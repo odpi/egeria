@@ -40,7 +40,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the Connection bean. It may be a Connection or a VirtualConnection.
      *
      * @param beanClass class of bean that has been requested
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -162,7 +162,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DataClassAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -210,7 +210,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the SchemaAnalysisAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -258,7 +258,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DataProfileAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -319,7 +319,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DataProfileLogAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -398,7 +398,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DataSourceMeasurementAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -446,7 +446,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DataSourcePhysicalStatusAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -498,7 +498,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentValueAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -547,7 +547,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentClassificationAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -597,7 +597,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentRelationshipAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -647,7 +647,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentValueAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -698,7 +698,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentClassificationAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -750,7 +750,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the DivergentRelationshipAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -802,7 +802,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the QualityAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -851,7 +851,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the QualityAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -901,7 +901,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the RequestForActionAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -951,7 +951,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the SchemaAnalysisAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -1018,7 +1018,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the SchemaAnalysisAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -1069,7 +1069,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the SuspectDuplicateAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -1121,7 +1121,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * Using the supplied instances, return a new instance of the SchemaAnalysisAnnotation bean.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities

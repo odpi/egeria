@@ -19,7 +19,7 @@ import java.util.Objects;
 
 /**
  * RepositoryServicesConfig provides the configuration properties that are needed by the OMRS components
- * to manage access to the metadata repositories that are members of the open metadata repository clusters that
+ * to manage access to the metadata repositories that are members of the open metadata repository cohorts that
  * this server connects to.
  * <ul>
  *     <li>
@@ -36,7 +36,7 @@ import java.util.Objects;
  *         localRepositoryConfig describes the properties used to manage the local metadata repository for this server.
  *     </li>
  *     <li>
- *         enterpriseAccessConfig describes the properties that control the cluster federation services that the
+ *         enterpriseAccessConfig describes the properties that control the cohort federation services that the
  *         OMRS provides to the Open Metadata AccessServices (OMASs).
  *     </li>
  *     <li>
@@ -226,7 +226,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration properties for each open metadata repository cluster that this local server
+     * Set up the configuration properties for each open metadata repository cohort that this local server
      * connects to.
      *
      * @param cohortConfigList list of cohort configuration properties

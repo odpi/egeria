@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * OwnerType defines the identifier used in an Asset's owner property.
  * <ul>
- *     <li>User Id - The owner's user id is stored in the owner property.</li>
+ *     <li>UserId - The owner's user id is stored in the owner property.</li>
  *     <li>Profile - The owner's profile unique identifier (guid) is stored in the owner property.</li>
  *     <li>Other - A different identifier for the owner outside of the scope of open metadata has been used.</li>
  * </ul>

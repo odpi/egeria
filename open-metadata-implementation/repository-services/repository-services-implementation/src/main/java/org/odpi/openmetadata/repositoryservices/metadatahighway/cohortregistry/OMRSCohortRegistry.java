@@ -228,7 +228,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
         /*
          * Save the connection consumer.  This component needs details of the current connections it should use
-         * to contact various members of the cluster (including the local server). It needs an initial
+         * to contact various members of the cohort (including the local server). It needs an initial
          * upload of the member's connections and then ongoing notifications for any changes in the membership.
          */
         this.connectionConsumer = connectionConsumer;

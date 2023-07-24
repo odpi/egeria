@@ -210,7 +210,7 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Return the list of metadata collection Ids for the metadata collections that retrieved this entity.
+     * Return the list of metadata collection ids for the metadata collections that retrieved this entity.
      *
      * @param entityGUID unique identifier for entity of interest
      * @return null or list of metadata collection ids

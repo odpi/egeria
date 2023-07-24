@@ -33,17 +33,36 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSEventCategory implements Serializable
 {
-    UNKNOWN (0, "Unknown Event",  "Unknown event category"),
-    REGISTRY(1, "Registry Event", "Event used to manage the membership of the metadata repository cohort"),
-    TYPEDEF (2, "TypeDef Event",  "Event used to manage the synchronization of TypeDefs within the metadata repository cohort"),
-    INSTANCE(3, "Instance Event", "Event used to manage the replication of metadata instances within the metadata repository cohort"),
+    /**
+     * Unknown Event - Unknown event category.
+     */
+    UNKNOWN (0, "Unknown Event",  "Unknown event category."),
+
+    /**
+     * Registry Event - Event used to manage the membership of the metadata repository cohort.
+     */
+    REGISTRY(1, "Registry Event", "Event used to manage the membership of the metadata repository cohort."),
+
+    /**
+     * TypeDef Event - Event used to manage the synchronization of TypeDefs within the metadata repository cohort.
+     */
+    TYPEDEF (2, "TypeDef Event",  "Event used to manage the synchronization of TypeDefs within the metadata repository cohort."),
+
+    /**
+     * Instance Event - Event used to manage the replication of metadata instances within the metadata repository cohort.
+     */
+    INSTANCE(3, "Instance Event", "Event used to manage the replication of metadata instances within the metadata repository cohort."),
+
+    /**
+     * Generic Event - Event used for sending generic messages, typically error messages.
+     */
     GENERIC (99, "Generic Event", "Event used for sending generic messages, typically error messages.");
 
     private static final long serialVersionUID = 1L;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

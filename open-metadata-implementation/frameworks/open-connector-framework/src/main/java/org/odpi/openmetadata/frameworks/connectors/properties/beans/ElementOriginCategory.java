@@ -39,13 +39,30 @@ public enum ElementOriginCategory
                                                                   "The metadata collection id for the element is the metadata collection id of the originating server. " +
                                                                   "If the originating server later joins the cohort with the same metadata collection id " +
                                                                   "then these elements will be refreshed from the originating server's current repository."),
+
+    /**
+     * The element comes from an open metadata content pack. The metadata collection id of the elements is set to the GUID of the pack.
+     */
     CONTENT_PACK            (3, "Content Pack",            "The element comes from an open metadata content pack. " +
                                                                   "The metadata collection id of the elements is set to the GUID of the pack."),
+
+    /**
+     * The element comes from a metadata repository that used to be a member of the one of the local repository's cohorts, but it has been deregistered.
+     * The metadata collection id remains the same. If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
+     */
     DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The element comes from a metadata repository that " +
-                                                                  "used to be a member of the one of the local repository's cohorts but it has been deregistered. " +
+                                                                  "used to be a member of the one of the local repository's cohorts, but it has been deregistered. " +
                                                                   "The metadata collection id remains the same. If the repository rejoins the cohort " +
                                                                   "then these elements can be refreshed from the rejoining repository."),
+
+    /**
+     * The element is part of a service's configuration.  The metadata collection id is null.
+     */
     CONFIGURATION           (5, "Configuration",           "The element is part of a service's configuration.  The metadata collection id is null."),
+
+    /**
+     * The element is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.
+     */
     EXTERNAL_SOURCE         (6, "External Source",         "The element is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
 
     private static final long     serialVersionUID = 1L;

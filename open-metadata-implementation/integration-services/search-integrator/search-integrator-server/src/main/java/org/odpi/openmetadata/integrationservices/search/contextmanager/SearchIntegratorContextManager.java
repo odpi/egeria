@@ -180,6 +180,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                                                                                     externalSourceGUID,
                                                                                     externalSourceName,
                                                                                     IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                                    maxPageSize,
                                                                                     auditLog);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

@@ -72,7 +72,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param repositoryName name of the repository used for logging.
      * @param repositoryHelper class used to build type definitions and instances.
      * @param repositoryValidator class used to validate type definitions and instances.
-     * @param metadataCollectionId unique Identifier of the enterprise metadata collection Id.
+     * @param metadataCollectionId unique Identifier of the enterprise metadata collection id.
      * @param localMetadataCollectionId unique Identifier of the local repository's metadata collection id (will be null if no local repository).
      */
     EnterpriseOMRSMetadataCollection(EnterpriseOMRSRepositoryConnector enterpriseParentConnector,

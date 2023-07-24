@@ -38,6 +38,7 @@ public class SearchIntegratorContext extends IntegrationContext
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      * @param integrationServiceName name of this service
+     * @param maxPageSize max number of elements that can be returned on a query
      * @param auditLog               logging destination
      */
     public SearchIntegratorContext(String                       connectorId,
@@ -53,6 +54,7 @@ public class SearchIntegratorContext extends IntegrationContext
                                    String                       externalSourceGUID,
                                    String                       externalSourceName,
                                    String                       integrationServiceName,
+                                   int                          maxPageSize,
                                    AuditLog                     auditLog) {
 
         super(connectorId,
@@ -65,7 +67,8 @@ public class SearchIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.integrationServiceName = integrationServiceName;
         this.auditLog = auditLog;

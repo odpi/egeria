@@ -43,19 +43,19 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
      * The constructor for DatabaseIntegratorErrorCode expects to be passed one of the enumeration rows defined in
      * DatabaseIntegratorErrorCode above.   For example:
-     *
+     * <br><br>
      *     DatabaseIntegratorErrorCode   errorCode = DatabaseIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

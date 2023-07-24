@@ -31,23 +31,94 @@ package org.odpi.openmetadata.metadatasecurity.properties;
 
 public enum ReferenceableStatus
 {
+    /**
+     * Unknown instance status.
+     */
     UNKNOWN                 (0,  0,  "<Unknown>",               "Unknown instance status."),
+
+    /**
+     * The content is incomplete.
+     */
     DRAFT                   (1,  1,  "Draft",                   "The content is incomplete."),
+
+    /**
+     * The content is ready for review.
+     */
     PREPARED                (2,  2,  "Prepared",                "The content is ready for review."),
+
+    /**
+     * The content is in review.
+     */
     PROPOSED                (3,  3,  "Proposed",                "The content is in review."),
+
+    /**
+     * The content is approved.
+     */
     APPROVED                (4,  4,  "Approved",                "The content is approved."),
+
+    /**
+     * The request or proposal is rejected.
+     */
     REJECTED                (5,  5,  "Rejected",                "The request or proposal is rejected."),
+
+    /**
+     * The request or proposal is approved for development.
+     */
     APPROVED_CONCEPT        (6,  6,  "Approved concept",        "The request or proposal is approved for development."),
+
+    /**
+     * The instance is being developed.
+     */
     UNDER_DEVELOPMENT       (7,  7,  "Under development",       "The instance is being developed."),
+
+    /**
+     * The development of the instance is complete.
+     */
     DEVELOPMENT_COMPLETE    (8,  8,  "Development complete",    "The development of the instance is complete."),
+
+    /**
+     * The instance is approved for deployment.
+     */
     APPROVED_FOR_DEPLOYMENT (9,  9,  "Approved for deployment", "The instance is approved for deployment."),
+
+    /**
+     * The instance is deployed in standby mode.
+     */
     STANDBY                 (10, 10, "StandBy",                 "The instance is deployed in standby mode."),
+
+    /**
+     * The instance is approved and in use.
+     */
     ACTIVE                  (15, 15, "Active",                  "The instance is approved and in use."),
+
+    /**
+     * The instance is not in use due to failure.
+     */
     FAILED                  (20, 20, "Failed",                  "The instance is not in use due to failure."),
+
+    /**
+     * The instance is shutdown or disabled.
+     */
     DISABLED                (21, 21, "Disabled",                "The instance is shutdown or disabled."),
+
+    /**
+     * The activity associated with the instance is complete.
+     */
     COMPLETE                (22, 22, "Complete",                "The activity associated with the instance is complete."),
+
+    /**
+     * The instance is out of date and should not be used.
+     */
     DEPRECATED              (30, 30, "Deprecated",              "The instance is out of date and should not be used."),
+
+    /**
+     * The instance is in a locally defined state.
+     */
     OTHER                   (50, 50, "Other",                   "The instance is in a locally defined state."),
+
+    /**
+     * The instance has been deleted and is no longer available.
+     */
     DELETED                 (99, 99, "Deleted",                 "The instance has been deleted and is no longer available.");
 
 
@@ -60,7 +131,6 @@ public enum ReferenceableStatus
     /**
      * Default constructor sets up the specific values for an enum instance.
      *
-     * @param ordinal int enum value ordinal
      * @param ordinal int enum value ordinal
      * @param name     String name
      * @param description String description

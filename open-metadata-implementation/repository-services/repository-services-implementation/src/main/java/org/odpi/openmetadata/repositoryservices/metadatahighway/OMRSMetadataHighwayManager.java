@@ -521,7 +521,7 @@ public class OMRSMetadataHighwayManager
      * that means a connector can not be created, an exception is thrown.
      *
      * @param cohortName name of the cohort that this registry store is for
-     * @param cohortRegistryConnection connection to the cluster registry store.
+     * @param cohortRegistryConnection connection to the open cohort registry store.
      * @return OMRSCohortRegistryStore connector
      */
     private OMRSCohortRegistryStore getCohortRegistryStore(String     cohortName,

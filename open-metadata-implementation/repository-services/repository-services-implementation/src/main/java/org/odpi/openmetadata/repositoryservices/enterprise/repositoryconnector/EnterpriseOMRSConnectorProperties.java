@@ -15,6 +15,15 @@ public class EnterpriseOMRSConnectorProperties extends ConnectedAssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
+
+    /**
+     * Constructor
+     *
+     * @param parentConnector connector described by these properties
+     * @param connectorManager associated connector manager
+     * @param enterpriseMetadataCollectionId collection identifier to use for this connector
+     * @param enterpriseMetadataCollectionName name of associated metadata collection
+     */
     public EnterpriseOMRSConnectorProperties(EnterpriseOMRSRepositoryConnector parentConnector,
                                              OMRSConnectorManager              connectorManager,
                                              String                            enterpriseMetadataCollectionId,

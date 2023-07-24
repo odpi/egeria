@@ -10,18 +10,26 @@ import java.io.Serializable;
  */
 public enum TypeDefStatus implements Serializable
 {
-    ACTIVE_TYPEDEF              (1, "ActiveTypeDef",
-                                   "TypeDef available and in use.  This is the default value equivalent to null"),
-    RENAMED_TYPEDEF             (2, "RenamedTypeDef",
-                                   "This typeDef should not be used because it has been renamed."),
-    DEPRECATED_TYPEDEF          (3,  "DeprecatedTypeDef",
-                                   "This typeDef should not be used because it has been deprecated");
+    /**
+     * ActiveTypeDef - TypeDef available and in use.  This is the default value equivalent to null.
+     */
+    ACTIVE_TYPEDEF      (1, "ActiveTypeDef", "TypeDef available and in use.  This is the default value equivalent to null."),
+
+    /**
+     * RenamedTypeDef - This typeDef should not be used because it has been renamed.
+     */
+    RENAMED_TYPEDEF     (2, "RenamedTypeDef", "This typeDef should not be used because it has been renamed."),
+
+    /**
+     * DeprecatedTypeDef - This typeDef should not be used because it has been deprecated.
+     */
+    DEPRECATED_TYPEDEF (3,  "DeprecatedTypeDef", "This typeDef should not be used because it has been deprecated.");
 
     private static final long    serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
 
     /**

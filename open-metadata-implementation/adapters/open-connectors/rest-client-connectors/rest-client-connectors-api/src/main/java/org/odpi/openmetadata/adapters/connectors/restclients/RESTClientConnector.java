@@ -4,6 +4,9 @@ package org.odpi.openmetadata.adapters.connectors.restclients;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 
+/**
+ * RESTClientConnector provides the base class for REST Client connectors.
+ */
 public abstract class RESTClientConnector extends ConnectorBase implements RESTClientCalls
 {
     /**

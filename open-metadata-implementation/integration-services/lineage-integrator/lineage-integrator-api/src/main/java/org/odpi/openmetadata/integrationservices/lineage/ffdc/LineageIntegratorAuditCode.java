@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The LineageIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -22,12 +21,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum LineageIntegratorAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0001 - The lineage integrator context manager is being initialized for calls to server {0} on platform {1}
+     */
     CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The lineage integrator context manager is being initialized for calls to server {0} on platform {1}",
                         "The Lineage Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
+     */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0002",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
@@ -35,6 +40,9 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
                                    "Verify that this connector is being started with the correct configuration."),
 
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0003 - The context for connector {0} has its permitted synchronization set to {1}
+     */
     PERMITTED_SYNCHRONIZATION("OMIS-LINEAGE-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
@@ -43,6 +51,9 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
              "Check that this permitted synchronized value is as expected.  If it is not," +
                      "change the configuration for this connector and restart the integration daemon."),
 
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0004 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT("OMIS-LINEAGE-INTEGRATOR-0004",
                  OMRSAuditLogRecordSeverity.ERROR,
                  "Integration connector {0} has a null context",
@@ -50,6 +61,9 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                  "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
                          "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
 
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0005 - A {0} exception with message {1} occurred when parsing open lineage event: {2}
+     */
     OPEN_LINEAGE_FORMAT_ERROR("OMIS-LINEAGE-INTEGRATOR-0005",
                               OMRSAuditLogRecordSeverity.ERROR,
                               "A {0} exception with message {1} occurred when parsing open lineage event: {2}",
@@ -58,6 +72,9 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                                       "The raw event is passed to the listening connectors with a null OpenLineageRunEvent bean.  The connector can use the open lineage standard server to process the event facet by facet.",
                               "Verify the format of the open lineage event.  If incorrect, seek the source of the event.  If correct, look to enhance Egeria's OpenLineageRunEvent."),
 
+    /**
+     * OMIS-LINEAGE-INTEGRATOR-0006 - A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event
+     */
     OPEN_LINEAGE_PUBLISH_ERROR("OMIS-LINEAGE-INTEGRATOR-0006",
                               OMRSAuditLogRecordSeverity.EXCEPTION,
                               "A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event",
@@ -66,19 +83,19 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for LineageIntegratorAuditCode expects to be passed one of the enumeration rows defined in
      * LineageIntegratorAuditCode above.   For example:
-     *
+     * <br><br>
      *     LineageIntegratorAuditCode   auditCode = LineageIntegratorAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

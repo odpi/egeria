@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         cohortRegistryConnection is the connection properties necessary to create the connector to the
  *         cohort registry store.  This is the store where the cohort registry keeps information about its
- *         local metadata collection Id and details of other repositories in the cohort.
+ *         local metadata collection identifier and details of other repositories in the cohort.
  *
  *         The default value is to use a local file called "cohort.registry" that is stored in the server's
  *         home directory.

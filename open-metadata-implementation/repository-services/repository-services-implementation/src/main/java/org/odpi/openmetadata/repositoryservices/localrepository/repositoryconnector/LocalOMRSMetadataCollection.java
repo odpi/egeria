@@ -54,7 +54,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param repositoryName name of the repository used for logging.
      * @param repositoryHelper class used to build type definitions and instances.
      * @param repositoryValidator class used to validate type definitions and instances.
-     * @param metadataCollectionId unique Identifier of the metadata collection Id.
+     * @param metadataCollectionId unique Identifier of the metadata collection id.
      * @param localServerName name of the local server.
      * @param localServerType type of the local server.
      * @param localOrganizationName name of the organization that owns the local server.

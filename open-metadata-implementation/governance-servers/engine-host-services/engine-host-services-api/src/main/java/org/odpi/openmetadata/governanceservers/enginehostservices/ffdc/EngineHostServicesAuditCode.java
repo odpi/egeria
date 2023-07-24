@@ -9,10 +9,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The EngineHostServicesAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Identifier - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -22,6 +21,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum EngineHostServicesAuditCode implements AuditLogMessageSet
 {
+    /**
+     * ENGINE-HOST-SERVICES-0001 - The engine host services are initializing in server {0}
+     */
     SERVER_INITIALIZING("ENGINE-HOST-SERVICES-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The engine host services are initializing in server {0}",
@@ -30,6 +32,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                 "governance services (connectors) to actively govern open metadata and the digital landscape it represents.",
                         "Verify that the start up sequence goes on to initialize the configured engine services and engines."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0002 - The engine host {0} has initialized
+     */
     SERVER_INITIALIZED("ENGINE-HOST-SERVICES-0002",
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The engine host {0} has initialized",
@@ -38,6 +43,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                "assigned governance engines has been retrieved from the Governance Engine OMAS by the engine host services " +
                                "and the engine services are able to connect to their partner OMAS."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0003 - The engine host services are unable to initialize a new instance of engine host {0}; exception {1} with message {2}
+     */
     SERVICE_INSTANCE_FAILURE("ENGINE-HOST-SERVICES-0003",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "The engine host services are unable to initialize a new instance of engine host {0}; " +
@@ -47,6 +55,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                              "Review the error message and any other reported failures to determine the cause of the problem.  " +
                                      "Once this is resolved, restart the engine host."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0004 - Engine host {0} is not configured with the platform URL root for its configuration OMAS {1}
+     */
     NO_CONFIG_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0004",
                          OMRSAuditLogRecordSeverity.ERROR,
                          "Engine host {0} is not configured with the platform URL root for its configuration OMAS {1}",
@@ -54,6 +65,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                          "Add the platform URL root of the OMAG server where the Governance Engine OMAS is running " +
                                "to this engine service's configuration."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0005 - Engine host {0} is not configured with the name for the server running its configuration OMAS {1}
+     */
     NO_CONFIG_OMAS_SERVER_NAME("ENGINE-HOST-SERVICES-0005",
                         OMRSAuditLogRecordSeverity.ERROR,
                        "Engine host {0} is not configured with the name for the server running its configuration OMAS {1}",
@@ -62,6 +76,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                 "to this integration service's configuration."),
 
 
+    /**
+     * ENGINE-HOST-SERVICES-0006 - Engine service {0} in engine host {1} is not configured with the platform URL root for its partner OMAS {2}
+     */
     NO_PARTNER_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0006",
                               OMRSAuditLogRecordSeverity.ERROR,
                               "Engine service {0} in engine host {1} is not configured with the platform URL root for its partner OMAS {2}",
@@ -69,6 +86,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                               "Add the platform URL root of the OMAG server where the partner OMAS is running " +
                                       "to this engine service's configuration."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0007 - Engine service {0} in engine host {1} is not configured with the name for the server running its partner OMAS {2}
+     */
     NO_PARTNER_OMAS_SERVER_NAME("ENGINE-HOST-SERVICES-0007",
                                OMRSAuditLogRecordSeverity.ERROR,
                                "Engine service {0} in engine host {1} is not configured with the name for the server running its partner OMAS {2}",
@@ -77,6 +97,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                        "to this integration service's configuration."),
 
 
+    /**
+     * ENGINE-HOST-SERVICES-0008 - No governance engines are configured in the engine service {0} on engine host {1}
+     */
     NO_ENGINES_FOR_SERVICE( "ENGINE-HOST-SERVICES-0008",
                             OMRSAuditLogRecordSeverity.ERROR,
                             "No governance engines are configured in the engine service {0} on engine host {1}",
@@ -86,6 +109,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                    "to describe what is wrong and how to fix it.  " +
                                    "If there are no errors in the configuration, raise an issue to get help to fix this."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0009 - {0} in engine host {1} is configured with a null engine name
+     */
     NULL_ENGINE_NAME("ENGINE-HOST-SERVICES-0009",
                                 OMRSAuditLogRecordSeverity.ERROR,
                                 "{0} in engine host {1} is configured with a null engine name",
@@ -93,6 +119,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                 "Correct the qualified name for the governance engine configured for the engine service" +
                                         " in the engine host's configuration document."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0010 - The engine service {0} has been configured with a null admin class in engine host {1}
+     */
     NULL_ENGINE_SERVICE_ADMIN_CLASS("ENGINE-HOST-SERVICES-0010",
                          OMRSAuditLogRecordSeverity.ERROR,
                          "The engine service {0} has been configured with a null admin class in engine host {1}",
@@ -104,6 +133,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                  "Ensure the engine service registers itself with the engine-host-services module and " +
                                  "the platform-chassis-spring module has access to the engine service's spring module."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0011 - The engine service {0} has been configured with an admin class of {1} which can not be
+     * used by the class loader.  The {2} exception was returned with message {3}
+     */
     BAD_ENGINE_SERVICE_ADMIN_CLASS("ENGINE-HOST-SERVICES-0011",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
                             "The engine service {0} has been configured with an admin class of {1} which can not be " +
@@ -114,6 +147,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                     "Once the class is correctly set up, restart the engine host.  It will be necessary to restart the " +
                                     "OMAG Server Platform if the class path needed adjustment. "),
 
+    /**
+     * ENGINE-HOST-SERVICES-0012 - The Open Metadata Engine Services (OMESs) are initializing in server {0}
+     */
     STARTING_ENGINE_SERVICES("ENGINE-HOST-SERVICES-0012",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The Open Metadata Engine Services (OMESs) are initializing in server {0}",
@@ -122,18 +158,27 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                 "governance services (connectors) to actively govern open metadata and the digital landscape it represents.",
                         "Verify that the start up sequence goes on to initialize the configured engine services and engines."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0013 - Engine service {0} in engine host {1} is unable to start any governance engines
+     */
     ENGINE_SERVICE_NULL_HANDLERS("ENGINE-HOST-SERVICES-0013",
                                  OMRSAuditLogRecordSeverity.ERROR,
                                  "Engine service {0} in engine host {1} is unable to start any governance engines",
                                  "The server is not able to run any governance requests.  It fails to start.",
                                  "Correct the configuration for the engine service to ensure it has at least one valid governance engine."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0014 - {0} out of {1} Open Metadata Engine Services (OMESs) in engine host server {2} have initialized
+     */
     ALL_ENGINE_SERVICES_STARTED("ENGINE-HOST-SERVICES-0014",
                                 OMRSAuditLogRecordSeverity.STARTUP,
                                 "{0} out of {1} Open Metadata Engine Services (OMESs) in engine host server {2} have initialized",
                                 "The governance engine has completed initialization and is ready to receive governance requests.",
                                 "Verify that the governance engine has been initialized wit the correct list of governance request types."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0015 - The governance engine {0} in server {1} is shutting down
+     */
     ENGINE_SHUTDOWN("ENGINE-HOST-SERVICES-0015",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The governance engine {0} in server {1} is shutting down",
@@ -141,6 +186,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                     "Verify that this shutdown is intended and the governance engine is no longer needed."),
 
 
+    /**
+     * ENGINE-HOST-SERVICES-0016 - The {0} engine service is disabled and will not be started
+     */
     SKIPPING_ENGINE_SERVICE("ENGINE-HOST-SERVICES-0016",
                       OMRSAuditLogRecordSeverity.STARTUP,
                       "The {0} engine service is disabled and will not be started",
@@ -148,18 +196,28 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                       "Engine services are typically disabled because the code is either incomplete or not working. " +
                               "It is necessary to connect with the Egeria community to find out when the service will be enabled."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0017 - The engine host {0} is shutting down
+     */
     SERVER_SHUTTING_DOWN("ENGINE-HOST-SERVICES-0017",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The engine host {0} is shutting down",
                     "The local administrator has requested shut down of this engine host server.",
                     "Verify that this server is no longer needed and the shutdown is expected."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0018 - The engine host {0} has completed shut down
+     */
     SERVER_SHUTDOWN("ENGINE-HOST-SERVICES-0018",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
-                         "The engine host {0} has completed shutdown",
+                         "The engine host {0} has completed shut down",
                          "The local administrator has requested shut down of this engine host server and the operation has completed.",
                          "Verify that all integration connectors that support the metadata exchange have shut down successfully."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0019 - Engine host server {0} is not authorized to call the Governance Engine
+     * OMAS running in server {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}
+     */
     SERVER_NOT_AUTHORIZED("ENGINE-HOST-SERVICES-0019",
                           OMRSAuditLogRecordSeverity.SECURITY,
                           "Engine host server {0} is not authorized to call the Governance Engine " +
@@ -171,12 +229,18 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                   "Engine OMAS, specific metadata elements or the entire remote server.  Diagnose the " +
                                   "extent of the authorization failure.  Then ensure the engine host's userId has sufficient access."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0020 - Engine host server {0} failed to start.  The exception was {1} with message: {2}
+     */
     ENGINE_SERVICE_INSTANCE_FAILURE("ENGINE-HOST-SERVICES-0020",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
                           "Engine host server {0} failed to start.  The exception was {1} with message: {2}",
                           "The server encountered a problem and has halted initialization of its services.",
                           "Diagnose why the service is unable to start using the messages logged to the audit log."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0021 - Governance engine {0} in engine host server {1} is configured to process governance requests of type {2}
+     */
     SUPPORTED_REQUEST_TYPE("ENGINE-HOST-SERVICES-0021",
                              OMRSAuditLogRecordSeverity.INFO,
                              "Governance engine {0} in engine host server {1} is configured to process governance requests of type {2}",
@@ -184,6 +248,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                      "request type.  It is ready to run governance requests of this type",
                              "Verify that this is an appropriate governance request type for the governance engine."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0022 - Governance engine {0} in engine host server {1} is not configured to support any type of governance requests
+     */
     NO_SUPPORTED_REQUEST_TYPES("ENGINE-HOST-SERVICES-0022",
                                OMRSAuditLogRecordSeverity.ERROR,
                                "Governance engine {0} in engine host server {1} is not configured to support any type of governance requests",
@@ -192,6 +259,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                "Add the configuration for at least one registered governance service (and corresponding governance request type to " +
                                        "this governance engine."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0023 - Governance engine {0} in engine host server {1} is not able to retrieve its configured governance request types from the
+     * Governance Engine OMAS running in server {2} on OMAG Server Platform {3}.  The error message was {4}
+     */
     REQUEST_TYPE_CONFIG_ERROR("ENGINE-HOST-SERVICES-0023",
                               OMRSAuditLogRecordSeverity.EXCEPTION,
                               "Governance engine {0} in engine host server {1} is not able to retrieve its configured governance request types from the " +
@@ -203,6 +274,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                       "Once the problem has been resolved, restart the governance engine."),
 
 
+    /**
+     * ENGINE-HOST-SERVICES-0024 - Governance engine {0} is unable to update the status for governance service {1}.  The exception was {2} with error
+     * message {3}
+     */
     EXC_ON_ERROR_STATUS_UPDATE("ENGINE-HOST-SERVICES-0024",
                                OMRSAuditLogRecordSeverity.EXCEPTION,
                                "Governance engine {0} is unable to update the status for governance service {1}.  The exception was {2} with error " +
@@ -210,6 +285,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                "The server is not able to record the failed result for a governance request. The governance report status is not updated.",
                                "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the governance request."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0025 - Governance engine called {0} is not known by metadata server {1}.  Exception {2} with message {3} returned to server {4}
+     */
     UNKNOWN_GOVERNANCE_ENGINE_NAME( "ENGINE-HOST-SERVICES-0025",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Governance engine called {0} is not known by metadata server {1}.  Exception {2} with message {3} " +
@@ -219,6 +297,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                    "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
                                            "configuration of the server.  Once the cause is resolved, restart the server."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0026 - The engine host services are unable to retrieve the connection for the configuration listener for server {0}
+     * from metadata server {1}. Exception returned was {2} with error message {3}
+     */
     NO_CONFIGURATION_LISTENER("ENGINE-HOST-SERVICES-0026",
                               OMRSAuditLogRecordSeverity.EXCEPTION,
                               "The engine host services are unable to retrieve the connection for the configuration " +
@@ -236,6 +318,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                       "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
                                       "refresh-config command or wait for the engine host services to retry the configuration request."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0}.
+     * It will receive configuration updates from metadata server {1}
+     */
     CONFIGURATION_LISTENER_REGISTERED("ENGINE-HOST-SERVICES-0027",
                                       OMRSAuditLogRecordSeverity.STARTUP,
                                       "The engine host services has registered the configuration " +
@@ -252,6 +338,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                               "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
                                               "refresh-config command or wait for the engine host services to retry the configuration request."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0028 - All governance service configuration is being refreshed for governance engine {0}
+     */
     CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0028",
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "All governance service configuration is being refreshed for governance engine {0}",
@@ -262,6 +351,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                           "Monitor the engine host services to ensure all the governance services are retrieved. " +
                                                   "Then it is ready to process new governance requests."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0029 - Refreshing all governance service configuration has being completed for governance engine {0}
+     */
     FINISHED_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0029",
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "Refreshing all governance service configuration has being completed for governance engine {0}",
@@ -271,6 +363,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                                   "If there are any governance services missing then validate the configuration of" +
                                                   "the governance engine in the metadata server."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0030 - Failed to refresh configuration for governance service registered as {0} for governance request types {1}.
+     * The exception was {2} with error message {3}
+     */
     GOVERNANCE_SERVICE_NO_CONFIG("ENGINE-HOST-SERVICES-0030",
                                 OMRSAuditLogRecordSeverity.INFO,
                                 "Failed to refresh configuration for governance service registered as " +
@@ -281,6 +377,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                         "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
                                         "the governance service."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0031 - Failed to refresh configuration for governance engine {0}.  The exception was {1} with error message {2}
+     */
     GOVERNANCE_ENGINE_NO_CONFIG("ENGINE-HOST-SERVICES-0031",
                                OMRSAuditLogRecordSeverity.ERROR,
                                "Failed to refresh configuration for governance engine {0}.  The exception was {1} with error message {2}",
@@ -290,12 +389,21 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                        "call to request that the governance engine calls the Governance Engine OMAS to refresh the configuration for " +
                                        "the governance service."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0032 - Governance action {0} running governance service {1} for governance engine {2} with request type {3} has
+     * recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}
+     */
     GOVERNANCE_ACTION_TARGET_COMPLETION("ENGINE-HOST-SERVICES-0032",
                               OMRSAuditLogRecordSeverity.INFO,
                               "Governance action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}",
                               "The governance action request has completed processing on one of its action targets.",
                               "Validate that the processing of this action target is correct."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0033 - Governance action {0} running governance service {1} for governance engine {2} with request type {3}
+     * has recorded completion status of {4} and output guards of {5}.  Next governance action is given request parameters
+     * called {6} and action targets of {7}.  The completion message was {8}
+     */
     GOVERNANCE_ACTION_RECORD_COMPLETION("ENGINE-HOST-SERVICES-0033",
                                         OMRSAuditLogRecordSeverity.SHUTDOWN,
                                         "Governance action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion status of {4} and output guards of {5}.  Next governance action is given request parameters called {6} and action targets of {7}.  The completion message was {8}",
@@ -303,6 +411,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                                 "reason. The governance action has been marked as FAILED.",
                                         "Validate that the processing of this governance action request is correct."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0034 - Failed to execute governance action for governance engine {0}.  The exception was {1} with error message {2}
+     */
     GOVERNANCE_ACTION_FAILED("ENGINE-HOST-SERVICES-0034",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "Failed to execute governance action for governance engine {0}.  The exception was {1} with error message {2}",
@@ -311,6 +422,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                              "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                      "retry the governance action by updating its status back to REQUESTED status."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}
+     */
     NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",
                        OMRSAuditLogRecordSeverity.ERROR,
                        "{0} in server {1} is not configured with the platform URL root for the {2}",
@@ -319,6 +433,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                        "Add the platform URL root of the metadata server where the partner OMAS is running " +
                                "to this engine service's configuration document."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0151 - {0} in server {1} is not configured with the name for the server running the {2}
+     */
     NO_OMAS_SERVER_NAME("ENGINE-HOST-SERVICES-0151",
                         OMRSAuditLogRecordSeverity.ERROR,
                         "{0} in server {1} is not configured with the name for the server running the {2}",
@@ -327,12 +444,18 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                         "Add the server name of the metadata server where the partner OMAS is running " +
                                 "to this engine service's configuration document."),
 
+    /**
+     * ENGINE-HOST-SERVICES-0152 - The {0} in server {1} is not configured with any engines
+     */
     NO_ENGINES("ENGINE-HOST-SERVICES-0152",
                OMRSAuditLogRecordSeverity.ERROR,
                "The {0} in server {1} is not configured with any engines",
                "The server is not able to run any requests since this has not engines.  It fails to start.",
                "Add the qualified name for at least one engine to the engine service in this server's configuration document."),
 
+    /**
+     * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
+     */
     ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
                             OMRSAuditLogRecordSeverity.ERROR,
                             "{0} caught an exception {1} while processing governance action {2}; the error message was {3}",
@@ -343,19 +466,19 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     ;
 
 
-    final AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for EngineHostServicesAuditCode expects to be passed one of the enumeration rows defined in
      * EngineHostServicesAuditCode above.   For example:
-     *
+     * <br><br>
      *     EngineHostServicesAuditCode   auditCode = EngineHostServicesAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique identifier for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

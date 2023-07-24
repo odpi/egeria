@@ -945,6 +945,104 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
     }
 
 
+    /**
+     * Retrieve the glossary metadata element for the requested glossary category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested category
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GlossaryElement getGlossaryForCategory(String  userId,
+                                                  String  assetManagerGUID,
+                                                  String  assetManagerName,
+                                                  String  glossaryCategoryGUID,
+                                                  Date    effectiveTime,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "getGlossaryForCategory";
+        final String guidParameterName = "glossaryCategoryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryCategoryGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/for-category/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
+
+        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 glossaryCategoryGUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the requested term
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GlossaryElement getGlossaryForTerm(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  glossaryTermGUID,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "getGlossaryForTerm";
+        final String guidParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/for-term/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
+
+        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 glossaryTermGUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing);
+
+        return restResult.getElement();
+    }
+
+
 
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
@@ -1390,6 +1488,62 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                                     serverName,
                                                                                                     userId,
                                                                                                     glossaryGUID,
+                                                                                                    startFrom,
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GlossaryCategoryElement>   getCategoriesForTerm(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String glossaryTermGUID,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName        = "getCategoriesForTerm";
+        final String guidParameterName = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/categories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
+
+        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                    urlTemplate,
+                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                    serverName,
+                                                                                                    userId,
+                                                                                                    glossaryTermGUID,
                                                                                                     startFrom,
                                                                                                     validatedPageSize,
                                                                                                     forLineage,

@@ -179,8 +179,7 @@ public class OMAGServerOperationResource
 
 
     /**
-     * Shutdown any active servers and unregister them from
-     * any cohorts.
+     * Shutdown the platform.
      *
      * @param userId  user that is issuing the request
      * @return void response or

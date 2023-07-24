@@ -24,13 +24,13 @@ ext {
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
     avroVersion = '1.11.1'
-    classgraphVersion = '4.8.158'
+    classgraphVersion = '4.8.160'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
     commonscodecVersion = '1.15'
     commonsconfiguration2Version = '2.9.0'
     commonsconfigurationVersion = '1.10'
-    commonsioVersion = '2.11.0'
+    commonsioVersion = '2.13.0'
     commonsloggingVersion = '1.2'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
@@ -41,10 +41,10 @@ ext {
     gremlinVersion = '3.5.6'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
-    guavaVersion = '31.1-jre'
+    guavaVersion = '32.0.1-jre'
     hamcrestVersion = '2.2'
     hdrhistogramVersion = '2.1.12'
-    hibernatevalidatorVersion = '8.0.0.Final'
+    hibernatevalidatorVersion = '8.0.1.Final'
     // TODO There is now a version 5 codestream of the next 2 http dependencies
     httpclientVersion = '4.5.14'
     httpcoreVersion = '4.4.16'
@@ -73,12 +73,12 @@ ext {
     lettuceVersion = '6.2.4.RELEASE'
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
-    openlineageVersion = '0.28.0'
+    openlineageVersion = '0.29.2'
     ossVersion = '4.15.0'
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
-    plexusVersion = '3.5.1'
-    prometheusVersion = '1.11.0'
+    plexusVersion = '4.0.0'
+    prometheusVersion = '1.11.2'
     nettyVersion = '4.1.94.Final'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
@@ -89,25 +89,25 @@ ext {
     sleepycatVersion = '18.3.12'
     snakeyamlVersion = '2.0'
     slf4jVersion = '2.0.6'
-    snappyVersion = '1.1.9.1'
-    springbootVersion = '3.0.6'
+    snappyVersion = '1.1.10.2'
+    springbootVersion = '3.1.1'
     spotbugsVersion = '4.7.3'
     springdataVersion = '3.0.3'
     springldapVersion = '3.0.1'
-    springsecurityVersion = '6.0.3'
+    springsecurityVersion = '6.1.1'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     swaggerVersion = '2.2.14'
-    testngVersion = '7.7.1'
+    testngVersion = '7.8.0'
     thriftVersion = '0.18.1'
     springwebVersion = '6.0.6'
     tinkVersion = '1.9.0'
-    tomcatVersion = '10.1.8'
+    tomcatVersion = '10.1.10'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.10.1'
     antVersion = '1.10.13'
-    jnrVersion = '3.1.16'
-    cassandraVersion = '4.1.1'
-    protobufVersion = '3.23.0'
+    jnrVersion = '3.1.17'
+    cassandraVersion = '4.1.2'
+    protobufVersion = '3.23.4'
     osgiVersion = '8.0.0'
     log4jVersion = '2.20.0'
     jacksonjdk8Version = '2.15.2'
@@ -119,7 +119,7 @@ ext {
 dependencies {
     // Only use this to bring in platforms, which are *constraints*
     dependencies {
-        api(platform('net.openhft:chronicle-bom:2.24ea55'))
+        api(platform('net.openhft:chronicle-bom:2.24ea71'))
     }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
@@ -288,7 +288,7 @@ dependencies {
         // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
         api("com.beust:jcommander:1.82")
-        api("org.antlr:antlr4:4.12.0")
+        api("org.antlr:antlr4:4.13.0")
         api("org.apache.ivy:ivy:2.5.1")
 
         // Add in Egeria's own projects -- not for us, but for our users

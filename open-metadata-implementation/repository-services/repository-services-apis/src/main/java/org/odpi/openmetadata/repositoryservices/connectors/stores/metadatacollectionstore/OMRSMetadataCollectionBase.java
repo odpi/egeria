@@ -73,7 +73,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param repositoryName name of this repository.
      * @param repositoryHelper helper class for building types and instances
      * @param repositoryValidator validator class for checking open metadata repository objects and parameters.
-     * @param metadataCollectionId unique identifier of the metadata collection Id.
+     * @param metadataCollectionId unique identifier of the metadata collection id.
      */
     public OMRSMetadataCollectionBase(OMRSRepositoryConnector parentConnector,
                                       String                  repositoryName,

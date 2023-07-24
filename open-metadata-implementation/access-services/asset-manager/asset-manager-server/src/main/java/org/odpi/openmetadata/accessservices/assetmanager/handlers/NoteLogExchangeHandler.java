@@ -140,7 +140,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement noteLog : results)
             {
@@ -191,7 +191,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement note : results)
             {

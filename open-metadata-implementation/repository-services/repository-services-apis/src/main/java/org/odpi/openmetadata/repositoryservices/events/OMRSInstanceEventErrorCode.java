@@ -13,46 +13,55 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMRSInstanceEventErrorCode defines the list of error codes that are used to record errors in the metadata
- * instance replication process that is used by the repository connectors within the open metadata repository cluster.
- * <ul>
- *     <li>
- *         NOT_IN_USE: There has been no error detected and so the error code is not in use.
- *     </li>
- * </ul>
+ * instance replication process that is used by the repository connectors within the open metadata repository cohort.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSInstanceEventErrorCode implements Serializable
 {
+    /**
+     * No Error - There has been no error detected and so the error code is not in use.
+     */
     NOT_IN_USE                (0, "No Error",
-                                  "There has been no error detected and so the error code is not in use.",
+                               "There has been no error detected and so the error code is not in use.",
                                null),
+
+    /**
+     * Conflicting Instances - There are two metadata instances that have the same unique identifier (guid) but have different types.
+     */
     CONFLICTING_INSTANCES     (1, "Conflicting Instances",
-                               "There are two metadata instances that have the same unique identifier (guid) but" +
-                                           " have different types.",
+                               "There are two metadata instances that have the same unique identifier (guid) but have different types.",
                                OMRSEventErrorCode.CONFLICTING_INSTANCES),
+
+    /**
+     * Conflicting Type Version - An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.
+     */
     CONFLICTING_TYPE         (2, "Conflicting Type Version",
                                "An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.",
                                OMRSEventErrorCode.CONFLICTING_TYPE),
+
+    /**
+     * Unknown Error Code - Unrecognized error code from incoming event.
+     */
     UNKNOWN_ERROR_CODE        (99, "Unknown Error Code",
                                "Unrecognized error code from incoming event.",
                                null);
 
     private static final long serialVersionUID = 1L;
 
-    private int                ordinal;
-    private String             name;
-    private String             description;
-    private OMRSEventErrorCode encoding;
+    private final int                ordinal;
+    private final String             name;
+    private final String             description;
+    private final OMRSEventErrorCode encoding;
 
 
     /**
      * Default constructor sets up the values for this enum instance.
      *
-     * @param ordinal int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param ordinal int identifier for the enum, used for indexing arrays etc. with the enum.
      * @param name String name for the enum, used for message content.
-     * @param description String default description for the enum, used when there is not natural
+     * @param description String default description for the enum, used when there is no natural
      *                             language resource bundle available.
      * @param encoding code value to use in OMRSEvents
      */
@@ -69,7 +78,7 @@ public enum OMRSInstanceEventErrorCode implements Serializable
 
 
     /**
-     * Return the identifier for the enum, used for indexing arrays etc with the enum.
+     * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
      * @return int identifier
      */
@@ -91,7 +100,7 @@ public enum OMRSInstanceEventErrorCode implements Serializable
 
 
     /**
-     * Return the default description for the enum, used when there is not natural
+     * Return the default description for the enum, used when there is no natural
      * language resource bundle available.
      *
      * @return String default description

@@ -181,7 +181,7 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provided above - or null to clear the field
+     * @param ownerType indicator of the type of id provided above - or null to clear the field
      *
      * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
@@ -202,7 +202,7 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId unique identifier/property of the owner - or null to clear the field
-     * @param ownerTypeName name of the type of Id provided above - or null to clear the field
+     * @param ownerTypeName name of the type of id provided above - or null to clear the field
      * @param ownerPropertyName name of the property that describes the ownerId
      *
      * @throws InvalidParameterException userId is null

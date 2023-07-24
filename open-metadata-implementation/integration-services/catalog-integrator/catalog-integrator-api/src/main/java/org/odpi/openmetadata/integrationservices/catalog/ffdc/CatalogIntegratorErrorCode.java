@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * The CatalogIntegratorErrorCode error code is used to define first failure data capture (FFDC) for errors that
  * occur when working with the Integration Services.  It is used in conjunction with all exceptions,
  * both Checked and Runtime (unchecked).
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -27,7 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
 {
-
+    /**
+     * OMIS-CATALOG-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}
+     */
     INVALID_CONNECTOR(400,"OMIS-CATALOG-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
@@ -35,6 +36,9 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
 
+    /**
+     * OMIS-CATALOG-INTEGRATOR-400-002 - The {0} has been disabled by the configuration for the {1} integration service
+     */
     DISABLED_EXCHANGE_SERVICE(400,"OMIS-CATALOG-INTEGRATOR-400-002",
                       "The {0} has been disabled by the configuration for the {1} integration service",
                       "The integration service's context is unable to return the client interface to this service.",
@@ -42,6 +46,9 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                               "Either change the configuration of the integration service or change the connector to skip the part of the " +
                               "synchronization that uses this exchange service since the organization does not want this type of metadata synchronized."),
 
+    /**
+     * OMIS-CATALOG-INTEGRATOR-400-003 - The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests on behalf of asset manager {3}
+     */
     NOT_PERMITTED_SYNCHRONIZATION(400,"OMIS-CATALOG-INTEGRATOR-400-003",
                               "The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests on behalf of asset manager {3}",
                               "The request is not issued and an exception is returned to the caller.",
@@ -49,11 +56,17 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                                       "Either change the configuration of the integration service or change the connector to skip the part of the " +
                                       "synchronization that uses this request since the organization does not want this type of metadata synchronized."),
 
+    /**
+     * OMIS-CATALOG-INTEGRATOR-400-004 - The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}
+     */
     BAD_CONFIG_PROPERTIES(400, "OMIS-CATALOG-INTEGRATOR-400-004",
                           "The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}",
                           "The access service has not been passed valid configuration .",
                           "Correct the value of the failing configuration property and restart the server."),
 
+    /**
+     * OMIS-CATALOG-INTEGRATOR-500-001 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT(400,"OMIS-CATALOG-INTEGRATOR-500-001",
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
@@ -62,19 +75,19 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
      * The constructor for CatalogIntegratorErrorCode expects to be passed one of the enumeration rows defined in
      * CatalogIntegratorErrorCode above.   For example:
-     *
+     * <br><br>
      *     CatalogIntegratorErrorCode   errorCode = CatalogIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

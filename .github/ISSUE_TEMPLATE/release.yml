@@ -17,34 +17,34 @@ body:
       value: |
         Create release x.y :
         Prior to the release work
-        - [ ] slack post advising of upcoming release & linking to issue
-        - [ ] advance warning in developer/community call
-        - [ ] final agreement to start branch in team call & identification of outstanding issues
+        - [ ] Slack post advising of upcoming release & linking to issue
+        - [ ] Advance warning in developer/community call
+        - [ ] Final agreement to start branch in team call & identification of outstanding issues
         - [ ] Agree required updates/versions for additional repos including egeria-ui, egeria-reactui, connectors etc
 
         Branching & Correcting versions
-        - [ ] Create branch
+        - [ ] Create branch (egeria-release-x.y)
         - [ ] Reassign any issues not being worked on to the next release
         - [ ] Update version for main (ie x.y-SNAPSHOT > x.y+1-SNAPSHOT)
-        - [ ] Update version for branch (ie x.y-SNAPSHOT -> x.y)
+        - [ ] Update version for release branch (ie x.y-SNAPSHOT -> x.y)
 
         Final updates to the release
         - [ ] Ensure any remaining fixes are merged into branch (and vice-versa to main)
 
         Pre-release security check
-        - [ ] Execute manual [sonatype lift scan](https://lift.sonatype.com) on release branch from and communicate findings (needs more formal process in future)
+        - [ ] Check security scans (ie owasp dependency check)
 
         Generate a release image for testing
-        - [ ] Start [Release](https://github.com/odpi/egeria/actions/workflows/release.yml) pipeline manually to generate container image
+        - [ ] Start [Release](https://github.com/odpi/egeria/actions/workflows/release.yml) pipeline manually to generate container image and stage artifacts on maven central
 
 
         Updating the Helm Charts (egeria-charts repo)
         - [ ] checker correct container images are on [docker.io](https://hub.docker.com/u/odpi) & [quay.io](https://quay.io/organization/odpi) (these are built by the 'merge' build of a release)
         - [ ] update image versions for helm charts [egeria-charts](https://github.com/odpi/egeria-charts/) repo (using -prerelease for chart version)
-          - check/update the strimzi chart versions
-          - check/update the kafka version used for the strimzi CR in each chart
-          - check/update the current jupyter lab version & generate a new docker container in egeria-jupyter
-          - update the jupyter lab version in the charts
+          - check/update the [strimzi chart versions](https://github.com/strimzi/strimzi-kafka-operator/releases)
+          - check/update supported kafka version used for the strimzi CR in each chart
+          - check/update the current [jupyter lab version](https://hub.docker.com/r/jupyter/minimal-notebook/tags) & generate a new docker image in egeria-jupyter
+          - update the jupyter lab image version in the charts
 
 
         Final tests
@@ -52,20 +52,22 @@ body:
         - [ ] Verify odpi-egeria-lab chart (pods active/ready)
         - [ ] Verify egeria-base chart (pods active/ready)
         - [ ] Check notebooks (config, start, data catalog at a minimum)
-        - [ ] Check polymer UI (only possible to check it runs and run UI lab)
+        - [ ] Check Egeria UI (only possible to check it runs and run UI lab)
         - [ ] Check React UI (rex, tex, glossary author). Some of the steps descibed [here](https://egeria-project.org/education/egeria-dojo/running-egeria/user-interfaces/ecosystem-ui/ecosystem-ui-start/)
-        - [ ] [CTS - graph](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
-        - [ ] [CTS - inmemory](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
+        - [ ] Check and validate [CTS results](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
+          - CTS using in-memory
+          - CTS using graph
+          - CTS using xtdb
 
         Final Docs
-        - [ ] Update release notes in egeria-docs
+        - [ ] Update release notes in [egeria-docs](https://github.com/odpi/egeria-docs/tree/main/site/docs/release-notes)
 
         Final build and publish
         - [ ] Check if the Release pipeline rlease artifacts are shown in staging repo in [OSS Repository Manager](https://oss.sonatype.org/#welcome)
-        - [ ] 'close' staging repo & Validate artifacts ok (number, structure, validations) on oss.sonatype.org
-        - [ ] Create final github releases for egeria (add link to egeria docs)
-        - [ ] Close repo on oss.sonatype.org (once updated) for egeria, release
+        - [ ] Close staging repo & validate artifacts ok (number, structure, validations) on oss.sonatype.org 
         - [ ] Check 'release' repo on oss.sonatype.org has artifacts
+        - [ ] Release the repo (takes time for the operation to complete and for the arifacts to be visible in maven central repository)
+        - [ ] Create final [github release](https://github.com/odpi/egeria/releases) (add link to egeria docs)
         - [ ] Update final versions of egeria-charts to release ie x.y
         - [ ] Publish that release is now shipped via slack #egeria-announce
         - [ ] Post on egeria-annouce [mailing list](egeria-announce@lists.lfaidata.foundation)

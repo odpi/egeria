@@ -19,7 +19,7 @@ public class AtlasRelatedTermHeader
 {
     private String termGuid = null;
     private String relationGuid	= null;
-   private String  displayText = null;
+   private String  displayText = null; // name in properties
 
 
     public AtlasRelatedTermHeader()

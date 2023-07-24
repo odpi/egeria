@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.registration;
 
 /**
  * The registration package provides the definitions and interfaces to describe each of the Open Metadata
@@ -14,3 +13,5 @@ package org.odpi.openmetadata.adminservices.registration;
  * ViewServiceAdmin is the API that each view service implements. It is called to initialize and shutdown
  * the view service.
  */
+package org.odpi.openmetadata.adminservices.registration;
+

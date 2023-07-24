@@ -1061,6 +1061,45 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Add the DeployedOn relationship to the archive.
+     *
+     * @param deployedElementQName qualified name of element being deployed
+     * @param deployedOnQName qualified name of target
+     * @param deploymentTime time of the deployment
+     * @param deployerTypeName type name of the element representing the deployer
+     * @param deployerPropertyName property name used to identify the deployer
+     * @param deployer identifier of the deployer
+     * @param deploymentStatus status of the deployment
+     */
+    public void addDeployedOnRelationship(String deployedElementQName,
+                                          String deployedOnQName,
+                                          Date   deploymentTime,
+                                          String deployerTypeName,
+                                          String deployerPropertyName,
+                                          String deployer,
+                                          int    deploymentStatus)
+    {
+        final String methodName = "addDeployedOnRelationship";
+        final String operationStatus = "OperationalStatus";
+
+        String deployedElementId = this.idToGUIDMap.getGUID(deployedElementQName);
+        String deployedOnId = this.idToGUIDMap.getGUID(deployedOnQName);
+
+        EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
+        EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
+
+        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(operationStatus, deploymentStatus);
+
+        InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, "deploymentTime", deploymentTime, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployerTypeName", deployerTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployerPropertyName", deployerPropertyName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployer", deployer, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, operationStatus, statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
+
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship("DeployedOn", this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
+    }
+
+    /**
      * Add a location entity to the archive.
      *
      * @param qualifiedName unique name of the location
@@ -3394,11 +3433,11 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addSoftwareCapability";
 
-        String assetTypeName = SOFTWARE_CAPABILITY_TYPE_NAME;
+        String entityTypeName = SOFTWARE_CAPABILITY_TYPE_NAME;
 
         if (typeName != null)
         {
-            assetTypeName = typeName;
+            entityTypeName = typeName;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -3411,15 +3450,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
-        EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
-                                                                 idToGUIDMap.getGUID(qualifiedName),
-                                                                 properties,
-                                                                 InstanceStatus.ACTIVE,
-                                                                 null);
+        EntityDetail entity = archiveHelper.getEntityDetail(entityTypeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            null);
 
-        archiveBuilder.addEntity(assetEntity);
+        archiveBuilder.addEntity(entity);
 
-        return assetEntity.getGUID();
+        return entity.getGUID();
     }
 
 

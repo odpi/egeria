@@ -35,8 +35,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class WatchdogMetadataElementEvent extends WatchdogGovernanceEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private OpenMetadataElement metadataElement = null;
     private OpenMetadataElement previousMetadataElement = null;
 

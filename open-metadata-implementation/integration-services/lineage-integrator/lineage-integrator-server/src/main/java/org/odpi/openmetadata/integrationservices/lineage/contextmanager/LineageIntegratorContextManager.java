@@ -228,6 +228,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                                       externalSourceGUID,
                                                                                       externalSourceName,
                                                                                       IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                                      maxPageSize,
                                                                                       auditLog);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

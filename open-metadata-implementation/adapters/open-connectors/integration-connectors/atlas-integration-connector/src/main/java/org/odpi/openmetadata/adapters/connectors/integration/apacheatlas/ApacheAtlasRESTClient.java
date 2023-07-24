@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasGlossaryAnchorElement;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.NameConflictException;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasGlossaryCategoryElement;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasGlossaryElement;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasGlossaryTermElement;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
@@ -16,6 +17,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.springframework.core.ParameterizedTypeReference;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -25,7 +28,7 @@ import java.util.List;
 public class ApacheAtlasRESTClient
 {
     protected String   serverName;             /* Initialized in constructor */
-    protected String   url;                    /* Initialized in constructor */
+    protected String   baseURL;                /* Initialized in constructor */
     protected AuditLog auditLog;               /* Initialized in constructor */
 
 
@@ -33,55 +36,20 @@ public class ApacheAtlasRESTClient
 
 
     /**
-     * Constructor for no authentication with audit log.
-     *
-     * @param serverName name of the Atlas Server to call
-     * @param url URL root of the server platform where the OMAG Server is running.
-     * @param auditLog destination for log messages.
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    protected ApacheAtlasRESTClient(String    serverName,
-                                    String    url,
-                                    AuditLog  auditLog) throws InvalidParameterException
-    {
-        final String  methodName = "RESTClient(no authentication)";
-
-        this.serverName = serverName;
-        this.url = url;
-        this.auditLog = auditLog;
-
-        RESTClientFactory factory = new RESTClientFactory(serverName, url);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Exception error)
-        {
-            throw new InvalidParameterException(ApacheAtlasErrorCode.NULL_URL.getMessageDefinition(serverName, error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error,
-                                                "url or serverName");
-        }
-    }
-
-
-    /**
      * Constructor for simple userId and password authentication with audit log.
      *
-     * @param serverName name of the OMAG Server to call
-     * @param url URL root of the server platform where the OMAG Server is running.
+     * @param connectorName name of the connector
+     * @param serverName name of the server
+     * @param baseURL URL root of the server platform where the OMAG Server is running.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    protected ApacheAtlasRESTClient(String   serverName,
-                                    String   url,
+    protected ApacheAtlasRESTClient(String   connectorName,
+                                    String   serverName,
+                                    String   baseURL,
                                     String   userId,
                                     String   password,
                                     AuditLog auditLog) throws InvalidParameterException
@@ -89,11 +57,11 @@ public class ApacheAtlasRESTClient
         final String  methodName = "RESTClient(userId and password)";
 
         this.serverName = serverName;
-        this.url = url;
+        this.baseURL = baseURL;
         this.auditLog = auditLog;
 
         RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           url,
+                                                           baseURL,
                                                            userId,
                                                            password);
 
@@ -103,56 +71,291 @@ public class ApacheAtlasRESTClient
         }
         catch (Exception  error)
         {
-            throw new InvalidParameterException(ApacheAtlasErrorCode.NULL_URL.getMessageDefinition(serverName, error.getMessage()),
+            throw new InvalidParameterException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName, error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error,
-                                                "url or serverName");
+                                                "baseURL, serverName, userId or password");
         }
     }
 
 
-    AtlasGlossaryAnchorElement syncGlossary(GlossaryElement egeriaGlossary)
+    /**
+     * Return a glossary based on the paging count.
+     *
+     * @param glossaryCount position of the glossary in the paging list.
+     * @return glossary or null
+     * @throws PropertyServerException problem with the request
+     */
+    @SuppressWarnings(value = "unchecked")
+    AtlasGlossaryElement getAtlasGlossary(int glossaryCount) throws PropertyServerException
     {
-        String atlasGUID = null;
+        final String methodName = "getAtlasGlossary(glossaryCount)";
+        final String url = baseURL + "/api/atlas/v2/glossary?limit=1&offset=" + glossaryCount + "&sort=ASC";
 
-        /*
-         * Retrieve the named glossary
-         */
 
-        /*
-         * If found, update glossary
-         */
+        List<LinkedHashMap<String, Object>> glossaryElements = (ArrayList<LinkedHashMap<String, Object>>)this.callGetRESTCallNoParams(methodName, ArrayList.class, url);
 
-        /*
-         * If not found create glossary
-         */
+        if ((glossaryElements != null) && (! glossaryElements.isEmpty()))
+        {
+            LinkedHashMap<String, Object> requestedGlossary = glossaryElements.get(0);
+
+            return this.getAtlasGlossary(requestedGlossary.get("guid").toString());
+        }
 
         return null;
     }
 
 
-    String syncGlossaryTerm(GlossaryTermElement        egeriaGlossaryTerm,
-                            AtlasGlossaryAnchorElement atlasGlossaryAnchor)
+    /**
+     * Return a glossary based on its guid.
+     *
+     * @param glossaryGUID unique identifier of the glossary.
+     * @return glossary or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryElement getAtlasGlossary(String glossaryGUID) throws PropertyServerException
     {
-        String atlasGUID = null;
-        /*
-         * Retrieve the terms from the glossary
-         */
+        final String methodName = "getAtlasGlossary(glossaryGUID)";
+        final String url = baseURL + "/api/atlas/v2/glossary/" + glossaryGUID;
 
-        /*
-         * Scan the terms to match on the egeriaGUID
-         */
+        return this.callGetRESTCallNoParams(methodName, AtlasGlossaryElement.class, url);
+    }
 
-        /*
-         * If a match is found; update if required
-         */
 
-        /*
-         * If no match; create a new term
-         */
+    /**
+     * Create a new empty glossary.
+     *
+     * @param glossary glossary to create
+     * @return glossaryGUID
+     * @throws PropertyServerException problem with the request
+     */
+    String createAtlasGlossary(AtlasGlossaryElement glossary) throws PropertyServerException
+    {
+        final String methodName = "createAtlasGlossary(glossary)";
+        final String url = baseURL + "/api/atlas/v2/glossary";
 
-        return atlasGUID;
+        AtlasGlossaryElement newGlossary = this.callPostRESTCallNoParams(methodName, AtlasGlossaryElement.class, url, glossary);
+
+        if (newGlossary != null)
+        {
+            return newGlossary.getGuid();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Save a glossary with all of its links to terms and categories.
+     *
+     * @param glossary glossary to create/update
+     * @return glossary or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryElement saveAtlasGlossary(AtlasGlossaryElement glossary) throws PropertyServerException
+    {
+        final String methodName = "saveAtlasGlossary(glossary)";
+        final String url = baseURL + "/api/atlas/v2/glossary/{0}";
+
+        return this.callPutRESTCall(methodName, AtlasGlossaryElement.class, url, glossary, glossary.getGuid());
+    }
+
+
+
+    /**
+     * Delete a glossary with all of its links to terms and categories.
+     *
+     * @param glossary glossary to delete
+     * @throws PropertyServerException problem with the request
+     */
+    void deleteAtlasGlossary(AtlasGlossaryElement glossary) throws PropertyServerException
+    {
+        final String methodName = "deleteAtlasGlossary()";
+        final String url = baseURL + "/api/atlas/v2/glossary/" + glossary.getGuid();
+
+        this.callDeleteRESTCall(methodName, url);
+    }
+
+
+    /**
+     * Return a glossary term based on its guid.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term.
+     * @return glossary or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryTermElement getAtlasGlossaryTerm(String glossaryTermGUID) throws PropertyServerException
+    {
+        final String methodName = "getAtlasGlossaryTerm(glossaryTermGUID)";
+        final String url = baseURL + "/api/atlas/v2/glossary/term/" + glossaryTermGUID;
+
+        return this.callGetRESTCallNoParams(methodName, AtlasGlossaryTermElement.class, url);
+    }
+
+
+    /**
+     * Create a new term linked to its glossary, other terms and categories.
+     *
+     * @param term term to create
+     * @return glossaryTermGUID
+     * @throws PropertyServerException problem with the request
+     * @throws NameConflictException the name supplied clashes with another term
+     */
+    String createAtlasGlossaryTerm(AtlasGlossaryTermElement term) throws PropertyServerException,
+                                                                         NameConflictException
+    {
+        final String methodName = "createAtlasGlossaryTerm()";
+        final String url = baseURL + "/api/atlas/v2/glossary/term";
+
+        AtlasGlossaryTermElement newTerm;
+
+
+        try
+        {
+            newTerm = this.callPostRESTCallNameConflict(methodName, AtlasGlossaryTermElement.class, url, term);
+        }
+        catch (PropertyServerException error)
+        {
+            if (error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            {
+                throw new NameConflictException(ApacheAtlasErrorCode.TERM_ALREADY_EXISTS.getMessageDefinition(term.getName()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "name",
+                                                error);
+            }
+
+            throw error;
+        }
+
+        if (newTerm != null)
+        {
+            return newTerm.getGuid();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Save a term with all of its links to other terms and categories.
+     *
+     * @param term term to create/update
+     * @return term or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryTermElement saveAtlasGlossaryTerm(AtlasGlossaryTermElement term) throws PropertyServerException
+    {
+        final String methodName = "saveAtlasGlossaryTerm()";
+        final String url = baseURL + "/api/atlas/v2/glossary/term/{0}";
+
+        return this.callPutRESTCall(methodName, AtlasGlossaryTermElement.class, url, term, term.getGuid());
+    }
+
+
+    /**
+     * Delete a term with all of its links to other terms and categories.
+     *
+     * @param term term to delete
+     * @throws PropertyServerException problem with the request
+     */
+    void deleteAtlasGlossaryTerm(AtlasGlossaryTermElement term) throws PropertyServerException
+    {
+        final String methodName = "deleteAtlasGlossaryTerm()";
+        final String url = baseURL + "/api/atlas/v2/glossary/term/" + term.getGuid();
+
+        this.callDeleteRESTCall(methodName, url);
+    }
+
+
+    /**
+     * Return a category based on its guid.
+     *
+     * @param glossaryCategoryGUID unique identifier of the category.
+     * @return glossary or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryCategoryElement getAtlasGlossaryCategory(String glossaryCategoryGUID) throws PropertyServerException
+    {
+        final String methodName = "getAtlasGlossaryCategory(glossaryCategoryGUID)";
+        final String url = baseURL + "/api/atlas/v2/glossary/category/" + glossaryCategoryGUID;
+
+        return this.callGetRESTCallNoParams(methodName, AtlasGlossaryCategoryElement.class, url);
+    }
+
+
+    /**
+     * Create a new category linked to its glossary and potentially other categories and terms.
+     *
+     * @param category category to create
+     * @return glossaryCategoryGUID
+     * @throws PropertyServerException problem with the request
+     * @throws NameConflictException the name supplied clashes with another term
+     */
+    String createAtlasGlossaryCategory(AtlasGlossaryCategoryElement category) throws PropertyServerException,
+                                                                                     NameConflictException
+    {
+        final String methodName = "createAtlasGlossaryCategory(category)";
+        final String url = baseURL + "/api/atlas/v2/glossary/category";
+
+        AtlasGlossaryCategoryElement newGlossaryCategory;
+
+
+        try
+        {
+            newGlossaryCategory = this.callPostRESTCallNameConflict(methodName, AtlasGlossaryCategoryElement.class, url, category);
+        }
+        catch (PropertyServerException error)
+        {
+            if (error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            {
+                throw new NameConflictException(ApacheAtlasErrorCode.CATEGORY_ALREADY_EXISTS.getMessageDefinition(category.getName()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "name",
+                                                error);
+            }
+
+            throw error;
+        }
+        if (newGlossaryCategory != null)
+        {
+            return newGlossaryCategory.getGuid();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Save a category with all of its links to terms and categories.
+     *
+     * @param category category to create/update
+     * @return glossary category or null
+     * @throws PropertyServerException problem with the request
+     */
+    AtlasGlossaryCategoryElement saveAtlasGlossaryCategory(AtlasGlossaryCategoryElement category) throws PropertyServerException
+    {
+        final String methodName = "saveAtlasGlossaryCategory(glossaryGUID)";
+        final String url = baseURL + "/api/atlas/v2/glossary/category/{0}";
+
+        return this.callPutRESTCall(methodName, AtlasGlossaryCategoryElement.class, url, category, category.getGuid());
+    }
+
+
+    /**
+     * Delete a category with all of its links to terms and categories.
+     *
+     * @param category category to create/update
+     * @throws PropertyServerException problem with the request
+     */
+    void deleteAtlasGlossaryCategory(AtlasGlossaryCategoryElement category) throws PropertyServerException
+    {
+        final String methodName = "deleteAtlasGlossaryCategory(glossaryGUID)";
+        final String url = baseURL + "/api/atlas/v2/glossary/category/" + category.getGuid();
+
+        this.callDeleteRESTCall(methodName, url);
     }
 
 
@@ -272,6 +475,49 @@ public class ApacheAtlasRESTClient
         }
 
         return null;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
+     * complex parameters.
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param returnClass class of the response object.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected <T> T callPostRESTCallNameConflict(String    methodName,
+                                                 Class<T>  returnClass,
+                                                 String    urlTemplate,
+                                                 Object    requestBody) throws PropertyServerException
+    {
+        try
+        {
+            return clientConnector.callPostRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
+        }
+        catch (Exception error)
+        {
+            /*
+             * Avoid logging error to the audit log if this is just a name conflict
+             */
+            if (! error.getMessage().contains("org.springframework.web.client.HttpClientErrorException$Conflict"))
+            {
+                logRESTCallException(methodName, error);
+            }
+
+            throw new PropertyServerException(ApacheAtlasErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                                   serverName,
+                                                                                                                   baseURL,
+                                                                                                                   error.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              error);
+        }
     }
 
 
@@ -438,6 +684,28 @@ public class ApacheAtlasRESTClient
     /**
      * Issue a Delete REST call that returns a response object.
      *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  void callDeleteRESTCall(String    methodName,
+                                       String    urlTemplate) throws PropertyServerException
+    {
+        try
+        {
+            clientConnector.callDeleteRESTCallNoParams(methodName, Object.class, urlTemplate, null);
+        }
+        catch (Exception error)
+        {
+            logRESTCallException(methodName, error);
+        }
+    }
+
+
+    /**
+     * Issue a Delete REST call that returns a response object.
+     *
      * @param <T> return type
      * @param methodName  name of the method being called.
      * @param responseType class of the response for generic object.
@@ -480,15 +748,15 @@ public class ApacheAtlasRESTClient
             auditLog.logException(methodName,
                                   ApacheAtlasAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                        serverName,
-                                                                                                       url,
+                                                                                                       baseURL,
                                                                                                        error.getMessage()),
                                   error);
         }
 
         throw new PropertyServerException(ApacheAtlasErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                              serverName,
-                                                                                                                               url,
-                                                                                                              error.getMessage()),
+                                                                                                               serverName,
+                                                                                                               baseURL,
+                                                                                                               error.getMessage()),
                                           this.getClass().getName(),
                                           methodName,
                                           error);
