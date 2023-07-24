@@ -93,15 +93,6 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
                             testTypeName + assertionMsg2 + classificationDef.getName(),
                             RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
                             RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
-
-                }
-                else
-                {
-                    super.addNotSupportedAssertion(assertion2,
-                            testTypeName + assertionMsg2 + classificationDef.getName(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
-
                 }
             }
         }

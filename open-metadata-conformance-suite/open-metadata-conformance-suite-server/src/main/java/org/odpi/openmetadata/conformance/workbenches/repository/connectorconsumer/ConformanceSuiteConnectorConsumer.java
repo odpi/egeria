@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
@@ -22,10 +22,10 @@ import java.util.Set;
  */
 public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
 {
-    private Map<String, OMRSRepositoryConnector>  connectorMap  = new HashMap<>();
+    private final Map<String, OMRSRepositoryConnector> connectorMap = new HashMap<>();
 
-    private String                                tutServerName;
-    private RepositoryConformanceWorkPad          workPad;
+    private final String                       tutServerName;
+    private final RepositoryConformanceWorkPad workPad;
 
 
     /**
@@ -51,16 +51,10 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
     {
         final String methodName = "setLocalConnector";
 
-        OMRSAuditLog auditLog = workPad.getAuditLog();
+        AuditLog auditLog = workPad.getAuditLog();
 
-        ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.LOCAL_CONNECTOR_IN_COHORT;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(metadataCollectionId),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            ConformanceSuiteAuditCode.LOCAL_CONNECTOR_IN_COHORT.getMessageDefinition(metadataCollectionId));
 
         workPad.setLocalMetadataCollectionId(metadataCollectionId);
         workPad.setLocalRepositoryConnector(localConnector);
@@ -84,34 +78,22 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
 
             if (tutServerName.equals(remoteConnector.getServerName()))
             {
-                OMRSAuditLog auditLog = workPad.getAuditLog();
+                AuditLog auditLog = workPad.getAuditLog();
 
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.TUT_CONNECTED_TO_COHORT;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(tutServerName,
-                                                                    metadataCollectionId),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.TUT_CONNECTED_TO_COHORT.getMessageDefinition(tutServerName,
+                                                                    metadataCollectionId));
                 workPad.setTutMetadataCollectionId(metadataCollectionId);
                 workPad.setTutRepositoryConnector(remoteConnector);
             }
             else
             {
-                OMRSAuditLog auditLog = workPad.getAuditLog();
+                AuditLog auditLog = workPad.getAuditLog();
 
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.ANOTHER_CONNECTED_TO_COHORT;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(remoteConnector.getServerName(),
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.ANOTHER_CONNECTED_TO_COHORT.getMessageDefinition(remoteConnector.getServerName(),
                                                                     metadataCollectionId,
-                                                                    tutServerName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                                                                    tutServerName));
             }
         }
     }
@@ -132,34 +114,22 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
         {
             if (tutServerName.equals(repositoryConnector.getServerName()))
             {
-                OMRSAuditLog auditLog = workPad.getAuditLog();
+                AuditLog auditLog = workPad.getAuditLog();
 
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.TUT_LEFT_COHORT;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(tutServerName,
-                                                                    metadataCollectionId),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.TUT_LEFT_COHORT.getMessageDefinition(tutServerName,
+                                                                                                   metadataCollectionId));
 
                 workPad.setTutRepositoryConnector(null);
             }
             else
             {
-                OMRSAuditLog auditLog = workPad.getAuditLog();
+                AuditLog auditLog = workPad.getAuditLog();
 
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.ANOTHER_LEFT_COHORT;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(repositoryConnector.getServerName(),
-                                                                    metadataCollectionId,
-                                                                    tutServerName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.ANOTHER_LEFT_COHORT.getMessageDefinition(repositoryConnector.getServerName(),
+                                                                                                       metadataCollectionId,
+                                                                                                       tutServerName));
             }
         }
     }
