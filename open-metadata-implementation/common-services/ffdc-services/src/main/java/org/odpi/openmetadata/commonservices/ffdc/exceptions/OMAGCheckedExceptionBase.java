@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.exceptions;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -13,6 +14,9 @@ import java.util.Map;
  */
 public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an OMAGCheckedExceptionBase.
      *

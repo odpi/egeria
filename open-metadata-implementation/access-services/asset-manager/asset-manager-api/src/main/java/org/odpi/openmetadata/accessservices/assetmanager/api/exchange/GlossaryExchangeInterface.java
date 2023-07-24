@@ -16,10 +16,8 @@ import java.util.List;
  * GlossaryExchangeInterface defines the client side interface for the Asset Manager OMAS that is
  * relevant for managing glossaries.   It provides the ability to
  * define and maintain the content of glossary as well as govern it.
- *
  * Glossaries have a top-level root object that describe the purpose, language and intended usage of its
  * content.  Linked to the glossary's root object are the terms, categories and relationships it contains.
- *
  * In addition to the content, the glossary can be augmented with classifications and linked to
  * external glossary definitions.
  */
@@ -61,7 +59,6 @@ public interface GlossaryExchangeInterface
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -246,7 +243,6 @@ public interface GlossaryExchangeInterface
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
-     *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
@@ -309,7 +305,6 @@ public interface GlossaryExchangeInterface
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
      * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
-     *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param userId calling user
@@ -518,6 +513,61 @@ public interface GlossaryExchangeInterface
                                       boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
+
+    /**
+     * Retrieve the glossary metadata element for the requested glossary category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the glossary category
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    GlossaryElement getGlossaryForCategory(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  glossaryCategoryGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    GlossaryElement getGlossaryForTerm(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  glossaryTermGUID,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /* =====================================================================================================================
@@ -741,6 +791,38 @@ public interface GlossaryExchangeInterface
                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GlossaryCategoryElement>   getCategoriesForTerm(String  userId,
+                                                         String  assetManagerGUID,
+                                                         String  assetManagerName,
+                                                         String  glossaryTermGUID,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         Date    effectiveTime,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**

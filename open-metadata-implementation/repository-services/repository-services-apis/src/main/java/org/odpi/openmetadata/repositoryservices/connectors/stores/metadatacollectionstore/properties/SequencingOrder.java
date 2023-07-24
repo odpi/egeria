@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * SequencingOrder is used for search requests against a metadata collection.  It defines how the results should
  * to be ordered before they are returned.  This is particularly important when the results are to returned
  * over multiple pages since the caller does not have all the results at once to perform the sort themselves.
- *
  * The sequencing order values are:
  * <ul>
  *     <li>
@@ -52,20 +51,51 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum SequencingOrder implements Serializable
 {
+    /**
+     * Any Order
+     */
     ANY                  (0, "Any Order",                       "Any order."),
+
+    /**
+     * Order by ascending GUID.
+     */
     GUID                 (1, "GUID",                            "Order by ascending GUID."),
+
+    /**
+     * Order by creation date, most recently created first.
+     */
     CREATION_DATE_RECENT (2, "Creation Date (Recent First)",    "Order by creation date, most recently created first."),
+
+    /**
+     * Order by creation date, oldest first.
+     */
     CREATION_DATE_OLDEST (3, "Creation Date (Oldest First)",    "Order by creation date, oldest first."),
+
+    /**
+     * Order by last update date, most recently updated first.
+     */
     LAST_UPDATE_RECENT   (4, "Last Update Date (Recent First)", "Order by last update date, most recently updated first."),
+
+    /**
+     * Order by last update date, most recently updated last.
+     */
     LAST_UPDATE_OLDEST   (5, "Last Update Date (Oldest First)", "Order by last update date, most recently updated last."),
+
+    /**
+     * Order by property value, lowest value first.
+     */
     PROPERTY_ASCENDING   (6, "By property value (Ascending)",   "Order by property value, lowest value first."),
+
+    /**
+     * Order by property value, highest first.
+     */
     PROPERTY_DESCENDING  (7, "By property value (Descending)",  "Order by property value, highest first.");
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
     /**
      * Constructor to set up a single instances of the enum.

@@ -14,23 +14,82 @@ import java.util.List;
  */
 public enum OMRSAuditLogRecordSeverity implements AuditLogRecordSeverity
 {
-    UNKNOWN   (0,  "<Unknown>",   "Uninitialized Severity."),
+    /**
+     * Unknown - Uninitialized Severity.
+     */
+    UNKNOWN   (0,  "Unknown",   "Uninitialized Severity."),
+
+    /**
+     * Information - The server is providing information about its normal operation.
+     */
     INFO      (1,  "Information", "The server is providing information about its normal operation."),
+
+    /**
+     * Event - An event was sent to or received from another participant in the server's ecosystem.
+     */
     EVENT     (2,  "Event",       "An event was sent to or received from another participant in the server's ecosystem."),
+
+    /**
+     * Decision - A decision has been made related to the operation of the system.
+     */
     DECISION  (3,  "Decision",    "A decision has been made related to the operation of the system."),
+
+    /**
+     * Action - Action is required by the administrator.  At a minimum, the situation needs to be investigated and if necessary, corrective action taken.
+     */
     ACTION    (4,  "Action",      "Action is required by the administrator.  " +
             "At a minimum, the situation needs to be investigated and if necessary, corrective action taken."),
+
+    /**
+     * Error - An error occurred. This may restrict some of the server's operations.
+     */
     ERROR     (5,  "Error",       "An error occurred. This may restrict some of the server's operations."),
+
+    /**
+     * Exception - An unexpected exception occurred.  Details of the exception and stack trace are included in the log record.
+     */
     EXCEPTION (6,  "Exception",   "An unexpected exception occurred.  Details of the exception and stack trace are included in the log record."),
+
+    /**
+     * Security - Unauthorized access to a service or metadata instance has been attempted.
+     */
     SECURITY  (7,  "Security",    "Unauthorized access to a service or metadata instance has been attempted."),
+
+    /**
+     * Startup - A new component is starting up.
+     */
     STARTUP   (8,  "Startup",     "A new component is starting up."),
+
+    /**
+     * Shutdown - An existing component is shutting down.
+     */
     SHUTDOWN  (9,  "Shutdown",    "An existing component is shutting down."),
+
+    /**
+     * Asset - An auditable action relating to an asset has been taken.
+     */
     ASSET     (10, "Asset",       "An auditable action relating to an asset has been taken."),
+
+    /**
+     * Types - Activity is occurring that relates to the open metadata types in use by this server.
+     */
     TYPES     (11, "Types",       "Activity is occurring that relates to the open metadata types in use by this server."),
+
+    /**
+     * Cohort - The server is exchanging registration information about an open metadata repository cohort that it is connecting to.
+     */
     COHORT    (12, "Cohort",      "The server is exchanging registration information about an open metadata repository cohort that " +
             "it is connecting to."),
+
+    /**
+     * Trace - This is additional information on the operation of the server that may be of assistance in debugging a problem.  It is not normally logged to any destination, but can be added when needed.
+     */
     TRACE     (13, "Trace",       "This is additional information on the operation of the server that may be " +
             "of assistance in debugging a problem.  It is not normally logged to any destination, but can be added when needed."),
+
+    /**
+     * PerfMon - This log record contains performance monitoring timing information for specific types of processing. It is not normally logged to any destination but can be added when needed.
+     */
     PERFMON   (14, "PerfMon",     "This log record contains performance monitoring timing information for " +
             "specific types of processing. It is not normally logged to any destination but can be added when needed.")
 

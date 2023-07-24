@@ -35,6 +35,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
@@ -139,6 +140,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
@@ -181,6 +183,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }

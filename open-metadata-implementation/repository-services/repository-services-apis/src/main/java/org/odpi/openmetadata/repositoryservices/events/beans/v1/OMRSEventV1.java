@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 
+import java.io.Serial;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,6 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class OMRSEventV1 extends OMRSEventBean
 {
+    @Serial
     private static final long    serialVersionUID = 1L;
 
     private       Date                       timestamp            = null;
@@ -69,8 +71,7 @@ public class OMRSEventV1 extends OMRSEventBean
 
 
     /**
-     * Return details about the event originator.  This is to help trace the source of errors or
-     * metadata.
+     * Return details about the event originator.  This is to help trace the source of errors or metadata.
      *
      * @return event originator object
      */
@@ -79,60 +80,127 @@ public class OMRSEventV1 extends OMRSEventBean
         return originator;
     }
 
+
+    /**
+     * Set up details about the event originator.  This is to help trace the source of errors or metadata.
+     *
+     * @param originator event originator object
+     */
     public void setOriginator(OMRSEventOriginator originator)
     {
         this.originator = originator;
     }
 
+
+    /**
+     * Return whether this is a registry, type or instance event.
+     *
+     * @return category
+     */
     public OMRSEventCategory getEventCategory()
     {
         return eventCategory;
     }
 
+
+    /**
+     * Set up whether this is a registry, type or instance event.
+     *
+     * @param eventCategory category
+     */
     public void setEventCategory(OMRSEventCategory eventCategory)
     {
         this.eventCategory = eventCategory;
     }
 
+
+    /**
+     * Return the properties specific to a registry event.
+     *
+     * @return registry section
+     */
     public OMRSEventV1RegistrySection getRegistryEventSection()
     {
         return registryEventSection;
     }
 
+
+    /**
+     * Set up the properties specific to a registry event.
+     *
+     * @param registryEventSection registry section
+     */
     public void setRegistryEventSection(OMRSEventV1RegistrySection registryEventSection)
     {
         this.registryEventSection = registryEventSection;
     }
 
+
+    /**
+     * Return the properties specific to a type event.
+     *
+     * @return type section
+     */
     public OMRSEventV1TypeDefSection getTypeDefEventSection()
     {
         return typeDefEventSection;
     }
 
+
+    /**
+     * Set up the properties specific to a type event.
+     *
+     * @param typeDefEventSection type section
+     */
     public void setTypeDefEventSection(OMRSEventV1TypeDefSection typeDefEventSection)
     {
         this.typeDefEventSection = typeDefEventSection;
     }
 
+
+    /**
+     * Return the properties specific to an instance event.
+     *
+     * @return instance section
+     */
     public OMRSEventV1InstanceSection getInstanceEventSection()
     {
         return instanceEventSection;
     }
 
+
+    /**
+     * Set up the properties specific to an instance event.
+     *
+     * @param instanceEventSection instance section
+     */
     public void setInstanceEventSection(OMRSEventV1InstanceSection instanceEventSection)
     {
         this.instanceEventSection = instanceEventSection;
     }
 
+
+    /**
+     * Return the properties specific to an error event.
+     *
+     * @return error section
+     */
     public OMRSEventV1ErrorSection getErrorSection()
     {
         return errorSection;
     }
 
+
+    /**
+     * Set up the properties specific to an error event.
+     *
+     * @param errorSection error section
+     */
     public void setErrorSection(OMRSEventV1ErrorSection errorSection)
     {
         this.errorSection = errorSection;
     }
+
 
     /**
      * JSON-style toString.

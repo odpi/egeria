@@ -704,7 +704,57 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param glossaryTermGUIDParameterName name of the parameter supplying glossaryTermGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getCategoriesForTerm(String  userId,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermGUIDParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,

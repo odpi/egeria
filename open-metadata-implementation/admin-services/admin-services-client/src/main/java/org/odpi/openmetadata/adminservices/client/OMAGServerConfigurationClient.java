@@ -519,6 +519,42 @@ public class OMAGServerConfigurationClient
 
 
     /**
+     * Add an audit log destination that sends each log record as an event on the supplied event topic.
+     *
+     * @param topicName name of topic for audit log entries
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addEventTopicAuditLogDestination(String       topicName,
+                                                 List<String> supportedSeverities) throws OMAGNotAuthorizedException,
+                                                                                          OMAGInvalidParameterException,
+                                                                                          OMAGConfigurationErrorException
+    {
+        final String methodName  = "addEventTopicAuditLogDestination(with topicName)";
+        final String topicNameParameter = "topicName";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/event-topic?topicName={2}";
+
+        try
+        {
+            invalidParameterHandler.validateName(topicName, topicNameParameter, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        supportedSeverities,
+                                        adminUserId,
+                                        serverName,
+                                        topicName);
+    }
+
+
+    /**
      * Add an audit log destination that is defined by the supplied connection object.
      *
      * @param connection connection object that defines the audit log destination

@@ -143,7 +143,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                                                                                                 UserNotAuthorizedException,
                                                                                                                 PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (ExternalReferenceElement externalReference : results)
             {
@@ -193,7 +193,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                                                                                                         UserNotAuthorizedException,
                                                                                                                         PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement externalReference : results)
             {

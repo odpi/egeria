@@ -258,7 +258,7 @@ public class OCFRuntimeException extends RuntimeException
 
         if (reportedErrorMessageId == null)
         {
-            log.error("Null error message Id passed to an exception");
+            log.error("Null error message Identifier passed to an exception");
         }
 
         if (reportedSystemAction == null)

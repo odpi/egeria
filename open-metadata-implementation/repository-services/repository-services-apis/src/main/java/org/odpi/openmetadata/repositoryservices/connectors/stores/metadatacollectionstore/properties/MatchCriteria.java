@@ -25,15 +25,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum MatchCriteria implements Serializable
 {
+    /**
+     * All - All properties must match.
+     */
     ALL  (0, "All",  "All properties must match."),
+
+    /**
+     * Any - A match on any of the properties in the instance is good enough.
+     */
     ANY  (1, "Any",  "A match on any of the properties in the instance is good enough."),
+
+    /**
+     * None - Return instances where none of the supplied properties match.
+     */
     NONE (2, "None", "Return instances where none of the supplied properties match.");
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -48,6 +59,7 @@ public enum MatchCriteria implements Serializable
         this.name = name;
         this.description = description;
     }
+
 
     /**
      * Return the numeric representation of the match criteria.

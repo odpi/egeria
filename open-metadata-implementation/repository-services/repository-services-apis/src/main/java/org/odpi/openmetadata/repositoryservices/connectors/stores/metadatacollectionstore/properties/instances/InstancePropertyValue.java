@@ -32,6 +32,9 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
 {
     private static final long    serialVersionUID = 1L;
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long  CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION = 1;
 
     /*

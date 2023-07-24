@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * The AnalyticsIntegratorErrorCode error code is used to define first failure data capture (FFDC) for errors that
  * occur when working with the Integration Services.  It is used in conjunction with all exceptions,
  * both Checked and Runtime (unchecked).
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -43,7 +42,7 @@ public enum AnalyticsIntegratorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -55,7 +54,7 @@ public enum AnalyticsIntegratorErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

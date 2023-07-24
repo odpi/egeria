@@ -226,6 +226,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                         integrationConnectorGUID,
                                                                                         externalSourceGUID,
                                                                                         externalSourceName,
+                                                                                        maxPageSize,
                                                                                         auditLog);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

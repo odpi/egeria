@@ -240,7 +240,8 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                                                         permittedSynchronization,
                                                                                         integrationConnectorGUID,
                                                                                         externalSourceGUID,
-                                                                                        externalSourceName);
+                                                                                        externalSourceName,
+                                                                                        maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);
 

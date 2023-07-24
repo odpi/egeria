@@ -26,10 +26,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RelatedMediaType implements Serializable
 {
+    /**
+     * The media is an image.
+     */
     IMAGE(0,    0,  "Image",    "The media is an image."),
+
+    /**
+     * The media is an audio recording.
+     */
     AUDIO(1,    1,  "Audio",    "The media is an audio recording."),
+
+    /**
+     * The media is a text document - probably rich text.
+     */
     DOCUMENT(2, 2,  "Document", "The media is a text document - probably rich text."),
+
+    /**
+     * The media is a video recording.
+     */
     VIDEO(3,    3,  "Video",    "The media is a video recording."),
+
+    /**
+     * The media type is not supported.
+     */
     OTHER(99,   99, "Other",    "The media type is not supported.");
 
     private static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";

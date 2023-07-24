@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * are explicitly assigned to an entity.  However, it is possible for some classifications to flow along
  * relationships to other entities.  These are the propagated classifications.  Each entity can only have one
  * classification of a certain type.  A propagated classification can not override an assigned classification.
- * Classifications can only be attached to entities of specific types.  However a propagated classification can
+ * Classifications can only be attached to entities of specific types.  However, a propagated classification can
  * flow through an entity that does not support the particular type of classification and then on to other
  * relationships attached to the entity.  The ClassificationPropagateRule in the relationship's RelationshipDef
  * defines where the classification can flow to.
@@ -26,8 +26,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ClassificationOrigin implements Serializable
 {
-    ASSIGNED       (0, "Assigned",   "The classification is explicitly assigned to the entity"),
-    PROPAGATED     (1, "Propagated", "The classification has propagated along a relationship to this entity");
+    /**
+     * Assigned - The classification is explicitly assigned to the entity.
+     */
+    ASSIGNED       (0, "Assigned",   "The classification is explicitly assigned to the entity."),
+
+    /**
+     * Propagated - The classification has propagated along a relationship to this entity.
+     */
+    PROPAGATED     (1, "Propagated", "The classification has propagated along a relationship to this entity.");
 
     private static final long serialVersionUID = 1L;
 

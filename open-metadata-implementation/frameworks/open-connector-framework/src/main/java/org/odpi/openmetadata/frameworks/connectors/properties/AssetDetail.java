@@ -79,6 +79,12 @@ public class AssetDetail extends AssetSummary
         this.schema = schema;
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param assetBean bean to seed new asset detail
+     */
     public AssetDetail(Asset assetBean)
     {
         super(assetBean);

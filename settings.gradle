@@ -16,16 +16,16 @@ pluginManagement {
     }
     plugins {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
-        id "io.freefair.lombok" version "8.0.1"
+        id "io.freefair.lombok" version "8.1.0"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.20.0"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-        id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
+        id 'org.gradlex.java-ecosystem-capabilities' version "1.3"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
-        id 'org.springframework.boot' version '2.7.11'
+        id 'org.springframework.boot' version '2.7.13'
         id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
@@ -319,6 +319,7 @@ include(':open-metadata-implementation:integration-services:topic-integrator:top
 include(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-server')
 include(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-spring')
 include(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
+include(':open-metadata-implementation:server-chassis:server-chassis-spring')
 include(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
 include(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
 include(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')

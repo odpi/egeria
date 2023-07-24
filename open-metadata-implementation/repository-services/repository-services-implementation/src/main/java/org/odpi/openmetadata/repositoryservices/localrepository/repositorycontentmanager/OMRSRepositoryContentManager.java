@@ -2602,7 +2602,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName name of type being processed
      * @param actionDescription activity in progress when exception occurred
      * @param sourceName source of the event
-     * @param originatorMetadataCollectionId originator's metadata collection Id
+     * @param originatorMetadataCollectionId originator's metadata collection id
      * @param originatorServerName originator's server name
      * @param additionalInformation information about the object being processed
      */

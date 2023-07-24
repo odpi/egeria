@@ -59,7 +59,7 @@ open-metadata-implementation/platform-chassis/ @mandy-chessell
 open-metadata-implementation/platform-chassis/platform-chassis-spring/ @bogdan-sava @lpalashevski
 open-metadata-implementation/user-interface/ui-chassis/ @bogdan-sava @marius-patrascu
 open-metadata-implementation/view-services/ @davidradl
-
+open-metadata-implementation/server-chassis/ @lpalashevski @mandy-chessell
 
 # Resources
 

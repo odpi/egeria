@@ -26,7 +26,7 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
      * @param repositoryName name of the repository - used for logging.
      * @param repositoryHelper class used to build type definitions and instances.
      * @param repositoryValidator class used to validate type definitions and instances.
-     * @param metadataCollectionId unique Identifier of the metadata collection Id.
+     * @param metadataCollectionId unique Identifier of the metadata collection id.
      */
     ReadOnlyOMRSMetadataCollection(ReadOnlyOMRSRepositoryConnector parentConnector,
                                    String                          repositoryName,

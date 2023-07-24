@@ -30,16 +30,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ClassificationPropagationRule implements Serializable
 {
+    /**
+     * No classification propagation.
+     */
     NONE       (0, "NONE",       "No classification propagation"),
+
+    /**
+     * Classification propagation direction is one way from entity one to entity two.
+     */
     ONE_TO_TWO (1, "ONE_TO_TWO", "Classification propagation direction is one way from entity one to entity two"),
+
+    /**
+     * Classification propagation direction is one way from entity two to entity one.
+     */
     TWO_TO_ONE (2, "TWO_TO_ONE", "Classification propagation direction is one way from entity two to entity one"),
+
+    /**
+     * Classification propagation in both directions.
+     */
     BOTH       (3, "BOTH",       "Classification propagation in both directions");
 
     private static final long serialVersionUID = 1L;
 
-    private int            ordinal;
-    private String         name;
-    private String         description;
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
 
 
     /**

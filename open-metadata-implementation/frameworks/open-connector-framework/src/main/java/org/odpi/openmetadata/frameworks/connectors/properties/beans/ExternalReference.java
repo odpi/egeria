@@ -154,6 +154,11 @@ public class ExternalReference extends Referenceable
     public String getResourceDescription() { return resourceDescription; }
 
 
+    /**
+     * Set up the description of the resource that this external reference represents.
+     *
+     * @param resourceDescription String resource description
+     */
     public void setResourceDescription(String resourceDescription)
     {
         this.resourceDescription = resourceDescription;
