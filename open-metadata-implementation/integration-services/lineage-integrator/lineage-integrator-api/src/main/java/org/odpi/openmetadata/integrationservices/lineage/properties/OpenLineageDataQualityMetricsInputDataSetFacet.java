@@ -34,24 +34,44 @@ public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageI
     }
 
 
+    /**
+     * Return the row count metric.
+     *
+     * @return long
+     */
     public long getRowCount()
     {
         return rowCount;
     }
 
 
+    /**
+     * Set up the row count metric.
+     *
+     * @param rowCount long
+     */
     public void setRowCount(long rowCount)
     {
         this.rowCount = rowCount;
     }
 
 
+    /**
+     * Return the number of bytes.
+     *
+     * @return long
+     */
     public long getBytes()
     {
         return bytes;
     }
 
 
+    /**
+     * Set up the number of bytes.
+     *
+     * @param bytes long
+     */
     public void setBytes(long bytes)
     {
         this.bytes = bytes;

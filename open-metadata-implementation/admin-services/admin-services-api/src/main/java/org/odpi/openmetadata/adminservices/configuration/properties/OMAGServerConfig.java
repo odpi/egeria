@@ -39,7 +39,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         organizationName - descriptive name for the organization that owns the local server/repository.
- *         This is useful when the open metadata repository cluster consists of metadata servers from different
+ *         This is useful when the open metadata repository cohort consists of metadata servers from different
  *         organizations, or different departments of an enterprise.
  *
  *         The default value is null.

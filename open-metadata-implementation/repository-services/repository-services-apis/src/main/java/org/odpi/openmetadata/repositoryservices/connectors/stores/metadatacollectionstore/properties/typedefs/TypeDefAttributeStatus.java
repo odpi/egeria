@@ -8,17 +8,28 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
  */
 public enum TypeDefAttributeStatus
 {
+    /**
+     * Active Attribute - Attribute available and in use.  This is the default value equivalent to null.
+     */
     ACTIVE_ATTRIBUTE              (1, "ActiveAttribute",
-                                   "Attribute available and in use.  This is the default value equivalent to null"),
+                                   "Attribute available and in use.  This is the default value equivalent to null."),
+
+    /**
+     * Renamed Attribute - This attribute should not be used because it has been renamed.
+     */
     RENAMED_ATTRIBUTE             (2, "RenamedAttribute",
                                    "This attribute should not be used because it has been renamed."),
+
+    /**
+     * Deprecated Attribute - This attribute should not be used because it has been deprecated.
+     */
     DEPRECATED_ATTRIBUTE          (3,  "DeprecatedAttribute",
-                                   "This attribute should not be used because it has been deprecated");
+                                   "This attribute should not be used because it has been deprecated.");
 
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
 
     /**

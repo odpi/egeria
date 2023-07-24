@@ -20,10 +20,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RelatedMediaUsage implements Serializable
 {
+    /**
+     * Provides a small image to represent the asset in tree views and graphs.
+     */
     ICON           (0, 0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
+
+    /**
+     * Provides a small image about the asset that can be used in lists.
+     */
     THUMBNAIL      (1, 1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
+
+    /**
+     * Illustrates how the asset works or what it contains. It is complementary to the asset's description.
+     */
     ILLUSTRATION   (2, 2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
+
+    /**
+     * Provides guidance to a person on how to use the asset.
+     */
     USAGE_GUIDANCE (3, 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
+
+    /**
+     * Another usage.
+     */
     OTHER          (99, 99, "Other", "Another usage.");
 
     private static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";

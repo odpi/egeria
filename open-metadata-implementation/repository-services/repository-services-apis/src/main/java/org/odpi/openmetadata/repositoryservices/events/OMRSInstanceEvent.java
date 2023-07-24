@@ -383,7 +383,7 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
-     * Set up the home metadata collection Id.  This is used for when a repository is requesting a refresh of an instance's
+     * Set up the home metadata collection id.  This is used for when a repository is requesting a refresh of an instance's
      * details.
      *
      * @param homeMetadataCollectionId unique id of the metadata collection where this instance comes from.

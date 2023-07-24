@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -14,6 +15,9 @@ import java.util.Map;
  */
 public class NewInstanceException extends OMAGCheckedExceptionBase
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an NewInstanceException.
      *

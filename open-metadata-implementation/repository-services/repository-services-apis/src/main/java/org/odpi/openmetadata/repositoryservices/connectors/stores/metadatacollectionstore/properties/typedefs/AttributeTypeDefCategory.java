@@ -12,23 +12,38 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The AttributeTypeDefCategory defines the list of valid types of a attribute (property) for an open metadata instance.
+ * The AttributeTypeDefCategory defines the list of valid types of an attribute (property) for an open metadata instance.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AttributeTypeDefCategory implements Serializable
 {
-    UNKNOWN_DEF        (0, "<Unknown>",         "Uninitialized AttributeTypeDef object."),
+    /**
+     * Uninitialized AttributeTypeDef object.
+     */
+    UNKNOWN_DEF        (0, "Unknown",           "Uninitialized AttributeTypeDef object."),
+
+    /**
+     * A primitive type.
+     */
     PRIMITIVE          (1, "Primitive",         "A primitive type."),
+
+    /**
+     * A collection object.
+     */
     COLLECTION         (2, "Collection",        "A collection object."),
+
+    /**
+     * A pre-defined list of valid values.
+     */
     ENUM_DEF           (4, "EnumDef",           "A pre-defined list of valid values.");
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int            typeCode;
+    private final String         typeName;
+    private final String         typeDescription;
 
 
     /**

@@ -7,6 +7,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 
+/**
+ * RepositoryExecutor is the interface implemented by the executors that issue requests to a repository during a federated query.
+ */
 public interface RepositoryExecutor
 {
     /**

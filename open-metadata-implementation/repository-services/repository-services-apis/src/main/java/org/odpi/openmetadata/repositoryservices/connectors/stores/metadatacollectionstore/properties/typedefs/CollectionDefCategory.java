@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * This enum defines the list of open metadata collection types.  These types are generic types that need to
  * be configured with specific primitive types before they can be used as an attribute type.
- *
+ * <br><br>
  * The enum includes a code value, a string name for the type (used in self describing structures such as JSON or XML)
  * and the name of the Java Class that supports this type.
  */
@@ -26,9 +26,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionDefCategory implements Serializable
 {
+    /**
+     * Unknown collection type
+     */
     OM_COLLECTION_UNKNOWN (0, "<>",              0, null),
+
+    /**
+     * A map from values of one type to another.
+     */
     OM_COLLECTION_MAP     (1, "map<{$0}, {$1}>", 2, MapPropertyValue.class.getName()),
+
+    /**
+     * An array of values of the same type.
+     */
     OM_COLLECTION_ARRAY   (2, "array<{$0}>",     1, ArrayPropertyValue.class.getName()),
+
+    /**
+     * A record with a variety of values.
+     */
     OM_COLLECTION_STRUCT  (3, "struct<>",        0, StructPropertyValue.class.getName());
 
     private static final long serialVersionUID = 1L;

@@ -141,11 +141,11 @@ public class OMAGServerAdminServices
 
             if (typeName == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server type name.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server type name.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server type name to " + typeName + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server type name to " + typeName + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -214,11 +214,11 @@ public class OMAGServerAdminServices
 
             if (name == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's owning organization's name.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's owning organization's name.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -287,11 +287,11 @@ public class OMAGServerAdminServices
 
             if (description == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's description.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's description.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's description to " + description + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's description to " + description + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -360,11 +360,11 @@ public class OMAGServerAdminServices
 
             if (serverUserId == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's userId.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's userId.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -433,11 +433,11 @@ public class OMAGServerAdminServices
 
             if (serverPassword == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's password.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's password.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's password to " + serverPassword + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's password to " + serverPassword + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -504,7 +504,7 @@ public class OMAGServerAdminServices
                     configAuditTrail = new ArrayList<>();
                 }
 
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for maximum page size to " + maxPageSize + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for maximum page size to " + maxPageSize + ".");
 
                 serverConfig.setAuditTrail(configAuditTrail);
                 serverConfig.setMaxPageSize(maxPageSize);
@@ -541,8 +541,7 @@ public class OMAGServerAdminServices
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
      * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
      * the local repositories event mapper.
-     *
-     * When the event bus is configured, it is used only on future configuration.  It does not effect
+     * When the event bus is configured, it is used only on future configuration.  It does not affect
      * existing configuration.
      *
      * @param userId  user that is issuing the request.
@@ -742,7 +741,7 @@ public class OMAGServerAdminServices
                     configAuditTrail = new ArrayList<>();
                 }
 
-                configAuditTrail.add(new Date().toString() + " " + userId + " deleted configuration for default event bus.");
+                configAuditTrail.add(new Date() + " " + userId + " deleted configuration for default event bus.");
 
                 serverConfig.setAuditTrail(configAuditTrail);
                 serverConfig.setEventBusConfig(null);
@@ -776,9 +775,7 @@ public class OMAGServerAdminServices
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
-     *
      * The default value is "localhost:9443".
-     *
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
      *
@@ -821,11 +818,11 @@ public class OMAGServerAdminServices
 
             if (url == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's URL root.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's URL root.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's URL root to " + url + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's URL root to " + url + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -856,9 +853,7 @@ public class OMAGServerAdminServices
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
-     *
      * The default value is "localhost:9443".
-     *
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
      *
@@ -903,11 +898,11 @@ public class OMAGServerAdminServices
 
             if (urlRoot == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's URL root.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's URL root.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's URL root to " + urlRoot + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's URL root to " + urlRoot + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -968,7 +963,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " set up default audit log destinations.");
+            configAuditTrail.add(new Date() + " " + userId + " set up default audit log destinations.");
 
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
@@ -1053,7 +1048,7 @@ public class OMAGServerAdminServices
             }
             else
             {
-                qualifier = "- " + supportedSeverities.toString();
+                qualifier = "- " + supportedSeverities;
             }
 
             this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(qualifier, supportedSeverities));
@@ -1112,7 +1107,7 @@ public class OMAGServerAdminServices
             }
             else
             {
-                qualifier = "- " + supportedSeverities.toString();
+                qualifier = "- " + supportedSeverities;
             }
 
             this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(qualifier, supportedSeverities));
@@ -1189,6 +1184,7 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param topicName name of topic
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -1196,6 +1192,7 @@ public class OMAGServerAdminServices
      */
     public VoidResponse addEventTopicAuditLogDestination(String       userId,
                                                          String       serverName,
+                                                         String       topicName,
                                                          List<String> supportedSeverities)
     {
         final String methodName = "addEventTopicAuditLogDestination";
@@ -1219,6 +1216,7 @@ public class OMAGServerAdminServices
                                                                                                                  supportedSeverities,
                                                                                                                  eventBusConfig.getConnectorProvider(),
                                                                                                                  eventBusConfig.getTopicURLRoot(),
+                                                                                                                 topicName,
                                                                                                                  serverConfig.getLocalServerId(),
                                                                                                                  eventBusConfig.getConfigurationProperties()));
         }
@@ -2218,7 +2216,7 @@ public class OMAGServerAdminServices
      * @return string response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public StringResponse getCohortTopicName(String userId,
                                              String serverName,
@@ -2277,7 +2275,7 @@ public class OMAGServerAdminServices
      * @return list of topics response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public DedicatedTopicListResponse getDedicatedCohortTopicNames(String userId,
                                                                    String serverName,
@@ -2340,9 +2338,8 @@ public class OMAGServerAdminServices
      */
     private String getCohortTopicName(Connection eventTopicConnection)
     {
-        if (eventTopicConnection instanceof VirtualConnection)
+        if (eventTopicConnection instanceof VirtualConnection virtualConnection)
         {
-            VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
             List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
 
             if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
@@ -2377,7 +2374,7 @@ public class OMAGServerAdminServices
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideCohortTopicName(String userId,
                                                 String serverName,
@@ -2455,7 +2452,7 @@ public class OMAGServerAdminServices
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideRegistrationCohortTopicName(String userId,
                                                             String serverName,
@@ -2534,7 +2531,7 @@ public class OMAGServerAdminServices
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideTypesCohortTopicName(String userId,
                                                      String serverName,
@@ -2613,7 +2610,7 @@ public class OMAGServerAdminServices
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     public VoidResponse overrideInstancesCohortTopicName(String userId,
                                                          String serverName,
@@ -2690,14 +2687,13 @@ public class OMAGServerAdminServices
      * @return
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
-     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.
      */
     private Connection overrideCohortTopicName(Connection eventTopicConnection,
                                                String     topicName)
     {
-        if (eventTopicConnection instanceof VirtualConnection)
+        if (eventTopicConnection instanceof VirtualConnection virtualConnection)
         {
-            VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
             List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
 
             if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
@@ -2784,12 +2780,12 @@ public class OMAGServerAdminServices
                 if (auditLogDestinations == null)
                 {
                     auditLogDestinations = new ArrayList<>();
-                    configAuditTrail.add(new Date().toString() + " " + userId + " created first audit log destination.");
+                    configAuditTrail.add(new Date() + " " + userId + " created first audit log destination.");
 
                 }
                 else
                 {
-                    configAuditTrail.add(new Date().toString() + " " + userId + " added to list of audit log destinations.");
+                    configAuditTrail.add(new Date() + " " + userId + " added to list of audit log destinations.");
                 }
 
                 auditLogDestinations.add(auditLogDestination);
@@ -2900,7 +2896,7 @@ public class OMAGServerAdminServices
                             {
                                 newAuditLogConnections.add(suppliedConnection);
                                 found = true;
-                                configAuditTrail.add(new Date().toString() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
+                                configAuditTrail.add(new Date() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
                             }
                             else
                             {
@@ -2922,7 +2918,7 @@ public class OMAGServerAdminServices
                                 {
                                     newAuditLogConnections.add(suppliedConnection);
                                     found = true;
-                                    configAuditTrail.add(new Date().toString() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
+                                    configAuditTrail.add(new Date() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
                                 }
                                 else
                                 {
@@ -3043,7 +3039,7 @@ public class OMAGServerAdminServices
                         if (existingConnection.getQualifiedName().equals(suppliedConnectionName))
                         {
                             found = true;
-                            configAuditTrail.add(new Date().toString() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
+                            configAuditTrail.add(new Date() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
                         }
                         else
                         {
@@ -3064,7 +3060,7 @@ public class OMAGServerAdminServices
                             if (existingConnection.getDisplayName().equals(suppliedConnectionName))
                             {
                                 found = true;
-                                configAuditTrail.add(new Date().toString() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
+                                configAuditTrail.add(new Date() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
                             }
                             else
                             {
@@ -3077,7 +3073,7 @@ public class OMAGServerAdminServices
                 if (! found)
                 {
                     /*
-                     * Error did not find a audit log to remove
+                     * Error did not find an audit log to remove
                      */
                     throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName,
                                                                                                                                     functionName),
@@ -3161,11 +3157,11 @@ public class OMAGServerAdminServices
 
             if (auditLogDestinations == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
+                configAuditTrail.add(new Date() + " " + userId + " setting up no audit log destinations.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
+                configAuditTrail.add(new Date() + " " + userId + " updated list of audit log destinations.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -3317,11 +3313,11 @@ public class OMAGServerAdminServices
 
             if (openMetadataArchives == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " clearing open metadata archives.");
+                configAuditTrail.add(new Date() + " " + userId + " clearing open metadata archives.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of open metadata archives loaded at server start up.");
+                configAuditTrail.add(new Date() + " " + userId + " updated list of open metadata archives loaded at server start up.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -3674,11 +3670,11 @@ public class OMAGServerAdminServices
 
             if (cohortConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for cohort " + cohortName + ".");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for cohort " + cohortName + ".");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for cohort " + cohortName + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for cohort " + cohortName + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -3908,7 +3904,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " deployed configuration for server.");
+            configAuditTrail.add(new Date() + " " + userId + " deployed configuration for server.");
 
             omagServerConfig.setAuditTrail(configAuditTrail);
 

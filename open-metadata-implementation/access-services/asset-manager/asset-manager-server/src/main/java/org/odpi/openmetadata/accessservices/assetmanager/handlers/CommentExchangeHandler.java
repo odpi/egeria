@@ -114,7 +114,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement comment : results)
             {

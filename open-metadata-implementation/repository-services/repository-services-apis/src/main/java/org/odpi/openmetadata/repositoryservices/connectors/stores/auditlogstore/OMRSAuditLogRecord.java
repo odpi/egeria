@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMRSAuditLogRecord extends AuditLogRecord
 {
-    private static final long    serialVersionUID = 1L;
-
     private OMRSAuditLogRecordOriginator   originator           = null;
     private OMRSAuditLogReportingComponent reportingComponent   = null;
 

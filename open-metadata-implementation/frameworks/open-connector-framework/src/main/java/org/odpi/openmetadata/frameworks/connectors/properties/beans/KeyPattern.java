@@ -20,24 +20,55 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum KeyPattern implements Serializable
 {
+    /**
+     * Unique key allocated and used within the scope of a single system.
+     */
     LOCAL_KEY     (0,  0, "Local Key", "Unique key allocated and used within the scope of a single system."),
+
+    /**
+     * Key allocated and used within the scope of a single system that is periodically reused for different records.
+     */
     RECYCLED_KEY  (1,  1, "Recycled Key", "Key allocated and used within the scope of a single system that " +
                                                                                 "is periodically reused for different records."),
+
+    /**
+     * Key derived from an attribute of the entity, such as email address, passport number.
+     */
     NATURAL_KEY   (2,  2, "Natural Key", "Key derived from an attribute of the entity, such as email address, passport number."),
+
+    /**
+     * Key value copied from another system.
+     */
     MIRROR_KEY    (3,  3, "Mirror Key", "Key value copied from another system."),
+
+    /**
+     * Key formed by combining keys from multiple systems.
+     */
     AGGREGATE_KEY (4,  4, "Aggregate Key", "Key formed by combining keys from multiple systems."),
+
+    /**
+     * Key from another system can bey used if system name provided.
+     */
     CALLERS_KEY   (5,  5, "Caller's Key", "Key from another system can bey used if system name provided."),
+
+    /**
+     * Key value will remain active even if records are merged.
+     */
     STABLE_KEY    (6,  6, "Stable Key", "Key value will remain active even if records are merged."),
+
+    /**
+     * Another key pattern.
+     */
     OTHER         (99, 99, "Other", "Another key pattern.");
 
     private static final String ENUM_TYPE_GUID  = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
     private static final String ENUM_TYPE_NAME  = "KeyPattern";
 
-    private int    openTypeOrdinal;
+    private final int openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

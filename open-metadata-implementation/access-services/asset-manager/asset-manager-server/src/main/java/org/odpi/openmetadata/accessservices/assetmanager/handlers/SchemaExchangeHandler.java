@@ -144,7 +144,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (SchemaTypeElement element : results)
             {

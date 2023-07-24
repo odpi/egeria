@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The BasicFileConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Basic File Connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -19,7 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
+ *     <li>Error Message Identifier - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
  *     <li>UserAction - describes how a consumer should correct the error</li>
@@ -27,27 +26,50 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
 {
+    /**
+     * BASIC-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}
+     */
     FILE_NOT_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-001",
             "The file name is null in the Connection object {0}",
             "The connector is unable to open the file because the name of the file is not passed in the Connection object.",
             "The name of the file should be set up in the address property of the connection's Endpoint object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-400-002 - The file {0} given in Connection object {1} is a directory
+     */
     DIRECTORY_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-002",
             "The file {0} given in Connection object {1} is a directory",
             "The connector is unable to work with a directory.",
             "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable
+     */
     FILE_NOT_READABLE(400, "BASIC-FILE-CONNECTOR-400-003",
             "The file {0} given in Connection object {1} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
+     */
     FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
              "The file named {0} in the Connection object {1} does not exist",
              "The connector is unable to locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-500-001 - The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}
+     */
     UNEXPECTED_SECURITY_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-500-002 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
+     */
     UNEXPECTED_IO_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
@@ -60,11 +82,10 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
     /**
      * The constructor for BasicFileConnectorErrorCode expects to be passed one of the enumeration rows defined in
      * BasicFileConnectorErrorCode above.   For example:
-     *
+     * <br><br>
      *     BasicFileConnectorErrorCode   errorCode = BasicFileConnectorErrorCode.ERROR_SENDING_EVENT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
-     *
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message

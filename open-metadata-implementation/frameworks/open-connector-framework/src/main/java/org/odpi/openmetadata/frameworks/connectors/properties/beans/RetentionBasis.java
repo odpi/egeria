@@ -19,20 +19,51 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RetentionBasis implements Serializable
 {
+    /**
+     * There is no assessment of the retention requirements for this data.
+     */
     UNCLASSIFIED       (0, 0, "Unclassified",
                                "There is no assessment of the retention requirements for this data."),
+
+    /**
+     * This data is temporary. There are no formal retention requirements.
+     */
     TEMPORARY          (1, 1, "Temporary",
                                "This data is temporary. There are no formal retention requirements."),
+
+    /**
+     * The data is needed for the lifetime of the referenced project.
+     */
     PROJECT_LIFETIME   (2, 2, "Project Lifetime",
                                "The data is needed for the lifetime of the referenced project."),
+
+    /**
+     * The data is needed for the lifetime of the referenced team.
+     */
     TEAM_LIFETIME      (3, 3, "Team Lifetime",
                                "The data is needed for the lifetime of the referenced team."),
+
+    /**
+     * The data is needed for the lifetime of the referenced contract.
+     */
     CONTRACT_LIFETIME  (4, 4, "Contract Lifetime",
                                "The data is needed for the lifetime of the referenced contract."),
+
+    /**
+     * The retention period for the data is defined by the referenced regulation.
+     */
     REGULATED_LIFETIME (5, 5, "Regulated Lifetime",
                                "The retention period for the data is defined by the referenced regulation."),
+
+    /**
+     * The data is needed for the specified time.
+     */
     TIMEBOXED_LIFETIME (6, 6, "Time Boxed Lifetime",
                                "The data is needed for the specified time."),
+
+    /**
+     * Another basis for determining the retention requirement.
+     */
     OTHER             (99, 99, "Other",
                                "Another basis for determining the retention requirement.");
 

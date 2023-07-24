@@ -204,6 +204,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                                                 integrationConnectorGUID,
                                                                                                 externalSourceGUID,
                                                                                                 externalSourceName,
+                                                                                                maxPageSize,
                                                                                                 auditLog);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

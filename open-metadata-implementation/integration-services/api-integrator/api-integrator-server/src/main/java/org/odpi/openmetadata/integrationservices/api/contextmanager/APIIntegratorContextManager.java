@@ -6,7 +6,6 @@ package org.odpi.openmetadata.integrationservices.api.contextmanager;
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIManagerProperties;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.*;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -239,7 +238,8 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                               permittedSynchronization,
                                                                               integrationConnectorGUID,
                                                                               externalSourceGUID,
-                                                                              externalSourceName);
+                                                                              externalSourceName,
+                                                                              maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);
 

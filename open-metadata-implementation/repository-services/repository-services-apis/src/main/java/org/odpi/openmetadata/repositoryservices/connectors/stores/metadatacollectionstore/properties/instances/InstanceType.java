@@ -25,6 +25,9 @@ public class InstanceType extends InstanceElementHeader
     private String                    typeDefName             = null;
     private long                      typeDefVersion          = 0L;
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long CURRENT_INSTANCE_TYPE_HEADER_VERSION = 1;
 
     /**

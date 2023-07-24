@@ -14,26 +14,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * OMRSTypeDefEventType defines the different types of TypeDef events in the open metadata repository services
  * protocol:
- * <ul>
- *     <li>
- *         UNKNOWN_TYPEDEF_EVENT: the event is not recognized by this local server, probably because it is back-level
- *         from other servers in the cluster.  It is logged in the audit log and then ignored.  The metadata exchange
- *         protocol should evolve so that new message types can be ignored by back-level servers without damage
- *         to the cluster's integrity.
- *     </li>
- *     <li>
- *         NEW_TYPEDEF: A new TypeDef has been defined.
- *     </li>
- *     <li>
- *         UPDATED_TYPEDEF: An existing TypeDef has been updated.
- *     </li>
- *     <li>
- *         DELETED_TYPEDEF_EVENT: An existing TypeDef has been deleted.
- *     </li>
- *     <li>
- *         RE_IDENTIFIED_TYPEDEF_EVENT: the guid has been changed for a TypeDef.
- *     </li>
- * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

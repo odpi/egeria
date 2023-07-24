@@ -166,7 +166,8 @@ public class IntegrationContextManager
                                                         permittedSynchronization,
                                                         externalSourceGUID,
                                                         externalSourceName,
-                                                        integrationConnectorGUID);
+                                                        integrationConnectorGUID,
+                                                        maxPageSize);
         }
 
         integrationConnector.setContext(integrationContext);

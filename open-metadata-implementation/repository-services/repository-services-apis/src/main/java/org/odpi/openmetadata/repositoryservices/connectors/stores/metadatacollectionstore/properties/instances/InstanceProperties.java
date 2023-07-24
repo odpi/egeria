@@ -69,6 +69,9 @@ public class InstanceProperties extends InstanceElementHeader
     private Date                                effectiveToTime = null;
     private Map<String, InstancePropertyValue>  instanceProperties = new HashMap<>();
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION = 1;
 
     /**

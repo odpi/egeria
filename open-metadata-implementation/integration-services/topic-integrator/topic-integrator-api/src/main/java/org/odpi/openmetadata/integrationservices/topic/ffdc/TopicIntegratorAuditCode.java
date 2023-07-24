@@ -9,10 +9,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The TopicIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Identifier - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -22,12 +21,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum TopicIntegratorAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMIS-TOPIC-INTEGRATOR-0001 - The topic integrator context manager is being initialized for calls to server {0} on platform {1}
+     */
     CONTEXT_INITIALIZING("OMIS-TOPIC-INTEGRATOR-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The topic integrator context manager is being initialized for calls to server {0} on platform {1}",
                          "The Topic Integrator OMIS is initializing its context manager.",
                          "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
+    /**
+     * OMIS-TOPIC-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
+     */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-TOPIC-INTEGRATOR-0002",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
@@ -35,6 +40,9 @@ public enum TopicIntegratorAuditCode implements AuditLogMessageSet
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
                                    "Verify that this connector is being started with the correct configuration."),
 
+    /**
+     * OMIS-TOPIC-INTEGRATOR-0003 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT("OMIS-TOPIC-INTEGRATOR-0003",
                  OMRSAuditLogRecordSeverity.ERROR,
                  "Integration connector {0} has a null context",
@@ -44,19 +52,19 @@ public enum TopicIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for TopicIntegratorAuditCode expects to be passed one of the enumeration rows defined in
      * TopicIntegratorAuditCode above.   For example:
-     *
+     * <br><br>
      *     TopicIntegratorAuditCode   auditCode = TopicIntegratorAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

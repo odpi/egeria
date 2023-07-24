@@ -97,6 +97,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public InfrastructureIntegratorContext(String                       connectorId,
                                            String                       connectorName,
@@ -119,7 +120,8 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                            PermittedSynchronization     permittedSynchronization,
                                            String                       integrationConnectorGUID,
                                            String                       externalSourceGUID,
-                                           String                       externalSourceName)
+                                           String                       externalSourceName,
+                                           int                          maxPageSize)
     {
         super(connectorId,
               connectorName,
@@ -131,7 +133,8 @@ public class InfrastructureIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.capabilityManagerClient    = capabilityManagerClient;
         this.connectionManagerClient    = connectionManagerClient;
