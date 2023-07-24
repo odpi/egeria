@@ -32,10 +32,10 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
     private static final  String discoveredProperty_numberOfClassificationDefs = "Number of supported ClassificationDefs";
     private static final  String discoveredProperty_classificationDefs = "Supported ClassificationDefs";
 
-    private List<TypeDef>  allTypeDefs;
-    private Map<String, EntityDef> entityDefs = new HashMap<>();
-    private List<RelationshipDef> relationshipDefs = new ArrayList<>();
-    private List<ClassificationDef> classificationDefs = new ArrayList<>();
+    private final List<TypeDef>          allTypeDefs;
+    private final Map<String, EntityDef>  entityDefs         = new HashMap<>();
+    private final List<RelationshipDef>   relationshipDefs   = new ArrayList<>();
+    private final List<ClassificationDef> classificationDefs = new ArrayList<>();
 
 
     /**
@@ -57,61 +57,6 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
     }
 
 
-
-    /**
-     * Return the list of entity definitions returned by the repository.
-     *
-     * @return map of EntityDef name to EntityDefs
-     */
-    public Map<String, EntityDef> getEntityDefs()
-    {
-        if (entityDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return entityDefs;
-        }
-    }
-
-
-    /**
-     * Return the list of relationship definitions returned by the repository.
-     *
-     * @return list of RelationshipDefs
-     */
-    public List<RelationshipDef> getRelationshipDefs()
-    {
-        if (relationshipDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return relationshipDefs;
-        }
-    }
-
-
-    /**
-     * Return the list of classification definitions returned by the repository.
-     *
-     * @return list of classifications
-     */
-    public List<ClassificationDef> getClassificationDefs()
-    {
-        if (classificationDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return classificationDefs;
-        }
-    }
-
-
     /**
      * Method implemented by the actual test case.
      *
@@ -121,9 +66,9 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        List<TypeDef>  typeDefGallery = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(), TypeDefCategory.ENTITY_DEF);
+        List<TypeDef>  typeDefList = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(), TypeDefCategory.ENTITY_DEF);
 
-        if (typeDefGallery == null)
+        if (typeDefList == null)
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfEntityDefs,
                                         0,
@@ -133,13 +78,13 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
         else
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfEntityDefs,
-                                        typeDefGallery.size(),
+                                        typeDefList.size(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
             List<String>    supportedTypes = new ArrayList<>();
 
-            for (TypeDef   typeDef : typeDefGallery)
+            for (TypeDef   typeDef : typeDefList)
             {
                 this.entityDefs.put(typeDef.getName(), (EntityDef)typeDef);
                 supportedTypes.add(typeDef.getName());
@@ -152,9 +97,9 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
         }
 
 
-        typeDefGallery = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(), TypeDefCategory.RELATIONSHIP_DEF);
+        typeDefList = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(), TypeDefCategory.RELATIONSHIP_DEF);
 
-        if (typeDefGallery == null)
+        if (typeDefList == null)
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfRelationshipDefs,
                                         0,
@@ -164,13 +109,13 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
         else
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfRelationshipDefs,
-                                        typeDefGallery.size(),
+                                        typeDefList.size(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
             List<String>    supportedTypes = new ArrayList<>();
 
-            for (TypeDef   typeDef : typeDefGallery)
+            for (TypeDef   typeDef : typeDefList)
             {
                 this.relationshipDefs.add((RelationshipDef) typeDef);
                 supportedTypes.add(typeDef.getName());
@@ -183,10 +128,10 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
         }
 
 
-        typeDefGallery = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(),
-                                                                   TypeDefCategory.CLASSIFICATION_DEF);
+        typeDefList = metadataCollection.findTypeDefsByCategory(workPad.getLocalServerUserId(),
+                                                                TypeDefCategory.CLASSIFICATION_DEF);
 
-        if (typeDefGallery == null)
+        if (typeDefList == null)
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfClassificationDefs,
                                         0,
@@ -196,13 +141,13 @@ public class TestFindTypeDefsByCategory extends RepositoryConformanceTestCase
         else
         {
             super.addDiscoveredProperty(discoveredProperty_numberOfClassificationDefs,
-                                        typeDefGallery.size(),
+                                        typeDefList.size(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
                                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
             List<String>    supportedTypes = new ArrayList<>();
 
-            for (TypeDef   typeDef : typeDefGallery)
+            for (TypeDef   typeDef : typeDefList)
             {
                 this.classificationDefs.add((ClassificationDef) typeDef);
                 supportedTypes.add(typeDef.getName());

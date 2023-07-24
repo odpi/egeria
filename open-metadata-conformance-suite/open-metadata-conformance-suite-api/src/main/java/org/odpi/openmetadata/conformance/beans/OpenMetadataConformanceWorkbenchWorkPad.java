@@ -4,7 +4,7 @@ package org.odpi.openmetadata.conformance.beans;
 
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
 import org.odpi.openmetadata.conformance.ffdc.exception.ConformanceSuiteRuntimeException;
-import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.*;
 
@@ -195,18 +195,11 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
             relatedProperties.put("Existing TestCase", duplicateTestCase);
             relatedProperties.put("New TestCase", testCase);
 
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.DUPLICATE_TEST_CASE;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(tutName,
-                                                                                        tutType,
-                                                                                        testCase.getTestCaseId());
-
-            throw new ConformanceSuiteRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new ConformanceSuiteRuntimeException(ConformanceSuiteErrorCode.DUPLICATE_TEST_CASE.getMessageDefinition(tutName,
+                                                                                                                          tutType,
+                                                                                                                          testCase.getTestCaseId()),
                                                        this.getClass().getName(),
                                                        methodName,
-                                                       errorMessage,
-                                                       errorCode.getSystemAction(),
-                                                       errorCode.getUserAction(),
                                                        relatedProperties);
         }
     }
@@ -591,15 +584,9 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
             return testCase.getResult();
         }
 
-        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_TEST_CASE_ID;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(testCaseId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(ConformanceSuiteErrorCode.UNKNOWN_TEST_CASE_ID.getMessageDefinition(testCaseId),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
     }
 

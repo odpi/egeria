@@ -3,18 +3,20 @@
 package org.odpi.openmetadata.conformance.server;
 
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
-import org.odpi.openmetadata.conformance.ffdc.exception.ConformanceSuiteCheckedExceptionBase;
-import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.conformance.ffdc.exception.PropertyServerException;
 import org.odpi.openmetadata.conformance.rest.*;
 import org.odpi.openmetadata.conformance.beans.TechnologyUnderTestWorkPad;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * ConformanceSuiteTestLabServices supports the REST API for the CTS.
+ */
 public class ConformanceSuiteTestLabServices
 {
     private static final ConformanceServicesInstanceMap instanceMap   = new ConformanceServicesInstanceMap();
@@ -87,16 +89,16 @@ public class ConformanceSuiteTestLabServices
             TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
             response.setProfileResult(workPad.getProfileReport(profileName));
         }
-        catch (PropertyServerException   error)
+        catch (PropertyServerException error)
         {
             capturePropertyServerException(response, error);
         }
-        catch (InvalidParameterException   error)
+        catch (InvalidParameterException error)
         {
             captureInvalidParameterException(response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: " + methodName + " with response: " + response);
 
         return response;
     }
@@ -393,16 +395,9 @@ public class ConformanceSuiteTestLabServices
     {
         if (userId == null)
         {
-            ConformanceSuiteErrorCode errorCode = ConformanceSuiteErrorCode.NULL_USER_ID;
-            String                 errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(ConformanceSuiteErrorCode.NULL_USER_ID.getMessageDefinition(methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 "userId");
         }
     }
@@ -430,15 +425,9 @@ public class ConformanceSuiteTestLabServices
         }
         else
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(ConformanceSuiteErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(serverName, methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -463,15 +452,9 @@ public class ConformanceSuiteTestLabServices
          */
         if (serverName == null)
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 serverNameParameter);
         }
         else
@@ -489,12 +472,12 @@ public class ConformanceSuiteTestLabServices
      * @param exceptionClassName  class name of the exception to recreate
      */
     private void captureCheckedException(ConformanceServicesAPIResponse       response,
-                                         ConformanceSuiteCheckedExceptionBase error,
+                                         OCFCheckedExceptionBase              error,
                                          String                               exceptionClassName)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
     }
@@ -509,13 +492,13 @@ public class ConformanceSuiteTestLabServices
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
     private void captureCheckedException(ConformanceServicesAPIResponse       response,
-                                         ConformanceSuiteCheckedExceptionBase error,
+                                         OCFCheckedExceptionBase              error,
                                          String                               exceptionClassName,
                                          Map<String, Object>                  exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
         response.setExceptionProperties(exceptionProperties);

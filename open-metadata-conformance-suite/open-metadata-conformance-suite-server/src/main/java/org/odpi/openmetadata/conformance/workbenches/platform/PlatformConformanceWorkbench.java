@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.platform;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.tests.platform.OpenMetadataPlatformTestCase;
 import org.odpi.openmetadata.conformance.tests.platform.origin.TestOpenMetadataOrigin;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,16 +41,10 @@ public class PlatformConformanceWorkbench extends OpenMetadataConformanceWorkben
 
         this.workPad = workPad;
 
-        OMRSAuditLog auditLog   = workPad.getAuditLog();
+        AuditLog auditLog = workPad.getAuditLog();
 
-        ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(workbenchId, workbenchDocumentationURL),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING.getMessageDefinition(workbenchId, workbenchDocumentationURL));
     }
 
     /**
@@ -78,17 +72,10 @@ public class PlatformConformanceWorkbench extends OpenMetadataConformanceWorkben
 
         if (workPad !=  null)
         {
-            OMRSAuditLog              auditLog   = workPad.getAuditLog();
-            ConformanceSuiteAuditCode auditCode;
+            AuditLog auditLog   = workPad.getAuditLog();
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED.getMessageDefinition(workPad.getWorkbenchId()));
 
             try
             {
@@ -109,25 +96,13 @@ public class PlatformConformanceWorkbench extends OpenMetadataConformanceWorkben
             {
                 log.error(String.format("Unexpected error: %s", error.getMessage()), error);
 
-                auditCode = ConformanceSuiteAuditCode.WORKBENCH_FAILURE;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                                                    error.getMessage()),
-                                   error.toString(),
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.WORKBENCH_FAILURE.getMessageDefinition(workPad.getWorkbenchId(), error.getMessage()),
+                                    error.toString());
             }
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_COMPLETED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_COMPLETED.getMessageDefinition(workPad.getWorkbenchId()));
         }
     }
 }

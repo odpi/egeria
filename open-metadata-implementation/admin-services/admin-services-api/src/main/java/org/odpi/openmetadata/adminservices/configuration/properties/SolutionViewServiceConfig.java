@@ -4,12 +4,16 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 
+import java.io.Serial;
 import java.util.Objects;
 
-/*
+/**
  * The SolutionViewServiceConfig class is a specialization of ViewServiceConfig for solution-level view services
  */
-public class SolutionViewServiceConfig extends ViewServiceConfig {
+public class SolutionViewServiceConfig extends ViewServiceConfig
+{
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /* There are no additional properties yet */
 
@@ -19,6 +23,7 @@ public class SolutionViewServiceConfig extends ViewServiceConfig {
     public SolutionViewServiceConfig() {
         super();
     }
+
 
     /**
      * Copy/clone constructor
