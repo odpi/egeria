@@ -27,7 +27,7 @@ public class MemberRegistration implements Serializable
     private static final long serialVersionUID = 1L;
 
     /*
-     * Information about a metadata repository that is a member of the metadata repository cluster
+     * Information about a metadata repository that is a member of the metadata repository cohort
      */
     private String     metadataCollectionId   = null;
     private String     metadataCollectionName = null;
@@ -184,7 +184,7 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Return the time that this repository registered with the cluster. (Or null if it has not yet registered.)
+     * Return the time that this repository registered with the cohort. (Or null if it has not yet registered.)
      *
      * @return Date object representing the registration time stamp
      */
@@ -195,7 +195,7 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Set up the time that this repository registered with the cluster. (Or null if it has not yet registered.)
+     * Set up the time that this repository registered with the cohort. (Or null if it has not yet registered.)
      *
      * @param registrationTime Date object representing the registration time stamp
      */

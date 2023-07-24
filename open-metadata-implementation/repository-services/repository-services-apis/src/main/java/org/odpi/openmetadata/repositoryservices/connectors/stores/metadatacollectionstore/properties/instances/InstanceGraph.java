@@ -25,6 +25,9 @@ public class InstanceGraph extends InstanceElementHeader
 {
     private static final long    serialVersionUID = 1L;
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long  CURRENT_INSTANCE_GRAPH_HEADER_VERSION = 1;
 
     private List<EntityDetail> entities      = null;

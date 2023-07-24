@@ -19,9 +19,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum LatestChangeAction implements Serializable
 {
+    /**
+     * The target element has been created.
+     */
     CREATED (0, 0, "Created", "The target element has been created."),
+
+    /**
+     * The properties of the target element have been changed.
+     */
     UPDATED (1, 1,"Updated", "The properties of the target element have been changed."),
+
+    /**
+     * The target element has been deleted.
+     */
     DELETED (2, 2,"Deleted", "The target element has been deleted."),
+
+    /**
+     * Another type of action.
+     */
     OTHER   (99, 99,"Other",  "Another type of action.");
 
     private static final String ENUM_TYPE_GUID  = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";

@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AttributeCardinality is used on a association from one TypeDef to another.  It defines how many instances the "linked to" TypeDef
+ * AttributeCardinality is used on an association from one TypeDef to another.  It defines how many instances the "linked to" TypeDef
  * are permitted to be connected to the "linked from" TypeDef:
  * <ul>
  *     <li>
@@ -51,19 +51,46 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AttributeCardinality implements Serializable
 {
-    UNKNOWN                (0, "<Unknown>",                "Unknown or uninitialized cardinality"),
+    /**
+     * Unknown or uninitialized cardinality.
+     */
+    UNKNOWN                (0, "Unknown",                  "Unknown or uninitialized cardinality"),
+
+    /**
+     * 0..1 for zero or one instances. 0..1.
+     */
     AT_MOST_ONE            (1, "At Most One",              "0..1 for zero or one instances. 0..1."),
+
+    /**
+     * 1 for one instance, no more and no less.
+     */
     ONE_ONLY               (2, "One Only",                 "1 for one instance, no more and no less"),
+
+    /**
+     * 1..* for one or more instances (stored in specific order).
+     */
     AT_LEAST_ONE_ORDERED   (3, "At Least One (Ordered)",   "1..* for one or more instances (stored in specific order)"),
+
+    /**
+     * 1..* for one or more instances (stored in any order).
+     */
     AT_LEAST_ONE_UNORDERED (4, "At Least One (Unordered)", "1..* for one or more instances (stored in any order)"),
+
+    /**
+     * 0..* for any number of instances (stored in a specific order).
+     */
     ANY_NUMBER_ORDERED     (5, "Any Number (Ordered)",     "0..* for any number of instances (stored in a specific order)"),
+
+    /**
+     * 0..* for any number of instances (stored in any order).
+     */
     ANY_NUMBER_UNORDERED   (6, "Any Number (Unordered)",   "0..* for any number of instances (stored in any order)");
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
 
     /**

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,8 @@ import java.util.Objects;
  */
 public abstract class OCFCheckedExceptionBase extends Exception
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final Logger log = LoggerFactory.getLogger(OCFCheckedExceptionBase.class);
 
@@ -379,7 +381,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
         if (reportedErrorMessageId == null)
         {
-            log.error("Null error message Id passed to an exception");
+            log.error("Null error message Identifier passed to an exception");
         }
 
         if (reportedSystemAction == null)

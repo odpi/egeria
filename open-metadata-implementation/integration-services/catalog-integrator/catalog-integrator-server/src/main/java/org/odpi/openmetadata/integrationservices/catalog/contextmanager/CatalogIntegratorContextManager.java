@@ -44,18 +44,18 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
     private final static String disabledExchangeServicesOption = "disabledExchangeServices";
 
     private ConnectedAssetClient            connectedAssetClient;
-    private OpenMetadataStoreClient     openMetadataStoreClient;
-    private ExternalAssetManagerClient  assetManagerClient;
-    private CollaborationExchangeClient collaborationExchangeClient;
-    private ConnectionExchangeClient           connectionExchangeClient;
-    private DataAssetExchangeClient            dataAssetExchangeClient;
-    private ExternalReferenceExchangeClient    externalReferenceExchangeClient;
-    private GlossaryExchangeClient             glossaryExchangeClient;
-    private GovernanceExchangeClient           governanceExchangeClient;
-    private InfrastructureExchangeClient       infrastructureExchangeClient;
-    private LineageExchangeClient              lineageExchangeClient;
-    private StewardshipExchangeClient          stewardshipExchangeClient;
-    private ValidValuesExchangeClient          validValuesExchangeClient;
+    private OpenMetadataStoreClient         openMetadataStoreClient;
+    private ExternalAssetManagerClient      assetManagerClient;
+    private CollaborationExchangeClient     collaborationExchangeClient;
+    private ConnectionExchangeClient        connectionExchangeClient;
+    private DataAssetExchangeClient         dataAssetExchangeClient;
+    private ExternalReferenceExchangeClient externalReferenceExchangeClient;
+    private GlossaryExchangeClient          glossaryExchangeClient;
+    private GovernanceExchangeClient        governanceExchangeClient;
+    private InfrastructureExchangeClient    infrastructureExchangeClient;
+    private LineageExchangeClient           lineageExchangeClient;
+    private StewardshipExchangeClient       stewardshipExchangeClient;
+    private ValidValuesExchangeClient       validValuesExchangeClient;
 
 
     /**
@@ -291,7 +291,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof CatalogIntegratorConnector)
+        if (integrationConnector instanceof CatalogIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 CatalogIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -307,8 +307,6 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                               maxPageSize,
                                                                               auditLog,
                                                                               connectorId);
-
-            CatalogIntegratorConnector serviceSpecificConnector = (CatalogIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
             String externalSourceName = metadataSourceQualifiedName;
@@ -343,6 +341,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                                       externalSourceName,
                                                                                       IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
                                                                                       this.extractDisabledExchangeServices(serviceOptions, connectorName),
+                                                                                      maxPageSize,
                                                                                       auditLog);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

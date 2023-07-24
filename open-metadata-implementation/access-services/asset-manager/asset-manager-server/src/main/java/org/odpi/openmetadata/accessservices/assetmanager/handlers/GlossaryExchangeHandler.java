@@ -173,7 +173,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement glossary : results)
             {
@@ -222,7 +222,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement glossaryCategory : results)
             {
@@ -273,7 +273,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement glossaryTerm : results)
             {
@@ -1295,6 +1295,125 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     }
 
 
+
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElement getGlossaryForCategory(String  userId,
+                                                  String  assetManagerGUID,
+                                                  String  assetManagerName,
+                                                  String  glossaryCategoryGUID,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String guidParameterName  = "glossaryCategoryGUID";
+
+        GlossaryElement glossary = glossaryHandler.getGlossaryForCategory(userId,
+                                                                          glossaryCategoryGUID,
+                                                                          guidParameterName,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        if (glossary != null)
+        {
+            final String glossaryGUIDParameterName  = "glossary.getElementHeader().getGUID()";
+
+            glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         glossary.getElementHeader().getGUID(),
+                                                                         glossaryGUIDParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime,
+                                                                         methodName));
+        }
+
+        return glossary;
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElement getGlossaryForTerm(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  glossaryTermGUID,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String guidParameterName  = "glossaryTermGUID";
+
+        GlossaryElement glossary = glossaryHandler.getGlossaryForTerm(userId,
+                                                                      glossaryTermGUID,
+                                                                      guidParameterName,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      methodName);
+
+        if (glossary != null)
+        {
+            final String glossaryGUIDParameterName  = "glossary.getElementHeader().getGUID()";
+
+            glossary.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                         glossary.getElementHeader().getGUID(),
+                                                                         glossaryGUIDParameterName,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                         assetManagerGUID,
+                                                                         assetManagerName,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         effectiveTime,
+                                                                         methodName));
+        }
+
+        return glossary;
+    }
+
+
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
      */
@@ -1797,6 +1916,62 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                  forLineage,
                                                                                                  forDuplicateProcessing,
                                                                                                  methodName);
+
+        this.addCorrelationPropertiesToGlossaryCategories(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          results,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   getCategoriesForTerm(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String  glossaryTermGUID,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing,
+                                                                Date    effectiveTime,
+                                                                String  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        List<GlossaryCategoryElement> results = glossaryCategoryHandler.getCategoriesForTerm(userId,
+                                                                                             glossaryTermGUID,
+                                                                                             glossaryTermGUIDParameterName,
+                                                                                             startFrom,
+                                                                                             pageSize,
+                                                                                             effectiveTime,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             methodName);
 
         this.addCorrelationPropertiesToGlossaryCategories(userId,
                                                           assetManagerGUID,

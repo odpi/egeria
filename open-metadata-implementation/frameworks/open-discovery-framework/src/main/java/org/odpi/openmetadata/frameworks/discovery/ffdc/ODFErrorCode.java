@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
+ *     <li>Error Message Identifier - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
  *     <li>UserAction - describes how a user should correct the error</li>

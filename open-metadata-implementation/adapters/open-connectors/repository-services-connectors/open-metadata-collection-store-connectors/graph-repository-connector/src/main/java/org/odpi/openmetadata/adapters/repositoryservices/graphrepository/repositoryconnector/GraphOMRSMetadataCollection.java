@@ -73,14 +73,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     private GraphOMRSMetadataStore graphStore = null;
 
     /**
-     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection id.
      *
      * @param parentConnector      - connector that this metadata collection supports.  The connector has the information
      *                             to call the metadata repository.
      * @param repositoryName       - name of the repository - used for logging.
      * @param repositoryHelper     - class used to build type definitions and instances.
      * @param repositoryValidator  - class used to validate type definitions and instances.
-     * @param metadataCollectionId - unique Identifier of the metadata collection Id.
+     * @param metadataCollectionId - unique Identifier of the metadata collection id.
      * @param auditLog             - logging destination
      */
     GraphOMRSMetadataCollection(GraphOMRSRepositoryConnector parentConnector,
@@ -92,7 +92,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                 Map<String, Object>          storageProperties) throws RepositoryErrorException
     {
         /*
-         * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
+         * The metadata collection id is the unique Id for the metadata collection.  It is managed by the super class.
          */
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
 

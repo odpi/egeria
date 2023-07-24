@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * <ul>
  *     <li>OnlyOnLeft - values that only appear on the 'left' object (the one from which differences were checked)</li>
  *     <li>OnlyOnRight - values that only appear on the 'right' object (the one passed as an argument when differences
- *          were calculated</li>
+ *          were calculated).</li>
  *     <li>Names - the names of the things that differ, including those from OnlyOnLeft, OnlyOnRight and where the
  *          thing has a value on both sides but that value is different</li>
  * </ul>
@@ -27,7 +27,32 @@ public abstract class Differences
     protected Map<String, Object> onlyOnLeft;
     protected Map<String, Object> onlyOnRight;
 
-    public enum SidePresent { LEFT_ONLY, RIGHT_ONLY, NEITHER, BOTH }
+    /**
+     * Defines the valid values for the differences.
+     */
+    public enum SidePresent
+    {
+        /**
+         * OnlyOnLeft - values that only appear on the 'left' object (the one from which differences were checked)
+         */
+        LEFT_ONLY,
+
+        /**
+         * OnlyOnRight - values that only appear on the 'right' object (the one passed as an argument when differences
+         * were calculated)
+         */
+        RIGHT_ONLY,
+
+        /**
+         * No differences.
+         */
+        NEITHER,
+
+        /**
+         * Differences on both sides.
+         */
+        BOTH
+    }
 
     /**
      * Construct a new set of differences.

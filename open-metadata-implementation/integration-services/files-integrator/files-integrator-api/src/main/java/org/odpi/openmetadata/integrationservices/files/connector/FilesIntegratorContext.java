@@ -52,6 +52,7 @@ public class FilesIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public FilesIntegratorContext(String                       connectorId,
                                   String                       connectorName,
@@ -67,7 +68,8 @@ public class FilesIntegratorContext extends IntegrationContext
                                   PermittedSynchronization     permittedSynchronization,
                                   String                       integrationConnectorGUID,
                                   String                       externalSourceGUID,
-                                  String                       externalSourceName)
+                                  String                       externalSourceName,
+                                  int                          maxPageSize)
     {
         super(connectorId,
               connectorName,
@@ -79,7 +81,8 @@ public class FilesIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.filesAndFoldersClient    = filesAndFoldersClient;
         this.connectionManagerClient  = connectionManagerClient;

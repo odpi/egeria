@@ -557,6 +557,68 @@ public class GlossaryExchangeResource
     }
 
 
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/for-category/{glossaryCategoryGUID}/retrieve")
+
+    public GlossaryElementResponse getGlossaryForCategory(@PathVariable String                        serverName,
+                                                          @PathVariable String                        userId,
+                                                          @PathVariable String                        glossaryCategoryGUID,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                       forLineage,
+                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                       forDuplicateProcessing,
+                                                          @RequestBody(required = false)
+                                                                        EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getGlossaryForCategory(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/for-term/{glossaryTermGUID}/retrieve")
+
+    public GlossaryElementResponse getGlossaryForTerm(@PathVariable String                        serverName,
+                                                      @PathVariable String                        userId,
+                                                      @PathVariable String                        glossaryTermGUID,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                       forLineage,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean                       forDuplicateProcessing,
+                                                      @RequestBody(required = false)
+                                                                    EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getGlossaryForTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
 
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
@@ -825,6 +887,41 @@ public class GlossaryExchangeResource
                                                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getCategoriesForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of metadata elements describing the categories associated with the requested term or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/categories/retrieve")
+
+    public GlossaryCategoryElementsResponse getCategoriesForTerm(@PathVariable String                       serverName,
+                                                                 @PathVariable String                       userId,
+                                                                 @PathVariable String                       glossaryTermGUID,
+                                                                 @RequestParam int                          startFrom,
+                                                                 @RequestParam int                          pageSize,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forLineage,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forDuplicateProcessing,
+                                                                 @RequestBody(required = false)
+                                                                               EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getCategoriesForTerm(serverName, userId, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

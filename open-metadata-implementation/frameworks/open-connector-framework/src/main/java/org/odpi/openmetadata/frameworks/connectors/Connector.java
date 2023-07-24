@@ -36,7 +36,7 @@ import java.util.Map;
  * OMRS Connectors add the metadata repository management APIs...
  * </p>
  * <p>
- * The initialize() method is called by the Connector Provider to set up the connector instance Id and the
+ * The initialize() method is called by the Connector Provider to set up the connector instance Identifier and the
  * Connection properties for the connector as part of its construction process.
  * </p>
  * <p>

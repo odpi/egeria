@@ -128,7 +128,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (DataAssetElement element : results)
             {

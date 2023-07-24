@@ -54,29 +54,32 @@ public class AuditLogRecord
      */
     public AuditLogRecord(AuditLogRecord template)
     {
-        this.guid                 = template.getGUID();
-        this.timeStamp            = template.getTimeStamp();
-        this.originatorProperties = template.getOriginatorProperties();
-        this.originatorComponent  = template.getOriginatorComponent();
-        this.actionDescription    = template.getActionDescription();
-        this.threadId             = template.getThreadId();
-        this.threadName           = template.getThreadName();
-        this.severityCode         = template.getSeverityCode();
-        this.severity             = template.getSeverity();
-        this.messageId            = template.getMessageId();
-        this.messageText          = template.getMessageText();
-        this.messageParameters     = template.getMessageParameters();
-        this.additionalInformation = template.getAdditionalInformation();
-        this.systemAction          = template.getSystemAction();
-        this.userAction            = template.getUserAction();
-        this.exceptionClassName    = template.getExceptionClassName();
-        this.exceptionMessage      = template.getExceptionMessage();
-        this.exceptionStackTrace   = template.getExceptionStackTrace();
+        if (template != null)
+        {
+            this.guid = template.getGUID();
+            this.timeStamp = template.getTimeStamp();
+            this.originatorProperties = template.getOriginatorProperties();
+            this.originatorComponent = template.getOriginatorComponent();
+            this.actionDescription = template.getActionDescription();
+            this.threadId = template.getThreadId();
+            this.threadName = template.getThreadName();
+            this.severityCode = template.getSeverityCode();
+            this.severity = template.getSeverity();
+            this.messageId = template.getMessageId();
+            this.messageText = template.getMessageText();
+            this.messageParameters = template.getMessageParameters();
+            this.additionalInformation = template.getAdditionalInformation();
+            this.systemAction = template.getSystemAction();
+            this.userAction = template.getUserAction();
+            this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionMessage = template.getExceptionMessage();
+            this.exceptionStackTrace = template.getExceptionStackTrace();
+        }
     }
 
 
     /**
-     * Return the unique Id of the audit log record.
+     * Return the unique Identifier of the audit log record.
      *
      * @return String guid
      */
@@ -87,7 +90,7 @@ public class AuditLogRecord
 
 
     /**
-     * Set up the unique Id of the audit log record.
+     * Set up the unique Identifier of the audit log record.
      *
      * @param guid  String guid
      */

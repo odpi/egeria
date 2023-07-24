@@ -207,7 +207,7 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Return the unique identifier for metadata collection Id where this TypeDef came from.
+     * Return the unique identifier for metadata collection id where this TypeDef came from.
      *
      * @return String guid
      */
@@ -218,7 +218,7 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Set up the unique identifier for metadata collection Id where this TypeDef came from.
+     * Set up the unique identifier for metadata collection id where this TypeDef came from.
      *
      * @param origin String guid
      */

@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * OwnerType defines the identifier used in an Asset's owner property.
  * <ul>
- *     <li>User Id - The owner's user id is stored in the owner property.</li>
+ *     <li>User Identifier - The owner's user id is stored in the owner property.</li>
  *     <li>Profile - The owner's profile unique identifier (guid) is stored in the owner property.</li>
  *     <li>Other - A different identifier for the owner outside of the scope of open metadata has been used.</li>
  * </ul>
@@ -26,9 +26,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OwnerType implements Serializable
 {
+    /**
+     * The owner's user id is stored in the owner property.
+     */
     USER_ID     (0,  0,  "UserId",    "The owner's user id is stored in the owner property."),
+
+    /**
+     * The owner's profile unique identifier (guid) is stored in the owner property.
+     */
     PROFILE_ID  (1,  1,  "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
-    OTHER       (99, 99, "Other",     "A different identifier for the owner outside of the scope of open metadata has been used.");
+
+    /**
+     * A different identifier for the owner outside the open metadata ecosystem has been used.
+     */
+    OTHER       (99, 99, "Other",     "A different identifier for the owner outside the open metadata ecosystem.");
 
     private static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6feeee257b56";
     private static final String ENUM_TYPE_NAME  = "AssetOwnerType";

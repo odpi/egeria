@@ -20,6 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AtlasGlossaryBaseProperties
 {
+    /**
+     * This is the name used by the connector to store the GUID of the equivalent open metadata element in the Atlas Glossary element.
+     * The GUID is used for correlations because the qualified name is not stable in Atlas.  The Egeria elements that originate from
+     * Atlas keep the qualified name in step with Atlas and is used to determine if the structure of the glossary has changed.
+     */
+    public static String EGERIA_GUID_PROPERTY_NAME = "egeriaGUID";
+
     private String              guid                 = null;
     private String              qualifiedName        = null;
     private String              name                 = null;

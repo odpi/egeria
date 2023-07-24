@@ -515,7 +515,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             if (eventBean instanceof OMRSEventV1)
             {
                 OMRSEventBean finalEventBean = eventBean;
-                internalTopicListeners.parallelStream().forEach((topicListener) ->
+                //internalTopicListeners.parallelStream().forEach((topicListener) ->
+                for (OMRSTopicListener topicListener : internalTopicListeners)
                 {
                     try
                     {
@@ -535,7 +536,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                   error);
                         }
                     }
-                });
+                } //);
             }
         }
         else

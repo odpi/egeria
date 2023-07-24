@@ -20,13 +20,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSEventProtocolVersion implements Serializable
 {
+    /**
+     * OMRS Version 1
+     */
     V1 (1, "OMRS V1.0", "OMRS Version 1");
 
     private static final long     serialVersionUID = 1L;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

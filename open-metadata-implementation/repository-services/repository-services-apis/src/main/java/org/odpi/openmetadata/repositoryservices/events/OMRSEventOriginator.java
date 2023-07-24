@@ -30,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         OrganizationName: this is a descriptive name for the organization that runs/owns the server.  For
- *         an enterprise, it may be the name of a department, geography or division.  If the cluster covers a group
+ *         an enterprise, it may be the name of a department, geography or division.  If the cohort covers a group
  *         of business partners then it may be their respective company names.  This is an optional field.
  *     </li>
  *     <li>

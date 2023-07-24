@@ -146,6 +146,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String monitorDL01UserId  = "monitorDL01npa";
         final String cocoEngineUserId   = "cocoETLnpa";
         final String generalNPAUserId   = "generalnpa";
+        final String omagServerUserId   = "OMAGServer";
 
         /*
          * This userId is the userId that is expected in the calls to auto-start servers (it is changed with the startup.user variable).
@@ -206,6 +207,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(monitorDL01UserId);
         allUsers.add(cocoEngineUserId);
         allUsers.add(generalNPAUserId);
+        allUsers.add(omagServerUserId);
         allUsers.add(serverStartUpUserId);
 
         allEmployees.add(zachNowUserId);
@@ -268,6 +270,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(monitorDL01UserId);
         npaAccounts.add(cocoEngineUserId);
         npaAccounts.add(generalNPAUserId);
+        npaAccounts.add(omagServerUserId);
         npaAccounts.add(serverStartUpUserId);
         assetOnboarding.addAll(npaAccounts);
 

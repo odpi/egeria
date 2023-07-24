@@ -29,6 +29,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the api manager
      * @param externalSourceName unique name of the software server capability for the api manager
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public AnalyticsIntegratorContext(String                       connectorId,
                                       String                       connectorName,
@@ -40,7 +41,8 @@ public class AnalyticsIntegratorContext extends IntegrationContext
                                       PermittedSynchronization     permittedSynchronization,
                                       String                       integrationConnectorGUID,
                                       String                       externalSourceGUID,
-                                      String                       externalSourceName)
+                                      String                       externalSourceName,
+                                      int                          maxPageSize)
     {
         super(connectorId,
               connectorName,
@@ -52,7 +54,8 @@ public class AnalyticsIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
     }
 
 

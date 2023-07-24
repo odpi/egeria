@@ -1,0 +1,623 @@
+{
+	"info": {
+		"_postman_id": "f64dea5f-a1c2-4130-ad4b-f9cd3f78b302",
+		"name": "Apache Atlas Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Configure atlas-exchange server",
+			"item": [
+				{
+					"name": "Set default audit log destination for atlas-exchange",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/atlas-exchange/audit-log-destinations/default",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{user}}",
+								"servers",
+								"atlas-exchange",
+								"audit-log-destinations",
+								"default"
+							]
+						},
+						"description": "Set up the server so that it is using the default audit log setting which is to output to the console only."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the Catalog Integrator OMIS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\": \"metadata-store\",\n    \"integrationConnectorConfigs\": [\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"AtlasIntegrator\",\n            \"connectorUserId\": \"generalnpa\",\n            \"connection\": {\n                \"class\": \"Connection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider\"\n                },\n                \"endpoint\": {\n                    \"class\": \"Endpoint\",\n                    \"address\": \"http://wolfsonnet.me:21000\"\n                },\n                \"userId\" : \"admin\",\n                \"clearPassword\" : \"admin\"\n            },\n            \"metadataSourceQualifiedName\": \"ApacheAtlasDL01\",\n            \"refreshTimeInterval\": \"30\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"BOTH_DIRECTIONS\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/atlas-exchange/integration-services/catalog-integrator",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"atlas-exchange",
+								"integration-services",
+								"catalog-integrator"
+							]
+						},
+						"description": "Add details of the metadata server to call and the connectors to run."
+					},
+					"response": []
+				},
+				{
+					"name": "Get atlas-exchange's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/atlas-exchange/configuration",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"atlas-exchange",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder describes how to set up the atlas-exchange server. This is an integration daemon and runs the atlas connector."
+		},
+		{
+			"name": "Configure metadata-store",
+			"item": [
+				{
+					"name": "Add to cohort",
+					"item": [
+						{
+							"name": "Set local server URL root",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"URLRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/server-url-root-for-caller",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"metadata-store",
+										"server-url-root-for-caller"
+									]
+								},
+								"description": "Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.\n\nThis value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster."
+							},
+							"response": []
+						},
+						{
+							"name": "Add cohort configuration",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/cohorts/{{cohort}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"metadata-store",
+										"cohorts",
+										"{{cohort}}"
+									]
+								},
+								"description": "Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request."
+							},
+							"response": []
+						}
+					],
+					"description": "This folder holds the commands to add the metadata access store to a cohort."
+				},
+				{
+					"name": "Set up event bus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"metadata-store",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable the in-memory repository",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/local-repository/mode/in-memory-repository",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"metadata-store",
+								"local-repository",
+								"mode",
+								"in-memory-repository"
+							]
+						},
+						"description": "Set up the local reposiotry to use the in-memory implementation."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable the Asset Manager OMAS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/access-services/asset-manager",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"metadata-store",
+								"access-services",
+								"asset-manager"
+							]
+						},
+						"description": "Turn on a specific registered Open Metadata Access Services (OMAS).\n\nChange the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping \"OMAS\", change to lower-case and link two words with a dash \"-\".  For example, Asset Owner OMAS, would have a url name of asset-owner."
+					},
+					"response": []
+				},
+				{
+					"name": "Get metadata-store's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-store/configuration",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"metadata-store",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains the commands to configure the Metadata Access Store called metadata-store."
+		},
+		{
+			"name": "Start metadata-store server - using stored configuration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/metadata-store/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"metadata-store",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+			},
+			"response": []
+		},
+		{
+			"name": "Start atlas-exchange server - using stored configuration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/atlas-exchange/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"atlas-exchange",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+			},
+			"response": []
+		},
+		{
+			"name": "Get atlas-exchange status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/atlas-exchange/open-metadata/integration-daemon/users/{{user}}/status",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"atlas-exchange",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"status"
+					]
+				},
+				"description": "Retrieves the status of the connectors running in the Integration Daemon"
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh connectors in the Catalog Integrator OMIS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/atlas-exchange/open-metadata/integration-daemon/users/{{user}}/integration-services/catalog-integrator/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"atlas-exchange",
+						"open-metadata",
+						"integration-daemon",
+						"users",
+						"{{user}}",
+						"integration-services",
+						"catalog-integrator",
+						"refresh"
+					]
+				},
+				"description": "Restarts the requested Integration Service"
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive file",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "content-packs/CocoComboArchive.json",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/metadata-store/instance/open-metadata-archives/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"metadata-store",
+						"instance",
+						"open-metadata-archives",
+						"file"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Find all glossaries in Egeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"class\" : \"SearchStringRequestBody\",\n\t \"searchString\" : \".*\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/by-search-string?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"metadata-store",
+						"open-metadata",
+						"access-services",
+						"asset-manager",
+						"users",
+						"{{user}}",
+						"glossaries",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				},
+				"description": "This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly."
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve ALL the glossary terms for a glossary in Egeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"AssetManagerIdentifiersRequestBody\",\n    \"assetManagerGUID\" : \"ba69fd95-c4d6-451f-9411-b9239cd1b9f8\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/retrieve?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"metadata-store",
+						"open-metadata",
+						"access-services",
+						"asset-manager",
+						"users",
+						"{{user}}",
+						"glossaries",
+						"{{glossaryGUID}}",
+						"terms",
+						"retrieve"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve ALL the glossary categories for a glossary in Egeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories/retrieve?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"metadata-store",
+						"open-metadata",
+						"access-services",
+						"asset-manager",
+						"users",
+						"{{user}}",
+						"glossaries",
+						"{{glossaryGUID}}",
+						"categories",
+						"retrieve"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve a glossary term from Egeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/retrieve",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"metadata-store",
+						"open-metadata",
+						"access-services",
+						"asset-manager",
+						"users",
+						"{{user}}",
+						"glossaries",
+						"terms",
+						"{{glossaryTermGUID}}",
+						"retrieve"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

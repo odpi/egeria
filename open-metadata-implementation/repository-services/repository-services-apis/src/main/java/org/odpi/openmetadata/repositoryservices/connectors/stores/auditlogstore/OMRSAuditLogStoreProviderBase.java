@@ -16,6 +16,9 @@ import java.util.List;
  */
 public abstract class OMRSAuditLogStoreProviderBase extends ConnectorProviderBase
 {
+    /**
+     * Property name of supported severities
+     */
     public static final String  supportedSeveritiesProperty = "supportedSeverities";
 
     /**

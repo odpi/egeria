@@ -14,35 +14,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMRSRegistryEventErrorCode defines the list of error codes that are used to record errors in the registration
- * process that is used by the cluster registries when managing the membership of the open metadata repository cluster.
- * <ul>
- *     <li>
- *         NOT_IN_USE: There has been no error detected and so the error code is not in use.
- *     </li>
- *     <li>
- *         CONFLICTING_REPOSITORY_ID: Remote server/repository is using the same metadata collection id as the local server.
- *     </li>
- *     <li>
- *         CONFLICTING_TYPEDEFS: There are conflicting type definitions (TypeDefs) detected between two repositories
- *         in the open metadata repository cluster.
- *     </li>
- * </ul>
+ * process that is used by the cohort registries when managing the membership of the open metadata repository cohort.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSRegistryEventErrorCode implements Serializable
 {
+    /**
+     * No Error - There has been no error detected and so the error code is not in use.
+     */
     NOT_IN_USE                (0, "No Error",
-                                  "There has been no error detected and so the error code is not in use.",
+                               "There has been no error detected and so the error code is not in use.",
                                null),
-    CONFLICTING_COLLECTION_ID (1, "Conflicting metadata collection Id",
+
+    /**
+     * Conflicting metadata collection id - Remote server/repository is using the same metadata collection id as the local server.
+     */
+    CONFLICTING_COLLECTION_ID (1, "Conflicting metadata collection id",
                                "Remote server/repository is using the same metadata collection id as the local server.",
                                OMRSEventErrorCode.CONFLICTING_COLLECTION_ID),
+
+    /**
+     * Unusable Remote Connection to Repository - The remote connection send by one of the member of the cohort is resulting in errors
+     * when it is used to create an OMRS Connector to the repository.
+     */
     BAD_REMOTE_CONNECTION     (2, "Unusable Remote Connection to Repository",
                                   "The remote connection send by one of the member of the cohort is resulting in errors " +
                                           "when it is used to create an OMRS Connector to the repository.",
                                OMRSEventErrorCode.BAD_REMOTE_CONNECTION),
+
+    /**
+     * Unknown Error Code - Unrecognized error code from incoming event.
+     */
     UNKNOWN_ERROR_CODE        (99, "Unknown Error Code",
                                "Unrecognized error code from incoming event.",
                                null)
@@ -50,18 +54,18 @@ public enum OMRSRegistryEventErrorCode implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int                ordinal;
-    private  String             name;
-    private  String             description;
-    private  OMRSEventErrorCode encoding;
+    private final int                ordinal;
+    private final String             name;
+    private final String             description;
+    private final OMRSEventErrorCode encoding;
 
 
     /**
      * Typical constructor sets up the values for this enum instance.
      *
-     * @param ordinal int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param ordinal int identifier for the enum, used for indexing arrays etc. with the enum.
      * @param name String name for the enum, used for message content.
-     * @param description String default description for the enum, used when there is not natural
+     * @param description String default description for the enum, used when there is no natural
      *                             language resource bundle available.
      * @param encoding code value to use in OMRSEvents
      */
@@ -78,7 +82,7 @@ public enum OMRSRegistryEventErrorCode implements Serializable
 
 
     /**
-     * Return the identifier for the enum, used for indexing arrays etc with the enum.
+     * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
      * @return int identifier
      */
@@ -100,7 +104,7 @@ public enum OMRSRegistryEventErrorCode implements Serializable
 
 
     /**
-     * Return the default description for the enum, used when there is not natural
+     * Return the default description for the enum, used when there is no natural
      * language resource bundle available.
      *
      * @return String default description

@@ -311,7 +311,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * Remember the metadata collection name for this metadata collection id. If the metadata collection id
      * is null, it is ignored.
      *
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.

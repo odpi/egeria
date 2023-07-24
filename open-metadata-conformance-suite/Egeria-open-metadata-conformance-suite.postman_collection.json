@@ -1,0 +1,524 @@
+{
+	"info": {
+		"_postman_id": "10cb552b-74f8-46d3-a0bd-f0412ac450d9",
+		"name": "Egeria-open-metadata-conformance-suite",
+		"description": "This collection describes the commands to set up an OMAG server to run the conformance suite.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Configuration",
+			"item": [
+				{
+					"name": "Query cSuite server's configuration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"configuration"
+							]
+						},
+						"description": "Query the current configuration of the conformance suite server."
+					},
+					"response": []
+				},
+				{
+					"name": "Set cSuite server's user Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-id?id={{user}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"server-user-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{user}}"
+								}
+							]
+						},
+						"description": "Set up the user Id that this server should use on open metadata requests."
+					},
+					"response": []
+				},
+				{
+					"name": "Set cSuite server's password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-password?password={{password}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"server-user-password"
+							],
+							"query": [
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						},
+						"description": "Set up the password that the conformance suite server should use on open metadata requests."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus to connect to cohort topics",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable access to the cohort",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"cohorts",
+								"{{cohort}}"
+							]
+						},
+						"description": "Request registration to a cohort."
+					},
+					"response": []
+				},
+				{
+					"name": "Disable access to the cohort",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"cohorts",
+								"{{cohort}}"
+							]
+						},
+						"description": "Unregister from a cohort."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the test of an open metadata repository",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/repository-workbench/repositories/{{tutServer}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"conformance-suite-workbenches",
+								"repository-workbench",
+								"repositories",
+								"{{tutServer}}"
+							]
+						},
+						"description": "Activate the repository workbench tests to validate the behaviour of a specific repository."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the test of an open metadata server platform",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/platform-workbench/platforms/{{tutPlatformURLroot}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"conformance-suite-workbenches",
+								"platform-workbench",
+								"platforms",
+								"{{tutPlatformURLroot}}"
+							]
+						},
+						"description": "Activate the repository workbench tests to validate the behaviour of a specific server platform."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete the repository workbench configuration",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/repository-workbench",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"conformance-suite-workbenches",
+								"repository-workbench"
+							]
+						},
+						"description": "Remove all of the configuration for the open metadata conformance suite."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete the platform workbench configuration",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/platform-workbench",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"conformance-suite-workbenches",
+								"platform-workbench"
+							]
+						},
+						"description": "Remove the configuration for the platform workbench of the open metadata conformance suite."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete the conformance suite configuration",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{server}}",
+								"conformance-suite-workbenches"
+							]
+						},
+						"description": "Remove all of the configuration for the open metadata conformance suite."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Starting/Stopping CTS server",
+			"item": [
+				{
+					"name": "Activate conformance suite using config",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{server}}",
+								"instance"
+							]
+						},
+						"description": "Activate open metadata conformance suite services."
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate conformance suite server",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{server}}",
+								"instance"
+							]
+						},
+						"description": "Deactivate open metadata conformance suite services for this server."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Getting Results",
+			"item": [
+				{
+					"name": "Retrieve platform workbench results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/platform-workbench",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report",
+								"workbenches",
+								"platform-workbench"
+							]
+						},
+						"description": "Retrieve the results from the platform workbench tests."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve repository workbench results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/repository-workbench",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report",
+								"workbenches",
+								"repository-workbench"
+							]
+						},
+						"description": "Retrieve the results from the repository workbench tests."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve full report of results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report"
+							]
+						},
+						"description": "Retrieve all of the results of the conformance suite testing."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve summary report of results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/summary",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report",
+								"summary"
+							]
+						},
+						"description": "Retrieve all of the results of the conformance suite testing."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve report of failed test cases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/failed",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report",
+								"test-cases",
+								"failed"
+							]
+						},
+						"description": "Retrieve the results of all failed test cases."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve report of a specific test case",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/repository-metadata-collection",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"conformance-suite",
+								"users",
+								"{{adminUserId}}",
+								"report",
+								"test-cases",
+								"repository-metadata-collection"
+							]
+						},
+						"description": "Retrieve the results of all failed test cases."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

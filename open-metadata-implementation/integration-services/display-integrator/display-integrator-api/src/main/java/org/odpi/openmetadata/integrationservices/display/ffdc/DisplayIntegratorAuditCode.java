@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The DisplayIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -22,12 +21,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum DisplayIntegratorAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMIS-DISPLAY-INTEGRATOR-0001 - The topic integrator context manager is being initialized for calls to server {0} on platform {1}
+     */
     CONTEXT_INITIALIZING("OMIS-DISPLAY-INTEGRATOR-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The topic integrator context manager is being initialized for calls to server {0} on platform {1}",
                          "The Display Integrator OMIS is initializing its context manager.",
                          "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
+    /**
+     * OMIS-DISPLAY-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
+     */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-DISPLAY-INTEGRATOR-0002",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
@@ -35,6 +40,9 @@ public enum DisplayIntegratorAuditCode implements AuditLogMessageSet
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
                                    "Verify that this connector is being started with the correct configuration."),
 
+    /**
+     * OMIS-DISPLAY-INTEGRATOR-0003 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT("OMIS-DISPLAY-INTEGRATOR-0003",
                  OMRSAuditLogRecordSeverity.ERROR,
                  "Integration connector {0} has a null context",
@@ -44,29 +52,29 @@ public enum DisplayIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for DisplayIntegratorAuditCode expects to be passed one of the enumeration rows defined in
      * DisplayIntegratorAuditCode above.   For example:
-     *
+     * <br><br>
      *     DisplayIntegratorAuditCode   auditCode = DisplayIntegratorAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
     DisplayIntegratorAuditCode(String                     messageId,
-                             OMRSAuditLogRecordSeverity severity,
-                             String                     message,
-                             String                     systemAction,
-                             String                     userAction)
+                               OMRSAuditLogRecordSeverity severity,
+                               String                     message,
+                               String                     systemAction,
+                               String                     userAction)
     {
         messageDefinition = new AuditLogMessageDefinition(messageId,
                                                           severity,
