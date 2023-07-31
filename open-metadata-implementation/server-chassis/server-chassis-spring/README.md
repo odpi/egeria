@@ -21,10 +21,13 @@ To start the OMAG Server application manually using java from the project home, 
 # Go to project home folder
 cd ../../../
 # Execute java using -jar parameter starting the bootJar package and --omag.server.config setting the location of the OMAG server configuration file 
-java -jar open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server.config=file:open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/metadata-repository-server.json
+java -jar open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server-config=file:open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/metadata-repository-server.json
 ```
 Alternately, for development purpose in IDE such as IntelliJ you can use default Spring Boot run configuration. 
 
 ### Application Properties
 
-`omag.server.config` - The OMAG server configuration JSON file location. Notice the 'file:' prefix. With this, spring-boot loads the resource from a file on a given path on the filesystem. 
+| Property name      | Environment variable | Description                                                                                                                                                                          |
+|--------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| omag.server-config | OMAG_SERVER-CONFIG   | The OMAGServerConfig document, JSON file location **(Required)**. Notice the 'file:' prefix. With this, spring-boot loads the resource from a file on a given path on the filesystem |
+| omag.server-user   | OMAG_SERVER-USER     | The user name used to activate server using OMAG platform services - considered only when server security connector is enabled. If not provided default value 'system' is used       |
