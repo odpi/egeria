@@ -35,13 +35,12 @@ import java.util.List;
 public class OMAGServer implements ApplicationRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
-    private ObjectMapper objectMapper;
-    private final OMAGServerOperationalServices operationalServices;
-    private OMAGServerProperties serverProperties;
-    private OMAGServerConfig serverConfigDocument = null;
-    private String serverName = null;
     private final ConfigurableApplicationContext context;
-
+    private final ObjectMapper objectMapper;
+    private final OMAGServerOperationalServices operationalServices;
+    private final OMAGServerProperties serverProperties;
+    private OMAGServerConfig serverConfigDocument;
+    private String serverName;
 
     /**
      * Constructor injecting the beans required.
