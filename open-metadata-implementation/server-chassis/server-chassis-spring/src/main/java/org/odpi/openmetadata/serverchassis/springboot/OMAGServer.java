@@ -21,8 +21,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -101,7 +99,7 @@ public class OMAGServer implements ApplicationRunner {
      * The activation process requires OMAGServerConfig document.
      * @see org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig
      *
-     * The OMAGServerConfig document file location is provided as org.springframework.core.io.Resource and configured by application property ${omag.server.config}
+     * The OMAGServerConfig document location is provided as org.springframework.core.io.Resource and configured by application property `omag.server-config`.
      *
      * @throws OMAGServerActivationError
      */
@@ -110,21 +108,20 @@ public class OMAGServer implements ApplicationRunner {
         LOG.debug("Activation started");
 
         try {
-            LOG.info("Configuration file: {} is being parsed", serverProperties.getServerConfig().getFile());
-            LOG.trace("{}", Files.readString(Path.of(serverProperties.getServerConfig().getFile().getPath())));
-            serverConfigDocument = objectMapper.reader().readValue(serverProperties.getServerConfig().getFile(), OMAGServerConfig.class);
+            LOG.info("Configuration {}", serverProperties.getServerConfig());
+            serverConfigDocument = objectMapper.reader().readValue(serverProperties.getServerConfig().getInputStream(), OMAGServerConfig.class);
+
+            if (serverConfigDocument == null) {
+                LOG.info("Activation failed, the cause is that the OMAGServerConfig document is null");
+                throw new OMAGServerActivationError("Activation failed, the cause is that the OMAGServerConfig document is null");
+            }
+
             serverName = serverConfigDocument.getLocalServerName();
-            LOG.info("Configuration document for server: {} loaded successfully", serverName);
+            LOG.info("Configuration document for server: {} - loaded successfully", serverName);
         } catch (IOException e) {
-            LOG.info("Configuration cannot be loaded from the resource provided - check application configuration");
+            LOG.info("Configuration document cannot be loaded from the resource provided - check application configuration");
             throw new OMAGServerActivationError(
-                    String.format("Configuration cannot be loaded from the resource provided - check application configuration"),e);
-        }
-
-        if (serverConfigDocument == null) {
-            LOG.info("Activation failed, the cause is that OMAGConfig document is null");
-            throw new OMAGServerActivationError("Activation failed, the cause is that OMAGConfig document is null");
-
+                    String.format("Configuration document cannot be loaded from the resource provided - check application configuration"),e);
         }
 
         LOG.info("Sending activation request for server: {} and user: {}", serverName, serverProperties.getServerUser());

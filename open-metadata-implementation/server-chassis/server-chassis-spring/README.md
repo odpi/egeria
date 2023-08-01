@@ -5,29 +5,28 @@
 
 ![egeria-content-status-in-development.png](..%2F..%2F..%2Fimages%2Fegeria-content-status-in-development.png)
 
-This module is providing OMAG server chassis spring-boot based application that is able to launch single pre-configured OMAG server instance.
+This module provides spring-boot based application that is able to launch single pre-configured OMAG server instance.
 
 ### Building the module with Gradle
 
-To build current module from the project home folder execute following Gradle command:
+To build the boot application jar from the current module use:
 
-`./gradlew clean :open-metadata-implementation:server-chassis:server-chassis-spring:build`
+`./gradlew clean build`
 
-### Starting the application
+### Starting the application locally
 
-To start the OMAG Server application manually using java from the project home, execute following bash command:
+You can run the application locally from this module with java using following command:
 
 ```bash
-# Go to project home folder
-cd ../../../
-# Execute java using -jar parameter starting the bootJar package and --omag.server.config setting the location of the OMAG server configuration file 
-java -jar open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server-config=file:open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/metadata-repository-server.json
+java -jar build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server-config=classpath:samples/metadata-repository-server.json --server.port=9080 --server.ssl.enabled=false
 ```
-Alternately, for development purpose in IDE such as IntelliJ you can use default Spring Boot run configuration. 
 
-### Application Properties
+The command will run the application using provided parameters. For demo purpose we turn ssl off and run the application on http port 9080.
 
-| Property name      | Environment variable | Description                                                                                                                                                                          |
-|--------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| omag.server-config | OMAG_SERVER-CONFIG   | The OMAGServerConfig document, JSON file location **(Required)**. Notice the 'file:' prefix. With this, spring-boot loads the resource from a file on a given path on the filesystem |
-| omag.server-user   | OMAG_SERVER-USER     | The user name used to activate server using OMAG platform services - considered only when server security connector is enabled. If not provided default value 'system' is used       |
+### Configuration properties
+
+| Property name      | Environment variable |     | Description                                                                                                                                                                                                         |
+|--------------------|----------------------|:----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| omag.server-config | OMAG_SERVER-CONFIG   |     | The [OMAGServerConfig document](https://egeria-project.org/concepts/configuration-document/) json file location **(Required)**. Note the value should be spring Resource i.e. starting with `classpath:` or `file:` |
+| server.port        | SERVER_PORT          |     | Configures port used by the embedded Tomcat server                                                                                                                                                                  |
+| server.ssl.enabled | SERVER_SSL_ENABLED   |     | Configures if SSL should be enabled for the embedded Tomcat server                                                                                                                                                  |

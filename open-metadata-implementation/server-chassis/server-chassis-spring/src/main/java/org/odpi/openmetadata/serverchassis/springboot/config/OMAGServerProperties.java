@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 public class OMAGServerProperties {
 
     /**
-     * Configures the location of the OMAGServerConfig json document defined as Spring Resource.
+     * Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
      * This property is required and cannot be null.
      */
     @NotNull
