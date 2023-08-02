@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -75,31 +75,20 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.serverchassis.springboot.OMAGServer</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code>org.springframework.boot.ApplicationRunner</code></dd>
+</dl>
 <hr>
-<div class="type-signature"><span class="annotations">@SpringBootApplication(scanBasePackages="org.odpi.openmetadata")
+<div class="type-signature"><span class="annotations">@EnableConfigurationProperties(<a href="config/OMAGServerProperties.html" title="class in org.odpi.openmetadata.serverchassis.springboot.config">OMAGServerProperties.class</a>)
+@SpringBootApplication(scanBasePackages="org.odpi.openmetadata")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServer</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements org.springframework.boot.ApplicationRunner</span></div>
 <div class="block">OMAGServer provides the main program for the OMAG Server spring-boot based starter application.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<li>
-<section class="nested-class-summary" id="nested-class-summary">
-<h2>Nested Class Summary</h2>
-<div class="caption"><span>Nested Classes</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Class</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="OMAGServer.OMAGServerStartup.html" class="type-name-link" title="class in org.odpi.openmetadata.serverchassis.springboot">OMAGServer.OMAGServerStartup</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Application Runner implementation class.</div>
-</div>
-</div>
-</section>
-</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -108,9 +97,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">OMAGServer</a>()</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.springframework.context.ConfigurableApplicationContext,com.fasterxml.jackson.databind.ObjectMapper,org.odpi.openmetadata.serverchassis.springboot.config.OMAGServerProperties,org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices)" class="member-name-link">OMAGServer</a><wbr>(org.springframework.context.ConfigurableApplicationContext&nbsp;ctx,
+ com.fasterxml.jackson.databind.ObjectMapper&nbsp;objectMapper,
+ <a href="config/OMAGServerProperties.html" title="class in org.odpi.openmetadata.serverchassis.springboot.config">OMAGServerProperties</a>&nbsp;omagServerProperties,
+ <a href="../../platformservices/server/OMAGServerOperationalServices.html" title="class in org.odpi.openmetadata.platformservices.server">OMAGServerOperationalServices</a>&nbsp;operationalServices)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Default constructor.</div>
+<div class="block">Constructor injecting the beans required.</div>
 </div>
 </div>
 </section>
@@ -120,7 +112,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -128,7 +120,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Main program, creating spring boot application instance.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run(org.springframework.boot.ApplicationArguments)" class="member-name-link">run</a><wbr>(org.springframework.boot.ApplicationArguments&nbsp;args)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">ApplicationRunner implementation.</div>
+</div>
 </div>
 </div>
 </div>
@@ -147,11 +146,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;()">
+<section class="detail" id="&lt;init&gt;(org.springframework.context.ConfigurableApplicationContext,com.fasterxml.jackson.databind.ObjectMapper,org.odpi.openmetadata.serverchassis.springboot.config.OMAGServerProperties,org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices)">
 <h3>OMAGServer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OMAGServer</span>()</div>
-<div class="block">Default constructor.
- Creates instance of OMAG operational services.</div>
+<div class="member-signature"><span class="annotations">@Autowired
+</span><span class="modifiers">public</span>&nbsp;<span class="element-name">OMAGServer</span><wbr><span class="parameters">(org.springframework.context.ConfigurableApplicationContext&nbsp;ctx,
+ com.fasterxml.jackson.databind.ObjectMapper&nbsp;objectMapper,
+ <a href="config/OMAGServerProperties.html" title="class in org.odpi.openmetadata.serverchassis.springboot.config">OMAGServerProperties</a>&nbsp;omagServerProperties,
+ <a href="../../platformservices/server/OMAGServerOperationalServices.html" title="class in org.odpi.openmetadata.platformservices.server">OMAGServerOperationalServices</a>&nbsp;operationalServices)</span></div>
+<div class="block">Constructor injecting the beans required.</div>
 </section>
 </li>
 </ul>
@@ -166,6 +168,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">main</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</span></div>
+<div class="block">Main program, creating spring boot application instance.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>args</code> - </dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="run(org.springframework.boot.ApplicationArguments)">
+<h3>run</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">run</span><wbr><span class="parameters">(org.springframework.boot.ApplicationArguments&nbsp;args)</span></div>
+<div class="block">ApplicationRunner implementation.
+ The purpose of this class is to provide a standard way to run the OMAG server activation task, separate from the main application thread.
+ Executing the server activation in a runner task affects internal availability state by default as the runners are part of the standard application lifecycle.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>run</code>&nbsp;in interface&nbsp;<code>org.springframework.boot.ApplicationRunner</code></dd>
+</dl>
 </section>
 </li>
 </ul>
