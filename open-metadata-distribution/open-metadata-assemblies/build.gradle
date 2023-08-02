@@ -112,9 +112,9 @@ distributions {
         contents {
             into('server') {
                 // Just the chassis - for backward compatibility
-                from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
+                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
                 rename { String fileName ->
-                    fileName.replace("platform-chassis-spring", "server-chassis-spring")
+                    fileName.replace("server-chassis-spring", "omag-server")
                 }
                 fileMode = 0755
             }
