@@ -34,7 +34,7 @@ ext {
     commonsloggingVersion = '1.2'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
-    elasticsearchVersion = '8.7.1'
+    elasticsearchVersion = '8.9.0'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
     // TODO: Held back for compatability
@@ -54,7 +54,7 @@ ext {
     jakartaannotationVersion = '2.1.1'
     jakartapersistenceVersion = '3.1.0'
     jakartavalidationVersion = '3.0.2'
-    janusVersion = '0.6.3'
+    janusVersion = '1.0.0-20230705-152651.16846ad'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '4.7.0'
