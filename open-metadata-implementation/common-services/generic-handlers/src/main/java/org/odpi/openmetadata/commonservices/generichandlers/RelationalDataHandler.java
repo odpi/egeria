@@ -339,7 +339,7 @@ public class RelationalDataHandler<DATABASE,
 
         if (databaseGUID != null)
         {
-            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
+            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
             {
                 InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
                                                                                          encodingLanguage,

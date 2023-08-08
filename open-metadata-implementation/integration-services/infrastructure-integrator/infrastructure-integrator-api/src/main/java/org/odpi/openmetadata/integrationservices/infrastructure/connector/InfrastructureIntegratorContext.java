@@ -66,7 +66,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
     private final ServerManagerClient         serverManagerClient;
     private final ITInfrastructureEventClient eventClient;
 
-    private boolean     infrastructureManagerIsHome = true;
+    private boolean     externalSourceIsHome = true;
 
     static final String assetTypeName         = "Asset";
 
@@ -158,11 +158,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
     /**
      * Set up the flag that controls the ownership of metadata created for this infrastructure manager. Default is true.
      *
-     * @param infrastructureManagerIsHome should the metadata be marked as owned by the infrastructure manager so others can not update?
+     * @param externalSourceIsHome should the metadata be marked as owned by the infrastructure manager so others can not update?
      */
-    public void setInfrastructureManagerIsHome(boolean infrastructureManagerIsHome)
+    public void setInfrastructureManagerIsHome(boolean externalSourceIsHome)
     {
-        this.infrastructureManagerIsHome = infrastructureManagerIsHome;
+        this.externalSourceIsHome = externalSourceIsHome;
     }
 
 
@@ -214,7 +214,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return hostManagerClient.createHost(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, hostProperties);
+        return hostManagerClient.createHost(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, hostProperties);
     }
 
 
@@ -235,7 +235,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return hostManagerClient.createHostFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return hostManagerClient.createHostFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -279,7 +279,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        hostManagerClient.setupClusterMember(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, hostGUID, clusterMemberGUID, effectiveFrom, effectiveTo);
+        hostManagerClient.setupClusterMember(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, hostGUID, clusterMemberGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -502,7 +502,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, platformProperties);
+        return platformManagerClient.createSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, platformProperties);
     }
 
 
@@ -523,7 +523,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -724,7 +724,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return serverManagerClient.createSoftwareServer(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, softwareServerProperties);
+        return serverManagerClient.createSoftwareServer(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, softwareServerProperties);
     }
 
 
@@ -746,7 +746,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                  PropertyServerException
 
     {
-        return serverManagerClient.createSoftwareServerFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return serverManagerClient.createSoftwareServerFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -949,7 +949,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        serverManagerClient.addServerPurpose(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, itAssetGUID, classificationName, effectiveFrom, effectiveTo, classificationProperties);
+        serverManagerClient.addServerPurpose(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, itAssetGUID, classificationName, effectiveFrom, effectiveTo, classificationProperties);
     }
 
 
@@ -1019,7 +1019,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        serverManagerClient.deployITAsset(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, itAssetGUID, destinationGUID, deploymentProperties);
+        serverManagerClient.deployITAsset(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, itAssetGUID, destinationGUID, deploymentProperties);
     }
 
 
@@ -1137,7 +1137,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapability(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, classificationName, capabilityProperties);
+        return capabilityManagerClient.createSoftwareCapability(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, classificationName, capabilityProperties);
     }
 
 
@@ -1158,7 +1158,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1202,7 +1202,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        capabilityManagerClient.deployCapability(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, capabilityGUID, infrastructureAssetGUID, deploymentProperties);
+        capabilityManagerClient.deployCapability(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, capabilityGUID, infrastructureAssetGUID, deploymentProperties);
     }
 
 
@@ -1436,7 +1436,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return capabilityManagerClient.createServerAssetUse(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, capabilityGUID, assetGUID, properties);
+        return capabilityManagerClient.createServerAssetUse(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, capabilityGUID, assetGUID, properties);
     }
 
 
@@ -1601,7 +1601,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return dataAssetManagerClient.createDataAsset(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, dataAssetProperties);
+        return dataAssetManagerClient.createDataAsset(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, dataAssetProperties);
     }
 
 
@@ -1624,7 +1624,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                             PropertyServerException
 
     {
-        return dataAssetManagerClient.createDataAssetFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return dataAssetManagerClient.createDataAssetFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1869,7 +1869,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return processManagerClient.createProcess(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, processStatus, processProperties);
+        return processManagerClient.createProcess(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, processStatus, processProperties);
     }
 
 
@@ -1891,7 +1891,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                           PropertyServerException
 
     {
-        return processManagerClient.createProcessFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return processManagerClient.createProcessFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1957,7 +1957,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        processManagerClient.setupProcessParent(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, parentProcessGUID, childProcessGUID, containmentType, effectiveFrom, effectiveTo);
+        processManagerClient.setupProcessParent(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentProcessGUID, childProcessGUID, containmentType, effectiveFrom, effectiveTo);
     }
 
 
@@ -2249,7 +2249,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                           PropertyServerException
 
     {
-        return processManagerClient.setupDataFlow(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, dataSupplierGUID, dataConsumerGUID, properties, effectiveTime);
+        return processManagerClient.setupDataFlow(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, dataSupplierGUID, dataConsumerGUID, properties, effectiveTime);
     }
 
 
@@ -2397,7 +2397,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                 PropertyServerException
 
     {
-        return processManagerClient.setupControlFlow(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, currentStepGUID, nextStepGUID, properties, effectiveTime);
+        return processManagerClient.setupControlFlow(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, currentStepGUID, nextStepGUID, properties, effectiveTime);
     }
 
 
@@ -2545,7 +2545,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                PropertyServerException
 
     {
-        return processManagerClient.setupProcessCall(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, callerGUID, calledGUID, properties, effectiveTime);
+        return processManagerClient.setupProcessCall(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, callerGUID, calledGUID, properties, effectiveTime);
     }
 
 
@@ -3491,9 +3491,6 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * profile describes using the ITInfrastructureProfile relationship.  If the itUserId is specified, a UserIdentity for that userId is
      * found/created and connected to the new IT profile.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param itInfrastructureGUID unique identifier of the piece of IT infrastructure that is described by the new IT profile.
      * @param itUserId            userId used by the IT Infrastructure
      * @param properties          properties for an IT profile
@@ -3504,25 +3501,19 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String createITProfile(String              userId,
-                                  String              infrastructureManagerGUID,
-                                  String              infrastructureManagerName,
-                                  String              itInfrastructureGUID,
+    public String createITProfile(String              itInfrastructureGUID,
                                   String              itUserId,
                                   ITProfileProperties properties) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return itProfileManagerClient.createITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itUserId, properties);
+        return itProfileManagerClient.createITProfile(userId, externalSourceGUID, externalSourceName, itInfrastructureGUID, itUserId, properties);
     }
 
 
     /**
      * Update the definition of an IT profile.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param itProfileGUID unique identifier of IT profile
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties properties to change
@@ -3531,48 +3522,36 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateITProfile(String              userId,
-                                String              infrastructureManagerGUID,
-                                String              infrastructureManagerName,
-                                String              itProfileGUID,
+    public void updateITProfile(String              itProfileGUID,
                                 boolean             isMergeUpdate,
                                 ITProfileProperties properties) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        itProfileManagerClient.updateITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID, isMergeUpdate, properties);
+        itProfileManagerClient.updateITProfile(userId, externalSourceGUID, externalSourceName, itProfileGUID, isMergeUpdate, properties);
     }
 
 
     /**
      * Remove the definition of an IT profile.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param itProfileGUID unique identifier of IT profile
      *
      * @throws InvalidParameterException guid or userId is null; guid is not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void deleteITProfile(String userId,
-                                String infrastructureManagerGUID,
-                                String infrastructureManagerName,
-                                String itProfileGUID) throws InvalidParameterException,
+    public void deleteITProfile(String itProfileGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        itProfileManagerClient.deleteITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID);
+        itProfileManagerClient.deleteITProfile(userId, externalSourceGUID, externalSourceName, itProfileGUID);
     }
 
 
     /**
      * Add a new contact method to the profile.
      *
-     * @param userId the name of the calling user.
-     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param itProfileGUID identifier of the profile to update.
      * @param properties properties of contact method.
      *
@@ -3582,38 +3561,29 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String addContactMethod(String                  userId,
-                                   String                  infrastructureManagerGUID,
-                                   String                  infrastructureManagerName,
-                                   String                  itProfileGUID,
+    public String addContactMethod(String                  itProfileGUID,
                                    ContactMethodProperties properties) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        return itProfileManagerClient.addContactMethod(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID, properties);
+        return itProfileManagerClient.addContactMethod(userId, externalSourceGUID, externalSourceName, itProfileGUID, properties);
     }
 
 
     /**
      * Remove an obsolete contact method from the profile.
      *
-     * @param userId the name of the calling user.
-     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param contactMethodGUID unique identifier (guid) for the obsolete contact method.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void deleteContactMethod(String            userId,
-                                    String            infrastructureManagerGUID,
-                                    String            infrastructureManagerName,
-                                    String            contactMethodGUID) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public void deleteContactMethod(String  contactMethodGUID) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
-        itProfileManagerClient.deleteContactMethod(userId, infrastructureManagerGUID, infrastructureManagerName, contactMethodGUID);
+        itProfileManagerClient.deleteContactMethod(userId, externalSourceGUID, externalSourceName, contactMethodGUID);
     }
 
 

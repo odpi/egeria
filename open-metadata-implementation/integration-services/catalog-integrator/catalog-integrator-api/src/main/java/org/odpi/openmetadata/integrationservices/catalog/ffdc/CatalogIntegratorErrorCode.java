@@ -64,6 +64,18 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                           "The access service has not been passed valid configuration .",
                           "Correct the value of the failing configuration property and restart the server."),
 
+
+
+
+    /**
+     * OMIS-CATALOG-INTEGRATOR-400-006 - Integration connector {0} has passed a null element to {1}
+     */
+    NULL_ELEMENT_PASSED(400,"OMIS-CATALOG-INTEGRATOR-400-006",
+                        "Integration connector {0} has passed a null element to {1} in parameter {2}",
+                        "The integration connector called the method with a null element. This means it has a logic error because the element should not be null.",
+                        "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                                "from the integration daemon and its partner metadata server. Look at the logic and path through the code and correct the error."),
+
     /**
      * OMIS-CATALOG-INTEGRATOR-500-001 - Integration connector {0} has a null context
      */

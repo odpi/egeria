@@ -1700,9 +1700,9 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     /**
      * Create a parent-child relationship between two processes.  No longer use this method.  Use following method instead.
      *
-     * @param userId value from context used
-     * @param externalSourceGUID value from context used
-     * @param externalSourceName value from context used
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
@@ -1714,6 +1714,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public void setupProcessParent(String                       userId,
                                    String                       externalSourceGUID,
                                    String                       externalSourceName,

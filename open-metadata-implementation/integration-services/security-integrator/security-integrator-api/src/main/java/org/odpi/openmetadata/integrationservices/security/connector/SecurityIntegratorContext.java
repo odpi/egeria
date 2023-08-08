@@ -465,7 +465,6 @@ public class SecurityIntegratorContext extends IntegrationContext
     /**
      * Retrieve the list of matching profiles for the search string.
      *
-     * @param userId the name of the calling user.
      * @param searchString RegEx string to search for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -476,8 +475,7 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<ActorProfileElement> findActorProfile(String userId,
-                                                      String searchString,
+    public List<ActorProfileElement> findActorProfile(String searchString,
                                                       int    startFrom,
                                                       int    pageSize) throws InvalidParameterException,
                                                                               PropertyServerException,

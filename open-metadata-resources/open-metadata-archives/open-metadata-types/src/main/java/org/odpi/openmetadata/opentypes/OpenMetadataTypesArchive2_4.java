@@ -49,8 +49,8 @@ public class OpenMetadataTypesArchive2_4
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -2957,17 +2957,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed graph store.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
-
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
@@ -3007,8 +2996,8 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed log file.";
+        final String attribute2Name            = "purpose";
+        final String attribute2Description     = "Use of the log file.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -3055,16 +3044,6 @@ public class OpenMetadataTypesArchive2_4
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed database.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
         properties.add(property);
 
         final String attribute3Name            = "version";
@@ -3129,16 +3108,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed database server.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the softwareVersion attribute to define the version number of database server software.";
         final String attribute3DescriptionGUID = null;
@@ -3201,17 +3170,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed metadata repository.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
-
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
@@ -3251,17 +3209,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed metadata server.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
-
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
@@ -3300,17 +3247,6 @@ public class OpenMetadataTypesArchive2_4
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
-
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed repository proxy.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

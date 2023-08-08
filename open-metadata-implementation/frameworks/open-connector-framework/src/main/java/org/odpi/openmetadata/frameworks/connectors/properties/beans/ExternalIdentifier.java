@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,13 +27,18 @@ public class ExternalIdentifier extends Referenceable
     /*
      * Attributes of an external identifier
      */
-    protected String            identifier = null;
-    protected String            description = null;
-    protected String            usage = null;
-    protected String            source = null;
-    protected KeyPattern        keyPattern = null;
-    protected Referenceable     scope = null;
-    protected String            scopeDescription = null;
+    protected String        identifier                     = null;
+    protected String        description                    = null;
+    protected String        usage                          = null;
+    protected String        source                         = null;
+    protected KeyPattern    keyPattern                     = null;
+    protected String        externalInstanceCreatedBy      = null;
+    protected Date          externalInstanceCreationTime   = null;
+    protected String        externalInstanceLastUpdatedBy  = null;
+    protected Date          externalInstanceLastUpdateTime = null;
+    protected long          externalInstanceVersion        = 0L;
+    protected Referenceable scope                          = null;
+    protected String        scopeDescription               = null;
 
 
     /**
@@ -47,31 +53,36 @@ public class ExternalIdentifier extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param templateExternalIdentifier  element to copy
+     * @param template  element to copy
      */
-    public ExternalIdentifier(ExternalIdentifier templateExternalIdentifier)
+    public ExternalIdentifier(ExternalIdentifier template)
     {
 
-        super(templateExternalIdentifier);
+        super(template);
 
-        if (templateExternalIdentifier != null)
+        if (template != null)
         {
             /*
              * Copy the values from the supplied template.
              */
-            identifier = templateExternalIdentifier.getIdentifier();
-            description = templateExternalIdentifier.getDescription();
-            usage = templateExternalIdentifier.getUsage();
-            source = templateExternalIdentifier.getSource();
-            keyPattern = templateExternalIdentifier.getKeyPattern();
+            identifier = template.getIdentifier();
+            description = template.getDescription();
+            usage = template.getUsage();
+            source = template.getSource();
+            keyPattern = template.getKeyPattern();
+            externalInstanceCreatedBy = template.getExternalInstanceCreatedBy();
+            externalInstanceCreationTime = template.getExternalInstanceCreationTime();
+            externalInstanceLastUpdatedBy = template.getExternalInstanceLastUpdatedBy();
+            externalInstanceLastUpdateTime = template.getExternalInstanceLastUpdateTime();
+            externalInstanceVersion = template.getExternalInstanceVersion();
 
-            Referenceable  templateScope = templateExternalIdentifier.getScope();
+            Referenceable  templateScope = template.getScope();
             if (templateScope != null)
             {
                 scope = new Referenceable(templateScope);
             }
 
-            scopeDescription = templateExternalIdentifier.getScopeDescription();
+            scopeDescription = template.getScopeDescription();
         }
     }
 
@@ -170,6 +181,117 @@ public class ExternalIdentifier extends Referenceable
     }
 
 
+
+    /**
+     * Return the username of the person or process that created the instance in the external system.
+     *
+     * @return name
+     */
+    public String getExternalInstanceCreatedBy()
+    {
+        return externalInstanceCreatedBy;
+    }
+
+
+    /**
+     * Set up the username of the person or process that created the instance in the external system.
+     *
+     * @param externalInstanceCreatedBy name
+     */
+    public void setExternalInstanceCreatedBy(String externalInstanceCreatedBy)
+    {
+        this.externalInstanceCreatedBy = externalInstanceCreatedBy;
+    }
+
+
+    /**
+     * Return the date/time when the instance in the external system was created.
+     *
+     * @return date
+     */
+    public Date getExternalInstanceCreationTime()
+    {
+        return externalInstanceCreationTime;
+    }
+
+
+    /**
+     * Set up the date/time when the instance in the external system was created.
+     *
+     * @param externalInstanceCreationTime date
+     */
+    public void setExternalInstanceCreationTime(Date externalInstanceCreationTime)
+    {
+        this.externalInstanceCreationTime = externalInstanceCreationTime;
+    }
+
+
+    /**
+     * Return the username of the person or process that last updated the instance in the external system.
+     *
+     * @return name
+     */
+    public String getExternalInstanceLastUpdatedBy()
+    {
+        return externalInstanceLastUpdatedBy;
+    }
+
+
+    /**
+     * Set up the username of the person or process that last updated the instance in the external system.
+     *
+     * @param externalInstanceLastUpdatedBy name
+     */
+    public void setExternalInstanceLastUpdatedBy(String externalInstanceLastUpdatedBy)
+    {
+        this.externalInstanceLastUpdatedBy = externalInstanceLastUpdatedBy;
+    }
+
+
+    /**
+     * Return the date/time that the instance in the external system was last updated.
+     *
+     * @return date
+     */
+    public Date getExternalInstanceLastUpdateTime()
+    {
+        return externalInstanceLastUpdateTime;
+    }
+
+
+    /**
+     * Set up the date/time that the instance in the external system was last updated.
+     *
+     * @param externalInstanceLastUpdateTime date
+     */
+    public void setExternalInstanceLastUpdateTime(Date externalInstanceLastUpdateTime)
+    {
+        this.externalInstanceLastUpdateTime = externalInstanceLastUpdateTime;
+    }
+
+
+    /**
+     * Return the latest version of the element in the external system.
+     *
+     * @return long
+     */
+    public long getExternalInstanceVersion()
+    {
+        return externalInstanceVersion;
+    }
+
+
+    /**
+     * Set up the latest version of the element in the external system.
+     *
+     * @param externalInstanceVersion long
+     */
+    public void setExternalInstanceVersion(long externalInstanceVersion)
+    {
+        this.externalInstanceVersion = externalInstanceVersion;
+    }
+
+
     /**
      * Return the scope of this external identifier.  This depends on the key pattern.  It may be a server definition,
      * a reference data set or glossary term.
@@ -229,24 +351,28 @@ public class ExternalIdentifier extends Referenceable
     public String toString()
     {
         return "ExternalIdentifier{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", identifier='" + identifier + '\'' +
+                       "identifier='" + identifier + '\'' +
                        ", description='" + description + '\'' +
                        ", usage='" + usage + '\'' +
                        ", source='" + source + '\'' +
                        ", keyPattern=" + keyPattern +
+                       ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +
+                       ", externalInstanceCreationTime=" + externalInstanceCreationTime +
+                       ", externalInstanceLastUpdatedBy='" + externalInstanceLastUpdatedBy + '\'' +
+                       ", externalInstanceLastUpdateTime='" + externalInstanceLastUpdateTime + '\'' +
+                       ", externalInstanceVersion=" + externalInstanceVersion +
                        ", scope=" + scope +
                        ", scopeDescription='" + scopeDescription + '\'' +
-                       ", headerVersion=" + getHeaderVersion() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
                        '}';
     }
 
