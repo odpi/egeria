@@ -74,6 +74,14 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
 
 
     /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0036 - The {0} integration connector can not retrieve the correlation information for (1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}
+     */
+    MISSING_CORRELATION(404, "APACHE-ATLAS-INTEGRATION-CONNECTOR-404-001",
+                        "The {0} integration connector can not retrieve the correlation information for (1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}",
+                        "The correlation information that should be associated with the open metadata entity is missing and the integration connector is not able to confidently synchronize it with the Apache Atlas entity.",
+                        "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to delete the open metadata entity.  However, if this entity has been enhanced with many attachments and classifications then it is also possible to add the correlation information to the open metadata entity to allow the synchronization to continue."),
+
+    /**
      * APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001",
