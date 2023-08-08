@@ -215,6 +215,10 @@ public class OMAGServerOperationalServices
              */
             ServerTypeClassifier     serverTypeClassifier = new ServerTypeClassifier(serverName, configuration);
             ServerTypeClassification serverTypeClassification = serverTypeClassifier.getServerType();
+            if (configuration.getLocalServerType() == null)
+            {
+                configuration.setLocalServerType(serverTypeClassification.getServerTypeName());
+            }
 
             /*
              * Validate that the server is not running already.  If it is running it should be shutdown.
