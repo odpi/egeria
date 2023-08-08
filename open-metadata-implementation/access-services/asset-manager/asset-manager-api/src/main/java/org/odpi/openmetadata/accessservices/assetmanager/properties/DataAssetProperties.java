@@ -27,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataAssetProperties extends AssetProperties
 {
-    private boolean isReferenceAsset = false;
+    private boolean isReferenceAsset           = false;
+    private String  deployedImplementationType = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class DataAssetProperties extends AssetProperties
         if (template != null)
         {
             isReferenceAsset = template.getIsReferenceAsset();
+            deployedImplementationType = template.getDeployedImplementationType();
         }
     }
 
@@ -77,6 +79,28 @@ public class DataAssetProperties extends AssetProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -89,6 +113,7 @@ public class DataAssetProperties extends AssetProperties
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", isReferenceAsset=" + isReferenceAsset +
+                       ", deployedImplementationType=" + deployedImplementationType +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +

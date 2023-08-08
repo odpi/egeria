@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -14,10 +14,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * AssetManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * SoftwareCapabilityConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a SoftwareCapabilityElement bean.
  */
-public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
+public class SoftwareCapabilityConverter<B> extends AssetManagerOMASConverter<B>
 {
     /**
      * Constructor
@@ -26,9 +26,9 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public AssetManagerConverter(OMRSRepositoryHelper repositoryHelper,
-                                 String               serviceName,
-                                 String               serverName)
+    public SoftwareCapabilityConverter(OMRSRepositoryHelper repositoryHelper,
+                                       String               serviceName,
+                                       String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -58,7 +58,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
             if (returnBean instanceof SoftwareCapabilityElement bean)
             {
-                AssetManagerProperties    assetManagerProperties = new AssetManagerProperties();
+                SoftwareCapabilitiesProperties softwareCapabilitiesProperties = new SoftwareCapabilitiesProperties();
 
                 if (entity != null)
                 {
@@ -66,27 +66,27 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    assetManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetManagerProperties.setTechnicalName(this.removeName(instanceProperties));
-                    assetManagerProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
-                    assetManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                    assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
-                    assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
-                    assetManagerProperties.setSource(this.removeSource(instanceProperties));
+                    softwareCapabilitiesProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    softwareCapabilitiesProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    softwareCapabilitiesProperties.setTechnicalName(this.removeName(instanceProperties));
+                    softwareCapabilitiesProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    softwareCapabilitiesProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    softwareCapabilitiesProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
+                    softwareCapabilitiesProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    softwareCapabilitiesProperties.setSource(this.removeSource(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    assetManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    assetManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    softwareCapabilitiesProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    softwareCapabilitiesProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setSoftwareCapabilitiesProperties(assetManagerProperties);
+                    bean.setSoftwareCapabilitiesProperties(softwareCapabilitiesProperties);
                 }
                 else
                 {
-                    handleMissingMetadataInstance(AssetManagerProperties.class.getName(),
+                    handleMissingMetadataInstance(SoftwareCapabilitiesProperties.class.getName(),
                                                   TypeDefCategory.ENTITY_DEF,
                                                   methodName);
                 }
