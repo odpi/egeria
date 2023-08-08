@@ -96,7 +96,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
-<code><a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationReportWriter">integrationReportWriter</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#maxPageSize">maxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#connectorName">connectorName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationReportWriter">integrationReportWriter</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#maxPageSize">maxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -2477,9 +2477,9 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Create a parent-child relationship between two processes.  No longer use this method.  Use following method instead.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - value from context used</dd>
-<dd><code>externalSourceGUID</code> - value from context used</dd>
-<dd><code>externalSourceName</code> - value from context used</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this asset</dd>
 <dd><code>parentProcessGUID</code> - unique identifier of the process in the external asset manager that is to be the parent process</dd>
 <dd><code>childProcessGUID</code> - unique identifier of the process in the external asset manager that is to be the nested sub-process</dd>

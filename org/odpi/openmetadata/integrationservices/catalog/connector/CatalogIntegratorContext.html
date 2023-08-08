@@ -152,7 +152,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
-<code><a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationReportWriter">integrationReportWriter</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#maxPageSize">maxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#connectorName">connectorName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationReportWriter">integrationReportWriter</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#maxPageSize">maxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -277,38 +277,43 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the interface for exchanging lineage information (processes, ports, schemas, lineage linkage etc).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StewardshipExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">StewardshipExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipExchangeService()" class="member-name-link">getStewardshipExchangeService</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/metadataelements/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataCorrelationHeader</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCorrelationHeader(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement)" class="member-name-link">getMetadataCorrelationHeader</a><wbr>(<a href="../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;retrievedElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the correlation header from the retrieved element that matches this asset manager.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StewardshipExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">StewardshipExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipExchangeService()" class="member-name-link">getStewardshipExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the interface for exchanging stewardship information.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValuesExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ValidValuesExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValuesExchangeService()" class="member-name-link">getValidValuesExchangeService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValuesExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ValidValuesExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValuesExchangeService()" class="member-name-link">getValidValuesExchangeService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the interface for exchanging valid values and reference data information.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isListenerRegistered()" class="member-name-link">isListenerRegistered</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isListenerRegistered()" class="member-name-link">isListenerRegistered</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a flag indicating whether a listener has been registered or not.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a>&nbsp;listener)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register a listener object that will be passed each of the events published by the Asset Manager OMAS.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">removeExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">removeExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdentifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove a new external identifier from an existing open metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)" class="member-name-link">updateExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)" class="member-name-link">updateExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
  <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the description of a specific external identifier.</div>
 </div>
 </div>
@@ -635,6 +640,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getMetadataCorrelationHeader(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement)">
+<h3>getMetadataCorrelationHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/metadataelements/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataCorrelationHeader</a></span>&nbsp;<span class="element-name">getMetadataCorrelationHeader</span><wbr><span class="parameters">(<a href="../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;retrievedElement)</span>
+                                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Retrieve the correlation header from the retrieved element that matches this asset manager.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>retrievedElement</code> - element retrieved from the metadata repository</dd>
+<dt>Returns:</dt>
+<dd>metadata correlation header or null if the element does not have a matching correlation header</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the element passed is null</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">
 <h3>addExternalIdentifier</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addExternalIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
@@ -711,7 +732,7 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Confirm that the values of a particular metadata element have been synchronized.  This is important
- from an audit points of view, and to allow bidirectional updates of metadata using optimistic locking.</div>
+ from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataGUID</code> - unique identifier (GUID) of this element in open metadata</dd>

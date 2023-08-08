@@ -431,6 +431,7 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc

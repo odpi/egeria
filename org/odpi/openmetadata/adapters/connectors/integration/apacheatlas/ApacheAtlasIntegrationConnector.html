@@ -51,7 +51,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -108,6 +108,27 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#GLOSSARY_CORRELATION_LINK_TYPE_NAME" class="member-name-link">GLOSSARY_CORRELATION_LINK_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The type name for the relationship that links the correlation entity to its associated Apache Atlas glossary member.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#OPEN_METADATA_CORRELATION_LINK_TYPE_NAME" class="member-name-link">OPEN_METADATA_CORRELATION_LINK_TYPE_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The type name for the relationship that links the correlation entity to its associated Apache Atlas entity.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#OPEN_METADATA_CORRELATION_TYPE_NAME" class="member-name-link">OPEN_METADATA_CORRELATION_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The type name for the entity that holds the correlation values for corresponding open metadata entity.</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
 <code><a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#connectorName">connectorName</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#integrationContext">integrationContext</a></code></div>
@@ -143,7 +164,7 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Shutdown glossary monitoring</div>
+<div class="block">Shutdown Apache Atlas monitoring</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</code></div>
@@ -184,6 +205,59 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="OPEN_METADATA_CORRELATION_TYPE_NAME">
+<h3>OPEN_METADATA_CORRELATION_TYPE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">OPEN_METADATA_CORRELATION_TYPE_NAME</span></div>
+<div class="block">The type name for the entity that holds the correlation values for corresponding open metadata entity.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationConnector.OPEN_METADATA_CORRELATION_TYPE_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_CORRELATION_LINK_TYPE_NAME">
+<h3>OPEN_METADATA_CORRELATION_LINK_TYPE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">OPEN_METADATA_CORRELATION_LINK_TYPE_NAME</span></div>
+<div class="block">The type name for the relationship that links the correlation entity to its associated Apache Atlas entity.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationConnector.OPEN_METADATA_CORRELATION_LINK_TYPE_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="GLOSSARY_CORRELATION_LINK_TYPE_NAME">
+<h3>GLOSSARY_CORRELATION_LINK_TYPE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">GLOSSARY_CORRELATION_LINK_TYPE_NAME</span></div>
+<div class="block">The type name for the relationship that links the correlation entity to its associated Apache Atlas glossary member.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationConnector.GLOSSARY_CORRELATION_LINK_TYPE_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -227,10 +301,7 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
              throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
- as well as any external REST API calls to explicitly refresh the connector.
- <br><br>
- This method performs two sweeps. It first retrieves the glossary elements from Egeria and synchronizes them with Apache Atlas.
- The second sweep works through the glossaries in Apache Atlas and ensures that none have been missed out by the first sweep.</div>
+ as well as any external REST API calls to explicitly refresh the connector.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
@@ -259,7 +330,7 @@ implements <a href="../../../../accessservices/assetmanager/api/AssetManagerEven
 <h3>disconnect</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()
                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Shutdown glossary monitoring</div>
+<div class="block">Shutdown Apache Atlas monitoring</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#disconnect()">disconnect</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>

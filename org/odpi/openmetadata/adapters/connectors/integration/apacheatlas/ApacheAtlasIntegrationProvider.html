@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li>Method</li>
 </ul>
@@ -92,6 +92,24 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY" class="member-name-link">ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The configuration property name used to supply the name of the Atlas Glossary to copy into the open metadata
+ ecosystem.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY" class="member-name-link">EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The configuration property name used to supply the qualified name of an Egeria glossary to synchronize with
+ Apache Atlas.</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -132,6 +150,46 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY">
+<h3>EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY</span></div>
+<div class="block">The configuration property name used to supply the qualified name of an Egeria glossary to synchronize with
+ Apache Atlas.  If this value is null, all Egeria originated glossaries are copied to Apache Atlas.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider.EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY">
+<h3>ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY</span></div>
+<div class="block">The configuration property name used to supply the name of the Atlas Glossary to copy into the open metadata
+ ecosystem.  If this value is null, all Apache Atlas originated glossaries are copied into the open metadata ecosystem.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider.ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">

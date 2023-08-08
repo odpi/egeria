@@ -1833,7 +1833,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Classify a port, process or process as "BusinessSignificant" (this may affect the way that lineage is displayed).</div>
 <dl class="notes">
@@ -1866,7 +1866,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the "BusinessSignificant" designation from the element.</div>
 <dl class="notes">
@@ -1903,7 +1903,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Link two elements together to show that data flows from one to the other.</div>
 <dl class="notes">
@@ -1940,7 +1940,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/NameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
  is more than one data flow relationships between these two elements since it is used to disambiguate
@@ -1976,7 +1976,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update relationship between two elements that shows that data flows from one to the other.</div>
 <dl class="notes">
@@ -2009,7 +2009,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the data flow relationship between two elements.</div>
 <dl class="notes">
@@ -2046,7 +2046,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 <dl class="notes">
@@ -2085,7 +2085,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 <dl class="notes">
@@ -2124,7 +2124,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Link two elements to show that when one completes the next is started.</div>
 <dl class="notes">
@@ -2161,7 +2161,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/NameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
  is more than one control flow relationships between these two elements since it is used to disambiguate
@@ -2197,7 +2197,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the relationship between two elements that shows that when one completes the next is started.</div>
 <dl class="notes">
@@ -2230,7 +2230,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the control flow relationship between two elements.</div>
 <dl class="notes">
@@ -2267,7 +2267,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 <dl class="notes">
@@ -2306,7 +2306,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 <dl class="notes">
@@ -2382,7 +2382,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/NameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
  is more than one process call relationships between these two elements since it is used to disambiguate
@@ -2418,7 +2418,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the relationship between two elements that shows a request-response call between them.</div>
 <dl class="notes">
@@ -2451,7 +2451,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the process call relationship.</div>
 <dl class="notes">
@@ -2488,7 +2488,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 <dl class="notes">
@@ -2527,7 +2527,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationships linked from a specific element to its callers.</div>
 <dl class="notes">
@@ -2564,7 +2564,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Link two elements together to show that they are part of the lineage of the data that is moving
  between the processes.  Typically, the lineage relationships stitch together processes and data assets
@@ -2602,7 +2602,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/NameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
  is more than one process call relationships between these two elements since it is used to disambiguate
@@ -2638,7 +2638,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the lineage mapping between two elements.</div>
 <dl class="notes">
@@ -2671,7 +2671,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the lineage mapping between two elements.</div>
 <dl class="notes">
@@ -2708,7 +2708,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 <dl class="notes">
@@ -2747,7 +2747,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the lineage mapping relationships linked from a specific destination element to its sources.</div>
 <dl class="notes">
