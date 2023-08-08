@@ -4,7 +4,7 @@
   "localServerId": "0aac3308-bae9-43e9-8743-2cac4350fe3f",
   "localServerName": "cocoDIS1",
   "localServerType": "Open Metadata and Governance Server",
-  "localServerURL": "https://localhost:9444",
+  "localServerURL": "https://localhost:9445",
   "localServerUserId": "OMAGServer",
   "maxPageSize": 1000,
   "repositoryServicesConfig": {
@@ -130,7 +130,7 @@
         }
       ],
       "omagserverName": "cocoMDS1",
-      "omagserverPlatformRootURL": "https://localhost:9443"
+      "omagserverPlatformRootURL": "https://localhost:9444"
     }
   ]
 }
