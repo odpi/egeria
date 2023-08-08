@@ -3679,6 +3679,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @throws InvalidParameterException invalid search criteria
      */
     @Override
+    @SuppressWarnings(value="fallthrough")
     public int countMatchingPropertyValues(InstanceProperties       matchProperties,
                                            InstanceProperties       instanceProperties) throws InvalidParameterException
     {

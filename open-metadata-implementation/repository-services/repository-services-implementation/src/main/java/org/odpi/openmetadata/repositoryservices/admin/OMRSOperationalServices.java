@@ -196,7 +196,6 @@ public class OMRSOperationalServices
      * Return the enterprise connector manager.  This is used by the conformance suite to get access to connectors
      * to registered members of the cohorts that this server is connected to.  That way it can exercise their
      * APIs and compare them with the events being received over the cohort topic.
-     *
      * This method is called after the OMRS is initialized.  The enterprise connector manager is created whether
      * there are OMASs activated or not.
      *

@@ -123,7 +123,11 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
 
                     bean.setExternalIdentifier(this.removeIdentifier(instanceProperties));
                     bean.setKeyPattern(this.removeKeyPattern(instanceProperties));
-                    bean.setMappingProperties(this.removeMappingProperties(instanceProperties));
+                    bean.setExternalInstanceCreatedBy(this.removeExternalInstanceCreatedBy(instanceProperties));
+                    bean.setExternalInstanceCreationTime(this.removeExternalInstanceCreationTime(instanceProperties));
+                    bean.setExternalInstanceLastUpdatedBy(this.removeExternalInstanceLastUpdatedBy(instanceProperties));
+                    bean.setExternalInstanceLastUpdateTime(this.removeExternalInstanceLastUpdateTime(instanceProperties));
+                    bean.setExternalInstanceVersion(this.removeExternalInstanceVersion(instanceProperties));
 
                     if (relationships != null)
                     {
@@ -158,6 +162,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                                     bean.setExternalIdentifierName(this.removeDescription(instanceProperties));
                                     bean.setExternalIdentifierUsage(this.removeUsage(instanceProperties));
                                     bean.setExternalIdentifierSource(this.removeSource(instanceProperties));
+                                    bean.setMappingProperties(this.removeMappingProperties(instanceProperties));
                                     bean.setLastSynchronized(this.removeLastSynchronized(instanceProperties));
                                 }
                             }

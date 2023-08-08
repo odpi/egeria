@@ -336,6 +336,11 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalIdentifierUsage(),
                                                 requestBody.getExternalIdentifierSource(),
                                                 requestBody.getMappingProperties(),
+                                                requestBody.getExternalInstanceCreatedBy(),
+                                                requestBody.getExternalInstanceCreationTime(),
+                                                requestBody.getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getExternalInstanceLastUpdateTime(),
+                                                requestBody.getExternalInstanceVersion(),
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
@@ -439,6 +444,11 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalIdentifierUsage(),
                                                 requestBody.getExternalIdentifierSource(),
                                                 requestBody.getMappingProperties(),
+                                                requestBody.getExternalInstanceCreatedBy(),
+                                                requestBody.getExternalInstanceCreationTime(),
+                                                requestBody.getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getExternalInstanceLastUpdateTime(),
+                                                requestBody.getExternalInstanceVersion(),
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
@@ -603,13 +613,13 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse confirmSynchronization(String            serverName,
-                                               String            userId,
-                                               String            openMetadataElementGUID,
-                                               String            openMetadataElementTypeName,
-                                               boolean           forLineage,
-                                               boolean           forDuplicateProcessing,
-                                               UpdateRequestBody requestBody)
+    public VoidResponse confirmSynchronization(String                        serverName,
+                                               String                        userId,
+                                               String                        openMetadataElementGUID,
+                                               String                        openMetadataElementTypeName,
+                                               boolean                       forLineage,
+                                               boolean                       forDuplicateProcessing,
+                                               MetadataCorrelationProperties requestBody)
     {
         final String methodName                           = "confirmSynchronization";
         final String openMetadataElementGUIDParameterName = "openMetadataElementGUID";
@@ -625,7 +635,7 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            if (requestBody != null)
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
@@ -635,15 +645,15 @@ public class AssetManagerRESTServices
                                                openMetadataElementGUID,
                                                openMetadataElementGUIDParameterName,
                                                openMetadataElementTypeName,
-                                               requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                               requestBody.getExternalIdentifier(),
                                                externalIdentifierParameterName,
-                                               requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                               requestBody.getAssetManagerGUID(),
                                                assetManagerGUIDParameterName,
-                                               requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                               requestBody.getAssetManagerName(),
                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
-                                               requestBody.getEffectiveTime(),
+                                               null,
                                                methodName);
             }
             else

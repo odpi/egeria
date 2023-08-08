@@ -27,7 +27,6 @@ import java.util.Map;
  * ExternalIdentifierHandler manages ExternalIdentifier objects.  These entities represent the identifiers used for metadata
  * in third party technology. It runs server-side in the OMAG Server Platform and manages ExternalId entities through the OMRSRepositoryConnector
  * via the repository handler.
- *
  * The ExternalIdentifier is linked to the SoftwareCapability that represents the third party technology
  * that generated the external identifier.  This is referred to as the scope. It is also linked to the element
  * (or elements) in open metadata that are equivalent to the metadata element(s) in the third party technology.
@@ -112,6 +111,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierUsage usage information from the connector/client supplying the identifier
      * @param identifierSource name of the connector/client supplying the identifier
      * @param identifierMappingProperties additional properties to help with the synchronization
+     * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
+     * @param externalInstanceCreationTime the date/time when the instance in the external system was created
+     * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
+     * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
+     * @param externalInstanceVersion the latest version of the element in the external system
      * @param scopeGUID unique identifier of the software capability that represents the third metadata source
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeQualifiedName qualified name from the entity that
@@ -141,6 +145,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                         String              identifierUsage,
                                         String              identifierSource,
                                         Map<String, String> identifierMappingProperties,
+                                        String              externalInstanceCreatedBy,
+                                        Date                externalInstanceCreationTime,
+                                        String              externalInstanceLastUpdatedBy,
+                                        Date                externalInstanceLastUpdateTime,
+                                        long                externalInstanceVersion,
                                         String              scopeGUID,
                                         String              scopeGUIDParameterName,
                                         String              scopeQualifiedName,
@@ -181,6 +190,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             externalIdGUID = createExternalIdentifier(userId,
                                                       identifier,
                                                       identifierKeyPattern,
+                                                      externalInstanceCreatedBy,
+                                                      externalInstanceCreationTime,
+                                                      externalInstanceLastUpdatedBy,
+                                                      externalInstanceLastUpdateTime,
+                                                      externalInstanceVersion,
                                                       scopeGUID,
                                                       scopeGUIDParameterName,
                                                       scopeTypeName,
@@ -212,6 +226,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                      externalIdGUIDParameterName,
                                      identifier,
                                      identifierKeyPattern,
+                                     externalInstanceCreatedBy,
+                                     externalInstanceCreationTime,
+                                     externalInstanceLastUpdatedBy,
+                                     externalInstanceLastUpdateTime,
+                                     externalInstanceVersion,
                                      forLineage,
                                      forDuplicateProcessing,
                                      effectiveTime,
@@ -800,6 +819,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param userId calling user
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
+     * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
+     * @param externalInstanceCreationTime the date/time when the instance in the external system was created
+     * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
+     * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
+     * @param externalInstanceVersion the latest version of the element in the external system
      * @param scopeGUID unique identifier of the software capability that represents the third metadata source
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
@@ -822,6 +846,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     private String createExternalIdentifier(String  userId,
                                             String  identifier,
                                             int     identifierKeyPattern,
+                                            String  externalInstanceCreatedBy,
+                                            Date    externalInstanceCreationTime,
+                                            String  externalInstanceLastUpdatedBy,
+                                            Date    externalInstanceLastUpdateTime,
+                                            long    externalInstanceVersion,
                                             String  scopeGUID,
                                             String  scopeGUIDParameterName,
                                             String  scopeTypeName,
@@ -841,6 +870,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
+                                                                          externalInstanceCreatedBy,
+                                                                          externalInstanceCreationTime,
+                                                                          externalInstanceLastUpdatedBy,
+                                                                          externalInstanceLastUpdateTime,
+                                                                          externalInstanceVersion,
                                                                           repositoryHelper,
                                                                           serviceName,
                                                                           serverName);
@@ -894,6 +928,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdGUID unique identifier of the
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
+     * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
+     * @param externalInstanceCreationTime the date/time when the instance in the external system was created
+     * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
+     * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
+     * @param externalInstanceVersion the latest version of the element in the external system
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -908,6 +947,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                           String  externalIdGUIDParameterName,
                                           String  identifier,
                                           int     identifierKeyPattern,
+                                          String  externalInstanceCreatedBy,
+                                          Date    externalInstanceCreationTime,
+                                          String  externalInstanceLastUpdatedBy,
+                                          Date    externalInstanceLastUpdateTime,
+                                          long    externalInstanceVersion,
                                           boolean forLineage,
                                           boolean forDuplicateProcessing,
                                           Date    effectiveTime,
@@ -917,6 +961,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
+                                                                          externalInstanceCreatedBy,
+                                                                          externalInstanceCreationTime,
+                                                                          externalInstanceLastUpdatedBy,
+                                                                          externalInstanceLastUpdateTime,
+                                                                          externalInstanceVersion,
                                                                           repositoryHelper,
                                                                           serviceName,
                                                                           serverName);

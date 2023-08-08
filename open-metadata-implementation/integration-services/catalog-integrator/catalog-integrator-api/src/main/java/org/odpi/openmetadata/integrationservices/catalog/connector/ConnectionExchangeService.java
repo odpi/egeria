@@ -183,9 +183,6 @@ public class ConnectionExchangeService
     /**
      * Update the metadata element representing an connection.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the metadata element to update
      * @param connectionExternalIdentifier unique identifier of the connection in the  external source
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -196,10 +193,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateConnection(String               userId,
-                                 String               externalSourceGUID,
-                                 String               externalSourceName,
-                                 String               connectionGUID,
+    public void updateConnection(String               connectionGUID,
                                  String               connectionExternalIdentifier,
                                  boolean              isMergeUpdate,
                                  ConnectionProperties connectionProperties,
@@ -238,7 +232,6 @@ public class ConnectionExchangeService
     /**
      * Create a relationship between a connection and a connector type.
      *
-     * @param userId calling user
      * @param externalSourceIsHome ensure that only the asset manager can update this relationship
      * @param connectionGUID unique identifier of the connection in the external asset manager
      * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
@@ -250,8 +243,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupConnectorType(String  userId,
-                                   boolean externalSourceIsHome,
+    public void setupConnectorType(boolean externalSourceIsHome,
                                    String  connectionGUID,
                                    String  connectorTypeGUID,
                                    Date    effectiveFrom,
@@ -292,9 +284,6 @@ public class ConnectionExchangeService
     /**
      * Remove a relationship between a connection and a connector type.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the connection in the external asset manager
      * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -303,10 +292,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearConnectorType(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String connectionGUID,
+    public void clearConnectorType(String connectionGUID,
                                    String connectorTypeGUID,
                                    Date   effectiveTime) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -341,9 +327,6 @@ public class ConnectionExchangeService
     /**
      * Create a relationship between a connection and an endpoint.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param externalSourceIsHome ensure that only the asset manager can update this relationship
      * @param connectionGUID unique identifier of the connection in the external asset manager
      * @param endpointGUID unique identifier of the endpoint in the external asset manager
@@ -355,10 +338,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupEndpoint(String  userId,
-                              String  externalSourceGUID,
-                              String  externalSourceName,
-                              boolean externalSourceIsHome,
+    public void setupEndpoint(boolean externalSourceIsHome,
                               String  connectionGUID,
                               String  endpointGUID,
                               Date    effectiveFrom,
@@ -399,9 +379,6 @@ public class ConnectionExchangeService
     /**
      * Remove a relationship between a connection and an endpoint.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the connection in the external asset manager
      * @param endpointGUID unique identifier of the endpoint in the external asset manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -410,10 +387,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearEndpoint(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String connectionGUID,
+    public void clearEndpoint(String connectionGUID,
                               String endpointGUID,
                               Date   effectiveTime) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
@@ -448,9 +422,6 @@ public class ConnectionExchangeService
     /**
      * Create a relationship between a virtual connection and an embedded connection.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param externalSourceIsHome ensure that only the asset manager can update this relationship
      * @param connectionGUID unique identifier of the virtual connection in the external asset manager
      * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
@@ -463,10 +434,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupEmbeddedConnection(String                       userId,
-                                        String                       externalSourceGUID,
-                                        String                       externalSourceName,
-                                        boolean                      externalSourceIsHome,
+    public void setupEmbeddedConnection(boolean                      externalSourceIsHome,
                                         String                       connectionGUID,
                                         String                       embeddedConnectionGUID,
                                         EmbeddedConnectionProperties properties,
@@ -505,9 +473,6 @@ public class ConnectionExchangeService
     /**
      * Remove a relationship between a virtual connection and an embedded connection.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the virtual connection in the external asset manager
      * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -516,10 +481,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearEmbeddedConnection(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String connectionGUID,
+    public void clearEmbeddedConnection(String connectionGUID,
                                         String embeddedConnectionGUID,
                                         Date   effectiveTime) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
@@ -554,9 +516,6 @@ public class ConnectionExchangeService
     /**
      * Create a relationship between an asset and its connection.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param externalSourceIsHome ensure that only the asset manager can update this relationship
      * @param assetGUID unique identifier of the asset
      * @param properties summary of the asset that is stored in the relationship between the asset and the connection.
@@ -567,10 +526,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupAssetConnection(String                    userId,
-                                     String                    externalSourceGUID,
-                                     String                    externalSourceName,
-                                     boolean                   externalSourceIsHome,
+    public void setupAssetConnection(boolean                   externalSourceIsHome,
                                      String                    assetGUID,
                                      String                    connectionGUID,
                                      AssetConnectionProperties properties,
@@ -609,9 +565,6 @@ public class ConnectionExchangeService
     /**
      * Remove a relationship between an asset and its connection.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the asset
      * @param connectionGUID unique identifier of the connection
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -620,10 +573,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearAssetConnection(String userId,
-                                     String externalSourceGUID,
-                                     String externalSourceName,
-                                     String assetGUID,
+    public void clearAssetConnection(String assetGUID,
                                      String connectionGUID,
                                      Date   effectiveTime) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
@@ -659,9 +609,6 @@ public class ConnectionExchangeService
      * Remove the metadata element representing a connection.  This will delete the connection and all anchored
      * elements such as schema and comments.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the metadata element to remove
      * @param connectionExternalIdentifier unique identifier of the connection in the external source
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -670,10 +617,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeConnection(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String connectionGUID,
+    public void removeConnection(String connectionGUID,
                                  String connectionExternalIdentifier,
                                  Date   effectiveTime) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -727,7 +671,14 @@ public class ConnectionExchangeService
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return connectionExchangeClient.findConnections(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.findConnections(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        searchString,
+                                                        startFrom,
+                                                        pageSize,
+                                                        effectiveTime,
+                                                        forLineage,
                                                         forDuplicateProcessing);
     }
 
@@ -754,7 +705,14 @@ public class ConnectionExchangeService
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionExchangeClient.getConnectionsByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.getConnectionsByName(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             name,
+                                                             startFrom,
+                                                             pageSize,
+                                                             effectiveTime,
+                                                             forLineage,
                                                              forDuplicateProcessing);
     }
 
@@ -778,7 +736,13 @@ public class ConnectionExchangeService
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return connectionExchangeClient.getConnectionsForAssetManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.getConnectionsForAssetManager(userId,
+                                                                      externalSourceGUID,
+                                                                      externalSourceName,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      effectiveTime,
+                                                                      forLineage,
                                                                       forDuplicateProcessing);
     }
 
@@ -786,9 +750,6 @@ public class ConnectionExchangeService
     /**
      * Retrieve the connection metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectionGUID unique identifier of the requested metadata element
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      *
@@ -798,15 +759,17 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectionElement getConnectionByGUID(String userId,
-                                                 String externalSourceGUID,
-                                                 String externalSourceName,
-                                                 String connectionGUID,
+    public ConnectionElement getConnectionByGUID(String connectionGUID,
                                                  Date   effectiveTime) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return connectionExchangeClient.getConnectionByGUID(userId, externalSourceGUID, externalSourceName, connectionGUID, effectiveTime, forLineage,
+        return connectionExchangeClient.getConnectionByGUID(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            connectionGUID,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
     }
 
@@ -904,9 +867,6 @@ public class ConnectionExchangeService
     /**
      * Update the metadata element representing an endpoint.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectorTypeGUID unique identifier of the metadata element to update
      * @param endpointExternalIdentifier unique identifier of the endpoint in the external source
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -917,10 +877,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateEndpoint(String              userId,
-                               String              externalSourceGUID,
-                               String              externalSourceName,
-                               String              connectorTypeGUID,
+    public void updateEndpoint(String              connectorTypeGUID,
                                String              endpointExternalIdentifier,
                                boolean             isMergeUpdate,
                                EndpointProperties  endpointProperties,
@@ -960,9 +917,6 @@ public class ConnectionExchangeService
      * Remove the metadata element representing a connector type.  This will delete the endpoint and all anchored
      * elements such as schema and comments.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectorTypeGUID unique identifier of the metadata element to remove
      * @param endpointExternalIdentifier unique identifier of the endpoint in the external source
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -971,10 +925,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeEndpoint(String userId,
-                               String externalSourceGUID,
-                               String externalSourceName,
-                               String connectorTypeGUID,
+    public void removeEndpoint(String connectorTypeGUID,
                                String endpointExternalIdentifier,
                                Date   effectiveTime) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
@@ -1028,7 +979,14 @@ public class ConnectionExchangeService
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return connectionExchangeClient.findEndpoints(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.findEndpoints(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      searchString,
+                                                      startFrom,
+                                                      pageSize,
+                                                      effectiveTime,
+                                                      forLineage,
                                                       forDuplicateProcessing);
     }
 
@@ -1055,7 +1013,14 @@ public class ConnectionExchangeService
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return connectionExchangeClient.getEndpointsByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.getEndpointsByName(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           name,
+                                                           startFrom,
+                                                           pageSize,
+                                                           effectiveTime,
+                                                           forLineage,
                                                            forDuplicateProcessing);
     }
 
@@ -1079,7 +1044,13 @@ public class ConnectionExchangeService
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return connectionExchangeClient.getEndpointsForAssetManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.getEndpointsForAssetManager(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    effectiveTime,
+                                                                    forLineage,
                                                                     forDuplicateProcessing);
     }
 
@@ -1087,9 +1058,6 @@ public class ConnectionExchangeService
     /**
      * Retrieve the endpoint metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param endpointGUID unique identifier of the requested metadata element
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      *
@@ -1099,15 +1067,17 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EndpointElement getEndpointByGUID(String userId,
-                                             String externalSourceGUID,
-                                             String externalSourceName,
-                                             String endpointGUID,
+    public EndpointElement getEndpointByGUID(String endpointGUID,
                                              Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return connectionExchangeClient.getEndpointByGUID(userId, externalSourceGUID, externalSourceName, endpointGUID, effectiveTime, forLineage,
+        return connectionExchangeClient.getEndpointByGUID(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          endpointGUID,
+                                                          effectiveTime,
+                                                          forLineage,
                                                           forDuplicateProcessing);
     }
 
@@ -1205,9 +1175,6 @@ public class ConnectionExchangeService
     /**
      * Update the metadata element representing a connector type.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectorTypeGUID unique identifier of the metadata element to update
      * @param connectorTypeExternalIdentifier unique identifier of the connectorType in the external connectorType manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -1218,10 +1185,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateConnectorType(String                  userId,
-                                    String                  externalSourceGUID,
-                                    String                  externalSourceName,
-                                    String                  connectorTypeGUID,
+    public void updateConnectorType(String                  connectorTypeGUID,
                                     String                  connectorTypeExternalIdentifier,
                                     boolean                 isMergeUpdate,
                                     ConnectorTypeProperties connectorTypeProperties,
@@ -1261,9 +1225,6 @@ public class ConnectionExchangeService
      * Remove the metadata element representing a connector type.  This will delete the connectorType and all anchored
      * elements such as schema and comments.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param connectorTypeGUID unique identifier of the metadata element to remove
      * @param connectorTypeExternalIdentifier unique identifier of the connectorType in the external connectorType manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -1272,10 +1233,7 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeConnectorType(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String connectorTypeGUID,
+    public void removeConnectorType(String connectorTypeGUID,
                                     String connectorTypeExternalIdentifier,
                                     Date   effectiveTime) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -1329,7 +1287,14 @@ public class ConnectionExchangeService
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return connectionExchangeClient.findConnectorTypes(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.findConnectorTypes(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           searchString,
+                                                           startFrom,
+                                                           pageSize,
+                                                           effectiveTime,
+                                                           forLineage,
                                                            forDuplicateProcessing);
     }
 
@@ -1380,7 +1345,13 @@ public class ConnectionExchangeService
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return connectionExchangeClient.getConnectorTypesForAssetManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize, effectiveTime, forLineage,
+        return connectionExchangeClient.getConnectorTypesForAssetManager(userId,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         effectiveTime,
+                                                                         forLineage,
                                                                          forDuplicateProcessing);
     }
 
@@ -1388,9 +1359,6 @@ public class ConnectionExchangeService
     /**
      * Retrieve the connectorType metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
      * @param dataAssetGUID unique identifier of the requested metadata element
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      *
@@ -1400,15 +1368,17 @@ public class ConnectionExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ConnectorTypeElement getConnectorTypeByGUID(String userId,
-                                                       String externalSourceGUID,
-                                                       String externalSourceName,
-                                                       String dataAssetGUID,
+    public ConnectorTypeElement getConnectorTypeByGUID(String dataAssetGUID,
                                                        Date   effectiveTime) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return connectionExchangeClient.getConnectorTypeByGUID(userId, externalSourceGUID, externalSourceName, dataAssetGUID, effectiveTime, forLineage,
+        return connectionExchangeClient.getConnectorTypeByGUID(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               dataAssetGUID,
+                                                               effectiveTime,
+                                                               forLineage,
                                                                forDuplicateProcessing);
     }
 }

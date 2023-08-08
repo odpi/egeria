@@ -1235,9 +1235,6 @@ public class GlossaryExchangeService
     /**
      * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome      ensure that only the asset manager can update this element
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -1251,10 +1248,7 @@ public class GlossaryExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createControlledGlossaryTerm(String                       userId,
-                                               String                       assetManagerGUID,
-                                               String                       assetManagerName,
-                                               boolean                      assetManagerIsHome,
+    public String createControlledGlossaryTerm(boolean                      assetManagerIsHome,
                                                String                       glossaryGUID,
                                                ExternalIdentifierProperties externalIdentifierProperties,
                                                GlossaryTermProperties       glossaryTermProperties,
@@ -1400,9 +1394,6 @@ public class GlossaryExchangeService
      * Update the status of the metadata element representing a glossary term.  This is only valid on
      * a controlled glossary term.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermStatus new properties for the glossary term
@@ -1412,10 +1403,7 @@ public class GlossaryExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateGlossaryTermStatus(String             userId,
-                                         String             assetManagerGUID,
-                                         String             assetManagerName,
-                                         String             glossaryTermGUID,
+    public void updateGlossaryTermStatus(String             glossaryTermGUID,
                                          String             glossaryTermExternalIdentifier,
                                          GlossaryTermStatus glossaryTermStatus,
                                          Date               effectiveTime) throws InvalidParameterException,

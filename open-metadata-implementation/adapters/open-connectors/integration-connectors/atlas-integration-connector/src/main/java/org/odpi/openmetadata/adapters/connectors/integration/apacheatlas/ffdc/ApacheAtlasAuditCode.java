@@ -268,6 +268,109 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                         "The connector attempts to add a numerical post-fix to the term name to ensure it has a unique name.",
                         "No action is required. The connector will validate whether it has already created the term on another thread, or it will try the request with a new name."),
 
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0035 - The {0} integration connector is calling the {1} integration module
+     */
+    SYNC_INTEGRATION_MODULE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0035",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "The {0} integration connector is calling the {1} integration module",
+                             "The connector is calling one of its registered integration modules to refresh the metadata it is responsible for.",
+                             "No action is required.  This message is to record that the connector is working it way through the registered integration modules.  If an error occurs this message helps to identify which module experienced the error."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0036 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}
+     */
+    MISSING_CORRELATION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0036",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}",
+                            "The correlation information that should be associated with the open metadata entity is missing and the integration connector is not able to confidently synchronize it with the Apache Atlas entity.",
+                            "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to delete the open metadata entity.  However, if this entity has been enhanced with many attachments and classifications then it is also possible to add the correlation information to the open metadata entity to allow the synchronization to continue."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0040 - The integration connector {0} created open metadata {1} entity {2} match Apache Atlas {3} entity {4}
+     */
+    CREATING_EGERIA_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0040",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} created open metadata {1} entity {2} match Apache Atlas {3} entity {4}",
+                           "The connector is has created the open metadata entity with information from the Apache Atlas entity.",
+                           "No action is required. The connector working to ensure the open metadata ecosystem can store metadata from Apache Atlas."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0041 - The integration connector {0} created Apache Atlas {1} entity {2} match open metadata {3} entity {4}
+     */
+    CREATING_ATLAS_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0041",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} created Apache Atlas {1} entity {2} match open metadata {3} entity {4}",
+                           "The connector is has created the Apache Atlas entity with information from the open metadata entity.",
+                           "No action is required. The connector working to ensure Apache Atlas can store metadata from the open metadata ecosystem."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0042 - The integration connector {0} is synchronizing Apache Atlas {1} entity {2} to {3} open metadata entity {4}
+     */
+    UPDATING_EGERIA_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0042",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} is synchronizing Apache Atlas {1} entity {2} to {3} open metadata entity {4}",
+                           "The connector is updating the open metadata entity with information from the Apache Atlas entity.",
+                           "No action is required. The connector working to keep the Open metadata entity consistent with its Apache Atlas equivalent."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0043 - The integration connector {0} is synchronizing open metadata {1} entity {2} to the {3} Apache Atlas entity {4}
+     */
+    UPDATING_ATLAS_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0043",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} is synchronizing open metadata {1} entity {2} to the {3} Apache Atlas entity {4}",
+                           "The connector is updating the Apache Atlas entity with information from the open metadata entity.",
+                           "No action is required. The connector working to keep the Apache Atlas entity consistent with the open metadata one."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0044 - The integration connector {0} is deleting {1} open metadata entity {2} since Apache Atlas entity {3} has been removed
+     */
+    DELETING_EGERIA_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0044",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} is deleting {1} open metadata entity {2} since Apache Atlas entity {3} has been removed",
+                           "The connector is deleting the open metadata entity because the Apache Atlas entity where its content is sourced from has gone.",
+                           "No action is required. The connector is working to keep the two systems consistent."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0045 - The integration connector {0} is deleting the {1} Apache Atlas entity {2} since the open metadata entity {3} has been removed
+     */
+    DELETING_ATLAS_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0045",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The integration connector {0} is deleting the {1} Apache Atlas entity {2} since the open metadata entity {3} has been removed",
+                           "The connector is deleting the Apache Atlas entity because the open metadata entity where its content is sourced from has gone.",
+                           "No action is required. The connector is working to keep the entities in the two systems consistent."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0046 - The integration connector {0} is replacing {1} open metadata entity {2} for Apache Atlas entity {3} since the open metadata entity has been unilaterally removed
+     */
+    REPLACING_EGERIA_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0046",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "The integration connector {0} is replacing {1} open metadata entity {2} for Apache Atlas entity {3} since the open metadata entity has been unilaterally removed",
+                            "The connector is creating a new open metadata entity to represent the Apache Atlas entity in the open metadata ecosystem.  This is because the entity originated in Apache Atlas and this is the proper place to delete the entity.",
+                            "Investigate why the connector can not retrieve the original open metadata entity.  Has it been deleted, archived or moved to a governance zone that is not visible to this connector?  Make changes to ensure the open metadata entities synchronized from Apache Atlas are only maintained by this connector."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0047 - The integration connector {0} is replacing Apache Atlas {1} entity {2} for open metadata entity {3} since the Apache Atlas entity has been unilaterally removed
+     */
+    REPLACING_ATLAS_ENTITY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0047",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "The integration connector {0} is replacing Apache Atlas {1} entity {2} for open metadata entity {3} since the Apache Atlas entity has been unilaterally removed",
+                            "The connector is creating a new Apache Atlas entity to represent the open metadata entity from the open metadata ecosystem.  This is because the entity originated in the open metadata ecosystem and this is the proper place to delete the entity.",
+                            "Investigate why the connector can not retrieve the original Apache Atlas.   Make changes to ensure the Apache Atlas entities synchronized from the open metadata ecosystem are only maintained by this connector."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0048 - The integration connector {0} is adding a DataFlow lineage relationship from {1} open metadata entity {2} to {3} open metadata entity {4}
+     */
+    ADDING_LINEAGE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0048",
+                     OMRSAuditLogRecordSeverity.INFO,
+                     "The integration connector {0} is adding a DataFlow lineage relationship from {1} open metadata entity {2} to {3} open metadata entity {4}",
+                     "The connector is creating a new lineage relationship around a process base on a similar relationship in Apache Atlas.",
+                     "No action is required. The connector is working to keep the two systems view of lineage consistent."),
+
     ;
 
     private final String                     logMessageId;

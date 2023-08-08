@@ -168,6 +168,39 @@ public class SchemaExchangeService
 
 
     /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createAnchoredSchemaType(boolean                      assetManagerIsHome,
+                                           String                       anchorGUID,
+                                           ExternalIdentifierProperties externalIdentifierProperties,
+                                           SchemaTypeProperties         schemaTypeProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return schemaExchangeClient.createAnchoredSchemaType(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             assetManagerIsHome,
+                                                             anchorGUID,
+                                                             externalIdentifierProperties,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             schemaTypeProperties);
+    }
+
+
+    /**
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
@@ -548,7 +581,13 @@ public class SchemaExchangeService
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return schemaExchangeClient.getSchemaTypeForElement(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName, effectiveTime, forLineage,
+        return schemaExchangeClient.getSchemaTypeForElement(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            parentElementGUID,
+                                                            parentElementTypeName,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
     }
 
@@ -876,9 +915,6 @@ public class SchemaExchangeService
     /**
      * Classify the column schema attribute to indicate that it describes a primary key.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the asset manager can update this classification
      * @param schemaAttributeGUID unique identifier of the metadata element to update
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
@@ -890,10 +926,7 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupColumnAsPrimaryKey(String     userId,
-                                        String     assetManagerGUID,
-                                        String     assetManagerName,
-                                        boolean    assetManagerIsHome,
+    public void setupColumnAsPrimaryKey(boolean    assetManagerIsHome,
                                         String     schemaAttributeGUID,
                                         String     schemaAttributeExternalIdentifier,
                                         String     primaryKeyName,
@@ -1026,9 +1059,6 @@ public class SchemaExchangeService
     /**
      * Update the relationship properties for the query target.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
@@ -1038,10 +1068,7 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateForeignKeyRelationship(String               userId,
-                                             String               assetManagerGUID,
-                                             String               assetManagerName,
-                                             String               primaryKeyGUID,
+    public void updateForeignKeyRelationship(String               primaryKeyGUID,
                                              String               foreignKeyGUID,
                                              ForeignKeyProperties foreignKeyProperties,
                                              Date                 effectiveTime) throws InvalidParameterException,

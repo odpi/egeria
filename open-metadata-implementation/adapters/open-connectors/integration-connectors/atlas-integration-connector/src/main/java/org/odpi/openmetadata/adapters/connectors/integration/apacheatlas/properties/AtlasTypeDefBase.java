@@ -91,8 +91,6 @@ public class AtlasTypeDefBase
             ATLAS_TYPE_OBJECT_ID,
     };
 
-    public static final String     EGERIA_SERVICE_TYPE    = "open_metadata_ecosystem";
-
     private AtlasTypeCategory category    = null;
     private String            guid        = null;
     private String            createdBy   = null;

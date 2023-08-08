@@ -17,9 +17,13 @@ import java.util.UUID;
  */
 class ExternalIdentifierBuilder extends ReferenceableBuilder
 {
-    private String              identifier        = null;
-    private int                 keyPattern        = 0;
-
+    private String identifier                     = null;
+    private int    keyPattern                     = 0;
+    private String externalInstanceCreatedBy      = null;
+    private Date   externalInstanceCreationTime   = null;
+    private String externalInstanceLastUpdatedBy  = null;
+    private Date   externalInstanceLastUpdateTime = null;
+    private long   externalInstanceVersion        = 0L;
 
 
     /**
@@ -46,12 +50,22 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
      *
      * @param identifier the identifier from the external technology
      * @param keyPattern identifier from the external party
+     * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
+     * @param externalInstanceCreationTime the date/time when the instance in the external system was created
+     * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
+     * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
+     * @param externalInstanceVersion the latest version of the element in the external system
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     ExternalIdentifierBuilder(String               identifier,
                               int                  keyPattern,
+                              String               externalInstanceCreatedBy,
+                              Date                 externalInstanceCreationTime,
+                              String               externalInstanceLastUpdatedBy,
+                              Date                 externalInstanceLastUpdateTime,
+                              long                 externalInstanceVersion,
                               OMRSRepositoryHelper repositoryHelper,
                               String               serviceName,
                               String               serverName)
@@ -65,6 +79,11 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         this.identifier = identifier;
         this.keyPattern = keyPattern;
+        this.externalInstanceCreatedBy = externalInstanceCreatedBy;
+        this.externalInstanceCreationTime = externalInstanceCreationTime;
+        this.externalInstanceLastUpdatedBy = externalInstanceLastUpdatedBy;
+        this.externalInstanceLastUpdateTime = externalInstanceLastUpdateTime;
+        this.externalInstanceVersion = externalInstanceVersion;
     }
 
 
@@ -101,6 +120,35 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
         }
 
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_CREATED_BY_PROPERTY_NAME,
+                                                                  externalInstanceCreatedBy,
+                                                                  methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME,
+                                                                  externalInstanceCreationTime,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME,
+                                                                  externalInstanceLastUpdatedBy,
+                                                                  methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME,
+                                                                externalInstanceLastUpdateTime,
+                                                                methodName);
+
+        properties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.EXT_INSTANCE_VERSION_PROPERTY_NAME,
+                                                                externalInstanceVersion,
+                                                                methodName);
 
         return properties;
     }
@@ -109,7 +157,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
     /**
      * Return the properties that are to be stored in the ExternalIdLink relationship.
      *
-     * @param description description of the linkage between the open metadata referenceable (resource) and the external id)
+     * @param description description of the linkage between the open metadata referenceable (resource) and the external id
      * @param usage the way that the external identifier should be used.
      * @param source the description of the source (typically the integration connector name)
      * @param mappingProperties additional properties to help with the mapping to the external metadata

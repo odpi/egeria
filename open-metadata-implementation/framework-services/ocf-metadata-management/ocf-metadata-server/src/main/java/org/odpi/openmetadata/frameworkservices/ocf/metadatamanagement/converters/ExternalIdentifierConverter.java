@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalIdentifier;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.KeyPattern;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,10 +58,8 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ExternalIdentifier)
+            if (returnBean instanceof ExternalIdentifier bean)
             {
-                ExternalIdentifier bean = (ExternalIdentifier) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
@@ -73,6 +72,13 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
                 InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                 bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                bean.setIdentifier((this.removeIdentifier(instanceProperties)));
+                bean.setKeyPattern(this.removeKeyPattern(instanceProperties));
+                bean.setExternalInstanceCreatedBy(this.removeExternalInstanceCreatedBy(instanceProperties));
+                bean.setExternalInstanceCreationTime(this.removeExternalInstanceCreationTime(instanceProperties));
+                bean.setExternalInstanceLastUpdatedBy(this.removeExternalInstanceLastUpdatedBy(instanceProperties));
+                bean.setExternalInstanceLastUpdateTime(this.removeExternalInstanceLastUpdateTime(instanceProperties));
+                bean.setExternalInstanceVersion(this.removeExternalInstanceVersion(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                 /*
@@ -112,5 +118,35 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
                         String       methodName) throws PropertyServerException
     {
         return this.getNewBean(beanClass, entity, methodName);
+    }
+
+
+    /**
+     * Extract and delete the keyPattern property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return KeyPattern enum
+     */
+    KeyPattern removeKeyPattern(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeKeyPattern";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (KeyPattern keyPattern : KeyPattern.values())
+            {
+                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                {
+                    return keyPattern;
+                }
+            }
+        }
+
+        return KeyPattern.LOCAL_KEY;
     }
 }

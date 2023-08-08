@@ -57,9 +57,8 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ProcessElement)
+            if (returnBean instanceof ProcessElement bean)
             {
-                ProcessElement    bean              = (ProcessElement) returnBean;
                 ProcessProperties processProperties = new ProcessProperties();
 
                 if (entity != null)
@@ -79,6 +78,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));
                     processProperties.setFormulaType(this.removeFormulaType(instanceProperties));
+                    processProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
                     processProperties.setImplementationLanguage(this.removeImplementationLanguage(instanceProperties));
 
                     /*

@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.SoftwareCapabilityConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -25,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +37,8 @@ import java.util.Map;
  */
 public class DataAssetExchangeHandler extends ExchangeHandlerBase
 {
-    private final AssetHandler<DataAssetElement>             assetHandler;
+    private final AssetHandler<DataAssetElement> assetHandler;
+    private final FilesAndFoldersHandler<SoftwareCapabilityElement, DataAssetElement, DataAssetElement> filesAndFoldersHandler;
 
     private final static String assetGUIDParameterName = "assetGUID";
 
@@ -79,7 +83,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
               publishZones,
               auditLog);
 
-        assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+        AssetConverter<DataAssetElement> assetConverter = new AssetConverter<>(repositoryHelper, serviceName, serverName);
+
+        assetHandler = new AssetHandler<>(assetConverter,
                                           DataAssetElement.class,
                                           serviceName,
                                           serverName,
@@ -92,6 +98,24 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                           defaultZones,
                                           publishZones,
                                           auditLog);
+
+        filesAndFoldersHandler = new FilesAndFoldersHandler<>(new SoftwareCapabilityConverter<>(repositoryHelper, serviceName, serverName),
+                                                              SoftwareCapabilityElement.class,
+                                                              assetConverter,
+                                                              DataAssetElement.class,
+                                                              assetConverter,
+                                                              DataAssetElement.class,
+                                                              serviceName,
+                                                              serverName,
+                                                              invalidParameterHandler,
+                                                              repositoryHandler,
+                                                              repositoryHelper,
+                                                              localServerUserId,
+                                                              securityVerifier,
+                                                              supportedZones,
+                                                              defaultZones,
+                                                              publishZones,
+                                                              auditLog);
     }
 
 
@@ -206,6 +230,24 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             typeName = assetProperties.getTypeName();
         }
 
+        Map<String, Object> assetExtendedProperties = new HashMap<>();
+        if (assetProperties.getExtendedProperties() != null)
+        {
+            assetExtendedProperties.putAll(assetProperties.getExtendedProperties());
+        }
+
+        if (assetProperties instanceof DataStoreProperties dataStoreProperties)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, dataStoreProperties.getPathName());
+            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, dataStoreProperties.getCreateTime());
+            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, dataStoreProperties.getModifiedTime());
+        }
+
+        if (assetExtendedProperties.isEmpty())
+        {
+            assetExtendedProperties = null;
+        }
+
         String assetGUID = assetHandler.createAssetInRepository(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
@@ -215,7 +257,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 assetProperties.getTechnicalDescription(),
                                                                 assetProperties.getAdditionalProperties(),
                                                                 typeName,
-                                                                assetProperties.getExtendedProperties(),
+                                                                assetExtendedProperties,
                                                                 InstanceStatus.ACTIVE,
                                                                 assetProperties.getEffectiveFrom(),
                                                                 assetProperties.getEffectiveTo(),
@@ -235,6 +277,77 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                  forDuplicateProcessing,
                                                  effectiveTime,
                                                  methodName);
+
+            if (assetProperties instanceof DataStoreProperties dataStoreProperties)
+            {
+                if ((dataStoreProperties.getEncodingType() != null) ||
+                            (dataStoreProperties.getEncodingLanguage() != null) ||
+                            (dataStoreProperties.getEncodingDescription() != null) ||
+                            (dataStoreProperties.getEncodingProperties() != null))
+                {
+                    InstanceProperties classificationProperties;
+
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            null,
+                                                                                            OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
+                                                                                            dataStoreProperties.getEncodingType(),
+                                                                                            methodName);
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            classificationProperties,
+                                                                                            OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                            dataStoreProperties.getEncodingLanguage(),
+                                                                                            methodName);
+                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                            classificationProperties,
+                                                                                            OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                            dataStoreProperties.getEncodingDescription(),
+                                                                                            methodName);
+                    classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                               classificationProperties,
+                                                                                               OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                               dataStoreProperties.getEncodingProperties(),
+                                                                                               methodName);
+
+
+                    assetHandler.setClassificationInRepository(userId,
+                                                               this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                               this.getExternalSourceName(correlationProperties, assetManagerIsHome),
+                                                               assetGUID,
+                                                               assetGUIDParameterName,
+                                                               OpenMetadataAPIMapper.DATA_STORE_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                               classificationProperties,
+                                                               true,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               effectiveTime,
+                                                               methodName);
+                }
+            }
+
+            /*
+             * For files and folders
+             */
+            if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME)) ||
+                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME))) &&
+                (assetExtendedProperties != null) &&
+                (assetExtendedProperties.get(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME) != null))
+            {
+                final String pathNameParameterName = "assetProperties.getExtendedProperties().get(parameterName)";
+                filesAndFoldersHandler.addFileAssetPath(userId,
+                                                        this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                        this.getExternalSourceName(correlationProperties, assetManagerIsHome),
+                                                        assetGUID,
+                                                        assetGUIDParameterName,
+                                                        typeName,
+                                                        assetProperties.getExtendedProperties().get(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME).toString(),
+                                                        pathNameParameterName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+            }
 
             this.createExternalIdentifier(userId,
                                           assetGUID,
@@ -724,10 +837,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (relationshipProperties != null)
         {
-            if (relationshipProperties instanceof DataContentForDataSetProperties)
+            if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                DataContentForDataSetProperties dataContentForDataSetProperties = (DataContentForDataSetProperties) relationshipProperties;
-
                 instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
                 instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
             }
@@ -939,10 +1050,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (relationshipProperties != null)
         {
-            if (relationshipProperties instanceof DataContentForDataSetProperties)
+            if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                DataContentForDataSetProperties dataContentForDataSetProperties = (DataContentForDataSetProperties) relationshipProperties;
-
                 instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
                 instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
             }

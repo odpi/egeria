@@ -450,7 +450,6 @@ public class OpenMetadataGovernanceService
     /**
      * Retrieve details of a specific valid name for a map property.
      *
-     * @param userId caller's userId
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param preferredValue valid value to match
@@ -461,8 +460,7 @@ public class OpenMetadataGovernanceService
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataMapName(String userId,
-                                                      String typeName,
+    public ValidMetadataValue getValidMetadataMapName(String typeName,
                                                       String propertyName,
                                                       String preferredValue) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
