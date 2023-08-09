@@ -3,18 +3,13 @@
 
 # Data Store Connectors
 
-The Data Store Connectors module contains
-a small collection of connectors for applications.
-The aim is to eventually cover most common types of data sources.
-connectors to different types of data stores.  These connectors implement the
-
-[Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) **Connector** interface.
-
-* **[file-connectors](file-connectors)** provides connector to read files.
+The Data Store Connectors module contains a small collection of 
+[resource connectors](https://egeria-project.org/concepts/digital-resource-connector/) for accessing the most common types of data sources.
 
 
-There is a code sample that shows how to work with the file connector
+* **[file-connectors](file-connectors)** provides connector to read files. There is a code sample that shows how to work with the file connector
 in the [asset-management-samples](../../../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples).
+* **[jdbc-resource-connector](jdbc-resource-connector)** provides access to a JDBC resource through a connector.
 
 ----
 * Return to [open-connectors](..) module.
