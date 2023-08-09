@@ -438,6 +438,12 @@ org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.integration.elasticsearch
 org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.jdbc
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests
 org.odpi.openmetadata.adapters.connectors.integration.kafka
 org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis
@@ -445,6 +451,7 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.restclients
 org.odpi.openmetadata.adapters.connectors.restclients.factory
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc
