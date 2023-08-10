@@ -53,7 +53,7 @@ import java.util.List;
  */
 public class OMAGServerOperationalServices
 {
-    private final OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
+    private final OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.SERVER_OPERATIONS.getServiceName());
 
     private final OMAGServerPlatformInstanceMap        platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
@@ -62,7 +62,7 @@ public class OMAGServerOperationalServices
     private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
     private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerOperationalServices.class),
-                                                                            CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
+                                                                            CommonServicesDescription.SERVER_OPERATIONS.getServiceName());
 
     /*
      * =============================================================
@@ -235,7 +235,7 @@ public class OMAGServerOperationalServices
              */
             instance = new OMAGOperationalServicesInstance(serverName,
                                                            serverTypeClassification,
-                                                           CommonServicesDescription.PLATFORM_SERVICES.getServiceName(),
+                                                           CommonServicesDescription.SERVER_OPERATIONS.getServiceName(),
                                                            configuration.getMaxPageSize());
             instance.setServerActiveStatus(ServerActiveStatus.STARTING);
 
@@ -278,11 +278,11 @@ public class OMAGServerOperationalServices
              * immature subsystems that have not yet developed their logging and error handling.
              */
             OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(
-                    CommonServicesDescription.PLATFORM_SERVICES.getServiceCode(),
-                    CommonServicesDescription.PLATFORM_SERVICES.getServiceDevelopmentStatus(),
-                    CommonServicesDescription.PLATFORM_SERVICES.getServiceName(),
-                    CommonServicesDescription.PLATFORM_SERVICES.getServiceDescription(),
-                    CommonServicesDescription.PLATFORM_SERVICES.getServiceWiki());
+                    CommonServicesDescription.SERVER_OPERATIONS.getServiceCode(),
+                    CommonServicesDescription.SERVER_OPERATIONS.getServiceDevelopmentStatus(),
+                    CommonServicesDescription.SERVER_OPERATIONS.getServiceName(),
+                    CommonServicesDescription.SERVER_OPERATIONS.getServiceDescription(),
+                    CommonServicesDescription.SERVER_OPERATIONS.getServiceWiki());
             instance.setAuditLog(auditLog);
 
             /*
