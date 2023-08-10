@@ -6,8 +6,6 @@
 
 dependencies {
     implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
-    implementation project(':open-metadata-implementation:server-operations:server-operations-server')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
@@ -35,7 +33,7 @@ dependencies {
 
 }
 
-description = 'Platform Services Server-side'
+description = 'Server Operations Server-side'
 
 java {
     withJavadocJar()

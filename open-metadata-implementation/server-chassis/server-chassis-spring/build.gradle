@@ -39,8 +39,8 @@ dependencies {
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-server')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-server')
 
     /* IN DEVELOPMENT */
 

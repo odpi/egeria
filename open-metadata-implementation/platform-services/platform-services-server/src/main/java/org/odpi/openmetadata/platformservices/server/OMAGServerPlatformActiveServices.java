@@ -11,10 +11,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.platformservices.properties.ServerStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
-import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
-import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.slf4j.LoggerFactory;
 
 

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.platformservices.properties;
+package org.odpi.openmetadata.serveroperations.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,12 +10,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Server active status defines the state of the server (or a service) on a single platform.
+ * Server instance status defines the state of the server (or a service) on a single platform.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum ServerActiveStatus
+public enum ServerInstanceStatus
 {
     /**
      * Unknown - The state of the server is unknown.  This is equivalent to a null value.
@@ -54,9 +54,9 @@ public enum ServerActiveStatus
      * @param name default name
      * @param description default description
      */
-    ServerActiveStatus(int    ordinal,
-                       String name,
-                       String description)
+    ServerInstanceStatus(int    ordinal,
+                         String name,
+                         String description)
     {
         this.ordinal         = ordinal;
         this.name            = name;
@@ -105,11 +105,10 @@ public enum ServerActiveStatus
     @Override
     public String toString()
     {
-        return "ServerActiveStatus{" +
+        return "ServerInstanceStatus{" +
                        "ordinal=" + ordinal +
                        ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        '}';
-    }
-}
+    }}
 
