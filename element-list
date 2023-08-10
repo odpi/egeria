@@ -773,7 +773,6 @@ org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconne
 org.odpi.openmetadata.opentypes
 org.odpi.openmetadata.opentypes.utility
 org.odpi.openmetadata.platformservices.client
-org.odpi.openmetadata.platformservices.properties
 org.odpi.openmetadata.platformservices.rest
 org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring
@@ -826,6 +825,9 @@ org.odpi.openmetadata.samples.governanceengine.discoveryservices
 org.odpi.openmetadata.serverchassis.springboot
 org.odpi.openmetadata.serverchassis.springboot.config
 org.odpi.openmetadata.serverchassis.springboot.exception
+org.odpi.openmetadata.serveroperations.properties
+org.odpi.openmetadata.serveroperations.rest
+org.odpi.openmetadata.serveroperations.server
 org.odpi.openmetadata.test.unittest.utilities
 org.odpi.openmetadata.userinterface.uichassis.springboot
 org.odpi.openmetadata.userinterface.uichassis.springboot.api
