@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceE
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerInstanceHistory;
 
 import java.util.*;
 

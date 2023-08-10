@@ -28,7 +28,6 @@ public class OMAGServerProperties {
 
     /**
      * Configures the username parameter used to activate the OMAG server instance using platform operational services.
-     * @see org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices#activateWithSuppliedConfig(String, String, OMAGServerConfig)
      * Default value is set to 'system', can be overwritted
      */
     private String serverUser = "system";

@@ -4,8 +4,8 @@ package org.odpi.openmetadata.serverchassis.springboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.serverchassis.springboot.config.OMAGServerProperties;
 import org.odpi.openmetadata.serverchassis.springboot.exception.OMAGServerActivationError;
 import org.slf4j.Logger;
@@ -34,9 +34,9 @@ public class OMAGServer implements ApplicationRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
     private final ConfigurableApplicationContext context;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper                  objectMapper;
     private final OMAGServerOperationalServices operationalServices;
-    private final OMAGServerProperties serverProperties;
+    private final OMAGServerProperties          serverProperties;
     private OMAGServerConfig serverConfigDocument;
     private String serverName;
 
@@ -94,7 +94,7 @@ public class OMAGServer implements ApplicationRunner {
 
     /**
      * This method activates OMAGServer instance using OMAG platform operational services.
-     * @see org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices
+     * @see OMAGServerOperationalServices
      *
      * The activation process requires OMAGServerConfig document.
      * @see org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig

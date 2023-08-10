@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.platformservices.server;
+package org.odpi.openmetadata.serveroperations.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
@@ -15,9 +15,9 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineP
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
-import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
-import org.odpi.openmetadata.platformservices.properties.ServerServicesStatus;
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
