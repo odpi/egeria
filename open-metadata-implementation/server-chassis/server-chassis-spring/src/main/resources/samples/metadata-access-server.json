@@ -5,7 +5,7 @@
   "localServerName": "cocoMDS1",
   "localServerType": "Open Metadata and Governance Server",
   "localServerURL": "https://localhost:9443",
-  "localServerUserId": "OMAGServer",
+  "localServerUserId": "cocoMDS1npa",
   "maxPageSize": 1000,
   "accessServicesConfig": [
     {
@@ -20,8 +20,6 @@
       "accessServiceWiki": "https://egeria-project.org/services/omas/asset-catalog/overview/",
       "accessServiceOperationalStatus": "ENABLED",
       "accessServiceOptions": {
-        "SupportedZones": [],
-        "DefaultZones": [],
         "SupportedTypesForSearch": [
           "RelationalTable",
           "TabularColumn",
@@ -49,8 +47,6 @@
       "accessServiceWiki": "https://egeria-project.org/services/omas/asset-manager/overview/",
       "accessServiceOperationalStatus": "ENABLED",
       "accessServiceOptions": {
-        "SupportedZones": [],
-        "DefaultZones": [],
         "SupportedTypesForSearch": [
           "RelationalTable",
           "TabularColumn",
@@ -113,7 +109,6 @@
         },
         "configurationProperties": {
           "supportedSeverities": [
-            "Information",
             "Startup",
             "Shutdown"
           ]
