@@ -37,10 +37,14 @@ dependencies {
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
+
+    implementation project(path: ':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
+    implementation project(path: ':open-metadata-implementation:repository-services:repository-services-implementation')
 
     /* IN DEVELOPMENT */
 
