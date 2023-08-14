@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,9 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -43,50 +47,49 @@ public class OMAGConfigHelper {
     public void loadConfig() throws OMAGServerActivationError {
 
         try {
+            if (serverProperties.getServerConfigFile() != null) {
 
-            if (serverProperties.getJsonConfigFile() == null) {
+                LOG.info("Configuration {}", serverProperties.getServerConfigFile());
+                //TODO: This is POC implementation. Better way to identify content type may be required.
+                if (Objects.requireNonNull(serverProperties.getServerConfigFile().getFilename()).endsWith("json")) {
+                    omagServerConfig = mapper.reader().readValue(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
+                } else {
+                    //TODO: This is POC implementation. We need better code to deal with yaml i.e. one option is to use Jackson and Yaml data format.
+                    Yaml yaml = new Yaml();
+                    omagServerConfig = yaml.loadAs(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
+                }
+                LOG.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
 
-                LOG.info("JSON configuration file not used. Configuring server using omag. application properties");
+            } else if (serverProperties.getServer() != null) {
+                LOG.info("Configuring server using omag. application properties [EXPERIMENTAL]");
 
                 omagServerConfig = new OMAGServerConfig();
-
                 omagServerConfig.setLocalServerName(serverProperties.getServer().getName());
                 omagServerConfig.setLocalServerUserId(serverProperties.getServer().getUser());
                 omagServerConfig.setMaxPageSize(serverProperties.getServer().getMaxPageSize());
 
-                if(serverProperties.getServer().getRepositoryServices() != null) {
+                if (serverProperties.getServer().getRepositoryServices() != null) {
                     RepositoryServicesConfig repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig();
                     if (serverProperties.getServer().getRepositoryServices().getAuditLogConnectors() != null) {
-
                         List<Connection> auditLogConnectors = serverProperties.getServer().getRepositoryServices().getAuditLogConnectors().stream().map(o -> {
                             Connection c = new Connection();
                             ConnectorType ct = new ConnectorType();
                             ct.setConnectorProviderClassName(o.getProviderClassName());
                             c.setConnectorType(ct);
-                            //TODO: Fix map/list binding problem. The type of supportedSeverities in configurationProperties should be resolved to List instead of Map!!!
+                            //TODO: Fix binding problem. The type of supportedSeverities in configurationProperties should be resolved to List instead of Map!!!
                             c.setConfigurationProperties(o.getConfigurationProperties());
                             return c;
                         }).collect(Collectors.toList());
-
                         repositoryServicesConfig.setAuditLogConnections(auditLogConnectors);
                     }
-                    //TODO: Work in progress currently using default in-meme local repo.
+                    //TODO: Work in progress currently using default in-mem local repo.
                     LocalRepositoryConfig localRepositoryConfig = getLocalRepositoryConfig();
                     repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
                     omagServerConfig.setRepositoryServicesConfig(repositoryServicesConfig);
                 }
-
-
-            } else {
-
-                LOG.info("Configuration {}", serverProperties.getJsonConfigFile());
-                omagServerConfig = mapper.reader().readValue(serverProperties.getJsonConfigFile().getInputStream(), OMAGServerConfig.class);
-                LOG.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
-
             }
 
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.info("Configuration document cannot be loaded from the resource provided - check application configuration");
             throw new OMAGServerActivationError(
                     String.format("Configuration document cannot be loaded from the resource provided - check application configuration"), e);
