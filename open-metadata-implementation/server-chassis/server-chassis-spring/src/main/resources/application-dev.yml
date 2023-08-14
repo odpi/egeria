@@ -20,4 +20,3 @@ omag:
             address: "https://localhost:9443/servers/cocoMDS1"
         events-to-save: ALL
         events-to-send: ALL
-

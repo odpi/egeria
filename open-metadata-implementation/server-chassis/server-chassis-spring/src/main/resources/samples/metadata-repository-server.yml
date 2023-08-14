@@ -1,0 +1,31 @@
+---
+localServerName: cocoMDS1
+localServerType: Open Metadata and Governance Server
+localServerURL: https://localhost:9443
+localServerUserId: OMAGServer
+maxPageSize: 1000
+repositoryServicesConfig:
+  auditLogConnections:
+    - connectorType:
+        connectorProviderClassName: >-
+          org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider
+      configurationProperties:
+        supportedSeverities:
+          - Error
+  localRepositoryConfig:
+    metadataCollectionId: 838005fc-e09f-4688-af89-58254a155cc6
+    localRepositoryMode: OPEN_METADATA_NATIVE
+    localRepositoryLocalConnection:
+      connectorType:
+        connectorProviderClassName: >-
+          org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider
+    localRepositoryRemoteConnection:
+      headerVersion: 0
+      displayName: Local Repository Remote Connection
+      connectorType:
+        connectorProviderClassName: >-
+          org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider
+      endpoint:
+        address: https://localhost:9443/servers/cocoMDS1
+    eventsToSaveRule: ALL
+    eventsToSendRule: ALL
