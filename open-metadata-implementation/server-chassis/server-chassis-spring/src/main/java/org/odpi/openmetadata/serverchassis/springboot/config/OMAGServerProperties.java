@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot.config;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -29,7 +28,7 @@ public class OMAGServerProperties {
      * This property is required and cannot be null.
      */
 //    @NotNull
-    private Resource jsonConfigFile;
+    private Resource serverConfigFile;
 
     /**
      * Configures the default user parameter used to activate the OMAG server instance using platform operational services.
@@ -65,7 +64,7 @@ public class OMAGServerProperties {
     @Setter
     public static class Connector {
         private String providerClassName;
-        private Map configurationProperties;
+        private Map<String, Object> configurationProperties;
         private Endpoint endpoint;
     }
 
