@@ -12,16 +12,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Process properties defines the properties of a process.  A process is a series of steps and decisions in operation
  * in the organization.  It is typically an automated process but may be performed by a person.
- * Only set the implementationLanguage if the process is automated.
+ * Only set the deployedImplementationType or implementationLanguage if the process is automated - ie inherits from DeployedSoftwareComponent.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProcessProperties extends AssetProperties
 {
-    private String        formula                = null;
-    private String        formulaType            = null;
-    private String        implementationLanguage = null;
+    private String formula                    = null;
+    private String formulaType                = null;
+    private String deployedImplementationType = null;
+    private String implementationLanguage     = null;
 
     /**
      * Default constructor
@@ -46,6 +47,7 @@ public class ProcessProperties extends AssetProperties
             formula = template.getFormula();
             formulaType = template.getFormulaType();
             implementationLanguage = template.getImplementationLanguage();
+            deployedImplementationType = template.getDeployedImplementationType();
         }
     }
 
@@ -92,7 +94,29 @@ public class ProcessProperties extends AssetProperties
 
 
     /**
-     * Return the name of the programming language that this process is implemented in.
+     * Retrieve the name of the technology used for this process (DeployedComponentType only).
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this process (DeployedComponentType only).
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
+     * Return the name of the programming language that this process is implemented in (DeployedComponentType only).
      *
      * @return string name
      */
@@ -103,7 +127,7 @@ public class ProcessProperties extends AssetProperties
 
 
     /**
-     * Set up the name of the programming language that this process is implemented in.
+     * Set up the name of the programming language that this process is implemented in (DeployedComponentType only).
      *
      * @param implementationLanguage string name
      */
@@ -123,6 +147,7 @@ public class ProcessProperties extends AssetProperties
     {
         return "ProcessProperties{" +
                        ", formula='" + formula + '\'' +
+                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +

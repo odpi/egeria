@@ -7,11 +7,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.platformservices.rest.OMAGServerStatusResponse;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOperationalServices;
+import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class OMAGServerOperationResource
 {
-    private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+    private final OMAGServerOperationalServices         serverOperationalServices   = new OMAGServerOperationalServices();
+    private final OMAGServerPlatformOperationalServices platformOperationalServices = new OMAGServerPlatformOperationalServices();
 
     /*
      * ========================================================================================
@@ -62,7 +64,7 @@ public class OMAGServerOperationResource
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
-        return operationalServices.activateWithStoredConfig(userId, serverName);
+        return serverOperationalServices.activateWithStoredConfig(userId, serverName);
     }
 
 
@@ -90,7 +92,7 @@ public class OMAGServerOperationResource
                                                              @PathVariable String           serverName,
                                                              @RequestBody  OMAGServerConfig configuration)
     {
-        return operationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
+        return serverOperationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
     }
 
 
@@ -111,7 +113,7 @@ public class OMAGServerOperationResource
     public VoidResponse shutdownServer(@PathVariable String  userId,
                                        @PathVariable String  serverName)
     {
-        return operationalServices.shutdownServer(userId, serverName);
+        return serverOperationalServices.shutdownServer(userId, serverName);
     }
 
 
@@ -130,7 +132,7 @@ public class OMAGServerOperationResource
 
     public VoidResponse shutdownAllServers(@PathVariable String  userId)
     {
-        return operationalServices.shutdownAllServers(userId);
+        return platformOperationalServices.shutdownAllServers(userId);
     }
 
 
@@ -153,7 +155,7 @@ public class OMAGServerOperationResource
     public VoidResponse shutdownAndUnregisterServer(@PathVariable String  userId,
                                                     @PathVariable String  serverName)
     {
-        return operationalServices.shutdownAndUnregisterServer(userId, serverName);
+        return serverOperationalServices.shutdownAndUnregisterServer(userId, serverName);
     }
 
 
@@ -174,7 +176,7 @@ public class OMAGServerOperationResource
 
     public VoidResponse shutdownAndUnregisterAllServers(@PathVariable String  userId)
     {
-        return operationalServices.shutdownAndUnregisterAllServers(userId);
+        return platformOperationalServices.shutdownAndUnregisterAllServers(userId);
     }
 
 
@@ -193,7 +195,7 @@ public class OMAGServerOperationResource
 
     public VoidResponse shutdownPlatform(@PathVariable String  userId)
     {
-        return operationalServices.shutdownPlatform(userId);
+        return platformOperationalServices.shutdownPlatform(userId);
     }
 
 
@@ -227,7 +229,7 @@ public class OMAGServerOperationResource
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {
-        return operationalServices.getActiveConfiguration(userId, serverName);
+        return serverOperationalServices.getActiveConfiguration(userId, serverName);
     }
 
 
@@ -257,7 +259,7 @@ public class OMAGServerOperationResource
     public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String userId,
                                                           @PathVariable String serverName)
     {
-        return operationalServices.getActiveServerStatus(userId, serverName);
+        return serverOperationalServices.getActiveServerStatus(userId, serverName);
     }
 
 
@@ -284,7 +286,7 @@ public class OMAGServerOperationResource
                                                    @PathVariable String serverName,
                                                    @RequestBody  String fileName)
     {
-        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+        return serverOperationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
     }
 
 
@@ -311,6 +313,6 @@ public class OMAGServerOperationResource
                                                @PathVariable String     serverName,
                                                @RequestBody  Connection connection)
     {
-        return operationalServices.addOpenMetadataArchive(userId, serverName, connection);
+        return serverOperationalServices.addOpenMetadataArchive(userId, serverName, connection);
     }
 }

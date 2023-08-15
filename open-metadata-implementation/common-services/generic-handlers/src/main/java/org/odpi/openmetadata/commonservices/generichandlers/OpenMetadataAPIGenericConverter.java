@@ -36,7 +36,6 @@ import java.util.Map;
 /**
  * OpenMetadataAPIGenericConverter provides the generic methods for the bean converters used to provide translation between
  * specific Open Metadata API beans and the repository services API beans.
- *
  * Generic classes have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing an Open Metadata API bean.
@@ -1727,6 +1726,115 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+
+    /**
+     * Extract and delete the externalInstanceCreatedBy property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeExternalInstanceCreatedBy(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeExternalInstanceCreatedBy";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXT_INSTANCE_CREATED_BY_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the externalInstanceCreationTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeExternalInstanceCreationTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeExternalInstanceCreationTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the externalInstanceLastUpdatedBy property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeExternalInstanceLastUpdatedBy(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeExternalInstanceLastUpdatedBy";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the externalInstanceLastUpdateTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeExternalInstanceLastUpdateTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeExternalInstanceCreationTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the externalInstanceVersion property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected long removeExternalInstanceVersion(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeExternalInstanceVersion";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeLongProperty(serviceName,
+                                                       OpenMetadataAPIMapper.EXT_INSTANCE_VERSION_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return 0L;
+    }
 
     /**
      * Extract and delete the URL property from the supplied instance properties.

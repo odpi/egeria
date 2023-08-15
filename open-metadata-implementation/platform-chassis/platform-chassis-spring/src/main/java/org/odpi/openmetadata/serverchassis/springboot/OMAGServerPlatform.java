@@ -11,10 +11,10 @@ import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.http.HttpRequestHeadersFilter;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -105,7 +105,7 @@ public class OMAGServerPlatform
     private ApplicationEventPublisher applicationEventPublisher;
 
     private boolean triggeredRuntimeHalt = false;
-    private String startupMessage = "";
+    private       String                        startupMessage      = "";
     private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
     private final OMAGServerAdminStoreServices  configStoreServices = new OMAGServerAdminStoreServices();
 

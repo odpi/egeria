@@ -107,6 +107,7 @@ public class DataSetProperties extends DataAssetProperties
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
+                       ", deployedImplementationType=" + getDeployedImplementationType() +
                        ", formula='" + formula + '\'' +
                        ", formulaType='" + formulaType + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +

@@ -43,9 +43,9 @@ public enum CommonServicesDescription implements Serializable
 
     GAF_METADATA_MANAGEMENT          (184,
                                       ComponentDevelopmentStatus.STABLE,
-                                      "Open Metadata Store Services",
+                                      "Governance Action Framework Services",
                                       "open-metadata-store",
-                                      "Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
+                                      "Support governance action services.",
                                       "https://egeria-project.org/services/gaf-metadata-management"),
 
     PLATFORM_SERVICES               (185,
@@ -61,6 +61,21 @@ public enum CommonServicesDescription implements Serializable
                                       "open-integration-service",
                                       "Provides operational support for the integration connectors.",
                                       "https://egeria-project.org/services/oif-metadata-management"),
+
+    SERVER_OPERATIONS               (187,
+                                     ComponentDevelopmentStatus.STABLE,
+                                     "Server Operations",
+                                     "server-operations",
+                                     "Supports the start up and shutdown of OMAG Servers.",
+                                     "https://egeria-project.org/services/server-operations/overview"),
+
+
+    OPEN_METADATA_STORE          (188,
+                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      "Open Metadata Store Services",
+                                      "open-metadata-store",
+                                      "Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).",
+                                      "https://egeria-project.org/services/oms-metadata-management"),
 
     ;
 

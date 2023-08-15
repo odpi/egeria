@@ -10,8 +10,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationG
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
@@ -24,6 +22,8 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.GroupConfigurationRefreshThread;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

@@ -17,8 +17,8 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.registration.O
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
-import org.odpi.openmetadata.platformservices.properties.ServerStatus;
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerInstanceHistory;
+import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
 import java.util.*;
 

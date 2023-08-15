@@ -33,6 +33,7 @@ public class IntegrationContext
     protected final String                   externalSourceGUID;
     protected final String                   externalSourceName;
     protected       boolean                  externalSourceIsHome    = true;
+    protected final String                   connectorName;
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
 
@@ -76,6 +77,7 @@ public class IntegrationContext
         this.openMetadataStoreClient      = openMetadataStoreClient;
         this.permittedSynchronization     = permittedSynchronization;
         this.userId                       = connectorUserId;
+        this.connectorName                = connectorName;
         this.externalSourceGUID           = externalSourceGUID;
         this.externalSourceName           = externalSourceName;
         this.integrationConnectorGUID     = integrationConnectorGUID;

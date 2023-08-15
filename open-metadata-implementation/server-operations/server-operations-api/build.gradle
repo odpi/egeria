@@ -1,0 +1,16 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+}
+
+description = 'Server Operations Common API elements'
+
+java {
+    withJavadocJar()
+}

@@ -5,9 +5,9 @@ package org.odpi.openmetadata.platformservices.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.platformservices.rest.OMAGServerStatusResponse;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OldOperationalServicesResource provides the REST API for controlling the start up, management and
+ * OldOperationalServicesResource provides the REST API for controlling the start-up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @Deprecated
 public class OldOperationalServicesResource
 {
-    private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+    private final OMAGServerOperationalServices         serverOperationalServices   = new OMAGServerOperationalServices();
 
     /*
      * ========================================================================================
@@ -56,7 +56,7 @@ public class OldOperationalServicesResource
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
-        return operationalServices.activateWithStoredConfig(userId, serverName);
+        return serverOperationalServices.activateWithStoredConfig(userId, serverName);
     }
 
 
@@ -84,7 +84,7 @@ public class OldOperationalServicesResource
                                                              @PathVariable String           serverName,
                                                              @RequestBody  OMAGServerConfig configuration)
     {
-        return operationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
+        return serverOperationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
     }
 
 
@@ -105,7 +105,7 @@ public class OldOperationalServicesResource
     public VoidResponse deactivateTemporarily(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.shutdownServer(userId, serverName);
+        return serverOperationalServices.shutdownServer(userId, serverName);
     }
 
 
@@ -128,7 +128,7 @@ public class OldOperationalServicesResource
     public VoidResponse deactivatePermanently(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.shutdownAndUnregisterServer(userId, serverName);
+        return serverOperationalServices.shutdownAndUnregisterServer(userId, serverName);
     }
 
 
@@ -162,7 +162,7 @@ public class OldOperationalServicesResource
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {
-        return operationalServices.getActiveConfiguration(userId, serverName);
+        return serverOperationalServices.getActiveConfiguration(userId, serverName);
     }
 
 
@@ -192,7 +192,7 @@ public class OldOperationalServicesResource
     public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String userId,
                                                           @PathVariable String serverName)
     {
-        return operationalServices.getActiveServerStatus(userId, serverName);
+        return serverOperationalServices.getActiveServerStatus(userId, serverName);
     }
 
 
@@ -219,7 +219,7 @@ public class OldOperationalServicesResource
                                                    @PathVariable String serverName,
                                                    @RequestBody  String fileName)
     {
-        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+        return serverOperationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
     }
 
 
@@ -246,6 +246,6 @@ public class OldOperationalServicesResource
                                                @PathVariable String     serverName,
                                                @RequestBody  Connection connection)
     {
-        return operationalServices.addOpenMetadataArchive(userId, serverName, connection);
+        return serverOperationalServices.addOpenMetadataArchive(userId, serverName, connection);
     }
 }

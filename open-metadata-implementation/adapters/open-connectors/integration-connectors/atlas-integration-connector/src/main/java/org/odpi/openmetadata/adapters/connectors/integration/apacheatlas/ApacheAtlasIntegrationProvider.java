@@ -44,13 +44,13 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
      * The configuration property name used to supply the qualified name of an Egeria glossary to synchronize with
      * Apache Atlas.  If this value is null, all Egeria originated glossaries are copied to Apache Atlas.
      */
-    static final String EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "egeriaGlossaryQualifiedName";
+    public static final String EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "egeriaGlossaryQualifiedName";
 
     /**
      * The configuration property name used to supply the name of the Atlas Glossary to copy into the open metadata
      * ecosystem.  If this value is null, all Apache Atlas originated glossaries are copied into the open metadata ecosystem.
      */
-    static final String ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY            = "atlasGlossaryName";
+    public static final String ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY            = "atlasGlossaryName";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific

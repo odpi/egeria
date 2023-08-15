@@ -2032,6 +2032,7 @@ public interface GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param limitResultsByStatus list of statuses that the term must have
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for

@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.serverchassis.springboot;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.serverchassis.springboot.config.OMAGConfigHelper;
 import org.odpi.openmetadata.serverchassis.springboot.exception.OMAGServerActivationError;
 import org.slf4j.Logger;
@@ -38,9 +38,9 @@ public class OMAGServer implements ApplicationRunner {
 
      */
     @Autowired
-    public OMAGServer(ConfigurableApplicationContext ctx, OMAGConfigHelper configHelper, OMAGServerOperationalServices omagServerOperationalServices) {
+    public OMAGServer(ConfigurableApplicationContext ctx, OMAGConfigHelper configHelper, OMAGServerOperationalServices serverOperationalServices) {
         this.context = ctx;
-        this.operationalServices = omagServerOperationalServices;
+        this.operationalServices = serverOperationalServices;
         this.configHelper = configHelper;
     }
 

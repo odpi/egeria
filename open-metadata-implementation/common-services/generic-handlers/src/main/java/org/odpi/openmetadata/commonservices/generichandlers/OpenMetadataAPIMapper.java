@@ -127,10 +127,15 @@ public class OpenMetadataAPIMapper
     public static final String SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME       = "RelatedKeyword";
     /* End1 = SearchKeyword; End 2 = SearchKeyword */
 
-    public static final String EXTERNAL_IDENTIFIER_TYPE_GUID             = "7c8f8c2c-cc48-429e-8a21-a1f1851ccdb0";
-    public static final String EXTERNAL_IDENTIFIER_TYPE_NAME             = "ExternalId";              /* from Area 0 */
+    public static final String EXTERNAL_IDENTIFIER_TYPE_GUID               = "7c8f8c2c-cc48-429e-8a21-a1f1851ccdb0";
+    public static final String EXTERNAL_IDENTIFIER_TYPE_NAME               = "ExternalId";              /* from Area 0 */
 
-    public static final String IDENTIFIER_PROPERTY_NAME         = "identifier";             /* from ExternalId entity */
+    public static final String IDENTIFIER_PROPERTY_NAME                    = "identifier";                      /* from ExternalId entity */
+    public static final String EXT_INSTANCE_CREATED_BY_PROPERTY_NAME       = "externalInstanceCreatedBy";       /* from ExternalId entity */
+    public static final String EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME    = "externalInstanceCreationTime";    /* from ExternalId entity */
+    public static final String EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME  = "externalInstanceLastUpdatedBy";   /* from ExternalId entity */
+    public static final String EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME = "externalInstanceLastUpdateTime";  /* from ExternalId entity */
+    public static final String EXT_INSTANCE_VERSION_PROPERTY_NAME          = "externalInstanceVersion";         /* from ExternalId entity */
     public static final String MAPPING_PROPERTIES_PROPERTY_NAME = "mappingProperties";      /* from ExternalId entity */
     public static final String LAST_SYNCHRONIZED_PROPERTY_NAME  = "lastSynchronized";       /* from ExternalId entity */
     public static final String KEY_PATTERN_PROPERTY_NAME        = "keyPattern";             /* from ExternalId entity */

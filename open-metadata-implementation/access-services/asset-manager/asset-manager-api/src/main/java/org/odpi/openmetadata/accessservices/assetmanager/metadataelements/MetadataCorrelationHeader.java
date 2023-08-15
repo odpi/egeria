@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataCorrelationHeader extends MetadataCorrelationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
     private              Date lastSynchronized = null;
 
 
@@ -91,13 +89,18 @@ public class MetadataCorrelationHeader extends MetadataCorrelationProperties
                        "lastSynchronized=" + lastSynchronized +
                        ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
                        ", assetManagerName='" + getAssetManagerName() + '\'' +
-                       ", permittedSynchronization=" + getSynchronizationDirection() +
+                       ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
                        ", externalIdentifier='" + getExternalIdentifier() + '\'' +
                        ", externalIdentifierName='" + getExternalIdentifierName() + '\'' +
                        ", externalIdentifierUsage='" + getExternalIdentifierUsage() + '\'' +
                        ", externalIdentifierSource='" + getExternalIdentifierSource() + '\'' +
                        ", keyPattern=" + getKeyPattern() +
+                       ", externalInstanceCreatedBy='" + getExternalInstanceCreatedBy() + '\'' +
+                       ", externalInstanceCreationTime=" + getExternalInstanceCreationTime() +
+                       ", externalInstanceLastUpdatedBy='" + getExternalInstanceLastUpdatedBy() + '\'' +
+                       ", externalInstanceLastUpdateTime=" + getExternalInstanceLastUpdateTime() +
+                       ", externalInstanceVersion=" + getExternalInstanceVersion() +
                        ", mappingProperties=" + getMappingProperties() +
                        '}';
     }

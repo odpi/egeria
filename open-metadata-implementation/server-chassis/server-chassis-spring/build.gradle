@@ -39,8 +39,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-server')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-server')
 
     implementation project(path: ':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(path: ':open-metadata-implementation:repository-services:repository-services-implementation')

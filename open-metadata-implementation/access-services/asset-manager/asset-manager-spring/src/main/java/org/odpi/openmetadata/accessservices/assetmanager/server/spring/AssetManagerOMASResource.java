@@ -209,17 +209,17 @@ public class AssetManagerOMASResource
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/asset-managers/elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers")
+    @PostMapping(path = "/asset-managers/elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/synchronized")
 
     public VoidResponse confirmSynchronization(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        openMetadataElementGUID,
                                                @PathVariable String                        openMetadataElementTypeName,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forLineage,
+                                                             boolean                       forLineage,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forDuplicateProcessing,
-                                               @RequestBody  UpdateRequestBody requestBody)
+                                                             boolean                       forDuplicateProcessing,
+                                               @RequestBody  MetadataCorrelationProperties requestBody)
     {
         return restAPI.confirmSynchronization(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }

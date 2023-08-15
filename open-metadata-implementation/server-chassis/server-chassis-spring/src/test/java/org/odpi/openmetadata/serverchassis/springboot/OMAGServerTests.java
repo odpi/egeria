@@ -4,12 +4,11 @@ package org.odpi.openmetadata.serverchassis.springboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.serverchassis.springboot.config.OMAGServerProperties;
 import org.odpi.openmetadata.serverchassis.springboot.config.SSLEnvironmentConfiguration;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
@@ -23,11 +22,11 @@ class OMAGServerTests {
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
-    SSLEnvironmentConfiguration initializingBeanConfig;
+    SSLEnvironmentConfiguration   initializingBeanConfig;
     @Autowired
     OMAGServerOperationalServices operationalServices;
     @Autowired
-    OMAGServerProperties omagServerProperties;
+    OMAGServerProperties          omagServerProperties;
 
     @Test
     void contextLoads() {

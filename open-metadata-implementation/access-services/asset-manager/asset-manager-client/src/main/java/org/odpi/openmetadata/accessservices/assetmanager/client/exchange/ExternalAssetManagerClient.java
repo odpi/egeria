@@ -472,8 +472,8 @@ public class ExternalAssetManagerClient implements ExternalAssetManagerInterface
                                         requestBody,
                                         serverName,
                                         userId,
-                                        openMetadataElementGUID,
-                                        openMetadataElementTypeName);
+                                        openMetadataElementTypeName,
+                                        openMetadataElementGUID);
     }
 
 
