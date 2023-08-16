@@ -1,7 +1,6 @@
 ---
 localServerName: cocoMDS1
 localServerType: Open Metadata and Governance Server
-localServerURL: https://localhost:9443
 localServerUserId: OMAGServer
 maxPageSize: 1000
 repositoryServicesConfig:
@@ -14,7 +13,6 @@ repositoryServicesConfig:
           - Error
   localRepositoryConfig:
     metadataCollectionId: 838005fc-e09f-4688-af89-58254a155cc6
-    localRepositoryMode: OPEN_METADATA_NATIVE
     localRepositoryLocalConnection:
       connectorType:
         connectorProviderClassName: >-

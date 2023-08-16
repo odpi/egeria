@@ -3,13 +3,15 @@ omag:
   server:
     max-page-size: 1000
     name: cocoMDS1
-    user: "${default.omag.server.user}"
+    user: system
     type: OMAG_SERVER
     repository-services:
       audit-log-connectors:
         - provider-class-name: "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider"
           configuration-properties:
-            supportedSeverities: ["Error"]
+            supportedSeverities:
+              - Error
+            dummySecretProperty: "${app-secrets.dummyPassword}"
       local-repository:
         metadata-collection-id: "838005fc-e09f-4688-af89-58254a155cc6"
         local-connection:
@@ -20,3 +22,6 @@ omag:
             address: "https://localhost:9443/servers/cocoMDS1"
         events-to-save: ALL
         events-to-send: ALL
+---
+app-secrets:
+  dummyPassword: top-secret
