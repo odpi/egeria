@@ -4,10 +4,8 @@ package org.odpi.openmetadata.serverchassis.springboot.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;

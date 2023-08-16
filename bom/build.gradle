@@ -87,7 +87,6 @@ ext {
     servletVersion = '4.0.1'
     jakartaServletVersion = '6.0.0'
     sleepycatVersion = '18.3.12'
-    snakeyamlVersion = '2.0'
     slf4jVersion = '2.0.6'
     snappyVersion = '1.1.10.2'
     springbootVersion = '3.1.1'
@@ -255,7 +254,6 @@ dependencies {
         // testng also used in our 'source' code to support unit tests
         api("org.testng:testng:${testngVersion}")
         api("joda-time:joda-time:${jodatimeVersion}")
-        api("org.yaml:snakeyaml:${snakeyamlVersion}")
         api("org.antlr:antlr-runtime:${antlrVersion}")
         api("org.antlr:ST4:${ST4Version}")
         api("org.apache.jena:jena-arq:${jenaVersion}")
