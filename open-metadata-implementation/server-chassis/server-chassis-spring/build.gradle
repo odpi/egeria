@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.projectlombok:lombok'
 //    implementation 'org.yaml:snakeyaml'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
     annotationProcessor 'org.projectlombok:lombok'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
@@ -46,6 +47,7 @@ dependencies {
     implementation project(path: ':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(path: ':open-metadata-implementation:repository-services:repository-services-implementation')
 
+    implementation 'com.google.guava:guava'
     /* IN DEVELOPMENT */
 
     /* Pulling dependencies for some fo the sub-systems enabling 'Metadata Access Store' services  */
