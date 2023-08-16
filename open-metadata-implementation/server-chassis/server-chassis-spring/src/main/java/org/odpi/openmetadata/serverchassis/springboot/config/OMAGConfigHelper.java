@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.serverchassis.springboot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.Getter;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
@@ -55,8 +56,10 @@ public class OMAGConfigHelper {
                     omagServerConfig = mapper.reader().readValue(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
                 } else {
                     //TODO: This is POC implementation. We need better code to deal with yaml i.e. one option is to use Jackson and Yaml data format.
-                    Yaml yaml = new Yaml();
-                    omagServerConfig = yaml.loadAs(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
+//                    Yaml yaml = new Yaml();
+//                    omagServerConfig = yaml.loadAs(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
+                    ObjectMapper yamlmapper = new ObjectMapper(new YAMLFactory());
+                    omagServerConfig = yamlmapper.reader().readValue(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
                 }
 
             } else if (serverProperties.getServer() != null) {

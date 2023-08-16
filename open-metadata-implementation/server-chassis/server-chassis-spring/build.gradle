@@ -26,14 +26,15 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.projectlombok:lombok'
-    implementation 'org.yaml:snakeyaml'
+//    implementation 'org.yaml:snakeyaml'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
     annotationProcessor 'org.projectlombok:lombok'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'ch.qos.logback:logback-classic'
     runtimeOnly 'org.hibernate:hibernate-validator'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
-    runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+//    runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
