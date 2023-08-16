@@ -58,10 +58,11 @@ public class OMAGConfigHelper {
                     Yaml yaml = new Yaml();
                     omagServerConfig = yaml.loadAs(serverProperties.getServerConfigFile().getInputStream(), OMAGServerConfig.class);
                 }
-                LOG.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
 
             } else if (serverProperties.getServer() != null) {
-                LOG.info("Configuring server using omag. application properties [EXPERIMENTAL]");
+
+                LOG.info("Configuration document for server not provided");
+                LOG.info("[EXPERIMENTAL] Configuring server using omag. application properties");
 
                 omagServerConfig = new OMAGServerConfig();
                 omagServerConfig.setLocalServerName(serverProperties.getServer().getName());
@@ -88,6 +89,8 @@ public class OMAGConfigHelper {
                     omagServerConfig.setRepositoryServicesConfig(repositoryServicesConfig);
                 }
             }
+
+            LOG.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
 
         } catch (Exception e) {
             LOG.info("Configuration document cannot be loaded from the resource provided - check application configuration");
