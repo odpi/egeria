@@ -31,13 +31,6 @@ public class OMAGServerProperties {
     private Resource serverConfigFile;
 
     /**
-     * Configures the default user parameter used to activate the OMAG server instance using platform operational services.
-     */
-    @Value("${omag.server-user:${omag.server.user:system}}")
-    private String defaultUser;
-
-
-    /**
      * Server bean represents simplified OMAG server configuration model used for YAML based application configuration.
      */
     private Server server;

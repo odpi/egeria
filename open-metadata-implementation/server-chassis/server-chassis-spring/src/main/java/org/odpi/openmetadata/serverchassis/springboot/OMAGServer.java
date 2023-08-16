@@ -79,10 +79,9 @@ public class OMAGServer implements ApplicationRunner {
      */
     @EventListener(ContextClosedEvent.class)
     private void onContextClosedEvent() {
-        //TODO: Improvement required: the name of the server should be taken for the configuration.
-        if (configHelper.getOmagServerConfig().getLocalServerName() != null) {
+        if (configHelper.getOmagServerConfig() != null) {
             LOG.info("Application stopped, deactivating server: {}", configHelper.getOmagServerConfig().getLocalServerName());
-            operationalServices.deactivateTemporarilyServerList(configHelper.getServerProperties().getDefaultUser(), List.of(configHelper.getOmagServerConfig().getLocalServerName()));
+            operationalServices.deactivateTemporarilyServerList(configHelper.getOmagServerConfig().getLocalServerUserId(), List.of(configHelper.getOmagServerConfig().getLocalServerName()));
         }
     }
 
