@@ -1,12 +1,9 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot.constants;
 
 import java.io.Serializable;
 import java.util.stream.Stream;
-
-/**
- * Created by YM21WO on egeria
- * on 17/08/2023 at 11:19
- */
 public enum Extensions implements Serializable {
 
     YAML(".yaml"),

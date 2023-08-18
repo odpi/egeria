@@ -28,7 +28,6 @@ dependencies {
     implementation 'org.projectlombok:lombok'
 //    implementation 'org.yaml:snakeyaml'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
-    implementation 'com.fasterxml.jackson.core:jackson-core'
     annotationProcessor 'org.projectlombok:lombok'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
@@ -36,9 +35,10 @@ dependencies {
     runtimeOnly 'org.hibernate:hibernate-validator'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 //    runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+//    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
