@@ -7,15 +7,10 @@ import com.google.common.io.Files;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.odpi.openmetadata.serverchassis.springboot.constants.Extensions;
 import org.odpi.openmetadata.serverchassis.springboot.exception.OMAGServerActivationError;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,9 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @EnableConfigurationProperties(OMAGServerProperties.class)
@@ -86,34 +79,14 @@ public class OMAGConfigHelper {
                     //TODO: This is POC implementation. We need better code to deal with yaml i.e. one option is to use Jackson and Yaml data format.
 //                    Yaml yaml = new Yaml();
 //                    omagServerConfig = yaml.loadAs(serverConfigFile.getInputStream(), OMAGServerConfig.class);
-
                     omagServerConfig = yamlObjectMapper.reader()
                             .readValue(serverConfigFile.getInputStream(), OMAGServerConfig.class);
                 }
 
             } else if (isPropertiesConfiguration()) {
 
-                log.info("Configuring server using omag. application properties [EXPERIMENTAL]");
-
-                OMAGServerProperties.Server omagServer = serverProperties.getServer();
-
-                omagServerConfig = new OMAGServerConfig();
-                omagServerConfig.setLocalServerName(omagServer.getName());
-                omagServerConfig.setLocalServerUserId(omagServer.getUser());
-                omagServerConfig.setMaxPageSize(omagServer.getMaxPageSize());
-
-                if (omagServer.getRepositoryServices() != null) {
-                    RepositoryServicesConfig repositoryServicesConfig = omrsConfigurationFactory.getDefaultRepositoryServicesConfig();
-
-                    if (omagServer.getRepositoryServices().getAuditLogConnectors() != null) {
-
-                        repositoryServicesConfig.setAuditLogConnections(getAuditLogConnectors());
-                    }
-                    //TODO: Work in progress currently using default in-mem local repo.
-                    LocalRepositoryConfig localRepositoryConfig = getLocalRepositoryConfig();
-                    repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
-                    omagServerConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-                }
+                log.info("[EXPERIMENTAL] Configuring server using omag. application properties");
+                omagServerConfig = serverProperties.getServerConfig();
             }
 
             log.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
@@ -143,40 +116,7 @@ public class OMAGConfigHelper {
     }
 
     private boolean isPropertiesConfiguration() {
-        return serverProperties.getServer() != null;
-    }
-
-    private List<Connection> getAuditLogConnectors() {
-
-        return serverProperties.getServer()
-                .getRepositoryServices()
-                .getAuditLogConnectors()
-                .stream()
-                .map(o -> getConnection(o))
-                .collect(Collectors.toList());
-    }
-
-    private Connection getConnection(OMAGServerProperties.Connector o) {
-        Connection c = new Connection();
-        ConnectorType ct = new ConnectorType();
-        ct.setConnectorProviderClassName(o.getProviderClassName());
-        c.setConnectorType(ct);
-        //TODO: Fix binding problem. The type of supportedSeverities in configurationProperties should be resolved to List instead of Map!!!
-        c.setConfigurationProperties(o.getConfigurationProperties());
-        return c;
-    }
-
-    private LocalRepositoryConfig getLocalRepositoryConfig() {
-        LocalRepositoryConfig localRepositoryConfig = new LocalRepositoryConfig();
-
-        OMAGServerProperties.LocalRepository localRepository =
-                getServerProperties().getServer().getRepositoryServices().getLocalRepository();
-
-        localRepositoryConfig.setEventsToSendRule(localRepository.getEventsToSend());
-        localRepositoryConfig.setEventsToSaveRule(localRepository.getEventsToSave());
-        localRepositoryConfig.setMetadataCollectionId(localRepository.getMetadataCollectionId());
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection());
-        return localRepositoryConfig;
+        return serverProperties.getServerConfig() != null;
     }
 
 }
