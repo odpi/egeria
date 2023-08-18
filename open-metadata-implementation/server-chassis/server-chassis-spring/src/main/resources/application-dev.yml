@@ -1,27 +1,31 @@
 ---
 omag:
-  server:
-    max-page-size: 1000
-    name: cocoMDS1
-    user: system
-    type: OMAG_SERVER
-    repository-services:
-      audit-log-connectors:
-        - provider-class-name: "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider"
-          configuration-properties:
+  server-config:
+    localServerName: cocoMDS1
+    localServerUserId: OMAGServer
+    maxPageSize: 1000
+    repositoryServicesConfig:
+      auditLogConnections:
+        - connectorType:
+            connectorProviderClassName: >-
+              org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider
+          configurationProperties:
             supportedSeverities:
               - Error
-            dummySecretProperty: "${app-secrets.dummyPassword}"
-      local-repository:
-        metadata-collection-id: "838005fc-e09f-4688-af89-58254a155cc6"
-        local-connection:
-          provider-class-name: "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider"
-        remote-connection:
-          provider-class-name: "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider"
+      localRepositoryConfig:
+        metadataCollectionId: 838005fc-e09f-4688-af89-58254a155cc6
+        localRepositoryLocalConnection:
+          connectorType:
+            connectorProviderClassName: >-
+              org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider
+        localRepositoryRemoteConnection:
+          connectorType:
+            connectorProviderClassName: >-
+              org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider
           endpoint:
-            address: "https://localhost:9443/servers/cocoMDS1"
-        events-to-save: ALL
-        events-to-send: ALL
+            address: https://localhost:9443/servers/cocoMDS1
+        eventsToSaveRule: ALL
+        eventsToSendRule: ALL
 ---
 app-secrets:
   dummyPassword: top-secret
