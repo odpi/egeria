@@ -65,7 +65,6 @@ import org.slf4j.LoggerFactory;
  *     OMRSMetadataInstanceStore is the common interface for working with the contents of a metadata repository.
  *     Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
  *     Relationships).
- *
  *     The methods on OMRSMetadataInstanceStore are in the following major groups:
  * </p>
  * <ul>
@@ -280,7 +279,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * Returns the identifier of the metadata repository.  This is the identifier used to register the
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
-     *
      * This request has been deprecated because it does not work in a server without security (no userId)
      * and to open up a secured server to allow requests without userIds is not a good idea.
      *
@@ -2810,7 +2808,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove
      * relationships attached to the entity.
-     *
      * This method is called when a remote repository calls the variant of purgeEntity that
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
      * However, it may also be used to purge after a soft-delete.
@@ -3209,7 +3206,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * This method is called when a remote repository calls the variant of purgeRelationship that
      * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
      * However, it may also be used to purge after a soft-delete.
-     *
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.

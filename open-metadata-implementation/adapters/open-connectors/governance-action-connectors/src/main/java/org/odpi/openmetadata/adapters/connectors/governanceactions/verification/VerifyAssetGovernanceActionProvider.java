@@ -42,7 +42,7 @@ public class VerifyAssetGovernanceActionProvider extends GovernanceActionService
     static final String PROVISIONING_COMPLETE_GUARD = "provisioning-complete";
     static final String PROVISIONING_FAILED_GUARD   = "provisioning-failed";
 
-    private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
+    private static final String connectorClassName = null; // todo
 
 
     /**
@@ -80,6 +80,7 @@ public class VerifyAssetGovernanceActionProvider extends GovernanceActionService
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY);

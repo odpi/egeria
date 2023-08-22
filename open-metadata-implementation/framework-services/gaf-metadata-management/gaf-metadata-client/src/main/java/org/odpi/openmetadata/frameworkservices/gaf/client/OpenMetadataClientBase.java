@@ -363,8 +363,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
                                                                                                   this.getEffectiveTimeAsLong(effectiveTime),
-                                                                                                  Integer.toString(startFrom),
-                                                                                                  Integer.toString(pageSize));
+                                                                                                  startFrom,
+                                                                                                  pageSize);
 
         return restResult.getElementList();
     }
@@ -405,7 +405,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
 
-        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
+        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/any-type?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
         final String specificURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -421,12 +421,12 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                               serviceURLMarker,
                                                                               userId,
                                                                               elementGUID,
-                                                                              Integer.toString(startingAtEnd),
+                                                                              startingAtEnd,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
                                                                               this.getEffectiveTimeAsLong(effectiveTime),
-                                                                              Integer.toString(startFrom),
-                                                                              Integer.toString(pageSize));
+                                                                              startFrom,
+                                                                              pageSize);
         }
         else
         {
@@ -437,12 +437,12 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                               userId,
                                                                               elementGUID,
                                                                               relationshipTypeName,
-                                                                              Integer.toString(startingAtEnd),
+                                                                              startingAtEnd,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
                                                                               this.getEffectiveTimeAsLong(effectiveTime),
-                                                                              Integer.toString(startFrom),
-                                                                              Integer.toString(pageSize));
+                                                                              startFrom,
+                                                                              pageSize);
         }
 
         return restResult.getElementList();
@@ -516,8 +516,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
                                                                                                   this.getEffectiveTimeAsLong(effectiveTime),
-                                                                                                  Integer.toString(startFrom),
-                                                                                                  Integer.toString(pageSize));
+                                                                                                  startFrom,
+                                                                                                  pageSize);
 
         return restResult.getElementList();
     }
@@ -580,10 +580,53 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                 forLineage,
                                                                                                                 forDuplicateProcessing,
                                                                                                                 this.getEffectiveTimeAsLong(effectiveTime),
-                                                                                                                Integer.toString(startFrom),
-                                                                                                                Integer.toString(pageSize));
+                                                                                                                startFrom,
+                                                                                                                pageSize);
 
         return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param relationshipGUID unique identifier for the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return relationship properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public RelatedMetadataElements getRelationshipByGUID(String  userId,
+                                                         String  relationshipGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName = "getRelationshipByGUID";
+        final String guidParameterName = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/relationship/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
+
+        RelatedMetadataElementsResponse restResult = restClient.callRelatedMetadataElementGetRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      serverName,
+                                                                                                      serviceURLMarker,
+                                                                                                      userId,
+                                                                                                      relationshipGUID,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      this.getEffectiveTimeAsLong(effectiveTime));
+
+        return restResult.getElement();
     }
 
 
@@ -2435,7 +2478,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -2480,7 +2522,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *

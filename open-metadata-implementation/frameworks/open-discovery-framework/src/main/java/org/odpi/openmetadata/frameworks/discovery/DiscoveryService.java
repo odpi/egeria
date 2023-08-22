@@ -213,24 +213,7 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
+        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
-
-        if (this.embeddedConnectors != null)
-        {
-            for (Connector embeddedConnector : this.embeddedConnectors)
-            {
-                if (embeddedConnector != null)
-                {
-                    try
-                    {
-                        embeddedConnector.disconnect();
-                    }
-                    catch (Exception error)
-                    {
-                        // keep going
-                    }
-                }
-            }
-        }
     }
 }

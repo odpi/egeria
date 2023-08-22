@@ -68,6 +68,7 @@ public class KafkaMonitorIntegrationProvider extends IntegrationConnectorProvide
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 

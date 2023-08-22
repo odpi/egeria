@@ -383,7 +383,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void logExceptionToAudit(OMRSInstanceEvent instanceEvent, Exception e) {
         String actionDescription = "Asset Lineage OMAS is unable to process an OMRSTopic event.";
 
-        auditLog.logException(actionDescription,
-                AssetLineageAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(e.getMessage(), serverName, instanceEvent.getInstanceEventType().getName()), instanceEvent.toString(), e);
+        auditLog.logMessage(actionDescription,
+                AssetLineageAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(e.getMessage(), serverName, instanceEvent.getInstanceEventType().getName()), instanceEvent.toString());
     }
 }

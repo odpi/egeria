@@ -75,6 +75,7 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY);

@@ -20,6 +20,7 @@ import java.util.List;
 public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase implements VirtualConnectorExtension
 {
     private final List<OpenMetadataTopicConnector> topicConnectors = new ArrayList<>();
+    protected List<Connector>          embeddedConnectors          = null;
 
 
     /**
@@ -77,6 +78,8 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
     @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
+        this.embeddedConnectors = embeddedConnectors;
+
         if (embeddedConnectors != null)
         {
             for (Connector  embeddedConnector : embeddedConnectors)
@@ -133,14 +136,7 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
         /*
          * Step through the embedded connectors and shut them down.
          */
-        for (Connector topicConnector : topicConnectors)
-        {
-            if (topicConnector != null)
-            {
-                topicConnector.disconnect();
-            }
-        }
-
+        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
     }
 }

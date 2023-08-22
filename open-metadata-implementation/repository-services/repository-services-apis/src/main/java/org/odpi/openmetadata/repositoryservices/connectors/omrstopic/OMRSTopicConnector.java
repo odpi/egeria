@@ -624,14 +624,10 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
 
         final String actionDescription = "Disconnect OMRS Topic Connector";
-
-        for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
-        {
-            eventBusConnector.disconnect();
-        }
 
         if ((auditLog != null) && (! unknownTopicName.equals(topicName)))
         {

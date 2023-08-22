@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
@@ -29,6 +31,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -590,6 +593,73 @@ public class OpenMetadataStoreRESTServices
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElementsResponse getRelationshipByGUID(String  serverName,
+                                                                 String  serviceURLMarker,
+                                                                 String  userId,
+                                                                 String  relationshipGUID,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing,
+                                                                 long    effectiveTime)
+    {
+        final String methodName = "getRelationshipByGUID";
+        final String guidParameterName = "relationshipGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        RelatedMetadataElementsResponse response = new RelatedMetadataElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            Relationship relationship = handler.getAttachmentLink(userId,
+                                                                 relationshipGUID,
+                                                                 guidParameterName,
+                                                                 null,
+                                                                 this.getEffectiveTimeFromLong(effectiveTime),
+                                                                 methodName);
+
+            if (relationship != null)
+            {
+                RelatedElementsConverter<RelatedMetadataElements> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
+                                                                                                             handler.getServiceName(),
+                                                                                                             serverName);
+                response.setElement(converter.getNewRelationshipBean(RelatedMetadataElements.class,
+                                                                     relationship,
+                                                                     methodName));
             }
         }
         catch (Exception error)
