@@ -109,6 +109,30 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
+     * Copy/clone Constructor to return a copy of a connection object but with a replacement connector type.
+     *
+     * @param templateConnection template object to copy.
+     * @param connectorType connector type to replace in the connection
+     */
+    public ConnectionProperties(ConnectionProperties templateConnection,
+                                ConnectorType        connectorType)
+    {
+        super(templateConnection);
+
+        if (templateConnection == null)
+        {
+            this.connectionBean = new Connection();
+        }
+        else
+        {
+            this.connectionBean = new Connection(templateConnection.getConnectionBean());
+        }
+
+        this.connectionBean.setConnectorType(connectorType);
+    }
+
+
+    /**
      * Return the bean with all the properties.
      *
      * @return connection bean

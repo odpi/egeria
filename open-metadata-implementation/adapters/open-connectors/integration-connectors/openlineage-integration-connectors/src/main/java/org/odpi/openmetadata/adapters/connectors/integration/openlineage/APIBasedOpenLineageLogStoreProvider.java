@@ -58,6 +58,7 @@ public class APIBasedOpenLineageLogStoreProvider extends IntegrationConnectorPro
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 

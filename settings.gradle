@@ -61,7 +61,6 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
-include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
 include(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
@@ -335,6 +334,7 @@ include(':open-metadata-conformance-suite:open-metadata-conformance-suite-spring
 //include(':open-metadata-distribution:open-metadata-packages:open-metadata-adapter-package')
 //include(':open-metadata-distribution:open-metadata-packages')
 include(':open-metadata-distribution:open-metadata-assemblies')
+include(':open-metadata-distribution:omag-server-platform')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
 include(':open-metadata-resources:open-metadata-archives:open-connector-archives')
@@ -369,6 +369,7 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:governance-en
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:governance-program-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
+include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
 //if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
 //    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')

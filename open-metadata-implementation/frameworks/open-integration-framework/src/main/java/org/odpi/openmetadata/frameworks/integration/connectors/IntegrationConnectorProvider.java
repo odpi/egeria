@@ -19,6 +19,10 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
     private long    refreshTimeInterval = 60L; // default to once an hour
     private boolean usesBlockingCalls   = false;
 
+    /*
+     * The type name of the asset that this connector supports.
+     */
+    protected static final String supportedAssetTypeName = "IntegrationConnector";
 
     /*
      * Descriptive information about the connector for the connector type and audit log.

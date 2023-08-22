@@ -30,7 +30,9 @@ public class RelatedMetadataElements extends ElementControlHeader
     private Date              effectiveFromTime      = null;
     private Date              effectiveToTime        = null;
     private ElementProperties relationshipProperties = null;
+    private String            labelAtEnd1            = null;
     private String            elementGUIDAtEnd1      = null;
+    private String            labelAtEnd2            = null;
     private String            elementGUIDAtEnd2      = null;
 
 
@@ -61,6 +63,8 @@ public class RelatedMetadataElements extends ElementControlHeader
             relationshipProperties = template.getRelationshipProperties();
             elementGUIDAtEnd1      = template.getElementGUIDAtEnd1();
             elementGUIDAtEnd2      = template.getElementGUIDAtEnd2();
+            labelAtEnd1            = template.getLabelAtEnd1();
+            labelAtEnd2            = template.getLabelAtEnd2();
         }
     }
 
@@ -211,6 +215,50 @@ public class RelatedMetadataElements extends ElementControlHeader
 
 
     /**
+     * Return the descriptive label for end 1 of the relationship.
+     *
+     * @return string name
+     */
+    public String getLabelAtEnd1()
+    {
+        return labelAtEnd1;
+    }
+
+
+    /**
+     * Set up the descriptive label for end 1 of the relationship.
+     *
+     * @param labelAtEnd1 string name
+     */
+    public void setLabelAtEnd1(String labelAtEnd1)
+    {
+        this.labelAtEnd1 = labelAtEnd1;
+    }
+
+
+    /**
+     * Return the descriptive label for end 2 of the relationship.
+     *
+     * @return string name
+     */
+    public String getLabelAtEnd2()
+    {
+        return labelAtEnd2;
+    }
+
+
+    /**
+     * Set up the descriptive label for end 2 of the relationship.
+     *
+     * @param labelAtEnd2 string name
+     */
+    public void setLabelAtEnd2(String labelAtEnd2)
+    {
+        this.labelAtEnd2 = labelAtEnd2;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -224,7 +272,9 @@ public class RelatedMetadataElements extends ElementControlHeader
                        ", effectiveFromTime=" + effectiveFromTime +
                        ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
+                       ", labelAtEnd1='" + labelAtEnd1 + '\'' +
                        ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
+                       ", labelAtEnd2='" + labelAtEnd2 + '\'' +
                        ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
@@ -263,7 +313,9 @@ public class RelatedMetadataElements extends ElementControlHeader
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
                        Objects.equals(elementGUIDAtEnd1, that.elementGUIDAtEnd1) &&
-                       Objects.equals(elementGUIDAtEnd2, that.elementGUIDAtEnd2);
+                       Objects.equals(labelAtEnd1, that.labelAtEnd1) &&
+                       Objects.equals(elementGUIDAtEnd2, that.elementGUIDAtEnd2) &&
+                       Objects.equals(labelAtEnd2, that.labelAtEnd2);
     }
 
 

@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
  * OpenMetadataPlatformSecurityConnector provides the base class for a connector that validates access to the

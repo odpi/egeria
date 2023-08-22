@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The OMAGServerInstanceAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Identifier - to uniquely identify the message</li>
@@ -38,17 +37,26 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
     NO_TOPIC_INFORMATION("OMAG-MULTI-TENANT-0002",
                                  OMRSAuditLogRecordSeverity.ERROR,
                          "Method {0} called on behalf of the {1} service is unable to create a client-side open " +
-                                         "metadata topic connection because the topic name is not configured in the configuration for this service.",
+                                         "metadata topic connection because the topic name is not configured in the configuration for this service",
                          "This is a configuration error and an exception is sent to the requester.",
                          "Correct the configuration of the access service to include the name of the topic."),
 
+    /**
+     * OMAG-MULTI-TENANT-0003 - User {0} issued REST API call to operation {1} of service {2} on server {3}
+     */
+    USER_REQUEST_ACTIVITY("OMAG-MULTI-TENANT-0003",
+                         OMRSAuditLogRecordSeverity.ACTIVITY,
+                         "User {0} issued REST API call to operation {1} of service {2} on server {3}",
+                         "This message is used to capture user activity.",
+                         "No action is required, but this message can be used to capture user activity information."),
+
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**

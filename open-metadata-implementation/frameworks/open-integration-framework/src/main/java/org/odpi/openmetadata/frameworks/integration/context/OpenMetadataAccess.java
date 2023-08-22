@@ -317,6 +317,30 @@ public class OpenMetadataAccess
 
 
     /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param relationshipGUID unique identifier for the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return relationship properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElements getRelationshipByGUID(String  relationshipGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return openMetadataStore.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
      * This version of the method allows access to advanced features such as multiple states and

@@ -27,7 +27,7 @@ public class RelatedMetadataElement extends ElementControlHeader
     private Date                effectiveFromTime      = null;
     private Date                effectiveToTime        = null;
     private ElementProperties   relationshipProperties = null;
-    private OpenMetadataElement elementProperties      = null;
+    private OpenMetadataElement element                = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class RelatedMetadataElement extends ElementControlHeader
             effectiveFromTime = template.getEffectiveFromTime();
             effectiveToTime   = template.getEffectiveToTime();
             relationshipProperties = template.getRelationshipProperties();
-            elementProperties = template.getElementProperties();
+            element = template.getElement();
         }
     }
 
@@ -172,17 +172,17 @@ public class RelatedMetadataElement extends ElementControlHeader
      *
      * @return related element
      */
-    public OpenMetadataElement getElementProperties() { return elementProperties; }
+    public OpenMetadataElement getElement() { return element; }
 
 
     /**
      * Set up the properties of the related element.
      *
-     * @param elementProperties related element
+     * @param element related element
      */
-    public void setElementProperties(OpenMetadataElement elementProperties)
+    public void setElement(OpenMetadataElement element)
     {
-        this.elementProperties = elementProperties;
+        this.element = element;
     }
 
 
@@ -200,7 +200,7 @@ public class RelatedMetadataElement extends ElementControlHeader
                        ", effectiveFromTime=" + effectiveFromTime +
                        ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
-                       ", elementProperties=" + elementProperties +
+                       ", elementProperties=" + element +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +
@@ -237,7 +237,7 @@ public class RelatedMetadataElement extends ElementControlHeader
                        Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
-                       Objects.equals(elementProperties, that.elementProperties);
+                       Objects.equals(element, that.element);
     }
 
 
@@ -250,6 +250,6 @@ public class RelatedMetadataElement extends ElementControlHeader
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, effectiveFromTime,
-                            effectiveToTime, relationshipProperties, elementProperties);
+                            effectiveToTime, relationshipProperties, element);
     }
 }

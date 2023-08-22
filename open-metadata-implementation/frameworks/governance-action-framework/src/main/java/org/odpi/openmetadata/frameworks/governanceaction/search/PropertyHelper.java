@@ -237,8 +237,7 @@ public class PropertyHelper
         {
             resultingProperties = properties;
         }
-
-
+        
         EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
 
         enumTypePropertyValue.setSymbolicName(symbolicName);
@@ -504,7 +503,7 @@ public class PropertyHelper
                     resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
-                else if (mapPropertyValue instanceof List propertyAsList)
+                else if (mapPropertyValue instanceof List<?> propertyAsList)
                 {
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
@@ -852,14 +851,12 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof MapTypePropertyValue)
+                    if (propertyValue instanceof MapTypePropertyValue mapTypePropertyValue)
                     {
-                        MapTypePropertyValue mapTypePropertyValue = (MapTypePropertyValue) propertyValue;
-                        
                         return this.getElementPropertiesAsMap(mapTypePropertyValue.getMapValues());
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -891,9 +888,8 @@ public class PropertyHelper
 
                     if (actualPropertyValue != null)
                     {
-                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue)
+                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                         {
-                            PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) actualPropertyValue;
                             resultingMap.put(mapPropertyName, primitiveTypePropertyValue.getPrimitiveValue());
                         }
                         else
@@ -936,10 +932,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -949,7 +943,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -986,10 +980,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -999,13 +991,61 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
             }
         }
         
+        return 0;
+    }
+
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * an long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public long  getLongProperty(String             sourceName,
+                                 String             propertyName,
+                                 ElementProperties properties,
+                                 String             methodName)
+    {
+        final String  thisMethodName = "getLongProperty";
+
+        if (properties != null)
+        {
+            PropertyValue propertyValue = properties.getPropertyValue(propertyName);
+
+            if (propertyValue != null)
+            {
+                try
+                {
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    {
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG)
+                        {
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Long.parseLong(primitiveTypePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
         return 0;
     }
 
@@ -1035,10 +1075,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -1050,7 +1088,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -1088,10 +1126,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -1101,7 +1137,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -1193,7 +1229,7 @@ public class PropertyHelper
     private void throwHelperLogicError(String     sourceName,
                                        String     originatingMethodName,
                                        String     localMethodName,
-                                       Throwable  unexpectedException)
+                                       Exception  unexpectedException)
     {
         throw new GAFRuntimeException(GAFErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
                                                                                                localMethodName,

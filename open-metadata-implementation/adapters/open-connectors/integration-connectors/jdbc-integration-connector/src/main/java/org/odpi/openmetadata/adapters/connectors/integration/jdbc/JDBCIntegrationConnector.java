@@ -6,7 +6,6 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcM
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadataTransfer;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorConnector;
 
@@ -14,7 +13,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,26 +28,22 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
  */
 public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
 {
-
     private JDBCResourceConnector JDBCResourceConnector;
 
+
     /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
+     * Indicates that the connector is completely configured and can begin processing.
+     * This call can be used to register with non-blocking services.
      *
-     * @param embeddedConnectors  list of connectors
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    public void start() throws ConnectorCheckedException
     {
-        super.initializeEmbeddedConnectors(embeddedConnectors);
 
+        //todo - properly extract the JDBC resource connector (and if no embedded then create connection and call connector broker.
+                JDBCResourceConnector = (JDBCResourceConnector) embeddedConnectors.get(0);
 
-        JDBCResourceConnector = (JDBCResourceConnector) embeddedConnectors.get(0);
     }
-
 
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
@@ -101,7 +95,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
         String methodName = "connect";
         try
         {
-            return JDBCResourceConnector.asDataSource().getConnection();
+            return JDBCResourceConnector.getDataSource().getConnection();
         }
         catch (SQLException sqlException)
         {
@@ -111,6 +105,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
 
         return null;
     }
+
 
     public void close(Connection connection)
     {

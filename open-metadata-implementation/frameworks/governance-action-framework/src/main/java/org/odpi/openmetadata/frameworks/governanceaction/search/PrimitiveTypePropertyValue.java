@@ -114,6 +114,15 @@ public class PrimitiveTypePropertyValue extends PropertyValue
          * All ok so set the category
          */
         this.primitiveTypeCategory = primitiveTypeCategory;
+
+        if (primitiveTypeCategory == null)
+        {
+            super.setTypeName(null);
+        }
+        else
+        {
+            super.setTypeName(primitiveTypeCategory.getName());
+        }
     }
 
 

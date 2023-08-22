@@ -5,14 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 
 /**
@@ -82,7 +80,7 @@ public class RelatedElementConverter<B> extends GovernanceEngineOMASConverter<B>
 
                 super.fillOpenMetadataElement(relatedBean, entity);
 
-                bean.setElementProperties(relatedBean);
+                bean.setElement(relatedBean);
             }
 
             return returnBean;

@@ -251,7 +251,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
                     if (lineageRelationships.contains(relationshipName))
                     {
-                        OpenMetadataElement nextAsset = lineageLink.getElementProperties();
+                        OpenMetadataElement nextAsset = lineageLink.getElement();
 
                         /*
                          * Some lineage graphs are circular so the covered entity guids prevents the same element from being processed twice.

@@ -11,6 +11,14 @@ import java.util.List;
  */
 public abstract class GovernanceActionServiceProviderBase extends ConnectorProviderBase
 {
+    /*
+     * The type name of the asset that this connector supports.
+     */
+    protected static final String supportedAssetTypeName = "GovernanceActionService";
+
+    /*
+     * Additional configuration to aid choreographing this service in a Governance Action Process.
+     */
     protected List<String> supportedRequestTypes       = null;
     protected List<String> supportedRequestParameters  = null;
     protected List<String> supportedRequestSourceNames = null;

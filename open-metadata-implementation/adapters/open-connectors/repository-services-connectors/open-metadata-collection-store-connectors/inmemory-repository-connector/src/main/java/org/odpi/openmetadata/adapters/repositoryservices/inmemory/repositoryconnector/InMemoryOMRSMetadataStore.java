@@ -262,7 +262,7 @@ class InMemoryOMRSMetadataStore
     private String generateGUID(String typeName,
                                 String guid)
     {
-        return typeName + ":" + guid;
+        return typeName + "-" + guid;
     }
 
 
@@ -1384,7 +1384,7 @@ class InMemoryOMRSMetadataStore
                                                                boolean oldestFirst)
         {
             List<Relationship> historyResults = new ArrayList<>();
-            Date               followingUpdateTime = null;
+            Date               followingUpdateTime;
 
             /*
              * Do not have a relationship
