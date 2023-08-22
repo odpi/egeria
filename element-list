@@ -452,6 +452,8 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties
 org.odpi.openmetadata.adapters.connectors.restclients
 org.odpi.openmetadata.adapters.connectors.restclients.factory
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc

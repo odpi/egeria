@@ -747,6 +747,16 @@ loadScripts(document, 'script');</script>
 <dd><code>memberGUID</code> - unique identifier of the element that is being added to the collection</dd>
 <dd><code>memberGUIDParameterName</code> - parameter supplying the memberGUID</dd>
 <dd><code>membershipRationale</code> - why is the element a member? (optional)</dd>
+<dd><code>confidence</code> - level of confidence that the membership is correct - from 0 to 100</dd>
+<dd><code>membershipStatus</code> - status of member</dd>
+<dd><code>userDefinedStatus</code> - extension to membership status values</dd>
+<dd><code>createdBy</code> - who created the relationship</dd>
+<dd><code>expression</code> - what is the expression used to characterize the membership</dd>
+<dd><code>source</code> - what was the source of the membership recommendation</dd>
+<dd><code>steward</code> - which steward is responsible for the membership</dd>
+<dd><code>stewardTypeName</code> - type name of the element representing the steward</dd>
+<dd><code>stewardPropertyName</code> - property name of the property providing the identifier for the steward (eg qualifiedName)</dd>
+<dd><code>notes</code> - additional notes for/from the steward</dd>
 <dd><code>effectiveFrom</code> - the time that the relationship element must be effective from (null for any time, new Date() for now)</dd>
 <dd><code>effectiveTo</code> - the time that the relationship must be effective to (null for any time, new Date() for now)</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>

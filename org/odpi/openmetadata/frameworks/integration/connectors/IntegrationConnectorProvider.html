@@ -51,7 +51,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/apacheatlas/ApacheAtlasIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas">ApacheAtlasIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/APIBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">APIBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/FileBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">FileBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/GovernanceActionOpenLineageIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">GovernanceActionOpenLineageIntegrationProvider</a></code>, <code><a href="../../../governanceservers/integrationdaemonservices/connectors/IntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors">IntegrationConnectorProvider</a></code>, <code><a href="../../../adapters/connectors/integration/kafka/KafkaMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafka">KafkaMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openapis/OpenAPIMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">OpenAPIMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverIntegrationProvider</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/integration/apacheatlas/ApacheAtlasIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas">ApacheAtlasIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/APIBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">APIBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/elasticsearch/ElasticsearchIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.elasticsearch">ElasticsearchIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/FileBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">FileBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/GovernanceActionOpenLineageIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">GovernanceActionOpenLineageIntegrationProvider</a></code>, <code><a href="../../../governanceservers/integrationdaemonservices/connectors/IntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors">IntegrationConnectorProvider</a></code>, <code><a href="../../../adapters/connectors/integration/jdbc/JDBCIntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc">JDBCIntegrationConnectorProvider</a></code>, <code><a href="../../../adapters/connectors/integration/kafka/KafkaMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafka">KafkaMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openapis/OpenAPIMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">OpenAPIMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverIntegrationProvider</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationConnectorProvider</span>
@@ -104,6 +104,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#supportedAssetTypeName" class="member-name-link">supportedAssetTypeName</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../../connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../../connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -171,6 +180,28 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="supportedAssetTypeName">
+<h3>supportedAssetTypeName</h3>
+<div class="member-signature"><span class="modifiers">protected static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">supportedAssetTypeName</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider.supportedAssetTypeName">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">

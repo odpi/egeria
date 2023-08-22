@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../adapters/connectors/dynamicarchivers/DynamicArchiveProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers">DynamicArchiveProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/watchdog/GenericWatchdogGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericWatchdogGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/provisioning/MoveCopyFileGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">MoveCopyFileGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGovernanceActionProvider</a></code>, <code><a href="../../engineservices/repositorygovernance/connector/RepositoryGovernanceProvider.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.connector">RepositoryGovernanceProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/verification/VerifyAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyAssetGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/verification/VerifyFileFolderGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyFileFolderGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/ZonePublisherGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">ZonePublisherGovernanceActionProvider</a></code></dd>
+<dd><code><a href="../../adapters/connectors/governanceactions/watchdog/GenericWatchdogGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericWatchdogGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/provisioning/MoveCopyFileGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">MoveCopyFileGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/verification/VerifyAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyAssetGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/verification/VerifyFileFolderGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyFileFolderGovernanceActionProvider</a></code>, <code><a href="../../adapters/connectors/governanceactions/remediation/ZonePublisherGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">ZonePublisherGovernanceActionProvider</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">GovernanceActionServiceProviderBase</span>
@@ -103,21 +103,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#supportedGuards" class="member-name-link">supportedGuards</a></code></div>
+<div class="col-first even-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#supportedAssetTypeName" class="member-name-link">supportedAssetTypeName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#supportedRequestParameters" class="member-name-link">supportedRequestParameters</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedGuards" class="member-name-link">supportedGuards</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#supportedRequestSourceNames" class="member-name-link">supportedRequestSourceNames</a></code></div>
+<div class="col-second even-row-color"><code><a href="#supportedRequestParameters" class="member-name-link">supportedRequestParameters</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#supportedRequestTypes" class="member-name-link">supportedRequestTypes</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedRequestSourceNames" class="member-name-link">supportedRequestSourceNames</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#supportedTargetActionNames" class="member-name-link">supportedTargetActionNames</a></code></div>
+<div class="col-second even-row-color"><code><a href="#supportedRequestTypes" class="member-name-link">supportedRequestTypes</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedTargetActionNames" class="member-name-link">supportedTargetActionNames</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
@@ -193,6 +196,20 @@ loadScripts(document, 'script');</script>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="supportedAssetTypeName">
+<h3>supportedAssetTypeName</h3>
+<div class="member-signature"><span class="modifiers">protected static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">supportedAssetTypeName</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase.supportedAssetTypeName">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="supportedRequestTypes">
 <h3>supportedRequestTypes</h3>

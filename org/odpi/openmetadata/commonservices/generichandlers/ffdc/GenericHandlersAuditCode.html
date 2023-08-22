@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The GenericHandlersAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -117,37 +116,73 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACTION_CLAIM_REQUEST" class="member-name-link">ACTION_CLAIM_REQUEST</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0023 - Governance engine with {0} userId is claiming governance action {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ADD_ACTION_TARGETS" class="member-name-link">ADD_ACTION_TARGETS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#EXTERNAL_RELATIONSHIP_REMOVED" class="member-name-link">EXTERNAL_RELATIONSHIP_REMOVED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#EXTERNAL_RELATIONSHIP_UPDATED" class="member-name-link">EXTERNAL_RELATIONSHIP_UPDATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_STATUS_CHANGE" class="member-name-link">GOVERNANCE_ACTION_STATUS_CHANGE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#IGNORING_UNNECESSARY_ENTITY_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_ENTITY_UPDATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INITIATE_GOVERNANCE_ACTION" class="member-name-link">INITIATE_GOVERNANCE_ACTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#INITIATE_GOVERNANCE_ACTION_FROM_TYPE" class="member-name-link">INITIATE_GOVERNANCE_ACTION_FROM_TYPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NEW_EXTERNAL_RELATIONSHIP" class="member-name-link">NEW_EXTERNAL_RELATIONSHIP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PERMITTED_SYNC_CHANGING" class="member-name-link">PERMITTED_SYNC_CHANGING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SETTING_UP_EXTERNAL_ID" class="member-name-link">SETTING_UP_EXTERNAL_ID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SUCCESSFUL_ACTION_CLAIM_REQUEST" class="member-name-link">SUCCESSFUL_ACTION_CLAIM_REQUEST</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_DELETE_UNANCHORED_BEAN" class="member-name-link">UNABLE_TO_DELETE_UNANCHORED_BEAN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0022 - Adding action target {0} ({1}) to governance action {2} ({3})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ASSET_ACTIVITY_CREATE" class="member-name-link">ASSET_ACTIVITY_CREATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0026 - User {0} created {1} asset {2} during operation {3} of service {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EXTERNAL_RELATIONSHIP_REMOVED" class="member-name-link">EXTERNAL_RELATIONSHIP_REMOVED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0006 - {0} has removed the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EXTERNAL_RELATIONSHIP_UPDATED" class="member-name-link">EXTERNAL_RELATIONSHIP_UPDATED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0005 - {0} has updated an existing {1} relationship {2} during method {3} on behalf of external metadata manager {4} ({5})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_STATUS_CHANGE" class="member-name-link">GOVERNANCE_ACTION_STATUS_CHANGE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for governance action {2} by governance engine with {3} userId</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0010 - Ignoring unnecessary update to {0} classification attached to entity with unique identifier {1} through method {2} by user {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IGNORING_UNNECESSARY_ENTITY_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_ENTITY_UPDATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0008 - Ignoring unnecessary update to {0} entity with unique identifier {1} through method {2} by user {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0009 - Ignoring unnecessary update to {0} relationship with unique identifier {1} through method {2} by user {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INITIATE_GOVERNANCE_ACTION" class="member-name-link">INITIATE_GOVERNANCE_ACTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0020 - Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INITIATE_GOVERNANCE_ACTION_FROM_TYPE" class="member-name-link">INITIATE_GOVERNANCE_ACTION_FROM_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0021 - Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NEW_EXTERNAL_RELATIONSHIP" class="member-name-link">NEW_EXTERNAL_RELATIONSHIP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0004 - {0} has created a new {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PERMITTED_SYNC_CHANGING" class="member-name-link">PERMITTED_SYNC_CHANGING</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0003 - The permitted synchronization for {0} {1} ({2}) has changed for identifier {3} from {4} to {5}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SETTING_UP_EXTERNAL_ID" class="member-name-link">SETTING_UP_EXTERNAL_ID</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0002 - {0} has linked {1} element {2} to external identifier {3} from third party metadata source {4} ({5}) as part of the {6} operation</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SUCCESSFUL_ACTION_CLAIM_REQUEST" class="member-name-link">SUCCESSFUL_ACTION_CLAIM_REQUEST</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed governance action {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_DELETE_UNANCHORED_BEAN" class="member-name-link">UNABLE_TO_DELETE_UNANCHORED_BEAN</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0007 - The Open Metadata Service {0} has deleted a relationship, resulting in entity {1} of type {2} ({3}) losing its anchor.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0001 - The Open Metadata Service {0} is not able to set the Anchors classification on entity {1} of type {2} ({3}) during method {4}.</div>
+</div>
 </div>
 </section>
 </li>
@@ -212,96 +247,121 @@ the order they are declared.</div>
 <section class="detail" id="UNABLE_TO_SET_ANCHORS">
 <h3>UNABLE_TO_SET_ANCHORS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_ANCHORS</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0001 - The Open Metadata Service {0} is not able to set the Anchors classification on entity {1} of type {2} ({3}) during method {4}.
+ The resulting exception was {5} with error message {6}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SETTING_UP_EXTERNAL_ID">
 <h3>SETTING_UP_EXTERNAL_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">SETTING_UP_EXTERNAL_ID</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0002 - {0} has linked {1} element {2} to external identifier {3} from third party metadata source {4} ({5}) as part of the {6} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PERMITTED_SYNC_CHANGING">
 <h3>PERMITTED_SYNC_CHANGING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">PERMITTED_SYNC_CHANGING</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0003 - The permitted synchronization for {0} {1} ({2}) has changed for identifier {3} from {4} to {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEW_EXTERNAL_RELATIONSHIP">
 <h3>NEW_EXTERNAL_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">NEW_EXTERNAL_RELATIONSHIP</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0004 - {0} has created a new {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXTERNAL_RELATIONSHIP_UPDATED">
 <h3>EXTERNAL_RELATIONSHIP_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">EXTERNAL_RELATIONSHIP_UPDATED</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0005 - {0} has updated an existing {1} relationship {2} during method {3} on behalf of external metadata manager {4} ({5})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXTERNAL_RELATIONSHIP_REMOVED">
 <h3>EXTERNAL_RELATIONSHIP_REMOVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">EXTERNAL_RELATIONSHIP_REMOVED</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0006 - {0} has removed the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_DELETE_UNANCHORED_BEAN">
 <h3>UNABLE_TO_DELETE_UNANCHORED_BEAN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_DELETE_UNANCHORED_BEAN</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0007 - The Open Metadata Service {0} has deleted a relationship, resulting in entity {1} of type {2} ({3}) losing its anchor.
+ An attempt was made to delete this unanchored entity, which failed.  The resulting exception was {5} with error message {6}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IGNORING_UNNECESSARY_ENTITY_UPDATE">
 <h3>IGNORING_UNNECESSARY_ENTITY_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_UNNECESSARY_ENTITY_UPDATE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0008 - Ignoring unnecessary update to {0} entity with unique identifier {1} through method {2} by user {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE">
 <h3>IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0009 - Ignoring unnecessary update to {0} relationship with unique identifier {1} through method {2} by user {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE">
 <h3>IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0010 - Ignoring unnecessary update to {0} classification attached to entity with unique identifier {1} through method {2} by user {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INITIATE_GOVERNANCE_ACTION">
 <h3>INITIATE_GOVERNANCE_ACTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">INITIATE_GOVERNANCE_ACTION</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0020 - Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INITIATE_GOVERNANCE_ACTION_FROM_TYPE">
 <h3>INITIATE_GOVERNANCE_ACTION_FROM_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">INITIATE_GOVERNANCE_ACTION_FROM_TYPE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0021 - Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ADD_ACTION_TARGETS">
 <h3>ADD_ACTION_TARGETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ADD_ACTION_TARGETS</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0022 - Adding action target {0} ({1}) to governance action {2} ({3})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACTION_CLAIM_REQUEST">
 <h3>ACTION_CLAIM_REQUEST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ACTION_CLAIM_REQUEST</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0023 - Governance engine with {0} userId is claiming governance action {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SUCCESSFUL_ACTION_CLAIM_REQUEST">
 <h3>SUCCESSFUL_ACTION_CLAIM_REQUEST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">SUCCESSFUL_ACTION_CLAIM_REQUEST</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed governance action {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_STATUS_CHANGE">
 <h3>GOVERNANCE_ACTION_STATUS_CHANGE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_STATUS_CHANGE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for governance action {2} by governance engine with {3} userId</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ASSET_ACTIVITY_CREATE">
+<h3>ASSET_ACTIVITY_CREATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_CREATE</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0026 - User {0} created {1} asset {2} during operation {3} of service {4}</div>
 </section>
 </li>
 </ul>
