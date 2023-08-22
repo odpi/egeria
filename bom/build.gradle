@@ -79,7 +79,7 @@ ext {
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.0'
     prometheusVersion = '1.11.2'
-    nettyVersion = '4.1.94.Final'
+    nettyVersion = '4.1.96.Final'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
     sanitizerVersion = '1.2.3'
