@@ -80,7 +80,7 @@ public class RelatedElementConverter<B> extends OpenMetadataStoreConverter<B>
 
                 super.fillOpenMetadataElement(relatedBean, entity);
 
-                bean.setElementProperties(relatedBean);
+                bean.setElement(relatedBean);
             }
 
             return returnBean;

@@ -113,8 +113,15 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
         if (configurationProperties != null)
         {
-            fixedEgeriaGlossaryQualifiedName = configurationProperties.get(ApacheAtlasIntegrationProvider.EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-            atlasGlossaryName = configurationProperties.get(ApacheAtlasIntegrationProvider.ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY).toString();
+            if (configurationProperties.get(ApacheAtlasIntegrationProvider.EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY) != null)
+            {
+                fixedEgeriaGlossaryQualifiedName = configurationProperties.get(ApacheAtlasIntegrationProvider.EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+            }
+
+            if (configurationProperties.get(ApacheAtlasIntegrationProvider.ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY) != null)
+            {
+                atlasGlossaryName = configurationProperties.get(ApacheAtlasIntegrationProvider.ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY).toString();
+            }
         }
 
         /*
@@ -1750,21 +1757,26 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
                     if (atlasParentCategory == null)
                     {
-                        AtlasRelationship atlasRelationship = new AtlasRelationship();
+                        String atlasParentCategoryGUID = this.getAtlasGUID(egeriaParentCategory);
 
-                        atlasRelationship.setTypeName(atlasCategoryHierarchyTypeName);
+                        if (atlasParentCategoryGUID != null)
+                        {
+                            AtlasRelationship atlasRelationship = new AtlasRelationship();
 
-                        AtlasObjectId end1 = new AtlasObjectId();
+                            atlasRelationship.setTypeName(atlasCategoryHierarchyTypeName);
 
-                        end1.setGuid(atlasParentCategory.getEntity().getGuid());
-                        atlasRelationship.setEnd1(end1);
+                            AtlasObjectId end1 = new AtlasObjectId();
 
-                        AtlasObjectId end2 = new AtlasObjectId();
+                            end1.setGuid(atlasParentCategoryGUID);
+                            atlasRelationship.setEnd1(end1);
 
-                        end2.setGuid(atlasGlossaryCategoryGUID);
-                        atlasRelationship.setEnd2(end2);
+                            AtlasObjectId end2 = new AtlasObjectId();
 
-                        atlasClient.addRelationship(atlasRelationship);
+                            end2.setGuid(atlasGlossaryCategoryGUID);
+                            atlasRelationship.setEnd2(end2);
+
+                            atlasClient.addRelationship(atlasRelationship);
+                        }
                     }
                 }
                 else if (atlasParentCategory != null)
@@ -2521,6 +2533,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                error.getClass().getName(),
+                                                                                                               methodName,
                                                                                                                error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,

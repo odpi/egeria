@@ -54,6 +54,7 @@ public class OpenMetadataAPIGenericHandler<B>
     protected RepositoryErrorHandler             errorHandler;
 
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
+    private static final String assetActionDescription = "userAssetMonitoring";
 
     protected AuditLog                           auditLog;
 
@@ -2214,7 +2215,7 @@ public class OpenMetadataAPIGenericHandler<B>
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   connectionGUID,
                                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                                                                  false,
+                                                                                  true,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                   forLineage,
@@ -5428,15 +5429,28 @@ public class OpenMetadataAPIGenericHandler<B>
                                  effectiveTime,
                                  methodName);
 
-        return repositoryHandler.createEntity(userId,
-                                              entityTypeGUID,
-                                              entityTypeName,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              propertyBuilder.getInstanceProperties(methodName),
-                                              propertyBuilder.getEntityClassifications(),
-                                              propertyBuilder.getInstanceStatus(),
-                                              methodName);
+        String entityGUID = repositoryHandler.createEntity(userId,
+                                                           entityTypeGUID,
+                                                           entityTypeName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           propertyBuilder.getInstanceProperties(methodName),
+                                                           propertyBuilder.getEntityClassifications(),
+                                                           propertyBuilder.getInstanceStatus(),
+                                                           methodName);
+
+
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        {
+            auditLog.logMessage(assetActionDescription,
+                                GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                    entityTypeName,
+                                                                                                    entityGUID,
+                                                                                                    methodName,
+                                                                                                    serviceName));
+        }
+
+        return entityGUID;
     }
 
 
@@ -5607,6 +5621,16 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  templateGUID,
                                                  relationshipProperties,
                                                  methodName);
+
+            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                        entityTypeName,
+                                                                                                        templateProgress.newBeanGUID,
+                                                                                                        methodName,
+                                                                                                        serviceName));
+            }
 
             return templateProgress.newBeanGUID;
         }

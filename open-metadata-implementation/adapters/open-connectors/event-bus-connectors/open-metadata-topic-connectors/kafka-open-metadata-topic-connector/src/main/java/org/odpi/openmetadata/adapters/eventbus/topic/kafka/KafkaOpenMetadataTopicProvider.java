@@ -40,14 +40,14 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
      */
     private static final Class<?> connectorClass       = KafkaOpenMetadataTopicConnector.class;
 
-    private static final String  expectedDataFormat = "PLAINTEXT";
-    private static final String  assetTypeName = "KafkaTopic";
+    private static final String expectedDataFormat     = "PLAINTEXT";
+    private static final String supportedAssetTypeName = "KafkaTopic";
 
-    public static final String  producerPropertyName = "producer";
-    public static final String  consumerPropertyName = "consumer";
-    public static final String  egeriaConsumerPropertyName = "egeria_kafka_consumer";
-    public static final String  serverIdPropertyName = "local.server.id";
-    public static final String  sleepTimeProperty = "sleepTime";
+    public static final String producerPropertyName       = "producer";
+    public static final String consumerPropertyName       = "consumer";
+    public static final String egeriaConsumerPropertyName = "egeria_kafka_consumer";
+    public static final String serverIdPropertyName       = "local.server.id";
+    public static final String sleepTimeProperty          = "sleepTime";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -73,7 +73,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
-        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         connectorType.setExpectedDataFormat(expectedDataFormat);
 
         connectorInterfaces.add(OpenMetadataTopic.class.getName());

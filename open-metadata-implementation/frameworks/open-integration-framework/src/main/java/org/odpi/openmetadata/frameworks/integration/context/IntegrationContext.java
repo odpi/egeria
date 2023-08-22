@@ -414,7 +414,20 @@ public class IntegrationContext
     public boolean isTypeOf(ElementHeader  elementHeader,
                             String         typeName)
     {
-        ElementType elementType = elementHeader.getType();
+        return isTypeOf(elementHeader.getType(), typeName);
+    }
+
+
+    /**
+     * Understand the type of element.  It checks the type and super types.
+     *
+     * @param elementType element to validate
+     * @param typeName type to test
+     * @return boolean flag
+     */
+    public boolean isTypeOf(ElementType  elementType,
+                            String       typeName)
+    {
         if (elementType != null)
         {
             List<String> elementTypeNames = new ArrayList<>();

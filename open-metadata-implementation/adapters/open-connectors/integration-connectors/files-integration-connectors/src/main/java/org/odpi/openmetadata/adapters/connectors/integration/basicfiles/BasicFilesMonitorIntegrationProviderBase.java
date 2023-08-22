@@ -63,6 +63,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 

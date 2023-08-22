@@ -41,7 +41,7 @@ To use this
 
 ### Self-build dockerfile
 
-This dockerfile will also build egeria itself - so no seperate steps are needed. Simply run the dockerfile directly and it will extract egeria source & build it within the container.
+This dockerfile will also build egeria itself - so no separate steps are needed. Simply run the dockerfile directly and it will extract egeria source & build it within the container.
 
 Run `docker build -t egeria:myversion -f Dockerfile.selfbuild .`
 

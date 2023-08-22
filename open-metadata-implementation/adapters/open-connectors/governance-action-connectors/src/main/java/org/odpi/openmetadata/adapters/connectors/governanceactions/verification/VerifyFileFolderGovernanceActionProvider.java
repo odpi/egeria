@@ -72,6 +72,7 @@ public class VerifyFileFolderGovernanceActionProvider extends GovernanceActionSe
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(FOLDER_GUID_PROPERTY);

@@ -573,6 +573,16 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param memberGUID unique identifier of the element that is being added to the collection
      * @param memberGUIDParameterName parameter supplying the memberGUID
      * @param membershipRationale why is the element a member? (optional)
+     * @param confidence level of confidence that the membership is correct - from 0 to 100
+     * @param membershipStatus status of member
+     * @param userDefinedStatus extension to membership status values
+     * @param createdBy who created the relationship
+     * @param expression what is the expression used to characterize the membership
+     * @param source what was the source of the membership recommendation
+     * @param steward which steward is responsible for the membership
+     * @param stewardTypeName type name of the element representing the steward
+     * @param stewardPropertyName property name of the property providing the identifier for the steward (eg qualifiedName)
+     * @param notes additional notes for/from the steward
      * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
      * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
@@ -41,10 +42,19 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
+        final String actionDescription = "userMonitoring";
+
         AuditableServerServiceInstance instance = (AuditableServerServiceInstance) super.getServerServiceInstance(userId,
                                                                                                                   serverName,
                                                                                                                   serviceOperationName);
 
-        return instance.getAuditLog();
+        AuditLog auditLog = instance.getAuditLog();
+
+        auditLog.logMessage(actionDescription, OMAGServerInstanceAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(userId,
+                                                                                                                      serviceOperationName,
+                                                                                                                      serviceName,
+                                                                                                                      serverName));
+
+        return auditLog;
     }
 }

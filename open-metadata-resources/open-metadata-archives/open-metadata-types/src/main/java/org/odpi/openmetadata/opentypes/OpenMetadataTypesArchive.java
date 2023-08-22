@@ -7,6 +7,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -159,8 +160,10 @@ public class OpenMetadataTypesArchive
         update0010Base();
         update0017ExternalIdentifiers();
         update0035Hosts();
+        update0112People();
         update0210DataStores();
         update0212APIs();
+        update0224Databases();
         update0215SoftwareComponents();
         update0223Events();
     }
@@ -337,6 +340,57 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0112People()
+    {
+        this.archiveBuilder.addTypeDefPatch(updatePerson());
+    }
+
+
+    private TypeDefPatch updatePerson()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Person";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "residentCountry";
+        final String attribute1Description     = "Country that is the person's primary residence.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "timeZone";
+        final String attribute2Description     = "Principle time zone where this person is located.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0210DataStores()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataStore());
@@ -374,7 +428,6 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
-
 
 
     /*
@@ -504,6 +557,36 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0224Databases()
+    {
+        this.archiveBuilder.addEntityDef(addRelationalDatabaseEntity());
+    }
+
+
+
+    private EntityDef addRelationalDatabaseEntity()
+    {
+        final String guid = "6a28e242-4eca-4664-81cb-e2096d769568";
+
+        final String name            = "RelationalDatabase";
+        final String description     = "A database that follows the relational schema (tables and columns) and can be accessed through Java Database Connectivity (JDBC).";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Database";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
 

@@ -18,7 +18,7 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
     private static final String  connectorTypeGUID          = "02cfb290-43cb-497c-928e-267bd3d69324";
     private static final String  connectorTypeQualifiedName = "Egeria:ArchiveService:Glossary";
     private static final String  connectorTypeDisplayName   = "Glossary Dynamic Archive Service";
-    private static final String  connectorTypeDescription   = "Archive Service that writes a glossary to an archive.";
+    private static final String  connectorTypeDescription   = "Archive Service that writes a glossary to an archive as the glossary is developed.";
 
     static final String GLOSSARY_NAME_PROPERTY   = "glossaryName";
 
@@ -55,6 +55,7 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         if (recognizedConfigurationProperties == null)
         {
