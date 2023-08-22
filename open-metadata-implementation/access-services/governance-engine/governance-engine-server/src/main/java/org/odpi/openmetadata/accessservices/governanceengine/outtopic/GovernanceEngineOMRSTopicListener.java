@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -438,6 +439,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             if (relationship.getEntityTwoProxy() != null)
             {
                 relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
+            }
+
+            if (repositoryHelper.getTypeDefByName(serviceName, relationship.getType().getTypeDefName()) instanceof RelationshipDef relationshipDef)
+            {
+                relatedMetadataElements.setLabelAtEnd1(relationshipDef.getEndDef1().getAttributeName());
+                relatedMetadataElements.setLabelAtEnd2(relationshipDef.getEndDef2().getAttributeName());
             }
 
             return relatedMetadataElements;

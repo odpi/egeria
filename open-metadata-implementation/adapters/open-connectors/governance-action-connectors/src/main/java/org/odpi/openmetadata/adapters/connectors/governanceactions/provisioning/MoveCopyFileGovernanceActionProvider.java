@@ -91,6 +91,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(TARGET_FILE_NAME_PATTERN_PROPERTY);

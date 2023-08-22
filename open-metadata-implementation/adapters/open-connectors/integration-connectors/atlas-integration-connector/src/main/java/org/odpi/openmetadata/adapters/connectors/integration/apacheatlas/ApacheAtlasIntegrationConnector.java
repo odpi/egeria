@@ -191,7 +191,10 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
                                       error);
             }
 
-            throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(),
+            throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error);
@@ -294,7 +297,10 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
                                           error);
                 }
 
-                throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(),
+                throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   error.getMessage()),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     error);

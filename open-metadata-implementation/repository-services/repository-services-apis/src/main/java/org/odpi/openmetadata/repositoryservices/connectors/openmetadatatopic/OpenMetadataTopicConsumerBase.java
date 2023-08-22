@@ -22,6 +22,7 @@ import java.util.List;
 public class OpenMetadataTopicConsumerBase extends ConnectorBase implements VirtualConnectorExtension,
                                                                             AuditLoggingComponent
 {
+    protected List<Connector>                  embeddedConnectors = null;
     protected List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
     protected String                           connectionName     = "<Unknown>";
     protected AuditLog                         auditLog           = null;
@@ -37,6 +38,8 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
     @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
+        this.embeddedConnectors = embeddedConnectors;
+
         if (embeddedConnectors != null)
         {
             for (Connector embeddedConnector : embeddedConnectors)
@@ -154,14 +157,7 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
-
-        /*
-         * Each of the event bus connectors need to be disconnected, so they stop receiving inbound events.
-         */
-        for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
-        {
-            eventBusConnector.start();
-        }
     }
 }

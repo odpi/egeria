@@ -157,8 +157,7 @@ public class TransferCustomizations {
         List<String> processedCustomization = new ArrayList<>();
         if (customization instanceof String) {
             processedCustomization.add((String)customization);
-        } else if (customization instanceof List<?>) {
-            List<?> intermediary = (List<?>) customization;
+        } else if (customization instanceof List<?> intermediary) {
             for(Object intermediaryObject : intermediary) {
                 if(intermediaryObject instanceof String) {
                     processedCustomization.add((String)intermediaryObject);

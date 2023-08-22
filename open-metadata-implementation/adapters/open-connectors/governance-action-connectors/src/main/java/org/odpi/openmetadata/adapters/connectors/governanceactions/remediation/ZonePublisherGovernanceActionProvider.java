@@ -58,6 +58,7 @@ public class ZonePublisherGovernanceActionProvider extends GovernanceActionServi
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(PUBLISH_ZONES_PROPERTY);

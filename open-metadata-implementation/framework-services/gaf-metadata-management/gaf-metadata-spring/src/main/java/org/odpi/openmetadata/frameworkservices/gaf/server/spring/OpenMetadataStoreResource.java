@@ -50,7 +50,6 @@ public class OpenMetadataStoreResource
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
-     *
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
@@ -143,7 +142,6 @@ public class OpenMetadataStoreResource
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
-     *
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
@@ -179,12 +177,11 @@ public class OpenMetadataStoreResource
      * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
-     *
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @GetMapping(path = "/related-elements/{elementGUID}")
+    @GetMapping(path = "/related-elements/{elementGUID}/any-type")
 
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  serviceURLMarker,
@@ -227,7 +224,6 @@ public class OpenMetadataStoreResource
      * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
-     *
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
@@ -314,7 +310,6 @@ public class OpenMetadataStoreResource
      * @param requestBody properties defining the search criteria
      *
      * @return a list of relationships - null means no matching relationships - or
-     *
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
@@ -336,6 +331,36 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/related-elements/relationship/{relationshipGUID}")
+
+    public RelatedMetadataElementsResponse getRelationshipByGUID(@PathVariable String  serverName,
+                                                                 @PathVariable String  serviceURLMarker,
+                                                                 @PathVariable String  userId,
+                                                                 @PathVariable String  relationshipGUID,
+                                                                 @RequestParam boolean forLineage,
+                                                                 @RequestParam boolean forDuplicateProcessing,
+                                                                 @RequestParam long    effectiveTime)
+    {
+        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
      * This version of the method allows access to advanced features such as multiple states and
@@ -347,7 +372,6 @@ public class OpenMetadataStoreResource
      * @param requestBody properties for the new element
      *
      * @return unique identifier of the new metadata element
-     *
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
@@ -375,7 +399,6 @@ public class OpenMetadataStoreResource
      * @param requestBody new properties
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -403,7 +426,6 @@ public class OpenMetadataStoreResource
      * @param requestBody new status values - use null to leave as is
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -431,7 +453,6 @@ public class OpenMetadataStoreResource
      * @param requestBody new status values - use null to leave as is
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -458,7 +479,6 @@ public class OpenMetadataStoreResource
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException there is a problem with the metadata store
@@ -488,7 +508,6 @@ public class OpenMetadataStoreResource
      *                   classification name
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -518,7 +537,6 @@ public class OpenMetadataStoreResource
      * @param requestBody new properties for the classification
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
@@ -549,7 +567,6 @@ public class OpenMetadataStoreResource
      * @param requestBody the dates when this element is active / inactive - null for no restriction
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -578,7 +595,6 @@ public class OpenMetadataStoreResource
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
@@ -606,7 +622,6 @@ public class OpenMetadataStoreResource
      * @param requestBody the properties of the relationship
      *
      * @return unique identifier of the new relationship or
-     *
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
@@ -633,7 +648,6 @@ public class OpenMetadataStoreResource
      * @param requestBody new properties for the relationship
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
@@ -662,7 +676,6 @@ public class OpenMetadataStoreResource
      * @param requestBody the dates when this element is active / inactive - null for no restriction
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -689,7 +702,6 @@ public class OpenMetadataStoreResource
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
@@ -716,7 +728,6 @@ public class OpenMetadataStoreResource
      * @param requestBody properties for the new incident report
      *
      * @return unique identifier of the resulting incident report or
-     *
      *  InvalidParameterException null or non-unique qualified name for the incident report
      *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
      *  PropertyServerException there is a problem with the metadata store
@@ -908,7 +919,6 @@ public class OpenMetadataStoreResource
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -942,7 +952,6 @@ public class OpenMetadataStoreResource
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *

@@ -32,6 +32,7 @@ public class DuplicateSuspectDiscoveryProvider extends DiscoveryServiceProvider
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
     }

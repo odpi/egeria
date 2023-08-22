@@ -250,7 +250,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
      * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
      * event has been sent.
-     *
      * If the server has already registered in the past, it sends a registration request.
      */
     public synchronized void  connectToCohort()

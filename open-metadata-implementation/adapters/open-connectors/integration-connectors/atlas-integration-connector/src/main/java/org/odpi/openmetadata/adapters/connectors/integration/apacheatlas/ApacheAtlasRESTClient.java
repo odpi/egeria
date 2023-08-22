@@ -86,7 +86,10 @@ public class ApacheAtlasRESTClient
         }
         catch (Exception  error)
         {
-            throw new InvalidParameterException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName, error.getMessage()),
+            throw new InvalidParameterException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error,

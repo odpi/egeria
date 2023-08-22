@@ -296,7 +296,6 @@ public class OMRSCohortManager
     /**
      * Set up a new security verifier (the metadata collection runs with a default verifier until this
      * method is called).
-     *
      * The security verifier provides authorization checks for access and maintenance
      * changes to open metadata.  Authorization checks are enabled through the
      * OpenMetadataServerSecurityConnector.

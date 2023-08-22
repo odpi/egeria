@@ -18,18 +18,37 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceEngineStatus
 {
+    /**
+     * The governance engine is assigned to the engine host server but has not yet been configured.
+     */
     ASSIGNED    (0, "Assigned", "The governance engine is assigned to the engine host server but has not yet been configured."),
+
+    /**
+     * The governance engine is retrieving its configuration from the metadata server.
+     */
     CONFIGURING (1, "Configuring",  "The governance engine is retrieving its configuration from the metadata server."),
+
+    /**
+     * The governance engine is operational and able to service all defined governance requests on demand.
+     */
     RUNNING     (2, "Running", "The governance engine is operational and able to service all defined governance requests on demand."),
+
+    /**
+     * The governance engine is unable to run successfully due to an error in its configuration.
+     */
     FAILED      (3, "Failed", "The governance engine is unable to run successfully due to an error in its configuration."),
+
+    /**
+     * The governance engine has been disabled. It is waiting to be enabled before it can service any more governance requests.
+     */
     DISABLED    (4, "Disabled", "The governance engine has been disabled. It is waiting to be enabled before " +
                                                                    "it can service any more governance requests.");
 
     private static final long serialVersionUID = 1L;
 
-    private int    ordinal;
-    private String statusName;
-    private String statusDescription;
+    private final int    ordinal;
+    private final String statusName;
+    private final String statusDescription;
 
 
     /**

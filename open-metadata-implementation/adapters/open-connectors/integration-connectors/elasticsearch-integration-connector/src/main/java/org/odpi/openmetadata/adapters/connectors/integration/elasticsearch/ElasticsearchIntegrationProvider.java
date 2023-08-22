@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.elasticsearch;
 
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * OpenAPIMonitorIntegrationProvider is the base class provider for the open API integration connector.
  */
-public class ElasticsearchIntegrationProvider extends ConnectorProviderBase
+public class ElasticsearchIntegrationProvider extends IntegrationConnectorProvider
 {
     private static final String connectorTypeGUID          = "4cf65dbf-0808-4968-819b-6a49a9fe537a";
     private static final String connectorTypeQualifiedName = "Egeria:IntegrationConnector:ElasticsearchIntegrationProvider";
@@ -45,6 +45,7 @@ public class ElasticsearchIntegrationProvider extends ConnectorProviderBase
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
     }

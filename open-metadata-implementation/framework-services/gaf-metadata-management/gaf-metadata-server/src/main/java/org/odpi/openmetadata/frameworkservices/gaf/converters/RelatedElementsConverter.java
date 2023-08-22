@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -80,6 +81,12 @@ public class RelatedElementsConverter<B> extends OpenMetadataStoreConverter<B>
                 entityProxy = relationship.getEntityTwoProxy();
 
                 bean.setElementGUIDAtEnd2(entityProxy.getGUID());
+
+                if (repositoryHelper.getTypeDefByName(serviceName, relationship.getType().getTypeDefName()) instanceof RelationshipDef relationshipDef)
+                {
+                    bean.setLabelAtEnd1(relationshipDef.getEndDef1().getAttributeName());
+                    bean.setLabelAtEnd2(relationshipDef.getEndDef2().getAttributeName());
+                }
             }
 
             return returnBean;
