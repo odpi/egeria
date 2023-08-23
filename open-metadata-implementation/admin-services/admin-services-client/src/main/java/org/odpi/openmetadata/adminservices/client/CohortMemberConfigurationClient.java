@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
+import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -119,7 +120,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
 
     /**
      * Enable registration of server to an open metadata repository cohort using the topic pattern specified by cohortTopicStructure.
-     *
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
@@ -627,6 +627,44 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
                                           serverPlatformRootURL + urlTemplate,
                                           adminUserId,
                                           serverName);
+    }
+
+
+    /**
+     * Update the URL broadcast across the cohort to allow other members to issue queries to this repository.
+     * This method is needed to reconfigure a server that has moved from one platform to another.  Once the
+     * URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.
+     *
+     * @param serverURLRoot  String url.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void resetRemoteCohortURL(String serverURLRoot) throws OMAGNotAuthorizedException,
+                                                                  OMAGInvalidParameterException,
+                                                                  OMAGConfigurationErrorException
+    {
+        final String methodName    = "resetRemoteCohortURL";
+        final String parameterName = "serverURLRoot";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/configuration/remote-repository-connector-url";
+
+        try
+        {
+            invalidParameterHandler.validateName(serverURLRoot, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        URLRequestBody requestBody = new URLRequestBody();
+
+        requestBody.setUrlRoot(serverURLRoot);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        adminUserId,
+                                        serverName);
     }
 
 
