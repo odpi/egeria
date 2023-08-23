@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SimpleGovernanceCatalogArchiveBuilder</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">SimpleEventCatalogArchiveBuilder provides event and topic metadata.</div>
+<div class="block">SimpleEventCatalogArchiveBuilder provides governance metadata.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -96,6 +96,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Constructor pushes all archive header values to the superclass</div>
 </div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder,org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper)" class="member-name-link">SimpleGovernanceCatalogArchiveBuilder</a><wbr>(<a href="../../../repositoryservices/archiveutilities/OMRSArchiveBuilder.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveBuilder</a>&nbsp;archiveBuilder,
+ <a href="../../../samples/archiveutilities/SimpleCatalogArchiveHelper.html" title="class in org.odpi.openmetadata.samples.archiveutilities">SimpleCatalogArchiveHelper</a>&nbsp;archiveHelper)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Construct the builder using a shared archive builder and helper.</div>
+</div>
 </div>
 </section>
 </li>
@@ -110,11 +115,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataArchive()" class="member-name-link">getOpenMetadataArchive</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fillBuilder()" class="member-name-link">fillBuilder</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the open metadata type archive containing all the elements extracted from the connector
- providers of the featured open connectors.</div>
+<div class="block">Fills the archive builder with all the elements for this catalog.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataArchive()" class="member-name-link">getOpenMetadataArchive</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the open metadata type archive containing all the elements for this catalog.</div>
 </div>
 </div>
 </div>
@@ -148,6 +157,20 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder,org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper)">
+<h3>SimpleGovernanceCatalogArchiveBuilder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SimpleGovernanceCatalogArchiveBuilder</span><wbr><span class="parameters">(<a href="../../../repositoryservices/archiveutilities/OMRSArchiveBuilder.html" title="class in org.odpi.openmetadata.repositoryservices.archiveutilities">OMRSArchiveBuilder</a>&nbsp;archiveBuilder,
+ <a href="../../../samples/archiveutilities/SimpleCatalogArchiveHelper.html" title="class in org.odpi.openmetadata.samples.archiveutilities">SimpleCatalogArchiveHelper</a>&nbsp;archiveHelper)</span></div>
+<div class="block">Construct the builder using a shared archive builder and helper.  Used to create a
+ combination archive.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>archiveBuilder</code> - archive builder</dd>
+<dd><code>archiveHelper</code> - archive helper</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -157,11 +180,17 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="fillBuilder()">
+<h3>fillBuilder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">fillBuilder</span>()</div>
+<div class="block">Fills the archive builder with all the elements for this catalog.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getOpenMetadataArchive()">
 <h3>getOpenMetadataArchive</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></span>&nbsp;<span class="element-name">getOpenMetadataArchive</span>()</div>
-<div class="block">Returns the open metadata type archive containing all the elements extracted from the connector
- providers of the featured open connectors.</div>
+<div class="block">Returns the open metadata type archive containing all the elements for this catalog.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>populated open metadata archive object</dd>

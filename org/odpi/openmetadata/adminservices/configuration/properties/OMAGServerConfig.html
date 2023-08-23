@@ -85,49 +85,41 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerConfig</span>
 <span class="extends-implements">extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AdminServicesConfigHeader</a></span></div>
 <div class="block">OMAGServerConfig provides the properties used to initialize an open metadata and governance (OMAG) server.
-
  The OMAG server configuration has the following basic properties, plus configuration for the subsystems
  that should be activated in the OMAG Server:
  <ul>
      <li>
          localServerId - Unique identifier for this server.
-
          By default, this is initialized to a randomly generated Universal Unique identifier (UUID).
      </li>
      <li>
          localServerName - meaningful name for the server for use in messages and UIs.
          Ideally this value is unique to aid administrators in understanding the source of messages and events
          from the server.
-
          This value is set to the server name assigned when the configuration is created.
      </li>
      <li>
          localServerType - descriptive type name for the server.  Again this is useful information for the
          administrator to understand the role of the server.
-
          The default value is "Open Metadata and Governance Server".
      </li>
      <li>
          organizationName - descriptive name for the organization that owns the local server/repository.
          This is useful when the open metadata repository cohort consists of metadata servers from different
          organizations, or different departments of an enterprise.
-
          The default value is null.
      </li>
      <li>
          localServerURL - network address of the OMAG server platform where this server runs
          (typically host and port number but may also include the initial part of the URL before "open-metadata").
-
-         The default value is "https://localhost:9443".
+         The default value is "<a href="https://localhost:9443">...</a>".
      </li>
      <li>
          localServerUserId - UserId to use for server initiated REST calls.
-
          The default is "OMAGServer".
      </li>
      <li>
          maxPageSize - the maximum page size that can be set on requests to the server.
-
          The default value is 1000.
      </li>
  </ul></div>
@@ -492,14 +484,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="defaultLocalServerType">
 <h3>defaultLocalServerType</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultLocalServerType</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig.defaultLocalServerType">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 </ul>
@@ -815,7 +799,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>array of configuration properties, one for each OMAS</dd>
+<dd>list of configuration properties, one for each OMAS</dd>
 </dl>
 </section>
 </li>
@@ -826,7 +810,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>accessServicesConfig</code> - array of configuration properties, one for each OMAS</dd>
+<dd><code>accessServicesConfig</code> - list of configuration properties, one for each OMAS</dd>
 </dl>
 </section>
 </li>
@@ -837,7 +821,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>array of configuration properties, one for each OMIS</dd>
+<dd>list of configuration properties, one for each OMIS</dd>
 </dl>
 </section>
 </li>
@@ -848,7 +832,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>integrationServicesConfig</code> - array of configuration properties, one for each OMIS</dd>
+<dd><code>integrationServicesConfig</code> - list of configuration properties, one for each OMIS</dd>
 </dl>
 </section>
 </li>
@@ -859,7 +843,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the optional list of dynamic integration groups.  Used in an integration daemon.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>array of configuration properties, one for each integration group</dd>
+<dd>list of configuration properties, one for each integration group</dd>
 </dl>
 </section>
 </li>
@@ -870,7 +854,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the optional list of dynamic integration groups.  Used in an integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>dynamicIntegrationGroupsConfig</code> - array of configuration properties, one for each integration group</dd>
+<dd><code>dynamicIntegrationGroupsConfig</code> - list of configuration properties, one for each integration group</dd>
 </dl>
 </section>
 </li>
@@ -881,7 +865,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the configuration for the registered Open Metadata View Services (OMVSs).  Used in a view server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>array of configuration properties, one for each OMVS</dd>
+<dd>list of configuration properties, one for each OMVS</dd>
 </dl>
 </section>
 </li>
