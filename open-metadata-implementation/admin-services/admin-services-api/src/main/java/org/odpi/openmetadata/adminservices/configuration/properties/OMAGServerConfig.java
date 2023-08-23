@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -15,49 +16,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMAGServerConfig provides the properties used to initialize an open metadata and governance (OMAG) server.
- *
  * The OMAG server configuration has the following basic properties, plus configuration for the subsystems
  * that should be activated in the OMAG Server:
  * <ul>
  *     <li>
  *         localServerId - Unique identifier for this server.
- *
  *         By default, this is initialized to a randomly generated Universal Unique identifier (UUID).
  *     </li>
  *     <li>
  *         localServerName - meaningful name for the server for use in messages and UIs.
  *         Ideally this value is unique to aid administrators in understanding the source of messages and events
  *         from the server.
- *
  *         This value is set to the server name assigned when the configuration is created.
  *     </li>
  *     <li>
  *         localServerType - descriptive type name for the server.  Again this is useful information for the
  *         administrator to understand the role of the server.
- *
  *         The default value is "Open Metadata and Governance Server".
  *     </li>
  *     <li>
  *         organizationName - descriptive name for the organization that owns the local server/repository.
  *         This is useful when the open metadata repository cohort consists of metadata servers from different
  *         organizations, or different departments of an enterprise.
- *
  *         The default value is null.
  *     </li>
  *     <li>
  *         localServerURL - network address of the OMAG server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
- *
- *         The default value is "https://localhost:9443".
+ *         The default value is "<a href="https://localhost:9443">...</a>".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
- *
  *         The default is "OMAGServer".
  *     </li>
  *     <li>
  *         maxPageSize - the maximum page size that can be set on requests to the server.
- *
  *         The default value is 1000.
  *     </li>
  * </ul>
@@ -67,16 +60,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public static final String         VERSION_ONE = "V1.0";
     public static final String         VERSION_TWO = "V2.0";
-    public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(Arrays.asList(VERSION_TWO));
+    public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(List.of(VERSION_TWO));
 
     /*
      * Default values used when the server configuration does not provide a value.
      */
-    public  static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
+    public  static final String  defaultLocalServerType                   = null;
     private static final String  defaultLocalOrganizationName             = null;
     private static final String  defaultLocalServerURL                    = "https://localhost:9443";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
@@ -223,6 +217,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     {
         this.localServerDescription = localServerDescription;
     }
+
 
     /**
      * Return the name of the local server.
@@ -432,7 +427,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Return the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.
      *
-     * @return array of configuration properties, one for each OMAS
+     * @return list of configuration properties, one for each OMAS
      */
     public List<AccessServiceConfig> getAccessServicesConfig()
     {
@@ -443,7 +438,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Set up the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.
      *
-     * @param accessServicesConfig array of configuration properties, one for each OMAS
+     * @param accessServicesConfig list of configuration properties, one for each OMAS
      */
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
@@ -454,7 +449,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
      *
-     * @return array of configuration properties, one for each OMIS
+     * @return list of configuration properties, one for each OMIS
      */
     public List<IntegrationServiceConfig> getIntegrationServicesConfig()
     {
@@ -465,7 +460,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
      *
-     * @param integrationServicesConfig array of configuration properties, one for each OMIS
+     * @param integrationServicesConfig list of configuration properties, one for each OMIS
      */
     public void setIntegrationServicesConfig(List<IntegrationServiceConfig> integrationServicesConfig)
     {
@@ -476,7 +471,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Return the optional list of dynamic integration groups.  Used in an integration daemon.
      *
-     * @return array of configuration properties, one for each integration group
+     * @return list of configuration properties, one for each integration group
      */
     public List<IntegrationGroupConfig> getDynamicIntegrationGroupsConfig()
     {
@@ -487,7 +482,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Set up the optional list of dynamic integration groups.  Used in an integration daemon.
      *
-     * @param dynamicIntegrationGroupsConfig array of configuration properties, one for each integration group
+     * @param dynamicIntegrationGroupsConfig list of configuration properties, one for each integration group
      */
     public void setDynamicIntegrationGroupsConfig(List<IntegrationGroupConfig> dynamicIntegrationGroupsConfig)
     {
@@ -498,7 +493,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /**
      * Return the configuration for the registered Open Metadata View Services (OMVSs).  Used in a view server.
      *
-     * @return array of configuration properties, one for each OMVS
+     * @return list of configuration properties, one for each OMVS
      */
     public List<ViewServiceConfig> getViewServicesConfig()
     {
