@@ -13,12 +13,17 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
-import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
-import org.odpi.openmetadata.metadatasecurity.properties.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
@@ -43,8 +48,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                                                                                       OpenMetadataGlossarySecurity
 {
     /*
-     * These variables represent the different groups of user.  Typically these would be
-     * implemented as a look up to a user directory such as LDAP rather than in memory lists.
+     * These variables represent the different groups of user.  Typically, these would be
+     * implemented as a lookup to a user directory such as LDAP rather than in memory lists.
      * The lists are used here to make the demo easier to set up.
      */
     private final List<String> allUsers = new ArrayList<>();
@@ -477,6 +482,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
             {
                 return;
             }
+            else if (userId.endsWith("npa"))
+            {
+                return;
+            }
         }
 
         super.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
@@ -507,6 +516,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         }
 
         if (npaAccounts.contains(userId))
+        {
+            return;
+        }
+        else if (userId.endsWith("npa"))
         {
             return;
         }
@@ -550,7 +563,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                         (connection.getSecuredProperties() == null))
                     {
                         /*
-                         * Put the unsecured connection by to process after all of the secured connections have been processed.
+                         * Put the unsecured connection by to process after all the secured connections have been processed.
                          */
                         unsecuredConnections.add(connection);
                     }
@@ -660,6 +673,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                     if ((zoneName.equals(dataLakeZoneName)) && (updateRequested))
                     {
                         if (npaAccounts.contains(userId))
+                        {
+                            return true;
+                        }
+                        else if (userId.endsWith("npa"))
                         {
                             return true;
                         }
@@ -805,7 +822,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         }
 
         /*
-         * If they each contain the other then they are equal
+         * If they each contain the other, then they are equal
          */
         return ! ((oldZoneMembership.containsAll(newZoneMembership)) &&
                   (newZoneMembership.containsAll(oldZoneMembership)));
@@ -902,7 +919,6 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     /**
      * Determine the appropriate setting for the asset zones depending on the content of the asset and the
      * default zones.  This is called whenever a new asset is created.
-     *
      * The default behavior is to use the default values, unless the zones have been explicitly set up,
      * in which case, they are left unchanged.
      *
@@ -1096,7 +1112,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                              */
                             if (newAsset.getOwner() != null)
                             {
-                                if (npaAccounts.contains(userId) ||
+                                if (npaAccounts.contains(userId) || userId.endsWith("npa") ||
                                             (validateSeparationOfDuties(userId, originalAssetAuditHeader)))
                                 {
                                     return;
@@ -1685,7 +1701,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      */
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1712,7 +1728,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
-     * @return entity to return (may be altered by the connector)
+     * @return entity to return (maybe altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
@@ -1777,7 +1793,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1854,7 +1870,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1870,7 +1886,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to restore a instance within a repository.
+     * Tests for whether a specific user should have the right to restore an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1886,7 +1902,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1904,7 +1920,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the type name of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1922,7 +1938,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to change the home of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the home of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1942,7 +1958,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1971,7 +1987,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
-     * @return relationship to return (may be altered by the connector)
+     * @return relationship to return (maybe altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
@@ -1984,7 +2000,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2000,7 +2016,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2016,7 +2032,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to restore a instance within a repository.
+     * Tests for whether a specific user should have the right to restore an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2032,7 +2048,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2050,7 +2066,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the type name of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2098,7 +2114,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         /*
          * The cocoMDS6 server is linked to the manufacturing IOT devices as well as the core cohort
          * and so it does not save reference copies so that the IOT metadata does not clutter the cocoMDS6 repository
-         * (and hence becomes visible in the core cohort.
+         * (and hence becomes visible in the core cohort).
          */
         if ("cocoMDS6".equals(serverName))
         {
@@ -2120,7 +2136,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         /*
          * The cocoMDS6 server is linked to the manufacturing IOT devices as well as the core cohort
          * and so it does not save reference copies so that the IOT metadata does not clutter the cocoMDS6 repository
-         * (and hence becomes visible in the core cohort.
+         * (and hence becomes visible in the core cohort).
          */
         if ("cocoMDS6".equals(serverName))
         {
