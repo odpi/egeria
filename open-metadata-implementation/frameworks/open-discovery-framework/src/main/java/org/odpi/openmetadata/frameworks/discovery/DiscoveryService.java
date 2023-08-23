@@ -164,7 +164,6 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
      * This is where the function of the discovery service is implemented.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *

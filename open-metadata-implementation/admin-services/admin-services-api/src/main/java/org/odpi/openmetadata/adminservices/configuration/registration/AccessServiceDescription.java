@@ -40,7 +40,7 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.ENABLED),
 
     ASSET_MANAGER_OMAS               (204,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Asset Manager",
                                       "Asset Manager OMAS",
                                       "asset-manager",

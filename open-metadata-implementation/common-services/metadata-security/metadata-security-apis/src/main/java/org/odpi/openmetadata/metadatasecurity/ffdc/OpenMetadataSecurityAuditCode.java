@@ -219,11 +219,11 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to iss operation {1} because the glossary is null
+     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the glossary is null
      */
     NULL_GLOSSARY("OPEN-METADATA-SECURITY-0021",
                               OMRSAuditLogRecordSeverity.SECURITY,
-                              "User {0} is not authorized to iss operation {1} because the glossary is null",
+                              "User {0} is not authorized to issue operation {1} because the glossary is null",
                               "The system is unable to process a request from the user because the glossary element is not correctly anchored on a glossary.",
                               "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
 
