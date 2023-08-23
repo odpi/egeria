@@ -118,12 +118,23 @@ public class SimpleEventCatalogArchiveBuilder
 
 
     /**
-     * Returns the open metadata type archive containing all the elements extracted from the connector
-     * providers of the featured open connectors.
+     * Construct the builder using a shared archive builder and helper.  Used to create a
+     * combination archive.
      *
-     * @return populated open metadata archive object
+     * @param archiveBuilder archive builder
+     * @param archiveHelper archive helper
      */
-    public OpenMetadataArchive getOpenMetadataArchive()
+    public SimpleEventCatalogArchiveBuilder(OMRSArchiveBuilder archiveBuilder, SimpleCatalogArchiveHelper archiveHelper)
+    {
+        this.archiveBuilder = archiveBuilder;
+        this.archiveHelper = archiveHelper;
+    }
+
+
+    /**
+     * Fills the archive builder with all the elements for this catalog.
+     */
+    public void fillBuilder()
     {
         String assetGUID = archiveHelper.addAsset(topicAssetTypeName,
                                                   customerChangeQualifiedName,
@@ -185,7 +196,18 @@ public class SimpleEventCatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
         archiveHelper.saveGUIDs();
+    }
 
+
+    /**
+     * Returns the open metadata type archive containing all the elements extracted from the connector
+     * providers of the featured open connectors.
+     *
+     * @return populated open metadata archive object
+     */
+    public OpenMetadataArchive getOpenMetadataArchive()
+    {
+        fillBuilder();
         return archiveBuilder.getOpenMetadataArchive();
     }
 }

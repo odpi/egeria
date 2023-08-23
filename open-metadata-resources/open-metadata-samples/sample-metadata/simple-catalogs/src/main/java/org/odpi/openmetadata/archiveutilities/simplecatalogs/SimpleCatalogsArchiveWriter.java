@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs;
 
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleAPICatalogArchiveBuilder;
+import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleComboCatalogArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleDataCatalogArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleEventCatalogArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleGovernanceCatalogArchiveBuilder;
@@ -28,6 +29,9 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
     private static final String dataOpenMetadataArchiveName           = "SimpleDataCatalog";
     private static final String governanceOpenMetadataArchiveFileName = "SimpleGovernanceCatalog.json";
     private static final String governanceOpenMetadataArchiveName     = "SimpleGovernanceCatalog";
+
+    private static final String comboOpenMetadataArchiveFileName      = "SimpleCatalog.json";
+    private static final String comboOpenMetadataArchiveName          = "SimpleComboCatalog";
 
     /**
      * Default constructor
@@ -76,6 +80,10 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
             SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(governanceOpenMetadataArchiveName, openMetadataArchiveRootName, dependentArchives);
 
             super.writeOpenMetadataArchive(governanceOpenMetadataArchiveFileName, governanceArchiveBuilder.getOpenMetadataArchive());
+
+            SimpleComboCatalogArchiveBuilder comboCatalogArchiveBuilder = new SimpleComboCatalogArchiveBuilder(comboOpenMetadataArchiveName, openMetadataArchiveRootName);
+
+            super.writeOpenMetadataArchive(comboOpenMetadataArchiveFileName, comboCatalogArchiveBuilder.getOpenMetadataArchive());
         }
         catch (Exception  error)
         {

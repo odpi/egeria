@@ -105,6 +105,7 @@ egeria-lineage-repositories/**
 /OpenConnectorsArchive.json
 /OpenMetadataTypes.json
 /SimpleAPICatalog.json
+/SimpleCatalog.json
 /SimpleDataCatalog.json
 /SimpleEventCatalog.json
 /SimpleGovernanceCatalog.json
