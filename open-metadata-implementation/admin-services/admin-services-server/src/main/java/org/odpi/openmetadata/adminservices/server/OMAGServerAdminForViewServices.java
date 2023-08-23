@@ -20,6 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -33,12 +34,12 @@ import java.util.Map;
  */
 public class OMAGServerAdminForViewServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForViewServices.class),
-                                                                      CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForViewServices.class),
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
-    private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -454,7 +455,7 @@ public class OMAGServerAdminForViewServices
             IntegrationViewServiceConfig createdViewServiceConfig = new IntegrationViewServiceConfig(registration);
             createdViewServiceConfig.setResourceEndpoints(requestedIntegrationViewServiceConfig.getResourceEndpoints());
             viewServiceConfig = createdViewServiceConfig;
-            // some integration services require the OMAGServerPlatformRootURL
+            // some integration view services require the OMAGServerPlatformRootURL
             createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
         }
         else if (requestedViewServiceConfig instanceof SolutionViewServiceConfig)
@@ -705,6 +706,13 @@ public class OMAGServerAdminForViewServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig.getRepositoryServicesConfig() == null)
+            {
+                OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
+
+                serverConfig.setRepositoryServicesConfig(omrsConfigurationFactory.getDefaultRepositoryServicesConfig());
+            }
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
