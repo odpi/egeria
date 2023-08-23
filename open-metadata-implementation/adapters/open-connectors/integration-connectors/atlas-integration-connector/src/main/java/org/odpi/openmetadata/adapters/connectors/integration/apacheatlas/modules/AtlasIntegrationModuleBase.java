@@ -827,7 +827,7 @@ public abstract class AtlasIntegrationModuleBase
     /**
      * Add a property from Apache Atlas to Egeria's additionalProperties map since it has nowhere else to go.
      *
-     * @param atlasAttributes all of the attributes retrieved from Apache Atlas
+     * @param atlasAttributes all the attributes retrieved from Apache Atlas
      * @param skipPropertyNames names of the properties that have already been extracted
      * @return  additionalProperties populated with properties from Apache Atlas
      */
@@ -866,7 +866,7 @@ public abstract class AtlasIntegrationModuleBase
      * Since the property is a map of properties, each entry is added as separate property using a dotted
      * notation mapPropertyName.mapPropertyKey.mapPropertyValue.
      *
-     * @param atlasAttributes all of the attributes retrieved from Apache Atlas
+     * @param atlasAttributes all the attributes retrieved from Apache Atlas
      * @param propertyName name of the property to extract
      * @param egeriaAdditionalProperties additionalProperties to map to populate
      */
@@ -896,7 +896,7 @@ public abstract class AtlasIntegrationModuleBase
      * Since the property is a map of properties, each entry is added as separate property using a dotted
      * notation mapPropertyName.mapPropertyKey.mapPropertyValue.
      *
-     * @param atlasAttributes all of the attributes retrieved from Apache Atlas
+     * @param atlasAttributes all the attributes retrieved from Apache Atlas
      * @param propertyName name of the property to extract
      * @param egeriaAdditionalProperties additionalProperties to map to populate
      */
@@ -923,7 +923,7 @@ public abstract class AtlasIntegrationModuleBase
 
 
     /**
-     * Synchronize all of the data set entities from Apache Atlas to the open metadata ecosystem.
+     * Synchronize all the data set entities from Apache Atlas to the open metadata ecosystem.
      *
      * @param atlasTypeName name of the type of entity to synchronize from Apache Atlas
      * @param egeriaTypeName name of the type of entity to synchronize to the open metadata ecosystem
@@ -1189,7 +1189,7 @@ public abstract class AtlasIntegrationModuleBase
 
             dataAssetProperties.setTypeName(egeriaTypeName);
             dataAssetProperties.setDeployedImplementationType(atlasEntity.getTypeName());
-            dataAssetProperties.setQualifiedName("Apache Atlas" + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+            dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
             dataAssetProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             dataAssetProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
             dataAssetProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
@@ -1220,7 +1220,7 @@ public abstract class AtlasIntegrationModuleBase
 
         dataAssetProperties.setTypeName(egeriaTypeName);
         dataAssetProperties.setDeployedImplementationType(atlasFSPathEntity.getTypeName());
-        dataAssetProperties.setQualifiedName("Apache Atlas" + ":" + atlasFSPathEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+        dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasFSPathEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
         dataAssetProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
         dataAssetProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
         dataAssetProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
@@ -1254,7 +1254,7 @@ public abstract class AtlasIntegrationModuleBase
 
             processProperties.setTypeName(egeriaTypeName);
             processProperties.setDeployedImplementationType(atlasEntity.getTypeName());
-            processProperties.setQualifiedName("Apache Atlas" + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
+            processProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
             processProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
             processProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
             processProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
@@ -1287,7 +1287,7 @@ public abstract class AtlasIntegrationModuleBase
             Map<String, Object> attributes = atlasEntity.getAttributes();
 
             schemaAttributeProperties.setTypeName(egeriaSchemaAttributeTypeName);
-            schemaAttributeProperties.setQualifiedName("Apache Atlas" + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, "qualifiedName"));
+            schemaAttributeProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, "qualifiedName"));
 
             schemaAttributeProperties.setDisplayName(getAtlasStringProperty(attributes, "name") );
             schemaAttributeProperties.setDescription(getAtlasStringProperty(attributes, "description"));
