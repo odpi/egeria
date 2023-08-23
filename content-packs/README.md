@@ -64,6 +64,8 @@ These archives are used in the *Development labs* which are part of the [Open Me
 
 * **SimpleGovernanceCatalog** - A glossary term linked to metadata elements in the API, Event, Data catalogs.
 
+There is also **SimpleCatalog** that rolls up the content of the four catalogs into a single content pack for use in other scenarios.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
