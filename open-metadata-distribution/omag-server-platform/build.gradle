@@ -121,11 +121,18 @@ distributions {
                 fileMode = 0755
             }
             into('platform/extra') {
-                // Identify how
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs" }
-                rename { String fileName ->
-                    fileName.replace("extraREADME.md", "README.md")
-                }
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
+                fileMode = 0755
+            }
+            into('platform/lib') {
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
+                fileMode = 0755
+            }
+            into('platform') {
+                // Identify how the platform is started
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
             into('platform/lib') {
