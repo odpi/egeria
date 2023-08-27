@@ -3,8 +3,7 @@
 
 # OMAG Server Platform
 
-The omag-server-platform.jar file holds the main runtime for Egeria,  To start the 
-platform, enter:
+The omag-server-platform.jar file holds the main runtime for Egeria,  To start the platform, enter:
 
 ```bash
 java -Dloader.path=lib,extra omag-server-platform*.jar
@@ -35,8 +34,9 @@ You will see the platform logo plus other messages describing its startup config
 ```
 Once the "platform ready" message is displayed, its REST APIs are active and you can configure servers and services within them.
 
-* [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) describes how the platform works.
 * [Configuring the OMAG Server Platform](https://egeria-project.org/guides/admin/configuring-the-omag-server-platform/) describes the different configuration options available for the OMAG Server Platform.
+* [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) describes how the platform works.
+* [Configuring OMAG Servers](https://egeria-project.org/guides/admin/servers/) describes how to configure servers to run on your platform.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
