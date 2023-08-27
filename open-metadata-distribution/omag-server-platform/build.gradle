@@ -112,7 +112,40 @@ distributions {
     egeriaomag {
         //distributionBaseName = "${rootProject.name}-distribution"
         contents {
-            into('platform') {
+            into('') {
+                // Describe the docker build script
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/docker-build" }
+                fileMode = 0755
+            }
+            into('') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/docker/platform" }
+                        {
+                            include 'Dockerfile'
+                            include 'dist/*'
+                        }
+                fileMode = 0755
+            }
+            into('') {
+                from(rootProject.projectDir) {
+                    include 'NOTICE'
+                    include 'LICENSE'
+                }
+                fileMode = 0755
+            }
+            into('deployment') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/deployment" }
+                fileMode = 0755
+            }
+            into('deployment/platform') {
+                from(rootProject.projectDir) {
+                    include 'truststore.p12'
+                    include 'keystore.p12'
+                    include 'application.properties'
+                }
+                fileMode = 0755
+            }
+            into('deployment/platform') {
                 // OMAG Server Platform - new name consistent with documentation
                 from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
                 rename { String fileName ->
@@ -120,22 +153,27 @@ distributions {
                 }
                 fileMode = 0755
             }
-            into('platform/extra') {
-                // Identify how to add new libs
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
-                fileMode = 0755
-            }
-            into('platform/lib') {
-                // Identify how to add new libs
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
-                fileMode = 0755
-            }
-            into('platform') {
+            into('deployment/platform') {
                 // Identify how the platform is started
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
-            into('platform/lib') {
+            into('deployment/platform/data') {
+                // Describe the data files
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
+                fileMode = 0755
+            }
+            into('deployment/platform/logs') {
+                // Describe the log files
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
+                fileMode = 0755
+            }
+            into('deployment/platform/lib') {
+                // Describe connectors
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
+                fileMode = 0755
+            }
+            into('deployment/platform/lib') {
                 // All our connectors, plus discovery sample & the sample Coco security connectors
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
@@ -172,13 +210,76 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
                 fileMode = 0755
             }
-            into('etc/utilities') {
-                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility').shadowJar }
+            into('deployment/platform/extra') {
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
+                fileMode = 0755
+            }
+            into('deployment/etc') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
+                fileMode = 0755
+            }
+            into('deployment/etc') {
+                from(rootProject.projectDir) {
+                    include 'logback.xml'
+                }
+                fileMode = 0755
+            }
+            into('deployment/etc/utilities') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/utilities" }
+                fileMode = 0755
+            }
+            into('deployment/etc/utilities') {
+                from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-ops-utility').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries').shadowJar }
                 fileMode = 0755
             }
-            into('opt/sample-clients') {
+            into('deployment/etc/reports') {
+                // Describe the reports layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports" }
+                fileMode = 0755
+            }
+            into('deployment/etc/reports') {
+                from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
+                fileMode = 0755
+            }
+            into('deployment/opt') {
+                // Describe the opt layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
+                fileMode = 0755
+            }
+            into('deployment/opt') {
+                from(rootProject.projectDir) {
+                    include 'content-packs/*'
+                    include 'sample-data/*/*'
+                }
+                fileMode = 0755
+            }
+            into('deployment/opt/sample-data') {
+                // Describe the sample-data layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
+                fileMode = 0755
+            }
+            into('deployment/opt/sample-data') {
+                // Add all sample data
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals" }
+                        {
+                            include 'data-files/*.csv'
+                            include 'database/*/*.sql'
+                        }
+                fileMode = 0755
+            }
+            into('deployment/opt/sample-clients') {
+                // Describe the sample-clients layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-clients" }
+                fileMode = 0755
+            }
+            into('deployment/opt/sample-clients') {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
@@ -190,26 +291,23 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
                 fileMode = 0755
             }
-            into('opt') {
-                from(rootProject.projectDir) {
-                    include 'content-packs/*'
-                    include 'sample-data/*/*'
-                }
+            into('deployment/opt/postman-collections') {
+                // Describe the sample-clients layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/postman-collections" }
                 fileMode = 0755
             }
-            into('platform') {
-                from(rootProject.projectDir) {
-                    include 'truststore.p12'
-                    include 'keystore.p12'
-                    include 'application.properties'
-                }
-                fileMode = 0755
-            }
-            into('') {
-                from(rootProject.projectDir) {
-                    include 'NOTICE'
-                    include 'LICENSE'
-                }
+            into('deployment/opt/postman-collections') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/postman-rest-samples" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation" }
+                        {
+                            include 'admin-services/Egeria*.json'
+                            include 'repository-services/Egeria*.json'
+                            include 'platform-services/Egeria*.json'
+                            include 'access-services/*/Egeria*.json'
+                        }
                 fileMode = 0755
             }
         }
