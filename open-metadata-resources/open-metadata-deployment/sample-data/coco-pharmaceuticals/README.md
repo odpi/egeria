@@ -4,8 +4,8 @@
 # Coco Pharmaceuticals
 
 The Coco Pharmaceuticals samples follow the examples outlined in the Egeria tutorials and
-are based on the description of the imaginary company and its employees in the
-[ODPi Data Governance Project](https://odpi.github.io/data-governance/).
+are based on the description of the fictitious
+[Coco Pharmaceuticals company and its employees](https://egeria-project.org/practices/coco-pharmaceuticals/).
 
 The samples themselves broadly fit into two categories:
 

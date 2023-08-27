@@ -46,7 +46,7 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
 # Copy egeria distribution
 COPY build/assembly /deployments
 
-# Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
+# Expose port 9443 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
 
 # By default, we run the OMAG Server Platform
