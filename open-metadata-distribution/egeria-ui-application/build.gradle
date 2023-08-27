@@ -1,0 +1,96 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+plugins {
+    id 'distribution'
+}
+
+apply plugin: 'distribution'
+
+jar.enabled=false
+
+description = 'Egeria User Interface Assembly'
+
+dependencies {
+    implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
+}
+
+distributions {
+    egeriaui {
+        //distributionBaseName = "${rootProject.name}-ui-distribution"
+        contents {
+            into('') {
+                from { project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').bootJar }
+                fileMode = 0755
+            }
+            into('') {
+                from { "$rootProject.projectDir/open-metadata-distribution/egeria-ui-application/docs" }
+                fileMode = 0755
+            }
+            into('') {
+                from ("$rootProject.projectDir/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources") {
+                    include 'applications.properties'
+                    include 'application.yml'
+                    include 'demo-users.yml'
+                }
+                fileMode = 0755
+            }
+            into('') {
+                from(rootProject.projectDir) {
+                    include 'NOTICE'
+                    include 'LICENSE'
+                    include 'keystore.p12'
+                    include 'truststore.p12'
+                }
+                fileMode = 0755
+            }
+        }
+    }
+}
+// Override the distribution filenames to match what we use with maven (replaces baseName above)
+egeriauiDistTar.compression = Compression.GZIP
+//egeriaDistTar.archiveExtension = 'tar.gz'
+egeriauiDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
+egeriauiDistZip.enabled=false // TODO: does not seem to work
+
+// Ditto for the deploy distribution
+
+
+task unzip(type: Copy) {
+    String zipFile = "${project.buildDir}/distributions/${rootProject.name}-${rootProject.version}-distribution.tar.gz"
+    //def zipFile = (project.buildDir + '/distributions/' + rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
+    def outputDir = file("${buildDir}/unpacked")
+
+    from tarTree(zipFile)
+    into outputDir
+}
+
+egeriauiDistTar.finalizedBy unzip
+
+// Define the output from this module - in this case our distributions
+sourceSets {
+    main {
+        output.dir("${project.buildDir}/distributions")
+    }
+}
+
+// Only complete when unzip is done
+build.dependsOn unzip
+
+// We don't want a published artifact from this module, as it's creating the final assembly
+// So disable all publish tasks inherited from the top level
+publish.onlyIf { false }
+generatePomFileForMavenmodulePublication.onlyIf { false }
+publishMavenmodulePublicationToMavenLocal.onlyIf { false }
+publishToMavenLocal.onlyIf { false }
+publishAllPublicationsToOSSRHRepository.onlyIf { false }
+publishMavenmodulePublicationToOSSRHRepository.onlyIf { false }
+generateMetadataFileForMavenmodulePublication.onlyIf { false }
+
+
+
+
+
