@@ -123,6 +123,7 @@ public class ConnectorConfigurationFactory
         for (OMRSAuditLogRecordSeverity severityDefinition : supportedSeverityDefinitions)
         {
             if ((! OMRSAuditLogRecordSeverity.TRACE.equals(severityDefinition)) &&
+                (! OMRSAuditLogRecordSeverity.ACTIVITY.equals(severityDefinition)) &&
                 (! OMRSAuditLogRecordSeverity.PERFMON.equals(severityDefinition)))
             {
                 supportedSeverities.add(severityDefinition.getName());
