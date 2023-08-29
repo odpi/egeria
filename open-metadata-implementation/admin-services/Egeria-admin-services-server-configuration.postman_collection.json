@@ -1112,6 +1112,41 @@
 											"response": []
 										},
 										{
+											"name": "Reset Remote Cohort URL",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"class\": \"URLRequestBody\",\n    \"urlRoot\": \"{{baseURL}}/servers/{{server}}\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/configuration/remote-repository-connector-url",
+													"host": [
+														"{{baseURL}}"
+													],
+													"path": [
+														"open-metadata",
+														"admin-services",
+														"users",
+														"{{adminUserId}}",
+														"servers",
+														"{{server}}",
+														"local-repository",
+														"configuration",
+														"remote-repository-connector-url"
+													]
+												},
+												"description": "This request is used to change the URL broadcast to other members of the cohort. This URL is used by these other members to call this server as part of a federated query.\n\nThis call is used when:\n\n- moving the server to a different platform\n    \n- correcting the URL when it has been incorrectly configured."
+											},
+											"response": []
+										},
+										{
 											"name": "Add open metadata archive to server start",
 											"request": {
 												"method": "POST",

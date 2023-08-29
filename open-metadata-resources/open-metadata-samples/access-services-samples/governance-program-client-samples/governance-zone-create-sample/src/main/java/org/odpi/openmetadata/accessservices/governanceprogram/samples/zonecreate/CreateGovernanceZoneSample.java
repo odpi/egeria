@@ -146,7 +146,7 @@ public class CreateGovernanceZoneSample
      */
     public static void main(String[] args)
     {
-        String  serverName = "cocoMDS2";
+        String  serverName = "simple-metadata-store";
         String  serverURLRoot = "https://localhost:9443";
         String  clientUserId = "erinoverview";
 
