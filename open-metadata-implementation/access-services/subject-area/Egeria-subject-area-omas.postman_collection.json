@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "9187aded-af08-4687-9d8f-99bcb9dd3621",
+		"name": "Egeria-subject-area-omas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Create Glossary",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"Glossary\",\n    \"qualifiedName\" : \"glossaryTime\",\n    \"name\" : \"XY\",\n    \"effectiveFromTime\" : 77777777,\n    \"effectiveToTime\" : 88888888\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/subject-area/users/{{user}}/glossaries",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"subject-area",
+						"users",
+						"{{user}}",
+						"glossaries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Glossary",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"Glossary\",\n    \"qualifiedName\" : \"glossaryTime\",\n    \"name\" : \"XY\",\n    \"effectiveFromTime\" : 77777777,\n    \"effectiveToTime\" : 9999999999\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/subject-area/users/{{user}}/glossaries/{{glossaryGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"subject-area",
+						"users",
+						"{{user}}",
+						"glossaries",
+						"{{glossaryGUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Term",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"Term\",\n    \"qualifiedName\" : \"termXXXX2\",\n    \"name\" : \"X\",\n    \"glossary\" : \n        {\n            \"class\" : \"GlossarySummary\",\n            \"guid\" : \"01723297-dfc0-4ca6-a81b-29e6e385252e\"\n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/subject-area/users/{{user}}/terms",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"subject-area",
+						"users",
+						"{{user}}",
+						"terms"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

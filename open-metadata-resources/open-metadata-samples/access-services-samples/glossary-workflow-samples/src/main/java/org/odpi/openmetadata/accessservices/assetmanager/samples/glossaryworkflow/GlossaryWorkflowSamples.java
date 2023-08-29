@@ -29,7 +29,7 @@ public class GlossaryWorkflowSamples
      */
     public static void main(String[] args)
     {
-        String  serverName = "cocoMDS1";
+        String  serverName = "simple-metadata-store";
         String  platformURLRoot = "https://localhost:9443";
         String  clientUserId = "peterprofile";
 
