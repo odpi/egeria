@@ -67,7 +67,7 @@ ext {
     jwtApiVersion = '0.11.5'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
-    kafkaVersion = '3.5.0'
+    kafkaVersion = '3.5.1'
     lang3Version = '3.13.0'
     logbackVersion = '1.4.5'
     lettuceVersion = '6.2.6.RELEASE'
