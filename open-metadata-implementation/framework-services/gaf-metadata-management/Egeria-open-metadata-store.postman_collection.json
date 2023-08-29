@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "a078b46d-0589-40e9-a300-b35e65264f89",
 		"name": "Egeria-open-metadata-store",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
 	},
 	"item": [
 		{
@@ -256,7 +257,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-name/additionalProperties?actualValue=additionalProperties&typeName=ProjectCharter",
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-map-name/additionalProperties?actualValue=expectedDuration&typeName=ProjectCharter",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -276,7 +277,7 @@
 							"query": [
 								{
 									"key": "actualValue",
-									"value": "additionalProperties"
+									"value": "expectedDuration"
 								},
 								{
 									"key": "typeName",
@@ -293,7 +294,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-name/additionalProperties?preferredValue=additionalProperties&typeName=ProjectCharter",
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-map-name/additionalProperties?preferredValue=expectedDuration&typeName=ProjectCharter",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -313,7 +314,7 @@
 							"query": [
 								{
 									"key": "preferredValue",
-									"value": "additionalProperties"
+									"value": "expectedDuration"
 								},
 								{
 									"key": "typeName",

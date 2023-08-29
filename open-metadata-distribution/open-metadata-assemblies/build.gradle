@@ -58,7 +58,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
@@ -99,7 +99,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
-    implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
@@ -216,8 +216,8 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample').shadowJar }
                 fileMode = 0755
             }
             into('user-interface') {

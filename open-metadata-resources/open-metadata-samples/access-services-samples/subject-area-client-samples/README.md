@@ -6,7 +6,7 @@
 These samples shows how to call the Subject Area OMAS's client.
 There is a sample for each of the Subject Area OMAS's interfaces.
 
-* **[Subject Area Definitions](subject-area-definition-sample)** shows how to create Subject Area Definitions.
+* **[Subject Area Categories](subject-area-categories-sample)** shows how to create a hierarchy of categories.
 
 
 

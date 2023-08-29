@@ -28,6 +28,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSet
 {
+    /**
+     * CONNECTOR-CONFIGURATION-FACTORY-400-001 Invalid Connector Provider class {0}; class loader exception was {1} with message {2}
+     */
     INVALID_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-001 ",
             "Invalid Connector Provider class {0}; class loader exception was {1} with message {2}",
             "The system is unable to create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +

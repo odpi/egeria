@@ -6,7 +6,7 @@
 The omag-server-platform.jar file holds the main runtime for Egeria,  To start the platform, enter:
 
 ```bash
-java -Dloader.path=lib,extra omag-server-platform*.jar
+java -Dloader.path=lib,extra -jar omag-server-platform*.jar
 ```
 
 You will see the platform logo plus other messages describing its startup configuration.

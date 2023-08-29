@@ -3,7 +3,8 @@
 		"_postman_id": "45761482-82ad-4ce1-8a51-d0b898bb4cd2",
 		"name": "Egeria-data-manager-omas",
 		"description": "Calls to the REST API of the Data Manager OMAS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
 	},
 	"item": [
 		{
@@ -179,6 +180,102 @@
 			"response": []
 		},
 		{
+			"name": "Create a Topic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"TopicRequestBody\",\n\t\"qualifiedName\" : \"Test.MyTopic\",\n    \"displayName\" : \"MyTopic\",\n    \"description\" : \"This is a test topic\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics?eventBrokerIsHome=false",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "eventBrokerIsHome",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Create an Asset entity to represent the Database."
+			},
+			"response": []
+		},
+		{
+			"name": "Create an Event Type for a Topic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"EventTypeRequestBody\",\n\t\"qualifiedName\" : \"Test.MyTopic.EventType1\",\n    \"displayName\" : \"EventType1\",\n    \"description\" : \"This is a test event type for a topic\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/c3a5ae62-4b79-49ee-bec2-8887c58d6dc6/event-types?eventBrokerIsHome=false",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"topics",
+						"c3a5ae62-4b79-49ee-bec2-8887c58d6dc6",
+						"event-types"
+					],
+					"query": [
+						{
+							"key": "eventBrokerIsHome",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Create an Asset entity to represent the Database."
+			},
+			"response": []
+		},
+		{
 			"name": "Create a database schema",
 			"request": {
 				"method": "POST",
@@ -320,6 +417,123 @@
 			"response": []
 		},
 		{
+			"name": "Get topics for event broker",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/event-brokers/db5ff6c5-476b-4aec-a373-0a63c6adea13/TopicMonitor/topics?startFrom=0&pageSize=1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"event-brokers",
+						"db5ff6c5-476b-4aec-a373-0a63c6adea13",
+						"TopicMonitor",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find topics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/cocoMDSx/open-metadata/access-services/data-manager/users/erinoverview/topics/by-search-string/.*.?startFrom=0&pageSize=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"cocoMDSx",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"erinoverview",
+						"topics",
+						"by-search-string",
+						".*."
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find endpoints",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{mdrServer}}/open-metadata/access-services/data-manager/users/{{user}}/endpoints/by-search-string?startFrom=0&pageSize=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{mdrServer}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"endpoints",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GetDatabaseByName",
 			"request": {
 				"method": "GET",
@@ -349,6 +563,96 @@
 						{
 							"key": "pageSize",
 							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Event Type By Name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"Test.MyTopic.EventType1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/event-types/by-name?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"topics",
+						"event-types",
+						"by-name"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Event Type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \"Test.MyTopic.EventType1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/event-types/by-search-string?startFrom=0&pageSize=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"{{user}}",
+						"topics",
+						"event-types",
+						"by-search-string"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "0"
 						}
 					]
 				}
@@ -401,6 +705,42 @@
 						"databases",
 						"schemas",
 						"{{databaseSchemaGUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Nested Schema Attribute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/cocoMDS2/open-metadata/access-services/data-manager/users/erinoverview/schema-elements/{{guid}}/nested-attributes?startFrom=0&pageSizee=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"cocoMDS2",
+						"open-metadata",
+						"access-services",
+						"data-manager",
+						"users",
+						"erinoverview",
+						"schema-elements",
+						"{{guid}}",
+						"nested-attributes"
+					],
+					"query": [
+						{
+							"key": "startFrom",
+							"value": "0"
+						},
+						{
+							"key": "pageSizee",
+							"value": "0"
+						}
 					]
 				}
 			},

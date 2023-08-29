@@ -49,16 +49,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
-    implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
-    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
@@ -99,13 +90,24 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
-    implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
-    implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
-
+    implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample')
 }
 
 distributions {
@@ -132,12 +134,12 @@ distributions {
                 }
                 fileMode = 0755
             }
-            into('deployment') {
+            into('assembly') {
                 // Describe the deployment layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/deployment" }
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly" }
                 fileMode = 0755
             }
-            into('deployment/platform') {
+            into('assembly/platform') {
                 from(rootProject.projectDir) {
                     include 'truststore.p12'
                     include 'keystore.p12'
@@ -145,7 +147,7 @@ distributions {
                 }
                 fileMode = 0755
             }
-            into('deployment/platform') {
+            into('assembly/platform') {
                 // OMAG Server Platform - new name consistent with documentation
                 from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
                 rename { String fileName ->
@@ -153,27 +155,27 @@ distributions {
                 }
                 fileMode = 0755
             }
-            into('deployment/platform') {
+            into('assembly/platform') {
                 // Identify how the platform is started
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
-            into('deployment/platform/data') {
+            into('assembly/platform/data') {
                 // Describe the data files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
                 fileMode = 0755
             }
-            into('deployment/platform/logs') {
+            into('assembly/platform/logs') {
                 // Describe the log files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
                 fileMode = 0755
             }
-            into('deployment/platform/lib') {
+            into('assembly/platform/lib') {
                 // Describe connectors
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
                 fileMode = 0755
             }
-            into('deployment/platform/lib') {
+            into('assembly/platform/lib') {
                 // All our connectors, plus discovery sample & the sample Coco security connectors
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
@@ -210,62 +212,68 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
                 fileMode = 0755
             }
-            into('deployment/platform/extra') {
+            into('assembly/platform/extra') {
                 // Identify how to add new libs
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
                 fileMode = 0755
             }
-            into('deployment/etc') {
+            into('assembly/etc') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
                 fileMode = 0755
             }
-            into('deployment/etc') {
+            into('assembly/etc') {
                 from(rootProject.projectDir) {
                     include 'logback.xml'
                 }
                 fileMode = 0755
             }
-            into('deployment/etc/utilities') {
+            into('assembly/etc/utilities') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/utilities" }
                 fileMode = 0755
             }
-            into('deployment/etc/utilities') {
+            into('assembly/etc/utilities') {
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-ops-utility').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-jar-with-dependencies", "")
+                }
                 fileMode = 0755
             }
-            into('deployment/etc/reports') {
+            into('assembly/etc/reports') {
                 // Describe the reports layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports" }
                 fileMode = 0755
             }
-            into('deployment/etc/reports') {
+            into('assembly/etc/reports') {
                 from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-$rootProject.version-jar-with-dependencies", "")
+                }
                 fileMode = 0755
             }
-            into('deployment/opt') {
+            into('assembly/opt') {
                 // Describe the opt layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
                 fileMode = 0755
             }
-            into('deployment/opt') {
+            into('assembly/opt') {
                 from(rootProject.projectDir) {
                     include 'content-packs/*'
                     include 'sample-data/*/*'
                 }
                 fileMode = 0755
             }
-            into('deployment/opt/sample-data') {
+            into('assembly/opt/sample-data') {
                 // Describe the sample-data layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
                 fileMode = 0755
             }
-            into('deployment/opt/sample-data') {
+            into('assembly/opt/sample-data') {
                 // Add all sample data
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals" }
                         {
@@ -274,29 +282,41 @@ distributions {
                         }
                 fileMode = 0755
             }
-            into('deployment/opt/sample-clients') {
+            into('assembly/opt/sample-configs') {
+                // Add all sample configs
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-clients') {
                 // Describe the sample-clients layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-clients" }
                 fileMode = 0755
             }
-            into('deployment/opt/sample-clients') {
+            into('assembly/opt/sample-clients') {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-$rootProject.version-jar-with-dependencies", "")
+                }
                 fileMode = 0755
             }
-            into('deployment/opt/postman-collections') {
+            into('assembly/opt/postman-collections') {
                 // Describe the sample-clients layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/postman-collections" }
                 fileMode = 0755
             }
-            into('deployment/opt/postman-collections') {
+            into('assembly/opt/postman-collections') {
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/postman-rest-samples" }
                         {
                             include 'Egeria*.json'
@@ -307,6 +327,28 @@ distributions {
                             include 'repository-services/Egeria*.json'
                             include 'platform-services/Egeria*.json'
                             include 'access-services/*/Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections/framework-services') {
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections/sample-configs') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment" }
+                        {
+                            include 'Egeria*.json'
                         }
                 fileMode = 0755
             }

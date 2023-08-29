@@ -43,18 +43,21 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
       org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
+# Copy the files to package into the container
+COPY assembly/platform /deployments
+
 # Expose port 9443 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
 
 # By default, we run the OMAG Server Platform
-ENV JAVA_APP_JAR=platform/omag-server-platform-${version}.jar
+ENV JAVA_APP_JAR=omag-server-platform-${version}.jar
 
 # This is used with regular class loader, ie any client code etc
-# ENV JAVA_LIBDIR=/deployment/lib
+# ENV JAVA_LIBDIR=/deployments/lib
 
 # This is used when running a spring app such as the OMAG Server PLatform (default)
 # Extend this accordingly via the environment, or within a new Dockerfile as needed
-ENV LOADER_PATH=/deployment/platform/lib:/deployment/platform/extra
+ENV LOADER_PATH=/deployments/lib:/deployments/extra
 
 # Joloka will be removed shortly. For now disable to avoid errors
 # ENV AB_JOLOKIA_OFF=true
