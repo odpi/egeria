@@ -68,7 +68,7 @@ ext {
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
     kafkaVersion = '3.5.0'
-    lang3Version = '3.12.0'
+    lang3Version = '3.13.0'
     logbackVersion = '1.4.5'
     lettuceVersion = '6.2.4.RELEASE'
     // TODO: Version 9 now available
