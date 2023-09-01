@@ -362,6 +362,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         {
             return;
         }
+        else if (userId.endsWith("npa"))
+        {
+            return;
+        }
 
         super.validateUserForServer(userId);
     }
@@ -437,6 +441,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                         String   serviceName) throws UserNotAuthorizedException
     {
         if (allUsers.contains(userId))
+        {
+            return;
+        }
+        else if (userId.endsWith("npa"))
         {
             return;
         }
@@ -672,11 +680,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                      */
                     if ((zoneName.equals(dataLakeZoneName)) && (updateRequested))
                     {
-                        if (npaAccounts.contains(userId))
-                        {
-                            return true;
-                        }
-                        else if (userId.endsWith("npa"))
+                        if ((npaAccounts.contains(userId)) || (userId.endsWith("npa")))
                         {
                             return true;
                         }
@@ -702,6 +706,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                         List<String> zoneAccounts = zoneAccess.get(zoneName);
 
                         if ((zoneAccounts != null) && (zoneAccounts.contains(userId)))
+                        {
+                            return true;
+                        }
+                        else if ((zoneAccounts != null) && (userId.endsWith("npa")) && (zoneAccounts.contains("generalnpa")))
                         {
                             return true;
                         }
