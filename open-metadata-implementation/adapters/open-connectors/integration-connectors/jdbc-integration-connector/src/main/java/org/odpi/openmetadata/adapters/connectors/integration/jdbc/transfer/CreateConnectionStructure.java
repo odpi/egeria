@@ -94,7 +94,7 @@ class CreateConnectionStructure implements Consumer<DatabaseElement> {
      */
     private ConnectionProperties createConnectionProperties(DatabaseElement databaseElement){
         ConnectionProperties connectionProperties = new ConnectionProperties();
-        connectionProperties.setDisplayName(databaseElement.getDatabaseProperties().getDisplayName() + " Connection");
+        connectionProperties.setDisplayName(databaseElement.getDatabaseProperties().getName() + " Connection");
         connectionProperties.setQualifiedName(databaseElement.getDatabaseProperties().getQualifiedName() + "::connection");
         connectionProperties.setConfigurationProperties(databaseElement.getDatabaseProperties().getExtendedProperties());
 
