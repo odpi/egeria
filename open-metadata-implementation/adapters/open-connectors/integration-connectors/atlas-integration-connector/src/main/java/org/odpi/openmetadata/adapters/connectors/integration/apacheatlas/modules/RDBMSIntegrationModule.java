@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.module
 
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasRESTClient;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntity;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -53,7 +53,7 @@ public class RDBMSIntegrationModule extends DatabaseIntegrationModuleBase
                                   AuditLog                 auditLog,
                                   CatalogIntegratorContext myContext,
                                   String                   targetRootURL,
-                                  ApacheAtlasRESTClient    atlasClient,
+                                  ApacheAtlasRESTConnector atlasClient,
                                   List<Connector>          embeddedConnectors) throws UserNotAuthorizedException
     {
         super(connectorName,

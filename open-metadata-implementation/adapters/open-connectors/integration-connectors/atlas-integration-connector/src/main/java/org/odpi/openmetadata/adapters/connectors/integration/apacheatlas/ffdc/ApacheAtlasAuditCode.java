@@ -182,66 +182,6 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                              " to ensure it is correctly represented in the open metadata ecosystem."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0021 - The {0} integration connector is copying the Apache Atlas glossary term called {1} into the {2} ({3}) open metadata glossary term
-     */
-    SYNC_ATLAS_GLOSSARY_TERM("APACHE-ATLAS-INTEGRATION-CONNECTOR-0021",
-                        OMRSAuditLogRecordSeverity.INFO,
-                        "The {0} integration connector is copying the Apache Atlas glossary term called {1} into the {2} ({3}) open metadata glossary term",
-                        "The connector will ensure that the content of the glossary term in the open metadata ecosystem is the same as the glossary term stored in Apache Atlas.",
-                        "No action is required.  This message is to record that the connector is preforming a sweep of the Atlas glossary" +
-                                " to ensure its terms are correctly represented in the open metadata ecosystem."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0022 - The {0} integration connector is copying the Apache Atlas glossary category called {1} into the {2} ({3}) open metadata glossary category
-     */
-    SYNC_ATLAS_GLOSSARY_CATEGORY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0022",
-                             OMRSAuditLogRecordSeverity.INFO,
-                             "The {0} integration connector is copying the Apache Atlas glossary category called {1} into the {2} ({3}) open metadata glossary category",
-                             "The connector will ensure that the content of the glossary category in the open metadata ecosystem is the same as the glossary category stored in Apache Atlas.",
-                             "No action is required.  This message is to record that the connector is preforming a sweep of the Atlas glossary" +
-                                     " to ensure its categories are correctly represented in the open metadata ecosystem."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0025 - The {0} integration connector is copying the open metadata glossary {1} ({2}) into the Apache Atlas glossary called {3}
-     */
-    SYNC_EGERIA_GLOSSARY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0025",
-                        OMRSAuditLogRecordSeverity.INFO,
-                        "The {0} integration connector is copying the open metadata glossary {1} ({2}) into the Apache Atlas glossary called {3}",
-                        "The connector will ensure that the content of the glossary in Apache Atlas is the same as the glossary stored in the open metadata ecosystem.",
-                        "No action is required.  This message is to record that the connector is preforming a sweep of the open metadata glossary" +
-                                " to ensure it is correctly represented in Apache Atlas."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0026 - The {0} integration connector is copying the open metadata glossary term {1} ({2}) into the Apache Atlas glossary term called {3}
-     */
-    SYNC_EGERIA_GLOSSARY_TERM("APACHE-ATLAS-INTEGRATION-CONNECTOR-0026",
-                         OMRSAuditLogRecordSeverity.INFO,
-                         "The {0} integration connector is copying the open metadata glossary term {1} ({2}) into the Apache Atlas glossary term called {3}",
-                         "The connector will ensure that the content of the glossary term in Apache Atlas is the same as the glossary term stored in the open metadata ecosystem.",
-                         "No action is required.  This message is to record that the connector is preforming a sweep of the open metadata glossary" +
-                                 " to ensure its terms correctly represented in Apache Atlas."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0027 - The {0} integration connector is copying the open metadata glossary category {1} ({2}) into the Apache Atlas glossary category called {3}
-     */
-    SYNC_EGERIA_GLOSSARY_CATEGORY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0027",
-                         OMRSAuditLogRecordSeverity.INFO,
-                         "The {0} integration connector is copying the open metadata glossary category {1} ({2}) into the Apache Atlas glossary category called {3}",
-                         "The connector will ensure that the content of the glossary category in Apache Atlas is the same as the glossary category stored in the open metadata ecosystem.",
-                         "No action is required.  This message is to record that the connector is preforming a sweep of the open metadata glossary" +
-                                 " to ensure its categories correctly represented in Apache Atlas."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0031 - A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}
-     */
-    CLIENT_SIDE_REST_API_ERROR( "APACHE-ATLAS-INTEGRATION-CONNECTOR-0031",
-                                OMRSAuditLogRecordSeverity.EXCEPTION,
-                                "A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}",
-                                "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                "Look for errors in the local server's console to understand and correct the source of the error."),
-
-
-    /**
      * APACHE-ATLAS-INTEGRATION-CONNECTOR-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
      */
     UNABLE_TO_REGISTER_LISTENER("APACHE-ATLAS-INTEGRATION-CONNECTOR-0032",
@@ -249,25 +189,6 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                           "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
                                   "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",
                                   "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0033 - Glossary category {0} already exists in Apache Atlas; trying a different name
-     */
-    CATEGORY_ALREADY_EXISTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0033",
-                            OMRSAuditLogRecordSeverity.INFO,
-                            "Glossary category {0} already exists in Apache Atlas; trying a different name",
-                            "The connector attempts to add a numerical post-fix to the category name to ensure it has a unique name.",
-                            "No action is required. The connector will validate whether it has already created the category on another thread, or it will try the request with a new name."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0034 - Glossary term {0} already exists in Apache Atlas; trying a different name
-     */
-    TERM_ALREADY_EXISTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0034",
-                        OMRSAuditLogRecordSeverity.INFO,
-                        "Glossary term {0} already exists in Apache Atlas; trying a different name",
-                        "The connector attempts to add a numerical post-fix to the term name to ensure it has a unique name.",
-                        "No action is required. The connector will validate whether it has already created the term on another thread, or it will try the request with a new name."),
-
 
     /**
      * APACHE-ATLAS-INTEGRATION-CONNECTOR-0035 - The {0} integration connector is calling the {1} integration module

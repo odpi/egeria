@@ -14,14 +14,14 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProp
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasRESTClient;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntity;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntityHeader;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntityWithExtInfo;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasObjectId;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasRelationship;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityHeader;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasObjectId;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasRelationship;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -93,7 +93,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                           AuditLog                 auditLog,
                                           CatalogIntegratorContext myContext,
                                           String                   targetRootURL,
-                                          ApacheAtlasRESTClient    atlasClient,
+                                          ApacheAtlasRESTConnector atlasClient,
                                           List<Connector>          embeddedConnectors) throws UserNotAuthorizedException
     {
         super(connectorName,
@@ -1730,6 +1730,8 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                                   InvalidParameterException,
                                                                                                                   UserNotAuthorizedException
     {
+        final String methodName = "syncEgeriaGlossaryCategoryHierarchyInAtlas";
+
         if (egeriaGlossaryCategory != null)
         {
             String egeriaGlossaryCategoryGUID = egeriaGlossaryCategory.getElementHeader().getGUID();
@@ -1750,7 +1752,24 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                         String currentAtlasParentRelationshipGUID = atlasClient.getRelationshipGUID(atlasGlossaryCategory,
                                                                                                     atlasParentCategoryPropertyName);
 
-                        atlasClient.clearRelationship(currentAtlasParentRelationshipGUID);
+                        try
+                        {
+                            atlasClient.clearRelationship(currentAtlasParentRelationshipGUID);
+                        }
+                        catch (Exception error)
+                        {
+                            if (auditLog != null)
+                            {
+                                auditLog.logException(methodName,
+                                                      ApacheAtlasAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                                      error);
+
+
+                            }
+                        }
 
                         atlasParentCategory = null;
                     }
