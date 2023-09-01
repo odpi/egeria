@@ -3,7 +3,7 @@
 
 # The Apache Atlas Integration Connector
 
-The Apache Atlas integration connector publishes glossary terms to Apache Atlas.
+The Apache Atlas integration connector publishes glossary terms, assets and lineage to Apache Atlas.
 
 ## Deployment and configuration
 

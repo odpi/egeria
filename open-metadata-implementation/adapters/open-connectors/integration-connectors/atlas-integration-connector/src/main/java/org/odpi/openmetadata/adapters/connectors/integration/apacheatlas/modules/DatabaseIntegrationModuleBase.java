@@ -12,12 +12,12 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIden
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasRESTClient;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntity;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntityHeader;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntityWithExtInfo;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityHeader;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -80,7 +80,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                          AuditLog                 auditLog,
                                          CatalogIntegratorContext myContext,
                                          String                   targetRootURL,
-                                         ApacheAtlasRESTClient    atlasClient,
+                                         ApacheAtlasRESTConnector atlasClient,
                                          List<Connector>          embeddedConnectors) throws UserNotAuthorizedException
     {
         super(connectorName,

@@ -79,7 +79,7 @@ public class DatabaseTransfer {
 
         DatabaseProperties databaseProperties = new DatabaseProperties();
         databaseProperties.setQualifiedName(databaseManagerName + "::" + address);
-        databaseProperties.setDisplayName(StringUtils.isBlank(catalog) ? address : catalog);
+        databaseProperties.setName(StringUtils.isBlank(catalog) ? address : catalog);
         databaseProperties.setDatabaseInstance(driverName);
         databaseProperties.setDatabaseVersion(databaseProductVersion);
         databaseProperties.setDatabaseType(databaseProductName);

@@ -78,7 +78,7 @@ public class SchemaTransfer implements Function<JdbcSchema, DatabaseSchemaElemen
         additionalProperties.put(Jdbc.JDBC_SCHEMA_KEY, jdbcSchema.getTableSchem());
 
         DatabaseSchemaProperties jdbcSchemaProperties = new DatabaseSchemaProperties();
-        jdbcSchemaProperties.setDisplayName(jdbcSchema.getTableSchem());
+        jdbcSchemaProperties.setName(jdbcSchema.getTableSchem());
         jdbcSchemaProperties.setQualifiedName(databaseQualifiedName + "::" + jdbcSchema.getTableSchem());
         jdbcSchemaProperties.setAdditionalProperties(additionalProperties);
         return jdbcSchemaProperties;
