@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules;
 
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasRESTClient;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -43,7 +43,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
                                                 AuditLog                 auditLog,
                                                 CatalogIntegratorContext myContext,
                                                 String                   targetRootURL,
-                                                ApacheAtlasRESTClient atlasClient,
+                                                ApacheAtlasRESTConnector atlasClient,
                                                 List<Connector>          embeddedConnectors,
                                                 String[]                 supportedEntityTypes,
                                                 String[]                 listenForTypes) throws UserNotAuthorizedException

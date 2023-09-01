@@ -15,6 +15,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')

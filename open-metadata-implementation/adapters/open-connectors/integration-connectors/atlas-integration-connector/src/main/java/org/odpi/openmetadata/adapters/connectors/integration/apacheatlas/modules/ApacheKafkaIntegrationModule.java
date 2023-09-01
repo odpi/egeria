@@ -4,9 +4,9 @@ package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.module
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasRESTClient;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -46,7 +46,7 @@ public class ApacheKafkaIntegrationModule extends AtlasRegisteredIntegrationModu
                                         AuditLog                 auditLog,
                                         CatalogIntegratorContext myContext,
                                         String                   targetRootURL,
-                                        ApacheAtlasRESTClient    atlasClient,
+                                        ApacheAtlasRESTConnector atlasClient,
                                         List<Connector>          embeddedConnectors) throws UserNotAuthorizedException
     {
         super(connectorName,

@@ -7,23 +7,28 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventLi
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.ApacheHiveIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.ApacheKafkaIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasGlossaryIntegrationModule;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.ApacheHiveIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasLineageIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.RDBMSIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.RegisteredIntegrationModule;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasAttributeDef;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasCardinality;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasEntityDef;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasPropagateTags;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasRelationshipCategory;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasRelationshipDef;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasRelationshipEndDef;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties.AtlasTypesDef;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasAttributeDef;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasCardinality;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityDef;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasPropagateTags;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasRelationshipCategory;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasRelationshipDef;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasRelationshipEndDef;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
@@ -42,7 +47,7 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 {
     private String                        targetRootURL            = null;
     private CatalogIntegratorContext      myContext                = null;
-    private ApacheAtlasRESTClient         atlasClient              = null;
+    private ApacheAtlasRESTConnector      atlasClient              = null;
     private AtlasLineageIntegrationModule lineageIntegrationModule = null;
 
     private final Map<String, List<RegisteredIntegrationModule>> moduleMap  = new HashMap<>();
@@ -122,12 +127,24 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
             /*
              * Create the client that calls Apache Atlas.
              */
-            atlasClient = new ApacheAtlasRESTClient(connectorName,
-                                                    "Apache Atlas",
-                                                    targetRootURL,
-                                                    connectionProperties.getUserId(),
-                                                    connectionProperties.getClearPassword(),
-                                                    auditLog);
+            Connection atlasConnection = new Connection(connectionBean);
+
+            atlasConnection.setConnectorType(new ApacheAtlasRESTProvider().getConnectorType());
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
+
+            Connector newConnector = connectorBroker.getConnector(atlasConnection);
+
+            if (newConnector instanceof ApacheAtlasRESTConnector apacheAtlasRESTConnector)
+            {
+                this.atlasClient = apacheAtlasRESTConnector;
+                this.atlasClient.start();
+            }
+            else
+            {
+                throw new ConnectorCheckedException(ApacheAtlasErrorCode.NULL_ATLAS_CLIENT.getMessageDefinition(connectorName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+            }
 
             /*
              * Ensure the correlation types are properly defined in Apache Atlas.
@@ -358,7 +375,7 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
      * @param atlasClient client for Apache Atlas
      * @throws PropertyServerException unable to connect to Apache Atlas
      */
-    private void setupCorrelationTypes(ApacheAtlasRESTClient atlasClient) throws PropertyServerException
+    private void setupCorrelationTypes(ApacheAtlasRESTConnector atlasClient) throws PropertyServerException
     {
         final String serviceType                     = "open_metadata_ecosystem";
         final String entityDescription               = "Information used in synchronizing Apache Atlas metadata with external catalogs via the Open Metadata Ecosystem supported by Egeria.";
@@ -574,6 +591,7 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
             auditLog.logMessage(methodName, ApacheAtlasAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName, targetRootURL));
         }
 
+        atlasClient.disconnect();
         super.disconnect();
     }
 }
