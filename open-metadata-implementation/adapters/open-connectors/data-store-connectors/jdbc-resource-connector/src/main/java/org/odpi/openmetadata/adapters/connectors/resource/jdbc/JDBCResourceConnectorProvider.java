@@ -20,7 +20,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 660;
+    private static final int    connectorComponentId   = 662;
 
     /*
      * Unique identifier for the connector type.
