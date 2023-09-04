@@ -37,7 +37,7 @@ open metadata services are activated.
       "successfulAssertions" : [ "Origin descriptor retrieved from platform." ],
       "unsuccessfulAssertions" : [ ],
       "discoveredProperties" : {
-        "Repository origin id" : "Egeria OMAG Server Platform (version 4.3-SNAPSHOT)"
+        "Repository origin id" : "Egeria OMAG Server Platform (version 4.3)"
       }
 }
 ```
