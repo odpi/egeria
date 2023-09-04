@@ -435,7 +435,6 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules
-org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
@@ -456,6 +455,9 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
+org.odpi.openmetadata.adapters.connectors.resource.apacheatlas
+org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc
+org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties
