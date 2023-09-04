@@ -18,7 +18,7 @@ To build the boot application jar from the current module use:
 You can run the application locally from this module with java using following command:
 
 ```bash
-java -jar build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server-config=classpath:samples/metadata-repository-server.json --server.port=9080 --server.ssl.enabled=false
+java -jar build/libs/server-chassis-spring-*.jar --omag.server-config=classpath:samples/metadata-repository-server.json --server.port=9080 --server.ssl.enabled=false
 ```
 
 The command will run the application using provided parameters. For demo purpose we turn ssl off and run the application on http port 9080.
