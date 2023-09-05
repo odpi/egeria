@@ -78,6 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">HttpHelper</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Turn off client-side checking of certificates.  There are two options, one to turn it off all the time and the other is
+ controlled through the -Dstrict.ssl=false property.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,15 +110,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSL()" class="member-name-link">noStrictSSL</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Allows using self signed certificates https connections
- makes all the clients and servers trusted no matter the certificate</div>
+<div class="block">Allows the use of self-signed certificates on https connections.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#noStrictSSLIfConfigured()" class="member-name-link">noStrictSSLIfConfigured</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Allows using self signed certificates https connections
- makes all the clients and servers trusted no matter the certificate
- Only if the override property strict.ssl is set</div>
+<div class="block">Allows using self-signed certificates https connections.</div>
 </div>
 </div>
 </div>
@@ -153,17 +152,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="noStrictSSL()">
 <h3>noStrictSSL</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">noStrictSSL</span>()</div>
-<div class="block">Allows using self signed certificates https connections
- makes all the clients and servers trusted no matter the certificate</div>
+<div class="block">Allows the use of self-signed certificates on https connections.
+ The client will trust the server no matter which certificate is sent.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="noStrictSSLIfConfigured()">
 <h3>noStrictSSLIfConfigured</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">noStrictSSLIfConfigured</span>()</div>
-<div class="block">Allows using self signed certificates https connections
- makes all the clients and servers trusted no matter the certificate
- Only if the override property strict.ssl is set</div>
+<div class="block">Allows using self-signed certificates https connections.
+ If -Dstrict.ssl=false is set, the client will trust the server no matter the certificate passed.</div>
 </section>
 </li>
 </ul>

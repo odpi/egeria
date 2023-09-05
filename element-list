@@ -557,9 +557,6 @@ org.odpi.openmetadata.conformance.workbenches.platform
 org.odpi.openmetadata.conformance.workbenches.repository
 org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer
 org.odpi.openmetadata.conformance.workbenches.repository.listener
-org.odpi.openmetadata.devprojects.reports
-org.odpi.openmetadata.devprojects.reports.componentid
-org.odpi.openmetadata.devprojects.reports.databasereport
 org.odpi.openmetadata.devprojects.reports.platform
 org.odpi.openmetadata.engineservices.assetanalysis.admin
 org.odpi.openmetadata.engineservices.assetanalysis.api
@@ -790,6 +787,9 @@ org.odpi.openmetadata.platformservices.client
 org.odpi.openmetadata.platformservices.rest
 org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring
+org.odpi.openmetadata.reports
+org.odpi.openmetadata.reports.componentid
+org.odpi.openmetadata.reports.databasereport
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager
 org.odpi.openmetadata.repositoryservices.archiveutilities
