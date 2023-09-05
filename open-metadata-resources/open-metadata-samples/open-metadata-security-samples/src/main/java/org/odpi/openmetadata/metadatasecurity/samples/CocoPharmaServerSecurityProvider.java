@@ -16,7 +16,7 @@ public class CocoPharmaServerSecurityProvider extends OpenMetadataServerSecurity
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 90;
+    private static final int    connectorComponentId   = 92;
 
     /*
      * Unique identifier for the connector type.

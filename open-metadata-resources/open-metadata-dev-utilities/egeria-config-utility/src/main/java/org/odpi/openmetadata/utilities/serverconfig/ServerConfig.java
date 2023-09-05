@@ -832,7 +832,7 @@ public class ServerConfig
 
         ServerConfig utility = new ServerConfig(platformURLRoot, clientUserId);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         String platformOrigin = utility.getPlatformOrigin();
 

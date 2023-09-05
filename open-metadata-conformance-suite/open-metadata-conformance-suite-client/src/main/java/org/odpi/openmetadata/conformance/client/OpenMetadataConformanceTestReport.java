@@ -347,7 +347,7 @@ public class OpenMetadataConformanceTestReport
             password = args[3];
         }
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         System.out.println("=======================================");
         System.out.println(" Open Metadata Conformance Test Report ");

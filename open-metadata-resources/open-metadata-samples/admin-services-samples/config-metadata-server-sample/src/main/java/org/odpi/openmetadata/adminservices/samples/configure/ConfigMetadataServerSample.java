@@ -190,7 +190,7 @@ public class ConfigMetadataServerSample
             adminUserId = args[1];
         }
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         if (args.length > 3)
         {

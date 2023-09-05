@@ -75,7 +75,7 @@ public class CreateAvroFileAssetSample
             System.exit(-1);
         }
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
 
         String  fileName = args[0];

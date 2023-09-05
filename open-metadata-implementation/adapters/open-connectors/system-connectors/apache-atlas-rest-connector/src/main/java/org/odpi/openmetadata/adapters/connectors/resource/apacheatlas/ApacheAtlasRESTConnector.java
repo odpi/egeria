@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.resource.apacheatlas;
 
-
-import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.ApacheAtlasAuditCode;
-import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.ApacheAtlasErrorCode;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.*;
 import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.NameConflictException;
 import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasBusinessMetadataDef;
 import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasClassificationDef;

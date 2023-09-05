@@ -365,7 +365,7 @@ public class CSVFileReaderSample
         System.out.println("Reading file: " + fileName);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {

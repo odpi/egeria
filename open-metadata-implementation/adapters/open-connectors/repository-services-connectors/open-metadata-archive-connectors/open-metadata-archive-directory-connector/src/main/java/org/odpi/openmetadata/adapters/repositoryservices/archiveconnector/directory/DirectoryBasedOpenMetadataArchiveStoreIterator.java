@@ -49,7 +49,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
         return (pointer < length);
     }
 
-
     @Override
     public T next()
     {
