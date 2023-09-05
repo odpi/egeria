@@ -113,6 +113,7 @@ ext {
     reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.1.0'
     jacocoVersion = '0.8.8'
+    snakeYamlVersion = '2.2'
 }
 
 dependencies {
@@ -282,6 +283,7 @@ dependencies {
         api("org.slf4j:slf4j-simple:${slf4jVersion}")
         api("org.testng:testng:${testngVersion}")
         api("org.hamcrest:hamcrest:${hamcrestVersion}")
+        api("org.yaml:snakeyaml:${snakeYamlVersion}")
 
         // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.

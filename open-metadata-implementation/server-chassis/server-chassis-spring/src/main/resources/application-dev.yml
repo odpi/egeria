@@ -1,5 +1,8 @@
 ---
 omag:
+#  server-config-file: classpath:samples/metadata-repository-server.json
+#  server-config-file: classpath:samples/metadata-repository-server.yaml
+#  server-config-file: classpath:samples/metadata-repository-server.yml
   server-config:
     localServerName: cocoMDS1
     localServerUserId: OMAGServer
@@ -22,10 +25,12 @@ omag:
           connectorType:
             connectorProviderClassName: >-
               org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider
+          configurationProperties:
+            password: "${app-secrets.dummyPasswordDemo}"
           endpoint:
             address: https://localhost:9443/servers/cocoMDS1
         eventsToSaveRule: ALL
         eventsToSendRule: ALL
 ---
 app-secrets:
-  dummyPassword: top-secret
+  dummyPasswordDemo: top-secret
