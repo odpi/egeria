@@ -39,7 +39,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = KafkaOpenMetadataTopicConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnector";
 
     private static final String expectedDataFormat     = "PLAINTEXT";
     private static final String supportedAssetTypeName = "KafkaTopic";
@@ -61,7 +61,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

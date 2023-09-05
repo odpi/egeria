@@ -44,7 +44,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = ApacheAtlasRESTConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector";
 
 
     /**
@@ -58,7 +58,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

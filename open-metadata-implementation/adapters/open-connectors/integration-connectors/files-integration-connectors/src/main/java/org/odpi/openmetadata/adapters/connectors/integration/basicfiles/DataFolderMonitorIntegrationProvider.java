@@ -28,6 +28,6 @@ public class DataFolderMonitorIntegrationProvider extends BasicFilesMonitorInteg
               connectorDisplayName,
               connectorDescription,
               connectorWikiPage,
-              DataFolderMonitorIntegrationConnector.class);
+              "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationConnector");
     }
 }

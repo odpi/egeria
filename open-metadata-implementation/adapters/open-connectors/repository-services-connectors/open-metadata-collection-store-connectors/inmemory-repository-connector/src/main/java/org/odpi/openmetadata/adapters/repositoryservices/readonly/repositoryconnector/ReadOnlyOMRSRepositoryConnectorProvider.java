@@ -6,7 +6,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.readonly.repositorycon
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 
 /**
@@ -14,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * The ReadOnlyOMRSRepositoryConnectorProvider is the connector provider for the ReadOnlyOMRSRepositoryConnector.
  * It extends OMRSRepositoryConnectorProviderBase which in turn extends the OCF ConnectorProviderBase.
  * ConnectorProviderBase supports the creation of connector instances.
- *
+ * <br><br>
  * The ReadOnlyOMRSRepositoryConnectorProvider must initialize ConnectorProviderBase with the Java class
  * name of the OMRS Connector implementation (by calling super.setConnectorClassName(className)).
  * Then the connector provider will work.
@@ -43,7 +42,7 @@ public class ReadOnlyOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = ReadOnlyOMRSRepositoryConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnector";
 
 
     /**
@@ -57,7 +56,7 @@ public class ReadOnlyOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
