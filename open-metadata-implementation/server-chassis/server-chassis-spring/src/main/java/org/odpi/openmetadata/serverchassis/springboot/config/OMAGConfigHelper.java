@@ -9,13 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
-import org.odpi.openmetadata.serverchassis.springboot.constants.Extensions;
+import org.odpi.openmetadata.serverchassis.springboot.constants.SupportedConfigTypes;
 import org.odpi.openmetadata.serverchassis.springboot.exception.OMAGServerActivationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -25,8 +26,7 @@ import java.util.Objects;
 @Configuration
 @Slf4j
 public class OMAGConfigHelper {
-    public static final String WRONG_EXTENSION_MESSAGE = "Unallowed config file extension, " +
-            "allowed config file extensions are: " + Extensions.stream();
+
     @Getter
     final OMAGServerProperties serverProperties;
     private final ObjectMapper jsonObjectMapper;
@@ -61,26 +61,17 @@ public class OMAGConfigHelper {
 
                 Resource serverConfigFile = serverProperties.getServerConfigFile();
 
-                //TODO: This is POC implementation.
-                // Better way to identify content type may be required.
-
-                if (!isJsonConfigurationFile(serverConfigFile) && !isYamlConfigurationFile(serverConfigFile)) {
-                    log.error(WRONG_EXTENSION_MESSAGE);
-                    throw new OMAGServerActivationError(WRONG_EXTENSION_MESSAGE);
-                }
-
-                log.info("{} based configuration with server-config-file {}", getFileExtension(serverConfigFile), serverConfigFile);
+                log.info("Configuration {}", serverConfigFile);
 
                 if (isJsonConfigurationFile(serverConfigFile)) {
-                    omagServerConfig = jsonObjectMapper.reader()
-                            .readValue(serverConfigFile.getInputStream(), OMAGServerConfig.class);
-
+                    omagServerConfig = jsonObjectMapper.reader().readValue(serverConfigFile.getInputStream(), OMAGServerConfig.class);
                 } else if (isYamlConfigurationFile(serverConfigFile)) {
-                    //TODO: This is POC implementation. We need better code to deal with yaml i.e. one option is to use Jackson and Yaml data format.
-//                    Yaml yaml = new Yaml();
-//                    omagServerConfig = yaml.loadAs(serverConfigFile.getInputStream(), OMAGServerConfig.class);
-                    omagServerConfig = yamlObjectMapper.reader()
-                            .readValue(serverConfigFile.getInputStream(), OMAGServerConfig.class);
+                    omagServerConfig = yamlObjectMapper.reader().readValue(serverConfigFile.getInputStream(), OMAGServerConfig.class);
+                } else if (isYmlConfigurationFile(serverConfigFile)) {
+                    Yaml yaml = new Yaml();
+                    omagServerConfig = yaml.loadAs(serverConfigFile.getInputStream(), OMAGServerConfig.class);
+                } else {
+                    throw new OMAGServerActivationError("Configuration file is not supported");
                 }
 
             } else if (isPropertiesConfiguration()) {
@@ -89,17 +80,15 @@ public class OMAGConfigHelper {
                 omagServerConfig = serverProperties.getServerConfig();
             }
 
-            log.info("Configuration document for server: {} - loaded successfully", omagServerConfig.getLocalServerName());
-
         } catch (IOException e) {
             log.info("Configuration document cannot be loaded from the resource provided - check application configuration");
             throw new OMAGServerActivationError(
-                    String.format("Configuration document cannot be loaded from the resource provided - check application configuration"), e);
+                    "Configuration document cannot be loaded from the resource provided - check application configuration", e);
         }
     }
 
     private String getFileExtension(Resource serverConfigFile) {
-        return Files.getFileExtension(serverConfigFile.getFilename());
+        return Files.getFileExtension(Objects.requireNonNull(serverConfigFile.getFilename()));
     }
 
     private boolean isConfigurationFileProvided() {
@@ -107,12 +96,13 @@ public class OMAGConfigHelper {
     }
 
     private boolean isJsonConfigurationFile(Resource serverConfigFile) {
-        return Extensions.JSON.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)));
+        return SupportedConfigTypes.JSON.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)));
     }
-
     private boolean isYamlConfigurationFile(Resource serverConfigFile) {
-        return Extensions.YAML.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)))
-                || Extensions.YML.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)));
+        return SupportedConfigTypes.YAML.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)));
+    }
+    private boolean isYmlConfigurationFile(Resource serverConfigFile) {
+        return SupportedConfigTypes.YML.name().equalsIgnoreCase(Objects.requireNonNull(getFileExtension(serverConfigFile)));
     }
 
     private boolean isPropertiesConfiguration() {

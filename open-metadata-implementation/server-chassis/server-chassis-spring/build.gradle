@@ -26,28 +26,25 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.projectlombok:lombok'
-//    implementation 'org.yaml:snakeyaml'
+    implementation 'org.yaml:snakeyaml'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    implementation 'com.google.guava:guava'
     annotationProcessor 'org.projectlombok:lombok'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'ch.qos.logback:logback-classic'
     runtimeOnly 'org.hibernate:hibernate-validator'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
-//    runtimeOnly 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
     runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
-//    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
-
     implementation project(path: ':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(path: ':open-metadata-implementation:repository-services:repository-services-implementation')
 
-    implementation 'com.google.guava:guava'
     /* IN DEVELOPMENT */
 
     /* Pulling dependencies for some fo the sub-systems enabling 'Metadata Access Store' services  */
