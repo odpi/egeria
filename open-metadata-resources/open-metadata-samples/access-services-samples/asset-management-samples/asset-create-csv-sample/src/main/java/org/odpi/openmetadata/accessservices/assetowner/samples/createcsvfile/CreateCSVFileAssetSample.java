@@ -101,7 +101,7 @@ public class CreateCSVFileAssetSample
         System.out.println("Creating file: " + fileName);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {

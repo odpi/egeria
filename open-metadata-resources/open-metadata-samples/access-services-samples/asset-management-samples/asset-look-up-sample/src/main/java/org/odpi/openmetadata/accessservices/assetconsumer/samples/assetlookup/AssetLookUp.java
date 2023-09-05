@@ -728,7 +728,7 @@ public class AssetLookUp
 
         AssetLookUp utility = new AssetLookUp(serverName, platformURLRoot, clientUserId);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         String platformOrigin = utility.getPlatformOrigin();
 
