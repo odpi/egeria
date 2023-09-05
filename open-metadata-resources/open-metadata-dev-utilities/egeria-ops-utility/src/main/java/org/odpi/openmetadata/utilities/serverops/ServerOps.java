@@ -347,7 +347,7 @@ public class ServerOps
 
         ServerOps utility = new ServerOps(platformURLRoot, clientUserId);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         String platformOrigin = utility.getPlatformOrigin();
 
