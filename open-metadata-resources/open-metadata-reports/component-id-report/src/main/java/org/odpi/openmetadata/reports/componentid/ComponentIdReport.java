@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.devprojects.reports.componentid;
+package org.odpi.openmetadata.reports.componentid;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
@@ -22,20 +22,36 @@ import java.util.TreeMap;
  */
 public class ComponentIdReport
 {
-    private static String reportFileName = "component-id-report.md";
-    private static String licenseString = "<!-- SPDX-License-Identifier: CC-BY-4.0 -->\n";
-    private static String copyrightString = "<!-- Copyright Contributors to the Egeria project. -->\n\n";
-    private static String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component Home Page | \n| :--- | :--- | :--- | :--- |\n";
-    private static String snippetString = "\n--8<-- \"snippets/abbr.md\"";
+    private static final String reportFileName = "component-id-report.md";
+    private static final String licenseString  = "<!-- SPDX-License-Identifier: CC-BY-4.0 -->\n";
+    private static final String copyrightString = "<!-- Copyright Contributors to the Egeria project. -->\n\n";
+    private static final String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component Home Page | \n| :--- | :--- | :--- | :--- |\n";
+    private static final String snippetString = "\n--8<-- \"snippets/abbr.md\"";
 
-    private static String fileCohortRegistryConnector = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
-    private static String directoryMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.DirectoryBasedOpenMetadataArchiveStoreProvider";
-    private static String fileMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
-    private static String inMemRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
-    private static String readOnlyRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
-    private static String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
-    private static String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
-    private static String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private static final String fileCohortRegistryConnector = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
+    private static final String directoryMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.DirectoryBasedOpenMetadataArchiveStoreProvider";
+    private static final String fileMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
+    private static final String inMemRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
+    private static final String readOnlyRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
+    private static final String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
+    private static final String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
+    private static final String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private static final String jdbcResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
+    private static final String kafkaTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
+    private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider";
+    private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
+    private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
+    private static final String foldersIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
+    private static final String jdbcIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
+    private static final String kafkaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider";
+    private static final String openAPIIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
+    private static final String apiBasedOpenLineageLogStoreIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider";
+    private static final String fileBasedOpenLineageLogStoreIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.FileBasedOpenLineageLogStoreProvider";
+    private static final String gaOpenLineageIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider";
+    private static final String openLineageCataloguerIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider";
+    private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
+    private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
+    private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider";
 
 
     /**
@@ -52,10 +68,8 @@ public class ComponentIdReport
 
             Object potentialConnectorProvider = connectorProviderClass.getConstructor().newInstance();
 
-            if (potentialConnectorProvider instanceof ConnectorProviderBase)
+            if (potentialConnectorProvider instanceof ConnectorProviderBase connectorProvider)
             {
-                ConnectorProviderBase connectorProvider = (ConnectorProviderBase) potentialConnectorProvider;
-
                 return connectorProvider.getConnectorComponentDescription();
             }
         }
@@ -187,6 +201,22 @@ public class ComponentIdReport
         this.addConnectorDescription(restRepositoryConnector, report);
         this.addConnectorDescription(platformSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(serverSecurityConnectorProviderClassName, report);
+        this.addConnectorDescription(jdbcResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(kafkaTopicConnectorProviderClassName, report);
+        this.addConnectorDescription(atlasIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(filesIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(foldersIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(jdbcIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(kafkaIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(openAPIIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(apiBasedOpenLineageLogStoreIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(fileBasedOpenLineageLogStoreIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(gaOpenLineageIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(openLineageCataloguerIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(openLineageEventReceiverIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
+        this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 
