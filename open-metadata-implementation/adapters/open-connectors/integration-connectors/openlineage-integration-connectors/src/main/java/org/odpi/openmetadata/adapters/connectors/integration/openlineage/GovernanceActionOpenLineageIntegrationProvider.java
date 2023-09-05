@@ -36,7 +36,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = GovernanceActionOpenLineageIntegrationConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationConnector";
 
 
     /**
@@ -49,7 +49,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

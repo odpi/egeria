@@ -38,7 +38,7 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = ApacheAtlasIntegrationConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationConnector";
 
 
     /**
@@ -64,7 +64,7 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

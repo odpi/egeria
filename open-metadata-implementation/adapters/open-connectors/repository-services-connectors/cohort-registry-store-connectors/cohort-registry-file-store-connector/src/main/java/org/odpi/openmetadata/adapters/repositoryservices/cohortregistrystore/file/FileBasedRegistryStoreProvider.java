@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.fi
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStoreProviderBase;
 
 /**
@@ -34,7 +33,7 @@ public class FileBasedRegistryStoreProvider extends OMRSCohortRegistryStoreProvi
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = FileBasedRegistryStoreConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreConnector";
 
 
     /**
@@ -48,7 +47,7 @@ public class FileBasedRegistryStoreProvider extends OMRSCohortRegistryStoreProvi
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

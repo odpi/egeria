@@ -38,7 +38,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = OpenAPIMonitorIntegrationConnector.class;
+    private static final String connectorClassName      = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationConnector";
 
     static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
 
@@ -54,7 +54,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
