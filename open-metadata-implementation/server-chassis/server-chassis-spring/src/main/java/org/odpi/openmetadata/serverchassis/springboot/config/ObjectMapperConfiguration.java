@@ -11,12 +11,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import lombok.extern.slf4j.Slf4j;
 
-import org.odpi.openmetadata.serverchassis.springboot.constants.Extensions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.util.StringUtils;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -53,9 +51,6 @@ public class ObjectMapperConfiguration {
     @Bean
     @Qualifier("jsonObjectMapper")
     ObjectMapper objectMapper(Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
-
-        log.info("{}{}", StringUtils.capitalize(Extensions.JSON.name()), START_LOG_SUFIX);
-
         return newObjectMapper(jackson2ObjectMapperBuilder);
     }
 
@@ -65,9 +60,6 @@ public class ObjectMapperConfiguration {
     @Bean
     @Qualifier("yamlObjectMapper")
     public ObjectMapper yamlMapper() {
-
-        log.info("{}{}", StringUtils.capitalize(Extensions.YAML.name()), START_LOG_SUFIX);
-
         return YAMLMapper.builder()
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
                 .disable(YAMLGenerator.Feature.ALLOW_LONG_KEYS)
