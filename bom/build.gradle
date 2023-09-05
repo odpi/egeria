@@ -107,7 +107,7 @@ ext {
     antVersion = '1.10.13'
     jnrVersion = '3.1.17'
     cassandraVersion = '4.1.2'
-    protobufVersion = '3.23.4'
+    protobufVersion = '3.24.2'
     osgiVersion = '8.0.0'
     log4jVersion = '2.20.0'
     jacksonjdk8Version = '2.15.2'
