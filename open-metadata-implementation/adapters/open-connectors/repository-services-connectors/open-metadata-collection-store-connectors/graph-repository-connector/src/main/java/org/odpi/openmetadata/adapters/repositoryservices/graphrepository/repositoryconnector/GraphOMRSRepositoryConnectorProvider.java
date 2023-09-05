@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * The GraphOMRSRepositoryConnectorProvider is the connector provider for the GraphOMRSRepositoryConnector.
  * It extends OMRSRepositoryConnectorProviderBase which in turn extends the OCF ConnectorProviderBase.
  * ConnectorProviderBase supports the creation of connector instances.
- *
+ * <br><br>
  * The GraphOMRSRepositoryConnectorProvider must initialize ConnectorProviderBase with the Java class
  * name of the OMRS Connector implementation (by calling super.setConnectorClassName(className)).
  * Then the connector provider will work.
@@ -42,7 +42,7 @@ public class GraphOMRSRepositoryConnectorProvider extends OMRSRepositoryConnecto
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = GraphOMRSRepositoryConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnector";
 
 
     /**
@@ -56,7 +56,7 @@ public class GraphOMRSRepositoryConnectorProvider extends OMRSRepositoryConnecto
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
