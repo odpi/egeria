@@ -173,7 +173,7 @@ public class CreateGovernanceZoneSample
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
 
         try

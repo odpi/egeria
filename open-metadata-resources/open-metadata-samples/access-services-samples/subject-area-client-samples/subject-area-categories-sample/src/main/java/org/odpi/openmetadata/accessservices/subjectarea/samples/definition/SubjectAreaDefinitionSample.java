@@ -228,7 +228,7 @@ public class SubjectAreaDefinitionSample
         System.out.println("OMAG server platform: " + serverName);
         System.out.println("Using userId: " + clientUserId);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {
