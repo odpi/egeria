@@ -18,7 +18,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 700;
+    private static final int    connectorComponentId   = 663;
 
     /*
      * Unique identifier for the connector type.

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.devprojects.reports.platform;
+package org.odpi.openmetadata.reports.platform;
 
 
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
@@ -16,7 +16,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.devprojects.reports.EgeriaReport;
+import org.odpi.openmetadata.reports.EgeriaReport;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -152,7 +152,16 @@ public class EgeriaPlatformReport
                 /*
                  * Output requested for all servers
                  */
-                Set<OMAGServerConfig> configuredServers = configurationManagementClient.getAllServerConfigurations();
+                Set<OMAGServerConfig> configuredServers = null;
+
+                try
+                {
+                    configuredServers = configurationManagementClient.getAllServerConfigurations();
+                }
+                catch (Exception exception)
+                {
+                    // assume no configurations
+                }
 
                 if (configuredServers != null)
                 {
@@ -325,11 +334,18 @@ public class EgeriaPlatformReport
             /*
              * Now all the details about the servers is assembled, it can be printed out.
              */
-            for (OMAGServerDetails serverDetails : serverDetailsMap.values())
+            if (serverDetailsMap.isEmpty())
             {
-                if (serverDetails != null)
+                report.printReportLine(detailIndentLevel + 1, "None");
+            }
+            else
+            {
+                for (OMAGServerDetails serverDetails : serverDetailsMap.values())
                 {
-                    serverDetails.printServer(detailIndentLevel + 1);
+                    if (serverDetails != null)
+                    {
+                        serverDetails.printServer(detailIndentLevel + 1);
+                    }
                 }
             }
 
@@ -1240,7 +1256,7 @@ public class EgeriaPlatformReport
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {

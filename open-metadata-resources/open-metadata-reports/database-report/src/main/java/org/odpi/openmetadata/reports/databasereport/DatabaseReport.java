@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.devprojects.reports.databasereport;
+package org.odpi.openmetadata.reports.databasereport;
 
 
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManag
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
-import org.odpi.openmetadata.devprojects.reports.EgeriaReport;
+import org.odpi.openmetadata.reports.EgeriaReport;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
