@@ -10,7 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 
 /**
- *  This class provides validation support for OMAG specific application properties.
+ *  Provides validation support for OMAG specific application properties.
  */
 @ConfigurationProperties(prefix = "omag", ignoreUnknownFields=false)
 @Getter
@@ -24,6 +24,10 @@ public class OMAGServerProperties {
      */
 //    @NotNull
     private Resource serverConfigFile;
+    /**
+     * Application property that maps to OMAGServerConfig document directly.
+     * USED ONLY TO EXPERIMENT DUE TO UNDERLYING SPRING YAML CONFIGURATION PROCESSING BEHAVIOUR THAT COMPROMISES THE CURRENT FUNCTIONALITY.
+     */
     private OMAGServerConfig serverConfig;
 
 }

@@ -19,7 +19,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
- * This class provides configurations for customizing
+ * Provides configurations for customizing
  * json bean Jackson object mapper singleton instance configuration
  * and
  * yaml bean Jackson object mapper singleton instance configuration
@@ -27,7 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Slf4j
 @Configuration
 public class ObjectMapperConfiguration {
-    public static final String START_LOG_SUFIX = "ObjectMapper configuration started.";
 
     private static ObjectMapper newObjectMapper(Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
 
