@@ -2,7 +2,7 @@
 omag:
 #  server-config-file: classpath:samples/metadata-repository-server.json
 #  server-config-file: classpath:samples/metadata-repository-server.yaml
-#  server-config-file: classpath:samples/metadata-repository-server.yml
+  server-config-file: classpath:samples/metadata-repository-server.yml
   server-config:
     localServerName: cocoMDS1
     localServerUserId: OMAGServer
