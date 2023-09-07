@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot.config;
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 
 
 /**
- * This class provides configuration supporting OMAG related components required by the application.
+ * Provides configuration supporting OMAG related components required by the application.
  */
 @Configuration
 public class OMAGServicesConfiguration {
@@ -23,16 +21,8 @@ public class OMAGServicesConfiguration {
      * @see OMAGServerOperationalServices
      */
     @Primary
-    @Bean(name = {"platformOperationalServices"})
-    public OMAGServerOperationalServices platformOperationalServices(){
+    @Bean(name = {"serverOperationalServices"})
+    public OMAGServerOperationalServices serverOperationalServices(){
         return new OMAGServerOperationalServices();
     }
-
-    @Bean(name = {"connectorConfigurationFactory"})
-    public ConnectorConfigurationFactory connectorConfigurationFactory() {
-        return new ConnectorConfigurationFactory();
-    }
-
-    @Bean(name = {"omrsConfigurationFactory"})
-    public OMRSConfigurationFactory omrsConfigurationFactory() {return new OMRSConfigurationFactory(); }
 }
