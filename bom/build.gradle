@@ -34,11 +34,11 @@ ext {
     commonsloggingVersion = '1.2'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
-    elasticsearchVersion = '8.7.1'
+    elasticsearchVersion = '8.9.2'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
     // TODO: Held back for compatability
-    gremlinVersion = '3.5.6'
+    gremlinVersion = '3.7.0'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
     guavaVersion = '32.0.1-jre'
@@ -54,7 +54,7 @@ ext {
     jakartaannotationVersion = '2.1.1'
     jakartapersistenceVersion = '3.1.0'
     jakartavalidationVersion = '3.0.2'
-    janusVersion = '0.6.3'
+    janusVersion = '1.0.0-20230905-190901.baa1704'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '4.7.0'
