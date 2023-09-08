@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.serverchassis.springboot;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.serverchassis.springboot.config.OMAGConfigHelper;
 import org.odpi.openmetadata.serverchassis.springboot.exception.OMAGServerActivationError;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.serverchassis.springboot.config;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
+import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,7 +20,7 @@ public class OMAGServicesConfiguration {
      * Provides singleton bean instance of OMAGServerOperationalServices
      *
      * @return OMAGServerOperationalServices instance
-     * @see org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices
+     * @see OMAGServerOperationalServices
      */
     @Primary
     @Bean(name = {"platformOperationalServices"})
