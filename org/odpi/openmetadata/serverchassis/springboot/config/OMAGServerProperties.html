@@ -76,11 +76,12 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="annotations">@ConfigurationProperties(prefix="omag")
+<div class="type-signature"><span class="annotations">@ConfigurationProperties(prefix="omag",
+                         ignoreUnknownFields=false)
 @Validated
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerProperties</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class provides validation support for OMAG specific application properties.</div>
+<div class="block">Provides validation support for OMAG specific application properties.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,27 +109,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.core.io.Resource</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerConfig()" class="member-name-link">getServerConfig</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Application property that maps to OMAGServerConfig document directly.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.core.io.Resource</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerConfigFile()" class="member-name-link">getServerConfigFile</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
  This property is required and cannot be null.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerUser()" class="member-name-link">getServerUser</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Configures the username parameter used to activate the OMAG server instance using platform operational services.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServerConfig(org.springframework.core.io.Resource)" class="member-name-link">setServerConfig</a><wbr>(org.springframework.core.io.Resource&nbsp;serverConfig)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServerConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)" class="member-name-link">setServerConfig</a><wbr>(<a href="../../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;serverConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
- This property is required and cannot be null.</div>
+<div class="block">Application property that maps to OMAGServerConfig document directly.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServerUser(java.lang.String)" class="member-name-link">setServerUser</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUser)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServerConfigFile(org.springframework.core.io.Resource)" class="member-name-link">setServerConfigFile</a><wbr>(org.springframework.core.io.Resource&nbsp;serverConfigFile)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Configures the username parameter used to activate the OMAG server instance using platform operational services.</div>
+<div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
+ This property is required and cannot be null.</div>
 </div>
 </div>
 </div>
@@ -162,35 +163,35 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getServerConfigFile()">
+<h3>getServerConfigFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.core.io.Resource</span>&nbsp;<span class="element-name">getServerConfigFile</span>()</div>
+<div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
+ This property is required and cannot be null.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getServerConfig()">
 <h3>getServerConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.core.io.Resource</span>&nbsp;<span class="element-name">getServerConfig</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a></span>&nbsp;<span class="element-name">getServerConfig</span>()</div>
+<div class="block">Application property that maps to OMAGServerConfig document directly.
+ USED ONLY TO EXPERIMENT DUE TO UNDERLYING SPRING YAML CONFIGURATION PROCESSING BEHAVIOUR THAT COMPROMISES THE CURRENT FUNCTIONALITY.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setServerConfigFile(org.springframework.core.io.Resource)">
+<h3>setServerConfigFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setServerConfigFile</span><wbr><span class="parameters">(org.springframework.core.io.Resource&nbsp;serverConfigFile)</span></div>
 <div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
  This property is required and cannot be null.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getServerUser()">
-<h3>getServerUser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerUser</span>()</div>
-<div class="block">Configures the username parameter used to activate the OMAG server instance using platform operational services.
- Default value is set to 'system', can be overwritted</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setServerConfig(org.springframework.core.io.Resource)">
+<section class="detail" id="setServerConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">
 <h3>setServerConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setServerConfig</span><wbr><span class="parameters">(org.springframework.core.io.Resource&nbsp;serverConfig)</span></div>
-<div class="block">Configures the location of the OMAGServerConfig json document defined as org.springframework.core.io.Resource
- This property is required and cannot be null.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setServerUser(java.lang.String)">
-<h3>setServerUser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setServerUser</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUser)</span></div>
-<div class="block">Configures the username parameter used to activate the OMAG server instance using platform operational services.
- Default value is set to 'system', can be overwritted</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setServerConfig</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;serverConfig)</span></div>
+<div class="block">Application property that maps to OMAGServerConfig document directly.
+ USED ONLY TO EXPERIMENT DUE TO UNDERLYING SPRING YAML CONFIGURATION PROCESSING BEHAVIOUR THAT COMPROMISES THE CURRENT FUNCTIONALITY.</div>
 </section>
 </li>
 </ul>
