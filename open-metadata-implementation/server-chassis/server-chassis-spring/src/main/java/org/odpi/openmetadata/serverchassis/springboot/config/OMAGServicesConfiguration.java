@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 
 
 /**
- * This class provides configuration supporting OMAG related components required by the application.
+ * Provides configuration supporting OMAG related components required by the application.
  */
 @Configuration
 public class OMAGServicesConfiguration {
