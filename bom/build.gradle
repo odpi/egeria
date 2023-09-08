@@ -103,7 +103,7 @@ ext {
     tomcatVersion = '10.1.10'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.10.1'
-    antVersion = '1.10.13'
+    antVersion = '1.10.14'
     jnrVersion = '3.1.17'
     cassandraVersion = '4.1.2'
     protobufVersion = '3.23.4'
