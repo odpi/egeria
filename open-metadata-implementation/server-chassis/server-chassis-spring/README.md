@@ -3,7 +3,7 @@
 
 # OMAG Server Chassis Spring
 
-![egeria-content-status-in-development.png](..%2F..%2F..%2Fimages%2Fegeria-content-status-in-development.png)
+![egeria-content-status-tech-preview.png](..%2F..%2F..%2Fimages%2Fegeria-content-status-tech-preview.png)
 
 This module provides spring-boot based application that is able to launch single pre-configured OMAG server instance.
 
