@@ -80,7 +80,7 @@ jobs:
       # QEMU is needed for ARM64 build for egeria-configure
       # egeria-configure needs to install utilities
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set Release version env variable
         run: |
           echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
