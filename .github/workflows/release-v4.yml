@@ -72,7 +72,7 @@ jobs:
           mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
           cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
       - name: Build and push(egeria) to quay.io and docker.io
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:stable, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:stable
@@ -80,7 +80,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:stable, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:stable
