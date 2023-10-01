@@ -91,7 +91,7 @@ jobs:
           cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
       - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:latest, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:latest
@@ -99,7 +99,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:${{ env.VERSION }}
@@ -108,7 +108,7 @@ jobs:
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io (tag latest)
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:latest, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:latest
@@ -118,7 +118,7 @@ jobs:
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:${{ env.VERSION }}
