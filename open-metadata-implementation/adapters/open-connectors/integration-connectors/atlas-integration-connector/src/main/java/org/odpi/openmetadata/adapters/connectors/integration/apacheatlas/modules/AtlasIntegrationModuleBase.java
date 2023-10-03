@@ -1292,7 +1292,7 @@ public abstract class AtlasIntegrationModuleBase
             schemaAttributeProperties.setDisplayName(getAtlasStringProperty(attributes, "name") );
             schemaAttributeProperties.setDescription(getAtlasStringProperty(attributes, "description"));
 
-            schemaAttributeProperties.setTypeName(egeriaSchemaTypeTypeName);
+            schemaTypeProperties.setTypeName(egeriaSchemaTypeTypeName);
             schemaTypeProperties.setDisplayName(getAtlasStringProperty(attributes, "displayName"));
             schemaTypeProperties.setDescription(getAtlasStringProperty(attributes, "userDescription"));
 
