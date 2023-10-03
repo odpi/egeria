@@ -99,7 +99,7 @@ ext {
     testngVersion = '7.8.0'
     thriftVersion = '0.18.1'
     springwebVersion = '6.0.6'
-    tinkVersion = '1.9.0'
+    tinkVersion = '1.11.0'
     tomcatVersion = '10.1.10'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.10.1'
