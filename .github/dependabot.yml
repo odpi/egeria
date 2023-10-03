@@ -20,8 +20,8 @@ updates:
         - "*tomcat*"
     janusgraph:
       patterns:
-        - "*janus*"
-        - "*gremlin*"
+        - "*janusgraph*"
+        - "*tinkerpop*"
         - "*elasticsearch*"
         - "*lucene*"
     slf4j:
@@ -30,6 +30,13 @@ updates:
     jackson:
       patterns:
         - "com.fasterxml.*"
+  ignore:
+    - dependency-name: "janusgraph"
+      versions: [ "1.0.0-20231003-025335.faa9072" ]
+    - dependency-name: "tinkerpop"
+      versions: [ "3.7.0" ]
+    - dependency-name: "elasticsearch"
+      versions: [ "8.10.2" ]
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
   schedule:
