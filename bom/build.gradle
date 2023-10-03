@@ -78,7 +78,7 @@ ext {
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.0'
-    prometheusVersion = '1.11.2'
+    prometheusVersion = '1.11.4'
     nettyVersion = '4.1.94.Final'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
