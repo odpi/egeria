@@ -23,7 +23,7 @@ ext {
     // TODO: version 4 under new package name
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
-    avroVersion = '1.11.1'
+    avroVersion = '1.11.3'
     classgraphVersion = '4.8.160'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
