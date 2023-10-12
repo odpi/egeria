@@ -65,7 +65,6 @@ public class RelatedElementConverter<B> extends GovernanceEngineOMASConverter<B>
                 fillElementControlHeader(bean, relationship);
 
                 bean.setRelationshipGUID(relationship.getGUID());
-                bean.setRelationshipType(super.getElementType(relationship));
 
                 InstanceProperties instanceProperties = relationship.getProperties();
 

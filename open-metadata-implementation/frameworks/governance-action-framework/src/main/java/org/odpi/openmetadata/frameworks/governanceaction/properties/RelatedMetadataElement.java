@@ -23,7 +23,6 @@ public class RelatedMetadataElement extends ElementControlHeader
     private static final long serialVersionUID = 1L;
 
     private String              relationshipGUID       = null;
-    private ElementType         relationshipType       = null;
     private Date                effectiveFromTime      = null;
     private Date                effectiveToTime        = null;
     private ElementProperties   relationshipProperties = null;
@@ -50,7 +49,6 @@ public class RelatedMetadataElement extends ElementControlHeader
 
         if (template != null)
         {
-            relationshipType = template.getRelationshipType();
             relationshipGUID = template.getRelationshipGUID();
             effectiveFromTime = template.getEffectiveFromTime();
             effectiveToTime   = template.getEffectiveToTime();
@@ -58,7 +56,6 @@ public class RelatedMetadataElement extends ElementControlHeader
             element = template.getElement();
         }
     }
-
 
 
     /**
@@ -89,7 +86,8 @@ public class RelatedMetadataElement extends ElementControlHeader
      *
      * @return element type properties
      */
-    public ElementType getRelationshipType() { return relationshipType; }
+    @Deprecated
+    public ElementType getRelationshipType() { return super.getType(); }
 
 
     /**
@@ -98,9 +96,10 @@ public class RelatedMetadataElement extends ElementControlHeader
      *
      * @param relationshipType element type properties
      */
+    @Deprecated
     public void setRelationshipType(ElementType relationshipType)
     {
-        this.relationshipType = relationshipType;
+        super.setType(relationshipType);
     }
 
 
@@ -196,7 +195,6 @@ public class RelatedMetadataElement extends ElementControlHeader
     {
         return "RelatedMetadataElement{" +
                        "relationshipGUID='" + relationshipGUID + '\'' +
-                       ", relationshipType=" + relationshipType +
                        ", effectiveFromTime=" + effectiveFromTime +
                        ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
@@ -233,7 +231,6 @@ public class RelatedMetadataElement extends ElementControlHeader
         }
         RelatedMetadataElement that = (RelatedMetadataElement) objectToCompare;
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
-                       Objects.equals(relationshipType, that.relationshipType) &&
                        Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
@@ -249,7 +246,7 @@ public class RelatedMetadataElement extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, effectiveFromTime,
+        return Objects.hash(super.hashCode(), relationshipGUID, effectiveFromTime,
                             effectiveToTime, relationshipProperties, element);
     }
 }
