@@ -289,6 +289,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public List<B> findMetadataElementsWithString(String       userId,
                                                   String       searchString,
+                                                  String       typeName,
                                                   boolean      forLineage,
                                                   boolean      forDuplicateProcessing,
                                                   List<String> serviceSupportedZones,
@@ -304,11 +305,24 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
+        String searchTypeName = OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            searchTypeName = typeName;
+        }
+
+        String searchTypeGUID = invalidParameterHandler.validateTypeName(searchTypeName,
+                                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                              searchTypeGUID,
+                              searchTypeName,
                               forLineage,
                               forDuplicateProcessing,
                               serviceSupportedZones,

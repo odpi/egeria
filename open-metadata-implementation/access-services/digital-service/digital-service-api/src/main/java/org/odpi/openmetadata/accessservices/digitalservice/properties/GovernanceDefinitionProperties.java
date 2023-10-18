@@ -48,8 +48,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceDefinitionProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String       title            = null;
     private String       summary          = null;
     private String       description      = null;

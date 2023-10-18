@@ -247,7 +247,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             {
                 if (lineageLink != null)
                 {
-                    String relationshipName = lineageLink.getRelationshipType().getTypeName();
+                    String relationshipName = lineageLink.getType().getTypeName();
 
                     if (lineageRelationships.contains(relationshipName))
                     {

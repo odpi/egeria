@@ -22,9 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchStringRequestBody
 {
-    private Date   effectiveTime = null;
-    private String searchString = null;
+    private Date   effectiveTime             = null;
+    private String searchString              = null;
     private String searchStringParameterName = null;
+    private String typeName                  = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class SearchStringRequestBody
             effectiveTime = template.getEffectiveTime();
             searchString = template.getSearchString();
             searchStringParameterName = template.getSearchStringParameterName();
+            typeName = template.getTypeName();
         }
     }
 
@@ -119,6 +121,28 @@ public class SearchStringRequestBody
 
 
     /**
+     * Return the optional type name for the search results (null means any type).
+     *
+     * @return unique name of type
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the optional type name for the search results (null means any type).
+     *
+     * @param typeName unique name of type
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -130,6 +154,7 @@ public class SearchStringRequestBody
                        "effectiveTime=" + effectiveTime +
                        ", searchString='" + searchString + '\'' +
                        ", searchStringParameterName='" + searchStringParameterName + '\'' +
+                       ", typeName='" + typeName + '\'' +
                        '}';
     }
 
@@ -154,6 +179,7 @@ public class SearchStringRequestBody
         SearchStringRequestBody that = (SearchStringRequestBody) objectToCompare;
         return Objects.equals(effectiveTime, that.effectiveTime) &&
                        Objects.equals(searchString, that.searchString) &&
+                       Objects.equals(typeName, that.typeName) &&
                        Objects.equals(searchStringParameterName, that.searchStringParameterName);
     }
 
@@ -166,6 +192,6 @@ public class SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveTime, searchString, searchStringParameterName);
+        return Objects.hash(effectiveTime, searchString, searchStringParameterName, typeName);
     }
 }

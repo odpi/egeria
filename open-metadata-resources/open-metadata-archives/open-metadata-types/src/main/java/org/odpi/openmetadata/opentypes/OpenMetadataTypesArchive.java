@@ -7,6 +7,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
@@ -39,7 +40,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "4.3";
+    private static final String                  archiveVersion     = "4.4";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache-2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -147,7 +148,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive4_2 previousTypes = new OpenMetadataTypesArchive4_2(archiveBuilder);
+        OpenMetadataTypesArchive4_3 previousTypes = new OpenMetadataTypesArchive4_3(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -157,15 +158,9 @@ public class OpenMetadataTypesArchive
         /*
          * Add the type updates
          */
-        update0010Base();
-        update0017ExternalIdentifiers();
-        update0035Hosts();
-        update0112People();
+        update0021Collections();
+        update0130Projects();
         update0210DataStores();
-        update0212APIs();
-        update0224Databases();
-        update0215SoftwareComponents();
-        update0223Events();
     }
 
 
@@ -173,18 +168,18 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0010Base()
+    private void update0021Collections()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDataSet());
+        this.archiveBuilder.addTypeDefPatch(updateCollection());
+        this.archiveBuilder.addClassificationDef(getRootCollectionClassification());
     }
 
-
-    private TypeDefPatch updateDataSet()
+    private TypeDefPatch updateCollection()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "DataSet";
+        final String typeName = "Collection";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -197,8 +192,8 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Name of the technology used to implement this data set.";
+        final String attribute1Name            = "collectionType";
+        final String attribute1Description     = "Descriptive name of the concept that this collection represents.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -211,180 +206,51 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+    private ClassificationDef getRootCollectionClassification()
+    {
+        final String guid            = "9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4";
+        final String name            = "RootCollection";
+        final String description     = "This collection is the root collection in a collection hierarchy.";
+        final String descriptionGUID = null;
 
+        final String linkedToEntity = "Collection";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0017ExternalIdentifiers()
+    private void update0130Projects()
     {
-        this.archiveBuilder.addTypeDefPatch(updateExternalId());
+        this.archiveBuilder.addClassificationDef(getPersonalProjectClassification());
     }
 
 
-    private TypeDefPatch updateExternalId()
+    private ClassificationDef getPersonalProjectClassification()
     {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ExternalId";
+        final String guid            = "3d7b8500-cebd-4f18-b85c-a459bec3e3ef";
+        final String name            = "PersonalProject";
+        final String description     = "This is an informal project that has been created by an individual to help them organize their work.";
+        final String descriptionGUID = null;
 
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        final String linkedToEntity = "Project";
 
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "externalInstanceCreatedBy";
-        final String attribute1Description     = "The username of the person or process that created the instance in the external system.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "externalInstanceCreationTime";
-        final String attribute2Description     = "The date/time when the instance in the external system was created.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "externalInstanceLastUpdatedBy";
-        final String attribute3Description     = "The username of the person or process that last updated the instance in the external system.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "externalInstanceLastUpdateTime";
-        final String attribute4Description     = "The date/time when the instance in the external system was last updated.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "externalInstanceVersion";
-        final String attribute5Description     = "The latest version of the element in the external system.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                                                         attribute4Description,
-                                                         attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getLongTypeDefAttribute(attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0035Hosts()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateHostClusterMemberRelationship());
-    }
-
-
-    private TypeDefPatch updateHostClusterMemberRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "HostClusterMember";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "memberRole";
-        final String attribute1Description     = "The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "additionalProperties";
-        final String attribute2Description     = "Additional properties that define the configuration and properties of the member.";
-        final String attribute2DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0112People()
-    {
-        this.archiveBuilder.addTypeDefPatch(updatePerson());
-    }
-
-
-    private TypeDefPatch updatePerson()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "Person";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "residentCountry";
-        final String attribute1Description     = "Country that is the person's primary residence.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "timeZone";
-        final String attribute2Description     = "Principle time zone where this person is located.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -393,200 +259,94 @@ public class OpenMetadataTypesArchive
 
     private void update0210DataStores()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDataStore());
+        this.archiveBuilder.addClassificationDef(getDataScopeClassification());
     }
 
 
-    private TypeDefPatch updateDataStore()
+    private ClassificationDef getDataScopeClassification()
     {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataStore";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Name of the technology used to implement this data store.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0212APIs()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDeployedAPI());
-    }
-
-
-    private TypeDefPatch updateDeployedAPI()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DeployedAPI";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Name of the technology used to implement this API.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0215SoftwareComponents()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDeployedSoftwareComponent());
-    }
-
-
-    private TypeDefPatch updateDeployedSoftwareComponent()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DeployedSoftwareComponent";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Name of the technology used to implement this component.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0223Events()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDataFeed());
-    }
-
-
-    private TypeDefPatch updateDataFeed()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataFeed";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Name of the technology used to implement this data feed.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0224Databases()
-    {
-        this.archiveBuilder.addEntityDef(addRelationalDatabaseEntity());
-    }
-
-
-
-    private EntityDef addRelationalDatabaseEntity()
-    {
-        final String guid = "6a28e242-4eca-4664-81cb-e2096d769568";
-
-        final String name            = "RelationalDatabase";
-        final String description     = "A database that follows the relational schema (tables and columns) and can be accessed through Java Database Connectivity (JDBC).";
+        final String guid            = "22f996d0-c4b7-433a-af0b-6a3e9478e488";
+        final String name            = "DataScope";
+        final String description     = "Defines the scope of the data held in the associated data resource.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Database";
+        final String linkedToEntity = "Referenceable";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "minimumLongitude";
+        final String attribute1Description     = "If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "minimumLatitude";
+        final String attribute2Description     = "If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "maxLongitude";
+        final String attribute3Description     = "If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data..";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "maxLatitude";
+        final String attribute4Description     = "If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "minHeight";
+        final String attribute5Description     = "If the height above ground is relevant, this is the lowest height that the data covers.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "maxHeight";
+        final String attribute6Description     = "If the height above ground is relevant, this is the highest height that the data covers.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "startTime";
+        final String attribute7Description     = "If the data is bound by time, this is the start time.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "endTime";
+        final String attribute8Description     = "If the data is bound by time, this is the end time.";
+        final String attribute8DescriptionGUID = null;
+
+        property = archiveHelper.getFloatTypeDefAttribute(attribute1Name,
+                                                          attribute1Description,
+                                                          attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute2Name,
+                                                          attribute2Description,
+                                                          attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute3Name,
+                                                          attribute3Description,
+                                                          attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute4Name,
+                                                          attribute4Description,
+                                                          attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute5Name,
+                                                          attribute5Description,
+                                                          attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute6Name,
+                                                          attribute6Description,
+                                                          attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute7Name,
+                                                         attribute7Description,
+                                                         attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute8Name,
+                                                         attribute8Description,
+                                                         attribute8DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 

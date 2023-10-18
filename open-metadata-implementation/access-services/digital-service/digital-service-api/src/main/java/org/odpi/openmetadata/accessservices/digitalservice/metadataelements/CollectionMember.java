@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.digitalservice.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceableProperties;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,14 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CollectionMember implements MetadataElement, Serializable
+public class CollectionMember implements MetadataElement
 {
-    private static final long    serialVersionUID = 1L;
-
-    private ElementHeader           elementHeader = null;
-    private Date                    dateAddedToCollection = null;
-    private String                  membershipRationale   = null;
-    private ReferenceableProperties properties = null;
+    private ElementHeader                  elementHeader       = null;
+    private CollectionMembershipProperties membershipProperties = null;
+    private ElementStub                    member = null;
 
 
     /**
@@ -49,15 +46,14 @@ public class CollectionMember implements MetadataElement, Serializable
         if (template != null)
         {
             this.elementHeader = template.getElementHeader();
-            this.dateAddedToCollection = template.getDateAddedToCollection();
-            this.membershipRationale = template.getMembershipRationale();
-            this.properties = template.getProperties();
+            this.membershipProperties = template.getMembershipProperties();
+            this.member = template.getMember();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Return the element header associated with the relationship.
      *
      * @return element header object
      */
@@ -69,7 +65,7 @@ public class CollectionMember implements MetadataElement, Serializable
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Set up the element header associated with the relationship.
      *
      * @param elementHeader element header object
      */
@@ -81,75 +77,46 @@ public class CollectionMember implements MetadataElement, Serializable
 
 
     /**
-     * Return the date that the asset was added to this collection.
+     * Return the properties from the membership relationship.
      *
-     * @return date
+     * @return membership properties
      */
-    public Date getDateAddedToCollection()
+    public CollectionMembershipProperties getMembershipProperties()
     {
-        if (dateAddedToCollection == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(dateAddedToCollection.getTime());
-        }
+        return membershipProperties;
     }
 
 
     /**
-     * Set up the date that the asset was added to this collection.
+     * Set up the properties from the membership relationship.
      *
-     * @param dateAddedToCollection date
+     * @param membershipProperties membership properties
      */
-    public void setDateAddedToCollection(Date dateAddedToCollection)
+    public void setMembershipProperties(CollectionMembershipProperties membershipProperties)
     {
-        this.dateAddedToCollection = dateAddedToCollection;
+        this.membershipProperties = membershipProperties;
     }
 
 
     /**
-     * Return the rationale or role of the asset in this collection.
+     * Return the properties of the member.
      *
-     * @return text
+     * @return member properties
      */
-    public String getMembershipRationale()
+    public ElementStub getMember()
     {
-        return membershipRationale;
+        return member;
     }
 
 
     /**
-     * Set up the rationale or role of the asset in this collection.
+     * Set up the properties of the member.
      *
-     * @param membershipRationale text
+     * @param member  properties
      */
-    public void setMembershipRationale(String membershipRationale)
+    public void setMember(ElementStub member)
     {
-        this.membershipRationale = membershipRationale;
-    }
-
-
-    /**
-     * Return the properties of the element.
-     *
-     * @return properties
-     */
-    public ReferenceableProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties of the element.
-     *
-     * @param properties  properties
-     */
-    public void setProperties(ReferenceableProperties properties)
-    {
-        this.properties = properties;
+        this.member = member;
     }
 
 
@@ -164,9 +131,8 @@ public class CollectionMember implements MetadataElement, Serializable
     {
         return "CollectionMember{" +
                        "elementHeader=" + elementHeader +
-                       ", dateAddedToCollection=" + dateAddedToCollection +
-                       ", membershipRationale='" + membershipRationale + '\'' +
-                       ", properties=" + properties +
+                       ", membershipProperties=" + membershipProperties +
+                       ", member=" + member +
                        '}';
     }
 
@@ -184,26 +150,13 @@ public class CollectionMember implements MetadataElement, Serializable
         {
             return true;
         }
-        if (! (objectToCompare instanceof CollectionMember))
+        if (! (objectToCompare instanceof CollectionMember that))
         {
             return false;
         }
-
-        CollectionMember that = (CollectionMember) objectToCompare;
-
-        if (elementHeader != null ? ! elementHeader.equals(that.elementHeader) : that.elementHeader != null)
-        {
-            return false;
-        }
-        if (dateAddedToCollection != null ? ! dateAddedToCollection.equals(that.dateAddedToCollection) : that.dateAddedToCollection != null)
-        {
-            return false;
-        }
-        if (membershipRationale != null ? ! membershipRationale.equals(that.membershipRationale) : that.membershipRationale != null)
-        {
-            return false;
-        }
-        return properties != null ? properties.equals(that.properties) : that.properties == null;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(membershipProperties, that.membershipProperties) &&
+                       Objects.equals(member, that.member);
     }
 
 
@@ -215,10 +168,6 @@ public class CollectionMember implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        int result = elementHeader != null ? elementHeader.hashCode() : 0;
-        result = 31 * result + (dateAddedToCollection != null ? dateAddedToCollection.hashCode() : 0);
-        result = 31 * result + (membershipRationale != null ? membershipRationale.hashCode() : 0);
-        result = 31 * result + (properties != null ? properties.hashCode() : 0);
-        return result;
+        return Objects.hash(elementHeader, membershipProperties, member);
     }
 }

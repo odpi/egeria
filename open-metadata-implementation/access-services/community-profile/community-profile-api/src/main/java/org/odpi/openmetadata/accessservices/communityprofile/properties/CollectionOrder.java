@@ -28,11 +28,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionOrder implements Serializable
 {
+    /**
+     * Order the collection by the names of the members in the collection.
+     */
     NAME           (0,  0,  "Name",           "Order the collection by the names of the members in the collection."),
-    OWNER          (1,  1,  "Owner",          "Order the collection by the owners of the members in the collection (assets only)."),
+
+    /**
+     * Order the collection by the owners of the members in the collection.
+     */
+    OWNER          (1,  1,  "Owner",          "Order the collection by the owners of the members in the collection."),
+
+    /**
+     * Order the collection by the date that the members were added to the collection.
+     */
     DATE_ADDED     (2,  2,  "Date Added",     "Order the collection by the date that the members were added to the collection."),
+
+    /**
+     * Order the collection by the date that the members were updated in the collection.
+     */
     DATE_UPDATED   (3,  3,  "Date Updated",   "Order the collection by the date that the members were updated in the collection."),
+
+    /**
+     * Order the collection by the date that the members were created in the collection.
+     */
     DATE_CREATED   (4,  4,  "Date Created",   "Order the collection by the date that the members were created in the collection."),
+
+    /**
+     * Order the collection by another value.
+     */
     OTHER          (99, 99, "Other",          "Order the collection by another value.");
 
     private static final long serialVersionUID = 1L;

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -26,16 +24,38 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CollectionOrder implements Serializable
+public enum CollectionOrder
 {
+    /**
+     * Order the collection by the names of the members in the collection.
+     */
     NAME           (0,  0,  "Name",           "Order the collection by the names of the members in the collection."),
-    OWNER          (1,  1,  "Owner",          "Order the collection by the owners of the members in the collection (assets only)."),
-    DATE_ADDED     (2,  2,  "Date Added",     "Order the collection by the date that the members were added to the collection."),
-    DATE_UPDATED   (3,  3,  "Date Updated",   "Order the collection by the date that the members were updated in the collection."),
-    DATE_CREATED   (4,  4,  "Date Created",   "Order the collection by the date that the members were created in the collection."),
+
+    /**
+     * Order the collection by the owners of the members in the collection.
+     */
+    OWNER          (1,  1,  "Owner",          "Order the collection by the owners of the members in the collection."),
+
+    /**
+     * Order the collection by the date that the members were added to the collection.
+     */
+    DATE_ADDED     (2,  2,  "DateAdded",     "Order the collection by the date that the members were added to the collection."),
+
+    /**
+     * Order the collection by the date that the members were updated in the collection.
+     */
+    DATE_UPDATED   (3,  3,  "DateUpdated",   "Order the collection by the date that the members were updated in the collection."),
+
+    /**
+     * Order the collection by the date that the members were created in the collection.
+     */
+    DATE_CREATED   (4,  4,  "DateCreated",   "Order the collection by the date that the members were created in the collection."),
+
+    /**
+     * Order the collection by another value.
+     */
     OTHER          (99, 99, "Other",          "Order the collection by another value.");
 
-    private static final long serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "1d412439-4272-4a7e-a940-1065f889fc56";
     private static final String ENUM_TYPE_NAME  = "OrderBy";

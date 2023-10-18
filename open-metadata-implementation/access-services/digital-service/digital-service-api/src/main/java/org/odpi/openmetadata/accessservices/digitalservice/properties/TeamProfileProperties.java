@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamProfileProperties extends ActorProfileProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String teamType    = null;
     private String identifier  = null;
 

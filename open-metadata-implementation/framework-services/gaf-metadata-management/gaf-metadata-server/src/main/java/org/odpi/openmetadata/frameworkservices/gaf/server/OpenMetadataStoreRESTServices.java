@@ -365,6 +365,7 @@ public class OpenMetadataStoreRESTServices
 
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
+                                                                               requestBody.getTypeName(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),

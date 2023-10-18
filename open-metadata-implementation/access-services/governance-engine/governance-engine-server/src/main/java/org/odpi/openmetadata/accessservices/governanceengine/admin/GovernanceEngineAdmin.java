@@ -117,6 +117,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new GovernanceEngineOMRSTopicListener(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                       serverName,
                                                                                        serverUserName,
                                                                                        instance.getMetadataElementHandler(),
                                                                                        instance.getGovernanceActionHandler(),

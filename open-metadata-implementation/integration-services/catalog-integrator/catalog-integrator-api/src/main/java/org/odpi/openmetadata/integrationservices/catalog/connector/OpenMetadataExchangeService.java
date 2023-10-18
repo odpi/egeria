@@ -254,6 +254,41 @@ public class OpenMetadataExchangeService
 
 
     /**
+     * Retrieve the metadata elements of the requested type that contain the requested string.
+     *
+     * @param searchString           name to retrieve
+     * @param typeName               name of the type to limit the results to (may be null to mean all types)
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
+                                                                    String  typeName,
+                                                                    Date    effectiveTime,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return openMetadataStoreClient.findMetadataElementsWithString(userId,
+                                                                      searchString,
+                                                                      typeName,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      startFrom,
+                                                                      pageSize);
+    }
+
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID            unique identifier for the starting metadata element

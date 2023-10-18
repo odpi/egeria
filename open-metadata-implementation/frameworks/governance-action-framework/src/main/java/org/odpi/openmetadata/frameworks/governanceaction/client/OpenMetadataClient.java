@@ -153,6 +153,36 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
 
 
     /**
+     * Retrieve the metadata elements of the requested type that contain the requested string.
+     *
+     * @param userId caller's userId
+     * @param searchString name to retrieve
+     * @param typeName name of the type to limit the results to
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
+                                                                             String  searchString,
+                                                                             String  typeName,
+                                                                             boolean forLineage,
+                                                                             boolean forDuplicateProcessing,
+                                                                             Date    effectiveTime,
+                                                                             int     startFrom,
+                                                                             int     pageSize) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param userId caller's userId
@@ -326,7 +356,7 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
-     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     * @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -340,7 +370,7 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
     @Override
     public abstract void updateMetadataElementInStore(String            userId,
                                                       String            metadataElementGUID,
-                                                      boolean           replaceProperties,
+                                                      boolean           replaceAllProperties,
                                                       boolean           forLineage,
                                                       boolean           forDuplicateProcessing,
                                                       ElementProperties properties,

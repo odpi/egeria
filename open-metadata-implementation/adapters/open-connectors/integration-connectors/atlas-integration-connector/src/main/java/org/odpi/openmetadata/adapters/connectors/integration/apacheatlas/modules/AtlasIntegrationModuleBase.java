@@ -31,7 +31,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
+import org.odpi.openmetadata.integrationservices.catalog.connector.CollaborationExchangeService;
 import org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService;
 import org.odpi.openmetadata.integrationservices.catalog.connector.StewardshipExchangeService;
 
@@ -39,8 +43,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * AtlasIntegrationModuleBase defines the interface that classes that support the synchronization of particular types of metadata with Apache Atlas.
@@ -92,9 +98,12 @@ public abstract class AtlasIntegrationModuleBase
     protected final List<Connector>          embeddedConnectors;
     protected final ApacheAtlasRESTConnector atlasClient;
     protected final String                   targetRootURL;
+    protected final PropertyHelper           propertyHelper = new PropertyHelper();
 
     protected final DataAssetExchangeService   dataAssetExchangeService;
     protected final StewardshipExchangeService stewardshipExchangeService;
+    protected final CollaborationExchangeService collaborationExchangeService;
+    protected final OpenMetadataAccess           openMetadataAccess;
 
 
 
@@ -131,6 +140,8 @@ public abstract class AtlasIntegrationModuleBase
 
         this.dataAssetExchangeService = myContext.getDataAssetExchangeService();
         this.stewardshipExchangeService = myContext.getStewardshipExchangeService();
+        this.collaborationExchangeService = myContext.getCollaborationExchangeService();
+        this.openMetadataAccess = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess();
 
         /*
          * Deduplication is turned off so that the connector works with the entities it created rather than
@@ -138,6 +149,7 @@ public abstract class AtlasIntegrationModuleBase
          */
         this.dataAssetExchangeService.setForDuplicateProcessing(true);
         this.stewardshipExchangeService.setForDuplicateProcessing(true);
+        this.collaborationExchangeService.setForDuplicateProcessing(true);
     }
 
 

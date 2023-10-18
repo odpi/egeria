@@ -342,6 +342,40 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        return this.findMetadataElementsWithString(userId, searchString, null, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata elements of the requested type that contain the requested string.
+     *
+     * @param userId                 caller's userId
+     * @param searchString           name to retrieve
+     * @param typeName               name of the type to limit the results to (may be null to mean all types)
+     * @param forLineage             the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
+                                                                    String  searchString,
+                                                                    String  typeName,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing,
+                                                                    Date    effectiveTime,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
@@ -353,6 +387,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setTypeName(typeName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
                                                                                                   urlTemplate,
@@ -745,7 +780,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @param userId                 caller's userId
      * @param metadataElementGUID    unique identifier of the metadata element to update
-     * @param replaceProperties      flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     * @param replaceAllProperties      flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                               the individual properties specified on the request.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -759,7 +794,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     @Override
     public void updateMetadataElementInStore(String            userId,
                                              String            metadataElementGUID,
-                                             boolean           replaceProperties,
+                                             boolean           replaceAllProperties,
                                              boolean           forLineage,
                                              boolean           forDuplicateProcessing,
                                              ElementProperties properties,
@@ -771,7 +806,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                           null,
                                           null,
                                           metadataElementGUID,
-                                          replaceProperties,
+                                          replaceAllProperties,
                                           forLineage,
                                           forDuplicateProcessing,
                                           properties,
