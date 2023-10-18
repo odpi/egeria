@@ -77,21 +77,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CollectionMember</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a></span></div>
 <div class="block">CollectionMember describes a member of a collection.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionMember">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,50 +122,40 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateAddedToCollection()" class="member-name-link">getDateAddedToCollection</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date that the asset was added to this collection.</div>
+<div class="block">Return the element header associated with the relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMember()" class="member-name-link">getMember</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the element header associated with the properties.</div>
+<div class="block">Return the properties of the member.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMembershipRationale()" class="member-name-link">getMembershipRationale</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionMembershipProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMembershipProperties()" class="member-name-link">getMembershipProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the rationale or role of the asset in this collection.</div>
+<div class="block">Return the properties from the membership relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties of the element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDateAddedToCollection(java.util.Date)" class="member-name-link">setDateAddedToCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dateAddedToCollection)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the date that the asset was added to this collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the element header associated with the properties.</div>
+<div class="block">Set up the element header associated with the relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMembershipRationale(java.lang.String)" class="member-name-link">setMembershipRationale</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipRationale)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMember(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)" class="member-name-link">setMember</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;member)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the rationale or role of the asset in this collection.</div>
+<div class="block">Set up the properties of the member.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceableProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a>&nbsp;properties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMembershipProperties(org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties)" class="member-name-link">setMembershipProperties</a><wbr>(<a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionMembershipProperties</a>&nbsp;membershipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the properties of the element.</div>
+<div class="block">Set up the properties from the membership relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -227,7 +209,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <section class="detail" id="getElementHeader()">
 <h3>getElementHeader</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
-<div class="block">Return the element header associated with the properties.</div>
+<div class="block">Return the element header associated with the relationship.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a></code></dd>
@@ -240,7 +222,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
 <h3>setElementHeader</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</span></div>
-<div class="block">Set up the element header associated with the properties.</div>
+<div class="block">Set up the element header associated with the relationship.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">MetadataElement</a></code></dd>
@@ -250,68 +232,46 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="getDateAddedToCollection()">
-<h3>getDateAddedToCollection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getDateAddedToCollection</span>()</div>
-<div class="block">Return the date that the asset was added to this collection.</div>
+<section class="detail" id="getMembershipProperties()">
+<h3>getMembershipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionMembershipProperties</a></span>&nbsp;<span class="element-name">getMembershipProperties</span>()</div>
+<div class="block">Return the properties from the membership relationship.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>date</dd>
+<dd>membership properties</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setDateAddedToCollection(java.util.Date)">
-<h3>setDateAddedToCollection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDateAddedToCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;dateAddedToCollection)</span></div>
-<div class="block">Set up the date that the asset was added to this collection.</div>
+<section class="detail" id="setMembershipProperties(org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties)">
+<h3>setMembershipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMembershipProperties</span><wbr><span class="parameters">(<a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionMembershipProperties</a>&nbsp;membershipProperties)</span></div>
+<div class="block">Set up the properties from the membership relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>dateAddedToCollection</code> - date</dd>
+<dd><code>membershipProperties</code> - membership properties</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getMembershipRationale()">
-<h3>getMembershipRationale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMembershipRationale</span>()</div>
-<div class="block">Return the rationale or role of the asset in this collection.</div>
+<section class="detail" id="getMember()">
+<h3>getMember</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></span>&nbsp;<span class="element-name">getMember</span>()</div>
+<div class="block">Return the properties of the member.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>text</dd>
+<dd>member properties</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setMembershipRationale(java.lang.String)">
-<h3>setMembershipRationale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMembershipRationale</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipRationale)</span></div>
-<div class="block">Set up the rationale or role of the asset in this collection.</div>
+<section class="detail" id="setMember(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)">
+<h3>setMember</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMember</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;member)</span></div>
+<div class="block">Set up the properties of the member.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>membershipRationale</code> - text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getProperties()">
-<h3>getProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a></span>&nbsp;<span class="element-name">getProperties</span>()</div>
-<div class="block">Return the properties of the element.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setProperties(org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceableProperties)">
-<h3>setProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperties</span><wbr><span class="parameters">(<a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a>&nbsp;properties)</span></div>
-<div class="block">Set up the properties of the element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>properties</code> - properties</dd>
+<dd><code>member</code> - properties</dd>
 </dl>
 </section>
 </li>

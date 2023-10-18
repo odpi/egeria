@@ -110,7 +110,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
  <a href="../../../commonservices/generichandlers/GovernanceActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionHandler</a>&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;governanceActionHandler,
@@ -134,6 +135,37 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fillElementControlHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)" class="member-name-link">fillElementControlHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementControlHeader</a>&nbsp;elementControlHeader,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;header)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Fill a GAF control header from the information in a repository services element header.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../frameworks/connectors/properties/beans/ElementOriginCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementOriginCategory</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementOriginCategory(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType)" class="member-name-link">getElementOriginCategory</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Translate the repository services' InstanceProvenanceType to an ElementOrigin.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementStatus(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">getElementStatus</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Translate the repository services' InstanceStatus to an ElementStatus.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementType(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)" class="member-name-link">getElementType</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert information from a repository instance into an Open Connector Framework ElementType.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../frameworks/connectors/properties/beans/ElementVersions.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementVersions</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)" class="member-name-link">getElementVersions</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;header)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract detail of the version of the element and the user's maintaining it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)" class="member-name-link">getQualifiedName</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the qualifiedName property from the supplied instance properties.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processClassifiedEntityEvent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)" class="member-name-link">processClassifiedEntityEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorMetadataCollectionId,
@@ -432,9 +464,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>GovernanceEngineOMRSTopicListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceEngineOMRSTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
  <a href="../../../commonservices/generichandlers/GovernanceActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">GovernanceActionHandler</a>&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;governanceActionHandler,
@@ -445,6 +478,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serviceName</code> - this is the full name of the service - used for error logging in base class</dd>
+<dd><code>serverName</code> - name of this server</dd>
 <dd><code>userId</code> - local server userId for issuing requests to the repository services</dd>
 <dd><code>metadataElementHandler</code> - handler for working with GAF objects</dd>
 <dd><code>governanceActionHandler</code> - handler for working with governance actions</dd>
@@ -462,6 +496,84 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="fillElementControlHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)">
+<h3>fillElementControlHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">fillElementControlHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementControlHeader</a>&nbsp;elementControlHeader,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;header)</span></div>
+<div class="block">Fill a GAF control header from the information in a repository services element header.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementControlHeader</code> - GAF object control header</dd>
+<dd><code>header</code> - OMRS element header</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementStatus(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">
+<h3>getElementStatus</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a></span>&nbsp;<span class="element-name">getElementStatus</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus)</span></div>
+<div class="block">Translate the repository services' InstanceStatus to an ElementStatus.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>instanceStatus</code> - value from the repository services</dd>
+<dt>Returns:</dt>
+<dd>ElementStatus enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementType(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)">
+<h3>getElementType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementType</a></span>&nbsp;<span class="element-name">getElementType</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;instanceHeader)</span></div>
+<div class="block">Convert information from a repository instance into an Open Connector Framework ElementType.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>instanceHeader</code> - values from the server</dd>
+<dt>Returns:</dt>
+<dd>OCF ElementType object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementOriginCategory(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType)">
+<h3>getElementOriginCategory</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementOriginCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementOriginCategory</a></span>&nbsp;<span class="element-name">getElementOriginCategory</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a>&nbsp;instanceProvenanceType)</span></div>
+<div class="block">Translate the repository services' InstanceProvenanceType to an ElementOrigin.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>instanceProvenanceType</code> - value from the repository services</dd>
+<dt>Returns:</dt>
+<dd>ElementOrigin enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader)">
+<h3>getElementVersions</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementVersions.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementVersions</a></span>&nbsp;<span class="element-name">getElementVersions</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a>&nbsp;header)</span></div>
+<div class="block">Extract detail of the version of the element and the user's maintaining it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>header</code> - audit header from the repository</dd>
+<dt>Returns:</dt>
+<dd>ElementVersions object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getQualifiedName(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">
+<h3>getQualifiedName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;instanceProperties)</span></div>
+<div class="block">Extract the qualifiedName property from the supplied instance properties.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>instanceProperties</code> - properties from entity</dd>
+<dt>Returns:</dt>
+<dd>string name or null</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="processNewEntityEvent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">
 <h3>processNewEntityEvent</h3>

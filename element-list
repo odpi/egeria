@@ -217,6 +217,7 @@ org.odpi.openmetadata.accessservices.digitalservice.admin
 org.odpi.openmetadata.accessservices.digitalservice.api
 org.odpi.openmetadata.accessservices.digitalservice.builders
 org.odpi.openmetadata.accessservices.digitalservice.client
+org.odpi.openmetadata.accessservices.digitalservice.client.converters
 org.odpi.openmetadata.accessservices.digitalservice.client.rest
 org.odpi.openmetadata.accessservices.digitalservice.events
 org.odpi.openmetadata.accessservices.digitalservice.ffdc
@@ -607,6 +608,7 @@ org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
 org.odpi.openmetadata.frameworkservices.gaf.admin
 org.odpi.openmetadata.frameworkservices.gaf.client
+org.odpi.openmetadata.frameworkservices.gaf.client.converters
 org.odpi.openmetadata.frameworkservices.gaf.client.rest
 org.odpi.openmetadata.frameworkservices.gaf.converters
 org.odpi.openmetadata.frameworkservices.gaf.ffdc
