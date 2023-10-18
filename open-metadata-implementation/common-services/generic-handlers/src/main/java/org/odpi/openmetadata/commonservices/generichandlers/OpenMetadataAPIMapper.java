@@ -43,6 +43,7 @@ public class OpenMetadataAPIMapper
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";              /* from feedback relationships - Area 1 */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";           /* from many entities */
+    public static final String COLLECTION_TYPE_PROPERTY_NAME             = "collectionType";        /* from Collection entity */
 
     public static final String SAMPLE_DATA_TYPE_GUID                     = "0ee9c0f1-a89b-4806-8276-7c74f07fe190";
     public static final String SAMPLE_DATA_TYPE_NAME                     = "SampleData";

@@ -4,8 +4,6 @@ package org.odpi.openmetadata.frameworks.governanceaction.search;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -30,11 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = PrimitiveTypePropertyValue.class, name = "PrimitiveTypePropertyValue"),
         @JsonSubTypes.Type(value = StructTypePropertyValue.class, name = "StructTypePropertyValue")
 })
-public abstract class PropertyValue implements Serializable
+public abstract class PropertyValue
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /*
      * Common type information that is this is augmented by the subclasses
      */

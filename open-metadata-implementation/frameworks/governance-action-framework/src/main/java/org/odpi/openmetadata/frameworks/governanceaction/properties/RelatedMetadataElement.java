@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -22,6 +23,7 @@ public class RelatedMetadataElement extends ElementControlHeader
 {
     private static final long serialVersionUID = 1L;
 
+    private ElementStub         startingElement        = null;
     private String              relationshipGUID       = null;
     private Date                effectiveFromTime      = null;
     private Date                effectiveToTime        = null;
@@ -55,6 +57,28 @@ public class RelatedMetadataElement extends ElementControlHeader
             relationshipProperties = template.getRelationshipProperties();
             element = template.getElement();
         }
+    }
+
+
+    /**
+     * Return details of the starting element used to navigate to the desired element.
+     *
+     * @return element stub
+     */
+    public ElementStub getStartingElement()
+    {
+        return startingElement;
+    }
+
+
+    /**
+     * Set up details of the starting element used to navigate to the desired element.
+     *
+     * @param startingElement element stub
+     */
+    public void setStartingElement(ElementStub startingElement)
+    {
+        this.startingElement = startingElement;
     }
 
 
@@ -194,7 +218,8 @@ public class RelatedMetadataElement extends ElementControlHeader
     public String toString()
     {
         return "RelatedMetadataElement{" +
-                       "relationshipGUID='" + relationshipGUID + '\'' +
+                       "startingElement='" + startingElement + '\'' +
+                       ", relationshipGUID='" + relationshipGUID + '\'' +
                        ", effectiveFromTime=" + effectiveFromTime +
                        ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
@@ -231,6 +256,7 @@ public class RelatedMetadataElement extends ElementControlHeader
         }
         RelatedMetadataElement that = (RelatedMetadataElement) objectToCompare;
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
+                       Objects.equals(startingElement, that.startingElement) &&
                        Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
@@ -246,7 +272,7 @@ public class RelatedMetadataElement extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipGUID, effectiveFromTime,
+        return Objects.hash(super.hashCode(), startingElement, relationshipGUID, effectiveFromTime,
                             effectiveToTime, relationshipProperties, element);
     }
 }

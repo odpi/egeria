@@ -22,9 +22,9 @@ public class CollectionMembershipProperties extends RelationshipProperties
     private String                     membershipRationale = null;
     private String                     createdBy           = null;
     private String                     expression          = null;
-    private int                        confidence        = 0;
-    private CollectionMembershipStatus status            = null;
-    private String                     userDefinedStatus = null;
+    private int                        confidence          = 0;
+    private CollectionMembershipStatus status              = null;
+    private String                     userDefinedStatus   = null;
     private String                     steward             = null;
     private String                     stewardTypeName     = null;
     private String                     stewardPropertyName = null;

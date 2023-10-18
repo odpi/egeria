@@ -76,6 +76,7 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
                     collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     collectionProperties.setName(this.removeName(instanceProperties));
                     collectionProperties.setDescription(this.removeDescription(instanceProperties));
+                    collectionProperties.setCollectionType(this.removeCollectionType(instanceProperties));
                     collectionProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     collectionProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 

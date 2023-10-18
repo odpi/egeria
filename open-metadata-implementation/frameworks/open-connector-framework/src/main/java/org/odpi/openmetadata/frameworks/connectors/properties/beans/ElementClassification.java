@@ -52,6 +52,17 @@ public class ElementClassification extends ElementClassificationHeader
 
 
     /**
+     * Copy/clone constructor
+     *
+     * @param template template to copy
+     */
+    public ElementClassification(ElementClassificationHeader template)
+    {
+        super(template);
+    }
+
+
+    /**
      * Set up the name of the classification.  This name is the type name defined in a ClassificationDef type definition.
      *
      * @param classificationName  name of classification

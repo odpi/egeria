@@ -69,6 +69,17 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Copy/clone constructor.
+     *
+     * @param template element to copy
+     */
+    public ElementHeader(ElementControlHeader template)
+    {
+        super(template);
+    }
+
+
+    /**
      * Return the unique id for the properties object.  Null means no guid is assigned.
      *
      * @return String unique id

@@ -27,10 +27,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionStatus implements Serializable
 {
-    ACTIVE   (0,  "Active",   "all the collection members with a current effective dates (default)."),
-    PAST     (1,  "Past",     "all the collection members that have effective dates in the past."),
-    FUTURE   (2,  "Future",   "all the collection members that become effective in the future."),
-    ALL      (99, "All",      "all the collection members linked to the collection irrespective of their effective dates.");
+    /**
+     * All the collection members with a current effective dates (default).
+     */
+    ACTIVE   (0,  "Active",   "All the collection members with a current effective dates (default)."),
+
+    /**
+     * All the collection members that have effective dates in the past.
+     */
+    PAST     (1,  "Past",     "All the collection members that have effective dates in the past."),
+
+    /**
+     * All the collection members that become effective in the future.
+     */
+    FUTURE   (2,  "Future",   "All the collection members that become effective in the future."),
+
+    /**
+     * All the collection members linked to the collection irrespective of their effective dates.
+     */
+    ALL      (99, "All",      "All the collection members linked to the collection irrespective of their effective dates.");
 
     private static final long serialVersionUID = 1L;
 

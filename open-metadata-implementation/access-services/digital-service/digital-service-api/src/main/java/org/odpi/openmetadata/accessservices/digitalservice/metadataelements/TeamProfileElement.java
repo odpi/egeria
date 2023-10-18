@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.digitalservice.properties.TeamProfil
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,10 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TeamProfileElement implements MetadataElement, Serializable
+public class TeamProfileElement implements MetadataElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementHeader         elementHeader = null;
     private TeamProfileProperties properties = null;
     private ElementStub           superTeam  = null;
