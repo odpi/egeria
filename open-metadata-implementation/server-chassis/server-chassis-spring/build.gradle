@@ -106,8 +106,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.vaadin.external.google:android-json:0.0.20131108.vaadin1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params'
     testImplementation 'org.springframework:spring-test'
 
 }
