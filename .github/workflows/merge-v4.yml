@@ -22,7 +22,7 @@ jobs:
     name: "Merge v4"
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
         name: Checkout source
       - uses: gradle/wrapper-validation-action@v1
       - name: Set up JDK
