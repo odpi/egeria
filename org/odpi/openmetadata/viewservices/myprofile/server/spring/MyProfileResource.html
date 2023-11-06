@@ -77,12 +77,11 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")
+@RequestMapping("/servers/{serverName}/api/open-metadata/my-profile")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">MyProfileResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The MyProfileResource provides part of the server-side implementation of the Community Profile Open Metadata
- Assess Service (OMAS).  This interface provides access to an individual's personal profile and the
- management of a special collection linked to their profile called my-assets.</div>
+<div class="block">The MyProfileResource provides part of the server-side implementation of the My Profile OMVS.
+ This interface provides access to an individual's personal profile.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,8 +112,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/PersonalProfileResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">PersonalProfileResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyProfile(java.lang.String,java.lang.String)" class="member-name-link">getMyProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyProfile(java.lang.String)" class="member-name-link">getMyProfile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the profile for this user.</div>
 </div>
@@ -151,22 +149,18 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getMyProfile(java.lang.String,java.lang.String)">
+<section class="detail" id="getMyProfile(java.lang.String)">
 <h3>getMyProfile</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/my-profile")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/PersonalProfileResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">PersonalProfileResponse</a></span>&nbsp;<span class="element-name">getMyProfile</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Return the profile for this user.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>userId</code> - userId of the user making the request.</dd>
 <dt>Returns:</dt>
 <dd>profile response object or
  InvalidParameterException the userId is null or invalid or
- NoProfileForUserException the user does not have a profile or
  PropertyServerException there is a problem retrieving information from the property server(s) or
  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>

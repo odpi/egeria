@@ -151,6 +151,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Issue a PUT REST call that returns a response object.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;T</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#callPutRESTCallNoParams(java.lang.String,java.lang.Class,java.lang.String,java.lang.Object)" class="member-name-link">callPutRESTCallNoParams</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;returnClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Issue a PUT REST call that returns a response object.</div>
+</div>
 </div>
 </div>
 </div>
@@ -282,6 +290,30 @@ loadScripts(document, 'script');</script>
 <dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
 <dd><code>requestBody</code> - request body for the request.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="ffdc/exceptions/RESTServerException.html" title="class in org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions">RESTServerException</a></code> - something went wrong with the REST call stack.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callPutRESTCallNoParams(java.lang.String,java.lang.Class,java.lang.String,java.lang.Object)">
+<h3>callPutRESTCallNoParams</h3>
+<div class="member-signature"><span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">callPutRESTCallNoParams</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;returnClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody)</span>
+                       throws <span class="exceptions"><a href="ffdc/exceptions/RESTServerException.html" title="class in org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions">RESTServerException</a></span></div>
+<div class="block">Issue a PUT REST call that returns a response object.  This is typically an update.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - class name</dd>
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>returnClass</code> - class of the response object.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - request body for the request.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
 <dt>Throws:</dt>

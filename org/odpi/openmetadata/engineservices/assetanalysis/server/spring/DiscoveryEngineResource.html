@@ -80,9 +80,8 @@ loadScripts(document, 'script');</script>
 @RequestMapping("/servers/{serverName}/open-metadata/engine-services/asset-analysis/users/{userId}/discovery-engines/{discoveryEngineName}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">DiscoveryEngineResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">DiscoveryEngineResource provides the server-side catcher for REST calls using Spring that target a specific
- discovery engine hosted in a engine host server.
- The engine host server routes these requests to the named discovery engine.</div>
+<div class="block">DiscoveryEngineResource provides the server-side catcher for REST calls using Spring that target a specific discovery engine hosted in an
+ engine host server.  The engine host server routes these requests to the named discovery engine.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -223,7 +222,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - containing analysisParameters and annotationTypes</dd>
 <dt>Returns:</dt>
 <dd>unique id for the discovery request or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   DiscoveryEngineException there was a problem detected by the discovery engine.</dd>
@@ -254,7 +252,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - containing analysisParameters and annotationTypes</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   DiscoveryEngineException there was a problem detected by the discovery engine.</dd>
@@ -282,7 +279,6 @@ loadScripts(document, 'script');</script>
 <dd><code>discoveryRequestGUID</code> - identifier of the discovery request.</dd>
 <dt>Returns:</dt>
 <dd>discovery report or
-
   DiscoveryEngineException there was a problem detected by the discovery engine.</dd>
 </dl>
 </section>
@@ -314,7 +310,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of definitions to return on this call.</dd>
 <dt>Returns:</dt>
 <dd>list of annotations or
-
   DiscoveryEngineException there was a problem detected by the discovery engine.</dd>
 </dl>
 </section>
@@ -346,7 +341,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of annotations that can be returned.</dd>
 <dt>Returns:</dt>
 <dd>list of Annotation objects or
-
   DiscoveryEngineException there was a problem detected by the discovery engine.</dd>
 </dl>
 </section>

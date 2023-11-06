@@ -51,7 +51,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -87,7 +87,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ApacheAtlasRESTConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
 implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a>, <a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></span></div>
-<div class="block">RESTClient is responsible for issuing calls to the OMAS REST APIs.</div>
+<div class="block">ApacheAtlasRESTConnector is responsible for issuing calls to the Apache Atlas REST APIs.  It covers basic calls such as retrieving and adding
+ types, entities, relationships, labels, classifications and business metadata.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -104,6 +105,18 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#OPEN_METADATA_TYPE_PREFIX" class="member-name-link">OPEN_METADATA_TYPE_PREFIX</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#SERVICE_TYPE" class="member-name-link">SERVICE_TYPE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorBase.html#connectedAssetProperties">connectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectionProperties">connectionProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
@@ -135,15 +148,60 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBusinessMetadataToEntity(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addBusinessMetadataToEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessMetadataType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;attributes)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add business metadata to an entity.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addClassificationType(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addClassificationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;classificationProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a classification definition to Apache Atlas.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity)" class="member-name-link">addEntity</a><wbr>(<a href="properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntity</a>&nbsp;entity)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addNewTypes(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)" class="member-name-link">addNewTypes</a><wbr>(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLabelsToEntity(java.lang.String,java.util.List)" class="member-name-link">addLabelsToEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labels)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add labels to an entity.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addNewTypes(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)" class="member-name-link">addNewTypes</a><wbr>(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create new types.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataClassificationType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataClassificationDef)" class="member-name-link">addOpenMetadataClassificationType</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataClassificationDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataClassificationDef</a>&nbsp;openMetadataClassificationDef)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a classification definition from open metadata as a type of business metadata in Apache Atlas.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataEntityType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEntityDef)" class="member-name-link">addOpenMetadataEntityType</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataEntityDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataEntityDef</a>&nbsp;openMetadataEntityDef)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert an open metadata entity type to an Atlas type and add it to Apache Atlas.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataEnumType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumDef)" class="member-name-link">addOpenMetadataEnumType</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataEnumDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataEnumDef</a>&nbsp;openMetadataEnumDef)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an enum definition from open metadata as an enum definition in Apache Atlas.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataRelationshipType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipDef)" class="member-name-link">addOpenMetadataRelationshipType</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataRelationshipDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipDef</a>&nbsp;openMetadataRelationshipDef)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Convert an open metadata relationship type to an Atlas type and add it to Apache Atlas.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef)" class="member-name-link">addOpenMetadataType</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a>&nbsp;openMetadataTypeDef)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Take an open metadata type definition and add it to Apache Atlas's type system.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasRelationship.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasRelationship</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addRelationship(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasRelationship)" class="member-name-link">addRelationship</a><wbr>(<a href="properties/AtlasRelationship.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasRelationship</a>&nbsp;atlasRelationship)</code></div>
@@ -151,49 +209,61 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Add a relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearRelationship(java.lang.String)" class="member-name-link">clearRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasRelationshipGUID)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTypeDefinitions(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)" class="member-name-link">addTypeDefinitions</a><wbr>(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;atlasTypesDef)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove a relationship.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossary(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryElement)" class="member-name-link">createAtlasGlossary</a><wbr>(<a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a>&nbsp;glossary)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new empty glossary.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossaryCategory(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryCategoryElement)" class="member-name-link">createAtlasGlossaryCategory</a><wbr>(<a href="properties/AtlasGlossaryCategoryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryCategoryElement</a>&nbsp;category)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new category linked to its glossary and potentially other categories and terms.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossaryTerm(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryTermElement)" class="member-name-link">createAtlasGlossaryTerm</a><wbr>(<a href="properties/AtlasGlossaryTermElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryTermElement</a>&nbsp;term)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new term linked to its glossary, other terms and categories.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossary(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryElement)" class="member-name-link">deleteAtlasGlossary</a><wbr>(<a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a>&nbsp;glossary)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete a glossary with all of its links to terms and categories.</div>
+<div class="block">Make updates to the atlas types map based on the type changes described in the supplied Apache Atlas type definitions</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossaryCategory(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryCategoryElement)" class="member-name-link">deleteAtlasGlossaryCategory</a><wbr>(<a href="properties/AtlasGlossaryCategoryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryCategoryElement</a>&nbsp;category)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearRelationship(java.lang.String)" class="member-name-link">clearRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasRelationshipGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete a category with all of its links to terms and categories.</div>
+<div class="block">Remove a relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossary(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryElement)" class="member-name-link">createAtlasGlossary</a><wbr>(<a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a>&nbsp;glossary)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new empty glossary.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossaryCategory(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryCategoryElement)" class="member-name-link">createAtlasGlossaryCategory</a><wbr>(<a href="properties/AtlasGlossaryCategoryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryCategoryElement</a>&nbsp;category)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new category linked to its glossary and potentially other categories and terms.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAtlasGlossaryTerm(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryTermElement)" class="member-name-link">createAtlasGlossaryTerm</a><wbr>(<a href="properties/AtlasGlossaryTermElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryTermElement</a>&nbsp;term)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new term linked to its glossary, other terms and categories.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossary(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryElement)" class="member-name-link">deleteAtlasGlossary</a><wbr>(<a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a>&nbsp;glossary)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a glossary with all of its links to terms and categories.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossaryTerm(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryTermElement)" class="member-name-link">deleteAtlasGlossaryTerm</a><wbr>(<a href="properties/AtlasGlossaryTermElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryTermElement</a>&nbsp;term)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossaryCategory(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryCategoryElement)" class="member-name-link">deleteAtlasGlossaryCategory</a><wbr>(<a href="properties/AtlasGlossaryCategoryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryCategoryElement</a>&nbsp;category)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a category with all of its links to terms and categories.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAtlasGlossaryTerm(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryTermElement)" class="member-name-link">deleteAtlasGlossaryTerm</a><wbr>(<a href="properties/AtlasGlossaryTermElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryTermElement</a>&nbsp;term)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a term with all of its links to other terms and categories.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasEntityMutationResponse.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityMutationResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteEntity(java.lang.String)" class="member-name-link">deleteEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasEntityMutationResponse.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityMutationResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteEntity(java.lang.String)" class="member-name-link">deleteEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete an entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes()" class="member-name-link">getAllTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypes()" class="member-name-link">getAllTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the types registered to Apache Atlas.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAtlasAttributeDef(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefAttribute,int,java.lang.String)" class="member-name-link">getAtlasAttributeDef</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataTypeDefAttribute.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttribute</a>&nbsp;openMetadataTypeDefAttribute,
+ int&nbsp;maxStringLength,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a single attribute definition for a business metadata type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAtlasGlossary(int)" class="member-name-link">getAtlasGlossary</a><wbr>(int&nbsp;glossaryCount)</code></div>
@@ -214,6 +284,19 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAtlasGlossaryTerm(java.lang.String)" class="member-name-link">getAtlasGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a glossary term based on its guid.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanAttributeDef(java.lang.String,java.lang.String)" class="member-name-link">getBooleanAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an attribute of type boolean</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanAttributeDef(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getBooleanAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an attribute of type boolean for a business metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasBusinessMetadataDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasBusinessMetadataDef</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBusinessMetadataType(java.lang.String)" class="member-name-link">getBusinessMetadataType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
@@ -254,38 +337,88 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Retrieve the entities at the other end of the named relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity,java.lang.String)" class="member-name-link">getRelatedEntity</a><wbr>(<a href="properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntity</a>&nbsp;startingEntity,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityHeader,java.lang.String)" class="member-name-link">getRelatedEntity</a><wbr>(<a href="properties/AtlasEntityHeader.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityHeader</a>&nbsp;startingEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the entity at the other end of the named relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelatedEntity</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity,java.lang.String)" class="member-name-link">getRelatedEntity</a><wbr>(<a href="properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntity</a>&nbsp;startingEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the entity at the other end of the named relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipGUID(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelationshipGUID</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelatedEntity</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the entity at the other end of the named relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipGUID(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelationshipGUID</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the named relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelationships</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityWithExtInfo,java.lang.String)" class="member-name-link">getRelationships</a><wbr>(<a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a>&nbsp;startingEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the entities at the other end of the named relationship and build a map of the relationships.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasRelationshipDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasRelationshipDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipType(java.lang.String)" class="member-name-link">getRelationshipType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasRelationshipDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasRelationshipDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipType(java.lang.String)" class="member-name-link">getRelationshipType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the requested type from Apache Atlas.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStandardAttributeDef(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getStandardAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an Apache Atlas attribute of the requested type.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStandardAttributeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef)" class="member-name-link">getStandardAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="../../../../frameworks/governanceaction/properties/OpenMetadataAttributeTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataAttributeTypeDef</a>&nbsp;openMetadataAttributeTypeDef)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an attribute of the requested type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringAttributeDef(java.lang.String,java.lang.String)" class="member-name-link">getStringAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an attribute of type string</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringAttributeDef(java.lang.String,java.lang.String,int,java.lang.String)" class="member-name-link">getStringAttributeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ int&nbsp;maxStringLength,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an attribute of type string for a business metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTopLevelEntityTypes()" class="member-name-link">getTopLevelEntityTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of entity types that are top level - eg Referenceable.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeNamesAsString(java.util.Set)" class="member-name-link">getTypeNamesAsString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;typeNames)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of entity types as a list encoded as a single string with escaped type names.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector.TypeStatus</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTypeDefinedInAtlas(java.lang.String,long)" class="member-name-link">isTypeDefinedInAtlas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasTypeName,
+ long&nbsp;version)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Is the named type already defined in Apache Atlas?  Is the version correct?</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveAtlasGlossary(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasGlossaryElement)" class="member-name-link">saveAtlasGlossary</a><wbr>(<a href="properties/AtlasGlossaryElement.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasGlossaryElement</a>&nbsp;glossary)</code></div>
@@ -317,6 +450,11 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an entity's properties.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTypes(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)" class="member-name-link">updateTypes</a><wbr>(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update existing types.</div>
+</div>
 </div>
 </div>
 </div>
@@ -335,6 +473,42 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="OPEN_METADATA_TYPE_PREFIX">
+<h3>OPEN_METADATA_TYPE_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TYPE_PREFIX</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector.OPEN_METADATA_TYPE_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVICE_TYPE">
+<h3>SERVICE_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">SERVICE_TYPE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector.SERVICE_TYPE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -414,6 +588,32 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
+<section class="detail" id="isTypeDefinedInAtlas(java.lang.String,long)">
+<h3>isTypeDefinedInAtlas</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector.TypeStatus</span>&nbsp;<span class="element-name">isTypeDefinedInAtlas</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasTypeName,
+ long&nbsp;version)</span></div>
+<div class="block">Is the named type already defined in Apache Atlas?  Is the version correct?</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>atlasTypeName</code> - name of type to check for</dd>
+<dd><code>version</code> - type version to test for</dd>
+<dt>Returns:</dt>
+<dd>result</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addTypeDefinitions(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)">
+<h3>addTypeDefinitions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addTypeDefinitions</span><wbr><span class="parameters">(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;atlasTypesDef)</span></div>
+<div class="block">Make updates to the atlas types map based on the type changes described in the supplied Apache Atlas type definitions</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>atlasTypesDef</code> - type definitions returned from Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getAllTypes()">
 <h3>getAllTypes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a></span>&nbsp;<span class="element-name">getAllTypes</span>()
@@ -424,6 +624,32 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd>type definition list from Apache Atlas</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTypeNamesAsString(java.util.Set)">
+<h3>getTypeNamesAsString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeNamesAsString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;typeNames)</span></div>
+<div class="block">Return the list of entity types as a list encoded as a single string with escaped type names.
+ This format is used with business metadata type definitions.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of entity type names with escape characters or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTopLevelEntityTypes()">
+<h3>getTopLevelEntityTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getTopLevelEntityTypes</span>()
+                                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the list of entity types that are top level - eg Referenceable.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>set of entity type names</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - error calling Atlas</dd>
 </dl>
 </section>
 </li>
@@ -494,16 +720,239 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <li>
 <section class="detail" id="addNewTypes(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)">
 <h3>addNewTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a></span>&nbsp;<span class="element-name">addNewTypes</span><wbr><span class="parameters">(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</span>
-                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addNewTypes</span><wbr><span class="parameters">(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</span>
+                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create new types.  The registered types are returned from Apache Atlas.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>newTypeDefinitions</code> - gallery of new types</dd>
-<dt>Returns:</dt>
-<dd>type definition list from Apache Atlas</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateTypes(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasTypesDef)">
+<h3>updateTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateTypes</span><wbr><span class="parameters">(<a href="properties/AtlasTypesDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasTypesDef</a>&nbsp;newTypeDefinitions)</span>
+                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update existing types.  The registered types are returned from Apache Atlas.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>newTypeDefinitions</code> - gallery of new types</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef)">
+<h3>addOpenMetadataType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataType</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a>&nbsp;openMetadataTypeDef)</span>
+                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Take an open metadata type definition and add it to Apache Atlas's type system.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataTypeDef</code> - type definition from open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataEntityType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEntityDef)">
+<h3>addOpenMetadataEntityType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataEntityType</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataEntityDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataEntityDef</a>&nbsp;openMetadataEntityDef)</span>
+                               throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Convert an open metadata entity type to an Atlas type and add it to Apache Atlas.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataEntityDef</code> - entity from open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - unable to add type to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataRelationshipType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipDef)">
+<h3>addOpenMetadataRelationshipType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataRelationshipType</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataRelationshipDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipDef</a>&nbsp;openMetadataRelationshipDef)</span>
+                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Convert an open metadata relationship type to an Atlas type and add it to Apache Atlas.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataRelationshipDef</code> - relationship from open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - unable to add type to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataClassificationType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataClassificationDef)">
+<h3>addOpenMetadataClassificationType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataClassificationType</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataClassificationDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataClassificationDef</a>&nbsp;openMetadataClassificationDef)</span>
+                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add a classification definition from open metadata as a type of business metadata in Apache Atlas.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataClassificationDef</code> - classification type definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addClassificationType(java.lang.String,java.lang.String,java.util.Map)">
+<h3>addClassificationType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addClassificationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;classificationProperties)</span>
+                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add a classification definition to Apache Atlas.  This classification can be added to any top-level atlas entity type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>classificationName</code> - name of the classification</dd>
+<dd><code>classificationDescription</code> - description of the classification</dd>
+<dd><code>classificationProperties</code> - name/descriptions of string properties that will be added to the definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - unable to connect to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataEnumType(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumDef)">
+<h3>addOpenMetadataEnumType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataEnumType</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataEnumDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataEnumDef</a>&nbsp;openMetadataEnumDef)</span>
+                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add an enum definition from open metadata as an enum definition in Apache Atlas.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataEnumDef</code> - enum type definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAtlasAttributeDef(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefAttribute,int,java.lang.String)">
+<h3>getAtlasAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getAtlasAttributeDef</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/OpenMetadataTypeDefAttribute.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttribute</a>&nbsp;openMetadataTypeDefAttribute,
+ int&nbsp;maxStringLength,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</span>
+                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return a single attribute definition for a business metadata type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataTypeDefAttribute</code> - details of the attribute</dd>
+<dd><code>maxStringLength</code> - maximum length of string</dd>
+<dd><code>applicableEntityTypes</code> - list of type names that this attribute can be attached to</dd>
+<dt>Returns:</dt>
+<dd>atlas attribute definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem calling Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStandardAttributeDef(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef)">
+<h3>getStandardAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getStandardAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="../../../../frameworks/governanceaction/properties/OpenMetadataAttributeTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataAttributeTypeDef</a>&nbsp;openMetadataAttributeTypeDef)</span>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create an attribute of the requested type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dd><code>openMetadataAttributeTypeDef</code> - type of the attribute</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem calling Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStandardAttributeDef(java.lang.String,java.lang.String,java.lang.String)">
+<h3>getStandardAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getStandardAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+<div class="block">Create an Apache Atlas attribute of the requested type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dd><code>typeName</code> - name of the Apache Atlas type to use</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStringAttributeDef(java.lang.String,java.lang.String)">
+<h3>getStringAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getStringAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription)</span></div>
+<div class="block">Create an attribute of type string</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStringAttributeDef(java.lang.String,java.lang.String,int,java.lang.String)">
+<h3>getStringAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getStringAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ int&nbsp;maxStringLength,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</span></div>
+<div class="block">Create an attribute of type string for a business metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>maxStringLength</code> - maximum string length</dd>
+<dd><code>applicableEntityTypes</code> - list of entity types that this attribute can be attached to</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getBooleanAttributeDef(java.lang.String,java.lang.String)">
+<h3>getBooleanAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getBooleanAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription)</span></div>
+<div class="block">Create an attribute of type boolean</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getBooleanAttributeDef(java.lang.String,java.lang.String,java.lang.String)">
+<h3>getBooleanAttributeDef</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasAttributeDef.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasAttributeDef</a></span>&nbsp;<span class="element-name">getBooleanAttributeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;applicableEntityTypes)</span></div>
+<div class="block">Create an attribute of type boolean for a business metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the attribute</dd>
+<dd><code>propertyDescription</code> - description of the attribute</dd>
+<dd><code>applicableEntityTypes</code> - list of entity types that this attribute can be attached to</dd>
+<dt>Returns:</dt>
+<dd>attribute definition</dd>
 </dl>
 </section>
 </li>
@@ -534,6 +983,40 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code>entityWithExtInfo</code> - description of entity and any associated entities</dd>
 <dt>Returns:</dt>
 <dd>updated entity</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addLabelsToEntity(java.lang.String,java.util.List)">
+<h3>addLabelsToEntity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addLabelsToEntity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;labels)</span>
+                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add labels to an entity. This call overrides existing labels.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>entityGUID</code> - unique identifier of entity and any associated entities</dd>
+<dd><code>labels</code> - list of labels to assign to the entity</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addBusinessMetadataToEntity(java.lang.String,java.lang.String,java.util.Map)">
+<h3>addBusinessMetadataToEntity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addBusinessMetadataToEntity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;businessMetadataType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;attributes)</span>
+                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add business metadata to an entity. This call overrides specified attributes, leaving the rest intact.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>entityGUID</code> - unique identifier of entity and any associated entities</dd>
+<dd><code>businessMetadataType</code> - name of business metadata type that the attributes are added to</dd>
+<dd><code>attributes</code> - map of attribute names to attribute values to assign to the entity</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
 </dl>
@@ -641,6 +1124,24 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntity,java.lang.String)">
 <h3>getRelatedEntity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a></span>&nbsp;<span class="element-name">getRelatedEntity</span><wbr><span class="parameters">(<a href="properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntity</a>&nbsp;startingEntity,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</span>
+                                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the entity at the other end of the named relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>startingEntity</code> - entity information detailing the entity proxy for the entity at the far end of a named relationship.</dd>
+<dd><code>relationshipLabel</code> - name of relationship to traverse</dd>
+<dt>Returns:</dt>
+<dd>description of requested entity</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to Apache Atlas</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelatedEntity(org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties.AtlasEntityHeader,java.lang.String)">
+<h3>getRelatedEntity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/AtlasEntityWithExtInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityWithExtInfo</a></span>&nbsp;<span class="element-name">getRelatedEntity</span><wbr><span class="parameters">(<a href="properties/AtlasEntityHeader.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties">AtlasEntityHeader</a>&nbsp;startingEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipLabel)</span>
                                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the entity at the other end of the named relationship.</div>

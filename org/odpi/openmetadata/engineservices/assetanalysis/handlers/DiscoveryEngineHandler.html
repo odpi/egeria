@@ -103,12 +103,13 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">DiscoveryEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">DiscoveryEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
  <a href="../../../accessservices/governanceengine/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
  <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;serverClient,
  <a href="../../../accessservices/discoveryengine/client/DiscoveryEngineClient.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.client">DiscoveryEngineClient</a>&nbsp;discoveryEngineClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
@@ -199,7 +200,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
 <h3>DiscoveryEngineHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DiscoveryEngineHandler</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -207,6 +208,7 @@ loadScripts(document, 'script');</script>
  <a href="../../../accessservices/governanceengine/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
  <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;serverClient,
  <a href="../../../accessservices/discoveryengine/client/DiscoveryEngineClient.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.client">DiscoveryEngineClient</a>&nbsp;discoveryEngineClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</span></div>
 <div class="block">Create a client-side object for calling a discovery engine.</div>
@@ -218,6 +220,7 @@ loadScripts(document, 'script');</script>
 <dd><code>configurationClient</code> - client to retrieve the configuration</dd>
 <dd><code>serverClient</code> - client used by the engine host services to control the execution of governance action requests</dd>
 <dd><code>discoveryEngineClient</code> - REST client for direct REST Calls to Discovery Engine OMAS - used by discovery services</dd>
+<dd><code>openMetadataClient</code> - REST Client from the GAF that is linked to the Discovery Engine OMAS</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>maxPageSize</code> - maximum number of results that can be returned in a single request</dd>
 </dl>

@@ -157,7 +157,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span></div>
 <div class="block">Validate the connector and return its connector type.  The integration service does not need to
- be running in the integration daemon in order for this call to be successful.  It only needs to be registered with the
+ be running in the integration daemon in order for this call to be successful.  The integration service only needs to be registered with the
  integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -166,7 +166,6 @@ loadScripts(document, 'script');</script>
 <dd><code>connectorProviderClassName</code> - name of a specific connector or null for all connectors</dd>
 <dt>Returns:</dt>
 <dd>connector type or
-
   InvalidParameterException the connector provider class name is not a valid connector fo this service
   UserNotAuthorizedException user not authorized to issue this request
   PropertyServerException there was a problem detected by the integration service</dd>

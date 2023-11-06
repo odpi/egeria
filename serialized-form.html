@@ -2066,37 +2066,6 @@ loadScripts(document, 'script');</script>
 </ul>
 </section>
 </li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement</a></h3>
-<div class="type-signature">class ValidValueElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>correlationHeaders</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataCorrelationHeader</a>&gt; correlationHeaders</pre>
-</li>
-<li class="block-list">
-<h5>elementHeader</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
-</li>
-<li class="block-list">
-<h5>validValueProperties</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a> validValueProperties</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -34228,6 +34197,59 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/package-summary.html">org.odpi.openmetadata.frameworkservices.gaf.rest</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.TypeLimitedFindRequest">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/TypeLimitedFindRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.TypeLimitedFindRequest</a></h3>
+<div class="type-signature">class TypeLimitedFindRequest extends <a href="org/odpi/openmetadata/repositoryservices/rest/properties/OMRSAPIPagedFindRequest.html" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">OMRSAPIPagedFindRequest</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>typeGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> typeGUID</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.TypeLimitedHistoricalFindRequest">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/TypeLimitedHistoricalFindRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.TypeLimitedHistoricalFindRequest</a></h3>
+<div class="type-signature">class TypeLimitedHistoricalFindRequest extends <a href="org/odpi/openmetadata/frameworkservices/gaf/rest/TypeLimitedFindRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">TypeLimitedFindRequest</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>asOfTime</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> asOfTime</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/frameworkservices/ocf/metadatamanagement/client/package-summary.html">org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client</a></h2>
 <ul class="block-list">
 <li>
@@ -35784,6 +35806,40 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>reportingClassName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> reportingClassName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/platformchassis/springboot/package-summary.html">org.odpi.openmetadata.platformchassis.springboot</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.platformchassis.springboot.StartupFailEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/platformchassis/springboot/StartupFailEvent.html" title="class in org.odpi.openmetadata.platformchassis.springboot">org.odpi.openmetadata.platformchassis.springboot.StartupFailEvent</a></h3>
+<div class="type-signature">class StartupFailEvent extends org.springframework.context.ApplicationEvent implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>message</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> message</pre>
+</li>
+<li class="block-list">
+<h5>source</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> source</pre>
 </li>
 </ul>
 </section>
@@ -39951,40 +40007,6 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/serverchassis/springboot/package-summary.html">org.odpi.openmetadata.serverchassis.springboot</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.serverchassis.springboot.StartupFailEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/serverchassis/springboot/StartupFailEvent.html" title="class in org.odpi.openmetadata.serverchassis.springboot">org.odpi.openmetadata.serverchassis.springboot.StartupFailEvent</a></h3>
-<div class="type-signature">class StartupFailEvent extends org.springframework.context.ApplicationEvent implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>message</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> message</pre>
-</li>
-<li class="block-list">
-<h5>source</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> source</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/serverchassis/springboot/exception/package-summary.html">org.odpi.openmetadata.serverchassis.springboot.exception</a></h2>
 <ul class="block-list">
 <li>
@@ -40059,6 +40081,92 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>services</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/serveroperations/properties/OMAGServerServiceStatus.html" title="class in org.odpi.openmetadata.serveroperations.properties">OMAGServerServiceStatus</a>&gt; services</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/userauthn/package-summary.html">org.odpi.openmetadata.userauthn</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.userauthn.AppInfoBean">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/userauthn/AppInfoBean.html" title="class in org.odpi.openmetadata.userauthn">org.odpi.openmetadata.userauthn.AppInfoBean</a></h3>
+<div class="type-signature">class AppInfoBean extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>description</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
+<div class="block">Description value from application.properties</div>
+</li>
+<li class="block-list">
+<h5>title</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> title</pre>
+<div class="block">Title value from application.properties</div>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/userauthn/auth/demo/package-summary.html">org.odpi.openmetadata.userauthn.auth.demo</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.userauthn.auth.demo.User">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/userauthn/auth/demo/User.html" title="class in org.odpi.openmetadata.userauthn.auth.demo">org.odpi.openmetadata.userauthn.auth.demo.User</a></h3>
+<div class="type-signature">class User extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>avatarUrl</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> avatarUrl</pre>
+</li>
+<li class="block-list">
+<h5>id</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a> id</pre>
+</li>
+<li class="block-list">
+<h5>name</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> name</pre>
+</li>
+<li class="block-list">
+<h5>password</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> password</pre>
+</li>
+<li class="block-list">
+<h5>roles</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; roles</pre>
+</li>
+<li class="block-list">
+<h5>username</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> username</pre>
 </li>
 </ul>
 </section>

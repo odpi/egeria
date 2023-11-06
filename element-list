@@ -54,6 +54,7 @@ org.odpi.openmetadata.accessservices.assetmanager.api
 org.odpi.openmetadata.accessservices.assetmanager.api.exchange
 org.odpi.openmetadata.accessservices.assetmanager.api.management
 org.odpi.openmetadata.accessservices.assetmanager.client
+org.odpi.openmetadata.accessservices.assetmanager.client.converters
 org.odpi.openmetadata.accessservices.assetmanager.client.exchange
 org.odpi.openmetadata.accessservices.assetmanager.client.management
 org.odpi.openmetadata.accessservices.assetmanager.client.rest
@@ -425,6 +426,10 @@ org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
 org.odpi.openmetadata.adapters.connectors.discoveryservices
+org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas
+org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv
+org.odpi.openmetadata.adapters.connectors.discoveryservices.discoverduplicates
+org.odpi.openmetadata.adapters.connectors.discoveryservices.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary
@@ -451,6 +456,8 @@ org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests
 org.odpi.openmetadata.adapters.connectors.integration.kafka
 org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit
+org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis
 org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
@@ -785,6 +792,7 @@ org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconne
 org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils
 org.odpi.openmetadata.opentypes
 org.odpi.openmetadata.opentypes.utility
+org.odpi.openmetadata.platformchassis.springboot
 org.odpi.openmetadata.platformservices.client
 org.odpi.openmetadata.platformservices.rest
 org.odpi.openmetadata.platformservices.server
@@ -845,6 +853,16 @@ org.odpi.openmetadata.serveroperations.properties
 org.odpi.openmetadata.serveroperations.rest
 org.odpi.openmetadata.serveroperations.server
 org.odpi.openmetadata.test.unittest.utilities
+org.odpi.openmetadata.tokencontroller
+org.odpi.openmetadata.tokencontroller.ffdc
+org.odpi.openmetadata.tokenmanager.http
+org.odpi.openmetadata.userauthn
+org.odpi.openmetadata.userauthn.auth
+org.odpi.openmetadata.userauthn.auth.demo
+org.odpi.openmetadata.userauthn.auth.ldap
+org.odpi.openmetadata.userauthn.auth.model
+org.odpi.openmetadata.userauthn.auth.redis
+org.odpi.openmetadata.userauthn.auth.service
 org.odpi.openmetadata.userinterface.uichassis.springboot
 org.odpi.openmetadata.userinterface.uichassis.springboot.api
 org.odpi.openmetadata.userinterface.uichassis.springboot.api.asset

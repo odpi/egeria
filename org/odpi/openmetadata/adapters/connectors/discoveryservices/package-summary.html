@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -45,7 +41,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
 <li>Description&nbsp;|&nbsp;</li>
-<li>Related Packages&nbsp;|&nbsp;</li>
+<li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
 </div>
@@ -67,42 +63,31 @@ loadScripts(document, 'script');</script>
 <section class="summary">
 <ul class="summary-list">
 <li>
+<div id="related-package-summary">
+<div class="caption"><span>Related Packages</span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Package</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="discoveratlas/package-summary.html">org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="discovercsv/package-summary.html">org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="discoverduplicates/package-summary.html">org.odpi.openmetadata.adapters.connectors.discoveryservices.discoverduplicates</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.discoveryservices.ffdc</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</div>
+</li>
+<li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
-<div id="class-summary.tabpanel" role="tabpanel">
-<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
+<div class="caption"><span>Classes</span></div>
+<div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="AuditableDiscoveryService.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">AuditableDiscoveryService</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">AuditableDiscoveryService is a base class for discovery services that wish to use the audit log.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CSVDiscoveryService.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">CSVDiscoveryService</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CSVDiscoveryService is a discovery service implementation for analysing CSV Files to
- discovery columns and profile the data in them.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CSVDiscoveryServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">CSVDiscoveryServiceProvider</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CSVDiscoveryServiceProvider provides the connector provider for the CSV Discovery Service</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="DiscoveryServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.discoveryservices">DiscoveryServiceAuditCode</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
-<div class="block">The DiscoveryServiceAuditCode is used to define the message content for the OMRS Audit Log.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="DiscoveryServiceErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.discoveryservices">DiscoveryServiceErrorCode</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
-<div class="block">The DiscoveryServiceErrorCode is used to define first failure data capture (FFDC) for errors that occur
- when running Discovery Services.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DuplicateSuspectDiscoveryProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">DuplicateSuspectDiscoveryProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DuplicateSuspectDiscoveryProvider is the provider for the DuplicateSuspectDiscoveryService - an ODF discovery service connector.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DuplicateSuspectDiscoveryService.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">DuplicateSuspectDiscoveryService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DuplicateSuspectDiscoveryService is a discovery service that looks for assets in the asset catalog that seem to be
- duplicates of the asset supplied in the context.</div>
+<div class="block">AuditableDiscoveryService is a base class for discovery services that provides common error handling routines.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SequentialDiscoveryPipeline.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">SequentialDiscoveryPipeline</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -111,7 +96,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="SequentialDiscoveryPipelineProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.discoveryservices">SequentialDiscoveryPipelineProvider</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SequentialDiscoveryPipelineProvider is the provider for the SequentialDiscoveryPipeline - an ODF discovery pipeline connector.</div>
-</div>
 </div>
 </div>
 </div>
