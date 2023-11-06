@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}")
 
-@Tag(name="Asset Consumer OMAS", description="The Asset Consumer OMAS provides services to an individual who wants to work with assets such as: data stores, data sets and data feeds, reports, APIs, functions such as analytical services",
-     externalDocs=@ExternalDocumentation(description="Asset Consumer Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Asset Consumer OMAS", description="The Asset Consumer OMAS provides services to an individual who wants to work with assets such as: data stores, data sets and data feeds, reports, APIs, functions such as analytical services",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/asset-consumer/overview/"))
 
 public class AssetConsumerResource

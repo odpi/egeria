@@ -55,6 +55,31 @@ public class RESTCallLogger
 
 
     /**
+     * Log the start of an inbound REST Call.
+     *
+     * @param serverName destination server
+     * @param methodName called method
+     * @return stop watch measuring the call execution length
+     */
+    public RESTCallToken logRESTCall(String serverName,
+                                     String methodName)
+    {
+        if (log.isDebugEnabled())
+        {
+            RESTCallToken token = new RESTCallToken(serviceName, serverName, methodName);
+
+            log.debug(token.getRESTCallStartText());
+
+            return token;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Log the return of an inbound REST Call.
      *
      * @param token REST call token

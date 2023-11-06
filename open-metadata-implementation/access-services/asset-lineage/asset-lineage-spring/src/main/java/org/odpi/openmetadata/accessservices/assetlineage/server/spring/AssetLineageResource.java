@@ -29,9 +29,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-lineage/users/{userId}/")
 
-@Tag(name = "Asset Lineage OMAS",
+@Tag(name = "Metadata Access Server: Asset Lineage OMAS",
         description = "The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.",
-        externalDocs = @ExternalDocumentation(description = "Asset Lineage Open Metadata Access Service (OMAS)",
+        externalDocs = @ExternalDocumentation(description = "Further Information",
                 url = "https://egeria-project.org/services/omas/asset-lineage/overview/"))
 public class AssetLineageResource {
 

@@ -20,9 +20,9 @@ public class PropertyHelper
     /**
      * Throw an exception if the supplied GUID is null
      *
-     * @param guid           unique identifier to validate
-     * @param guidParameter  name of the parameter that passed the guid.
-     * @param methodName     name of the method making the call.
+     * @param guid          unique identifier to validate
+     * @param guidParameter name of the parameter that passed the guid.
+     * @param methodName    name of the method making the call.
      *
      * @throws InvalidParameterException the guid is null
      */
@@ -43,9 +43,9 @@ public class PropertyHelper
     /**
      * Throw an exception if the supplied name is null
      *
-     * @param name           unique name to validate
-     * @param nameParameter  name of the parameter that passed the name.
-     * @param methodName     name of the method making the call.
+     * @param name          unique name to validate
+     * @param nameParameter name of the parameter that passed the name.
+     * @param methodName    name of the method making the call.
      *
      * @throws InvalidParameterException the name is null
      */
@@ -68,11 +68,12 @@ public class PropertyHelper
      * ie entities, relationships and classifications.
      *
      * @param elementControlHeader header of the element to test
-     * @param expectedType expected type - nul means any type
+     * @param expectedType         expected type - nul means any type
+     *
      * @return boolean result
      */
     public boolean isTypeOf(ElementControlHeader elementControlHeader,
-                            String               expectedType)
+                            String expectedType)
     {
         if (expectedType == null)
         {
@@ -96,6 +97,46 @@ public class PropertyHelper
         return false;
     }
 
+
+    /**
+     * Return the search properties that requests elements with an exactly matching name in any of the listed property names.
+     *
+     * @param propertyNames list of property names
+     * @param name name to match on
+     * @return search properties
+     */
+    public SearchProperties getSearchPropertiesByName(List<String> propertyNames,
+                                                      String       name)
+    {
+        if ((propertyNames != null) && (! propertyNames.isEmpty()))
+        {
+            SearchProperties searchProperties = new SearchProperties();
+
+            PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
+            propertyValue.setTypeName("string");
+            propertyValue.setPrimitiveValue(name);
+
+            List<PropertyCondition> propertyConditions = new ArrayList<>();
+
+            for (String propertyName : propertyNames)
+            {
+                PropertyCondition propertyCondition = new PropertyCondition();
+
+                propertyCondition.setValue(propertyValue);
+                propertyCondition.setProperty(propertyName);
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                propertyConditions.add(propertyCondition);
+            }
+
+            searchProperties.setConditions(propertyConditions);
+            searchProperties.setMatchCriteria(MatchCriteria.ANY);
+
+            return searchProperties;
+        }
+
+        return null;
+    }
 
     /**
      * Add the supplied primitive property to an element properties object.  If the element property object

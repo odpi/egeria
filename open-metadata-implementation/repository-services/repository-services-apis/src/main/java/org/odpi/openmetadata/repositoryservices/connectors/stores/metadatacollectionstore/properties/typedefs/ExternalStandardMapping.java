@@ -108,7 +108,8 @@ public class ExternalStandardMapping extends TypeDefElementHeader
      *
      * @return String type name from standard
      */
-    public String getStandardTypeName() {
+    public String getStandardTypeName()
+    {
         return standardTypeName;
     }
 

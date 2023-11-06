@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
@@ -20,9 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-manager/users/{userId}")
 
-@Tag(name="Asset Manager OMAS",
+@Tag(name="Metadata Access Server: Asset Manager OMAS",
         description="The Asset Manager OMAS provides APIs and events for managing metadata exchange with third party asset managers, such as data catalogs.",
-        externalDocs=@ExternalDocumentation(description="Asset Manager Open Metadata Access Service (OMAS)",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omas/asset-manager/overview"))
 
 public class AssetManagerOMASResource
@@ -244,16 +246,49 @@ public class AssetManagerOMASResource
      */
     @PostMapping(path = "/asset-managers/external-identifiers/open-metadata-elements")
 
-    public ElementHeadersResponse getElementsForExternalIdentifier(@PathVariable String                        serverName,
-                                                                   @PathVariable String                        userId,
-                                                                   @RequestParam int                           startFrom,
-                                                                   @RequestParam int                           pageSize,
+    public ElementHeadersResponse getElementsForExternalIdentifier(@PathVariable String            serverName,
+                                                                   @PathVariable String            userId,
+                                                                   @RequestParam int               startFrom,
+                                                                   @RequestParam int               pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forLineage,
+                                                                                 boolean           forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forDuplicateProcessing,
+                                                                                 boolean           forDuplicateProcessing,
                                                                    @RequestBody  UpdateRequestBody requestBody)
     {
         return restAPI.getElementsForExternalIdentifier(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Assemble the correlation headers attached to the supplied element guid.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param openMetadataElementGUID unique identifier of the requested metadata element
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/asset-managers/elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/correlation-headers")
+
+    public MetadataCorrelationHeadersResponse getMetadataCorrelationHeaders(@PathVariable String                        serverName,
+                                                                            @PathVariable String                        userId,
+                                                                            @PathVariable String                        openMetadataElementGUID,
+                                                                            @PathVariable String                        openMetadataElementTypeName,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean                       forLineage,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean                       forDuplicateProcessing,
+                                                                            @RequestBody  (required = false)
+                                                                                          EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getMetadataCorrelationHeaders(serverName, userId, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 }

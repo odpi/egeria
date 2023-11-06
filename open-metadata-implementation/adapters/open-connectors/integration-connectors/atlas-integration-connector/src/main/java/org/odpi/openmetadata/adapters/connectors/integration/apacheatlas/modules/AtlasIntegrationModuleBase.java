@@ -57,6 +57,8 @@ public abstract class AtlasIntegrationModuleBase
     protected final static String openMetadataCorrelationLinkTypeName = "OpenMetadataCorrelationLink";
     protected final static String openMetadataGlossaryCorrelationLinkTypeName = "OpenMetadataGlossaryCorrelationLink";
     protected final static String openMetadataCorrelationPropertyName = "openMetadataCorrelation";
+    protected final static String openMetadataAssociatedElementPropertyName = "associatedElement";
+    protected final static String openMetadataAssociatedGlossaryPropertyName = "associatedMeaning";
     protected final static String egeriaGUIDPropertyName  = "egeriaGUID";
     protected final static String egeriaTypeNamePropertyName  = "egeriaTypeName";
     protected final static String egeriaQualifiedNamePropertyName  = "egeriaQualifiedName";

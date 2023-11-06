@@ -34,6 +34,9 @@ import java.util.List;
  */
 public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
 {
+    /**
+     * Unique name of this module for messages.
+     */
     private static final String lineageModuleName = "Apache Atlas Lineage Integration Module";
 
     protected final static String egeriaDataSetTypeName           = "DataSet";

@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/digital-service/users/{userId}")
 
-@Tag(name="Digital Service OMAS", description="The Digital Service OMAS provides services to aid the integration of tools involved in tracking the life cycle of an Egeria Digital Service",
-     externalDocs=@ExternalDocumentation(description="Digital Service Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Digital Service OMAS", description="The Digital Service OMAS provides services to aid the integration of tools involved in tracking the life cycle of an Egeria Digital Service",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/digital-service/overview/"))
 
 public class DigitalServiceResource

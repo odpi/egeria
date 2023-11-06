@@ -80,7 +80,6 @@ public class CollectionMemberConverter<B> extends DigitalServiceConverterBase<B>
                     membershipProperties.setCreatedBy(this.removeCreatedBy(elementProperties));
                     membershipProperties.setExpression(this.removeExpression(elementProperties));
                     membershipProperties.setConfidence(this.removeConfidence(elementProperties));
-                    membershipProperties.setConfidence(this.removeConfidence(elementProperties));
                     membershipProperties.setSteward(this.removeSteward(elementProperties));
                     membershipProperties.setStewardTypeName(this.removeStewardTypeName(elementProperties));
                     membershipProperties.setStewardPropertyName(this.removeStewardPropertyName(elementProperties));

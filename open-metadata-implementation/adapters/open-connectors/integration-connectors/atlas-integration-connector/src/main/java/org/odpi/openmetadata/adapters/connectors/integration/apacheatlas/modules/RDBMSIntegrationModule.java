@@ -23,6 +23,9 @@ import java.util.Map;
  */
 public class RDBMSIntegrationModule extends DatabaseIntegrationModuleBase
 {
+    /**
+     * Unique name of this module for messages.
+     */
     private static final String rdbmsModuleName = "RDBMS Integration Module";
 
     private static final String rdbmsDatabaseTypeName            = "rdbms_db";

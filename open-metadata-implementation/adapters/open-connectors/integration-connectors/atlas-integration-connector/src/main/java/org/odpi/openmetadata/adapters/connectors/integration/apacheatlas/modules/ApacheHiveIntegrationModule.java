@@ -28,6 +28,9 @@ import java.util.Map;
  */
 public class ApacheHiveIntegrationModule extends DatabaseIntegrationModuleBase
 {
+    /**
+     * Unique name of this module for messages.
+     */
     private static final String hiveModuleName = "Apache Hive Integration Module";
 
     private static final String hiveDatabaseTypeName            = "hive_db";

@@ -21,7 +21,8 @@ import java.util.Map;
  * metadata repository provider. In Egeria, this class is implemented in the GAF Metadata Management running in the
  * Metadata Access Server OMAG Server.
  */
-public abstract class OpenMetadataClient implements MetadataElementInterface,
+public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
+                                                    MetadataElementInterface,
                                                     StewardshipActionInterface,
                                                     MultiLanguageInterface,
                                                     ValidMetadataValuesInterface
@@ -46,6 +47,168 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
     }
+
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     *
+     * @return TypeDefGallery  List of different categories of type definitions.
+     *
+     * @throws InvalidParameterException  the userId is null
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataTypeDefGallery getAllTypes(String userId) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException;
+
+    /**
+     * Returns all the TypeDefs for a specific category.
+     *
+     * @param userId   unique identifier for requesting user.
+     * @param category enum value for the category of TypeDef to return.
+     *
+     * @return TypeDefs list.
+     *
+     * @throws InvalidParameterException  the TypeDefCategory is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract List<OpenMetadataTypeDef> findTypeDefsByCategory(String                      userId,
+                                                                     OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException;
+
+
+    /**
+     * Returns all the AttributeTypeDefs for a specific category.
+     *
+     * @param userId   unique identifier for requesting user.
+     * @param category enum value for the category of an AttributeTypeDef to return.
+     *
+     * @return AttributeTypeDefs list.
+     *
+     * @throws InvalidParameterException  the TypeDefCategory is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract List<OpenMetadataAttributeTypeDef> findAttributeTypeDefsByCategory(String                               userId,
+                                                                                       OpenMetadataAttributeTypeDefCategory category) throws InvalidParameterException,
+                                                                                                                                             PropertyServerException,
+                                                                                                                                             UserNotAuthorizedException;
+
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param userId       unique identifier for requesting user.
+     * @param standard     name of the standard null means any.
+     * @param organization name of the organization null means any.
+     * @param identifier   identifier of the element in the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract List<OpenMetadataTypeDef> findTypesByExternalId(String userId,
+                                                                    String standard,
+                                                                    String organization,
+                                                                    String identifier) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException;
+
+
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid   String unique id of the TypeDef
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the guid is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataTypeDef getTypeDefByGUID(String userId,
+                                                         String guid) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid   String unique id of the TypeDef
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the guid is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataAttributeTypeDef getAttributeTypeDefByGUID(String userId,
+                                                                           String guid) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException;
+
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name   String name of the TypeDef.
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the name is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataTypeDef getTypeDefByName(String userId,
+                                                         String name) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
+
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name   String name of the TypeDef.
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the name is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataAttributeTypeDef getAttributeTypeDefByName(String userId,
+                                                                           String name) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -215,6 +378,38 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
 
 
     /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract List<RelatedMetadataElements> getMetadataElementRelationships(String  userId,
+                                                                                  String  metadataElementAtEnd1GUID,
+                                                                                  String  metadataElementAtEnd2GUID,
+                                                                                  String  relationshipTypeName,
+                                                                                  boolean forLineage,
+                                                                                  boolean forDuplicateProcessing,
+                                                                                  Date    effectiveTime,
+                                                                                  int     startFrom,
+                                                                                  int     pageSize) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException;
+
+
+    /**
      * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
      *
      * @param userId caller's userId
@@ -347,6 +542,51 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
                                                         String            templateGUID) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException;
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public abstract String createMetadataElementInStore(String                         userId,
+                                                        String                         metadataElementTypeName,
+                                                        ElementStatus                  initialStatus,
+                                                        Map<String, ElementProperties> initialClassifications,
+                                                        String                         anchorGUID,
+                                                        Date                           effectiveFrom,
+                                                        Date                           effectiveTo,
+                                                        ElementProperties              properties,
+                                                        String                         templateGUID,
+                                                        String                         parentGUID,
+                                                        String                         parentRelationshipTypeName,
+                                                        ElementProperties              parentRelationshipProperties,
+                                                        boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 
 
     /**

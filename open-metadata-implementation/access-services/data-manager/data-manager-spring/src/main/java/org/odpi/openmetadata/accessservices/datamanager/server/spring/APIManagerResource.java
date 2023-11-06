@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
 
-@Tag(name="Data Manager OMAS",
+@Tag(name="Metadata Access Server: Data Manager OMAS",
      description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
                          "such as database servers, event brokers, content managers and file systems.",
-     externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/data-manager/overview/"))
 
 public class APIManagerResource

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -28,15 +30,221 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
 
-@Tag(name="Open Metadata Store Services",
+@Tag(name="Framework Services: Open Metadata Store Services",
      description="Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
-     externalDocs=@ExternalDocumentation(description="Open Metadata Store Services",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/gaf-metadata-management/"))
 
 
 public class OpenMetadataStoreResource
 {
     private final OpenMetadataStoreRESTServices restAPI = new OpenMetadataStoreRESTServices();
+
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefGalleryResponse:
+     * List of different categories of type definitions or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/all")
+
+    public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
+                                              @PathVariable String   serviceURLMarker,
+                                              @PathVariable String   userId)
+    {
+        return restAPI.getAllTypes(serverName, serviceURLMarker, userId);
+    }
+
+
+    /**
+     * Returns all the TypeDefs for a specific category.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param category find parameters used to limit the returned results.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/category/{category}")
+
+    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String                      serverName,
+                                                      @PathVariable String                      serviceURLMarker,
+                                                      @PathVariable String                      userId,
+                                                      @PathVariable OpenMetadataTypeDefCategory category)
+    {
+        return restAPI.findTypeDefsByCategory(serverName, serviceURLMarker, userId, category);
+    }
+
+
+    /**
+     * Returns all the AttributeTypeDefs for a specific category.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param category find parameters used to limit the returned results.
+     * @return AttributeTypeDefListResponse:
+     * AttributeTypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-attribute-types/category/{category}")
+
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                               serverName,
+                                                                        @PathVariable String                               serviceURLMarker,
+                                                                        @PathVariable String                               userId,
+                                                                        @PathVariable OpenMetadataAttributeTypeDefCategory category)
+    {
+        return restAPI.findAttributeTypeDefsByCategory(serverName, serviceURLMarker, userId, category);
+    }
+
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param standard name of the standard null means any.
+     * @param organization name of the organization null means any.
+     * @param identifier identifier of the element in the standard null means any.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/external-id")
+
+    public TypeDefListResponse findTypesByExternalId(@PathVariable                   String    serverName,
+                                                     @PathVariable                   String    serviceURLMarker,
+                                                     @PathVariable                   String    userId,
+                                                     @RequestParam(required = false) String    standard,
+                                                     @RequestParam(required = false) String    organization,
+                                                     @RequestParam(required = false) String    identifier)
+    {
+        return restAPI.findTypesByExternalId(serverName, serviceURLMarker, userId, standard, organization, identifier);
+    }
+
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef.
+     * @return TypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the guid is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/guid/{guid}")
+
+    public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
+                                            @PathVariable String    serviceURLMarker,
+                                            @PathVariable String    userId,
+                                            @PathVariable String    guid)
+    {
+        return restAPI.getTypeDefByGUID(serverName, serviceURLMarker, userId, guid);
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef
+     * @return AttributeTypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the guid is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-attribute-types/guid/{guid}")
+
+    public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
+                                                              @PathVariable String    serviceURLMarker,
+                                                              @PathVariable String    userId,
+                                                              @PathVariable String    guid)
+    {
+        return restAPI.getAttributeTypeDefByGUID(serverName, serviceURLMarker, userId, guid);
+    }
+
+
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the name is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/name/{name}")
+
+    public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
+                                            @PathVariable String    serviceURLMarker,
+                                            @PathVariable String    userId,
+                                            @PathVariable String    name)
+    {
+        return restAPI.getTypeDefByName(serverName, serviceURLMarker, userId, name);
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return AttributeTypeDefResponse:
+     * AttributeTypeDef structure describing its category and properties or
+     * InvalidParameterException the name is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-attribute-types/name/{name}")
+
+    public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
+                                                               @PathVariable String    serviceURLMarker,
+                                                               @PathVariable String    userId,
+                                                               @PathVariable String    name)
+    {
+        return restAPI.getAttributeTypeDefByName(serverName, serviceURLMarker, userId, name);
+    }
+
 
     /**
      * Retrieve the metadata element using its unique identifier.
@@ -253,6 +461,101 @@ public class OpenMetadataStoreResource
                                                   startingAtEnd,
                                                   startFrom,
                                                   pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
+
+    public RelatedMetadataElementsListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
+                                                                                  @PathVariable String  serviceURLMarker,
+                                                                                  @PathVariable String  userId,
+                                                                                  @PathVariable String  metadataElementAtEnd1GUID,
+                                                                                  @PathVariable String  metadataElementAtEnd2GUID,
+                                                                                  @RequestParam boolean forLineage,
+                                                                                  @RequestParam boolean forDuplicateProcessing,
+                                                                                  @RequestParam long    effectiveTime,
+                                                                                  @RequestParam int     startFrom,
+                                                                                  @RequestParam int     pageSize)
+    {
+        return restAPI.getMetadataElementRelationships(serverName,
+                                                       serviceURLMarker,
+                                                       userId,
+                                                       metadataElementAtEnd1GUID,
+                                                       null,
+                                                       metadataElementAtEnd2GUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       startFrom,
+                                                       pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata elements connected to the supplied element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
+
+    public RelatedMetadataElementsListResponse getMetadataElementRelationships(@PathVariable String  serverName,
+                                                                               @PathVariable String  serviceURLMarker,
+                                                                               @PathVariable String  userId,
+                                                                               @PathVariable String  metadataElementAtEnd1GUID,
+                                                                               @PathVariable String  relationshipTypeName,
+                                                                               @PathVariable String  metadataElementAtEnd2GUID,
+                                                                               @RequestParam boolean forLineage,
+                                                                               @RequestParam boolean forDuplicateProcessing,
+                                                                               @RequestParam long    effectiveTime,
+                                                                               @RequestParam int     startFrom,
+                                                                               @RequestParam int     pageSize)
+    {
+        return restAPI.getMetadataElementRelationships(serverName,
+                                                       serviceURLMarker,
+                                                       userId,
+                                                       metadataElementAtEnd1GUID,
+                                                       relationshipTypeName,
+                                                       metadataElementAtEnd2GUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       startFrom,
+                                                       pageSize);
     }
 
 

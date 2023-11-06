@@ -25,13 +25,18 @@ import java.util.List;
  */
 public class OMAGServerPlatformOperationalServices
 {
-    private final OMAGServerOperationalInstanceHandler instanceHandler           = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
-    private final OMAGServerOperationalServices        serverOperationalServices = new OMAGServerOperationalServices();
+    /**
+     * The instance handler is looking up the server operations instance and so it needs to be initialized with
+     * the server operations service name.
+     */
+    private final OMAGServerOperationalInstanceHandler serverOperationalInstanceHandler =
+            new OMAGServerOperationalInstanceHandler(CommonServicesDescription.SERVER_OPERATIONS.getServiceName());
+    private final OMAGServerOperationalServices serverOperationalServices        = new OMAGServerOperationalServices();
 
-    private final OMAGServerPlatformInstanceMap        platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    private final OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
-    private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
-    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerErrorHandler        errorHandler     = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler    exceptionHandler = new OMAGServerExceptionHandler();
 
     private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerPlatformOperationalServices.class),
                                                                             CommonServicesDescription.PLATFORM_SERVICES.getServiceName());
@@ -52,7 +57,7 @@ public class OMAGServerPlatformOperationalServices
      */
     public VoidResponse shutdownAllServers(String  userId)
     {
-        final String methodName = "shutdownServer";
+        final String methodName = "shutdownAllServer";
         final String serverName = "<null>";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -72,7 +77,7 @@ public class OMAGServerPlatformOperationalServices
                     serverOperationalServices.deactivateRunningServiceInstances(userId,
                                                                                 activeServerName,
                                                                                 methodName,
-                                                                                instanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
+                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
                                                                                 false);
                 }
             }
@@ -131,7 +136,7 @@ public class OMAGServerPlatformOperationalServices
                     serverOperationalServices.deactivateRunningServiceInstances(userId,
                                                                                 activeServerName,
                                                                                 methodName,
-                                                                                instanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
+                                                                                serverOperationalInstanceHandler.getServerServiceInstance(userId, activeServerName, methodName),
                                                                                 true);
                 }
             }

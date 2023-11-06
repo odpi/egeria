@@ -22,6 +22,9 @@ import java.util.List;
  */
 public class ApacheKafkaIntegrationModule extends AtlasRegisteredIntegrationModuleBase
 {
+    /**
+     * Unique name of this module for messages.
+     */
     private final static String kafkaModuleName     = "Apache Kafka Integration Module";
     private final static String egeriaKafkaTypeName = "KafkaTopic";
     private final static String atlasKafkaTypeName  = "kafka_topic";
@@ -33,7 +36,7 @@ public class ApacheKafkaIntegrationModule extends AtlasRegisteredIntegrationModu
      * Constructor for the module is supplied with the runtime context in order to operate.
      *
      * @param connectorName name of the connector (for messages)
-    * @param connectionProperties connection properties used to start the connector
+     * @param connectionProperties connection properties used to start the connector
      * @param auditLog logging destination
      * @param myContext integration context
      * @param targetRootURL URL to connect to Apache Atlas

@@ -172,9 +172,38 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                                    "Open metadata glossary categories that are copies from Apache Atlas should not be unilaterally removed.  Investigate why this element is missing from the open metadata ecosystem and make changes so it can not happen again."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0020 - The {0} integration connector is copying the Apache Atlas glossary called {1} into the {2} ({3}) open metadata glossary
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0017 - The {0} configuration property is not set for {1} integration connector and so the default value of {2} will be used
      */
-    SYNC_ATLAS_GLOSSARY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0020",
+    CONFIGURATION_PROPERTY_NOT_SET("APACHE-ATLAS-INTEGRATION-CONNECTOR-0017",
+                        OMRSAuditLogRecordSeverity.INFO,
+                     "{0} integration connector will use the default value of {1} for configuration property {2}",
+                             "The connector will use the default value for this property.",
+                             "Check that this default behaviour is what is wanted from the integration connector."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0018 - The list of values from the {0} configuration property has {1} items with values {2} for {3} integration connector
+     */
+    LIST_CONFIGURATION_PROPERTY_SET("APACHE-ATLAS-INTEGRATION-CONNECTOR-0018",
+                                    OMRSAuditLogRecordSeverity.INFO,
+                                    "The list of values from the {0} configuration property has {1} items with values {2} for {3} integration connector",
+                                    "The connector will use the listed values to control its behaviour.",
+                                    "Check that this list of items is what is expected.  It is created by a parsing routine and it is important to ensure that the values are what is expected."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0019 - The {0} configuration property is set to {1} for {2} integration connector
+     */
+    CONFIGURATION_PROPERTY_SET("APACHE-ATLAS-INTEGRATION-CONNECTOR-0019",
+                                    OMRSAuditLogRecordSeverity.INFO,
+                                    "The {0} configuration property is set to {1} for {2} integration connector",
+                                    "The connector will use the value shown to control its behaviour.",
+                                    "Check that this value is what is expected."),
+
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0025 - The {0} integration connector is copying the Apache Atlas glossary called {1} into the {2} ({3}) open metadata glossary
+     */
+    SYNC_ATLAS_GLOSSARY("APACHE-ATLAS-INTEGRATION-CONNECTOR-0025",
                       OMRSAuditLogRecordSeverity.INFO,
                      "The {0} integration connector is copying the Apache Atlas glossary called {1} into the {2} ({3}) open metadata glossary",
                      "The connector will ensure that the content of the glossary in the open metadata ecosystem is the same as the glossary stored in Apache Atlas.",
@@ -188,12 +217,60 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
                                   "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Apache Atlas during a refresh scan.",
-                                  "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
+                                  "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0035 - The {0} integration connector is calling the {1} integration module
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0033 - The {0} integration connector encountered an {1} exception when defining a {2} open metadata type {3} in Apache Atlas.  The exception message included was {4}
      */
-    SYNC_INTEGRATION_MODULE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0035",
+    UNABLE_TO_DEFINE_TYPE_IN_ATLAS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0033",
+                                OMRSAuditLogRecordSeverity.EXCEPTION,
+                                "The {0} integration connector encountered an {1} exception when defining a {2} open metadata type {3} in Apache Atlas.  The exception message included was {4}",
+                                "The connector continues to scan and synchronize metadata as configured.  However, some metadata may not be copied due to this missing type.",
+                                "Review the exception to uncover why the type can not be defined and correct the issue."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0034 - The {0} integration connector encountered an {1} exception when retrieving/setting up the classification reference set called {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_SET_UP_CLASSIFICATION_REFERENCE_SET("APACHE-ATLAS-INTEGRATION-CONNECTOR-0034",
+                                   OMRSAuditLogRecordSeverity.EXCEPTION,
+                                   "The {0} integration connector encountered an {1} exception when retrieving/setting up the classification reference set called {2}.  The exception message included was {3}",
+                                   "The connector will retry this request on the next refresh.",
+                                   "Use the information in the exception to determine why it is not possible to either set up or retrieve the configured classification reference set."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0035 - The {0} integration connector encountered an {1} exception when retrieving/setting up the members of the classification reference set called {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_GET_CLASSIFICATION_REFERENCE_SET_MEMBERS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0035",
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          "The {0} integration connector encountered an {1} exception when retrieving/setting up the members of the classification reference set called {2}.  The exception message included was {3}",
+                          "The connector will retry this retrieval on the next refresh.",
+                          "Use the information in the exception to determine why it is not possible to retrieve the members of the configured classification reference set.  Note: the problem is not caused by an empty classification reference set."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0036 - The {0} integration connector encountered an {1} exception when setting up Classifications in Apache Atlas using the members of the classification reference set called {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_ADD_CLASSIFICATION_REFERENCE_SET_TO_ATLAS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0036",
+                           OMRSAuditLogRecordSeverity.EXCEPTION,
+                           "The {0} integration connector encountered an {1} exception when setting up Classifications in Apache Atlas using the members of the classification reference set called {2}.  The exception message included was {3}",
+                           "The connector will retry to add the classification to Apache Atlas on the next refresh.",
+                           "Use the information in the exception to determine why it is not possible to set up classifications in Apache Atlas."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0037 - The {0} integration connector encountered an {1} exception when retrieving/setting up the members of the classification reference set called {2} using the classifications from Apache Atlas.  The exception message included was {3}
+     */
+    UNABLE_TO_BUILD_CLASSIFICATION_REFERENCE_SET_FROM_ATLAS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0037",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The {0} integration connector encountered an {1} exception when retrieving/setting up the members of the classification reference set called {2} using the classifications from Apache Atlas.  The exception message included was {3}",
+                             "The connector will retry to build the classification reference set on the next refresh.",
+                             "Use the information in the exception to determine why it is not possible to build the membership of the configured classification reference set using classifications from Apache Atlas."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0038 - The {0} integration connector is calling the {1} integration module
+     */
+    SYNC_INTEGRATION_MODULE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0038",
                              OMRSAuditLogRecordSeverity.INFO,
                              "The {0} integration connector is calling the {1} integration module",
                              "The connector is calling one of its registered integration modules to refresh the metadata it is responsible for.",
@@ -201,9 +278,9 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
 
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0036 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0039 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}
      */
-    MISSING_CORRELATION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0036",
+    MISSING_CORRELATION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0039",
                             OMRSAuditLogRecordSeverity.ERROR,
                             "The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}",
                             "The correlation information that should be associated with the open metadata entity is missing and the integration connector is not able to confidently synchronize it with the Apache Atlas entity.",
@@ -289,10 +366,67 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
     ADDING_LINEAGE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0048",
                      OMRSAuditLogRecordSeverity.INFO,
                      "The integration connector {0} is adding a DataFlow lineage relationship from {1} open metadata entity {2} to {3} open metadata entity {4}",
-                     "The connector is creating a new lineage relationship around a process base on a similar relationship in Apache Atlas.",
+                     "The connector is creating a new lineage relationship around a process based on a similar relationship in Apache Atlas.",
                      "No action is required. The connector is working to keep the two systems view of lineage consistent."),
 
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0049 - The {0} integration connector encountered an {1} exception when retrieving the related reference values assigned to entity {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_GET_REFERENCE_VALUE_ASSIGNMENTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0049",
+                                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                                              "The {0} integration connector encountered an {1} exception when retrieving the related reference values assigned to entity {2}.  The exception message included was {3}",
+                                              "The connector will retry this reference value retrieval request on the next refresh.  These reference values are used to record the classifications attached to the corresponding Apache Atlas entity.",
+                                              "Use the information in the exception to determine why it is not possible to retrieve the reference values."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0050 - The {0} integration connector encountered an {1} exception when setting up the related reference values assigned to the open metadata entity {2} that represents Apache Atlas entity {3}.  The exception message included was {4}
+     */
+    UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0050",
+                                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                                              "The {0} integration connector encountered an {1} exception when setting up the related reference values assigned to the open metadata entity {2} that represents Apache Atlas entity {3}.  The exception message included was {4}",
+                                              "The connector will retry this reference value assignment request on the next refresh.  These reference values are used to record the classifications attached to the corresponding Apache Atlas entity.",
+                                              "Use the information in the exception to determine why it is not possible to assign the reference values."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0051 - The integration connector {0} is adding a ReferenceValueAssignment relationship from {1} open metadata entity {2} to reference value {3} to represent the Apache Atlas {4} classification on entity {5}
+     */
+    ASSIGNING_REFERENCE_VALUE("APACHE-ATLAS-INTEGRATION-CONNECTOR-0051",
+                   OMRSAuditLogRecordSeverity.INFO,
+                   "The integration connector {0} is adding a ReferenceValueAssignment relationship from {1} open metadata entity {2} to reference value {3} to represent the Apache Atlas {4} classification on entity {5}",
+                   "The connector is creating a new relationship to indicate the presence of a specific classification in Apache Atlas.",
+                   "No action is required. The connector is working to keep the two systems view of the use of classifications consistent."),
+
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0052 - The {0} integration connector encountered an {1} exception when retrieving the related elements linked to entity {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_GET_RELATED_ELEMENTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0052",
+                                   OMRSAuditLogRecordSeverity.EXCEPTION,
+                                   "The {0} integration connector encountered an {1} exception when retrieving the related elements linked to entity {2}.  The exception message included was {3}",
+                                   "The connector will retry this related elements retrieval request on the next refresh.  These related elements are used to augment the metadata attached to the corresponding Apache Atlas entity.",
+                                   "Use the information in the exception to determine why it is not possible to retrieve the related elements."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0053 - The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_SET_RELATED_ELEMENTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0053",
+                                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                                              "The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.  The exception message included was {3}",
+                                                      "The connector will retry this related elements set up request on the next refresh.  These related elements are used to augment the metadata attached to the corresponding Apache Atlas entity.",
+                                                      "Use the information in the exception to determine why it is not possible to set up the related elements."),
+
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0054 - The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.  The exception message included was {3}
+     */
+    UNABLE_TO_PROCESS_RELATED_ELEMENTS("APACHE-ATLAS-INTEGRATION-CONNECTOR-0054",
+                                   OMRSAuditLogRecordSeverity.EXCEPTION,
+                                   "The {0} integration connector encountered an {1} exception when processing the related elements linked to entity {2}.  The exception message included was {3}",
+                                   "The connector will retry the calls to process related elements on the next refresh.  These related elements are used to augment the metadata attached to the corresponding Apache Atlas entity.",
+                                   "Use the information in the exception to determine why it is not possible to process the related elements."),
+
     ;
+
 
     private final String                     logMessageId;
     private final OMRSAuditLogRecordSeverity severity;

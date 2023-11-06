@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-manager/users/{userId}")
 
-@Tag(name="Asset Manager OMAS",
+@Tag(name="Metadata Access Server: Asset Manager OMAS",
      description="The Asset Manager OMAS provides APIs and events for managing metadata exchange with third party asset managers, such as data catalogs.",
-        externalDocs=@ExternalDocumentation(description="Asset Manager Open Metadata Access Service (OMAS)",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omas/asset-manager/overview"))
 
 public class ExternalReferenceExchangeResource

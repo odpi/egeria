@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}")
 
-@Tag(name="Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape." +
+@Tag(name="Metadata Access Server: Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape." +
         "\n",
-     externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/governance-program/overview/"))
 
 public class GovernanceZonesResource

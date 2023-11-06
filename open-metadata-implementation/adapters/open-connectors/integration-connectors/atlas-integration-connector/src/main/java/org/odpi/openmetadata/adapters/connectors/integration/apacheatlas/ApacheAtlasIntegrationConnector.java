@@ -5,12 +5,16 @@ package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc.ApacheAtlasErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.ApacheHiveIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.ApacheKafkaIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasGlossaryIntegrationModule;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasInformalTagsIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasLineageIntegrationModule;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasReferenceClassificationsIntegrationModule;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.AtlasRelatedElementsIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.RDBMSIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules.RegisteredIntegrationModule;
 import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector;
@@ -26,18 +30,26 @@ import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.properties
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefGallery;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 
 /**
@@ -45,10 +57,13 @@ import java.util.Map;
  */
 public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector implements AssetManagerEventListener
 {
-    private String                        targetRootURL            = null;
-    private CatalogIntegratorContext      myContext                = null;
-    private ApacheAtlasRESTConnector      atlasClient              = null;
-    private AtlasLineageIntegrationModule lineageIntegrationModule = null;
+    private String                                         targetRootURL                             = null;
+    private CatalogIntegratorContext                       myContext                                 = null;
+    private ApacheAtlasRESTConnector                       atlasClient                               = null;
+    private AtlasLineageIntegrationModule                  lineageIntegrationModule                  = null;
+    private AtlasInformalTagsIntegrationModule             informalTagsIntegrationModule             = null;
+    private AtlasRelatedElementsIntegrationModule          relatedElementsIntegrationModule          = null;
+    private AtlasReferenceClassificationsIntegrationModule referenceClassificationsIntegrationModule = null;
 
     private final Map<String, List<RegisteredIntegrationModule>> moduleMap  = new HashMap<>();
     private final List<RegisteredIntegrationModule>              moduleList = new ArrayList<>();
@@ -57,17 +72,38 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
     /**
      * The type name for the entity that holds the correlation values for corresponding open metadata entity.
      */
-    public static final String OPEN_METADATA_CORRELATION_TYPE_NAME      = "OpenMetadataCorrelation";
+    public static final String OPEN_METADATA_CORRELATION_TYPE_NAME      = ApacheAtlasRESTConnector.OPEN_METADATA_TYPE_PREFIX + "Correlation";
 
     /**
      * The type name for the relationship that links the correlation entity to its associated Apache Atlas entity.
      */
-    public static final String OPEN_METADATA_CORRELATION_LINK_TYPE_NAME = "OpenMetadataCorrelationLink";
+    public static final String OPEN_METADATA_CORRELATION_LINK_TYPE_NAME = ApacheAtlasRESTConnector.OPEN_METADATA_TYPE_PREFIX + "CorrelationLink";
 
     /**
      * The type name for the relationship that links the correlation entity to its associated Apache Atlas glossary member.
      */
-    public static final String GLOSSARY_CORRELATION_LINK_TYPE_NAME      = "OpenMetadataGlossaryCorrelationLink";
+    public static final String GLOSSARY_CORRELATION_LINK_TYPE_NAME      = ApacheAtlasRESTConnector.OPEN_METADATA_TYPE_PREFIX + "GlossaryCorrelationLink";
+
+    public static final String[] openMetadataTypesPolicyValidValues = new String[]{ ApacheAtlasIntegrationProvider.ALL_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY_VALUE,
+                                                                                    ApacheAtlasIntegrationProvider.ON_DEMAND_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY_VALUE };
+    public static final String   openMetadataTypesPolicyDefaultValue = ApacheAtlasIntegrationProvider.ON_DEMAND_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY_VALUE;
+
+
+    public static final String[] informalTagsMappingValidValues = new String[]{ ApacheAtlasIntegrationProvider.INFORMAL_TAGS_MAP_TO_ENTITIES_CONFIGURATION_PROPERTY_VALUE,
+                                                                                ApacheAtlasIntegrationProvider.INFORMAL_TAGS_MAP_TO_CLASSIFICATIONS_CONFIGURATION_PROPERTY_VALUE,
+                                                                                ApacheAtlasIntegrationProvider.INFORMAL_TAGS_MAP_TO_LABELS_CONFIGURATION_PROPERTY_VALUE,
+                                                                                ApacheAtlasIntegrationProvider.INFORMAL_TAGS_NO_MAPPING_CONFIGURATION_PROPERTY_VALUE};
+    public static final String   informalTagsMappingDefaultValue = ApacheAtlasIntegrationProvider.INFORMAL_TAGS_NO_MAPPING_CONFIGURATION_PROPERTY_VALUE;
+
+    public static final String[] classificationReferenceSetPolicyValidValues = new String[]{ ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_TO_ATLAS_CONFIGURATION_PROPERTY_VALUE,
+                                                                                             ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_FROM_ATLAS_CONFIGURATION_PROPERTY_VALUE,
+                                                                                             ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_BOTH_WAYS_CONFIGURATION_PROPERTY_VALUE};
+    public static final String   classificationReferenceSetPolicyDefaultValue = ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_FROM_ATLAS_CONFIGURATION_PROPERTY_VALUE;
+
+    public static final String[] relatedElementPolicyValidValues = new String[]{ ApacheAtlasIntegrationProvider.ALL_RELATED_ELEMENT_CONFIGURATION_PROPERTY_VALUE,
+                                                                                 ApacheAtlasIntegrationProvider.SELECTED_RELATED_ELEMENT_CONFIGURATION_PROPERTY_VALUE,
+                                                                                 ApacheAtlasIntegrationProvider.NONE_RELATED_ELEMENT_CONFIGURATION_PROPERTY_VALUE};
+    public static final String   relatedElementPolicyDefaultValue = ApacheAtlasIntegrationProvider.NONE_RELATED_ELEMENT_CONFIGURATION_PROPERTY_VALUE;
 
 
     /* ==============================================================================
@@ -121,7 +157,6 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
                                                 methodName);
         }
 
-
         try
         {
             /*
@@ -147,9 +182,27 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
             }
 
             /*
-             * Ensure the correlation types are properly defined in Apache Atlas.
+             * Ensure the correlation type definitions are properly defined in Apache Atlas.
              */
             setupCorrelationTypes(atlasClient);
+
+            /*
+             * Set up the configuration properties that control the synchronizing of types.
+             */
+            if (connectionProperties.getConfigurationProperties() != null)
+            {
+                String openMetadataTypesPolicy = this.getEnumConfigurationProperty(ApacheAtlasIntegrationProvider.OPEN_METADATA_TYPES_POLICY_CONFIGURATION_PROPERTY,
+                                                                                   connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.OPEN_METADATA_TYPES_POLICY_CONFIGURATION_PROPERTY),
+                                                                                   Arrays.asList(openMetadataTypesPolicyValidValues),
+                                                                                   openMetadataTypesPolicyDefaultValue);
+
+                if (ApacheAtlasIntegrationProvider.ALL_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY_VALUE.equals(openMetadataTypesPolicy))
+                {
+                    setupOpenMetadataTypes(atlasClient,
+                                           getConfigurationPropertyList(ApacheAtlasIntegrationProvider.IGNORE_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY,
+                                                                        connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.OPEN_METADATA_TYPES_POLICY_CONFIGURATION_PROPERTY)));
+                }
+            }
 
             /*
              * Set up the processing modules.  This is currently static, but the intention is that the modules can be plug-in extensions too
@@ -194,6 +247,89 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
                                                                               targetRootURL,
                                                                               atlasClient,
                                                                               embeddedConnectors);
+
+            String informalTagsMappingPolicy = informalTagsMappingDefaultValue;
+
+            if (connectionProperties.getConfigurationProperties() != null)
+            {
+                informalTagsMappingPolicy = this.getEnumConfigurationProperty(ApacheAtlasIntegrationProvider.INFORMAL_TAGS_MAPPING_POLICY_CONFIGURATION_PROPERTY,
+                                                                              connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.INFORMAL_TAGS_MAPPING_POLICY_CONFIGURATION_PROPERTY),
+                                                                              Arrays.asList(informalTagsMappingValidValues),
+                                                                              informalTagsMappingDefaultValue);
+            }
+
+            this.informalTagsIntegrationModule = new AtlasInformalTagsIntegrationModule(connectorName,
+                                                                                        connectionProperties,
+                                                                                        auditLog,
+                                                                                        this.getContext(),
+                                                                                        targetRootURL,
+                                                                                        atlasClient,
+                                                                                        embeddedConnectors,
+                                                                                        informalTagsMappingPolicy);
+
+
+            String                   relatedClassificationPolicy = null;
+            List<String>             ignoreClassificationList = null;
+            String                   relatedEntityPolicy = null;
+            List<String>             ignoreRelationshipList = null;
+
+            if (connectionProperties.getConfigurationProperties() != null)
+            {
+                relatedClassificationPolicy = this.getEnumConfigurationProperty(ApacheAtlasIntegrationProvider.RELATED_CLASSIFICATION_POLICY_CONFIGURATION_PROPERTY,
+                                                                                connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.RELATED_CLASSIFICATION_POLICY_CONFIGURATION_PROPERTY),
+                                                                                Arrays.asList(relatedElementPolicyValidValues),
+                                                                                relatedElementPolicyDefaultValue);
+
+                ignoreClassificationList = this.getConfigurationPropertyList(ApacheAtlasIntegrationProvider.RELATED_CLASSIFICATION_IGNORE_LIST_CONFIGURATION_PROPERTY,
+                                                                             connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.RELATED_CLASSIFICATION_IGNORE_LIST_CONFIGURATION_PROPERTY));
+
+                relatedEntityPolicy = this.getEnumConfigurationProperty(ApacheAtlasIntegrationProvider.RELATED_ENTITY_POLICY_CONFIGURATION_PROPERTY,
+                                                                        connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.RELATED_ENTITY_POLICY_CONFIGURATION_PROPERTY),
+                                                                        Arrays.asList(relatedElementPolicyValidValues),
+                                                                        relatedElementPolicyDefaultValue);
+
+                ignoreRelationshipList = this.getConfigurationPropertyList(ApacheAtlasIntegrationProvider.RELATED_RELATIONSHIP_IGNORE_LIST_CONFIGURATION_PROPERTY,
+                                                                           connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.RELATED_RELATIONSHIP_IGNORE_LIST_CONFIGURATION_PROPERTY));
+            }
+
+            this.relatedElementsIntegrationModule = new AtlasRelatedElementsIntegrationModule(connectorName,
+                                                                                              connectionProperties,
+                                                                                              auditLog,
+                                                                                              this.getContext(),
+                                                                                              targetRootURL,
+                                                                                              atlasClient,
+                                                                                              embeddedConnectors,
+                                                                                              informalTagsMappingPolicy,
+                                                                                              relatedClassificationPolicy,
+                                                                                              ignoreClassificationList,
+                                                                                              relatedEntityPolicy,
+                                                                                              ignoreRelationshipList);
+
+
+            String classificationReferenceSetName = null;
+            String classificationReferenceSetPolicy = classificationReferenceSetPolicyDefaultValue;
+
+            if (connectionProperties.getConfigurationProperties() != null)
+            {
+                classificationReferenceSetName = this.getStringConfigurationProperty(ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_NAME_CONFIGURATION_PROPERTY,
+                                                                                     connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_NAME_CONFIGURATION_PROPERTY),
+                                                                                     null);
+
+                classificationReferenceSetPolicy = this.getEnumConfigurationProperty(ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_POLICY_CONFIGURATION_PROPERTY,
+                                                                                     connectionProperties.getConfigurationProperties().get(ApacheAtlasIntegrationProvider.CLASSIFICATION_REFERENCE_SET_POLICY_CONFIGURATION_PROPERTY),
+                                                                                     Arrays.asList(classificationReferenceSetPolicyValidValues),
+                                                                                     classificationReferenceSetPolicyDefaultValue);
+            }
+
+            this.referenceClassificationsIntegrationModule = new AtlasReferenceClassificationsIntegrationModule(connectorName,
+                                                                                                                connectionProperties,
+                                                                                                                auditLog,
+                                                                                                                this.getContext(),
+                                                                                                                targetRootURL,
+                                                                                                                atlasClient,
+                                                                                                                embeddedConnectors,
+                                                                                                                classificationReferenceSetName,
+                                                                                                                classificationReferenceSetPolicy);
         }
         catch (Exception error)
         {
@@ -216,6 +352,171 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
                                                 methodName,
                                                 error);
         }
+    }
+
+
+    /**
+     * Extract the list of string values from a configuration property.
+     *
+     * @param propertyName name of the property
+     * @param propertyValue value that the property is set to
+     * @return null or the value parsed into a list of strings
+     */
+    private List<String> getConfigurationPropertyList(String propertyName,
+                                                      Object propertyValue)
+    {
+        final String methodName = "getConfigurationPropertyList";
+
+        List<String> result = null;
+
+        if (propertyValue != null)
+        {
+            result = new ArrayList<>();
+
+            String propertyValuesString = propertyValue.toString().replace('[', ' ');
+            propertyValuesString = propertyValuesString.replace(']', ' ');
+
+            StringTokenizer stringTokenizer = new StringTokenizer(propertyValuesString, ",");
+
+            while (stringTokenizer.hasMoreTokens())
+            {
+                String value = stringTokenizer.nextToken();
+                String trimedValue = value.trim();
+
+                if (trimedValue.length() != 0)
+                {
+                    result.add(trimedValue);
+                }
+            }
+            if (result.isEmpty())
+            {
+                result = null;
+            }
+        }
+
+        if (auditLog != null)
+        {
+            if (result == null)
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                             "null",
+                                                                                                             propertyName));
+            }
+            else
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.LIST_CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                              Integer.toString(result.size()),
+                                                                                                              result.toString(),
+                                                                                                              connectorName));
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Extract the string value from a configuration property.
+     *
+     * @param propertyName name of the property
+     * @param propertyValue value that the property is set to
+     * @param defaultValue default value if it is not set
+     * @return null or the value converted into a string
+     */
+    private String getStringConfigurationProperty(String propertyName,
+                                                  Object propertyValue,
+                                                  String defaultValue)
+    {
+        final String methodName = "getStringConfigurationProperty";
+
+        String result = null;
+
+        if (propertyValue != null)
+        {
+            result = propertyValue.toString();
+        }
+
+        if (auditLog != null)
+        {
+            if (result == null)
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                             defaultValue,
+                                                                                                             propertyName));
+            }
+            else
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                         result,
+                                                                                                         connectorName));
+            }
+        }
+
+        if (result == null)
+        {
+            return defaultValue;
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Extract and validate the string value from a configuration property.
+     *
+     * @param propertyName name of the property
+     * @param propertyValue value that the property is set to
+     * @param validValues list of valid values for this property
+     * @param defaultValue default value if it is not set
+     * @return null or the value converted into a string
+     */
+    private String getEnumConfigurationProperty(String       propertyName,
+                                                Object       propertyValue,
+                                                List<String> validValues,
+                                                String       defaultValue)
+    {
+        final String methodName = "getEnumConfigurationProperty";
+
+        String result = null;
+
+        if (propertyValue != null)
+        {
+            result = propertyValue.toString();
+
+            if (! validValues.contains(result))
+            {
+                result = null;
+            }
+        }
+
+        if (auditLog != null)
+        {
+            if (result == null)
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                             defaultValue,
+                                                                                                             propertyName));
+            }
+            else
+            {
+                auditLog.logMessage(methodName,
+                                    ApacheAtlasAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                         result,
+                                                                                                         connectorName));
+            }
+        }
+
+        if (result == null)
+        {
+            return defaultValue;
+        }
+
+        return result;
     }
 
 
@@ -282,6 +583,22 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
          * assets. It will fill out the lineage graph with any DataSet entities that have not been synchronized by the registered modules.
          */
         lineageIntegrationModule.synchronizeLineage();
+
+        /*
+         * Look for InformalTags attached to the open metadata ecosystem version of the Atlas entities and decide
+         * how they should be represented in Apache Atlas.  Choice is as classifications, labels or entities.
+         */
+        informalTagsIntegrationModule.synchronizeInformalTags();
+
+        /*
+         * Set up classification types as defined by the classification reference set.
+         */
+        Map<String, ValidValueElement> referenceClassifications = referenceClassificationsIntegrationModule.synchronizeClassificationDefinitions();
+
+        /*
+         * Handle additional related classifications and relationships/entities.
+         */
+        relatedElementsIntegrationModule.synchronizeRelatedElements(referenceClassifications);
 
         /*
          * Once the connector has completed a single refresh, it registered a listener with open metadata
@@ -377,7 +694,6 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
      */
     private void setupCorrelationTypes(ApacheAtlasRESTConnector atlasClient) throws PropertyServerException
     {
-        final String serviceType                     = "open_metadata_ecosystem";
         final String entityDescription               = "Information used in synchronizing Apache Atlas metadata with external catalogs via the Open Metadata Ecosystem supported by Egeria.";
         final String egeriaQualifiedNamePropertyName = "egeriaQualifiedName";
         final String egeriaQualifiedNameDescription  = "Unique name of equivalent open metadata instance in the open metadata ecosystem.";
@@ -416,14 +732,14 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 
             entityDef.setName(OPEN_METADATA_CORRELATION_TYPE_NAME);
             entityDef.setDescription(entityDescription);
-            entityDef.setServiceType(serviceType);
+            entityDef.setServiceType(ApacheAtlasRESTConnector.SERVICE_TYPE);
             entityDef.setTypeVersion(typeVersion);
             entityDef.setVersion(1);
 
-            attributeDefs.add(getStringAttributeDef(egeriaQualifiedNamePropertyName, egeriaQualifiedNameDescription));
-            attributeDefs.add(getStringAttributeDef(egeriaTypeNamePropertyName, egeriaTypeNameDescription));
-            attributeDefs.add(getStringAttributeDef(egeriaGUIDPropertyName, egeriaGUIDDescription));
-            attributeDefs.add(getBooleanAttributeDef(egeriaOwnedPropertyName, egeriaOwnedDescription));
+            attributeDefs.add(atlasClient.getStringAttributeDef(egeriaQualifiedNamePropertyName, egeriaQualifiedNameDescription));
+            attributeDefs.add(atlasClient.getStringAttributeDef(egeriaTypeNamePropertyName, egeriaTypeNameDescription));
+            attributeDefs.add(atlasClient.getStringAttributeDef(egeriaGUIDPropertyName, egeriaGUIDDescription));
+            attributeDefs.add(atlasClient.getBooleanAttributeDef(egeriaOwnedPropertyName, egeriaOwnedDescription));
 
             entityDef.setAttributeDefs(attributeDefs);
             entityDefs.add(entityDef);
@@ -450,7 +766,7 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 
             relationshipDef.setName(OPEN_METADATA_CORRELATION_LINK_TYPE_NAME);
             relationshipDef.setDescription(relationshipDescription);
-            relationshipDef.setServiceType(serviceType);
+            relationshipDef.setServiceType(ApacheAtlasRESTConnector.SERVICE_TYPE);
             relationshipDef.setTypeVersion(typeVersion);
             relationshipDef.setVersion(1);
             relationshipDef.setRelationshipCategory(AtlasRelationshipCategory.ASSOCIATION);
@@ -493,7 +809,7 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 
             relationshipDef.setName(GLOSSARY_CORRELATION_LINK_TYPE_NAME);
             relationshipDef.setDescription(relationshipDescription);
-            relationshipDef.setServiceType(serviceType);
+            relationshipDef.setServiceType(ApacheAtlasRESTConnector.SERVICE_TYPE);
             relationshipDef.setTypeVersion(typeVersion);
             relationshipDef.setVersion(1);
             relationshipDef.setRelationshipCategory(AtlasRelationshipCategory.ASSOCIATION);
@@ -521,58 +837,87 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 
 
     /**
-     * Create an attribute of type string
+     * Add definitions for all open metadata types, except the types to ignore, in Apache Atlas.
+     * This method is called if the "openMetadataTypesPolicy"=ALL.
      *
-     * @param propertyName name of the attribute
-     * @param propertyDescription description of the attribute
-     * @return attribute definition
-     */
-    private AtlasAttributeDef getStringAttributeDef(String propertyName,
-                                                    String propertyDescription)
-    {
-        AtlasAttributeDef  attributeDef  = new AtlasAttributeDef();
-
-        attributeDef.setName(propertyName);
-        attributeDef.setDescription(propertyDescription);
-        attributeDef.setTypeName("string");
-        attributeDef.setOptional(false);
-        attributeDef.setCardinality(AtlasCardinality.SINGLE);
-        attributeDef.setValuesMinCount(1);
-        attributeDef.setValuesMaxCount(1);
-        attributeDef.setUnique(false);
-        attributeDef.setIndexable(true);
-        attributeDef.setIncludeInNotification(false);
-        attributeDef.setSearchWeight(10);
-
-        return attributeDef;
-    }
-
-
-    /**
-     * Create an attribute of type boolean
+     * @param atlasClient client for Apache Atlas
+     * @param typesToIgnore null or list of types to ignore
+     * @throws PropertyServerException unable to connect to the open metadata ecosystem or Apache Atlas
+     * @throws UserNotAuthorizedException security problem in connecting to open metadata ecosystem
+     * @throws InvalidParameterException probably a logic error
      *
-     * @param propertyName name of the attribute
-     * @param propertyDescription description of the attribute
-     * @return attribute definition
      */
-    private AtlasAttributeDef getBooleanAttributeDef(String propertyName,
-                                                     String propertyDescription)
+    private void setupOpenMetadataTypes(ApacheAtlasRESTConnector atlasClient,
+                                        List<String>             typesToIgnore) throws PropertyServerException,
+                                                                                       InvalidParameterException,
+                                                                                       UserNotAuthorizedException
     {
-        AtlasAttributeDef  attributeDef  = new AtlasAttributeDef();
+        final String methodName = "setupOpenMetadataTypes";
 
-        attributeDef.setName(propertyName);
-        attributeDef.setDescription(propertyDescription);
-        attributeDef.setTypeName("boolean");
-        attributeDef.setOptional(false);
-        attributeDef.setCardinality(AtlasCardinality.SINGLE);
-        attributeDef.setValuesMinCount(1);
-        attributeDef.setValuesMaxCount(1);
-        attributeDef.setUnique(false);
-        attributeDef.setIndexable(false);
-        attributeDef.setIncludeInNotification(false);
-        attributeDef.setSearchWeight(10);
+        List<String> exclusionList = typesToIgnore;
 
-        return attributeDef;
+        if (exclusionList == null)
+        {
+            exclusionList = new ArrayList<>();
+        }
+
+        OpenMetadataTypeDefGallery openMetadataTypeDefGallery = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getAllTypes();
+
+        if (openMetadataTypeDefGallery != null)
+        {
+            if (openMetadataTypeDefGallery.getAttributeTypeDefs() != null)
+            {
+                for (OpenMetadataAttributeTypeDef attributeTypeDef : openMetadataTypeDefGallery.getAttributeTypeDefs())
+                {
+                    if ((attributeTypeDef instanceof OpenMetadataEnumDef openMetadataEnumDef) &&
+                        (! exclusionList.contains(attributeTypeDef.getName())))
+                    {
+                        try
+                        {
+                            atlasClient.addOpenMetadataEnumType(openMetadataEnumDef);
+                        }
+                        catch (Exception error)
+                        {
+                            if (auditLog != null)
+                            {
+                                auditLog.logException(methodName,
+                                                      ApacheAtlasAuditCode.UNABLE_TO_DEFINE_TYPE_IN_ATLAS.getMessageDefinition(connectorName,
+                                                                                                                               error.getClass().getName(),
+                                                                                                                               attributeTypeDef.getCategory().getName(),
+                                                                                                                               attributeTypeDef.getName(),
+                                                                                                                               error.getMessage()),
+                                                      error);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (openMetadataTypeDefGallery.getTypeDefs() != null)
+            {
+                for (OpenMetadataTypeDef typeDef : openMetadataTypeDefGallery.getTypeDefs())
+                {
+                    if ((typeDef != null) && (! exclusionList.contains(typeDef.getName())))
+                    {
+                        try
+                        {
+                            atlasClient.addOpenMetadataType(typeDef);
+                        }
+                        catch (Exception error)
+                        {
+                            if (auditLog != null)
+                            {
+                                auditLog.logException(methodName,
+                                                      ApacheAtlasAuditCode.UNABLE_TO_DEFINE_TYPE_IN_ATLAS.getMessageDefinition(connectorName,
+                                                                                                                               error.getClass().getName(),
+                                                                                                                               error.getMessage()),
+                                                      error);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

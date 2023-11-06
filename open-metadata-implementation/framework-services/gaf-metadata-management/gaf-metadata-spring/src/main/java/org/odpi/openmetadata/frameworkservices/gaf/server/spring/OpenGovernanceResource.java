@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-governance-service/users/{userId}")
 
-@Tag(name="Open Governance Service",
-        description="Provides support for common governance services used across thee OMASs.",
-        externalDocs=@ExternalDocumentation(description="Open Governance Service",
+@Tag(name="Framework Services: Open Governance Service",
+        description="Provides support for common governance services used across the OMASs.",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/gaf-metadata-management/"))
 
 public class OpenGovernanceResource

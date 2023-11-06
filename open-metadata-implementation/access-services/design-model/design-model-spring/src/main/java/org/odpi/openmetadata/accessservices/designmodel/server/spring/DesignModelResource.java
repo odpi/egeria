@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-model/users/{userId}")
 
-@Tag(name="Design Model OMAS", description="The Design Model OMAS supports the management of design model intellectual property that has either been provided as standard or created in a software architecture and design modeling tool.", externalDocs=@ExternalDocumentation(description="Design Model Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/design-model/overview/"))
+@Tag(name="Metadata Access Server: Design Model OMAS", description="The Design Model OMAS supports the management of design model intellectual property that has either been provided as standard or created in a software architecture and design modeling tool.",
+     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omas/design-model/overview/"))
 
 public class DesignModelResource
 {

@@ -495,7 +495,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /* ======================================================
-     * The methods that follow are used by the subclasses to extract specific properties from the instance properties.
+     * The methods that follow are used by the subclasses to extract specific properties from the element properties.
      * They are used for all properties except enums which need a specific method in the OMAS converters.
      */
 
@@ -746,7 +746,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the qualifiedName property from the supplied instance properties.
+     * Extract the qualifiedName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -769,7 +769,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the qualifiedName property from the supplied instance properties.
+     * Extract and delete the qualifiedName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -791,7 +791,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the qualifiedName property from the supplied instance properties.
+     * Extract and delete the qualifiedName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return map or null
@@ -830,7 +830,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the displayName property from the supplied instance properties.
+     * Extract and delete the displayName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -852,7 +852,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the displayName property from the supplied instance properties.
+     * Extract the displayName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -874,7 +874,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the name property from the supplied instance properties.
+     * Extract and delete the name property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -896,7 +896,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the version identifier property from the supplied instance properties.
+     * Extract and delete the version identifier property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -918,7 +918,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the description property from the supplied instance properties.
+     * Extract the description property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -940,7 +940,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the description property from the supplied instance properties.
+     * Extract and delete the description property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -962,7 +962,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the collectionType property from the supplied instance properties.
+     * Extract and delete the collectionType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -984,7 +984,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the keyword property from the supplied instance properties.
+     * Extract and delete the keyword property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1006,7 +1006,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the topicType property from the supplied instance properties.
+     * Extract and delete the topicType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1028,7 +1028,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the operatingSystem property from the supplied instance properties.
+     * Extract and delete the operatingSystem property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1050,7 +1050,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the operatingSystemPatchLevel property from the supplied instance properties.
+     * Extract and delete the operatingSystemPatchLevel property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1072,7 +1072,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the minimumInstances property from the supplied instance properties.
+     * Extract and delete the minimumInstances property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return int
@@ -1093,7 +1093,7 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
     /**
-     * Extract and delete the maximumInstances property from the supplied instance properties.
+     * Extract and delete the maximumInstances property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return int
@@ -1115,7 +1115,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the initials property from the supplied instance properties.
+     * Extract and delete the initials property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1137,7 +1137,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the givenNames property from the supplied instance properties.
+     * Extract and delete the givenNames property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1159,7 +1159,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the surname property from the supplied instance properties.
+     * Extract and delete the surname property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1182,7 +1182,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the fullName property from the supplied instance properties.
+     * Extract and delete the fullName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1204,7 +1204,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the preferredLanguage property from the supplied instance properties.
+     * Extract and delete the preferredLanguage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1227,7 +1227,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the jobTitle property from the supplied instance properties.
+     * Extract and delete the jobTitle property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1250,7 +1250,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the employeeNumber property from the supplied instance properties.
+     * Extract and delete the employeeNumber property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1273,7 +1273,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the employeeType property from the supplied instance properties.
+     * Extract and delete the employeeType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1295,7 +1295,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the contactType property from the supplied instance properties.
+     * Extract and delete the contactType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -1317,7 +1317,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the contactMethodService property from the supplied instance properties.
+     * Extract and delete the contactMethodService property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -1339,7 +1339,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the contactMethodValue property from the supplied instance properties.
+     * Extract and delete the contactMethodValue property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -1362,7 +1362,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the mission property from the supplied instance properties.
+     * Extract and delete the mission property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1386,7 +1386,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the associationType property from the supplied instance properties.
+     * Extract and delete the associationType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1408,7 +1408,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the identifier property from the supplied instance properties.
+     * Extract and delete the identifier property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1430,7 +1430,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the externalInstanceCreatedBy property from the supplied instance properties.
+     * Extract and delete the externalInstanceCreatedBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1452,7 +1452,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the externalInstanceCreationTime property from the supplied instance properties.
+     * Extract and delete the externalInstanceCreationTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1474,7 +1474,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the externalInstanceLastUpdatedBy property from the supplied instance properties.
+     * Extract and delete the externalInstanceLastUpdatedBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1496,7 +1496,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the externalInstanceLastUpdateTime property from the supplied instance properties.
+     * Extract and delete the externalInstanceLastUpdateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1518,7 +1518,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the externalInstanceVersion property from the supplied instance properties.
+     * Extract and delete the externalInstanceVersion property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1539,7 +1539,7 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
     /**
-     * Extract and delete the URL property from the supplied instance properties.
+     * Extract and delete the URL property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1561,7 +1561,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the organization property from the supplied instance properties.
+     * Extract and delete the organization property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1583,7 +1583,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the referenceVersion property from the supplied instance properties.
+     * Extract and delete the referenceVersion property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1605,7 +1605,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the referenceId property from the supplied instance properties.
+     * Extract and delete the referenceId property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1627,7 +1627,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the referenceId property from the supplied instance properties.
+     * Extract the referenceId property from the supplied element properties.
      *
      * @param elementProperties properties from relationship
      * @return string text or null
@@ -1649,7 +1649,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the orderPropertyName property from the supplied instance properties.
+     * Extract and delete the orderPropertyName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1671,7 +1671,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the membershipRationale property from the supplied instance properties.
+     * Extract and delete the membershipRationale property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1693,7 +1693,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the createdBy property from the supplied instance properties.
+     * Extract and delete the createdBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1716,7 +1716,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the mappingProperties property from the supplied instance properties.
+     * Extract and delete the mappingProperties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return map or null
@@ -1739,7 +1739,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the lastSynchronized property from the supplied instance properties.
+     * Extract and delete the lastSynchronized property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return map or null
@@ -1762,7 +1762,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the networkAddress property from the supplied instance properties.
+     * Extract and delete the networkAddress property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1794,7 +1794,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the postalAddress property from the supplied instance properties.
+     * Extract and delete the postalAddress property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1826,7 +1826,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "coordinates" property from the supplied instance properties.
+     * Extract and delete the "coordinates" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1848,7 +1848,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the mapProjection property from the supplied instance properties.
+     * Extract and delete the mapProjection property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1870,7 +1870,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the timeZone property from the supplied instance properties.
+     * Extract and delete the timeZone property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1892,7 +1892,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the level property from the supplied instance properties.
+     * Extract and delete the level property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1914,7 +1914,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the protocol property from the supplied instance properties.
+     * Extract and delete the protocol property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1936,7 +1936,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the encryption method property from the supplied instance properties.
+     * Extract and delete the encryption method property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1958,7 +1958,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the connector provider class name property from the supplied instance properties.
+     * Extract and delete the connector provider class name property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -1980,7 +1980,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the supported asset type name property from the supplied instance properties.
+     * Extract and delete the supported asset type name property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2002,7 +2002,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the expected data format property from the supplied instance properties.
+     * Extract and delete the expected data format property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2024,7 +2024,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the connector framework name property from the supplied instance properties.
+     * Extract and delete the connector framework name property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2050,7 +2050,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the connector interface language property from the supplied instance properties.
+     * Extract and delete the connector interface language property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2076,7 +2076,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the connector interfaces property from the supplied instance properties.
+     * Extract and delete the connector interfaces property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2098,7 +2098,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the target technology source property from the supplied instance properties.
+     * Extract and delete the target technology source property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2120,7 +2120,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the target technology name property from the supplied instance properties.
+     * Extract and delete the target technology name property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2142,7 +2142,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the target technology interfaces property from the supplied instance properties.
+     * Extract and delete the target technology interfaces property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2164,7 +2164,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the target technology versions property from the supplied instance properties.
+     * Extract and delete the target technology versions property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2186,7 +2186,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the recognizedAdditionalProperties property from the supplied instance properties.
+     * Extract and delete the recognizedAdditionalProperties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2208,7 +2208,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the recognizedSecuredProperties property from the supplied instance properties.
+     * Extract and delete the recognizedSecuredProperties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2231,7 +2231,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the recognized configuration properties property from the supplied instance properties.
+     * Extract and delete the recognized configuration properties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2253,7 +2253,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the securedProperties property from the supplied instance properties.
+     * Extract and delete the securedProperties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2275,7 +2275,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the  configuration properties property from the supplied instance properties.
+     * Extract and delete the  configuration properties property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -2297,7 +2297,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the userId property from the supplied instance properties.
+     * Extract and delete the userId property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2319,7 +2319,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the clear password property from the supplied instance properties.
+     * Extract and delete the clear password property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2341,7 +2341,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the encrypted password property from the supplied instance properties.
+     * Extract and delete the encrypted password property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2363,7 +2363,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the assetSummary property from the supplied instance properties.
+     * Extract the assetSummary property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2385,7 +2385,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "arguments" property from the supplied instance properties.
+     * Extract the "arguments" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2494,7 +2494,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the owner property from the supplied instance properties.
+     * Extract and delete the owner property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -2516,7 +2516,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the owner property from the supplied instance properties.
+     * Extract the owner property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -2539,7 +2539,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the ownerTypeName property from the supplied instance properties.
+     * Extract the ownerTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -2561,7 +2561,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the ownerPropertyName property from the supplied instance properties.
+     * Extract the ownerPropertyName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -2583,7 +2583,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the ownerType property from the supplied instance properties.
+     * Extract the ownerType property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return symbolic name
@@ -2605,7 +2605,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the ownerType property from the supplied instance properties.
+     * Extract the ownerType property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return symbolic name
@@ -2627,7 +2627,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the ownerPropertyName property from the supplied instance properties.
+     * Extract and delete the ownerPropertyName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string
@@ -2650,7 +2650,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the ownerTypeName property from the supplied instance properties.
+     * Extract and delete the ownerTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string
@@ -2673,7 +2673,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the roleTypeName property from the supplied instance properties.
+     * Extract and delete the roleTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string
@@ -2696,7 +2696,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the distinguishedName property from the supplied instance properties.
+     * Extract and delete the distinguishedName property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string
@@ -2719,7 +2719,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "groups" property from the supplied instance properties.
+     * Extract the "groups" property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string map or null
@@ -2741,7 +2741,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the securityLabels property from the supplied instance properties.
+     * Extract the securityLabels property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string map or null
@@ -2763,7 +2763,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the securityProperties property from the supplied instance properties.
+     * Extract the securityProperties property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string map or null
@@ -2785,7 +2785,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the karmaPoints property from the supplied instance properties.
+     * Extract the karmaPoints property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return ordinal or 0 for not specified
@@ -2807,7 +2807,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the organizationGUID property from the supplied instance properties.
+     * Extract the organizationGUID property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -2829,7 +2829,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the businessCapabilityGUID property from the supplied instance properties.
+     * Extract the businessCapabilityGUID property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -2851,7 +2851,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the otherOriginValues property from the supplied instance properties.
+     * Extract the otherOriginValues property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string map or null
@@ -2874,7 +2874,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the sourceCreateTime property from the supplied instance properties.
+     * Extract and delete the sourceCreateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date or null
@@ -2901,7 +2901,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the sourceUpdateTime property from the supplied instance properties.
+     * Extract and delete the sourceUpdateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date or null
@@ -2928,7 +2928,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the pathName property from the supplied instance properties.
+     * Extract and delete the pathName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string or null
@@ -2950,7 +2950,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the sourceCreateTime property from the supplied instance properties.
+     * Extract and delete the sourceCreateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date or null
@@ -2977,7 +2977,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the storeUpdateTime property from the supplied instance properties.
+     * Extract and delete the storeUpdateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date or null
@@ -3005,7 +3005,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the encoding property from the supplied instance properties.
+     * Extract the encoding property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -3027,7 +3027,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the encoding language property from the supplied instance properties.
+     * Extract the encoding language property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -3049,7 +3049,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the encoding description property from the supplied instance properties.
+     * Extract the encoding description property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -3071,7 +3071,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the encoding properties property from the supplied instance properties.
+     * Extract the encoding properties property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string map or null
@@ -3093,7 +3093,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the database type property from the supplied instance properties.
+     * Extract and delete the database type property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3120,7 +3120,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the database version property from the supplied instance properties.
+     * Extract and delete the database version property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3147,7 +3147,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the database instance property from the supplied instance properties.
+     * Extract and delete the database instance property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3169,7 +3169,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the database importedFrom property from the supplied instance properties.
+     * Extract and delete the database importedFrom property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3191,7 +3191,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the fileType property from the supplied instance properties.
+     * Extract and delete the fileType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3213,7 +3213,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the format property from the supplied instance properties.
+     * Extract and delete the format property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3235,7 +3235,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the encryption property from the supplied instance properties.
+     * Extract and delete the encryption property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3257,7 +3257,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the type property from the supplied instance properties.
+     * Extract and delete the type property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3289,7 +3289,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the type property from the supplied instance properties.
+     * Extract and delete the type property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3328,7 +3328,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the capabilityVersion property from the supplied instance properties.
+     * Extract and delete the capabilityVersion property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3355,7 +3355,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the patchLevel property from the supplied instance properties.
+     * Extract and delete the patchLevel property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3380,7 +3380,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Retrieve the isDeprecated flag from the properties from the supplied instance properties.
+     * Retrieve the isDeprecated flag from the properties from the supplied element properties.
      *
      * @param elementProperties properties from the classification
      * @return boolean - default is false
@@ -3402,7 +3402,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Retrieve the isDefaultValue flag from the properties from the supplied instance properties.
+     * Retrieve the isDefaultValue flag from the properties from the supplied element properties.
      *
      * @param elementProperties properties from the classification
      * @return boolean - default is false
@@ -3424,7 +3424,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the anchorGUID property from the supplied instance properties.
+     * Extract and delete the anchorGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3446,7 +3446,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the anchorGUID property from the supplied instance properties.
+     * Extract the anchorGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3468,7 +3468,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the data type property from the supplied instance properties.
+     * Extract and delete the data type property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3490,7 +3490,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the defaultValue property from the supplied instance properties.
+     * Extract and delete the defaultValue property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3512,7 +3512,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the defaultValue property from the supplied instance properties.
+     * Extract and delete the defaultValue property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3534,7 +3534,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the query property from the supplied instance properties.
+     * Extract the query property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3556,7 +3556,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the queryId property from the supplied instance properties.
+     * Extract the queryId property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3579,7 +3579,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the version number property from the supplied instance properties.
+     * Extract and delete the version number property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3601,7 +3601,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the id property from the supplied instance properties.
+     * Extract and delete the id property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3623,7 +3623,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the createdTime property from the supplied instance properties.
+     * Extract and delete the createdTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3645,7 +3645,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the createdTime property from the supplied instance properties.
+     * Extract and delete the createdTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3667,7 +3667,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the lastModifier property from the supplied instance properties.
+     * Extract and delete the lastModifier property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3689,7 +3689,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the author property from the supplied instance properties.
+     * Extract and delete the author property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3711,7 +3711,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the encoding standing property from the supplied instance properties.
+     * Extract and delete the encoding standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3733,7 +3733,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the namespace property from the supplied instance properties.
+     * Extract and delete the namespace property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -3755,7 +3755,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the position property from the supplied instance properties.
+     * Extract and delete the position property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3777,7 +3777,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the position property from the supplied instance properties.
+     * Extract the position property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3799,7 +3799,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the minCardinality property from the supplied instance properties.
+     * Extract and delete the minCardinality property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3821,7 +3821,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the maxCardinality property from the supplied instance properties.
+     * Extract and delete the maxCardinality property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default -1 which is unlimited
@@ -3887,7 +3887,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the defaultValueOverride property from the supplied instance properties.
+     * Extract and delete the defaultValueOverride property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -3909,7 +3909,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the minimumLength property from the supplied instance properties.
+     * Extract and delete the minimumLength property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3931,7 +3931,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the length property from the supplied instance properties.
+     * Extract and delete the length property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3953,7 +3953,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the precision/significantDigits property from the supplied instance properties.
+     * Extract and delete the precision/significantDigits property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer - default 0
@@ -3985,7 +3985,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Retrieve the isNullable flag from the properties from the supplied instance properties.
+     * Retrieve the isNullable flag from the properties from the supplied element properties.
      *
      * @param elementProperties properties from the classification
      * @return boolean - default is false
@@ -4007,7 +4007,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Retrieve the required flag from the properties from the supplied instance properties.
+     * Retrieve the required flag from the properties from the supplied element properties.
      *
      * @param elementProperties properties from the classification
      * @return boolean - default is false
@@ -4029,7 +4029,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the native class property from the supplied instance properties.
+     * Extract and delete the native class property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string name or null
@@ -4051,7 +4051,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "aliases" property from the supplied instance properties.
+     * Extract and delete the "aliases" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4073,7 +4073,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the guard property from the supplied instance properties.
+     * Extract the guard property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4095,7 +4095,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the formula property from the supplied instance properties.
+     * Extract the formula property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4117,7 +4117,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the formulaType property from the supplied instance properties.
+     * Extract the formulaType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4139,7 +4139,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the formula property from the supplied instance properties.
+     * Extract and delete the formula property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4161,7 +4161,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the formulaType property from the supplied instance properties.
+     * Extract and delete the formulaType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4183,7 +4183,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the implementationLanguage property from the supplied instance properties.
+     * Extract the implementationLanguage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4205,7 +4205,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the implementationLanguage property from the supplied instance properties.
+     * Extract and remove the implementationLanguage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4227,7 +4227,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the usesBlockingCalls property from the supplied instance properties.
+     * Extract and remove the usesBlockingCalls property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4249,7 +4249,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the type property from the supplied instance properties.
+     * Extract and delete the type property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4271,7 +4271,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the usage property from the supplied instance properties.
+     * Extract and delete the usage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4293,7 +4293,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the usage property from the supplied instance properties.
+     * Extract and delete the usage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4315,7 +4315,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the language property from the supplied instance properties.
+     * Extract and delete the language property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4339,7 +4339,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the summary property from the supplied instance properties.
+     * Extract the summary property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4361,7 +4361,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the summary property from the supplied instance properties.
+     * Extract and remove the summary property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4384,7 +4384,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the publishVersionIdentifier property from the supplied instance properties.
+     * Extract and remove the publishVersionIdentifier property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4409,7 +4409,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the abbreviation property from the supplied instance properties.
+     * Extract the abbreviation property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4431,7 +4431,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the abbreviation property from the supplied instance properties.
+     * Extract and remove the abbreviation property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4454,7 +4454,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and remove the "examples" property from the supplied instance properties.
+     * Extract and remove the "examples" property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4476,7 +4476,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the title property from the supplied instance properties.
+     * Extract the title property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4499,7 +4499,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "pronouns" property from the supplied instance properties.
+     * Extract the "pronouns" property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4521,7 +4521,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the text property from the supplied instance properties.
+     * Extract the text property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4543,7 +4543,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the priority property from the supplied instance properties.
+     * Extract the priority property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4565,7 +4565,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the priority integer property from the supplied instance properties.
+     * Extract the priority integer property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4587,7 +4587,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the headcount integer property from the supplied instance properties.
+     * Extract the headcount integer property from the supplied element properties.
      *
      * @param elementProperties properties from governance entities
      * @return string property or null
@@ -4609,7 +4609,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the scope property from the supplied instance properties.
+     * Extract and delete the scope property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4631,7 +4631,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "implications" property from the supplied instance properties.
+     * Extract and delete the "implications" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -4653,7 +4653,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "outcomes" property from the supplied instance properties.
+     * Extract and delete the "outcomes" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -4675,7 +4675,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "results" property from the supplied instance properties.
+     * Extract and delete the "results" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -4697,7 +4697,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the businessImperatives property from the supplied instance properties.
+     * Extract and delete the businessImperatives property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string list or null
@@ -4719,7 +4719,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the jurisdiction property from the supplied instance properties.
+     * Extract and delete the jurisdiction property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4741,7 +4741,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the "details" property from the supplied instance properties.
+     * Extract and delete the "details" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4763,7 +4763,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the rational property from the supplied instance properties.
+     * Extract the rational property from the supplied element properties.
      *
      * @param elementProperties properties from relationship
      * @return string text or null
@@ -4785,7 +4785,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the implementationDescription property from the supplied instance properties.
+     * Extract and delete the implementationDescription property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4807,7 +4807,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the criteria property from the supplied instance properties.
+     * Extract and delete the criteria property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -4829,7 +4829,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the domain identifier property from the supplied instance properties.
+     * Extract and delete the domain identifier property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer = default is 0 which is ALL
@@ -4852,7 +4852,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the level identifier property from the supplied instance properties.
+     * Extract and delete the level identifier property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return integer = default is 0 which is ALL
@@ -4875,7 +4875,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the measurement property from the supplied instance properties.
+     * Extract and delete the measurement property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -4898,7 +4898,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the target property from the supplied instance properties.
+     * Extract and delete the target property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -4921,7 +4921,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the classificationName property from the supplied instance properties.
+     * Extract and delete the classificationName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -4944,7 +4944,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the classificationPropertyName property from the supplied instance properties.
+     * Extract and delete the classificationPropertyName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -4967,7 +4967,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the processingEngineUserId property from the supplied instance properties.
+     * Extract and delete the processingEngineUserId property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -4990,7 +4990,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the requestType property from the supplied instance properties.
+     * Extract and delete the requestType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5012,7 +5012,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the serviceRequestType property from the supplied instance properties.
+     * Extract and delete the serviceRequestType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5034,7 +5034,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the requestParameters property from the supplied instance properties.
+     * Extract and delete the requestParameters property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5059,7 +5059,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the executorEngineGUID property from the supplied instance properties.
+     * Extract and delete the executorEngineGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5082,7 +5082,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the executorEngineName property from the supplied instance properties.
+     * Extract and delete the executorEngineName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5106,7 +5106,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the processName property from the supplied instance properties.
+     * Extract and delete the processName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5129,7 +5129,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the governanceActionTypeGUID property from the supplied instance properties.
+     * Extract and delete the governanceActionTypeGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5152,7 +5152,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the governanceActionTypeName property from the supplied instance properties.
+     * Extract and delete the governanceActionTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5176,7 +5176,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the producedGuards property from the supplied instance properties.
+     * Extract and delete the producedGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return array of guards
@@ -5199,7 +5199,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the guard property from the supplied instance properties.
+     * Extract and delete the guard property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5222,7 +5222,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the mandatoryGuards property from the supplied instance properties.
+     * Extract and delete the mandatoryGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return array of guards
@@ -5245,7 +5245,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the mandatoryGuard property from the supplied instance properties.
+     * Extract and delete the mandatoryGuard property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return flag
@@ -5268,7 +5268,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the ignoreMultipleTriggers property from the supplied instance properties.
+     * Extract and delete the ignoreMultipleTriggers property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return flag
@@ -5291,7 +5291,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the waitTime property from the supplied instance properties.
+     * Extract and delete the waitTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return flag
@@ -5314,7 +5314,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the receivedGuards property from the supplied instance properties.
+     * Extract and delete the receivedGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return array of guards
@@ -5337,7 +5337,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the completionGuards property from the supplied instance properties.
+     * Extract and delete the completionGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return array of guards
@@ -5360,7 +5360,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the completionMessage property from the supplied instance properties.
+     * Extract and delete the completionMessage property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string
@@ -5383,7 +5383,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the startDate property from the supplied instance properties.
+     * Extract and delete the startDate property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5406,7 +5406,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the plannedEndDate property from the supplied instance properties.
+     * Extract and delete the plannedEndDate property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5429,7 +5429,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the creationTime property from the supplied instance properties.
+     * Extract and delete the creationTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5452,7 +5452,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the dueTime property from the supplied instance properties.
+     * Extract and delete the dueTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5475,7 +5475,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the completionTime property from the supplied instance properties.
+     * Extract and delete the completionTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5498,7 +5498,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the completionDate property from the supplied instance properties.
+     * Extract and delete the completionDate property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return date
@@ -5521,7 +5521,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the status property from the supplied instance properties.
+     * Extract and delete the status property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5544,7 +5544,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the requestSourceName property from the supplied instance properties.
+     * Extract and delete the requestSourceName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5567,7 +5567,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the actionTargetName property from the supplied instance properties.
+     * Extract and delete the actionTargetName property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5590,7 +5590,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the originGovernanceService property from the supplied instance properties.
+     * Extract the originGovernanceService property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5613,7 +5613,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the originGovernanceEngine property from the supplied instance properties.
+     * Extract the originGovernanceEngine property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5636,7 +5636,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the licenseGUID property from the supplied instance properties.
+     * Extract the licenseGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5659,7 +5659,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the certificationGUID property from the supplied instance properties.
+     * Extract the certificationGUID property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return String text or null
@@ -5682,7 +5682,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the start property from the supplied instance properties.
+     * Extract the start property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return Date/timestamp or null
@@ -5705,7 +5705,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the end property from the supplied instance properties.
+     * Extract the end property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return Date/timestamp or null
@@ -5728,7 +5728,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "conditions" property from the supplied instance properties.
+     * Extract the "conditions" property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5750,7 +5750,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the custodian property from the supplied instance properties.
+     * Extract the custodian property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5772,7 +5772,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the certifiedBy property from the supplied instance properties.
+     * Extract the certifiedBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5794,7 +5794,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the recipient property from the supplied instance properties.
+     * Extract the recipient property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5817,7 +5817,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the licensedBy property from the supplied instance properties.
+     * Extract the licensedBy property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5839,7 +5839,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the licensee property from the supplied instance properties.
+     * Extract the licensee property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5863,7 +5863,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the description property from the supplied instance properties.
+     * Extract and delete the description property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -5885,7 +5885,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the strictRequirement property from the supplied instance properties.
+     * Extract the strictRequirement property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesAssignment relationship
      * @return boolean
@@ -5907,7 +5907,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the confidence property from the supplied instance properties.
+     * Extract the confidence property from the supplied element properties.
      *
      * @param elementProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
      * @return int
@@ -5929,7 +5929,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the steward property from the supplied instance properties.
+     * Extract the steward property from the supplied element properties.
      *
      * @param elementProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
      * @return string text or null
@@ -5952,7 +5952,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the stewardTypeName property from the supplied instance properties.
+     * Extract the stewardTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
      * @return string text or null
@@ -5974,7 +5974,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the stewardTypeName property from the supplied instance properties.
+     * Extract the stewardTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
      * @return string text or null
@@ -5996,7 +5996,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "notes" property from the supplied instance properties.
+     * Extract the "notes" property from the supplied element properties.
      *
      * @param elementProperties properties from GovernanceRuleImplementation, GovernanceProcessImplementation,
      *                           ReferenceValueAssignment or ValidValuesMapping relationship
@@ -6019,7 +6019,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the "attributeName" property from the supplied instance properties.
+     * Extract the "attributeName" property from the supplied element properties.
      *
      * @param elementProperties properties from ReferenceValueAssignment relationship
      * @return string text or null
@@ -6041,7 +6041,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the pointType property from the supplied instance properties.
+     * Extract the pointType property from the supplied element properties.
      *
      * @param elementProperties properties from classification
      * @return string text or null
@@ -6063,7 +6063,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the associationDescription property from the supplied instance properties.
+     * Extract the associationDescription property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesMapping relationship
      * @return string text or null
@@ -6085,7 +6085,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the symbolicName property from the supplied instance properties.
+     * Extract the symbolicName property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesImplementation relationship
      * @return string text or null
@@ -6107,7 +6107,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the implementationValue property from the supplied instance properties.
+     * Extract the implementationValue property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesImplementation relationship
      * @return string text or null
@@ -6129,7 +6129,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the additionalValues property from the supplied instance properties.
+     * Extract the additionalValues property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesImplementation relationship
      * @return map of name-value pairs
@@ -6151,7 +6151,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the commentText property from the supplied instance properties.
+     * Extract and delete the commentText property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -6173,7 +6173,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the isPublic property from the supplied instance properties.
+     * Extract the isPublic property from the supplied element properties.
      *
      * @param elementProperties properties from feedback relationships
      * @return boolean
@@ -6195,7 +6195,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the isPublic property from the supplied instance properties.
+     * Extract the isPublic property from the supplied element properties.
      *
      * @param elementProperties properties from feedback relationships
      * @return boolean
@@ -6217,7 +6217,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the review property from the supplied instance properties.
+     * Extract the review property from the supplied element properties.
      *
      * @param elementProperties properties from review/rating entities
      * @return string property or null
@@ -6239,7 +6239,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the tagName property from the supplied instance properties.
+     * Extract the tagName property from the supplied element properties.
      *
      * @param elementProperties properties from informal tag entities
      * @return string property or null
@@ -6261,7 +6261,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the tagDescription property from the supplied instance properties.
+     * Extract the tagDescription property from the supplied element properties.
      *
      * @param elementProperties properties from informal tag entities
      * @return string property or null
@@ -6283,7 +6283,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the executionDate property from the supplied instance properties.
+     * Extract the executionDate property from the supplied element properties.
      *
      * @param elementProperties properties from discovery analysis report entities
      * @return string property or null
@@ -6305,7 +6305,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the analysis parameters property from the supplied instance properties.
+     * Extract the analysis parameters property from the supplied element properties.
      *
      * @param elementProperties properties from discovery analysis report entities
      * @return string property or null
@@ -6327,7 +6327,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the analysis step property from the supplied instance properties.
+     * Extract the analysis step property from the supplied element properties.
      *
      * @param elementProperties properties from discovery analysis report entities
      * @return string property or null
@@ -6349,7 +6349,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the annotation type property from the supplied instance properties.
+     * Extract the annotation type property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6371,7 +6371,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the confidence level property from the supplied instance properties.
+     * Extract the confidence level property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return integer or 0
@@ -6393,7 +6393,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the confidence property from the supplied instance properties.
+     * Extract the confidence property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return integer or 0
@@ -6415,7 +6415,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the expression property from the supplied instance properties.
+     * Extract the expression property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6437,7 +6437,29 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the explanation property from the supplied instance properties.
+     * Extract the attributeName property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return string property or null
+     */
+    protected String removeAttributeName(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAttributeName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataTypesMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the explanation property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6459,7 +6481,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the jsonProperties property from the supplied instance properties.
+     * Extract the jsonProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6481,7 +6503,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the reviewDate property from the supplied instance properties.
+     * Extract the reviewDate property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return date or null
@@ -6503,7 +6525,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the steward property from the supplied instance properties.
+     * Extract the steward property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return string property or null
@@ -6525,7 +6547,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the stewardTypeName property from the supplied instance properties.
+     * Extract the stewardTypeName property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return string property or null
@@ -6547,7 +6569,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the stewardPropertyName property from the supplied instance properties.
+     * Extract the stewardPropertyName property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return string property or null
@@ -6569,7 +6591,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the notes property from the supplied instance properties.
+     * Extract the notes property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return string property or null
@@ -6590,7 +6612,7 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
     /**
-     * Extract the comment property from the supplied instance properties.
+     * Extract the comment property from the supplied element properties.
      *
      * @param elementProperties properties from annotation review entities
      * @return string property or null
@@ -6612,7 +6634,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the schemaName property from the supplied instance properties.
+     * Extract the schemaName property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6634,7 +6656,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the schemaType property from the supplied instance properties.
+     * Extract the schemaType property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6656,7 +6678,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the candidateClassifications property from the supplied instance properties.
+     * Extract the candidateClassifications property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name value pairs
@@ -6678,7 +6700,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the candidateDataClassGUIDs property from the supplied instance properties.
+     * Extract the candidateDataClassGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return list of string guids
@@ -6700,7 +6722,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the inferredDataType property from the supplied instance properties.
+     * Extract the inferredDataType property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6722,7 +6744,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the inferredFormat property from the supplied instance properties.
+     * Extract the inferredFormat property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6744,7 +6766,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the inferredLength property from the supplied instance properties.
+     * Extract the inferredLength property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return int property or 0
@@ -6766,7 +6788,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the inferredPrecision property from the supplied instance properties.
+     * Extract the inferredPrecision property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return int property or 0
@@ -6788,7 +6810,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the inferredScale property from the supplied instance properties.
+     * Extract the inferredScale property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return int property or 0
@@ -6810,7 +6832,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the profileProperties property from the supplied instance properties.
+     * Extract the profileProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name value pairs
@@ -6832,7 +6854,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the profileFlags property from the supplied instance properties.
+     * Extract the profileFlags property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name to boolean pairs
@@ -6854,7 +6876,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the profileCounts property from the supplied instance properties.
+     * Extract the profileCounts property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name to long pairs
@@ -6876,7 +6898,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the valueList property from the supplied instance properties.
+     * Extract the valueList property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return list of values
@@ -6898,7 +6920,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the valueCount property from the supplied instance properties.
+     * Extract the valueCount property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name to integer pairs
@@ -6920,7 +6942,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the valueRangeFrom property from the supplied instance properties.
+     * Extract and delete the valueRangeFrom property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6942,7 +6964,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the valueRangeTo property from the supplied instance properties.
+     * Extract and delete the valueRangeTo property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6964,7 +6986,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the averageValue property from the supplied instance properties.
+     * Extract and delete the averageValue property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return string property or null
@@ -6986,7 +7008,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the dataSourceProperties property from the supplied instance properties.
+     * Extract and delete the dataSourceProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name value pairs
@@ -7008,7 +7030,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the size property from the supplied instance properties.
+     * Extract and delete the size property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return int property or 0
@@ -7030,7 +7052,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the encoding property from the supplied instance properties.
+     * Extract and delete the encoding property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7052,7 +7074,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the parameterType property from the supplied instance properties.
+     * Extract and delete the parameterType property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7075,7 +7097,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the qualityDimension standing property from the supplied instance properties.
+     * Extract and delete the qualityDimension standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7098,7 +7120,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the qualityScore property from the supplied instance properties.
+     * Extract and delete the qualityScore property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return int property or 0
@@ -7121,7 +7143,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the duplicateAnchorGUID standing property from the supplied instance properties.
+     * Extract and delete the duplicateAnchorGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7143,7 +7165,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the divergentPropertyNames property from the supplied instance properties.
+     * Extract the divergentPropertyNames property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return list of values
@@ -7165,7 +7187,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the divergentClassificationName standing property from the supplied instance properties.
+     * Extract and delete the divergentClassificationName standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7187,7 +7209,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the divergentClassificationPropertyNames property from the supplied instance properties.
+     * Extract the divergentClassificationPropertyNames property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return list of values
@@ -7210,7 +7232,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the divergentRelatedMetadataElementsGUID standing property from the supplied instance properties.
+     * Extract and delete the divergentRelatedMetadataElementsGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7232,7 +7254,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the divergentRelatedMetadataElementsPropertyNames property from the supplied instance properties.
+     * Extract the divergentRelatedMetadataElementsPropertyNames property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return list of values
@@ -7255,7 +7277,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the attachmentGUID standing property from the supplied instance properties.
+     * Extract and delete the attachmentGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7277,7 +7299,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the duplicateAttachmentGUID standing property from the supplied instance properties.
+     * Extract and delete the duplicateAttachmentGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7299,7 +7321,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the relatedEntityGUID standing property from the supplied instance properties.
+     * Extract and delete the relatedEntityGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7321,7 +7343,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the relatedEntityGUID standing property from the supplied instance properties.
+     * Extract and delete the relatedEntityGUID standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7343,7 +7365,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the relationshipProperties property from the supplied instance properties.
+     * Extract the relationshipProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7365,7 +7387,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the discoveryActivity standing property from the supplied instance properties.
+     * Extract and delete the discoveryActivity standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7387,7 +7409,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the actionRequested standing property from the supplied instance properties.
+     * Extract and delete the actionRequested standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7409,7 +7431,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the actionProperties property from the supplied instance properties.
+     * Extract the actionProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7431,7 +7453,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the informalTerm standing property from the supplied instance properties.
+     * Extract and delete the informalTerm standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7453,7 +7475,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the candidateGlossaryTermGUIDs property from the supplied instance properties.
+     * Extract the candidateGlossaryTermGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7475,7 +7497,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the informalTopic standing property from the supplied instance properties.
+     * Extract and delete the informalTopic standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7497,7 +7519,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the candidateGlossaryCategoryGUIDs property from the supplied instance properties.
+     * Extract the candidateGlossaryCategoryGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7519,7 +7541,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the duplicateAnchorGUIDs property from the supplied instance properties.
+     * Extract the duplicateAnchorGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7541,7 +7563,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the matchingPropertyNames property from the supplied instance properties.
+     * Extract the matchingPropertyNames property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7563,7 +7585,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the matchingClassificationNames property from the supplied instance properties.
+     * Extract the matchingClassificationNames property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7585,7 +7607,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the matchingAttachmentGUIDs property from the supplied instance properties.
+     * Extract the matchingAttachmentGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7607,7 +7629,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the matchingRelatedMetadataElementsGUIDs property from the supplied instance properties.
+     * Extract the matchingRelatedMetadataElementsGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
      * @return map of name-value pairs
@@ -7629,7 +7651,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the dataFieldName standing property from the supplied instance properties.
+     * Extract and delete the dataFieldName standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7651,7 +7673,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the dataFieldType standing property from the supplied instance properties.
+     * Extract and delete the dataFieldType standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7673,7 +7695,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract and delete the dataFieldDescription standing property from the supplied instance properties.
+     * Extract and delete the dataFieldDescription standing property from the supplied element properties.
      *
      * @param elementProperties properties from element
      * @return string text or null
@@ -7695,7 +7717,7 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
-     * Extract the dataFieldAliases property from the supplied instance properties.
+     * Extract the dataFieldAliases property from the supplied element properties.
      *
      * @param elementProperties properties from data field entities
      * @return map of name-value pairs
