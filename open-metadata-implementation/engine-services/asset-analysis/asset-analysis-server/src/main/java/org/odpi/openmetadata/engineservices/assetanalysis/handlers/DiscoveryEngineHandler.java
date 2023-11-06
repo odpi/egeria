@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
@@ -27,6 +28,7 @@ import java.util.*;
 public class DiscoveryEngineHandler extends GovernanceEngineHandler
 {
     private final DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
+    private final OpenMetadataClient openMetadataClient;    /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "OpenDiscoveryEngine";
     private static final String assetTypeName = "Asset";
@@ -40,6 +42,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client used by the engine host services to control the execution of governance action requests
      * @param discoveryEngineClient REST client for direct REST Calls to Discovery Engine OMAS - used by discovery services
+     * @param openMetadataClient REST Client from the GAF that is linked to the Discovery Engine OMAS
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -49,6 +52,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   GovernanceEngineConfigurationClient configurationClient,
                                   GovernanceEngineClient              serverClient,
                                   DiscoveryEngineClient               discoveryEngineClient,
+                                  OpenMetadataClient                  openMetadataClient,
                                   AuditLog                            auditLog,
                                   int                                 maxPageSize)
     {
@@ -62,6 +66,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
               maxPageSize);
 
         this.discoveryEngineClient = discoveryEngineClient;
+        this.openMetadataClient = openMetadataClient;
     }
 
 
@@ -341,13 +346,20 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
         DiscoveryAssetCatalogStore assetCatalogStore = new DiscoveryAssetCatalogStoreClient(engineUserId,
                                                                                             discoveryEngineClient,
                                                                                             maxPageSize);
+
+        DiscoveryOpenMetadataStore openMetadataStore = new DiscoveryOpenMetadataStore(openMetadataClient,
+                                                                                      engineUserId,
+                                                                                      null,
+                                                                                      null);
+
         DiscoveryContext discoveryContext = new DiscoveryContext(engineUserId,
                                                                  assetGUID,
                                                                  analysisParameters,
                                                                  annotationTypes,
                                                                  assetStore,
                                                                  annotationStore,
-                                                                 assetCatalogStore);
+                                                                 assetCatalogStore,
+                                                                 openMetadataStore);
 
         return new DiscoveryServiceHandler(governanceEngineProperties,
                                            governanceEngineGUID,

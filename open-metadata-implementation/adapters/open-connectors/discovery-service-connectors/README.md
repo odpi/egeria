@@ -15,6 +15,10 @@ provided by Egeria.
 * **CSVDiscoveryService** - Extracts the column names from the first line of the file, counts up the number of records in the file
   and extracts its last modified time.
 
+* **Discover Apache Atlas Connector** is an open discovery service that gathers statistics about the
+  Apache Atlas server and stores it in a Discovery Analysis Report attached the the SoftwareServer entity
+  that represents the Apache Atlas server.
+
 ## Further information
 
 Discovery services are responsible for analysing the content of assets and creating

@@ -16,12 +16,13 @@ public class RESTCallToken
 
     static private synchronized long getNextCallId() { return nextCallId++; }
 
-    private StopWatch watch;
-    private long      callId;
-    private String    serviceName;
-    private String    serverName;
-    private String    userId;
-    private String    methodName;
+
+    private final StopWatch watch;
+    private final long      callId;
+    private final String    serviceName;
+    private final String    serverName;
+    private       String    userId;
+    private final String    methodName;
 
     /**
      * Set up the values that will be used in the logging process.
@@ -48,6 +49,44 @@ public class RESTCallToken
         {
             this.serverName = serverName;
         }
+    }
+
+
+    /**
+     * Set up the values that will be used in the logging process.
+     *
+     * @param serviceName name of service
+     * @param serverName name of server (or null if it is a platform request)
+     * @param methodName calling method
+     */
+    RESTCallToken(String serviceName, String serverName, String methodName)
+    {
+        this.serviceName = serviceName;
+        this.userId      = userId;
+        this.methodName  = methodName;
+
+        this.watch = StopWatch.createStarted();
+        this.callId = getNextCallId();
+
+        if (serverName == null)
+        {
+            this.serverName = PLATFORM_NAME;
+        }
+        else
+        {
+            this.serverName = serverName;
+        }
+    }
+
+
+    /**
+     * Allow the userId to be added retrospectively
+     *
+     * @param userId calling user
+     */
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
     }
 
 

@@ -23,9 +23,9 @@ import java.util.Date;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-integration/users/{userId}")
 
-@Tag(name="Open Integration Service",
-     description="Provides support for integration connectors.",
-     externalDocs=@ExternalDocumentation(description="Open Integration Service",
+@Tag(name="Framework Services: Open Integration Service",
+     description="Provides support for the context used by integration connectors.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/oif-metadata-management/"))
 
 

@@ -14,7 +14,6 @@ import java.util.Arrays;
 
 /**
  * The OIFErrorCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Identifier - to uniquely identify the message</li>
@@ -47,9 +46,9 @@ public enum OIFErrorCode implements ExceptionMessageSet
     /**
      * The constructor for OCFErrorCode expects to be passed one of the enumeration rows defined in
      * OCFErrorCode above.   For example:
-     *
+     * <br>
      *     OCFErrorCode   errorCode = OCFErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls

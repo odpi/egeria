@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Integration Daemon Services", description="The integration daemon services host one or more integration services that support " +
         "metadata exchange with third party technology.",
-        externalDocs=@ExternalDocumentation(description="Integration Daemon Services",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/integration-daemon-services/"))
 
 public class IntegrationDaemonResource

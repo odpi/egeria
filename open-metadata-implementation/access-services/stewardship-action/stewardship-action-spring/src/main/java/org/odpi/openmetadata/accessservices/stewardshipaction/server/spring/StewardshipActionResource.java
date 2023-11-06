@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/stewardship-action/users/{userId}")
 
-@Tag(name="Stewardship Action OMAS", description="The Stewardship Action OMAS provides APIs and events for tools and applications focused on resolving issues detected in the data landscape.",
-     externalDocs=@ExternalDocumentation(description="Stewardship Action Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Stewardship Action OMAS", description="The Stewardship Action OMAS provides APIs and events for tools and applications focused on resolving issues detected in the data landscape.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/stewardship-action/overview/"))
 
 public class StewardshipActionResource
 {
-    private StewardshipActionRESTServices restAPI = new StewardshipActionRESTServices();
+    private final StewardshipActionRESTServices restAPI = new StewardshipActionRESTServices();
 
     /**
      * Default constructor

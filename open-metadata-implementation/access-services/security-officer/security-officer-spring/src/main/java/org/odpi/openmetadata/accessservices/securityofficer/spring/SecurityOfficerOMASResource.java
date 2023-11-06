@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-officer/users/{userId}")
 
-@Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
-     externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/security-officer/overview/"))
 
 public class SecurityOfficerOMASResource {
 
-    private SecurityOfficerRESTService service = new SecurityOfficerRESTService();
+    private final SecurityOfficerRESTService service = new SecurityOfficerRESTService();
 
     /**
      * Returns the security tag for the given schema element

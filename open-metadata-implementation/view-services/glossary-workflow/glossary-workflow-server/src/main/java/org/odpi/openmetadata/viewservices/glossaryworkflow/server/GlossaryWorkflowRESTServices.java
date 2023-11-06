@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ArchiveRequestBody;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ControlledGlossaryTermRequestBody;
@@ -39,7 +40,7 @@ import java.util.Arrays;
  * This interface provides view interfaces for infrastructure and ops users.
  */
 
-public class GlossaryWorkflowRESTServices
+public class GlossaryWorkflowRESTServices extends TokenController
 {
     private static final GlossaryWorkflowInstanceHandler instanceHandler = new GlossaryWorkflowInstanceHandler();
 
@@ -68,7 +69,6 @@ public class GlossaryWorkflowRESTServices
      * categories are deleted as well.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -77,18 +77,21 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossary(String                   serverName,
-                                       String                   userId,
                                        ReferenceableRequestBody requestBody)
     {
         final String   methodName = "createGlossary";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -127,7 +130,6 @@ public class GlossaryWorkflowRESTServices
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
@@ -138,20 +140,23 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryFromTemplate(String              serverName,
-                                                   String              userId,
                                                    String              templateGUID,
                                                    boolean             deepCopy,
                                                    TemplateRequestBody requestBody)
     {
         final String methodName = "createGlossaryFromTemplate";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -180,7 +185,6 @@ public class GlossaryWorkflowRESTServices
      * Update the metadata element representing a glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
@@ -193,7 +197,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossary(String                         serverName,
-                                       String                         userId,
                                        String                         glossaryGUID,
                                        boolean                        isMergeUpdate,
                                        boolean                        forLineage,
@@ -202,13 +205,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -251,7 +258,6 @@ public class GlossaryWorkflowRESTServices
      * and terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -263,7 +269,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse removeGlossary(String                         serverName,
-                                       String                         userId,
                                        String                         glossaryGUID,
                                        boolean                        forLineage,
                                        boolean                        forDuplicateProcessing,
@@ -271,13 +276,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "removeGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -315,7 +324,6 @@ public class GlossaryWorkflowRESTServices
      * a collection of glossary updates that will be merged into its source glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -327,7 +335,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsEditingGlossary(String                    serverName,
-                                                     String                    userId,
                                                      String                    glossaryGUID,
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
@@ -335,13 +342,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setGlossaryAsEditingGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -382,7 +393,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the editing glossary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -394,7 +404,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsEditingGlossary(String                    serverName,
-                                                       String                    userId,
                                                        String                    glossaryGUID,
                                                        boolean                   forLineage,
                                                        boolean                   forDuplicateProcessing,
@@ -402,13 +411,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearGlossaryAsEditingGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -446,7 +459,6 @@ public class GlossaryWorkflowRESTServices
      * a collection of glossary updates that will be transferred into another glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -458,7 +470,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsStagingGlossary(String                    serverName,
-                                                     String                    userId,
                                                      String                    glossaryGUID,
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
@@ -466,13 +477,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setGlossaryAsStagingGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -513,7 +528,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the staging glossary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -525,7 +539,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsStagingGlossary(String                    serverName,
-                                                       String                    userId,
                                                        String                    glossaryGUID,
                                                        boolean                   forLineage,
                                                        boolean                   forDuplicateProcessing,
@@ -533,13 +546,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearGlossaryAsStagingGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -581,7 +598,6 @@ public class GlossaryWorkflowRESTServices
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -593,7 +609,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsTaxonomy(String                    serverName,
-                                              String                    userId,
                                               String                    glossaryGUID,
                                               boolean                   forLineage,
                                               boolean                   forDuplicateProcessing,
@@ -601,13 +616,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setGlossaryAsTaxonomy";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -648,7 +667,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the taxonomy designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -660,7 +678,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsTaxonomy(String                    serverName,
-                                                String                    userId,
                                                 String                    glossaryGUID,
                                                 boolean                   forLineage,
                                                 boolean                   forDuplicateProcessing,
@@ -668,13 +685,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearGlossaryAsTaxonomy";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -714,7 +735,6 @@ public class GlossaryWorkflowRESTServices
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -726,7 +746,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setGlossaryAsCanonical(String                    serverName,
-                                               String                    userId,
                                                String                    glossaryGUID,
                                                boolean                   forLineage,
                                                boolean                   forDuplicateProcessing,
@@ -734,13 +753,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setGlossaryAsCanonical";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -781,7 +804,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the canonical designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -793,7 +815,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearGlossaryAsCanonical(String                    serverName,
-                                                 String                    userId,
                                                  String                    glossaryGUID,
                                                  boolean                   forLineage,
                                                  boolean                   forDuplicateProcessing,
@@ -801,13 +822,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearGlossaryAsCanonical";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -849,7 +874,6 @@ public class GlossaryWorkflowRESTServices
      * Create a new metadata element to represent a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param isRootCategory is this category a root category?
      * @param forLineage return elements marked with the Memento classification?
@@ -862,7 +886,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryCategory(String                         serverName,
-                                               String                         userId,
                                                String                         glossaryGUID,
                                                boolean                        isRootCategory,
                                                boolean                        forLineage,
@@ -871,13 +894,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "createGlossaryCategory";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -919,7 +946,6 @@ public class GlossaryWorkflowRESTServices
      * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template
@@ -930,20 +956,23 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryCategoryFromTemplate(String               serverName,
-                                                           String               userId,
                                                            String               glossaryGUID,
                                                            String               templateGUID,
                                                            TemplateRequestBody  requestBody)
     {
         final String methodName = "createGlossaryCategoryFromTemplate";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -976,7 +1005,6 @@ public class GlossaryWorkflowRESTServices
      * Update the metadata element representing a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage return elements marked with the Memento classification?
@@ -989,7 +1017,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossaryCategory(String                         serverName,
-                                               String                         userId,
                                                String                         glossaryCategoryGUID,
                                                boolean                        isMergeUpdate,
                                                boolean                        forLineage,
@@ -998,13 +1025,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateGlossaryCategory";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1046,7 +1077,6 @@ public class GlossaryWorkflowRESTServices
      * Create a parent-child relationship between two categories.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param forLineage return elements marked with the Memento classification?
@@ -1059,7 +1089,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setupCategoryParent(String                  serverName,
-                                            String                  userId,
                                             String                  glossaryParentCategoryGUID,
                                             String                  glossaryChildCategoryGUID,
                                             boolean                 forLineage,
@@ -1068,13 +1097,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setupCategoryParent";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1125,7 +1158,6 @@ public class GlossaryWorkflowRESTServices
      * Remove a parent-child relationship between two categories.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param forLineage return elements marked with the Memento classification?
@@ -1138,7 +1170,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearCategoryParent(String                        serverName,
-                                            String                        userId,
                                             String                        glossaryParentCategoryGUID,
                                             String                        glossaryChildCategoryGUID,
                                             boolean                       forLineage,
@@ -1147,13 +1178,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearCategoryParent";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1192,7 +1227,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the metadata element representing a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1204,20 +1238,23 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse removeGlossaryCategory(String                         serverName,
-                                               String                         userId,
                                                String                         glossaryCategoryGUID,
                                                boolean                        forLineage,
                                                boolean                        forDuplicateProcessing,
                                                ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "removeGlossaryCategory";
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1258,21 +1295,23 @@ public class GlossaryWorkflowRESTServices
      * Return the list of glossary term status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermStatusListResponse getGlossaryTermStatuses(String serverName,
-                                                                  String userId)
+    public GlossaryTermStatusListResponse getGlossaryTermStatuses(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermStatusListResponse response = new GlossaryTermStatusListResponse();
         AuditLog                       auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setStatuses(Arrays.asList(GlossaryTermStatus.values()));
@@ -1292,21 +1331,23 @@ public class GlossaryWorkflowRESTServices
      * Return the list of glossary term relationship status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(String serverName,
-                                                                                          String userId)
+    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermRelationshipStatusListResponse response = new GlossaryTermRelationshipStatusListResponse();
         AuditLog                                   auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setStatuses(Arrays.asList(GlossaryTermRelationshipStatus.values()));
@@ -1326,21 +1367,23 @@ public class GlossaryWorkflowRESTServices
      * Return the list of glossary term relationship status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(String serverName,
-                                                                             String userId)
+    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermActivityTypeListResponse response = new GlossaryTermActivityTypeListResponse();
         AuditLog                             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setTypes(Arrays.asList(GlossaryTermActivityType.values()));
@@ -1360,7 +1403,6 @@ public class GlossaryWorkflowRESTServices
      * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the term is to be located
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1372,7 +1414,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createControlledGlossaryTerm(String                            serverName,
-                                                     String                            userId,
                                                      String                            glossaryGUID,
                                                      boolean                           forLineage,
                                                      boolean                           forDuplicateProcessing,
@@ -1380,13 +1421,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "createControlledGlossaryTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1421,7 +1466,6 @@ public class GlossaryWorkflowRESTServices
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the term is to be located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
@@ -1434,7 +1478,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryTermFromTemplate(String                      serverName,
-                                                       String                      userId,
                                                        String                      glossaryGUID,
                                                        String                      templateGUID,
                                                        boolean                     deepCopy,
@@ -1443,13 +1486,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "createGlossaryTermFromTemplate";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1484,7 +1531,6 @@ public class GlossaryWorkflowRESTServices
      * Update the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
@@ -1497,7 +1543,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossaryTerm(String                         serverName,
-                                           String                         userId,
                                            String                         glossaryTermGUID,
                                            boolean                        isMergeUpdate,
                                            boolean                        forLineage,
@@ -1506,13 +1551,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateGlossaryTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1556,7 +1605,6 @@ public class GlossaryWorkflowRESTServices
      * a controlled glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1568,7 +1616,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossaryTermStatus(String                        serverName,
-                                                 String                        userId,
                                                  String                        glossaryTermGUID,
                                                  boolean                       forLineage,
                                                  boolean                       forDuplicateProcessing,
@@ -1576,13 +1623,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateGlossaryTermStatus";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1617,7 +1668,6 @@ public class GlossaryWorkflowRESTServices
      * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
@@ -1631,7 +1681,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateGlossaryTermFromTemplate(String                         serverName,
-                                                       String                         userId,
                                                        String                         glossaryTermGUID,
                                                        boolean                        isMergeClassifications,
                                                        boolean                        isMergeProperties,
@@ -1641,13 +1690,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateGlossaryTermFromTemplate";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1684,7 +1737,6 @@ public class GlossaryWorkflowRESTServices
      * Move a glossary term from one glossary to another.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1696,7 +1748,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse moveGlossaryTerm(String                         serverName,
-                                         String                         userId,
                                          String                         glossaryTermGUID,
                                          boolean                        forLineage,
                                          boolean                        forDuplicateProcessing,
@@ -1704,13 +1755,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "moveGlossaryTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1744,7 +1799,6 @@ public class GlossaryWorkflowRESTServices
      * Link a term to a category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param forLineage return elements marked with the Memento classification?
@@ -1757,7 +1811,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setupTermCategory(String                   serverName,
-                                          String                   userId,
                                           String                   glossaryCategoryGUID,
                                           String                   glossaryTermGUID,
                                           boolean                  forLineage,
@@ -1766,13 +1819,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setupTermCategory";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1814,7 +1871,6 @@ public class GlossaryWorkflowRESTServices
      * Unlink a term from a category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param forLineage return elements marked with the Memento classification?
@@ -1827,7 +1883,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermCategory(String                        serverName,
-                                          String                        userId,
                                           String                        glossaryCategoryGUID,
                                           String                        glossaryTermGUID,
                                           boolean                       forLineage,
@@ -1836,13 +1891,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermCategory";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1881,24 +1940,26 @@ public class GlossaryWorkflowRESTServices
      * Return the list of term-to-term relationship names.
      *
      * @param serverName name of the server instance to connect to
-     * @param userId calling user
      * @return list of type names that are subtypes of asset or
      * throws InvalidParameterException full path or userId is null or
      * throws PropertyServerException problem accessing property server or
      * throws UserNotAuthorizedException security access problem.
      */
-    public NameListResponse getTermRelationshipTypeNames(String serverName,
-                                                         String userId)
+    public NameListResponse getTermRelationshipTypeNames(String serverName)
     {
         final String   methodName = "getTermRelationshipTypeNames";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NameListResponse response = new NameListResponse();
         AuditLog         auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
 
@@ -1918,7 +1979,6 @@ public class GlossaryWorkflowRESTServices
      * Link two terms together using a specialist relationship.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1932,7 +1992,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setupTermRelationship(String                  serverName,
-                                              String                  userId,
                                               String                  glossaryTermOneGUID,
                                               String                  relationshipTypeName,
                                               String                  glossaryTermTwoGUID,
@@ -1942,13 +2001,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setupTermRelationship";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1991,7 +2054,6 @@ public class GlossaryWorkflowRESTServices
      * Update the relationship properties for the two terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -2005,7 +2067,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateTermRelationship(String                  serverName,
-                                               String                  userId,
                                                String                  glossaryTermOneGUID,
                                                String                  relationshipTypeName,
                                                String                  glossaryTermTwoGUID,
@@ -2015,13 +2076,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateTermRelationship";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -2064,7 +2129,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the relationship between two terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -2078,7 +2142,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermRelationship(String                        serverName,
-                                              String                        userId,
                                               String                        glossaryTermOneGUID,
                                               String                        relationshipTypeName,
                                               String                        glossaryTermTwoGUID,
@@ -2088,13 +2151,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermRelationship";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2136,7 +2203,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes an abstract concept.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2148,7 +2214,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsAbstractConcept(String                    serverName,
-                                                 String                    userId,
                                                  String                    glossaryTermGUID,
                                                  boolean                   forLineage,
                                                  boolean                   forDuplicateProcessing,
@@ -2156,13 +2221,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsAbstractConcept";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2199,7 +2268,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the abstract concept designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2211,7 +2279,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsAbstractConcept(String                    serverName,
-                                                   String                    userId,
                                                    String                    glossaryTermGUID,
                                                    boolean                   forLineage,
                                                    boolean                   forDuplicateProcessing,
@@ -2219,13 +2286,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsAbstractConcept";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2263,7 +2334,6 @@ public class GlossaryWorkflowRESTServices
      * properties that describe the characteristics of the data values found within.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2275,7 +2345,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsDataField(String                    serverName,
-                                           String                    userId,
                                            String                    glossaryTermGUID,
                                            boolean                   forLineage,
                                            boolean                   forDuplicateProcessing,
@@ -2283,13 +2352,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsDataField";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2344,7 +2417,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the data field designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2356,7 +2428,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsDataField(String                    serverName,
-                                             String                    userId,
                                              String                    glossaryTermGUID,
                                              boolean                   forLineage,
                                              boolean                   forDuplicateProcessing,
@@ -2364,13 +2435,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsDataField";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2407,7 +2482,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2419,7 +2493,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsDataValue(String                    serverName,
-                                           String                    userId,
                                            String                    glossaryTermGUID,
                                            boolean                   forLineage,
                                            boolean                   forDuplicateProcessing,
@@ -2427,13 +2500,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsDataValue";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2470,7 +2547,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the data value designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2482,7 +2558,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsDataValue(String                    serverName,
-                                             String                    userId,
                                              String                    glossaryTermGUID,
                                              boolean                   forLineage,
                                              boolean                   forDuplicateProcessing,
@@ -2490,13 +2565,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsDataValue";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2533,7 +2612,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2545,7 +2623,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsActivity(String                    serverName,
-                                          String                    userId,
                                           String                    glossaryTermGUID,
                                           boolean                   forLineage,
                                           boolean                   forDuplicateProcessing,
@@ -2553,13 +2630,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsActivity";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -2600,7 +2681,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the activity designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2612,7 +2692,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsActivity(String                    serverName,
-                                            String                    userId,
                                             String                    glossaryTermGUID,
                                             boolean                   forLineage,
                                             boolean                   forDuplicateProcessing,
@@ -2620,13 +2699,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsActivity";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2663,7 +2746,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes a context.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2675,7 +2757,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsContext(String                    serverName,
-                                         String                    userId,
                                          String                    glossaryTermGUID,
                                          boolean                   forLineage,
                                          boolean                   forDuplicateProcessing,
@@ -2683,13 +2764,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsContext";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -2730,7 +2815,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the context definition designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2742,7 +2826,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsContext(String                    serverName,
-                                           String                    userId,
                                            String                    glossaryTermGUID,
                                            boolean                   forLineage,
                                            boolean                   forDuplicateProcessing,
@@ -2750,13 +2833,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsContext";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2793,7 +2880,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes a spine object.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2805,7 +2891,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsSpineObject(String                    serverName,
-                                             String                    userId,
                                              String                    glossaryTermGUID,
                                              boolean                   forLineage,
                                              boolean                   forDuplicateProcessing,
@@ -2813,13 +2898,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsSpineObject";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2856,7 +2945,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the spine object designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2868,7 +2956,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsSpineObject(String                    serverName,
-                                               String                    userId,
                                                String                    glossaryTermGUID,
                                                boolean                   forLineage,
                                                boolean                   forDuplicateProcessing,
@@ -2876,13 +2963,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsSpineObject";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2919,7 +3010,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes a spine attribute.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2931,7 +3021,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsSpineAttribute(String                    serverName,
-                                                String                    userId,
                                                 String                    glossaryTermGUID,
                                                 boolean                   forLineage,
                                                 boolean                   forDuplicateProcessing,
@@ -2939,13 +3028,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsSpineAttribute";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2982,7 +3075,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the spine attribute designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2994,7 +3086,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsSpineAttribute(String                    serverName,
-                                                  String                    userId,
                                                   String                    glossaryTermGUID,
                                                   boolean                   forLineage,
                                                   boolean                   forDuplicateProcessing,
@@ -3002,13 +3093,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsSpineAttribute";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3045,7 +3140,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the glossary term to indicate that it describes an object identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3057,7 +3151,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setTermAsObjectIdentifier(String                    serverName,
-                                                  String                    userId,
                                                   String                    glossaryTermGUID,
                                                   boolean                   forLineage,
                                                   boolean                   forDuplicateProcessing,
@@ -3065,13 +3158,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setTermAsObjectIdentifier";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3108,7 +3205,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the object identifier designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3120,7 +3216,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearTermAsObjectIdentifier(String                    serverName,
-                                                    String                    userId,
                                                     String                    glossaryTermGUID,
                                                     boolean                   forLineage,
                                                     boolean                   forDuplicateProcessing,
@@ -3128,13 +3223,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearTermAsObjectIdentifier";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3171,7 +3270,6 @@ public class GlossaryWorkflowRESTServices
      * Undo the last update to the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3183,7 +3281,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementResponse undoGlossaryTermUpdate(String                        serverName,
-                                                              String                        userId,
                                                               String                        glossaryTermGUID,
                                                               boolean                       forLineage,
                                                               boolean                       forDuplicateProcessing,
@@ -3191,13 +3288,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "undoGlossaryTermUpdate";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementResponse response = new GlossaryTermElementResponse();
         AuditLog                    auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3230,7 +3331,6 @@ public class GlossaryWorkflowRESTServices
      * Archive the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to archive
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -3241,20 +3341,23 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse archiveGlossaryTerm(String             serverName,
-                                            String             userId,
                                             String             glossaryTermGUID,
                                             boolean            forDuplicateProcessing,
                                             ArchiveRequestBody requestBody)
     {
         final String methodName = "archiveGlossaryTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3291,7 +3394,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3303,7 +3405,6 @@ public class GlossaryWorkflowRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse removeGlossaryTerm(String                         serverName,
-                                           String                         userId,
                                            String                         glossaryTermGUID,
                                            boolean                        forLineage,
                                            boolean                        forDuplicateProcessing,
@@ -3311,13 +3412,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "removeGlossaryTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -3360,7 +3465,6 @@ public class GlossaryWorkflowRESTServices
      * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param elementGUID unique identifier of the element where the note log is located
      * @param isPublic                 is this element visible to other people.
      * @param forLineage return elements marked with the Memento classification?
@@ -3373,7 +3477,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public  GUIDResponse createNoteLog(String                         serverName,
-                                       String                         userId,
                                        String                         elementGUID,
                                        boolean                        isPublic,
                                        boolean                        forLineage,
@@ -3382,13 +3485,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "createNoteLog";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3430,7 +3537,6 @@ public class GlossaryWorkflowRESTServices
      * Update the metadata element representing a note log.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param isPublic                 is this element visible to other people.
@@ -3444,7 +3550,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateNoteLog(String                         serverName,
-                                      String                         userId,
                                       String                         noteLogGUID,
                                       boolean                        isMergeUpdate,
                                       boolean                        isPublic,
@@ -3452,15 +3557,19 @@ public class GlossaryWorkflowRESTServices
                                       boolean                        forDuplicateProcessing,
                                       ReferenceableUpdateRequestBody requestBody)
     {
-        final String methodName                 = "updateNoteLog";
+        final String methodName = "updateNoteLog";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3503,7 +3612,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the metadata element representing a note log.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3515,7 +3623,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse removeNoteLog(String                         serverName,
-                                      String                         userId,
                                       String                         noteLogGUID,
                                       boolean                        forLineage,
                                       boolean                        forDuplicateProcessing,
@@ -3523,13 +3630,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "removeNoteLog";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3570,7 +3681,6 @@ public class GlossaryWorkflowRESTServices
      * Create a new metadata element to represent a note.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the element where the note is located
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3582,7 +3692,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createNote(String                         serverName,
-                                   String                         userId,
                                    String                         noteLogGUID,
                                    boolean                        forLineage,
                                    boolean                        forDuplicateProcessing,
@@ -3590,13 +3699,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName  = "createNote";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3636,7 +3749,6 @@ public class GlossaryWorkflowRESTServices
     /**
      * Update the properties of the metadata element representing a note.
      *
-     * @param userId calling user
      * @param serverName   name of the server instances for this request
      * @param noteGUID unique identifier of the note to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -3650,7 +3762,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse updateNote(String                         serverName,
-                                   String                         userId,
                                    String                         noteGUID,
                                    boolean                        isMergeUpdate,
                                    boolean                        forLineage,
@@ -3659,13 +3770,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "updateNote";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3707,7 +3822,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the metadata element representing a note.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3719,7 +3833,6 @@ public class GlossaryWorkflowRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse removeNote(String                         serverName,
-                                   String                         userId,
                                    String                         noteGUID,
                                    boolean                        forLineage,
                                    boolean                        forDuplicateProcessing,
@@ -3727,13 +3840,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "removeNote";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3772,7 +3889,6 @@ public class GlossaryWorkflowRESTServices
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3784,7 +3900,6 @@ public class GlossaryWorkflowRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public VoidResponse setConfidenceClassification(String                    serverName,
-                                                    String                    userId,
                                                     String                    elementGUID,
                                                     boolean                   forLineage,
                                                     boolean                   forDuplicateProcessing,
@@ -3792,13 +3907,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setConfidenceClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3839,7 +3958,6 @@ public class GlossaryWorkflowRESTServices
      * confidence to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3851,7 +3969,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearConfidenceClassification(String                    serverName,
-                                                      String                    userId,
                                                       String                    elementGUID,
                                                       boolean                   forLineage,
                                                       boolean                   forDuplicateProcessing,
@@ -3859,13 +3976,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "clearConfidenceClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3901,7 +4022,6 @@ public class GlossaryWorkflowRESTServices
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3913,7 +4033,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setCriticalityClassification(String                    serverName,
-                                                     String                    userId,
                                                      String                    elementGUID,
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
@@ -3921,13 +4040,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setCriticalityClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3968,7 +4091,6 @@ public class GlossaryWorkflowRESTServices
      * criticality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3980,7 +4102,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearCriticalityClassification(String                    serverName,
-                                                       String                    userId,
                                                        String                    elementGUID,
                                                        boolean                   forLineage,
                                                        boolean                   forDuplicateProcessing,
@@ -3988,13 +4109,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "clearCriticalityClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4029,7 +4154,6 @@ public class GlossaryWorkflowRESTServices
      * The level of confidence is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4041,7 +4165,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setConfidentialityClassification(String                    serverName,
-                                                         String                    userId,
                                                          String                    elementGUID,
                                                          boolean                   forLineage,
                                                          boolean                   forDuplicateProcessing,
@@ -4049,13 +4172,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setConfidentialityClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4096,7 +4223,6 @@ public class GlossaryWorkflowRESTServices
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4108,7 +4234,6 @@ public class GlossaryWorkflowRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public VoidResponse clearConfidentialityClassification(String                   serverName,
-                                                           String                   userId,
                                                            String                   elementGUID,
                                                            boolean                  forLineage,
                                                            boolean                  forDuplicateProcessing,
@@ -4116,13 +4241,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "clearConfidentialityClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4160,7 +4289,6 @@ public class GlossaryWorkflowRESTServices
      * properties respectively.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4172,7 +4300,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setRetentionClassification(String                    serverName,
-                                                   String                    userId,
                                                    String                    elementGUID,
                                                    boolean                   forLineage,
                                                    boolean                   forDuplicateProcessing,
@@ -4180,13 +4307,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setRetentionClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4227,7 +4358,6 @@ public class GlossaryWorkflowRESTServices
      * track the retention period to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4239,7 +4369,6 @@ public class GlossaryWorkflowRESTServices
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearRetentionClassification(String                   serverName,
-                                                     String                   userId,
                                                      String                   elementGUID,
                                                      boolean                  forLineage,
                                                      boolean                  forDuplicateProcessing,
@@ -4247,13 +4376,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "clearRetentionClassification";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4288,7 +4421,6 @@ public class GlossaryWorkflowRESTServices
      * Add or replace the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId      calling user
      * @param elementGUID unique identifier of element to attach to
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4300,7 +4432,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addSecurityTags(String                    serverName,
-                                        String                    userId,
                                         String                    elementGUID,
                                         boolean                   forLineage,
                                         boolean                   forDuplicateProcessing,
@@ -4308,13 +4439,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "addSecurityTags";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4354,7 +4489,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the security tags classification from an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId      calling user
      * @param elementGUID   unique identifier of element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4366,7 +4500,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearSecurityTags(String                    serverName,
-                                          String                    userId,
                                           String                    elementGUID,
                                           boolean                   forLineage,
                                           boolean                   forDuplicateProcessing,
@@ -4374,13 +4507,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName             = "clearSecurityTags";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4415,7 +4552,6 @@ public class GlossaryWorkflowRESTServices
      * Add or replace the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4427,7 +4563,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addOwnership(String                    serverName,
-                                     String                    userId,
                                      String                    elementGUID,
                                      boolean                   forLineage,
                                      boolean                   forDuplicateProcessing,
@@ -4435,13 +4570,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "addOwnership";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4481,7 +4620,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the ownership classification from an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID element where the classification needs to be cleared from.
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4493,7 +4631,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearOwnership(String                    serverName,
-                                       String                    userId,
                                        String                    elementGUID,
                                        boolean                   forLineage,
                                        boolean                   forDuplicateProcessing,
@@ -4501,13 +4638,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "clearOwnership";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4542,7 +4683,6 @@ public class GlossaryWorkflowRESTServices
      * Classify the element to assert that the definitions it represents are part of a subject area definition.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4554,7 +4694,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addElementToSubjectArea(String                    serverName,
-                                                String                    userId,
                                                 String                    elementGUID,
                                                 boolean                   forLineage,
                                                 boolean                   forDuplicateProcessing,
@@ -4562,13 +4701,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "addElementToSubjectArea";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4608,7 +4751,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the subject area designation from the identified element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -4620,7 +4762,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeElementFromSubjectArea(String                    serverName,
-                                                     String                    userId,
                                                      String                    elementGUID,
                                                      boolean                   forLineage,
                                                      boolean                   forDuplicateProcessing,
@@ -4628,13 +4769,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String   methodName = "removeElementFromSubjectArea";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4670,7 +4815,6 @@ public class GlossaryWorkflowRESTServices
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param forLineage return elements marked with the Memento classification?
@@ -4683,7 +4827,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse setupSemanticAssignment(String                  serverName,
-                                                String                  userId,
                                                 String                  elementGUID,
                                                 String                  glossaryTermGUID,
                                                 boolean                 forLineage,
@@ -4692,13 +4835,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "setupSemanticAssignment";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4740,7 +4887,6 @@ public class GlossaryWorkflowRESTServices
      * Remove a semantic assignment relationship between an element and its glossary term.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param forLineage return elements marked with the Memento classification?
@@ -4753,7 +4899,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearSemanticAssignment(String                        serverName,
-                                                String                        userId,
                                                 String                        elementGUID,
                                                 String                        glossaryTermGUID,
                                                 boolean                       forLineage,
@@ -4762,13 +4907,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "clearSemanticAssignment";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4805,7 +4954,6 @@ public class GlossaryWorkflowRESTServices
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
      * @param forLineage return elements marked with the Memento classification?
@@ -4818,7 +4966,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addGovernanceDefinitionToElement(String                  serverName,
-                                                         String                  userId,
                                                          String                  definitionGUID,
                                                          String                  elementGUID,
                                                          boolean                 forLineage,
@@ -4827,13 +4974,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "addGovernanceDefinitionToElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -4867,7 +5018,6 @@ public class GlossaryWorkflowRESTServices
      * Remove the GovernedBy relationship between a governance definition and an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
@@ -4880,7 +5030,6 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeGovernanceDefinitionFromElement(String                        serverName,
-                                                              String                        userId,
                                                               String                        definitionGUID,
                                                               String                        elementGUID,
                                                               boolean                       forLineage,
@@ -4889,13 +5038,17 @@ public class GlossaryWorkflowRESTServices
     {
         final String methodName = "removeGovernanceDefinitionFromElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            token.setUserId(userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 

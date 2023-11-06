@@ -154,6 +154,207 @@ public class GAFRESTClient extends OCFRESTClient
     }
 
 
+    /**
+     * Issue a GET REST call that returns a TypeDefGalleryResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
+     * @param params a list of parameters that are slotted into the url template
+     * @return TypeDefGalleryResponseObject
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public  TypeDefGalleryResponse callTypeDefGalleryGetRESTCall(String    methodName,
+                                                                 String    operationSpecificURL,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        TypeDefGalleryResponse restResult = this.callGetRESTCall(methodName,
+                                                                 TypeDefGalleryResponse.class,
+                                                                 operationSpecificURL,
+                                                                 params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a AttributeTypeDefListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return AttributeTypeDefListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public  AttributeTypeDefListResponse callAttributeTypeDefListGetRESTCall(String    methodName,
+                                                                             String    operationSpecificURL,
+                                                                             Object... params) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        AttributeTypeDefListResponse restResult = this.callGetRESTCall(methodName,
+                                                                       AttributeTypeDefListResponse.class,
+                                                                       operationSpecificURL,
+                                                                       params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a AttributeTypeDefResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return AttributeTypeDefResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public AttributeTypeDefResponse callAttributeTypeDefGetRESTCall(String    methodName,
+                                                                    String    operationSpecificURL,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        AttributeTypeDefResponse restResult =  this.callGetRESTCall(methodName,
+                                                                    AttributeTypeDefResponse.class,
+                                                                    operationSpecificURL,
+                                                                    params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TypeDefListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return TypeDefListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public  TypeDefListResponse callTypeDefListGetRESTCall(String    methodName,
+                                                           String    operationSpecificURL,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        TypeDefListResponse restResult = this.callGetRESTCall(methodName,
+                                                              TypeDefListResponse.class,
+                                                              operationSpecificURL,
+                                                              params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a TypeDefListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
+     * @param requestBody request body
+     * @param params  a list of parameters that are slotted into the url template
+     * @return TypeDefListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public  TypeDefListResponse callTypeDefListPostRESTCall(String    methodName,
+                                                            String    operationSpecificURL,
+                                                            Object    requestBody,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        TypeDefListResponse restResult = this.callPostRESTCall(methodName,
+                                                               TypeDefListResponse.class,
+                                                               operationSpecificURL,
+                                                               requestBody,
+                                                               params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TypeDefResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param operationSpecificURL  template of the URL for the REST API call, with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return TypeDefResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public TypeDefResponse callTypeDefGetRESTCall(String    methodName,
+                                                  String    operationSpecificURL,
+                                                  Object... params) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        TypeDefResponse restResult = this.callGetRESTCall(methodName,
+                                                          TypeDefResponse.class,
+                                                          operationSpecificURL,
+                                                          params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a TypeDefResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return TypeDefResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public  TypeDefResponse callTypeDefPostRESTCall(String    methodName,
+                                                    String    operationSpecificURL,
+                                                    Object    requestBody,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        TypeDefResponse restResult = this.callPostRESTCall(methodName,
+                                                           TypeDefResponse.class,
+                                                           operationSpecificURL,
+                                                           requestBody,
+                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 
     /**
      * Issue a POST REST call that returns a OpenMetadataElementsResponse object.
@@ -182,7 +383,6 @@ public class GAFRESTClient extends OCFRESTClient
                                                                         params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
         return restResult;
     }
 
@@ -309,6 +509,31 @@ public class GAFRESTClient extends OCFRESTClient
         return restResult;
     }
 
+
+    /**
+     * Issue a GET REST call that returns a RelatedMetadataElementsListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedMetadataElementsListResponse callRelatedMetadataElementsListGetRESTCall(String    methodName,
+                                                                                      String    urlTemplate,
+                                                                                      Object... params) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        RelatedMetadataElementsListResponse restResult = this.callGetRESTCall(methodName, RelatedMetadataElementsListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
 
 
     /**

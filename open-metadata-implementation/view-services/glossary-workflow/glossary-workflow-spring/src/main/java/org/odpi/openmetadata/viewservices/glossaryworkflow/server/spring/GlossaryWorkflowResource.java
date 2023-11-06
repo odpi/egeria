@@ -38,11 +38,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-workflow/users/{userId}")
+@RequestMapping("/servers/{serverName}/api/open-metadata/glossary-workflow")
 
-@Tag(name="Glossary Workflow OMVS",
+@Tag(name="API: Glossary Workflow OMVS",
      description="The Glossary Workflow OMVS enables the caller to create glossary terms and organize them into categories as part of a controlled workflow process.  It supports the editing glossary and multiple states.",
-     externalDocs=@ExternalDocumentation(description="Glossary Workflow Open Metadata View Service (OMVS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-workflow/overview/"))
 
 public class GlossaryWorkflowResource
@@ -72,7 +72,6 @@ public class GlossaryWorkflowResource
      * categories are deleted as well.
      *
      * @param serverName name of the server to route the request to.
-     * @param userId calling user
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -83,10 +82,9 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries")
 
     public GUIDResponse createGlossary(@PathVariable String                   serverName,
-                                       @PathVariable String                   userId,
                                        @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createGlossary(serverName, userId, requestBody);
+        return restAPI.createGlossary(serverName, requestBody);
     }
 
 
@@ -97,7 +95,6 @@ public class GlossaryWorkflowResource
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
@@ -110,13 +107,12 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/from-template/{templateGUID}")
 
     public GUIDResponse createGlossaryFromTemplate(@PathVariable String              serverName,
-                                                   @PathVariable String              userId,
                                                    @PathVariable String              templateGUID,
                                                    @RequestParam (required = false, defaultValue = "true")
                                                                  boolean             deepCopy,
                                                    @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createGlossaryFromTemplate(serverName, userId, templateGUID, deepCopy, requestBody);
+        return restAPI.createGlossaryFromTemplate(serverName, templateGUID, deepCopy, requestBody);
     }
 
 
@@ -124,7 +120,6 @@ public class GlossaryWorkflowResource
      * Update the metadata element representing a glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
@@ -139,7 +134,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/update")
 
     public VoidResponse updateGlossary(@PathVariable String                         serverName,
-                                       @PathVariable String                         userId,
                                        @PathVariable String                         glossaryGUID,
                                        @RequestParam (required = false, defaultValue = "false")
                                                      boolean                        isMergeUpdate,
@@ -149,7 +143,7 @@ public class GlossaryWorkflowResource
                                                      boolean                        forDuplicateProcessing,
                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateGlossary(serverName, userId, glossaryGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossary(serverName, glossaryGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -158,7 +152,6 @@ public class GlossaryWorkflowResource
      * and terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -172,7 +165,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/remove")
 
     public VoidResponse removeGlossary(@PathVariable String                         serverName,
-                                       @PathVariable String                         userId,
                                        @PathVariable String                         glossaryGUID,
                                        @RequestParam (required = false, defaultValue = "false")
                                                      boolean                        forLineage,
@@ -181,7 +173,7 @@ public class GlossaryWorkflowResource
                                        @RequestBody(required = false)
                                                      ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGlossary(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -190,7 +182,6 @@ public class GlossaryWorkflowResource
      * a collection of glossary updates that will be merged into its source glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -204,7 +195,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary")
 
     public VoidResponse setGlossaryAsEditingGlossary(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
                                                      @PathVariable String                    glossaryGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
                                                                    boolean                   forLineage,
@@ -212,7 +202,7 @@ public class GlossaryWorkflowResource
                                                                    boolean                   forDuplicateProcessing,
                                                      @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setGlossaryAsEditingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setGlossaryAsEditingGlossary(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -220,7 +210,6 @@ public class GlossaryWorkflowResource
      * Remove the editing glossary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -234,7 +223,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary/remove")
 
     public VoidResponse clearGlossaryAsEditingGlossary(@PathVariable String                    serverName,
-                                                       @PathVariable String                    userId,
                                                        @PathVariable String                    glossaryGUID,
                                                        @RequestParam (required = false, defaultValue = "false")
                                                                      boolean                   forLineage,
@@ -243,7 +231,7 @@ public class GlossaryWorkflowResource
                                                        @RequestBody(required = false)
                                                                      ClassificationRequestBody requestBody)
     {
-        return restAPI.clearGlossaryAsEditingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearGlossaryAsEditingGlossary(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -252,7 +240,6 @@ public class GlossaryWorkflowResource
      * a collection of glossary updates that will be transferred into another glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -266,7 +253,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary")
 
     public VoidResponse setGlossaryAsStagingGlossary(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
                                                      @PathVariable String                    glossaryGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
                                                      boolean                   forLineage,
@@ -274,7 +260,7 @@ public class GlossaryWorkflowResource
                                                      boolean                   forDuplicateProcessing,
                                                      @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setGlossaryAsStagingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setGlossaryAsStagingGlossary(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -282,7 +268,6 @@ public class GlossaryWorkflowResource
      * Remove the staging glossary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -296,7 +281,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary/remove")
 
     public VoidResponse clearGlossaryAsStagingGlossary(@PathVariable String                    serverName,
-                                                       @PathVariable String                    userId,
                                                        @PathVariable String                    glossaryGUID,
                                                        @RequestParam (required = false, defaultValue = "false")
                                                                      boolean                   forLineage,
@@ -305,7 +289,7 @@ public class GlossaryWorkflowResource
                                                        @RequestBody(required = false)
                                                                      ClassificationRequestBody requestBody)
     {
-        return restAPI.clearGlossaryAsStagingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearGlossaryAsStagingGlossary(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -317,7 +301,6 @@ public class GlossaryWorkflowResource
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -331,7 +314,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy")
 
     public VoidResponse setGlossaryAsTaxonomy(@PathVariable String                    serverName,
-                                              @PathVariable String                    userId,
                                               @PathVariable String                    glossaryGUID,
                                               @RequestParam (required = false, defaultValue = "false")
                                                             boolean                   forLineage,
@@ -339,7 +321,7 @@ public class GlossaryWorkflowResource
                                                             boolean                   forDuplicateProcessing,
                                               @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setGlossaryAsTaxonomy(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setGlossaryAsTaxonomy(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -347,7 +329,6 @@ public class GlossaryWorkflowResource
      * Remove the taxonomy designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -361,7 +342,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy/remove")
 
     public VoidResponse clearGlossaryAsTaxonomy(@PathVariable String                    serverName,
-                                                @PathVariable String                    userId,
                                                 @PathVariable String                    glossaryGUID,
                                                 @RequestParam (required = false, defaultValue = "false")
                                                               boolean                   forLineage,
@@ -370,7 +350,7 @@ public class GlossaryWorkflowResource
                                                 @RequestBody(required = false)
                                                               ClassificationRequestBody requestBody)
     {
-        return restAPI.clearGlossaryAsTaxonomy(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearGlossaryAsTaxonomy(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -381,7 +361,6 @@ public class GlossaryWorkflowResource
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -395,7 +374,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary")
 
     public VoidResponse setGlossaryAsCanonical(@PathVariable String                    serverName,
-                                               @PathVariable String                    userId,
                                                @PathVariable String                    glossaryGUID,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                   forLineage,
@@ -403,7 +381,7 @@ public class GlossaryWorkflowResource
                                                              boolean                   forDuplicateProcessing,
                                                @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setGlossaryAsCanonical(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setGlossaryAsCanonical(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -411,7 +389,6 @@ public class GlossaryWorkflowResource
      * Remove the canonical vocabulary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -425,7 +402,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary/remove")
 
     public VoidResponse clearGlossaryAsCanonical(@PathVariable String                    serverName,
-                                                 @PathVariable String                    userId,
                                                  @PathVariable String                    glossaryGUID,
                                                  @RequestParam (required = false, defaultValue = "false")
                                                                boolean                   forLineage,
@@ -434,7 +410,7 @@ public class GlossaryWorkflowResource
                                                  @RequestBody(required = false)
                                                                ClassificationRequestBody requestBody)
     {
-        return restAPI.clearGlossaryAsCanonical(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearGlossaryAsCanonical(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -446,7 +422,6 @@ public class GlossaryWorkflowResource
      * Create a new metadata element to represent a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param isRootCategory is this category a root category?
      * @param forLineage return elements marked with the Memento classification?
@@ -461,7 +436,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/categories")
 
     public GUIDResponse createGlossaryCategory(@PathVariable String                         serverName,
-                                               @PathVariable String                         userId,
                                                @PathVariable String                         glossaryGUID,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                        isRootCategory,
@@ -471,7 +445,7 @@ public class GlossaryWorkflowResource
                                                              boolean                        forDuplicateProcessing,
                                                @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.createGlossaryCategory(serverName, userId, glossaryGUID, isRootCategory, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createGlossaryCategory(serverName, glossaryGUID, isRootCategory, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -479,7 +453,6 @@ public class GlossaryWorkflowResource
      * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template
@@ -492,12 +465,11 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/categories/from-template/{templateGUID}")
 
     public GUIDResponse createGlossaryCategoryFromTemplate(@PathVariable String               serverName,
-                                                           @PathVariable String               userId,
                                                            @PathVariable String               glossaryGUID,
                                                            @PathVariable String               templateGUID,
                                                            @RequestBody  TemplateRequestBody  requestBody)
     {
-        return restAPI.createGlossaryCategoryFromTemplate(serverName, userId, glossaryGUID, templateGUID, requestBody);
+        return restAPI.createGlossaryCategoryFromTemplate(serverName, glossaryGUID, templateGUID, requestBody);
     }
 
 
@@ -505,7 +477,6 @@ public class GlossaryWorkflowResource
      * Update the metadata element representing a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage return elements marked with the Memento classification?
@@ -520,7 +491,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/update")
 
     public VoidResponse updateGlossaryCategory(@PathVariable String                         serverName,
-                                               @PathVariable String                         userId,
                                                @PathVariable String                         glossaryCategoryGUID,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                        isMergeUpdate,
@@ -530,7 +500,7 @@ public class GlossaryWorkflowResource
                                                              boolean                        forDuplicateProcessing,
                                                @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateGlossaryCategory(serverName, userId, glossaryCategoryGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossaryCategory(serverName, glossaryCategoryGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -538,7 +508,6 @@ public class GlossaryWorkflowResource
      * Create a parent-child relationship between two categories.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param forLineage return elements marked with the Memento classification?
@@ -553,7 +522,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryParentCategoryGUID}/subcategories/{glossaryChildCategoryGUID}")
 
     public VoidResponse setupCategoryParent(@PathVariable String                       serverName,
-                                            @PathVariable String                       userId,
                                             @PathVariable String                       glossaryParentCategoryGUID,
                                             @PathVariable String                       glossaryChildCategoryGUID,
                                             @RequestParam (required = false, defaultValue = "false")
@@ -563,7 +531,7 @@ public class GlossaryWorkflowResource
                                             @RequestBody(required = false)
                                                           RelationshipRequestBody requestBody)
     {
-        return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setupCategoryParent(serverName, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -571,7 +539,6 @@ public class GlossaryWorkflowResource
      * Remove a parent-child relationship between two categories.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param forLineage return elements marked with the Memento classification?
@@ -586,7 +553,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryParentCategoryGUID}/subcategories/{glossaryChildCategoryGUID}/remove")
 
     public VoidResponse clearCategoryParent(@PathVariable String                        serverName,
-                                            @PathVariable String                        userId,
                                             @PathVariable String                        glossaryParentCategoryGUID,
                                             @PathVariable String                        glossaryChildCategoryGUID,
                                             @RequestParam (required = false, defaultValue = "false")
@@ -596,7 +562,7 @@ public class GlossaryWorkflowResource
                                             @RequestBody(required = false)
                                                           EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearCategoryParent(serverName, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -604,7 +570,6 @@ public class GlossaryWorkflowResource
      * Remove the metadata element representing a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -618,7 +583,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/remove")
 
     public VoidResponse removeGlossaryCategory(@PathVariable String                        serverName,
-                                               @PathVariable String                        userId,
                                                @PathVariable String                        glossaryCategoryGUID,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                      forLineage,
@@ -627,7 +591,7 @@ public class GlossaryWorkflowResource
                                                @RequestBody(required = false)
                                                              ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossaryCategory(serverName, userId, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGlossaryCategory(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -639,15 +603,13 @@ public class GlossaryWorkflowResource
      * Return the list of glossary term status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/status-list")
 
-    public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName,
-                                                                  @PathVariable String userId)
+    public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName)
     {
-        return restAPI.getGlossaryTermStatuses(serverName, userId);
+        return restAPI.getGlossaryTermStatuses(serverName);
     }
 
 
@@ -655,15 +617,13 @@ public class GlossaryWorkflowResource
      * Return the list of glossary term relationship status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
-    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName,
-                                                                                          @PathVariable String userId)
+    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName)
     {
-        return restAPI.getGlossaryTermRelationshipStatuses(serverName, userId);
+        return restAPI.getGlossaryTermRelationshipStatuses(serverName);
     }
 
 
@@ -671,15 +631,13 @@ public class GlossaryWorkflowResource
      * Return the list of glossary term relationship status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/activity-types")
 
-    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName,
-                                                                             @PathVariable String userId)
+    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName)
     {
-        return restAPI.getGlossaryTermActivityTypes(serverName, userId);
+        return restAPI.getGlossaryTermActivityTypes(serverName);
     }
 
 
@@ -687,7 +645,6 @@ public class GlossaryWorkflowResource
      * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the new term is to be located
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -701,7 +658,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/new-controlled")
 
     public GUIDResponse createControlledGlossaryTerm(@PathVariable String                            serverName,
-                                                     @PathVariable String                            userId,
                                                      @PathVariable String                            glossaryGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
                                                                    boolean                           forLineage,
@@ -709,7 +665,7 @@ public class GlossaryWorkflowResource
                                                                    boolean                           forDuplicateProcessing,
                                                      @RequestBody  ControlledGlossaryTermRequestBody requestBody)
     {
-        return restAPI.createControlledGlossaryTerm(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createControlledGlossaryTerm(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -717,7 +673,6 @@ public class GlossaryWorkflowResource
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
@@ -732,7 +687,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/from-template/{templateGUID}")
 
     public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String                      serverName,
-                                                       @PathVariable String                      userId,
                                                        @PathVariable String                      glossaryGUID,
                                                        @PathVariable String                      templateGUID,
                                                        @RequestParam (required = false, defaultValue = "true")
@@ -741,7 +695,7 @@ public class GlossaryWorkflowResource
                                                                      boolean                     templateSubstitute,
                                                        @RequestBody  GlossaryTemplateRequestBody requestBody)
     {
-        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, deepCopy, templateSubstitute, requestBody);
+        return restAPI.createGlossaryTermFromTemplate(serverName, glossaryGUID, templateGUID, deepCopy, templateSubstitute, requestBody);
     }
 
 
@@ -749,7 +703,6 @@ public class GlossaryWorkflowResource
      * Update the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
@@ -764,7 +717,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update")
 
     public VoidResponse updateGlossaryTerm(@PathVariable String                         serverName,
-                                           @PathVariable String                         userId,
                                            @PathVariable String                         glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
                                                          boolean                        isMergeUpdate,
@@ -774,7 +726,7 @@ public class GlossaryWorkflowResource
                                                          boolean                        forDuplicateProcessing,
                                            @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTerm(serverName, userId, glossaryTermGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossaryTerm(serverName, glossaryTermGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -783,7 +735,6 @@ public class GlossaryWorkflowResource
      * a controlled glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -797,7 +748,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/status")
 
     public VoidResponse updateGlossaryTermStatus(@PathVariable String                        serverName,
-                                                 @PathVariable String                        userId,
                                                  @PathVariable String                        glossaryTermGUID,
                                                  @RequestParam (required = false, defaultValue = "false")
                                                                boolean                      forLineage,
@@ -805,7 +755,7 @@ public class GlossaryWorkflowResource
                                                                boolean                      forDuplicateProcessing,
                                                  @RequestBody  GlossaryTermStatusRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTermStatus(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossaryTermStatus(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -813,7 +763,6 @@ public class GlossaryWorkflowResource
      * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param isMergeClassifications should the classification be merged or replace the target entity?
      * @param isMergeProperties should the properties be merged with the existing ones or replace them
@@ -829,7 +778,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update/from-template")
 
     public VoidResponse updateGlossaryTermFromTemplate(@PathVariable String                         serverName,
-                                                       @PathVariable String                         userId,
                                                        @PathVariable String                         glossaryTermGUID,
                                                        @RequestParam (required = false, defaultValue = "false")
                                                                      boolean                        isMergeClassifications,
@@ -841,7 +789,7 @@ public class GlossaryWorkflowResource
                                                                      boolean                        forDuplicateProcessing,
                                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTermFromTemplate(serverName, userId, glossaryTermGUID, isMergeClassifications, isMergeProperties, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossaryTermFromTemplate(serverName, glossaryTermGUID, isMergeClassifications, isMergeProperties, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -849,7 +797,6 @@ public class GlossaryWorkflowResource
      * Move the glossary term from one glossary to another.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -863,7 +810,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/move")
 
     public VoidResponse moveGlossaryTerm(@PathVariable String                         serverName,
-                                         @PathVariable String                         userId,
                                          @PathVariable String                         glossaryTermGUID,
                                          @RequestParam (required = false, defaultValue = "false")
                                          boolean                        forLineage,
@@ -871,7 +817,7 @@ public class GlossaryWorkflowResource
                                          boolean                        forDuplicateProcessing,
                                          @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.moveGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.moveGlossaryTerm(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -879,7 +825,6 @@ public class GlossaryWorkflowResource
      * Link a term to a category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param forLineage return elements marked with the Memento classification?
@@ -894,7 +839,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms/{glossaryTermGUID}")
 
     public VoidResponse setupTermCategory(@PathVariable String                  serverName,
-                                          @PathVariable String                  userId,
                                           @PathVariable String                  glossaryCategoryGUID,
                                           @PathVariable String                  glossaryTermGUID,
                                           @RequestParam (required = false, defaultValue = "false")
@@ -903,7 +847,7 @@ public class GlossaryWorkflowResource
                                                         boolean                 forDuplicateProcessing,
                                           @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setupTermCategory(serverName, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -911,7 +855,6 @@ public class GlossaryWorkflowResource
      * Unlink a term from a category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param forLineage return elements marked with the Memento classification?
@@ -926,7 +869,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms/{glossaryTermGUID}/remove")
 
     public VoidResponse clearTermCategory(@PathVariable String                        serverName,
-                                          @PathVariable String                        userId,
                                           @PathVariable String                        glossaryCategoryGUID,
                                           @PathVariable String                        glossaryTermGUID,
                                           @RequestParam (required = false, defaultValue = "false")
@@ -936,14 +878,13 @@ public class GlossaryWorkflowResource
                                           @RequestBody(required = false)
                                                         EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermCategory(serverName, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
     /**
      * Return the list of term-to-term relationship names.
      *
      * @param serverName name of the server instance to connect to
-     * @param userId calling user
      * @return list of type names that are subtypes of asset or
      * throws InvalidParameterException full path or userId is null or
      * throws PropertyServerException problem accessing property server or
@@ -951,10 +892,9 @@ public class GlossaryWorkflowResource
      */
     @GetMapping(path = "/glossaries/terms/relationships/type-names")
 
-    public NameListResponse getTermRelationshipTypeNames(@PathVariable String serverName,
-                                                         @PathVariable String userId)
+    public NameListResponse getTermRelationshipTypeNames(@PathVariable String serverName)
     {
-        return restAPI.getTermRelationshipTypeNames(serverName, userId);
+        return restAPI.getTermRelationshipTypeNames(serverName);
     }
 
 
@@ -962,7 +902,6 @@ public class GlossaryWorkflowResource
      * Link two terms together using a specialist relationship.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -978,7 +917,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}")
 
     public VoidResponse setupTermRelationship(@PathVariable String                  serverName,
-                                              @PathVariable String                  userId,
                                               @PathVariable String                  glossaryTermOneGUID,
                                               @PathVariable String                  relationshipTypeName,
                                               @PathVariable String                  glossaryTermTwoGUID,
@@ -988,7 +926,7 @@ public class GlossaryWorkflowResource
                                                             boolean                  forDuplicateProcessing,
                                               @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setupTermRelationship(serverName, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -996,7 +934,6 @@ public class GlossaryWorkflowResource
      * Update the relationship properties for the two terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1012,7 +949,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/update")
 
     public VoidResponse updateTermRelationship(@PathVariable String                  serverName,
-                                               @PathVariable String                  userId,
                                                @PathVariable String                  glossaryTermOneGUID,
                                                @PathVariable String                  relationshipTypeName,
                                                @PathVariable String                  glossaryTermTwoGUID,
@@ -1022,7 +958,7 @@ public class GlossaryWorkflowResource
                                                              boolean                 forDuplicateProcessing,
                                                @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.updateTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateTermRelationship(serverName, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1030,7 +966,6 @@ public class GlossaryWorkflowResource
      * Remove the relationship between two terms.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1046,7 +981,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/remove")
 
     public VoidResponse clearTermRelationship(@PathVariable String                        serverName,
-                                              @PathVariable String                        userId,
                                               @PathVariable String                        glossaryTermOneGUID,
                                               @PathVariable String                        relationshipTypeName,
                                               @PathVariable String                        glossaryTermTwoGUID,
@@ -1057,7 +991,7 @@ public class GlossaryWorkflowResource
                                               @RequestBody(required = false)
                                                             EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearTermRelationship(serverName, userId, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermRelationship(serverName, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1065,7 +999,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes an abstract concept.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1079,7 +1012,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept")
 
     public VoidResponse setTermAsAbstractConcept(@PathVariable String                       serverName,
-                                                 @PathVariable String                       userId,
                                                  @PathVariable String                       glossaryTermGUID,
                                                  @RequestParam (required = false, defaultValue = "false")
                                                                boolean                      forLineage,
@@ -1088,7 +1020,7 @@ public class GlossaryWorkflowResource
                                                  @RequestBody(required = false)
                                                                ClassificationRequestBody    requestBody)
     {
-        return restAPI.setTermAsAbstractConcept(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsAbstractConcept(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1096,7 +1028,6 @@ public class GlossaryWorkflowResource
      * Remove the abstract concept designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1110,7 +1041,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept/remove")
 
     public VoidResponse clearTermAsAbstractConcept(@PathVariable String                    serverName,
-                                                   @PathVariable String                    userId,
                                                    @PathVariable String                    glossaryTermGUID,
                                                    @RequestParam (required = false, defaultValue = "false")
                                                                  boolean                   forLineage,
@@ -1119,7 +1049,7 @@ public class GlossaryWorkflowResource
                                                    @RequestBody(required = false)
                                                                  ClassificationRequestBody requestBody)
     {
-        return restAPI.clearTermAsAbstractConcept(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsAbstractConcept(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1128,7 +1058,6 @@ public class GlossaryWorkflowResource
      * properties that describe the characteristics of the data values found within.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1142,7 +1071,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field")
 
     public VoidResponse setTermAsDataField(@PathVariable String                       serverName,
-                                           @PathVariable String                       userId,
                                            @PathVariable String                       glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
                                                          boolean                      forLineage,
@@ -1151,7 +1079,7 @@ public class GlossaryWorkflowResource
                                            @RequestBody(required = false)
                                                          ClassificationRequestBody    requestBody)
     {
-        return restAPI.setTermAsDataField(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsDataField(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1159,7 +1087,6 @@ public class GlossaryWorkflowResource
      * Remove the data field designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1173,7 +1100,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field/remove")
 
     public VoidResponse clearTermAsDataField(@PathVariable String                    serverName,
-                                             @PathVariable String                    userId,
                                              @PathVariable String                    glossaryTermGUID,
                                              @RequestParam (required = false, defaultValue = "false")
                                                            boolean                   forLineage,
@@ -1182,7 +1108,7 @@ public class GlossaryWorkflowResource
                                              @RequestBody(required = false)
                                                            ClassificationRequestBody requestBody)
     {
-        return restAPI.clearTermAsDataField(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsDataField(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1190,7 +1116,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1204,7 +1129,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value")
 
     public VoidResponse setTermAsDataValue(@PathVariable String                       serverName,
-                                           @PathVariable String                       userId,
                                            @PathVariable String                       glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
                                                          boolean                      forLineage,
@@ -1213,7 +1137,7 @@ public class GlossaryWorkflowResource
                                            @RequestBody(required = false)
                                                          ClassificationRequestBody    requestBody)
     {
-        return restAPI.setTermAsDataValue(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsDataValue(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1221,7 +1145,6 @@ public class GlossaryWorkflowResource
      * Remove the data value designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1235,7 +1158,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value/remove")
 
     public VoidResponse clearTermAsDataValue(@PathVariable String                    serverName,
-                                             @PathVariable String                    userId,
                                              @PathVariable String                    glossaryTermGUID,
                                              @RequestParam (required = false, defaultValue = "false")
                                                            boolean                   forLineage,
@@ -1244,7 +1166,7 @@ public class GlossaryWorkflowResource
                                              @RequestBody(required = false)
                                                            ClassificationRequestBody requestBody)
     {
-        return restAPI.clearTermAsDataValue(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsDataValue(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1252,7 +1174,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1266,7 +1187,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity")
 
     public VoidResponse setTermAsActivity(@PathVariable String                    serverName,
-                                          @PathVariable String                    userId,
                                           @PathVariable String                    glossaryTermGUID,
                                           @RequestParam (required = false, defaultValue = "false")
                                                         boolean                   forLineage,
@@ -1274,7 +1194,7 @@ public class GlossaryWorkflowResource
                                                         boolean                   forDuplicateProcessing,
                                           @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsActivity(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsActivity(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1282,7 +1202,6 @@ public class GlossaryWorkflowResource
      * Remove the activity designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1296,7 +1215,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity/remove")
 
     public VoidResponse clearTermAsActivity(@PathVariable String                    serverName,
-                                            @PathVariable String                    userId,
                                             @PathVariable String                    glossaryTermGUID,
                                             @RequestParam (required = false, defaultValue = "false")
                                                           boolean                   forLineage,
@@ -1305,7 +1223,7 @@ public class GlossaryWorkflowResource
                                             @RequestBody(required = false)
                                                           ClassificationRequestBody requestBody)
     {
-        return restAPI.clearTermAsActivity(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsActivity(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1313,7 +1231,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes a context.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1327,7 +1244,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition")
 
     public VoidResponse setTermAsContext(@PathVariable String                    serverName,
-                                         @PathVariable String                    userId,
                                          @PathVariable String                    glossaryTermGUID,
                                          @RequestParam (required = false, defaultValue = "false")
                                                        boolean                   forLineage,
@@ -1335,7 +1251,7 @@ public class GlossaryWorkflowResource
                                                        boolean                   forDuplicateProcessing,
                                          @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsContext(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsContext(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1343,7 +1259,6 @@ public class GlossaryWorkflowResource
      * Remove the context definition designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1357,7 +1272,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition/remove")
 
     public VoidResponse clearTermAsContext(@PathVariable String                   serverName,
-                                           @PathVariable String                   userId,
                                            @PathVariable String                   glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
                                                          boolean                  forLineage,
@@ -1366,7 +1280,7 @@ public class GlossaryWorkflowResource
                                            @RequestBody(required = false)
                                                          ClassificationRequestBody requestBody)
     {
-        return restAPI.clearTermAsContext(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsContext(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1374,7 +1288,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes a spine object.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1388,7 +1301,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-spine-object")
 
     public VoidResponse setTermAsSpineObject(@PathVariable String                   serverName,
-                                             @PathVariable String                   userId,
                                              @PathVariable String                   glossaryTermGUID,
                                              @RequestParam (required = false, defaultValue = "false")
                                                            boolean                  forLineage,
@@ -1397,7 +1309,7 @@ public class GlossaryWorkflowResource
                                              @RequestBody(required = false)
                                                            ClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsSpineObject(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsSpineObject(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1405,7 +1317,6 @@ public class GlossaryWorkflowResource
      * Remove the spine object designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1419,7 +1330,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-spine-object/remove")
 
     public VoidResponse clearTermAsSpineObject(@PathVariable String                        serverName,
-                                               @PathVariable String                        userId,
                                                @PathVariable String                        glossaryTermGUID,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                       forLineage,
@@ -1428,7 +1338,7 @@ public class GlossaryWorkflowResource
                                                @RequestBody(required = false)
                                                              ClassificationRequestBody     requestBody)
     {
-        return restAPI.clearTermAsSpineObject(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsSpineObject(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1436,7 +1346,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes a spine attribute.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1450,7 +1359,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-spine-attribute")
 
     public VoidResponse setTermAsSpineAttribute(@PathVariable String                        serverName,
-                                                @PathVariable String                        userId,
                                                 @PathVariable String                        glossaryTermGUID,
                                                 @RequestParam (required = false, defaultValue = "false")
                                                               boolean                      forLineage,
@@ -1459,7 +1367,7 @@ public class GlossaryWorkflowResource
                                                 @RequestBody(required = false)
                                                               ClassificationRequestBody    requestBody)
     {
-        return restAPI.setTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsSpineAttribute(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1467,7 +1375,6 @@ public class GlossaryWorkflowResource
      * Remove the spine attribute designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1481,7 +1388,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-spine-attribute/remove")
 
     public VoidResponse clearTermAsSpineAttribute(@PathVariable String                        serverName,
-                                                  @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
                                                   @RequestParam (required = false, defaultValue = "false")
                                                                 boolean                       forLineage,
@@ -1490,7 +1396,7 @@ public class GlossaryWorkflowResource
                                                   @RequestBody(required = false)
                                                                 ClassificationRequestBody     requestBody)
     {
-        return restAPI.clearTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsSpineAttribute(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1498,7 +1404,6 @@ public class GlossaryWorkflowResource
      * Classify the glossary term to indicate that it describes an object identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1512,7 +1417,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-object-identifier")
 
     public VoidResponse setTermAsObjectIdentifier(@PathVariable String                   serverName,
-                                                  @PathVariable String                   userId,
                                                   @PathVariable String                   glossaryTermGUID,
                                                   @RequestParam (required = false, defaultValue = "false")
                                                                boolean                  forLineage,
@@ -1521,7 +1425,7 @@ public class GlossaryWorkflowResource
                                                   @RequestBody(required = false)
                                                                ClassificationRequestBody requestBody)
     {
-        return restAPI.setTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setTermAsObjectIdentifier(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1529,7 +1433,6 @@ public class GlossaryWorkflowResource
      * Remove the object identifier designation from the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1543,7 +1446,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-object-identifier/remove")
 
     public VoidResponse clearTermAsObjectIdentifier(@PathVariable String                        serverName,
-                                                    @PathVariable String                        userId,
                                                     @PathVariable String                        glossaryTermGUID,
                                                     @RequestParam (required = false, defaultValue = "false")
                                                                   boolean                      forLineage,
@@ -1552,7 +1454,7 @@ public class GlossaryWorkflowResource
                                                     @RequestBody(required = false)
                                                                   ClassificationRequestBody            requestBody)
     {
-        return restAPI.clearTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearTermAsObjectIdentifier(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1560,7 +1462,6 @@ public class GlossaryWorkflowResource
      * Undo the last update to the glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1574,7 +1475,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/undo")
 
     public GlossaryTermElementResponse undoGlossaryTermUpdate(@PathVariable String                        serverName,
-                                                              @PathVariable String                        userId,
                                                               @PathVariable String                        glossaryTermGUID,
                                                               @RequestParam (required = false, defaultValue = "false")
                                                                             boolean                       forLineage,
@@ -1583,7 +1483,7 @@ public class GlossaryWorkflowResource
                                                               @RequestBody(required = false)
                                                                             EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.undoGlossaryTermUpdate(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.undoGlossaryTermUpdate(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1591,7 +1491,6 @@ public class GlossaryWorkflowResource
      * Archive the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to archive
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -1604,14 +1503,13 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/archive")
 
     public VoidResponse archiveGlossaryTerm(@PathVariable String             serverName,
-                                            @PathVariable String             userId,
                                             @PathVariable String             glossaryTermGUID,
                                             @RequestParam (required = false, defaultValue = "false")
                                                           boolean            forDuplicateProcessing,
                                             @RequestBody(required = false)
                                                           ArchiveRequestBody requestBody)
     {
-        return restAPI.archiveGlossaryTerm(serverName, userId, glossaryTermGUID, forDuplicateProcessing, requestBody);
+        return restAPI.archiveGlossaryTerm(serverName, glossaryTermGUID, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1619,7 +1517,6 @@ public class GlossaryWorkflowResource
      * Remove the metadata element representing a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1633,7 +1530,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/remove")
 
     public VoidResponse removeGlossaryTerm(@PathVariable String                         serverName,
-                                           @PathVariable String                         userId,
                                            @PathVariable String                         glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
                                                          boolean                        forLineage,
@@ -1642,7 +1538,7 @@ public class GlossaryWorkflowResource
                                            @RequestBody(required = false)
                                                          ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGlossaryTerm(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1658,7 +1554,6 @@ public class GlossaryWorkflowResource
      * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param elementGUID unique identifier of the element where the note log is located
      * @param isPublic                 is this element visible to other people.
      * @param forLineage return elements marked with the Memento classification?
@@ -1673,7 +1568,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/elements/{elementGUID}/note-logs")
 
     public  GUIDResponse createNoteLog(@PathVariable String                         serverName,
-                                       @PathVariable String                         userId,
                                        @PathVariable String                         elementGUID,
                                        @RequestParam (required = false, defaultValue = "true")
                                        boolean                        isPublic,
@@ -1683,7 +1577,7 @@ public class GlossaryWorkflowResource
                                        boolean                        forDuplicateProcessing,
                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.createNoteLog(serverName, userId, elementGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createNoteLog(serverName, elementGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1691,7 +1585,6 @@ public class GlossaryWorkflowResource
      * Update the metadata element representing a note log.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param isPublic                 is this element visible to other people.
@@ -1707,7 +1600,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/note-logs/{noteLogGUID}/update")
 
     public VoidResponse updateNoteLog(@PathVariable String                         serverName,
-                                      @PathVariable String                         userId,
                                       @PathVariable String                         noteLogGUID,
                                       @RequestParam (required = false, defaultValue = "false")
                                       boolean                        isMergeUpdate,
@@ -1719,7 +1611,7 @@ public class GlossaryWorkflowResource
                                       boolean                        forDuplicateProcessing,
                                       @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateNoteLog(serverName, userId, noteLogGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateNoteLog(serverName, noteLogGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1727,7 +1619,6 @@ public class GlossaryWorkflowResource
      * Remove the metadata element representing a note log.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1741,7 +1632,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/note-logs/{noteLogGUID}/remove")
 
     public VoidResponse removeNoteLog(@PathVariable String                         serverName,
-                                      @PathVariable String                         userId,
                                       @PathVariable String                         noteLogGUID,
                                       @RequestParam (required = false, defaultValue = "false")
                                       boolean                        forLineage,
@@ -1750,7 +1640,7 @@ public class GlossaryWorkflowResource
                                       @RequestBody(required = false)
                                       ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeNoteLog(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeNoteLog(serverName, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1762,7 +1652,6 @@ public class GlossaryWorkflowResource
      * Create a new metadata element to represent a note.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the element where the note is located
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1776,7 +1665,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/note-logs/{noteLogGUID}/notes")
 
     public GUIDResponse createNote(@PathVariable String                         serverName,
-                                   @PathVariable String                         userId,
                                    @PathVariable String                         noteLogGUID,
                                    @RequestParam (required = false, defaultValue = "false")
                                                  boolean                        forLineage,
@@ -1784,14 +1672,13 @@ public class GlossaryWorkflowResource
                                                  boolean                        forDuplicateProcessing,
                                    @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.createNote(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createNote(serverName, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
      * Update the properties of the metadata element representing a note.
      *
-     * @param userId calling user
      * @param serverName   name of the server instances for this request
      * @param noteGUID unique identifier of the note to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -1807,7 +1694,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/note-logs/notes/{noteGUID}/update")
 
     public VoidResponse updateNote(@PathVariable String                         serverName,
-                                   @PathVariable String                         userId,
                                    @PathVariable String                         noteGUID,
                                    @RequestParam (required = false, defaultValue = "false")
                                                  boolean                        isMergeUpdate,
@@ -1817,7 +1703,7 @@ public class GlossaryWorkflowResource
                                                  boolean                        forDuplicateProcessing,
                                    @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateNote(serverName, userId, noteGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateNote(serverName, noteGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1825,7 +1711,6 @@ public class GlossaryWorkflowResource
      * Remove the metadata element representing a note.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteGUID unique identifier of the metadata element to remove
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1839,7 +1724,6 @@ public class GlossaryWorkflowResource
     @PostMapping("/note-logs/notes/{noteGUID}/remove")
 
     public VoidResponse removeNote(@PathVariable String                         serverName,
-                                   @PathVariable String                         userId,
                                    @PathVariable String                         noteGUID,
                                    @RequestParam (required = false, defaultValue = "false")
                                                  boolean                        forLineage,
@@ -1848,7 +1732,7 @@ public class GlossaryWorkflowResource
                                    @RequestBody(required = false)
                                                  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeNote(serverName, userId, noteGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeNote(serverName, noteGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1858,7 +1742,6 @@ public class GlossaryWorkflowResource
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1872,7 +1755,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/confidence")
 
     public VoidResponse setConfidenceClassification(@PathVariable String                    serverName,
-                                                    @PathVariable String                    userId,
                                                     @PathVariable String                    elementGUID,
                                                     @RequestParam(required = false, defaultValue = "false")
                                                                   boolean                   forLineage,
@@ -1881,7 +1763,7 @@ public class GlossaryWorkflowResource
                                                     @RequestBody  (required = false)
                                                                   ClassificationRequestBody requestBody)
     {
-        return restAPI.setConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1890,7 +1772,6 @@ public class GlossaryWorkflowResource
      * confidence to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1904,7 +1785,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/confidence/remove")
 
     public VoidResponse clearConfidenceClassification(@PathVariable String                    serverName,
-                                                      @PathVariable String                    userId,
                                                       @PathVariable String                    elementGUID,
                                                       @RequestParam(required = false, defaultValue = "false")
                                                       boolean                   forLineage,
@@ -1913,7 +1793,7 @@ public class GlossaryWorkflowResource
                                                       @RequestBody  (required = false)
                                                           EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.clearConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1922,7 +1802,6 @@ public class GlossaryWorkflowResource
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1936,7 +1815,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/criticality")
 
     public VoidResponse setCriticalityClassification(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
                                                                    boolean                   forLineage,
@@ -1945,7 +1823,7 @@ public class GlossaryWorkflowResource
                                                      @RequestBody  (required = false)
                                                                    ClassificationRequestBody requestBody)
     {
-        return restAPI.setCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1954,7 +1832,6 @@ public class GlossaryWorkflowResource
      * criticality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1968,7 +1845,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/criticality/remove")
 
     public VoidResponse clearCriticalityClassification(@PathVariable String                    serverName,
-                                                       @PathVariable String                    userId,
                                                        @PathVariable String                    elementGUID,
                                                        @RequestParam(required = false, defaultValue = "false")
                                                                      boolean                   forLineage,
@@ -1977,7 +1853,7 @@ public class GlossaryWorkflowResource
                                                        @RequestBody  (required = false)
                                                                      EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.clearCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1988,7 +1864,6 @@ public class GlossaryWorkflowResource
      * The level of confidence is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2002,7 +1877,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/confidentiality")
 
     public VoidResponse setConfidentialityClassification(@PathVariable String                    serverName,
-                                                         @PathVariable String                    userId,
                                                          @PathVariable String                    elementGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
                                                          boolean                   forLineage,
@@ -2011,7 +1885,7 @@ public class GlossaryWorkflowResource
                                                          @RequestBody  (required = false)
                                                          ClassificationRequestBody requestBody)
     {
-        return restAPI.setConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2020,7 +1894,6 @@ public class GlossaryWorkflowResource
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2034,7 +1907,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/confidentiality/remove")
 
     public VoidResponse clearConfidentialityClassification(@PathVariable String                    serverName,
-                                                           @PathVariable String                    userId,
                                                            @PathVariable String                    elementGUID,
                                                            @RequestParam(required = false, defaultValue = "false")
                                                            boolean                   forLineage,
@@ -2043,7 +1915,7 @@ public class GlossaryWorkflowResource
                                                            @RequestBody  (required = false)
                                                            EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.clearConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2054,7 +1926,6 @@ public class GlossaryWorkflowResource
      * properties respectively.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to classify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2068,7 +1939,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/retention")
 
     public VoidResponse setRetentionClassification(@PathVariable String                    serverName,
-                                                   @PathVariable String                    userId,
                                                    @PathVariable String                    elementGUID,
                                                    @RequestParam(required = false, defaultValue = "false")
                                                    boolean                   forLineage,
@@ -2077,7 +1947,7 @@ public class GlossaryWorkflowResource
                                                    @RequestBody  (required = false)
                                                    ClassificationRequestBody requestBody)
     {
-        return restAPI.setRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2086,7 +1956,6 @@ public class GlossaryWorkflowResource
      * track the retention period to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to unclassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2100,7 +1969,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/retention/remove")
 
     public VoidResponse clearRetentionClassification(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
                                                      boolean                   forLineage,
@@ -2109,7 +1977,7 @@ public class GlossaryWorkflowResource
                                                      @RequestBody  (required = false)
                                                      EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.clearRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2117,7 +1985,6 @@ public class GlossaryWorkflowResource
      * Add or replace the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId      calling user
      * @param elementGUID unique identifier of element to attach to
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2131,7 +1998,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/security-tags")
 
     public VoidResponse addSecurityTags(@PathVariable String                    serverName,
-                                        @PathVariable String                    userId,
                                         @PathVariable String                    elementGUID,
                                         @RequestParam(required = false, defaultValue = "false")
                                         boolean                   forLineage,
@@ -2140,7 +2006,7 @@ public class GlossaryWorkflowResource
                                         @RequestBody  (required = false)
                                         ClassificationRequestBody requestBody)
     {
-        return restAPI.addSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2148,7 +2014,6 @@ public class GlossaryWorkflowResource
      * Remove the security tags classification from an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId      calling user
      * @param elementGUID   unique identifier of element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2162,7 +2027,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/security-tags/remove")
 
     public VoidResponse clearSecurityTags(@PathVariable String          serverName,
-                                          @PathVariable String          userId,
                                           @PathVariable String          elementGUID,
                                           @RequestParam (required = false, defaultValue = "false")
                                                         boolean                   forLineage,
@@ -2171,7 +2035,7 @@ public class GlossaryWorkflowResource
                                           @RequestBody(required = false)
                                                         ClassificationRequestBody requestBody)
     {
-        return restAPI.clearSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2179,7 +2043,6 @@ public class GlossaryWorkflowResource
      * Add or replace the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2193,7 +2056,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/ownership")
 
     public VoidResponse addOwnership(@PathVariable String                    serverName,
-                                     @PathVariable String                    userId,
                                      @PathVariable String                    elementGUID,
                                      @RequestParam(required = false, defaultValue = "false")
                                      boolean                   forLineage,
@@ -2202,7 +2064,7 @@ public class GlossaryWorkflowResource
                                      @RequestBody  (required = false)
                                      ClassificationRequestBody requestBody)
     {
-        return restAPI.addOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addOwnership(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2210,7 +2072,6 @@ public class GlossaryWorkflowResource
      * Remove the ownership classification from an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID element where the classification needs to be removed.
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2224,7 +2085,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/ownership/remove")
 
     public VoidResponse clearOwnership(@PathVariable String                    serverName,
-                                       @PathVariable String                    userId,
                                        @PathVariable String                    elementGUID,
                                        @RequestParam(required = false, defaultValue = "false")
                                        boolean                   forLineage,
@@ -2233,7 +2093,7 @@ public class GlossaryWorkflowResource
                                        @RequestBody  (required = false)
                                        ClassificationRequestBody requestBody)
     {
-        return restAPI.clearOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearOwnership(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2241,7 +2101,6 @@ public class GlossaryWorkflowResource
      * Classify the element to assert that the definitions it represents are part of a subject area definition.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2255,7 +2114,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/subject-area-member")
 
     public VoidResponse addElementToSubjectArea(@PathVariable String                    serverName,
-                                                @PathVariable String                    userId,
                                                 @PathVariable String                    elementGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
                                                 boolean                   forLineage,
@@ -2264,7 +2122,7 @@ public class GlossaryWorkflowResource
                                                 @RequestBody  (required = false)
                                                 ClassificationRequestBody requestBody)
     {
-        return restAPI.addElementToSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addElementToSubjectArea(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2272,7 +2130,6 @@ public class GlossaryWorkflowResource
      * Remove the subject area designation from the identified element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2286,7 +2143,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/subject-area-member/remove")
 
     public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
-                                                     @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
                                                      boolean                   forLineage,
@@ -2295,7 +2151,7 @@ public class GlossaryWorkflowResource
                                                      @RequestBody  (required = false)
                                                      ClassificationRequestBody requestBody)
     {
-        return restAPI.removeElementFromSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeElementFromSubjectArea(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2304,7 +2160,6 @@ public class GlossaryWorkflowResource
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param forLineage return elements marked with the Memento classification?
@@ -2319,7 +2174,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}")
 
     public VoidResponse setupSemanticAssignment(@PathVariable String                  serverName,
-                                                @PathVariable String                  userId,
                                                 @PathVariable String                  elementGUID,
                                                 @PathVariable String                  glossaryTermGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
@@ -2329,7 +2183,7 @@ public class GlossaryWorkflowResource
                                                 @RequestBody  (required = false)
                                                 RelationshipRequestBody requestBody)
     {
-        return restAPI.setupSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.setupSemanticAssignment(serverName, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2337,7 +2191,6 @@ public class GlossaryWorkflowResource
      * Remove a semantic assignment relationship between an element and its glossary term.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param forLineage return elements marked with the Memento classification?
@@ -2352,7 +2205,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/remove")
 
     public VoidResponse clearSemanticAssignment(@PathVariable String                        serverName,
-                                                @PathVariable String                        userId,
                                                 @PathVariable String                        elementGUID,
                                                 @PathVariable String                        glossaryTermGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
@@ -2362,7 +2214,7 @@ public class GlossaryWorkflowResource
                                                 @RequestBody  (required = false)
                                                 EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2370,7 +2222,6 @@ public class GlossaryWorkflowResource
      * Link a governance definition to an element using the GovernedBy relationship.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
      * @param forLineage return elements marked with the Memento classification?
@@ -2385,7 +2236,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}")
 
     public VoidResponse addGovernanceDefinitionToElement(@PathVariable String                  serverName,
-                                                         @PathVariable String                  userId,
                                                          @PathVariable String                  definitionGUID,
                                                          @PathVariable String                  elementGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
@@ -2395,7 +2245,7 @@ public class GlossaryWorkflowResource
                                                          @RequestBody  (required = false)
                                                          RelationshipRequestBody requestBody)
     {
-        return restAPI.addGovernanceDefinitionToElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addGovernanceDefinitionToElement(serverName, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -2403,7 +2253,6 @@ public class GlossaryWorkflowResource
      * Remove the GovernedBy relationship between a governance definition and an element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to update
      * @param forLineage return elements marked with the Memento classification?
@@ -2418,7 +2267,6 @@ public class GlossaryWorkflowResource
     @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/remove")
 
     public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String                        serverName,
-                                                              @PathVariable String                        userId,
                                                               @PathVariable String                        definitionGUID,
                                                               @PathVariable String                        elementGUID,
                                                               @RequestParam(required = false, defaultValue = "false")
@@ -2428,6 +2276,6 @@ public class GlossaryWorkflowResource
                                                               @RequestBody  (required = false)
                                                               EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.removeGovernanceDefinitionFromElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeGovernanceDefinitionFromElement(serverName, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/dev-ops/users/{userId}")
 
-@Tag(name="DevOps OMAS", description="The DevOps OMAS provides APIs and events for tools that play a role in a DevOps pipeline.",
-     externalDocs=@ExternalDocumentation(description="DevOps Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: DevOps OMAS", description="The DevOps OMAS provides APIs and events for tools that play a role in a DevOps pipeline.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/dev-ops/overview/"))
 
 public class DevOpsResource

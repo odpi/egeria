@@ -4,15 +4,33 @@
 package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.ValidValuesExchangeInterface;
+import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ReferenceValueAssignmentDefinitionConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ReferenceValueAssignmentItemConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ValidValueConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ValidValueMemberConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentDefinitionElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworkservices.gaf.client.converters.OpenMetadataTypesMapper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,12 +39,20 @@ import java.util.List;
  * ValidValuesExchangeClient provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
- *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
 public class ValidValuesExchangeClient extends ExchangeClientBase implements ValidValuesExchangeInterface
 {
+    final private ValidValueConverter<ValidValueElement>      validValueConverter;
+    final private Class<ValidValueElement>                    validValueBeanClass = ValidValueElement.class;
+    final private ValidValueMemberConverter<ValidValueMember> validValueMemberConverter;
+    final private Class<ValidValueMember>                     validValueMemberClass = ValidValueMember.class;
+    final private ReferenceValueAssignmentItemConverter<ReferenceValueAssignmentItemElement> referenceValueAssignmentItemConverter;
+    final private Class<ReferenceValueAssignmentItemElement>                                 referenceValueAssignmentItemBeanClass = ReferenceValueAssignmentItemElement.class;
+    final private ReferenceValueAssignmentDefinitionConverter<ReferenceValueAssignmentDefinitionElement> referenceValueAssignmentDefinitionConverter;
+    final private Class<ReferenceValueAssignmentDefinitionElement>                                       referenceValueAssignmentDefinitionBeanClass = ReferenceValueAssignmentDefinitionElement.class;
+
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -41,6 +67,22 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
+
+        validValueConverter = new ValidValueConverter<>(propertyHelper,
+                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                        serverName);
+
+        validValueMemberConverter = new ValidValueMemberConverter<>(propertyHelper,
+                                                                    AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                    serverName);
+
+        referenceValueAssignmentItemConverter = new ReferenceValueAssignmentItemConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
+        
+        referenceValueAssignmentDefinitionConverter = new ReferenceValueAssignmentDefinitionConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
     }
 
 
@@ -56,6 +98,22 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
+
+        validValueConverter = new ValidValueConverter<>(propertyHelper,
+                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                        serverName);
+
+        validValueMemberConverter = new ValidValueMemberConverter<>(propertyHelper,
+                                                                    AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                    serverName);
+        
+        referenceValueAssignmentItemConverter = new ReferenceValueAssignmentItemConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
+
+        referenceValueAssignmentDefinitionConverter = new ReferenceValueAssignmentDefinitionConverter<>(propertyHelper,
+                                                                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                                        serverName);
     }
 
 
@@ -79,6 +137,22 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+
+        validValueConverter = new ValidValueConverter<>(propertyHelper,
+                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                        serverName);
+
+        validValueMemberConverter = new ValidValueMemberConverter<>(propertyHelper,
+                                                                    AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                    serverName);
+        
+        referenceValueAssignmentItemConverter = new ReferenceValueAssignmentItemConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
+
+        referenceValueAssignmentDefinitionConverter = new ReferenceValueAssignmentDefinitionConverter<>(propertyHelper,
+                                                                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                                        serverName);
     }
 
 
@@ -100,6 +174,22 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      AuditLog               auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+
+        validValueConverter = new ValidValueConverter<>(propertyHelper,
+                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                        serverName);
+
+        validValueMemberConverter = new ValidValueMemberConverter<>(propertyHelper,
+                                                                    AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                    serverName);
+        
+        referenceValueAssignmentItemConverter = new ReferenceValueAssignmentItemConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
+
+        referenceValueAssignmentDefinitionConverter = new ReferenceValueAssignmentDefinitionConverter<>(propertyHelper,
+                                                                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                                        serverName);
     }
 
 
@@ -120,6 +210,22 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
+
+        validValueConverter = new ValidValueConverter<>(propertyHelper,
+                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                        serverName);
+
+        validValueMemberConverter = new ValidValueMemberConverter<>(propertyHelper,
+                                                                    AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                    serverName);
+        
+        referenceValueAssignmentItemConverter = new ReferenceValueAssignmentItemConverter<>(propertyHelper,
+                                                                                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                            serverName);
+
+        referenceValueAssignmentDefinitionConverter = new ReferenceValueAssignmentDefinitionConverter<>(propertyHelper,
+                                                                                                        AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                                                        serverName);
     }
 
     /* =======================================================
@@ -136,6 +242,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier for the new set
      *
@@ -148,12 +257,44 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                        String                       assetManagerGUID,
                                        String                       assetManagerName,
                                        ExternalIdentifierProperties externalIdentifierProperties,
-                                       ValidValueProperties         validValueProperties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+                                       ValidValueProperties         validValueProperties,
+                                       Date                         effectiveTime,
+                                       boolean                      forLineage,
+                                       boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "createValidValueSet";
+        final String validValuePropertiesName = "validValueProperties";
+        final String qualifiedNameParameterName = "validValueProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
+        invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String validValueTypeName = OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME;
+
+        if (validValueProperties.getTypeName() != null)
+        {
+            validValueTypeName = validValueProperties.getTypeName();
+        }
+
+        String validValueGUID = openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                                     validValueTypeName,
+                                                                                     ElementStatus.ACTIVE,
+                                                                                     validValueProperties.getEffectiveFrom(),
+                                                                                     validValueProperties.getEffectiveTo(),
+                                                                                     this.getElementProperties(validValueProperties),
+                                                                                     null);
+
+        super.addExternalIdentifier(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    validValueGUID,
+                                    validValueTypeName,
+                                    externalIdentifierProperties);
+
+        return validValueGUID;
     }
 
 
@@ -166,6 +307,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier for the new definition
      *
@@ -175,18 +319,55 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      */
     @Override
     public String  createValidValueDefinition(String                       userId,
-                                              String                       setGUID,
                                               String                       assetManagerGUID,
                                               String                       assetManagerName,
+                                              String                       setGUID,
                                               ExternalIdentifierProperties externalIdentifierProperties,
-                                              ValidValueProperties         validValueProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                              ValidValueProperties         validValueProperties,
+                                              Date                         effectiveTime,
+                                              boolean                      forLineage,
+                                              boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
-        // todo
-        return null;
-    }
+        final String methodName = "createValidValueDefinition";
+        final String validValuePropertiesName = "validValueProperties";
+        final String qualifiedNameParameterName = "validValueProperties.qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
+        invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String validValueTypeName = OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME;
+
+        if (validValueProperties.getTypeName() != null)
+        {
+            validValueTypeName = validValueProperties.getTypeName();
+        }
+
+        String validValueGUID = openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                                     validValueTypeName,
+                                                                                     ElementStatus.ACTIVE,
+                                                                                     null,
+                                                                                     null,
+                                                                                     validValueProperties.getEffectiveFrom(),
+                                                                                     validValueProperties.getEffectiveTo(),
+                                                                                     this.getElementProperties(validValueProperties),
+                                                                                     null,
+                                                                                     setGUID,
+                                                                                     OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                     null,
+                                                                                     true);
+
+        super.addExternalIdentifier(userId,
+                                    assetManagerGUID,
+                                    assetManagerName,
+                                    validValueGUID,
+                                    validValueTypeName,
+                                    externalIdentifierProperties);
+
+        return validValueGUID;
+    }
 
 
     /**
@@ -223,9 +404,35 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
-    }
+        final String methodName = "updateValidValue";
+        final String validValuePropertiesName = "validValueProperties";
+        final String qualifiedNameParameterName = "validValueProperties.qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        this.validateExternalIdentifier(userId,
+                                        assetManagerGUID,
+                                        assetManagerName,
+                                        validValueGUID,
+                                        OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        validValueExternalIdentifier);
+
+        openMetadataStoreClient.updateMetadataElementInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             validValueGUID,
+                                                             ! isMergeUpdate,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             this.getElementProperties(validValueProperties),
+                                                             new Date());
+    }
 
 
     /**
@@ -256,9 +463,27 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        // todo
-    }
+        final String methodName = "removeValidValue";
+        final String validValueGUIDParameterName = "validValueGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        assetManagerGUID,
+                                        assetManagerName,
+                                        validValueGUID,
+                                        OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        validValueExternalIdentifier);
+        
+        openMetadataStoreClient.deleteMetadataElementInStore(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             validValueGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
 
 
     /**
@@ -290,7 +515,87 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        // todo
+        this.attachValidValueToSet(userId,
+                                   assetManagerGUID,
+                                   assetManagerName,
+                                   setGUID,
+                                   validValueGUID,
+                                   null,
+                                   effectiveTime,
+                                   forLineage,
+                                   forDuplicateProcessing);
+    }
+
+
+    /**
+     * Create a link between a valid value set or definition and a set.  This means the valid
+     * value is a member of the set.
+     *
+     * @param userId calling user.
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param setGUID unique identifier of the set.
+     * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param properties is this the default value - used when creating a list of valid values
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    @Override
+    public void    attachValidValueToSet(String                         userId,
+                                         String                         assetManagerGUID,
+                                         String                         assetManagerName,
+                                         String                         setGUID,
+                                         String                         validValueGUID,
+                                         ValidValueMembershipProperties properties,
+                                         Date                           effectiveTime,
+                                         boolean                        forLineage,
+                                         boolean                        forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName                  = "attachValidValueToSet";
+        final String validValueGUIDParameterName = "validValueGUID";
+        final String parentGUIDParameterName     = "setGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(setGUID, parentGUIDParameterName, methodName);
+
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addBooleanProperty(null,
+                                                                                    OpenMetadataTypesMapper.IS_DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                    properties.getDefaultValue());
+
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 setGUID,
+                                                                 validValueGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 properties.getEffectiveFrom(),
+                                                                 properties.getEffectiveTo(),
+                                                                 elementProperties,
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 setGUID,
+                                                                 validValueGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
     }
 
 
@@ -323,9 +628,163 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        // todo
+        final String methodName = "detachValidValue";
+
+        final String validValueGUIDParameterName = "validValueGUID";
+        final String parentGUIDParameterName = "setGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(setGUID, parentGUIDParameterName, methodName);
+
+        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
+                                                             OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                             setGUID,
+                                                             validValueGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
     }
 
+
+    /**
+     * Link a valid value as a reference value to a referencable to act as a tag/classification to help with locating and
+     * grouping the referenceable.
+     *
+     * @param userId            calling user.
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID    unique identifier of the valid value.
+     * @param referenceableGUID unique identifier of the element to link to.
+     * @param properties        details of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    @Override
+    public void assignReferenceValueToItem(String                             userId,
+                                           String                             assetManagerGUID,
+                                           String                             assetManagerName,
+                                           String                             validValueGUID,
+                                           String                             referenceableGUID,
+                                           ReferenceValueAssignmentProperties properties,
+                                           Date                               effectiveTime,
+                                           boolean                            forLineage,
+                                           boolean                            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        final String methodName = "assignReferenceValueToItem";
+        final String validValueGUIDParameterName = "validValueGUID";
+        final String itemGUIDParameterName = "parentGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
+
+        if (properties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null, 
+                                                                                   OpenMetadataTypesMapper.ATTRIBUTE_NAME_PROPERTY_NAME, 
+                                                                                   properties.getAttributeName());
+
+            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                              OpenMetadataTypesMapper.CONFIDENCE_PROPERTY_NAME,
+                                                              properties.getConfidence());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME,
+                                                                 properties.getSteward());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                 properties.getStewardTypeName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 properties.getStewardPropertyName());
+            
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.NOTES_PROPERTY_NAME,
+                                                                 properties.getNotes());
+
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 referenceableGUID,
+                                                                 validValueGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 properties.getEffectiveFrom(),
+                                                                 properties.getEffectiveTo(),
+                                                                 elementProperties,
+                                                                 effectiveTime);
+        }
+        else
+        {
+            openMetadataStoreClient.createRelatedElementsInStore(userId,
+                                                                 OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 referenceableGUID,
+                                                                 validValueGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime);
+        }
+
+    }
+
+
+    /**
+     * Remove the reference value link between a valid value and a referenceable (item).
+     *
+     * @param userId            calling user.
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID    unique identifier of the valid value.
+     * @param referenceableGUID unique identifier of the element to remove the link from.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    @Override
+    public void unassignReferenceValueFromItem(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  validValueGUID,
+                                               String  referenceableGUID,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "detachValidValue";
+
+        final String validValueGUIDParameterName = "validValueGUID";
+        final String itemGUIDParameterName = "referenceableGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
+
+        openMetadataStoreClient.deleteRelatedElementsInStore(userId,
+                                                             OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                             referenceableGUID,
+                                                             validValueGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime);
+    }
 
 
     /**
@@ -356,10 +815,20 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        // todo
-        return null;
-    }
+        final String methodName = "getValidValueByGUID";
+        final String guidParameterName = "validValueGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, guidParameterName, methodName);
+
+        OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                                   validValueGUID,
+                                                                                                   forLineage,
+                                                                                                   forDuplicateProcessing,
+                                                                                                   effectiveTime);
+
+        return convertValidValue(userId, assetManagerGUID, assetManagerName, openMetadataElement, methodName);
+    }
 
 
     /**
@@ -395,11 +864,33 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "getValidValuesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(validValueName, nameParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<String> propertyNames = Arrays.asList(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                   OpenMetadataTypesMapper.NAME_PROPERTY_NAME);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
+                                                                                                      OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                                      null,
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, validValueName),
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
+                                                                                                      effectiveTime,
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+        return convertValidValues(userId, assetManagerGUID, assetManagerName, openMetadataElements, methodName);
     }
-
-
+    
 
     /**
      * Locate valid values that match the search string.  It considers the names, description, scope,
@@ -434,8 +925,23 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName = "findValidValues";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
+                                                                                                                searchString,
+                                                                                                                OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                                                forLineage,
+                                                                                                                forDuplicateProcessing,
+                                                                                                                effectiveTime,
+                                                                                                                startFrom,
+                                                                                                                pageSize);
+
+        return convertValidValues(userId, assetManagerGUID, assetManagerName, openMetadataElements, methodName);
     }
 
 
@@ -459,19 +965,64 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public List<ValidValueElement> getValidValueSetMembers(String  userId,
-                                                           String  assetManagerGUID,
-                                                           String  assetManagerName,
-                                                           String  validValueSetGUID,
-                                                           int     startFrom,
-                                                           int     pageSize,
-                                                           Date    effectiveTime,
-                                                           boolean forLineage,
-                                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+    public List<ValidValueMember> getValidValueSetMembers(String  userId,
+                                                          String  assetManagerGUID,
+                                                          String  assetManagerName,
+                                                          String  validValueSetGUID,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          Date    effectiveTime,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        // todo
+        final String methodName = "getValidValueSetMembers";
+        final String validValueGUIDParameterName = "validValueSetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueSetGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                          validValueSetGUID,
+                                                                                                          1,
+                                                                                                          OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          forLineage,
+                                                                                                          forDuplicateProcessing,
+                                                                                                          effectiveTime,
+                                                                                                          startFrom,
+                                                                                                          pageSize);
+
+        if (linkedResources != null)
+        {
+            List<ValidValueMember> validValueMembers = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME))
+                {
+                    ValidValueMember validValueMember = validValueMemberConverter.getNewBean(validValueMemberClass, relatedMetadataElement, methodName);
+
+                    if ((validValueMember != null) && (validValueMember.getValidValueElement() != null))
+                    {
+                        validValueMember.getValidValueElement().setCorrelationHeaders(this.getMetadataCorrelationHeaders(userId,
+                                                                                                                         assetManagerGUID,
+                                                                                                                         assetManagerName,
+                                                                                                                         validValueMember.getValidValueElement().getElementHeader().getGUID(),
+                                                                                                                         OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                    }
+
+                    validValueMembers.add(validValueMember);
+                }
+            }
+
+            if (! validValueMembers.isEmpty())
+            {
+                return validValueMembers;
+            }
+        }
+
         return null;
     }
 
@@ -509,7 +1060,348 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        // todo
+        final String methodName = "getSetsForValidValue";
+        final String validValueGUIDParameterName = "validValueGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                          validValueGUID,
+                                                                                                          2,
+                                                                                                          OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          forLineage,
+                                                                                                          forDuplicateProcessing,
+                                                                                                          effectiveTime,
+                                                                                                          startFrom,
+                                                                                                          pageSize);
+
+        if (linkedResources != null)
+        {
+            List<ValidValueElement> validValueSets = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME))
+                {
+                    validValueSets.add(this.convertValidValue(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              relatedMetadataElement.getElement(),
+                                                              methodName));
+                }
+            }
+
+            if (! validValueSets.isEmpty())
+            {
+                return validValueSets;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Page through the list of referenceables that have this valid value as a reference value.
+     *
+     * @param userId         calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID unique identifier of valid value to query
+     * @param startFrom      paging starting point
+     * @param pageSize       maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of referenceable beans
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    @Override
+    public List<ReferenceValueAssignmentItemElement> getReferenceValueAssignedItems(String  userId,
+                                                                                    String  assetManagerGUID,
+                                                                                    String  assetManagerName,
+                                                                                    String  validValueGUID,
+                                                                                    int     startFrom,
+                                                                                    int     pageSize,
+                                                                                    Date    effectiveTime,
+                                                                                    boolean forLineage,
+                                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
+    {
+        final String methodName = "getReferenceValueAssignedItems";
+        final String validValueGUIDParameterName = "validValueGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                          validValueGUID,
+                                                                                                          2,
+                                                                                                          OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          forLineage,
+                                                                                                          forDuplicateProcessing,
+                                                                                                          effectiveTime,
+                                                                                                          startFrom,
+                                                                                                          pageSize);
+
+        if (linkedResources != null)
+        {
+            List<ReferenceValueAssignmentItemElement> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    ReferenceValueAssignmentItemElement bean = referenceValueAssignmentItemConverter.getNewBean(referenceValueAssignmentItemBeanClass, relatedMetadataElement, methodName);
+
+                    if ((bean != null) && (bean.getAssignedItem() != null))
+                    {
+                        bean.getAssignedItem().setCorrelationHeaders(this.getMetadataCorrelationHeaders(userId,
+                                                                                                        assetManagerGUID,
+                                                                                                        assetManagerName,
+                                                                                                        bean.getAssignedItem().getElementHeader().getGUID(),
+                                                                                                        OpenMetadataTypesMapper.REFERENCEABLE_TYPE_NAME));
+                        results.add(bean);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Page through the list of assigned reference values for a referenceable.
+     *
+     * @param userId            calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param referenceableGUID unique identifier of assigned item
+     * @param startFrom         paging starting point
+     * @param pageSize          maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of valid value beans
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    @Override
+    public List<ReferenceValueAssignmentDefinitionElement> getReferenceValueAssignments(String  userId,
+                                                                                        String  assetManagerGUID,
+                                                                                        String  assetManagerName,
+                                                                                        String  referenceableGUID,
+                                                                                        int     startFrom,
+                                                                                        int     pageSize,
+                                                                                        Date    effectiveTime,
+                                                                                        boolean forLineage,
+                                                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException
+    {
+        final String methodName = "getReferenceValueAssignments";
+        final String itemGUIDParameterName = "referenceableGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                          referenceableGUID,
+                                                                                                          1,
+                                                                                                          OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          forLineage,
+                                                                                                          forDuplicateProcessing,
+                                                                                                          effectiveTime,
+                                                                                                          startFrom,
+                                                                                                          pageSize);
+
+        if (linkedResources != null)
+        {
+            List<ReferenceValueAssignmentDefinitionElement> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME))
+                {
+                    ReferenceValueAssignmentDefinitionElement bean = referenceValueAssignmentDefinitionConverter.getNewBean(referenceValueAssignmentDefinitionBeanClass, relatedMetadataElement, methodName);
+
+                    if ((bean != null) && (bean.getValidValueElement() != null))
+                    {
+                        bean.getValidValueElement().setCorrelationHeaders(this.getMetadataCorrelationHeaders(userId,
+                                                                                                             assetManagerGUID,
+                                                                                                             assetManagerName,
+                                                                                                             bean.getValidValueElement().getElementHeader().getGUID(),
+                                                                                                             OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+
+                        results.add(bean);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the validValue properties into a set of element properties for the open metadata client.
+     *
+     * @param validValueProperties supplied validValue properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(ValidValueProperties validValueProperties)
+    {
+        if (validValueProperties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                   validValueProperties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                                 validValueProperties.getDisplayName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                 validValueProperties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.USAGE_PROPERTY_NAME,
+                                                                 validValueProperties.getUsage());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                 validValueProperties.getPreferredValue());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.SCOPE_PROPERTY_NAME,
+                                                                 validValueProperties.getScope());
+
+            elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                  OpenMetadataTypesMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                  validValueProperties.getIsDeprecated());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                    validValueProperties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              validValueProperties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert a validValue object from the OpenMetadataClient to local beans.
+     *
+     * @param openMetadataElement retrieved element
+     * @param methodName calling method
+     *
+     * @return list of validValue elements
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     * */
+    private ValidValueElement convertValidValue(String               userId,
+                                                String               assetManagerGUID,
+                                                String               assetManagerName,
+                                                OpenMetadataElement  openMetadataElement,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME)))
+        {
+            ValidValueElement bean = validValueConverter.getNewBean(validValueBeanClass, openMetadataElement, methodName);
+
+            if (bean != null)
+            {
+                bean.setCorrelationHeaders(this.getMetadataCorrelationHeaders(userId,
+                                                                              assetManagerGUID,
+                                                                              assetManagerName,
+                                                                              openMetadataElement.getElementGUID(),
+                                                                              OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                return bean;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert validValue objects from the OpenMetadataClient to local beans.
+     *
+     * @param openMetadataElements retrieved elements
+     * @param methodName calling method
+     *
+     * @return list of validValue elements
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     * */
+    private List<ValidValueElement> convertValidValues(String                     userId,
+                                                       String                     assetManagerGUID,
+                                                       String                     assetManagerName,
+                                                       List<OpenMetadataElement>  openMetadataElements,
+                                                       String                     methodName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        if (openMetadataElements != null)
+        {
+            List<ValidValueElement> validValueElements = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    ValidValueElement validValueElement = validValueConverter.getNewBean(validValueBeanClass, openMetadataElement, methodName);
+
+                    if (validValueElement != null)
+                    {
+                        validValueElement.setCorrelationHeaders(this.getMetadataCorrelationHeaders(userId,
+                                                                                                   assetManagerGUID,
+                                                                                                   assetManagerName,
+                                                                                                   openMetadataElement.getElementGUID(),
+                                                                                                   OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                        validValueElements.add(validValueElement);
+                    }
+                }
+            }
+
+            return validValueElements;
+        }
+
         return null;
     }
 }

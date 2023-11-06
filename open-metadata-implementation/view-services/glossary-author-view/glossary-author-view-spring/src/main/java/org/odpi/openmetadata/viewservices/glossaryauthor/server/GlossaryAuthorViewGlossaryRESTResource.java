@@ -26,8 +26,8 @@ import java.util.Date;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/glossaries")
 
-@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.",
-     externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",
+@Tag(name="View Server: Glossary Author OMVS", description="Glossary Author OMVS supports subject matter experts who are documenting their knowledge in a glossary.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-author/overview/"))
 
 public class GlossaryAuthorViewGlossaryRESTResource {

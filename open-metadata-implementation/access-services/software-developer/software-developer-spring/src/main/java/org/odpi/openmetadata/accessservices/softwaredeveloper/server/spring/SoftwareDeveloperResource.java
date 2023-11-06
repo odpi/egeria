@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/software-developer/users/{userId}")
 
-@Tag(name="Software Developer OMAS", description="The Software Developer OMAS provides APIs and events for software developer tools and applications that help developers make good use of the standards and best practices defined for the data landscape." +
-        "\n", externalDocs=@ExternalDocumentation(description="Software Developer Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Software Developer OMAS", description="The Software Developer OMAS provides APIs and events for software developer tools and applications that help developers make good use of the standards and best practices defined for the data landscape.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                                   url="https://egeria-project.org/services/omas/software-developer/overview/"))
 
 public class SoftwareDeveloperResource
 {
-    private SoftwareDeveloperRESTServices restAPI = new SoftwareDeveloperRESTServices();
+    private final SoftwareDeveloperRESTServices restAPI = new SoftwareDeveloperRESTServices();
 
     /**
      * Default constructor

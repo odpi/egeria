@@ -30,8 +30,10 @@ dependencies {
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.slf4j:slf4j-api'
     runtimeOnly 'org.hibernate:hibernate-validator'
+    runtimeOnly project(':open-metadata-implementation:user-security:user-authn')
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'

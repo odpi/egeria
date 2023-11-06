@@ -21,10 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
-@Tag(name="Administration Services - Operational - Deprecated",
-        description="Use the Platform Services.",
-        externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/services/platform-services/overview/"))
+@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
+                                                   "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
+                                                   "about the OMAG Servers that the OMAG Server Platform is hosting.  " +
+                                                   "It is also able to dynamically change the platform metadata security connector.",
+     externalDocs=@ExternalDocumentation(description="Further Information", url="https://egeria-project.org/services/platform-services/overview"))
 
 @Deprecated
 public class OldOperationalServicesResource

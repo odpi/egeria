@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
-@Tag(name="Asset Owner OMAS",
+@Tag(name="Metadata Access Server: Asset Owner OMAS",
      description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of " +
                          "Asset Owners in protecting and enhancing their assets.",
-     externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/asset-owner/overview/"))
 
 public class FileSystemOnboardingResource

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/data-engine-proxy/users/{userId}")
-@Tag(name = "Data Engine Proxy Service", description = "The Data Engine Proxy Service offers a rest interface to trigger processing by data engine proxy.", externalDocs = @ExternalDocumentation(description = "Open Lineage Services", url = "https://egeria-project.org/services//data-engine-proxy-services/"))
+@Tag(name = "Data Engine Proxy Service",
+     description = "The Data Engine Proxy Service offers a rest interface to trigger processing by data engine proxy.",
+     externalDocs = @ExternalDocumentation(description = "Further Information", url = "https://egeria-project.org/services/data-engine-proxy-services"))
 public class DataEngineProxyServicesResource {
 
     DataEngineProxyRestService dataEngineProxyRestService = new DataEngineProxyRestService();

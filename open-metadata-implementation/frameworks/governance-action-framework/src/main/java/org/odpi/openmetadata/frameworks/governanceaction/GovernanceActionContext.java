@@ -1073,12 +1073,72 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                PropertyServerException
     {
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 metadataElementTypeName,
-                                                                 ElementStatus.ACTIVE,
-                                                                 null,
-                                                                 null,
-                                                                 properties,
-                                                                 templateGUID);
+                                                               metadataElementTypeName,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               templateGUID);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         templateGUID,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               null,
+                                                               null,
+                                                               metadataElementTypeName,
+                                                               initialStatus,
+                                                               initialClassifications,
+                                                               anchorGUID,
+                                                               effectiveFrom,
+                                                               effectiveTo,
+                                                               properties,
+                                                               templateGUID,
+                                                               parentGUID,
+                                                               parentRelationshipTypeName,
+                                                               parentRelationshipProperties,
+                                                               parentAtEnd1);
     }
 
 

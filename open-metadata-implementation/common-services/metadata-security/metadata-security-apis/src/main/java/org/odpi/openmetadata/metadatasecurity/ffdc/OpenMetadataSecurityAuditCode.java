@@ -286,8 +286,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
 
     ;
 
-    ;
-
     private final String                     logMessageId;
     private final OMRSAuditLogRecordSeverity severity;
     private final String                     logMessage;

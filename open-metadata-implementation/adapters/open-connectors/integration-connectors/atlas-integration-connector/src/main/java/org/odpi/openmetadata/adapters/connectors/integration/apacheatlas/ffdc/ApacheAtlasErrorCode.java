@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The ApacheAtlasErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the Apache Atlas integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
