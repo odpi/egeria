@@ -63,7 +63,7 @@ public class MyProfileRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OrganizationManagement client = instanceHandler.getOrganizationManagementClient(userId, serverName, methodName);
