@@ -13,27 +13,39 @@ import java.util.List;
  */
 public enum CommonServicesDescription implements Serializable
 {
+    /**
+     * Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories.
+     */
     REPOSITORY_SERVICES              (180,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Repository Services (OMRS)",
                                       "repository-services",
-                                      "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
+                                      "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories.",
                                       "https://egeria-project.org/services/omrs"),
 
+    /**
+     * Configuration of services in an Open Metadata and Governance server (OMAG Server).
+     */
     ADMINISTRATION_SERVICES         (181,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Administration Services",
                                       "admin-services",
-                                      "Management of services active in an Open Metadata and governance server (OMAG Server)",
+                                      "Configuration of services in an Open Metadata and Governance server (OMAG Server).",
                                       "https://egeria-project.org/services/admin-services/overview"),
 
+    /**
+     * Common metadata services for the Open Connector Framework (OCF).
+     */
     OCF_METADATA_MANAGEMENT          (182,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Connected Asset Services",
                                       "connected-asset",
-                                      "Common metadata services for the Open Connector Framework (OCF)",
+                                      "Common metadata services for the Open Connector Framework (OCF).",
                                       "https://egeria-project.org/services/ocf-metadata-management"),
 
+    /**
+     * Authorization services for Open Metadata and Governance
+     */
     OPEN_METADATA_SECURITY           (183,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Security Services",
@@ -41,6 +53,9 @@ public enum CommonServicesDescription implements Serializable
                                       "Authorization services for Open Metadata and Governance",
                                       "https://egeria-project.org/services/metadata-security-services"),
 
+    /**
+     * Support governance action services.
+     */
     GAF_METADATA_MANAGEMENT          (184,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Governance Action Framework Services",
@@ -48,6 +63,9 @@ public enum CommonServicesDescription implements Serializable
                                       "Support governance action services.",
                                       "https://egeria-project.org/services/gaf-metadata-management"),
 
+    /**
+     * Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.
+     */
     PLATFORM_SERVICES               (185,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Platform Services",
@@ -55,6 +73,9 @@ public enum CommonServicesDescription implements Serializable
                                       "Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.",
                                       "https://egeria-project.org/services/platform-services/overview"),
 
+    /**
+     * Provides operational support for the integration connectors.
+     */
     OIF_METADATA_MANAGEMENT          (186,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Integration Service",
@@ -62,6 +83,9 @@ public enum CommonServicesDescription implements Serializable
                                       "Provides operational support for the integration connectors.",
                                       "https://egeria-project.org/services/oif-metadata-management"),
 
+    /**
+     * Supports the start up and shutdown of OMAG Servers.
+     */
     SERVER_OPERATIONS               (187,
                                      ComponentDevelopmentStatus.STABLE,
                                      "Server Operations",
@@ -70,6 +94,9 @@ public enum CommonServicesDescription implements Serializable
                                      "https://egeria-project.org/services/server-operations/overview"),
 
 
+    /**
+     * Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).
+     */
     OPEN_METADATA_STORE          (188,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Open Metadata Store Services",
@@ -91,11 +118,11 @@ public enum CommonServicesDescription implements Serializable
 
 
     /**
-     * Return a list containing each of the access service descriptions defined in this enum class.
+     * Return a list containing each of the service descriptions defined in this enum class.
      *
      * @return List of enums
      */
-    public static List<CommonServicesDescription> getGovernanceServersDescriptionList()
+    public static List<CommonServicesDescription> getCommonServicesDescriptionList()
     {
         List<CommonServicesDescription> serviceDescriptionList = new ArrayList<>();
 

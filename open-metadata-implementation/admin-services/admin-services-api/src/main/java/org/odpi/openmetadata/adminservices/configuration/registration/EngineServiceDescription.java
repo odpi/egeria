@@ -11,6 +11,10 @@ import java.io.Serializable;
  */
 public enum EngineServiceDescription implements Serializable
 {
+    /**
+     * Analyses the content of an asset's real world counterpart, generates annotations
+     * in an open discovery report that is attached to the asset in the open metadata repositories.
+     */
     ASSET_ANALYSIS_OMES(400,
                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
                         "Asset Analysis",
@@ -21,6 +25,10 @@ public enum EngineServiceDescription implements Serializable
                         "https://egeria-project.org/services/omes/asset-analysis/overview/",
                         "Discovery Engine OMAS"),
 
+    /**
+     * Executes requested governance action services to monitor, assess and maintain metadata and its
+     * real-world counterparts.
+     */
     GOVERNANCE_ACTION_OMES(401,
                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
                            "Governance Action",
@@ -31,6 +39,9 @@ public enum EngineServiceDescription implements Serializable
                            "https://egeria-project.org/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
+    /**
+     * Dynamically governance open metadata repositories in the connected cohorts.
+     */
     REPOSITORY_GOVERNANCE_OMES(402,
                                ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                "Repository Governance",

@@ -11,6 +11,9 @@ import java.io.Serializable;
  */
 public enum ViewServiceDescription implements Serializable
 {
+    /**
+     * View Service for glossary authoring.
+     */
     GLOSSARY_AUTHOR(800,
                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
                     "Glossary Author",
@@ -19,6 +22,9 @@ public enum ViewServiceDescription implements Serializable
                     "View Service for glossary authoring.",
                     "https://egeria-project.org/services/omvs/glossary-author/overview"),
 
+    /**
+     * Explore open metadata instances.
+     */
     REPOSITORY_EXPLORER(801,
                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Repository Explorer",
@@ -27,6 +33,9 @@ public enum ViewServiceDescription implements Serializable
                   "Explore open metadata instances.",
                   "https://egeria-project.org/services/omvs/rex/overview"),
 
+    /**
+     * Explore the open metadata types in a repository or cohort.
+     */
     TYPE_EXPLORER(802,
                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Type Explorer",
@@ -35,6 +44,9 @@ public enum ViewServiceDescription implements Serializable
                   "Explore the open metadata types in a repository or cohort.",
                   "https://egeria-project.org/services/omvs/tex/overview"),
 
+    /**
+     * Explore and operate an open metadata ecosystem.
+     */
     DINO(803,
                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Dynamic Infrastructure and Operations",
@@ -43,14 +55,20 @@ public enum ViewServiceDescription implements Serializable
                   "Explore and operate an open metadata ecosystem.",
                   "https://egeria-project.org/services/omvs/dino/overview"),
 
+    /**
+     * Author server configuration.
+     */
     SERVER_AUTHOR(804,
                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
                  "Server Author",
                  "Server Author OMVS",
                  "server-author",
-                 "Author servers.",
+                 "Author server configuration.",
                  "https://egeria-project.org/services/omvs/server-author/overview/"),
 
+    /**
+     * View glossary terms and categories within a glossary.
+     */
     GLOSSARY_BROWSER(805,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Glossary Browser",
@@ -59,6 +77,9 @@ public enum ViewServiceDescription implements Serializable
                       "View glossary terms and categories within a glossary.",
                       "https://egeria-project.org/services/omvs/glossary-browser/overview/"),
 
+    /**
+     * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
+     */
     GLOSSARY_WORKFLOW(806,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
                  "Glossary Workflow",
@@ -67,6 +88,9 @@ public enum ViewServiceDescription implements Serializable
                          "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
                          "https://egeria-project.org/services/omvs/glossary-workflow/overview/"),
 
+    /**
+     * Manage information about the logged on user as well as their preferences.
+     */
     MY_PROFILE(807,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "My Profile",
