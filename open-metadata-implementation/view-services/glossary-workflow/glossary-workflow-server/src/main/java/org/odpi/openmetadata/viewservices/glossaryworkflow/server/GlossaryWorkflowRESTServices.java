@@ -90,7 +90,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -155,7 +155,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -214,7 +214,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -285,7 +285,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -351,7 +351,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -420,7 +420,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -486,7 +486,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -555,7 +555,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -625,7 +625,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -694,7 +694,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -762,7 +762,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -831,7 +831,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -903,7 +903,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -971,7 +971,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1034,7 +1034,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1106,7 +1106,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1187,7 +1187,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1253,7 +1253,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1310,7 +1310,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1346,7 +1346,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1382,7 +1382,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1430,7 +1430,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1495,7 +1495,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1560,7 +1560,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1632,7 +1632,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1699,7 +1699,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1764,7 +1764,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1828,7 +1828,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1900,7 +1900,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1958,7 +1958,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -2010,7 +2010,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2085,7 +2085,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2160,7 +2160,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2230,7 +2230,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2295,7 +2295,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2361,7 +2361,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2444,7 +2444,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2509,7 +2509,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2574,7 +2574,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2639,7 +2639,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2708,7 +2708,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2773,7 +2773,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2842,7 +2842,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2907,7 +2907,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2972,7 +2972,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3037,7 +3037,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3102,7 +3102,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3167,7 +3167,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3232,7 +3232,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3297,7 +3297,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3356,7 +3356,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3421,7 +3421,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3494,7 +3494,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3568,7 +3568,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3639,7 +3639,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3708,7 +3708,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3779,7 +3779,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3849,7 +3849,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3916,7 +3916,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3985,7 +3985,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4049,7 +4049,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4118,7 +4118,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4181,7 +4181,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4250,7 +4250,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4316,7 +4316,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4385,7 +4385,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4448,7 +4448,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4516,7 +4516,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4579,7 +4579,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4647,7 +4647,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4710,7 +4710,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4778,7 +4778,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4844,7 +4844,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -4916,7 +4916,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4983,7 +4983,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -5047,7 +5047,7 @@ public class GlossaryWorkflowRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);

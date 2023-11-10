@@ -45,7 +45,7 @@ public class MyProfileResource
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/my-profile")
+    @GetMapping(path = "")
 
     @Operation(summary="getMyProfile",
                description="Return the personal profile of the logged on user (details of the user is extracted from the bearer token).",

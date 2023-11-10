@@ -11,34 +11,48 @@ import java.io.Serializable;
  */
 public enum AccessServiceDescription implements Serializable
 {
+    /**
+     * Search and understand your assets.
+     */
     ASSET_CATALOG_OMAS               (200,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Asset Catalog",
                                       "Asset Catalog OMAS",
                                       "asset-catalog",
-                                      "Search and understand your assets",
+                                      "Search and understand your assets.",
                                       "https://egeria-project.org/services/omas/asset-catalog/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Access assets through connectors.
+     */
     ASSET_CONSUMER_OMAS              (201,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Asset Consumer",
                                       "Asset Consumer OMAS",
                                       "asset-consumer",
-                                      "Access assets through connectors",
+                                      "Access assets through connectors.",
                                       "https://egeria-project.org/services/omas/asset-consumer/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Publish asset lineage.
+     */
     ASSET_LINEAGE_OMAS               (203,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Asset Lineage",
                                       "Asset Lineage OMAS",
                                       "asset-lineage",
-                                      "Store asset lineage",
+                                      "Publish asset lineage",
                                       "https://egeria-project.org/services/omas/asset-lineage/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
 
+    /**
+     * Manage metadata from a third party asset manager.
+     */
     ASSET_MANAGER_OMAS               (204,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Asset Manager",
@@ -49,6 +63,9 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
 
+    /**
+     * Manage an asset.
+     */
     ASSET_OWNER_OMAS                 (205,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Asset Owner",
@@ -58,6 +75,10 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/asset-owner/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Provides metadata information for Analytics Modeling.
+     */
     ANALYTICS_MODELING_OMAS			 (206,
                                          ComponentDevelopmentStatus.DEPRECATED,
                                          "Analytics Modeling",
@@ -68,34 +89,48 @@ public enum AccessServiceDescription implements Serializable
                                          ServiceOperationalStatus.NOT_IMPLEMENTED,
                                          ServiceOperationalStatus.NOT_IMPLEMENTED),
 
+    /**
+     * Define personal profile and collaborate
+     */
     COMMUNITY_PROFILE_OMAS           (207,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Community Profile",
                                       "Community Profile OMAS",
                                       "community-profile",
-                                      "Define personal profile and collaborate",
+                                      "Define personal profile and collaborate.",
                                       "https://egeria-project.org/services/omas/community-profile/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Manage information about the deployed IT infrastructure.
+     */
     IT_INFRASTRUCTURE_OMAS           (208,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "IT Infrastructure",
                                       "IT Infrastructure OMAS",
                                       "it-infrastructure",
-                                      "Manage information about the deployed IT infrastructure",
+                                      "Manage information about the deployed IT infrastructure.",
                                       "https://egeria-project.org/services/omas/it-infrastructure/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Exchange process models and lineage with a data engine.
+     */
     DATA_ENGINE_OMAS                 (209,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Data Engine",
                                       "Data Engine OMAS",
                                       "data-engine",
-                                      "Exchange process models and lineage with a data engine",
+                                      "Exchange process models and lineage with a data engine.",
                                       "https://egeria-project.org/services/omas/data-engine/overview/",
                                       ServiceOperationalStatus.ENABLED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
+    /**
+     * Capture changes to the data stores and data set managed by a data manager such as a database server, content manager or file system.
+     */
     DATA_MANAGER_OMAS                (210,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Data Manager",
@@ -105,43 +140,62 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/data-manager/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Manage governance of privacy.
+     */
     DATA_PRIVACY_OMAS                (211,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Data Privacy",
                                       "Data Privacy OMAS",
                                       "data-privacy",
-                                      "Manage governance of privacy",
+                                      "Manage governance of privacy.",
                                       "https://egeria-project.org/services/omas/data-privacy/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Create and manage data science definitions and models.
+     */
     DATA_SCIENCE_OMAS                (212,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Data Science",
                                       "Data Science OMAS",
                                       "data-science",
-                                      "Create and manage data science definitions and models",
+                                      "Create and manage data science definitions and models.",
                                       "https://egeria-project.org/services/omas/data-science/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Exchange design model content with tools and standard packages.
+     */
     DESIGN_MODEL_OMAS                (213,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Design Model",
                                       "Design Model OMAS",
                                       "design-model",
-                                      "Exchange design model content with tools and standard packages",
+                                      "Exchange design model content with tools and standard packages.",
                                       "https://egeria-project.org/services/omas/design-model/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Manage the metadata about the assets managed by a DevOps pipeline.
+     */
     DEVOPS_OMAS                      (214,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "DevOps",
                                       "DevOps OMAS",
                                       "devops",
-                                      "Manage a DevOps pipeline",
+                                      "Manage the metadata about the assets managed by a DevOps pipeline.",
                                       "https://egeria-project.org/services/omas/dev-ops/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED
-    ),
+                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Design of the digital services for an organization.
+     */
     DIGITAL_ARCHITECTURE_OMAS        (215,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Digital Architecture",
@@ -151,24 +205,36 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/digital-architecture/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Manage a digital service through its lifecycle.
+     */
     DIGITAL_SERVICE_OMAS            ( 216,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Digital Service",
                                       "Digital Service OMAS",
                                       "digital-service",
-                                      "Manage a digital service through its lifecycle",
+                                      "Manage a digital service through its lifecycle.",
                                       "https://egeria-project.org/services/omas/digital-service/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Support for automated open discovery services.
+     */
     DISCOVERY_ENGINE_OMAS            (217,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Discovery Engine",
                                       "Discovery Engine OMAS",
                                       "discovery-engine",
-                                      "Support for automated metadata discovery engines",
+                                      "Support for automated open discovery services.",
                                       "https://egeria-project.org/services/omas/discovery-engine/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Support glossary terms visualization.
+     */
     GLOSSARY_VIEW_OMAS               (218,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Glossary View",
@@ -179,6 +245,9 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
+    /**
+     * Set up an operational governance engine.
+     */
     GOVERNANCE_ENGINE_OMAS           (219,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Governance Engine",
@@ -188,24 +257,36 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/governance-engine/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Manage the governance program.
+     */
     GOVERNANCE_PROGRAM_OMAS          (220,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Governance Program",
                                       "Governance Program OMAS",
                                       "governance-program",
-                                      "Manage the governance program",
+                                      "Manage the governance program.",
                                       "https://egeria-project.org/services/omas/governance-program/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Manage governance related projects.
+     */
     PROJECT_MANAGEMENT_OMAS          (221,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Project Management",
                                       "Project Management OMAS",
                                       "project-management",
-                                      "Manage governance related projects",
+                                      "Manage governance related projects.",
                                       "https://egeria-project.org/services/omas/project-management/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Manages exchange of metadata with a security service.
+     */
     SECURITY_MANAGER_OMAS           (222,
                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                      "Security Manager",
@@ -215,39 +296,55 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/security-manager/overview/",
                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
                                      ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Set up rules and security tags to protect data.
+     */
     SECURITY_OFFICER_OMAS            (223,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Security Officer",
                                       "Security Officer OMAS",
                                       "security-officer",
-                                      "Set up rules and security tags to protect data",
+                                      "Set up rules and security tags to protect data.",
                                       "https://egeria-project.org/services/omas/security-officer/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Interact with software development tools.
+     */
     SOFTWARE_DEVELOPER_OMAS          (224,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Software Developer",
                                       "Software Developer OMAS",
                                       "software-developer",
-                                      "Interact with software development tools",
+                                      "Interact with software development tools.",
                                       "https://egeria-project.org/services/omas/software-developer/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Manage exceptions and actions from open governance.
+     */
     STEWARDSHIP_ACTION_OMAS          (225,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Stewardship Action",
                                       "Stewardship Action OMAS",
                                       "stewardship-action",
-                                      "Manage exceptions and actions from open governance",
+                                      "Manage exceptions and actions from open governance.",
                                       "https://egeria-project.org/services/omas/stewardship-action/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
+
+    /**
+     * Document knowledge about a subject area in a glossary.
+     */
     SUBJECT_AREA_OMAS                (226,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Subject Area",
                                       "Subject Area OMAS",
                                       "subject-area",
-                                      "Document knowledge about a subject area",
+                                      "Document knowledge about a subject area in a glossary.",
                                       "https://egeria-project.org/services/omas/subject-area/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED);

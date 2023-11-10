@@ -103,7 +103,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -139,7 +139,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -175,7 +175,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -232,7 +232,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -298,7 +298,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -361,7 +361,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -426,7 +426,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -493,7 +493,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -567,7 +567,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -635,7 +635,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -708,7 +708,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -780,7 +780,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -844,7 +844,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -910,7 +910,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -979,7 +979,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1058,7 +1058,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1127,7 +1127,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1200,7 +1200,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1275,7 +1275,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1349,7 +1349,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1414,7 +1414,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1486,7 +1486,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1552,7 +1552,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             if (requestBody != null)
             {
@@ -1607,7 +1607,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -1655,7 +1655,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -1702,7 +1702,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -1753,7 +1753,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1825,7 +1825,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1898,7 +1898,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1970,7 +1970,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2042,7 +2042,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2114,7 +2114,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -2177,7 +2177,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2244,7 +2244,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2321,7 +2321,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2377,7 +2377,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             if (requestBody != null)
             {
@@ -2428,7 +2428,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             if (requestBody != null)
             {
@@ -2483,7 +2483,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2525,7 +2525,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2571,7 +2571,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2628,7 +2628,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2691,7 +2691,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2754,7 +2754,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2818,7 +2818,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2865,7 +2865,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2913,7 +2913,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -2976,7 +2976,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3042,7 +3042,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3110,7 +3110,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3180,7 +3180,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3257,7 +3257,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3324,7 +3324,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -3393,7 +3393,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3459,7 +3459,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3545,7 +3545,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3634,7 +3634,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3723,7 +3723,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3812,7 +3812,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3901,7 +3901,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -3968,7 +3968,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4054,7 +4054,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4142,7 +4142,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4213,7 +4213,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4284,7 +4284,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4355,7 +4355,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4427,7 +4427,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
@@ -4499,7 +4499,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         {
             String userId = super.getUser(instanceHandler.getServiceName(), methodName);
 
-            token.setUserId(userId);
+            restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
