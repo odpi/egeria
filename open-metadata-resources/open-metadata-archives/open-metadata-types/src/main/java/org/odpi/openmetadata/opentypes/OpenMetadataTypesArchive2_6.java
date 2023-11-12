@@ -1716,7 +1716,7 @@ public class OpenMetadataTypesArchive2_6
          * Set up end 1.
          */
         final String                     end1EntityType               = "GovernanceAction";
-        final String                     end1AttributeName            = "identifiedActions";
+        final String                     end1AttributeName            = "identifiedGovernanceActions";
         final String                     end1AttributeDescription     = "Governance action that is acting on this element.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -2273,7 +2273,7 @@ public class OpenMetadataTypesArchive2_6
         final String attribute1Description     = "Label to add to the incident.";
         final String attribute1DescriptionGUID = null;
         final String attribute2Name            = "classifierIdentifier";
-        final String attribute2Description     = "Option for indicator value associated with the classifier label.";
+        final String attribute2Description     = "Unique identifier for the classifier associated with the classifier label.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "classifierName";
         final String attribute3Description     = "Display name for the classifier identifier.";
@@ -2495,7 +2495,7 @@ public class OpenMetadataTypesArchive2_6
          */
         final String                     end2EntityType               = "IncidentReport";
         final String                     end2AttributeName            = "incidentReports";
-        final String                     end2AttributeDescription     = "Descriptions of incidents affection this resource and the action taken.";
+        final String                     end2AttributeDescription     = "Descriptions of incidents affecting this resource and the action taken.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
