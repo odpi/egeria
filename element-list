@@ -849,6 +849,7 @@ org.odpi.openmetadata.samples.governanceengine.discoveryservices
 org.odpi.openmetadata.serverchassis.springboot
 org.odpi.openmetadata.serverchassis.springboot.config
 org.odpi.openmetadata.serverchassis.springboot.exception
+org.odpi.openmetadata.serveroperations.ffdc
 org.odpi.openmetadata.serveroperations.properties
 org.odpi.openmetadata.serveroperations.rest
 org.odpi.openmetadata.serveroperations.server

@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a>&gt;
 implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The OMAGAdminAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -116,110 +115,67 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ACCESS_SERVICE_FAILURE" class="member-name-link">ACCESS_SERVICE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ACCESS_SERVICE_INSTANCE_FAILURE" class="member-name-link">ACCESS_SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ALL_ACCESS_SERVICES_STARTED" class="member-name-link">ALL_ACCESS_SERVICES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ALL_ACCESS_SERVICES_STOPPED" class="member-name-link">ALL_ACCESS_SERVICES_STOPPED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ALL_ENGINE_SERVICES_STARTED" class="member-name-link">ALL_ENGINE_SERVICES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ALL_ENGINE_SERVICES_STOPPED" class="member-name-link">ALL_ENGINE_SERVICES_STOPPED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ALL_VIEW_SERVICES_STARTED" class="member-name-link">ALL_VIEW_SERVICES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ALL_VIEW_SERVICES_STOPPED" class="member-name-link">ALL_VIEW_SERVICES_STOPPED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#ALL_ZONES" class="member-name-link">ALL_ZONES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#BAD_CONFIG_PROPERTY" class="member-name-link">BAD_CONFIG_PROPERTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0201 - The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_CONFIG_PROPERTY" class="member-name-link">BAD_CONFIG_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0208 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#BAD_TOPIC_CONNECTOR" class="member-name-link">BAD_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0211 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAD_TOPIC_CONNECTOR_PROVIDER" class="member-name-link">BAD_TOPIC_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#BAD_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DEFAULT_PLATEAU_THRESHOLD" class="member-name-link">DEFAULT_PLATEAU_THRESHOLD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DEFAULT_ZONES" class="member-name-link">DEFAULT_ZONES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_SERVICE_FAILURE" class="member-name-link">ENGINE_SERVICE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_INSTANCE_FAILURE" class="member-name-link">ENGINE_SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_SERVICE_FAILURE" class="member-name-link">GOVERNANCE_SERVICE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#GOVERNANCE_SERVICES_STARTED" class="member-name-link">GOVERNANCE_SERVICES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_MAX_PAGE_SIZE" class="member-name-link">INVALID_MAX_PAGE_SIZE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0212 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
+ metadata topic connection because the connector provider is incorrect.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DEFAULT_PLATEAU_THRESHOLD" class="member-name-link">DEFAULT_PLATEAU_THRESHOLD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0207 - The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DEFAULT_ZONES" class="member-name-link">DEFAULT_ZONES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0203 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#KARMA_POINT_COLLECTION_INCREMENT" class="member-name-link">KARMA_POINT_COLLECTION_INCREMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#MAX_PAGE_SIZE" class="member-name-link">MAX_PAGE_SIZE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_ENTERPRISE_TOPIC" class="member-name-link">NO_ENTERPRISE_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_KARMA_POINT_COLLECTION" class="member-name-link">NO_KARMA_POINT_COLLECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0204 - The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_ENTERPRISE_TOPIC" class="member-name-link">NO_ENTERPRISE_TOPIC</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_KARMA_POINT_COLLECTION" class="member-name-link">NO_KARMA_POINT_COLLECTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0205 - The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PLATEAU_THRESHOLD" class="member-name-link">PLATEAU_THRESHOLD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0206 - The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PUBLISH_ZONES" class="member-name-link">PUBLISH_ZONES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0213 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#RESOURCE_ENDPOINTS" class="member-name-link">RESOURCE_ENDPOINTS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN_ERROR" class="member-name-link">SERVER_SHUTDOWN_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_SHUTDOWN_STARTED" class="member-name-link">SERVER_SHUTDOWN_STARTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN_SUCCESS" class="member-name-link">SERVER_SHUTDOWN_SUCCESS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_STARTUP_SUCCESS" class="member-name-link">SERVER_STARTUP_SUCCESS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0214 - The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC" class="member-name-link">SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SKIPPING_ACCESS_SERVICE" class="member-name-link">SKIPPING_ACCESS_SERVICE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SKIPPING_ENGINE_SERVICE" class="member-name-link">SKIPPING_ENGINE_SERVICE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SKIPPING_VIEW_SERVICE" class="member-name-link">SKIPPING_VIEW_SERVICE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#STARTING_ACCESS_SERVICES" class="member-name-link">STARTING_ACCESS_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_ENGINE_SERVICES" class="member-name-link">STARTING_ENGINE_SERVICES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#STARTING_GOVERNANCE_SERVICES" class="member-name-link">STARTING_GOVERNANCE_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_VIEW_SERVICES" class="member-name-link">STARTING_VIEW_SERVICES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#STOPPING_ACCESS_SERVICES" class="member-name-link">STOPPING_ACCESS_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#STOPPING_ENGINE_SERVICES" class="member-name-link">STOPPING_ENGINE_SERVICES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#STOPPING_VIEW_SERVICES" class="member-name-link">STOPPING_VIEW_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0209 - The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SUPPORTED_ZONES" class="member-name-link">SUPPORTED_ZONES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNLIMITED_MAX_PAGE_SIZE" class="member-name-link">UNLIMITED_MAX_PAGE_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_FAILURE" class="member-name-link">VIEW_SERVICE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_INSTANCE_FAILURE" class="member-name-link">VIEW_SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW" class="member-name-link">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-0202 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW" class="member-name-link">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-0215 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}</div>
+</div>
 </div>
 </section>
 </li>
@@ -276,315 +232,110 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="MAX_PAGE_SIZE">
-<h3>MAX_PAGE_SIZE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">MAX_PAGE_SIZE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNLIMITED_MAX_PAGE_SIZE">
-<h3>UNLIMITED_MAX_PAGE_SIZE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">UNLIMITED_MAX_PAGE_SIZE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_MAX_PAGE_SIZE">
-<h3>INVALID_MAX_PAGE_SIZE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">INVALID_MAX_PAGE_SIZE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_STARTUP_SUCCESS">
-<h3>SERVER_STARTUP_SUCCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SERVER_STARTUP_SUCCESS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_SHUTDOWN_STARTED">
-<h3>SERVER_SHUTDOWN_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_SHUTDOWN_SUCCESS">
-<h3>SERVER_SHUTDOWN_SUCCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN_SUCCESS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_SHUTDOWN_ERROR">
-<h3>SERVER_SHUTDOWN_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN_ERROR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STARTING_ACCESS_SERVICES">
-<h3>STARTING_ACCESS_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STARTING_ACCESS_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SKIPPING_ACCESS_SERVICE">
-<h3>SKIPPING_ACCESS_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SKIPPING_ACCESS_SERVICE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_ACCESS_SERVICES_STARTED">
-<h3>ALL_ACCESS_SERVICES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_ACCESS_SERVICES_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STOPPING_ACCESS_SERVICES">
-<h3>STOPPING_ACCESS_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STOPPING_ACCESS_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_ACCESS_SERVICES_STOPPED">
-<h3>ALL_ACCESS_SERVICES_STOPPED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_ACCESS_SERVICES_STOPPED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ACCESS_SERVICE_INSTANCE_FAILURE">
-<h3>ACCESS_SERVICE_INSTANCE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ACCESS_SERVICE_INSTANCE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ACCESS_SERVICE_ADMIN_CLASS">
-<h3>BAD_ACCESS_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_ACCESS_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ACCESS_SERVICE_FAILURE">
-<h3>ACCESS_SERVICE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ACCESS_SERVICE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ACCESS_SERVICE_ADMIN_CLASS">
-<h3>NULL_ACCESS_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">NULL_ACCESS_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STARTING_VIEW_SERVICES">
-<h3>STARTING_VIEW_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STARTING_VIEW_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SKIPPING_VIEW_SERVICE">
-<h3>SKIPPING_VIEW_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SKIPPING_VIEW_SERVICE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_VIEW_SERVICES_STARTED">
-<h3>ALL_VIEW_SERVICES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_VIEW_SERVICES_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STOPPING_VIEW_SERVICES">
-<h3>STOPPING_VIEW_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STOPPING_VIEW_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_VIEW_SERVICES_STOPPED">
-<h3>ALL_VIEW_SERVICES_STOPPED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_VIEW_SERVICES_STOPPED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="VIEW_SERVICE_INSTANCE_FAILURE">
-<h3>VIEW_SERVICE_INSTANCE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_INSTANCE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_VIEW_SERVICE_ADMIN_CLASS">
-<h3>BAD_VIEW_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_VIEW_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="VIEW_SERVICE_FAILURE">
-<h3>VIEW_SERVICE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_VIEW_SERVICE_ADMIN_CLASS">
-<h3>NULL_VIEW_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">NULL_VIEW_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STARTING_ENGINE_SERVICES">
-<h3>STARTING_ENGINE_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STARTING_ENGINE_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SKIPPING_ENGINE_SERVICE">
-<h3>SKIPPING_ENGINE_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SKIPPING_ENGINE_SERVICE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_ENGINE_SERVICES_STARTED">
-<h3>ALL_ENGINE_SERVICES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_ENGINE_SERVICES_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STOPPING_ENGINE_SERVICES">
-<h3>STOPPING_ENGINE_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STOPPING_ENGINE_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ALL_ENGINE_SERVICES_STOPPED">
-<h3>ALL_ENGINE_SERVICES_STOPPED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_ENGINE_SERVICES_STOPPED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_SERVICE_INSTANCE_FAILURE">
-<h3>ENGINE_SERVICE_INSTANCE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_INSTANCE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ENGINE_SERVICE_ADMIN_CLASS">
-<h3>BAD_ENGINE_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_ENGINE_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_SERVICE_FAILURE">
-<h3>ENGINE_SERVICE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENGINE_SERVICE_ADMIN_CLASS">
-<h3>NULL_ENGINE_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="STARTING_GOVERNANCE_SERVICES">
-<h3>STARTING_GOVERNANCE_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">STARTING_GOVERNANCE_SERVICES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="GOVERNANCE_SERVICES_STARTED">
-<h3>GOVERNANCE_SERVICES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_SERVICES_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="GOVERNANCE_SERVICE_FAILURE">
-<h3>GOVERNANCE_SERVICE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_SERVICE_FAILURE</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="ALL_ZONES">
 <h3>ALL_ZONES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">ALL_ZONES</span></div>
+<div class="block">OMAG-ADMIN-0201 - The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SUPPORTED_ZONES">
 <h3>SUPPORTED_ZONES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SUPPORTED_ZONES</span></div>
+<div class="block">OMAG-ADMIN-0202 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DEFAULT_ZONES">
 <h3>DEFAULT_ZONES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">DEFAULT_ZONES</span></div>
+<div class="block">OMAG-ADMIN-0203 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="KARMA_POINT_COLLECTION_INCREMENT">
 <h3>KARMA_POINT_COLLECTION_INCREMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">KARMA_POINT_COLLECTION_INCREMENT</span></div>
+<div class="block">OMAG-ADMIN-0204 - The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_KARMA_POINT_COLLECTION">
 <h3>NO_KARMA_POINT_COLLECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">NO_KARMA_POINT_COLLECTION</span></div>
+<div class="block">OMAG-ADMIN-0205 - The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PLATEAU_THRESHOLD">
 <h3>PLATEAU_THRESHOLD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">PLATEAU_THRESHOLD</span></div>
+<div class="block">OMAG-ADMIN-0206 - The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DEFAULT_PLATEAU_THRESHOLD">
 <h3>DEFAULT_PLATEAU_THRESHOLD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">DEFAULT_PLATEAU_THRESHOLD</span></div>
+<div class="block">OMAG-ADMIN-0207 - The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIG_PROPERTY">
 <h3>BAD_CONFIG_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_CONFIG_PROPERTY</span></div>
+<div class="block">OMAG-ADMIN-0208 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC">
 <h3>SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</span></div>
+<div class="block">OMAG-ADMIN-0209 - The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_ENTERPRISE_TOPIC">
 <h3>NO_ENTERPRISE_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">NO_ENTERPRISE_TOPIC</span></div>
+<div class="block">OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_TOPIC_CONNECTOR">
 <h3>BAD_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_TOPIC_CONNECTOR</span></div>
+<div class="block">OMAG-ADMIN-0211 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.
+ The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_TOPIC_CONNECTOR_PROVIDER">
 <h3>BAD_TOPIC_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">BAD_TOPIC_CONNECTOR_PROVIDER</span></div>
+<div class="block">OMAG-ADMIN-0212 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
+ metadata topic connection because the connector provider is incorrect.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PUBLISH_ZONES">
 <h3>PUBLISH_ZONES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">PUBLISH_ZONES</span></div>
+<div class="block">OMAG-ADMIN-0213 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RESOURCE_ENDPOINTS">
 <h3>RESOURCE_ENDPOINTS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">RESOURCE_ENDPOINTS</span></div>
+<div class="block">OMAG-ADMIN-0214 - The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW">
 <h3>VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminAuditCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminAuditCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</span></div>
+<div class="block">OMAG-ADMIN-0215 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}</div>
 </section>
 </li>
 </ul>

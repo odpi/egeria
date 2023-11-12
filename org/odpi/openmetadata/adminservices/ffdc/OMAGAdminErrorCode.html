@@ -87,14 +87,13 @@ loadScripts(document, 'script');</script>
 implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OMAGAdminErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMAG Server
  It is used in conjunction with OMAG Exceptions, both Checked and Runtime (unchecked).
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
      <li><ul>
          <li>500 - internal error</li>
          <li>501 - not implemented </li>
-         <li>503 - Service not available</li>
+         <li>503 - service not available</li>
          <li>400 - invalid parameters</li>
          <li>401 - unauthorized</li>
          <li>404 - not found</li>
@@ -127,125 +126,213 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACCESS_SERVICE_NOT_ENABLED" class="member-name-link">ACCESS_SERVICE_NOT_ENABLED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-006 - Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ACCESS_SERVICE_NOT_RECOGNIZED" class="member-name-link">ACCESS_SERVICE_NOT_RECOGNIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-005 - Unable to configure server {0} since access service {1} is not registered in this OMAG Server Platform</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#AUDIT_LOG_DESTINATION_NOT_FOUND" class="member-name-link">AUDIT_LOG_DESTINATION_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#BAD_CONFIG_FILE" class="member-name-link">BAD_CONFIG_FILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_CONFIG_PROPERTIES" class="member-name-link">BAD_CONFIG_PROPERTIES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#BAD_CONNECTION" class="member-name-link">BAD_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-404-100 - The {0} audit log destination connection name does not exist, so the requested {1} operation cannot proceed</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_CONFIG_FILE" class="member-name-link">BAD_CONFIG_FILE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-013 - The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2} which included a message {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#BAD_CONFIG_PROPERTIES" class="member-name-link">BAD_CONFIG_PROPERTIES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-024 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_CONNECTION" class="member-name-link">BAD_CONNECTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-041 - The connection passed to the {0} method does not describe a valid connector.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#BAD_MAX_PAGE_SIZE" class="member-name-link">BAD_MAX_PAGE_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-014 - The OMAG server {0} has been passed an invalid maximum page size of {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAD_TOPIC_CONNECTOR" class="member-name-link">BAD_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-026 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#BAD_TOPIC_CONNECTOR_PROVIDER" class="member-name-link">BAD_TOPIC_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">BAD_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#COHORT_NOT_KNOWN" class="member-name-link">COHORT_NOT_KNOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#COHORT_TOPIC_STRANGE" class="member-name-link">COHORT_TOPIC_STRANGE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#EMPTY_CONFIGURATION" class="member-name-link">EMPTY_CONFIGURATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_NOT_ENABLED" class="member-name-link">ENGINE_SERVICE_NOT_ENABLED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_SERVICE_NOT_RECOGNIZED" class="member-name-link">ENGINE_SERVICE_NOT_RECOGNIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENTERPRISE_TOPIC_START_FAILED" class="member-name-link">ENTERPRISE_TOPIC_START_FAILED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-500-003 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
+ metadata topic connection because the connector provider is incorrect.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-503-001 - A client-side exception was received from API call {0} to OMAG Server Platform at {1}.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#COHORT_NOT_KNOWN" class="member-name-link">COHORT_NOT_KNOWN</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-033 - The OMAG server {0} is unable to override the cohort topic until the {1} cohort is set up</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#COHORT_TOPIC_STRANGE" class="member-name-link">COHORT_TOPIC_STRANGE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-034 - The OMAG server {0} is unable to override the cohort topic for the {1} cohort because the contents of the topic
+ connection do not follow the expected pattern</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EMPTY_CONFIGURATION" class="member-name-link">EMPTY_CONFIGURATION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-019 - OMAG server {0} has been called with a configuration document that has no services configured</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ENGINE_SERVICE_NOT_ENABLED" class="member-name-link">ENGINE_SERVICE_NOT_ENABLED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-047 - Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_NOT_RECOGNIZED" class="member-name-link">ENGINE_SERVICE_NOT_RECOGNIZED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-046 - Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_CONFIG_FILE" class="member-name-link">INCOMPATIBLE_CONFIG_FILE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-023 - The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_SERVER_NAMES" class="member-name-link">INCOMPATIBLE_SERVER_NAMES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-002 - OMAG Server Platform was requested to start OMAG Server {0} but the configuration document retrieved for it
+ has the server name set to {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_SUBSYSTEMS" class="member-name-link">INCOMPATIBLE_SUBSYSTEMS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-031 - The configuration document for server {0} includes configuration for a {1} but also has configuration for the {2}
+ subsystem which is not a compatible combination</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_MODE_NOT_PROXY" class="member-name-link">LOCAL_REPOSITORY_MODE_NOT_PROXY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-052 - Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_MODE_NOT_SET" class="member-name-link">LOCAL_REPOSITORY_MODE_NOT_SET</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-008 - The local repository mode has not been set for OMAG server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MISSING_CONFIGURATION_PROPERTY" class="member-name-link">MISSING_CONFIGURATION_PROPERTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_CONFIG_DOC" class="member-name-link">NO_CONFIG_DOC</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_ENTERPRISE_TOPIC" class="member-name-link">NO_ENTERPRISE_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_EVENT_BUS_SET" class="member-name-link">NO_EVENT_BUS_SET</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-032 - The supplied configuration for server {0} was not accepted because there is no value provided for property {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_ENTERPRISE_TOPIC" class="member-name-link">NO_ENTERPRISE_TOPIC</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-025 - The {0} Open Metadata Access Service (OMAS) has been passed a null enterprise OMRS topic for server {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_EVENT_BUS_SET" class="member-name-link">NO_EVENT_BUS_SET</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-017 - The OMAG server {0} is unable to add open metadata services until the event bus is configured</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_ACCESS_SERVICE_ROOT_URL" class="member-name-link">NULL_ACCESS_SERVICE_ROOT_URL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-020 - The {0} service of OMAG server {1} has been configured with a null root URL for the remote {2} access service</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ACCESS_SERVICE_SERVER_NAME" class="member-name-link">NULL_ACCESS_SERVICE_SERVER_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-021 - The {0} service of OMAG server {1} has been configured with a null server name for the remote {2} access service</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CLIENT_CONFIG" class="member-name-link">NULL_CLIENT_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-038 - OMAG server {0} has been called by {1} with a null client config</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_COHORT_NAME" class="member-name-link">NULL_COHORT_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-007 - OMAG server {0} has been configured with a null cohort name</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTION" class="member-name-link">NULL_CONNECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_FILE_NAME" class="member-name-link">NULL_FILE_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_LOCAL_SERVER_NAME" class="member-name-link">NULL_LOCAL_SERVER_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_LOCAL_SERVER_USERID" class="member-name-link">NULL_LOCAL_SERVER_USERID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_METADATA_COLLECTION_NAME" class="member-name-link">NULL_METADATA_COLLECTION_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_OMAG_SERVER_NAME" class="member-name-link">NULL_OMAG_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_OMAG_SERVER_ROOT_URL" class="member-name-link">NULL_OMAG_SERVER_ROOT_URL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_PLATFORM_CONNECTION" class="member-name-link">NULL_PLATFORM_CONNECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_REPOSITORY_CONFIG" class="member-name-link">NULL_REPOSITORY_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_SERVER_CONFIG" class="member-name-link">NULL_SERVER_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_SERVICE_URL_MARKER" class="member-name-link">NULL_SERVICE_URL_MARKER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_USER_NAME" class="member-name-link">NULL_USER_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#OLD_CONFIGURATION" class="member-name-link">OLD_CONFIGURATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED" class="member-name-link">RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#TOO_LATE_TO_SET_EVENT_BUS" class="member-name-link">TOO_LATE_TO_SET_EVENT_BUS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE" class="member-name-link">UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNCLASSIFIABLE_SERVER" class="member-name-link">UNCLASSIFIABLE_SERVER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_PLATFORM_EXCEPTION" class="member-name-link">UNEXPECTED_PLATFORM_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_CONFIG" class="member-name-link">VIEW_SERVICE_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW" class="member-name-link">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_NOT_ENABLED" class="member-name-link">VIEW_SERVICE_NOT_ENABLED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_NOT_RECOGNIZED" class="member-name-link">VIEW_SERVICE_NOT_RECOGNIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-027 - OMAG server {0} has been called with a null connection for method {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_FILE_NAME" class="member-name-link">NULL_FILE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-022 - OMAG server {0} has been configured with a null file name for an Open Metadata Archive</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_LOCAL_SERVER_NAME" class="member-name-link">NULL_LOCAL_SERVER_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-001 - OMAG server has been called with a null local server name</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_LOCAL_SERVER_USERID" class="member-name-link">NULL_LOCAL_SERVER_USERID</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-003 - OMAG server {0} has been configured with a null local server user identifier (userId)</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_METADATA_COLLECTION_NAME" class="member-name-link">NULL_METADATA_COLLECTION_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-018 - OMAG server {0} has been called with a null metadata collection name</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_OMAG_SERVER_NAME" class="member-name-link">NULL_OMAG_SERVER_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-040 - The {0} service of server {1} has been configured with a null name for the remote server</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_OMAG_SERVER_ROOT_URL" class="member-name-link">NULL_OMAG_SERVER_ROOT_URL</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-039 - The {0} service of OMAG server {1} has been configured with a null root URL for its remote OMAG Server</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_PLATFORM_CONNECTION" class="member-name-link">NULL_PLATFORM_CONNECTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-028 - The OMAG Server Platform has been called with a null connection for method {0}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-105 - The {0} property in the configuration for server {1} is null</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_REPOSITORY_CONFIG" class="member-name-link">NULL_REPOSITORY_CONFIG</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-010 - The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_SERVER_CONFIG" class="member-name-link">NULL_SERVER_CONFIG</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-009 - The OMAG server {0} has been passed null configuration</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_SERVICE_URL_MARKER" class="member-name-link">NULL_SERVICE_URL_MARKER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-045 - The {0} service of server {1} has been configured with a null service URL marker</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_USER_NAME" class="member-name-link">NULL_USER_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-004 - A REST API call to OMAG server {0} has been made with a null user identifier (userId)</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED" class="member-name-link">RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-043 - A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TOO_LATE_TO_SET_EVENT_BUS" class="member-name-link">TOO_LATE_TO_SET_EVENT_BUS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-016 - The OMAG server {0} is unable to set up new event bus configuration because other services are already configured</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE" class="member-name-link">UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-044 - User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNCLASSIFIABLE_SERVER" class="member-name-link">UNCLASSIFIABLE_SERVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-035 - Unable to classify the type of server for OMAG server {0} from its configuration document</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-500-001 - Method {1} for OMAG server {0} returned an unexpected {2} exception with message {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-500-004 - The {0} service detected an unexpected {1} exception with message {2} during initialization</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_PLATFORM_EXCEPTION" class="member-name-link">UNEXPECTED_PLATFORM_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-500-002 - Method {0} returned an unexpected {1} exception with message {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_CONFIG" class="member-name-link">VIEW_SERVICE_CONFIG</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-042 - The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW" class="member-name-link">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-051 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VIEW_SERVICE_NOT_ENABLED" class="member-name-link">VIEW_SERVICE_NOT_ENABLED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-ADMIN-400-037 - Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VIEW_SERVICE_NOT_RECOGNIZED" class="member-name-link">VIEW_SERVICE_NOT_RECOGNIZED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-ADMIN-400-036 - Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform</div>
+</div>
 </div>
 </section>
 </li>
@@ -310,360 +397,363 @@ the order they are declared.</div>
 <section class="detail" id="NULL_LOCAL_SERVER_NAME">
 <h3>NULL_LOCAL_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_LOCAL_SERVER_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-001 - OMAG server has been called with a null local server name</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INCOMPATIBLE_SERVER_NAMES">
 <h3>INCOMPATIBLE_SERVER_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_SERVER_NAMES</span></div>
+<div class="block">OMAG-ADMIN-400-002 - OMAG Server Platform was requested to start OMAG Server {0} but the configuration document retrieved for it
+ has the server name set to {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LOCAL_SERVER_USERID">
 <h3>NULL_LOCAL_SERVER_USERID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_LOCAL_SERVER_USERID</span></div>
+<div class="block">OMAG-ADMIN-400-003 - OMAG server {0} has been configured with a null local server user identifier (userId)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_USER_NAME">
 <h3>NULL_USER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-004 - A REST API call to OMAG server {0} has been made with a null user identifier (userId)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACCESS_SERVICE_NOT_RECOGNIZED">
 <h3>ACCESS_SERVICE_NOT_RECOGNIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">ACCESS_SERVICE_NOT_RECOGNIZED</span></div>
+<div class="block">OMAG-ADMIN-400-005 - Unable to configure server {0} since access service {1} is not registered in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACCESS_SERVICE_NOT_ENABLED">
 <h3>ACCESS_SERVICE_NOT_ENABLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">ACCESS_SERVICE_NOT_ENABLED</span></div>
+<div class="block">OMAG-ADMIN-400-006 - Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_COHORT_NAME">
 <h3>NULL_COHORT_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_COHORT_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-007 - OMAG server {0} has been configured with a null cohort name</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_REPOSITORY_MODE_NOT_SET">
 <h3>LOCAL_REPOSITORY_MODE_NOT_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_MODE_NOT_SET</span></div>
+<div class="block">OMAG-ADMIN-400-008 - The local repository mode has not been set for OMAG server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SERVER_CONFIG">
 <h3>NULL_SERVER_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_SERVER_CONFIG</span></div>
+<div class="block">OMAG-ADMIN-400-009 - The OMAG server {0} has been passed null configuration</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_REPOSITORY_CONFIG">
 <h3>NULL_REPOSITORY_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_REPOSITORY_CONFIG</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ACCESS_SERVICE_ADMIN_CLASS">
-<h3>NULL_ACCESS_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_ACCESS_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ACCESS_SERVICE_ADMIN_CLASS">
-<h3>BAD_ACCESS_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_ACCESS_SERVICE_ADMIN_CLASS</span></div>
+<div class="block">OMAG-ADMIN-400-010 - The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIG_FILE">
 <h3>BAD_CONFIG_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_CONFIG_FILE</span></div>
+<div class="block">OMAG-ADMIN-400-013 - The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2} which included a message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_MAX_PAGE_SIZE">
 <h3>BAD_MAX_PAGE_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_MAX_PAGE_SIZE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENTERPRISE_TOPIC_START_FAILED">
-<h3>ENTERPRISE_TOPIC_START_FAILED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">ENTERPRISE_TOPIC_START_FAILED</span></div>
+<div class="block">OMAG-ADMIN-400-014 - The OMAG server {0} has been passed an invalid maximum page size of {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOO_LATE_TO_SET_EVENT_BUS">
 <h3>TOO_LATE_TO_SET_EVENT_BUS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">TOO_LATE_TO_SET_EVENT_BUS</span></div>
+<div class="block">OMAG-ADMIN-400-016 - The OMAG server {0} is unable to set up new event bus configuration because other services are already configured</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_EVENT_BUS_SET">
 <h3>NO_EVENT_BUS_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NO_EVENT_BUS_SET</span></div>
+<div class="block">OMAG-ADMIN-400-017 - The OMAG server {0} is unable to add open metadata services until the event bus is configured</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_METADATA_COLLECTION_NAME">
 <h3>NULL_METADATA_COLLECTION_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_METADATA_COLLECTION_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-018 - OMAG server {0} has been called with a null metadata collection name</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EMPTY_CONFIGURATION">
 <h3>EMPTY_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">EMPTY_CONFIGURATION</span></div>
+<div class="block">OMAG-ADMIN-400-019 - OMAG server {0} has been called with a configuration document that has no services configured</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ACCESS_SERVICE_ROOT_URL">
 <h3>NULL_ACCESS_SERVICE_ROOT_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_ACCESS_SERVICE_ROOT_URL</span></div>
+<div class="block">OMAG-ADMIN-400-020 - The {0} service of OMAG server {1} has been configured with a null root URL for the remote {2} access service</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ACCESS_SERVICE_SERVER_NAME">
 <h3>NULL_ACCESS_SERVICE_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_ACCESS_SERVICE_SERVER_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-021 - The {0} service of OMAG server {1} has been configured with a null server name for the remote {2} access service</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_FILE_NAME">
 <h3>NULL_FILE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_FILE_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-022 - OMAG server {0} has been configured with a null file name for an Open Metadata Archive</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INCOMPATIBLE_CONFIG_FILE">
 <h3>INCOMPATIBLE_CONFIG_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_CONFIG_FILE</span></div>
+<div class="block">OMAG-ADMIN-400-023 - The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIG_PROPERTIES">
 <h3>BAD_CONFIG_PROPERTIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_CONFIG_PROPERTIES</span></div>
+<div class="block">OMAG-ADMIN-400-024 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property.  The resulting {3} exception included the following message: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_ENTERPRISE_TOPIC">
 <h3>NO_ENTERPRISE_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NO_ENTERPRISE_TOPIC</span></div>
+<div class="block">OMAG-ADMIN-400-025 - The {0} Open Metadata Access Service (OMAS) has been passed a null enterprise OMRS topic for server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_TOPIC_CONNECTOR">
 <h3>BAD_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_TOPIC_CONNECTOR</span></div>
+<div class="block">OMAG-ADMIN-400-026 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  The error
+ message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTION">
 <h3>NULL_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION</span></div>
+<div class="block">OMAG-ADMIN-400-027 - OMAG server {0} has been called with a null connection for method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_PLATFORM_CONNECTION">
 <h3>NULL_PLATFORM_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_PLATFORM_CONNECTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_VIEW_SERVICE_ADMIN_CLASS">
-<h3>NULL_VIEW_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_VIEW_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_VIEW_SERVICE_ADMIN_CLASS">
-<h3>BAD_VIEW_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_VIEW_SERVICE_ADMIN_CLASS</span></div>
+<div class="block">OMAG-ADMIN-400-028 - The OMAG Server Platform has been called with a null connection for method {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INCOMPATIBLE_SUBSYSTEMS">
 <h3>INCOMPATIBLE_SUBSYSTEMS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_SUBSYSTEMS</span></div>
+<div class="block">OMAG-ADMIN-400-031 - The configuration document for server {0} includes configuration for a {1} but also has configuration for the {2}
+ subsystem which is not a compatible combination</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MISSING_CONFIGURATION_PROPERTY">
 <h3>MISSING_CONFIGURATION_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">MISSING_CONFIGURATION_PROPERTY</span></div>
+<div class="block">OMAG-ADMIN-400-032 - The supplied configuration for server {0} was not accepted because there is no value provided for property {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COHORT_NOT_KNOWN">
 <h3>COHORT_NOT_KNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">COHORT_NOT_KNOWN</span></div>
+<div class="block">OMAG-ADMIN-400-033 - The OMAG server {0} is unable to override the cohort topic until the {1} cohort is set up</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COHORT_TOPIC_STRANGE">
 <h3>COHORT_TOPIC_STRANGE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">COHORT_TOPIC_STRANGE</span></div>
+<div class="block">OMAG-ADMIN-400-034 - The OMAG server {0} is unable to override the cohort topic for the {1} cohort because the contents of the topic
+ connection do not follow the expected pattern</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNCLASSIFIABLE_SERVER">
 <h3>UNCLASSIFIABLE_SERVER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">UNCLASSIFIABLE_SERVER</span></div>
+<div class="block">OMAG-ADMIN-400-035 - Unable to classify the type of server for OMAG server {0} from its configuration document</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VIEW_SERVICE_NOT_RECOGNIZED">
 <h3>VIEW_SERVICE_NOT_RECOGNIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_NOT_RECOGNIZED</span></div>
+<div class="block">OMAG-ADMIN-400-036 - Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VIEW_SERVICE_NOT_ENABLED">
 <h3>VIEW_SERVICE_NOT_ENABLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_NOT_ENABLED</span></div>
+<div class="block">OMAG-ADMIN-400-037 - Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CLIENT_CONFIG">
 <h3>NULL_CLIENT_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_CLIENT_CONFIG</span></div>
+<div class="block">OMAG-ADMIN-400-038 - OMAG server {0} has been called by {1} with a null client config</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_OMAG_SERVER_ROOT_URL">
 <h3>NULL_OMAG_SERVER_ROOT_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_OMAG_SERVER_ROOT_URL</span></div>
+<div class="block">OMAG-ADMIN-400-039 - The {0} service of OMAG server {1} has been configured with a null root URL for its remote OMAG Server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_OMAG_SERVER_NAME">
 <h3>NULL_OMAG_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_OMAG_SERVER_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-040 - The {0} service of server {1} has been configured with a null name for the remote server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONNECTION">
 <h3>BAD_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_CONNECTION</span></div>
+<div class="block">OMAG-ADMIN-400-041 - The connection passed to the {0} method does not describe a valid connector.  Connection object is: {1}.
+ The resulting exception {2} had message of {3}, system action of {4} and user action of {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VIEW_SERVICE_CONFIG">
 <h3>VIEW_SERVICE_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_CONFIG</span></div>
+<div class="block">OMAG-ADMIN-400-042 - The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED">
 <h3>RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED</span></div>
+<div class="block">OMAG-ADMIN-400-043 - A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE">
 <h3>UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE</span></div>
+<div class="block">OMAG-ADMIN-400-044 - User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SERVICE_URL_MARKER">
 <h3>NULL_SERVICE_URL_MARKER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_SERVICE_URL_MARKER</span></div>
+<div class="block">OMAG-ADMIN-400-045 - The {0} service of server {1} has been configured with a null service URL marker</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENGINE_SERVICE_NOT_RECOGNIZED">
 <h3>ENGINE_SERVICE_NOT_RECOGNIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_NOT_RECOGNIZED</span></div>
+<div class="block">OMAG-ADMIN-400-046 - Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENGINE_SERVICE_NOT_ENABLED">
 <h3>ENGINE_SERVICE_NOT_ENABLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_NOT_ENABLED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ENGINE_SERVICE_ADMIN_CLASS">
-<h3>BAD_ENGINE_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENGINE_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENGINE_SERVICE_ADMIN_CLASS">
-<h3>NULL_ENGINE_SERVICE_ADMIN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_SERVICE_ADMIN_CLASS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OLD_CONFIGURATION">
-<h3>OLD_CONFIGURATION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">OLD_CONFIGURATION</span></div>
+<div class="block">OMAG-ADMIN-400-047 - Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW">
 <h3>VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW</span></div>
+<div class="block">OMAG-ADMIN-400-051 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_REPOSITORY_MODE_NOT_PROXY">
 <h3>LOCAL_REPOSITORY_MODE_NOT_PROXY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_MODE_NOT_PROXY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_CONFIG_DOC">
-<h3>NO_CONFIG_DOC</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_DOC</span></div>
+<div class="block">OMAG-ADMIN-400-052 - Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_PROPERTY_NAME">
 <h3>NULL_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">NULL_PROPERTY_NAME</span></div>
+<div class="block">OMAG-ADMIN-400-105 - The {0} property in the configuration for server {1} is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AUDIT_LOG_DESTINATION_NOT_FOUND">
 <h3>AUDIT_LOG_DESTINATION_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">AUDIT_LOG_DESTINATION_NOT_FOUND</span></div>
+<div class="block">OMAG-ADMIN-404-100 - The {0} audit log destination connection name does not exist, so the requested {1} operation cannot proceed</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OMAG-ADMIN-500-001 - Method {1} for OMAG server {0} returned an unexpected {2} exception with message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_PLATFORM_EXCEPTION">
 <h3>UNEXPECTED_PLATFORM_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_PLATFORM_EXCEPTION</span></div>
+<div class="block">OMAG-ADMIN-500-002 - Method {0} returned an unexpected {1} exception with message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_TOPIC_CONNECTOR_PROVIDER">
 <h3>BAD_TOPIC_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">BAD_TOPIC_CONNECTOR_PROVIDER</span></div>
+<div class="block">OMAG-ADMIN-500-003 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
+ metadata topic connection because the connector provider is incorrect.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
 <h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
+<div class="block">OMAG-ADMIN-500-004 - The {0} service detected an unexpected {1} exception with message {2} during initialization</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
 <h3>CLIENT_SIDE_REST_API_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGAdminErrorCode.html" title="enum class in org.odpi.openmetadata.adminservices.ffdc">OMAGAdminErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">OMAG-ADMIN-503-001 - A client-side exception was received from API call {0} to OMAG Server Platform at {1}.  The error message was {2}</div>
 </section>
 </li>
 </ul>

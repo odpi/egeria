@@ -107,23 +107,41 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ADMINISTRATION_SERVICES" class="member-name-link">ADMINISTRATION_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Configuration of services in an Open Metadata and Governance server (OMAG Server).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GAF_METADATA_MANAGEMENT" class="member-name-link">GAF_METADATA_MANAGEMENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Support governance action services.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OCF_METADATA_MANAGEMENT" class="member-name-link">OCF_METADATA_MANAGEMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Common metadata services for the Open Connector Framework (OCF).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OIF_METADATA_MANAGEMENT" class="member-name-link">OIF_METADATA_MANAGEMENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Provides operational support for the integration connectors.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_METADATA_SECURITY" class="member-name-link">OPEN_METADATA_SECURITY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Authorization services for Open Metadata and Governance</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_STORE" class="member-name-link">OPEN_METADATA_STORE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PLATFORM_SERVICES" class="member-name-link">PLATFORM_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REPOSITORY_SERVICES" class="member-name-link">REPOSITORY_SERVICES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_OPERATIONS" class="member-name-link">SERVER_OPERATIONS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Supports the start up and shutdown of OMAG Servers.</div>
+</div>
 </div>
 </section>
 </li>
@@ -139,9 +157,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGovernanceServersDescriptionList()" class="member-name-link">getGovernanceServersDescriptionList</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCommonServicesDescriptionList()" class="member-name-link">getCommonServicesDescriptionList</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return a list containing each of the access service descriptions defined in this enum class.</div>
+<div class="block">Return a list containing each of the service descriptions defined in this enum class.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceCode()" class="member-name-link">getServiceCode</a>()</code></div>
@@ -208,54 +226,63 @@ the order they are declared.</div>
 <section class="detail" id="REPOSITORY_SERVICES">
 <h3>REPOSITORY_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">REPOSITORY_SERVICES</span></div>
+<div class="block">Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ADMINISTRATION_SERVICES">
 <h3>ADMINISTRATION_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">ADMINISTRATION_SERVICES</span></div>
+<div class="block">Configuration of services in an Open Metadata and Governance server (OMAG Server).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OCF_METADATA_MANAGEMENT">
 <h3>OCF_METADATA_MANAGEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">OCF_METADATA_MANAGEMENT</span></div>
+<div class="block">Common metadata services for the Open Connector Framework (OCF).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_METADATA_SECURITY">
 <h3>OPEN_METADATA_SECURITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">OPEN_METADATA_SECURITY</span></div>
+<div class="block">Authorization services for Open Metadata and Governance</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GAF_METADATA_MANAGEMENT">
 <h3>GAF_METADATA_MANAGEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">GAF_METADATA_MANAGEMENT</span></div>
+<div class="block">Support governance action services.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PLATFORM_SERVICES">
 <h3>PLATFORM_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">PLATFORM_SERVICES</span></div>
+<div class="block">Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OIF_METADATA_MANAGEMENT">
 <h3>OIF_METADATA_MANAGEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">OIF_METADATA_MANAGEMENT</span></div>
+<div class="block">Provides operational support for the integration connectors.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_OPERATIONS">
 <h3>SERVER_OPERATIONS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">SERVER_OPERATIONS</span></div>
+<div class="block">Supports the start up and shutdown of OMAG Servers.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_METADATA_STORE">
 <h3>OPEN_METADATA_STORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">OPEN_METADATA_STORE</span></div>
+<div class="block">Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).</div>
 </section>
 </li>
 </ul>
@@ -298,10 +325,10 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceServersDescriptionList()">
-<h3>getGovernanceServersDescriptionList</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceServersDescriptionList</span>()</div>
-<div class="block">Return a list containing each of the access service descriptions defined in this enum class.</div>
+<section class="detail" id="getCommonServicesDescriptionList()">
+<h3>getCommonServicesDescriptionList</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a>&gt;</span>&nbsp;<span class="element-name">getCommonServicesDescriptionList</span>()</div>
+<div class="block">Return a list containing each of the service descriptions defined in this enum class.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>List of enums</dd>
