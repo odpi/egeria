@@ -168,7 +168,8 @@ public class OpenMetadataTypesArchive
         update0210DataStores();
         update0461GovernanceEngines();
         add00475ContextEvents();
-        add00755UltimateSourcesDestinations();
+        update0615SchemaExtraction();
+        add0755UltimateSourcesDestinations();
     }
 
 
@@ -241,7 +242,7 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(addActionEntity());
         this.archiveBuilder.addTypeDefPatch(updateToDoEntity());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
+        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
         this.archiveBuilder.addTypeDefPatch(updateActionsRelationship());
     }
 
@@ -283,12 +284,12 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private TypeDefPatch updateGovernanceActionEntity()
+    private TypeDefPatch updateEngineActionEntity()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceAction";
+        final String typeName = "EngineAction";
         final String superTypeName = "Action";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
@@ -533,7 +534,7 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(addContextEventEntity());
         this.archiveBuilder.addRelationshipDef(addContextEventEvidenceRelationship());
-        this.archiveBuilder.addRelationshipDef(addContextEventForTimelineRelationship());
+        this.archiveBuilder.addRelationshipDef(addContextEventForTimelineEffectsRelationship());
         this.archiveBuilder.addRelationshipDef(addContextEventImpactRelationship());
         this.archiveBuilder.addRelationshipDef(addDependentContextEventRelationship());
         this.archiveBuilder.addRelationshipDef(addRelatedContextEventRelationship());
@@ -718,11 +719,11 @@ public class OpenMetadataTypesArchive
         return relationshipDef;
     }
 
-    private RelationshipDef addContextEventForTimelineRelationship()
+    private RelationshipDef addContextEventForTimelineEffectsRelationship()
     {
         final String guid            = "f1f407cc-9047-487d-9ce3-aa892cf39711";
-        final String name            = "ContextEventForTimeline";
-        final String description     = "Link between a ContextEventTimelineEntry entity and either a ContextEvent entity or a collection of ContextEvent entities.";
+        final String name            = "ContextEventForTimelineEffects";
+        final String description     = "Associates a ContextEvent to a Referenceable (typically and Asset or DataProduct) whose data is affected by the event.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -741,7 +742,7 @@ public class OpenMetadataTypesArchive
          */
         final String                     end1EntityType               = "Referenceable";
         final String                     end1AttributeName            = "eventEffectedResources";
-        final String                     end1AttributeDescription     = "Entities whose data/performance is impacted by the context event.";
+        final String                     end1AttributeDescription     = "Entities whose data is impacted by the context event.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -811,7 +812,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "ContextEvent";
-        final String                     end2AttributeName            = "effectedByContextEvents";
+        final String                     end2AttributeName            = "impactedByContextEvents";
         final String                     end2AttributeDescription     = "Descriptions of context events affecting this resource and the action taken.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -1151,11 +1152,218 @@ public class OpenMetadataTypesArchive
         return entityDef;
     }
 
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void add00755UltimateSourcesDestinations()
+    private void update0615SchemaExtraction()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataFieldEntity());
+        this.archiveBuilder.addRelationshipDef(getDiscoveredLinkedDataFieldRelationship());
+    }
+
+    private TypeDefPatch updateDataFieldEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataField";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "minimumLength";
+        final String attribute1Description     = "Minimum length of the data value (zero means unlimited).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "length";
+        final String attribute2Description     = "Length of the data field (zero means unlimited).";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "significantDigits";
+        final String attribute3Description     = "Number of significant digits before the decimal point (zero means it is an integer).";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "isNullable";
+        final String attribute4Description     = "Accepts null values or not.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute6Name            = "minCardinality";
+        final String attribute6Description     = "Minimum number of occurrences of this attribute allowed.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "maxCardinality";
+        final String attribute7Description     = "Maximum number of occurrences of this attribute allowed.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "precision";
+        final String attribute8Description     = "Number of digits after the decimal point.";
+        final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "isDeprecated";
+        final String attribute9Description     = "Is this field deprecated?";
+        final String attribute9DescriptionGUID = null;
+        final String attribute10Name            = "version";
+        final String attribute10Description     = "Incrementing version number.";
+        final String attribute10DescriptionGUID = null;
+        final String attribute11Name            = "versionIdentifier";
+        final String attribute11Description     = "String description of the version number.";
+        final String attribute11DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
+                                                        attribute3Description,
+                                                        attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
+                                                            attribute4Description,
+                                                            attribute4DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
+                                                        attribute6Description,
+                                                        attribute6DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute7Name,
+                                                        attribute7Description,
+                                                        attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute8Name,
+                                                        attribute8Description,
+                                                        attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute9Name,
+                                                            attribute9Description,
+                                                            attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getLongTypeDefAttribute(attribute10Name,
+                                                         attribute10Description,
+                                                         attribute10DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute11Name,
+                                                           attribute11Description,
+                                                           attribute11DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    private RelationshipDef getDiscoveredLinkedDataFieldRelationship()
+    {
+        final String guid            = "cca4b116-4490-44c4-84e1-535231ae46a1";
+        final String name            = "DiscoveredLinkedDataField";
+        final String description     = "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "DataField";
+        final String                     end1AttributeName            = "linkFromDataFields";
+        final String                     end1AttributeDescription     = "Data field that is linked from.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataField";
+        final String                     end2AttributeName            = "linkToDataFields";
+        final String                     end2AttributeDescription     = "Data field that is linked to.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "relationshipTypeName";
+        final String attribute1Description     = "Unique name of the relationship type to use in the associated schema.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "relationshipEnd";
+        final String attribute2Description     = "If the end of a relationship is significant set to 1 or 2 to indicated the end; otherwise use 0.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "name";
+        final String attribute3Description     = "Display name for the relationship (or relationship end).";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "description";
+        final String attribute4Description     = "Description of the relationship (or relationship end).";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "minCardinality";
+        final String attribute5Description     = "Minimum number of occurrences of this relationship (or relationship end) allowed.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "maxCardinality";
+        final String attribute6Description     = "Maximum number of occurrences of this relationship (or relationship end) allowed.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "additionalProperties";
+        final String attribute7Description     = "Any additional properties for the relationship (or relationship end).";
+        final String attribute7DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute7Name,
+                                                                    attribute7Description,
+                                                                    attribute7DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0755UltimateSourcesDestinations()
     {
         this.archiveBuilder.addRelationshipDef(getUltimateSourceRelationship());
         this.archiveBuilder.addRelationshipDef(getUltimateDestinationRelationship());

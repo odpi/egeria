@@ -104,32 +104,38 @@ public class DatabaseColumnProperties extends TabularColumnProperties
     public String toString()
     {
         return "DatabaseColumnProperties{" +
-                "formula='" + formula + '\'' +
-                ", queries=" + queries +
-                ", dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getDefaultValue() + '\'' +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "formula='" + formula + '\'' +
+                       ", queries=" + queries +
+                       ", elementPosition=" + getElementPosition() +
+                       ", minCardinality=" + getMinCardinality() +
+                       ", maxCardinality=" + getMaxCardinality() +
+                       ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                       ", orderedValues=" + getOrderedValues() +
+                       ", sortOrder=" + getSortOrder() +
+                       ", minimumLength=" + getMinimumLength() +
+                       ", length=" + getLength() +
+                       ", precision=" + getPrecision() +
+                       ", significantDigits=" + getSignificantDigits() +
+                       ", isNullable=" + getIsNullable() +
+                       ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
+                       ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
+                       ", aliases=" + getAliases() +
+                       ", dataType='" + getDataType() + '\'' +
+                       ", defaultValue='" + getDefaultValue() + '\'' +
+                       ", fixedValue='" + getFixedValue() + '\'' +
+                       ", externalTypeGUID='" + getExternalTypeGUID() + '\'' +
+                       ", validValuesSetGUID='" + getValidValuesSetGUID() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

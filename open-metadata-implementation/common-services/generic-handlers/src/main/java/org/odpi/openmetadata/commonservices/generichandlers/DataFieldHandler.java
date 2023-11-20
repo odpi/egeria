@@ -211,7 +211,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId identifier of calling user
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
-     * @param pageSize maximum number of annotations that can be returned.
+     * @param pageSize maximum number of data fields that can be returned.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -260,6 +260,101 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   forDuplicateProcessing,
                                   effectiveTime,
                                   methodName);
+    }
+
+
+    /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param userId identifier of calling user
+     * @param dataFieldGUID starting data field identifier
+     * @param startingFrom starting position in the list
+     * @param pageSize maximum number of data fields that can be returned.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of DataField objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    public List<B>  getLinkedDataFields(String  userId,
+                                        String  dataFieldGUID,
+                                        int     startingFrom,
+                                        int     pageSize,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String dataFieldGUIDParameterName = "dataFieldGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    dataFieldGUID,
+                                                                    dataFieldGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    startingFrom,
+                                                                    pageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        if (relationships != null)
+        {
+            final String attachedEntityGUIDParameterName = "relationship.getEntityProxyXXX().getGUID()";
+
+            List<B> results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, dataFieldGUID, relationship);
+                    EntityDetail entityDetail = super.getEntityFromRepository(userId,
+                                                                              entityProxy.getGUID(),
+                                                                              attachedEntityGUIDParameterName,
+                                                                              OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                              null,
+                                                                              null,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                    if (entityDetail != null)
+                    {
+                        B bean = converter.getNewBean(beanClass, entityDetail, relationship, methodName);
+
+                        if (bean != null)
+                        {
+                            results.add(bean);
+                        }
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
     }
 
 
@@ -437,6 +532,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               parentEntityGUID,
                                                               parentEntityParameterName,
                                                               parentEntityType,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -646,6 +742,82 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+
+    /**
+     * Add a new data field and link it to an existing data field.
+     *
+     * @param userId identifier of calling user
+     * @param externalSourceGUID unique identifier of the external source (null for local)
+     * @param externalSourceName unique name of the external source (null for local)
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipEnd the logical end of the relationship.  Use 0 if this does not make sense.
+     * @param relationshipTypeName the name of this relationship between data fields.
+     * @param additionalProperties any additional properties
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public void    linkDataFields(String              userId,
+                                  String              externalSourceGUID,
+                                  String              externalSourceName,
+                                  String              linkFromDataFieldGUID,
+                                  String              linkToDataFieldGUID,
+                                  int                 relationshipEnd,
+                                  String              relationshipTypeName,
+                                  Map<String, String> additionalProperties,
+                                  boolean             forLineage,
+                                  boolean             forDuplicateProcessing,
+                                  Date                effectiveTime,
+                                  String              methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   linkFromDataFieldGUIDParameterName = "linkFromDataFieldGUID";
+        final String   linkToDataFieldGUIDParameterName = "linkToDataFieldGUID";
+
+        InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                                              null,
+                                                                                              OpenMetadataAPIMapper.RELATIONSHIP_END_PROPERTY_NAME,
+                                                                                              relationshipEnd,
+                                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
+                                                                              relationshipTypeName,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                 relationshipProperties,
+                                                                                 OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                 additionalProperties,
+                                                                                 methodName);
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  linkFromDataFieldGUID,
+                                  linkFromDataFieldGUIDParameterName,
+                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                  linkToDataFieldGUID,
+                                  linkToDataFieldGUIDParameterName,
+                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
+                                  OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
+                                  relationshipProperties,
+                                  null,
+                                  null,
+                                  effectiveTime,
+                                  methodName);
+    }
 
 
     /**

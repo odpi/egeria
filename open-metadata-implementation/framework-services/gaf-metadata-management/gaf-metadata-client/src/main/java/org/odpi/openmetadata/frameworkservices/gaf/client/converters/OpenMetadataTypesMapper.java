@@ -1808,7 +1808,7 @@ public class OpenMetadataTypesMapper
     public static final String WAIT_TIME_PROPERTY_NAME                   = "waitTime"; /* from NextGovernanceActionType relationship */
 
     public static final String GOVERNANCE_ACTION_STATUS_ENUM_TYPE_GUID   = "a6e698b0-a4f7-4a39-8c80-db0bb0f972ec";
-    public static final String GOVERNANCE_ACTION_STATUS_ENUM_TYPE_NAME   = "GovernanceActionStatus";
+    public static final String GOVERNANCE_ACTION_STATUS_ENUM_TYPE_NAME   = "EngineActionStatus";
     public static final int    REQUESTED_GA_STATUS_ORDINAL               = 0;
     public static final int    APPROVED_GA_STATUS_ORDINAL                = 1;
     public static final int    WAITING_GA_STATUS_ORDINAL                 = 2;

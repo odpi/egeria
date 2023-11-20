@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink;
+import org.odpi.openmetadata.frameworks.discovery.properties.RelatedDataField;
 
 import java.util.List;
 import java.util.Map;
@@ -254,7 +256,7 @@ public abstract class DiscoveryAnnotationStore
 
 
     /**
-     * Return any annotations attached to this annotation.
+     * Return any nested data fields attached to this data field.
      *
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
@@ -271,6 +273,26 @@ public abstract class DiscoveryAnnotationStore
                                                          int      maximumResults) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException;
+
+
+    /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param dataFieldGUID starting data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of annotations that can be returned.
+     *
+     * @return list of DataField objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    public abstract List<RelatedDataField>  getLinkedDataFields(String   dataFieldGUID,
+                                                                int      startingFrom,
+                                                                int      maximumResults) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
@@ -318,6 +340,22 @@ public abstract class DiscoveryAnnotationStore
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
 
+
+    /**
+     * Link two exising data fields together in a peer relationship.
+     *
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipProperties optional properties for the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public abstract void linkDataFields(String        linkFromDataFieldGUID,
+                                        DataFieldLink relationshipProperties,
+                                        String        linkToDataFieldGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
 
     /**
      * Add a new annotation and link it to an existing data field.

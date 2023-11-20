@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
@@ -210,7 +209,6 @@ public class IntegrationDaemonOperationalServices
                         String groupName             = this.getIntegrationGroupName(integrationGroupConfig);
 
                         GovernanceEngineRESTClient restClient = new GovernanceEngineRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
-                        GovernanceEngineClient serverClient = new GovernanceEngineClient(partnerOMASServerName, partnerOMASRootURL, restClient, maxPageSize);
                         GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(partnerOMASServerName,
                                                                                                   partnerOMASRootURL,
                                                                                                   restClient,
@@ -262,7 +260,6 @@ public class IntegrationDaemonOperationalServices
                                                                                            localServerName,
                                                                                            localServerUserId,
                                                                                            configurationClient,
-                                                                                           serverClient,
                                                                                            auditLog,
                                                                                            maxPageSize);
 

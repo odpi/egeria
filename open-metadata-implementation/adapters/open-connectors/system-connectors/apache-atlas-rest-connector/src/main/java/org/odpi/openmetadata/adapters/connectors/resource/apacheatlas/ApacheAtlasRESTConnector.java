@@ -16,10 +16,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataClassificationDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEntityDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumElementDef;
@@ -28,6 +30,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefAttribute;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefLink;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.ArrayList;
@@ -74,6 +77,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     /* ==============================================================================
      * Standard methods that trigger activity.
      */
+
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -213,6 +217,42 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     }
 
 
+    /*
+     *===========================================================================
+     * Specialized methods
+     */
+
+
+    /**
+     * Return the version of this Apache Atlas.
+     *
+     * @return atlas version information
+     * @throws PropertyServerException problem communicating with Apache Atlas
+     */
+    public AtlasVersion getAtlasVersion() throws PropertyServerException
+    {
+        final String methodName = "getAtlasVersion()";
+        final String url = targetRootURL + "/api/atlas/admin/version";
+
+        return this.callGetRESTCallNoParams(methodName, AtlasVersion.class, url);
+    }
+
+
+    /**
+     * Return the metrics of this Apache Atlas.
+     *
+     * @return atlas metrics information
+     * @throws PropertyServerException problem communicating with Apache Atlas
+     */
+    public AtlasMetrics getAtlasMetrics() throws PropertyServerException
+    {
+        final String methodName = "getAtlasMetrics()";
+        final String url = targetRootURL + "/api/atlas/admin/metrics";
+
+        return this.callGetRESTCallNoParams(methodName, AtlasMetrics.class, url);
+    }
+
+
     /**
      * Retain a list of defined types to avoid define the same type multiple times.
      *
@@ -226,6 +266,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     }
 
     private enum TypeStatus { ADD, UPDATE, IGNORE };
+
 
     /**
      * Is the named type already defined in Apache Atlas?  Is the version correct?
@@ -309,7 +350,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
             }
         }
     }
-
 
 
     /**
@@ -494,6 +534,59 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
         this.addTypeDefinitions(newTypes);
 
+    }
+
+
+    /**
+     * Copy the contents of an open metadata element into Apache Atlas and return the
+     * unique identifier of the new Apache Atlas element.
+     *
+     * @param openMetadataElement element to copy into Apache Atlas
+     * @return unique identifier of the resulting Atlas entity
+     * @throws PropertyServerException problem with communicating with Apache Atlas
+     * @throws InvalidParameterException type not defined in Apache Atlas
+     */
+    public String addOpenMetadataElement(OpenMetadataElement openMetadataElement) throws PropertyServerException,
+                                                                                         InvalidParameterException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Update the contents of an Apache Atlas entity using the contents of an open metadata element.
+     *
+     * @param atlasGUID unique identifier of the atlas entity to update
+     * @param openMetadataElement entity from the open metadata ecosystem to copy into Apache Atlas
+     * @return unique identifier of the resulting Atlas entity
+     * @throws PropertyServerException problem with communicating with Apache Atlas
+     * @throws InvalidParameterException entity not defined in Apache Atlas
+     */
+    public String updateOpenMetadataElement(String              atlasGUID,
+                                            OpenMetadataElement openMetadataElement) throws PropertyServerException,
+                                                                                            InvalidParameterException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Create a relationship to an Apache Atlas entity.  The Apache Atlas entity and associated relationship may or may not exist.
+     * If either element exists, it is updated.  If it does not exist, it is created.
+     * In all cases, the unique identifier of the Apache Atlas entity is returned.
+     *
+     * @param relatedMetadataElement relationship and entity from the open metadata ecosystem
+     * @return unique identifier of the resulting Atlas entity
+     * @throws PropertyServerException problem with communicating with Apache Atlas
+     * @throws InvalidParameterException type not defined in Apache Atlas
+     */
+    public String addRelatedMetadataElement(RelatedMetadataElement relatedMetadataElement) throws PropertyServerException,
+                                                                                                  InvalidParameterException
+    {
+        // todo
+        return null;
     }
 
 
@@ -1404,7 +1497,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
      * @param startingEntity entity information detailing the entity proxy for the entity at the far end of a named relationship.
      * @param relationshipLabel name of relationship to traverse
      *
-     * @return list of related entity GUIDs mapped to their relationship GUID
+     * @return Map of related entity GUIDs mapped to their relationship GUID
      * @throws PropertyServerException problem connecting to Apache Atlas
      */
     public Map<String, String> getRelationships(AtlasEntityWithExtInfo startingEntity,

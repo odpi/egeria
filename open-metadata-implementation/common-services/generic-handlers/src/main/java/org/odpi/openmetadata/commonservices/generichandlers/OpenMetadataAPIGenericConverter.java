@@ -1412,6 +1412,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return 0;
     }
 
+
     /**
      * Extract and delete the maximumInstances property from the supplied instance properties.
      *
@@ -4251,7 +4252,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the precision/significantDigits property from the supplied instance properties.
+     * Extract and delete the significantDigits property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return integer - default 0
+     */
+    protected int removeSignificantDigits(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeSignificantDigits";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the version property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return integer - default 0
+     */
+    protected long removeVersion(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeVersion";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.VERSION_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the precision property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return integer - default 0
@@ -4262,20 +4308,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            int retrievedValue = repositoryHelper.removeIntProperty(serviceName,
-                                                                    OpenMetadataAPIMapper.PRECISION_PROPERTY_NAME,
-                                                                    instanceProperties,
-                                                                    methodName);
-
-            if (retrievedValue == 0)
-            {
-                retrievedValue = repositoryHelper.removeIntProperty(serviceName,
-                                                                    OpenMetadataAPIMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
-                                                                    instanceProperties,
-                                                                    methodName);
-            }
-
-            return retrievedValue;
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.PRECISION_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
         }
 
         return 0;
@@ -5427,22 +5463,79 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the governanceActionTypeGUID property from the supplied instance properties.
+     * Extract and delete the processStepGUID property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string
      */
-    protected String removeGovernanceActionTypeGUID(InstanceProperties instanceProperties)
+    protected String removeProcessStepGUID(InstanceProperties instanceProperties)
 
     {
-        final String methodName = "removeGovernanceActionTypeGUID";
+        final String methodName = "removeProcessStepGUID";
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+            String processStepGUID = repositoryHelper.removeStringProperty(serviceName,
+                                                                           OpenMetadataAPIMapper.PROCESS_STEP_GUID_PROPERTY_NAME,
+                                                                           instanceProperties,
+                                                                           methodName);
+
+            if (processStepGUID == null)
+            {
+                processStepGUID = repositoryHelper.removeStringProperty(serviceName,
+                                                                        OpenMetadataAPIMapper.OLD_PROCESS_STEP_GUID_PROPERTY_NAME,
+                                                                        instanceProperties,
+                                                                        methodName);
+            }
+            else
+            {
+                repositoryHelper.removeStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OLD_PROCESS_STEP_GUID_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+            }
+
+            return processStepGUID;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the processStepName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeProcessStepName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProcessStepName";
+
+        if (instanceProperties != null)
+        {
+            String processStepName = repositoryHelper.removeStringProperty(serviceName,
+                                                                           OpenMetadataAPIMapper.PROCESS_STEP_NAME_PROPERTY_NAME,
+                                                                           instanceProperties,
+                                                                           methodName);
+
+            if (processStepName == null)
+            {
+                processStepName = repositoryHelper.removeStringProperty(serviceName,
+                                                                        OpenMetadataAPIMapper.OLD_PROCESS_STEP_NAME_PROPERTY_NAME,
+                                                                        instanceProperties,
+                                                                        methodName);
+            }
+            else
+            {
+                repositoryHelper.removeStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OLD_PROCESS_STEP_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+            }
+
+            return processStepName;
         }
 
         return null;
@@ -5463,7 +5556,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.PROCESS_STEP_NAME_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -7576,6 +7669,27 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the relationshipEnd property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return int
+     */
+    protected int removeRelationshipEnd(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeRelationshipEnd";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.RELATIONSHIP_END_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+    /**
      * Extract the relationshipProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
@@ -7928,6 +8042,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the dataFieldNamespace standing property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeDataFieldNamespace(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeDataFieldNamespace";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.DATA_FIELD_NAMESPACE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the dataFieldAliases property from the supplied instance properties.
      *
      * @param instanceProperties properties from data field entities
@@ -7947,6 +8083,5 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
-
 }
 

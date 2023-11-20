@@ -96,6 +96,7 @@ public class SchemaAttributeConverter<B> extends OCFConverter<B>
                 bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
                 bean.setLength(this.removeLength(instanceProperties));
                 bean.setPrecision(this.removePrecision(instanceProperties));
+                bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
                 bean.setIsNullable(this.removeIsNullable(instanceProperties));
                 bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                 bean.setAliases(this.removeAliases(instanceProperties));

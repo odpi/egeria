@@ -162,7 +162,7 @@ public class OpenMetadataTypesArchive2_8
         update0030HostsAndOperatingPlatforms();
         update0050Applications();
         update0440OrganizationControls();
-        update0462GovernanceActionTypes();
+        update0462GovernanceActionProcessSteps();
     }
 
 
@@ -381,11 +381,11 @@ public class OpenMetadataTypesArchive2_8
      */
 
     /**
-     * 0462 Describe Governance Action Types
+     * 0462 Describe Governance Action ProcessSteps
      */
-    private void update0462GovernanceActionTypes()
+    private void update0462GovernanceActionProcessSteps()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionTypeEntity());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStepEntity());
     }
 
 
@@ -393,12 +393,12 @@ public class OpenMetadataTypesArchive2_8
      * Deprecate supportedGuards and replace with producedGuards.
      * @return the type def patch
      */
-    private TypeDefPatch updateGovernanceActionTypeEntity()
+    private TypeDefPatch updateGovernanceActionProcessStepEntity()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceActionType";
+        final String typeName = "GovernanceActionProcessStep";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -424,7 +424,7 @@ public class OpenMetadataTypesArchive2_8
         properties.add(property);
 
         final String attribute2Name            = "producedGuards";
-        final String attribute2Description     = "List of guards that this action type produces.";
+        final String attribute2Description     = "List of guards that this process step produces.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute2Name,

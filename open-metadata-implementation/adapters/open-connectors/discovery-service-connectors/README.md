@@ -12,11 +12,11 @@ provided by Egeria.
 * **Sequential Discovery Pipeline** - Runs nested discovery services
   in a sequence.  [More information on discovery pipelines](../../../frameworks/open-discovery-framework/docs/discovery-pipeline.md).
   
-* **CSVDiscoveryService** - Extracts the column names from the first line of the file, counts up the number of records in the file
+* **CSV Discovery Service** - Extracts the column names from the first line of the file, counts up the number of records in the file
   and extracts its last modified time.
 
-* **Discover Apache Atlas Connector** is an open discovery service that gathers statistics about the
-  Apache Atlas server and stores it in a Discovery Analysis Report attached the the SoftwareServer entity
+* **Apache Atlas Discovery Service** is an open discovery service that gathers statistics about the
+  Apache Atlas server and stores it in a Discovery Analysis Report attached to the SoftwareServer entity
   that represents the Apache Atlas server.
 
 ## Further information

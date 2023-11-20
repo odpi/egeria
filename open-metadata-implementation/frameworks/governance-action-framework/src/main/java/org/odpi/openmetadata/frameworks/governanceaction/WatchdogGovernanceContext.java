@@ -77,16 +77,16 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String initiateGovernanceAction(String                qualifiedName,
-                                    int                   domainIdentifier,
-                                    String                displayName,
-                                    String                description,
-                                    List<String>          requestSourceGUIDs,
-                                    List<NewActionTarget> actionTargets,
-                                    Date                  startTime,
-                                    String                governanceEngineName,
-                                    String                requestType,
-                                    Map<String, String>   requestParameters) throws InvalidParameterException,
+    String initiateEngineAction(String                qualifiedName,
+                                int                   domainIdentifier,
+                                String                displayName,
+                                String                description,
+                                List<String>          requestSourceGUIDs,
+                                List<NewActionTarget> actionTargets,
+                                Date                  startTime,
+                                String                governanceEngineName,
+                                String                requestType,
+                                Map<String, String>   requestParameters) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
 
@@ -114,17 +114,17 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    String initiateGovernanceAction(String                qualifiedName,
-                                    int                   domainIdentifier,
-                                    String                displayName,
-                                    String                description,
-                                    List<String>          requestSourceGUIDs,
-                                    List<NewActionTarget> actionTargets,
-                                    Date                  startTime,
-                                    String                governanceEngineName,
-                                    String                requestType,
-                                    Map<String, String>   requestParameters,
-                                    String                processName) throws InvalidParameterException,
+    String initiateEngineAction(String                qualifiedName,
+                                int                   domainIdentifier,
+                                String                displayName,
+                                String                description,
+                                List<String>          requestSourceGUIDs,
+                                List<NewActionTarget> actionTargets,
+                                Date                  startTime,
+                                String                governanceEngineName,
+                                String                requestType,
+                                Map<String, String>   requestParameters,
+                                String                processName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 

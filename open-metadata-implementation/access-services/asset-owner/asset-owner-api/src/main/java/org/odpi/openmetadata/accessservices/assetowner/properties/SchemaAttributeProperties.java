@@ -43,6 +43,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               precision             = 0;
+    private int               significantDigits     = 0;
     private boolean           isNullable            = true;
 
     /*
@@ -91,6 +92,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             minimumLength          = template.getMinimumLength();
             length                 = template.getLength();
             precision              = template.getPrecision();
+            significantDigits      = template.getSignificantDigits();
             isNullable             = template.getIsNullable();
             defaultValueOverride   = template.getDefaultValueOverride();
             attributeType          = template.getAttributeType();
@@ -297,6 +299,28 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
 
     /**
+     * Return the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @return int
+     */
+    public int getSignificantDigits()
+    {
+        return significantDigits;
+    }
+
+
+    /**
+     * Set up the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @param significantDigits int
+     */
+    public void setSignificantDigits(int significantDigits)
+    {
+        this.significantDigits = significantDigits;
+    }
+
+
+    /**
      * Return whether the field is nullable or not.
      *
      * @return boolean
@@ -447,25 +471,32 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaAttributeProperties{" +
-                ", elementPosition=" + elementPosition +
-                ", minCardinality=" + minCardinality +
-                ", maxCardinality=" + maxCardinality +
-                ", allowsDuplicateValues=" + allowsDuplicateValues +
-                ", orderedValues=" + orderedValues +
-                ", defaultValueOverride='" + defaultValueOverride + '\'' +
-                ", sortOrder=" + sortOrder +
-                ", attributeType=" + attributeType +
-                ", attributeRelationships=" + attributeRelationships +
-                ", nativeJavaClass='" + nativeJavaClass + '\'' +
-                ", aliases=" + aliases +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName=" + getTypeName() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "elementPosition=" + elementPosition +
+                       ", minCardinality=" + minCardinality +
+                       ", maxCardinality=" + maxCardinality +
+                       ", allowsDuplicateValues=" + allowsDuplicateValues +
+                       ", orderedValues=" + orderedValues +
+                       ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                       ", sortOrder=" + sortOrder +
+                       ", minimumLength=" + minimumLength +
+                       ", length=" + length +
+                       ", precision=" + precision +
+                       ", significantDigits=" + significantDigits +
+                       ", isNullable=" + isNullable +
+                       ", attributeType=" + attributeType +
+                       ", attributeRelationships=" + attributeRelationships +
+                       ", nativeJavaClass='" + nativeJavaClass + '\'' +
+                       ", aliases=" + aliases +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -482,26 +513,30 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof SchemaAttributeProperties that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        SchemaAttributeProperties that = (SchemaAttributeProperties) objectToCompare;
         return elementPosition == that.elementPosition &&
-                minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
-                allowsDuplicateValues == that.allowsDuplicateValues &&
-                orderedValues == that.orderedValues &&
-                Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
-                sortOrder == that.sortOrder &&
-                Objects.equals(attributeType, that.attributeType) &&
-                Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
-                Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                Objects.equals(aliases, that.aliases);
+                       minCardinality == that.minCardinality &&
+                       maxCardinality == that.maxCardinality &&
+                       allowsDuplicateValues == that.allowsDuplicateValues &&
+                       orderedValues == that.orderedValues &&
+                       minimumLength == that.minimumLength &&
+                       length == that.length &&
+                       precision == that.precision &&
+                       significantDigits == that.significantDigits &&
+                       isNullable == that.isNullable &&
+                       Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
+                       sortOrder == that.sortOrder &&
+                       Objects.equals(attributeType, that.attributeType) &&
+                       Objects.equals(attributeRelationships, that.attributeRelationships) &&
+                       Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
+                       Objects.equals(aliases, that.aliases);
     }
 
 
@@ -514,7 +549,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, attributeType,
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, significantDigits, isNullable, attributeType,
                             attributeRelationships, nativeJavaClass, aliases);
     }
 }

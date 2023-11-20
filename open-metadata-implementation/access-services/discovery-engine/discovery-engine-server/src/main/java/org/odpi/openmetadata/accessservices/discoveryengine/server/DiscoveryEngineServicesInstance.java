@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.AnnotationConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DataFieldConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryAnalysisReportConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.RelatedDataFieldConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.discovery.properties.RelatedDataField;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
     private final AssetHandler<OpenMetadataAPIDummyBean>                  assetHandler;
     private final AnnotationHandler<Annotation>                           annotationHandler;
     private final DataFieldHandler<DataField>                             dataFieldHandler;
+    private final DataFieldHandler<RelatedDataField>                      relatedDataFieldHandler;
     private final DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
 
     private Connection                                              outTopicConnection;
@@ -99,18 +102,31 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
                                                              publishZones,
                                                              auditLog);
             this.dataFieldHandler = new DataFieldHandler<>(new DataFieldConverter<>(repositoryHelper, serviceName, serverName),
-                                                           DataField.class,
-                                                           serviceName,
-                                                           serverName,
-                                                           invalidParameterHandler,
-                                                           repositoryHandler,
-                                                           repositoryHelper,
-                                                           localServerUserId,
-                                                           securityVerifier,
-                                                           supportedZones,
-                                                           defaultZones,
-                                                           publishZones,
-                                                           auditLog);
+                                                                           DataField.class,
+                                                                           serviceName,
+                                                                           serverName,
+                                                                           invalidParameterHandler,
+                                                                           repositoryHandler,
+                                                                           repositoryHelper,
+                                                                           localServerUserId,
+                                                                           securityVerifier,
+                                                                           supportedZones,
+                                                                           defaultZones,
+                                                                           publishZones,
+                                                                           auditLog);
+            this.relatedDataFieldHandler = new DataFieldHandler<>(new RelatedDataFieldConverter<>(repositoryHelper, serviceName, serverName),
+                                                                  RelatedDataField.class,
+                                                                  serviceName,
+                                                                  serverName,
+                                                                  invalidParameterHandler,
+                                                                  repositoryHandler,
+                                                                  repositoryHelper,
+                                                                  localServerUserId,
+                                                                  securityVerifier,
+                                                                  supportedZones,
+                                                                  defaultZones,
+                                                                  publishZones,
+                                                                  auditLog);
             this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(
                     new DiscoveryAnalysisReportConverter<>(repositoryHelper, serviceName, serverName),
                     DiscoveryAnalysisReport.class,
@@ -196,6 +212,22 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return dataFieldHandler;
+    }
+
+
+    /**
+     * Return the handler for managing data field objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    DataFieldHandler<RelatedDataField> getRelatedDataFieldHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedDataFieldHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedDataFieldHandler;
     }
 
 }

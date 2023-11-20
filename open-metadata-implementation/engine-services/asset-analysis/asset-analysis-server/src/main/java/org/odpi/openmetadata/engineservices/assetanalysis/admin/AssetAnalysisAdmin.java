@@ -4,7 +4,7 @@ package org.odpi.openmetadata.engineservices.assetanalysis.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -53,7 +53,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceEngineClient              governanceActionClient,
+                                                           GovernanceContextClient             governanceActionClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -181,7 +181,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                             String                              accessServiceServerName,
                                                                             String                              localServerUserId,
                                                                             GovernanceEngineConfigurationClient configurationClient,
-                                                                            GovernanceEngineClient              governanceActionClient,
+                                                                            GovernanceContextClient             governanceActionClient,
                                                                             ODFRESTClient                       odfRESTClient,
                                                                             int                                 maxPageSize) throws OMAGConfigurationErrorException
     {

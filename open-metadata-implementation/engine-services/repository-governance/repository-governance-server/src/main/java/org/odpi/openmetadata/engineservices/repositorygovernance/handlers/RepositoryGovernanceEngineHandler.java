@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
@@ -44,7 +44,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                              String                              serverName,
                                              String                              serverUserId,
                                              GovernanceEngineConfigurationClient configurationClient,
-                                             GovernanceEngineClient              serverClient,
+                                             GovernanceContextClient             serverClient,
                                              EnterpriseRepositoryServicesClient  repositoryGovernanceEngineClient,
                                              AuditLog                            auditLog,
                                              int                                 maxPageSize)
@@ -65,7 +65,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
     /**
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
-     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param engineActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine
      * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
@@ -78,7 +78,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+    public GovernanceServiceHandler runGovernanceService(String                     engineActionGUID,
                                                          String                     governanceRequestType,
                                                          Date                       startDate,
                                                          Map<String, String>        requestParameters,
@@ -99,7 +99,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
                                                                                                                                requestSourceElements,
                                                                                                                                actionTargetElements,
-                                                                                                                               governanceActionGUID,
+                                                                                                                               engineActionGUID,
                                                                                                                                governanceServiceCache);
 
             Thread thread = new Thread(repositoryGovernanceServiceHandler, governanceServiceCache.getGovernanceServiceName() + new Date());

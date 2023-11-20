@@ -43,7 +43,10 @@ public enum RESTClientConnectorErrorCode
     CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002 ",
             "A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}",
             "The client has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-            "Review the error message to determine the cause of the error.  Check that the server is running an the URL is correct. Look for errors in the local server's console to understand and correct the cause of the error. Then rerun the request"),
+            "Review the error message to determine the cause of the error.  Check that the server is running and the URL is correct. " +
+                    "Also check that the request body has legal values in it.  " +
+                    "Look for errors in the local server's audit log to understand and correct the cause of the error. " +
+                    "Then rerun the request"),
 
     /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-003 - A {0} exception was received from REST API call {1} to server {2}: error message was: {3}

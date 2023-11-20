@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
@@ -93,10 +94,11 @@ public class OMRSArchiveManager
      * @param localMetadataCollectionId unique identifier of the local repository
      * @param repositoryContentManager typeDef processor for the local repository
      * @param instanceProcessor  instance processor for the local repository
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
     public void setLocalRepository(String                           localMetadataCollectionId,
                                    OMRSRepositoryContentManager     repositoryContentManager,
-                                   LocalOMRSInstanceEventProcessor  instanceProcessor)
+                                   LocalOMRSInstanceEventProcessor  instanceProcessor) throws RepositoryErrorException
     {
         this.localMetadataCollectionId = localMetadataCollectionId;
         this.repositoryContentManager = repositoryContentManager;
@@ -123,9 +125,10 @@ public class OMRSArchiveManager
      *
      * @param archiveStore  new open metadata archive to process
      * @param archiveSource source of the archive
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
     public void addOpenMetadataArchive(OpenMetadataArchiveStoreConnector     archiveStore,
-                                       String                                archiveSource)
+                                       String                                archiveSource) throws RepositoryErrorException
     {
         this.processOpenMetadataArchiveStore(archiveStore, archiveSource, repositoryContentManager, localInstanceEventProcessor);
         this.openMetadataArchiveStores.add(archiveStore);
@@ -154,11 +157,12 @@ public class OMRSArchiveManager
      * @param archiveSource source of the archive - such as file name
      * @param typeDefProcessor receiver of new TypeDefs
      * @param instanceProcessor receiver of new instances
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
     private void processOpenMetadataArchiveStore(OpenMetadataArchiveStoreConnector    archiveStore,
                                                  String                               archiveSource,
                                                  OMRSTypeDefEventProcessorInterface   typeDefProcessor,
-                                                 OMRSInstanceEventProcessorInterface  instanceProcessor)
+                                                 OMRSInstanceEventProcessorInterface  instanceProcessor) throws RepositoryErrorException
     {
         if (archiveStore != null)
         {

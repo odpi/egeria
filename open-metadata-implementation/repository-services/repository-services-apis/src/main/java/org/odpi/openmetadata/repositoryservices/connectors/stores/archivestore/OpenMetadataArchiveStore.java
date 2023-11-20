@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore;
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 /**
  * <p>
@@ -32,8 +33,9 @@ public interface OpenMetadataArchiveStore
      * Return the contents of the archive.
      *
      * @return OpenMetadataArchive object
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
-    OpenMetadataArchive getArchiveContents();
+    OpenMetadataArchive getArchiveContents() throws RepositoryErrorException;
 
 
     /**

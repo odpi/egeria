@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
@@ -53,7 +53,7 @@ public abstract class EngineServiceAdmin
                                                                     String                              localServerPassword,
                                                                     int                                 maxPageSize,
                                                                     GovernanceEngineConfigurationClient configurationClient,
-                                                                    GovernanceEngineClient              governanceActionClient,
+                                                                    GovernanceContextClient             governanceActionClient,
                                                                     EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException;
 
 

@@ -38,6 +38,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               precision             = 0;
+    private int               significantDigits     = 0;
     private boolean           isNullable            = true;
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
@@ -83,6 +84,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             minimumLength         = template.getMinimumLength();
             length                = template.getLength();
             precision             = template.getPrecision();
+            significantDigits     = template.getSignificantDigits();
             isNullable            = template.getIsNullable();
             defaultValueOverride  = template.getDefaultValueOverride();
             nativeJavaClass       = template.getNativeJavaClass();
@@ -289,6 +291,28 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public void setPrecision(int precision)
     {
         this.precision = precision;
+    }
+
+
+    /**
+     * Return the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @return int
+     */
+    public int getSignificantDigits()
+    {
+        return significantDigits;
+    }
+
+
+    /**
+     * Set up the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @param significantDigits int
+     */
+    public void setSignificantDigits(int significantDigits)
+    {
+        this.significantDigits = significantDigits;
     }
 
 
@@ -516,6 +540,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                        ", minimumLength=" + minimumLength +
                        ", length=" + length +
                        ", precision=" + precision +
+                       ", significantDigits=" + significantDigits +
                        ", isNullable=" + isNullable +
                        ", nativeJavaClass='" + nativeJavaClass + '\'' +
                        ", aliases=" + aliases +
@@ -566,6 +591,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                        minimumLength == that.minimumLength &&
                        length == that.length &&
                        precision == that.precision &&
+                       significantDigits == that.significantDigits &&
                        isNullable == that.isNullable &&
                        Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                        sortOrder == that.sortOrder &&
@@ -588,8 +614,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride,
-                            sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass, aliases, dataType, defaultValue, fixedValue,
-                            externalTypeGUID, validValuesSetGUID);
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, significantDigits, isNullable, nativeJavaClass,
+                            aliases, dataType, defaultValue, fixedValue, externalTypeGUID, validValuesSetGUID);
     }
 }

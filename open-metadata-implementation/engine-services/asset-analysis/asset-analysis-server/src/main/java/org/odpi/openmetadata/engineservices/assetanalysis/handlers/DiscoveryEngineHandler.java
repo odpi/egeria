@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
@@ -50,7 +50,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   String                              serverName,
                                   String                              serverUserId,
                                   GovernanceEngineConfigurationClient configurationClient,
-                                  GovernanceEngineClient              serverClient,
+                                  GovernanceContextClient             serverClient,
                                   DiscoveryEngineClient               discoveryEngineClient,
                                   OpenMetadataClient                  openMetadataClient,
                                   AuditLog                            auditLog,
@@ -175,7 +175,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
 
     /**
-     * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
+     * Run an instance of a discovery service in its own thread and return the handler (for disconnect processing).
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine

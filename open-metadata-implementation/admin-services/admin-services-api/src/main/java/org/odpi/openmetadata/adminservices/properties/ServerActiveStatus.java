@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,19 +16,36 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Deprecated
-public enum ServerActiveStatus implements Serializable
+public enum ServerActiveStatus
 {
-    UNKNOWN     (0,   "Unknown",  "The state of the server is unknown.  This is equivalent to a null value"),
+    /**
+     * he state of the server is unknown.  This is equivalent to a null value.
+     */
+    UNKNOWN     (0,   "Unknown",  "The state of the server is unknown.  This is equivalent to a null value."),
+
+    /**
+     * The server is starting.
+     */
     STARTING    (1,   "Starting", "The server is starting."),
+
+    /**
+     * The server has completed start up and is running.
+     */
     RUNNING     (2,   "Running",  "The server has completed start up and is running."),
-    STOPPING    (3,   "Stopping", "The server has received a request to shutdown."),
+
+    /**
+     * The server has received a request to shut itself down.
+     */
+    STOPPING    (3,   "Stopping", "The server has received a request to shut itself down."),
+
+    /**
+     * The server is not running.
+     */
     INACTIVE    (99,  "Inactive", "The server is not running.");
 
-    private static final long serialVersionUID = 1L;
-
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**
