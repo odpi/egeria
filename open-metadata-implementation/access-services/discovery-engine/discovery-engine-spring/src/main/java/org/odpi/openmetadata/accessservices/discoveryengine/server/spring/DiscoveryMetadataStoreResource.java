@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngi
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DiscoveryMetadataStoreResource
 {
-    private DiscoveryEngineRESTServices restAPI = new DiscoveryEngineRESTServices();
+    private final DiscoveryEngineRESTServices restAPI = new DiscoveryEngineRESTServices();
 
 
     /**
@@ -48,7 +49,6 @@ public class DiscoveryMetadataStoreResource
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
      * @return list of unique identifiers for located assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -74,7 +74,6 @@ public class DiscoveryMetadataStoreResource
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -101,7 +100,6 @@ public class DiscoveryMetadataStoreResource
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -129,7 +127,6 @@ public class DiscoveryMetadataStoreResource
      * @param pageSize maximum number of results to return
      *
      * @return list of assets that match the search string or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -155,7 +152,6 @@ public class DiscoveryMetadataStoreResource
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -206,7 +202,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody  all the other parameters
      *
      * @return the unique identifier of the new discovery report or
-     *
      *  InvalidParameterException one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to access the asset and/or report or
      *  PropertyServerException there was a problem in the store whether the asset/report properties are kept.
@@ -231,7 +226,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody updated report - this will replace what was previous stored
      *
      * @return the new values stored in the repository or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -255,7 +249,6 @@ public class DiscoveryMetadataStoreResource
      * @param discoveryReportGUID identifier of the discovery request.
      *
      * @return discovery report or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -322,7 +315,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody status value to use on the query
      *
      * @return list of annotation (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving annotations from the annotation store.
@@ -355,7 +347,6 @@ public class DiscoveryMetadataStoreResource
      * @param maximumResults maximum number of definitions to return on this call.
      *
      * @return list of annotations or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -386,7 +377,6 @@ public class DiscoveryMetadataStoreResource
      * @param maximumResults maximum number of annotations that can be returned.
      *
      * @return list of Annotation objects or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -416,7 +406,6 @@ public class DiscoveryMetadataStoreResource
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -440,7 +429,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
-     *
      *  InvalidParameterException the annotation is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
@@ -468,7 +456,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving annotations in the annotation store.
@@ -496,7 +483,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody new properties
      *
      * @return fully filled out annotation or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating the annotation in the annotation store.
@@ -524,7 +510,6 @@ public class DiscoveryMetadataStoreResource
      * @param requestBody null request body to satisfy POST semantics
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem deleting the annotation from the annotation store.
@@ -552,7 +537,6 @@ public class DiscoveryMetadataStoreResource
      * @param maximumResults maximum number of elements that can be returned
      *
      * @return list of data fields (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving data fields from the annotation store.
@@ -579,7 +563,6 @@ public class DiscoveryMetadataStoreResource
      * @param maximumResults maximum number of elements that can be returned
      *
      * @return list of data fields (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving data fields from the annotation store.
@@ -597,13 +580,13 @@ public class DiscoveryMetadataStoreResource
 
 
     /**
-     * Return any annotations attached to this annotation.
+     * Return any child data fields attached to this data field.
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param maximumResults maximum number of data fields that can be returned.
      *
      * @return list of DataField objects or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -623,6 +606,32 @@ public class DiscoveryMetadataStoreResource
 
 
     /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID starting data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of data fields that can be returned.
+     *
+     * @return list of DataField objects or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    @GetMapping(path = "/data-fields/{dataFieldGUID}/linked-data-fields")
+
+    public RelatedDataFieldListResponse geLinkedDataFields(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String dataFieldGUID,
+                                                     @RequestParam int    startingFrom,
+                                                     @RequestParam int    maximumResults)
+    {
+        return restAPI.getLinkedDataFields(serverName, userId, dataFieldGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
      * Return a specific data field stored in the annotation store (previous or new).
      *
      * @param serverName name of server instance to route request to
@@ -630,7 +639,6 @@ public class DiscoveryMetadataStoreResource
      * @param dataFieldGUID unique identifier of the data field
      *
      * @return data field object or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving the data field from the annotation store.
@@ -654,7 +662,6 @@ public class DiscoveryMetadataStoreResource
      * @param dataField dataField object
      *
      * @return unique identifier of new data field or
-     *
      *  InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
      *                                   that can not be associated with a data field.
      *  UserNotAuthorizedException the user id not authorized to issue this request
@@ -678,9 +685,7 @@ public class DiscoveryMetadataStoreResource
      * @param userId identifier of calling user
      * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
      * @param dataField data field object
-     *
      * @return unique identifier of new data field or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving data fields in the annotation store.
@@ -697,6 +702,31 @@ public class DiscoveryMetadataStoreResource
 
 
     /**
+     * Link two exising data fields together in a peer relationship.
+     *
+     * @param userId identifier of calling user
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipProperties optional properties for the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @return void or
+     *  InvalidParameterException one of the parameters is invalid or
+     *  UserNotAuthorizedException the user id not authorized to issue this request or
+     *  PropertyServerException there was a problem deleting the data field from the annotation store.
+     */
+    @PostMapping(path = "/data-fields/{linkFromDataFieldGUID}/linked-data-fields/{linkToDataFieldGUID}")
+
+    public VoidResponse linkDataFields(@PathVariable String        serverName,
+                                       @PathVariable String        userId,
+                                       @PathVariable String        linkFromDataFieldGUID,
+                                       @PathVariable String        linkToDataFieldGUID,
+                                       @RequestBody (required = false)
+                                                     DataFieldLink relationshipProperties)
+    {
+        return restAPI.linkDataFields(serverName, userId, linkFromDataFieldGUID ,linkToDataFieldGUID, relationshipProperties);
+    }
+
+
+    /**
      * Add a new annotation and link it to an existing data field.
      *
      * @param serverName name of server instance to route request to
@@ -705,7 +735,6 @@ public class DiscoveryMetadataStoreResource
      * @param annotation data field object
      *
      * @return unique identifier of new annotation or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving data fields in the annotation store.
@@ -728,7 +757,6 @@ public class DiscoveryMetadataStoreResource
      * @param userId identifier of calling user
      * @param dataFieldGUID unique identifier of data field
      * @param dataField new properties
-     *
      * @return fully filled out data field or
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request

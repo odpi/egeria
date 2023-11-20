@@ -11,6 +11,8 @@ plugins {
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    runtimeOnly project(':open-metadata-implementation:frameworks:open-discovery-framework')
+    runtimeOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
     compileOnly project(':open-metadata-implementation:platform-services:platform-services-client')
@@ -33,6 +35,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     runtimeOnly 'ch.qos.logback:logback-classic'
 }
 

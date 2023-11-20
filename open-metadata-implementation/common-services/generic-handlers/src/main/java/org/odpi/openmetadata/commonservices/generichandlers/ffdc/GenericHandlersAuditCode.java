@@ -128,58 +128,58 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                                "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the classification and make adjustments to the caller's logic if appropriate."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0020 - Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}
+     * OMAG-GENERIC-HANDLERS-0020 - Initializing a new engine action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}
      */
-    INITIATE_GOVERNANCE_ACTION("OMAG-GENERIC-HANDLERS-0020",
-                               OMRSAuditLogRecordSeverity.STARTUP,
-                               "Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}",
-                               "A new GovernanceAction entity is created.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
-                               "Validate that this governance action should be initialized.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
+    INITIATE_ENGINE_ACTION("OMAG-GENERIC-HANDLERS-0020",
+                           OMRSAuditLogRecordSeverity.STARTUP,
+                           "Initializing a new engine action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}",
+                           "A new EngineAction entity is created.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the engine action.",
+                           "Validate that this engine action should be initialized.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the engine action to their connected engine host(s)."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0021 - Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}
+     * OMAG-GENERIC-HANDLERS-0021 - Initializing a new engine action {0} from governance action process step {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}
      */
-    INITIATE_GOVERNANCE_ACTION_FROM_TYPE("OMAG-GENERIC-HANDLERS-0021",
-                               OMRSAuditLogRecordSeverity.STARTUP,
-                               "Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}",
-                               "A new GovernanceAction entity is created using the definition of the governance action type.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
-                               "Validate that this governance action should be initialized using this type.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
+    INITIATE_ENGINE_ACTION_FROM_PROCESS_STEP("OMAG-GENERIC-HANDLERS-0021",
+                                             OMRSAuditLogRecordSeverity.STARTUP,
+                                             "Initializing a new engine action {0} from governance action process step {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}",
+                                             "A new EngineAction entity is created using the definition of the governance action process step.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the engine action.",
+                                             "Validate that this engine action should be initialized using this type.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the engine action to their connected engine host(s)."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0022 - Adding action target {0} ({1}) to governance action {2} ({3})
+     * OMAG-GENERIC-HANDLERS-0022 - Adding action target {0} ({1}) to engine action {2} ({3})
      */
     ADD_ACTION_TARGETS("OMAG-GENERIC-HANDLERS-0022",
                                          OMRSAuditLogRecordSeverity.STARTUP,
-                                         "Adding action target {0} ({1}) to governance action {2} ({3})",
-                                         "The governance action is linked to the action target so that it is made available to the governance action service when it runs.",
-                                         "Validate that this action target should be added to the governance action."),
+                                         "Adding action target {0} ({1}) to engine action {2} ({3})",
+                                         "The engine action is linked to the action target so that it is made available to the governance service when it runs.",
+                                         "Validate that this action target should be added to the engine action."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0023 - Governance engine with {0} userId is claiming governance action {1}
+     * OMAG-GENERIC-HANDLERS-0023 - Governance engine with {0} userId is claiming engine action {1}
      */
     ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0023",
                        OMRSAuditLogRecordSeverity.STARTUP,
-                       "Governance engine with {0} userId is claiming governance action {1}",
-                       "The governance engine is requesting permission to execute the governance action.  This will be successful if the governance engine is the first to claim the governance action and it is in APPROVED status.",
-                       "Validate that one of the governance engines successfully claims the governance action."),
+                       "Governance engine with {0} userId is claiming engine action {1}",
+                       "The governance engine is requesting permission to execute the engine action.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.",
+                       "Validate that one of the governance engines successfully claims the engine action."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed governance action {1}
+     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}
      */
     SUCCESSFUL_ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0024",
                          OMRSAuditLogRecordSeverity.STARTUP,
-                         "Governance engine with {0} userId has successfully claimed governance action {1}",
-                         "The governance action is updated to show that the governance engine has claimed it and that its status is now WAITING.  This will be successful if the governance engine is the first to claim the governance action and it is in APPROVED status.",
-                         "Validate that only one of the governance engines successfully claims the governance action."),
+                         "Governance engine with {0} userId has successfully claimed engine action {1}",
+                         "The engine action is updated to show that the governance engine has claimed it and that its status is now WAITING.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.",
+                         "Validate that only one of the governance engines successfully claims the engine action."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for governance action {2} by governance engine with {3} userId
+     * OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId
      */
-    GOVERNANCE_ACTION_STATUS_CHANGE("OMAG-GENERIC-HANDLERS-0025",
-                                    OMRSAuditLogRecordSeverity.STARTUP,
-                                    "Status changed from {0} to {1} for governance action {2} by governance engine with {3} userId",
-                                    "The governance action's status has been updated as requested.",
-                                    "Validate that the status change is valid."),
+    ENGINE_ACTION_STATUS_CHANGE("OMAG-GENERIC-HANDLERS-0025",
+                                OMRSAuditLogRecordSeverity.STARTUP,
+                                "Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId",
+                                "The engine action's status has been updated as requested.",
+                                "Validate that the status change is valid."),
 
 
     /**
@@ -195,9 +195,9 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
 
     private final String                     logMessageId;
     private final OMRSAuditLogRecordSeverity severity;
-    private final String logMessage;
-    private final String systemAction;
-    private final String userAction;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**

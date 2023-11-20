@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 
 import java.util.Objects;
 
@@ -14,14 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * StatusRequestBody provides a structure for passing a new GovernanceActionStatus.
+ * StatusRequestBody provides a structure for passing a new EngineActionStatus.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StatusRequestBody
 {
-    private GovernanceActionStatus status = null;
+    private EngineActionStatus status = null;
 
 
 
@@ -53,7 +53,7 @@ public class StatusRequestBody
      *
      * @return status enum
      */
-    public GovernanceActionStatus getStatus()
+    public EngineActionStatus getStatus()
     {
         return status;
     }
@@ -64,7 +64,7 @@ public class StatusRequestBody
      *
      * @param status  status enum
      */
-    public void setStatus(GovernanceActionStatus status)
+    public void setStatus(EngineActionStatus status)
     {
         this.status = status;
     }

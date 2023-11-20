@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngi
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -24,7 +24,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventTyp
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -60,8 +60,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
     private final GovernanceEngineOutTopicPublisher                eventPublisher;
     private final OMRSRepositoryHelper                             repositoryHelper;
-    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
-    private final GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
+    private final MetadataElementHandler<OpenMetadataElement>  metadataElementHandler;
+    private final EngineActionHandler<GovernanceActionElement> engineActionHandler;
 
     private final String                                           userId;
     private final String                                           serverName;
@@ -77,7 +77,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param serverName name of this server
      * @param userId local server userId for issuing requests to the repository services
      * @param metadataElementHandler handler for working with GAF objects
-     * @param governanceActionHandler handler for working with governance actions
+     * @param engineActionHandler handler for working with governance actions
      * @param eventPublisher this is the out topic publisher.
      * @param repositoryHelper repository helper
      * @param auditLog logging destination
@@ -86,7 +86,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                              String                                           serverName,
                                              String                                           userId,
                                              MetadataElementHandler<OpenMetadataElement>      metadataElementHandler,
-                                             GovernanceActionHandler<GovernanceActionElement> governanceActionHandler,
+                                             EngineActionHandler<GovernanceActionElement> engineActionHandler,
                                              GovernanceEngineOutTopicPublisher                eventPublisher,
                                              OMRSRepositoryHelper                             repositoryHelper,
                                              AuditLog                                         auditLog)
@@ -94,7 +94,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         super(serviceName, auditLog);
 
         this.metadataElementHandler = metadataElementHandler;
-        this.governanceActionHandler = governanceActionHandler;
+        this.engineActionHandler = engineActionHandler;
 
         this.userId = userId;
         this.serverName = serverName;
@@ -263,12 +263,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME))
+                                              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME))
                 {
-                    GovernanceActionStatus status = governanceActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
-                                                                                            entity.getProperties());
+                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
+                                                                                    entity.getProperties());
 
-                    if (status == GovernanceActionStatus.APPROVED)
+                    if (status == EngineActionStatus.APPROVED)
                     {
 
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
@@ -313,7 +313,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME);
+                                                 OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME);
             }
         }
 
@@ -342,7 +342,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
             }
         }
 
@@ -382,7 +382,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                              OpenMetadataAPIMapper.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
                 {
                     return true;
                 }

@@ -42,6 +42,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
+    runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
 
     if (!project.hasProperty("adminChassisOnly")) {
         runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')

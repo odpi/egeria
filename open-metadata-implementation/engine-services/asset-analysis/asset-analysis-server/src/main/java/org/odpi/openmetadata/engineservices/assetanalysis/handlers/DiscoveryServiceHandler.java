@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -37,8 +37,8 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      * @param discoveryEngineProperties properties of the discovery engine - used for message logging
      * @param discoveryEngineGUID unique Identifier of the discovery engine - used for message logging
      * @param engineHostUserId userId for making updates to the governance actions
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param governanceActionClient client for processing governance actions
+     * @param engineActionGUID unique identifier of the governance action that triggered this governance service
+     * @param engineActionClient client for processing governance actions
      * @param serviceRequestType requestType - used for message logging
      * @param discoveryServiceGUID name of this discovery service - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
@@ -50,8 +50,8 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
     DiscoveryServiceHandler(GovernanceEngineProperties discoveryEngineProperties,
                             String                     discoveryEngineGUID,
                             String                     engineHostUserId,
-                            String                     governanceActionGUID,
-                            GovernanceEngineClient     governanceActionClient,
+                            String                     engineActionGUID,
+                            GovernanceContextClient    engineActionClient,
                             String                     serviceRequestType,
                             String                     discoveryServiceGUID,
                             String                     discoveryServiceName,
@@ -63,8 +63,8 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
         super(discoveryEngineProperties,
               discoveryEngineGUID,
               engineHostUserId,
-              governanceActionGUID,
-              governanceActionClient,
+              engineActionGUID,
+              engineActionClient,
               serviceRequestType,
               discoveryServiceGUID,
               discoveryServiceName,

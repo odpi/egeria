@@ -1672,7 +1672,7 @@ public class OMAGServerOperationalServices
             OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
-            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive, fileName);
+            repositoryServicesInstance.addOpenMetadataArchive(serverName, newOpenMetadataArchive, fileName);
         }
         catch (InvalidParameterException error)
         {
@@ -1729,7 +1729,7 @@ public class OMAGServerOperationalServices
             OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
-            repositoryServicesInstance.addOpenMetadataArchive(connection, methodName);
+            repositoryServicesInstance.addOpenMetadataArchive(serverName, connection, methodName);
         }
         catch (InvalidParameterException error)
         {

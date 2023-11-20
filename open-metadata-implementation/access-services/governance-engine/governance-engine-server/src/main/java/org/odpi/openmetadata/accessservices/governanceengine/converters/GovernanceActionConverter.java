@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RelatedGovernanceActionElement;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -68,10 +68,8 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceActionElement)
+            if (returnBean instanceof GovernanceActionElement bean)
             {
-                GovernanceActionElement    bean       = (GovernanceActionElement)returnBean;
-
                 if (primaryEntity != null)
                 {
                     /*
@@ -96,11 +94,11 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     bean.setGovernanceEngineGUID(this.removeExecutorEngineGUID(instanceProperties));
                     bean.setGovernanceEngineName(this.removeExecutorEngineName(instanceProperties));
                     bean.setProcessName(this.removeProcessName(instanceProperties));
-                    bean.setGovernanceActionTypeGUID(this.removeGovernanceActionTypeGUID(instanceProperties));
-                    bean.setGovernanceActionTypeName(this.removeGovernanceActionTypeName(instanceProperties));
+                    bean.setGovernanceActionTypeGUID(this.removeProcessStepGUID(instanceProperties));
+                    bean.setGovernanceActionTypeName(this.removeProcessStepName(instanceProperties));
                     bean.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     bean.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
-                    bean.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                    bean.setActionStatus(this.removeGovernanceActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                     bean.setStartTime(this.removeStartDate(instanceProperties));
                     bean.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
                     bean.setCompletionTime(this.removeCompletionDate(instanceProperties));
@@ -162,7 +160,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                     actionTargetElements.add(actionTargetElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
                                 {
                                     String requestSourceGUID = relationship.getEntityOneProxy().getGUID();
 
@@ -181,7 +179,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                         requestSourceElements.add(requestSourceElement);
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.NEXT_GOVERNANCE_ACTION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.NEXT_ENGINE_ACTION_TYPE_NAME))
                                 {
                                     RelatedGovernanceActionElement relatedAction = new RelatedGovernanceActionElement();
 

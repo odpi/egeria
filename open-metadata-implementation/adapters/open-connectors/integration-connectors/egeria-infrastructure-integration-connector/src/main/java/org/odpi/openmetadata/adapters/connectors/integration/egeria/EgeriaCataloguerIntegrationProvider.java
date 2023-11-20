@@ -18,7 +18,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 700;
+    private static final int    connectorComponentId   = 663;
 
     /*
      * Unique identifier for the connector type.
@@ -28,7 +28,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:DevProjects:IntegrationConnector:Infrastructure:Egeria";
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Infrastructure:Egeria";
     private static final String connectorDisplayName   = "Egeria Infrastructure Cataloguing Connector";
     private static final String connectorDescription   = "Scavenges information from an Egeria deployment to catalog the platforms, servers, services and connectors.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/egeria-infrastructure-cataloguing-integration-connector/";

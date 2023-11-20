@@ -487,6 +487,32 @@ public class ODFRESTClient extends OCFRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a RelatedDataFieldListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return RelatedDataFieldListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public RelatedDataFieldListResponse callRelatedDataFieldListGetRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object... params) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        RelatedDataFieldListResponse restResult = this.callGetRESTCall(methodName, RelatedDataFieldListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a DataFieldResponse object.
      *
      * @param methodName  name of the method being called.

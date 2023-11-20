@@ -6,6 +6,8 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -51,7 +53,6 @@ import java.util.List;
  * This includes managing the local metadata repository, connecting and disconnecting from the metadata
  * highway and supporting administrative
  * actions captured through the OMAG REST interface.
- *
  * Examples of the types of capabilities offered by the OMRS Manager include:
  * <ul>
  *     <li>Initialize and Shutdown the OMRS</li>
@@ -284,8 +285,9 @@ public class OMRSOperationalServices
      * is taken as is.  Any configuration errors are reported as exceptions.
      *
      * @param repositoryServicesConfig current configuration values
+     * @throws RepositoryErrorException there is a problem accessing an open metadata archive
      */
-    public void initializeCohortMember(RepositoryServicesConfig repositoryServicesConfig)
+    public void initializeCohortMember(RepositoryServicesConfig repositoryServicesConfig) throws RepositoryErrorException
     {
         final String   actionDescription = "Initialize Repository Services for Cohort Member";
         final String   methodName        = "initializeCohortMember";
@@ -902,7 +904,6 @@ public class OMRSOperationalServices
     /**
      * Set up a new security verifier (the handler runs with a default verifier until this
      * method is called).
-     *
      * The security verifier provides authorization checks for access and maintenance
      * changes to open metadata.  Authorization checks are enabled through the
      * OpenMetadataServerSecurityConnector.
@@ -931,14 +932,32 @@ public class OMRSOperationalServices
     /**
      * Add an open metadata archive to the local repository.
      *
+     * @param serverName name of called server
      * @param openMetadataArchiveConnection connection to the archive
      * @param archiveSource descriptive name of the archive source
+     * @throws InvalidParameterException the archive resource is not found
+     * @throws RepositoryErrorException there is a problem with the archive manager
      */
-    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection,
-                                       String        archiveSource)
+    public void addOpenMetadataArchive(String        serverName,
+                                       Connection    openMetadataArchiveConnection,
+                                       String        archiveSource) throws InvalidParameterException,
+                                                                           RepositoryErrorException
     {
-        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection),
-                                              archiveSource);
+        final String methodName = "addOpenMetadataArchive";
+        final String serverNameParameterName = "serverName";
+
+        if (archiveManager != null)
+        {
+            archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection),
+                                                  archiveSource);
+        }
+        else
+        {
+            throw new InvalidParameterException(OMRSErrorCode.ARCHIVE_MANAGER_NOT_ACTIVE.getMessageDefinition(serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                serverNameParameterName);
+        }
     }
 
 

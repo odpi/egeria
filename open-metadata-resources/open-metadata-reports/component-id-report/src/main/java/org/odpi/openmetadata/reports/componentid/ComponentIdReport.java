@@ -52,6 +52,7 @@ public class ComponentIdReport
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider";
+    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider";
 
 
     /**
@@ -217,6 +218,7 @@ public class ComponentIdReport
         this.addConnectorDescription(openLineageEventReceiverIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
         this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
+        this.addConnectorDescription(apacheAtlasDiscoveryServiceProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

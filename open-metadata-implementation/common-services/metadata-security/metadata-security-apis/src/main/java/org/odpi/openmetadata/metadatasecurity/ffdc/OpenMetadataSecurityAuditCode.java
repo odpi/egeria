@@ -237,6 +237,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                   "No action is required, but this message can be used to capture user activity information."),
 
 
+
+
     /**
      * OPEN-METADATA-SECURITY-0051 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}
      */
@@ -245,7 +247,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                         "User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}",
                         "This message is used to capture user requests to receive full details about an asset.",
                         "No action is required, but this message can be used to capture user activity information about the use of assets."),
-
 
     /**
      * OPEN-METADATA-SECURITY-0052 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}
@@ -284,6 +285,14 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                           "This message is used to capture user requests to delete an asset.",
                           "No action is required, but this message can be used to capture user activity information related to asset deletion."),
 
+    /**
+     * OPEN-METADATA-SECURITY-0056 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}
+     */
+    ASSET_ACTIVITY_SEARCH("OPEN-METADATA-SECURITY-0056",
+                          OMRSAuditLogRecordSeverity.ACTIVITY,
+                          "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
+                          "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
+                          "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches."),
     ;
 
     private final String                     logMessageId;

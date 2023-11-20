@@ -1114,11 +1114,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
 
     /**
-     * Return any annotations attached to this annotation.
+     * Return any child data fields attached to this data field.
      *
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param maximumResults maximum number of data fields that can be returned.
      *
      * @return list of DataField objects
      *
@@ -1146,6 +1146,46 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                    serverName,
                                                                                    userId,
                                                                                    parentDataFieldGUID,
+                                                                                   Integer.toString(startingFrom),
+                                                                                   Integer.toString(maximumResults));
+
+        return restResult.getDataFields();
+    }
+
+
+    /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param dataFieldGUID starting data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of data fields that can be returned.
+     *
+     * @return list of DataField objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    public  List<RelatedDataField>  getLinkedDataFields(String   userId,
+                                                        String   dataFieldGUID,
+                                                        int      startingFrom,
+                                                        int      maximumResults) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String   methodName = "getLinkedDataFields";
+        final String   dataFieldGUIDParameterName = "dataFieldGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/linked-data-fields?startingFrom={3}&maximumResults={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        RelatedDataFieldListResponse restResult = restClient.callRelatedDataFieldListGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataFieldGUID,
                                                                                    Integer.toString(startingFrom),
                                                                                    Integer.toString(maximumResults));
 
@@ -1256,6 +1296,43 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                   parentDataFieldGUID);
 
         return restResult.getGUID();
+    }
+
+
+    /**
+     * Link two exising data fields together in a peer relationship.
+     *
+     * @param userId identifier of calling user
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipProperties optional properties for the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public void linkDataFields(String        userId,
+                               String        linkFromDataFieldGUID,
+                               DataFieldLink relationshipProperties,
+                               String        linkToDataFieldGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   methodName = "linkDataFields";
+        final String   linkFromDataFieldGUIDParameterName = "linkFromDataFieldGUID";
+        final String   linkToDataFieldGUIDParameterName = "linkToDataFieldGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/linked-data-fields/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(linkFromDataFieldGUID, linkFromDataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(linkToDataFieldGUID, linkToDataFieldGUIDParameterName, methodName);
+
+        restClient.callGUIDPostRESTCall(methodName,
+                                        urlTemplate,
+                                        relationshipProperties,
+                                        serverName,
+                                        userId,
+                                        linkFromDataFieldGUID,
+                                        linkToDataFieldGUID);
     }
 
 

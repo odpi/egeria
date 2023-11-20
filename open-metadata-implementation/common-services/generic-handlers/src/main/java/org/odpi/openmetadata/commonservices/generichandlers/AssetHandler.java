@@ -108,7 +108,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     /**
      * Return the list of asset subtype names mapped to their descriptions.
      *
-     * @return list of type names that are subtypes of asset
+     * @return map of type names that are subtypes of asset
      */
     public Map<String, String> getTypesOfAssetDescriptions()
     {
@@ -1582,6 +1582,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       organizationGUID,
                                       organizationGUIDParameterName,
                                       OpenMetadataAPIMapper.ORGANIZATION_TYPE_NAME,
+                                      true,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1596,6 +1597,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       businessCapabilityGUID,
                                       businessCapabilityGUIDParameterName,
                                       OpenMetadataAPIMapper.BUSINESS_CAPABILITY_TYPE_NAME,
+                                      true,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1734,6 +1736,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                   entity,
                                                   guidParameterName,
+                                                  true,
                                                   false,
                                                   forLineage,
                                                   forDuplicateProcessing,

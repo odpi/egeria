@@ -1178,8 +1178,8 @@ public class OpenMetadataTypesArchive3_11
     private void update04xxMultiLinkGovernanceImplementationTypes()
     {
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcess());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionProcessStepRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNextEngineActionRelationship());
         this.archiveBuilder.addTypeDefPatch(updateLicenseRelationship());
         this.archiveBuilder.addTypeDefPatch(updateCertificationRelationship());
     }
@@ -1217,12 +1217,12 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionTypeRelationship()
+    private TypeDefPatch updateNextGovernanceActionProcessStepRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceActionType";
+        final String typeName = "NextGovernanceActionProcessStep";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1234,12 +1234,12 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionRelationship()
+    private TypeDefPatch updateNextEngineActionRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceAction";
+        final String typeName = "NextEngineAction";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

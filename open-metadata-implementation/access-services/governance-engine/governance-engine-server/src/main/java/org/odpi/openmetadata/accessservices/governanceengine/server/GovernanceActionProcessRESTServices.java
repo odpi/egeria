@@ -3,12 +3,9 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.NextGovernanceActionTypeElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -17,9 +14,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -657,28 +659,29 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
 
-                response.setGUID(handler.createGovernanceActionType(userId,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDomainIdentifier(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getSupportedGuards(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getGovernanceEngineGUID(),
-                                                                    requestBody.getRequestType(),
-                                                                    requestBody.getRequestParameters(),
-                                                                    requestBody.getIgnoreMultipleTriggers(),
-                                                                    requestBody.getWaitTime(),
-                                                                    null,
-                                                                    null,
-                                                                    false,
-                                                                    false,
-                                                                    new Date(),
-                                                                    methodName));
+                response.setGUID(handler.createGovernanceActionProcessStep(userId,
+                                                                           requestBody.getQualifiedName(),
+                                                                           requestBody.getDomainIdentifier(),
+                                                                           requestBody.getDisplayName(),
+                                                                           requestBody.getDescription(),
+                                                                           requestBody.getSupportedGuards(),
+                                                                           requestBody.getAdditionalProperties(),
+                                                                           requestBody.getGovernanceEngineGUID(),
+                                                                           requestBody.getRequestType(),
+                                                                           requestBody.getRequestParameters(),
+                                                                           requestBody.getIgnoreMultipleTriggers(),
+                                                                           requestBody.getWaitTime(),
+                                                                           null,
+                                                                           null,
+                                                                           false,
+                                                                           false,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                           new Date(),
+                                                                           methodName));
             }
             else
             {
@@ -727,34 +730,35 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
 
                 GovernanceActionTypeProperties properties = requestBody.getProperties();
 
                 invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-                handler.updateGovernanceActionType(userId,
-                                                   actionTypeGUID,
-                                                   requestBody.getMergeUpdate(),
-                                                   properties.getQualifiedName(),
-                                                   properties.getDomainIdentifier(),
-                                                   properties.getDisplayName(),
-                                                   properties.getDescription(),
-                                                   properties.getSupportedGuards(),
-                                                   properties.getAdditionalProperties(),
-                                                   properties.getGovernanceEngineGUID(),
-                                                   properties.getRequestType(),
-                                                   properties.getRequestParameters(),
-                                                   properties.getIgnoreMultipleTriggers(),
-                                                   properties.getWaitTime(),
-                                                   null,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   new Date(),
-                                                   methodName);
+                handler.updateGovernanceActionProcessStep(userId,
+                                                          actionTypeGUID,
+                                                          requestBody.getMergeUpdate(),
+                                                          properties.getQualifiedName(),
+                                                          properties.getDomainIdentifier(),
+                                                          properties.getDisplayName(),
+                                                          properties.getDescription(),
+                                                          properties.getSupportedGuards(),
+                                                          properties.getAdditionalProperties(),
+                                                          properties.getGovernanceEngineGUID(),
+                                                          properties.getRequestType(),
+                                                          properties.getRequestParameters(),
+                                                          properties.getIgnoreMultipleTriggers(),
+                                                          properties.getWaitTime(),
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                          new Date(),
+                                                          methodName);
             }
             else
             {
@@ -800,11 +804,17 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            handler.removeGovernanceActionType(userId, actionTypeGUID, false, false, new Date(), methodName);
+            handler.removeGovernanceActionProcessStep(userId,
+                                                      actionTypeGUID,
+                                                      false,
+                                                      false,
+                                                      instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                      new Date(),
+                                                      methodName);
         }
         catch (Exception error)
         {
@@ -851,24 +861,25 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
 
                 if (requestBody.getSearchStringParameterName() != null)
                 {
                     searchStringParameterName = requestBody.getSearchStringParameterName();
                 }
 
-                response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       requestBody.getSearchString(),
-                                                                       searchStringParameterName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       false,
-                                                                       false,
-                                                                       new Date(),
-                                                                       methodName));
+                response.setElements(handler.findGovernanceActionProcessSteps(userId,
+                                                                              requestBody.getSearchString(),
+                                                                              searchStringParameterName,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              false,
+                                                                              false,
+                                                                              instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                              new Date(),
+                                                                              methodName));
             }
             else
             {
@@ -920,22 +931,22 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
 
                 if (requestBody.getNameParameterName() != null)
                 {
                     nameParameterName = requestBody.getNameParameterName();
                 }
 
-                response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getName(),
-                                                                            nameParameterName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            null,
-                                                                            methodName));
+                response.setElements(handler.getGovernanceActionProcessStepsByName(userId,
+                                                                                   requestBody.getName(),
+                                                                                   nameParameterName,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName), null,
+                                                                                   methodName));
             }
             else
             {
@@ -978,11 +989,15 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            response.setElement(handler.getGovernanceActionTypeByGUID(userId, actionTypeGUID, null, methodName));
+            response.setElement(handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                             actionTypeGUID,
+                                                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                             null,
+                                                                             methodName));
         }
         catch (Exception error)
         {
@@ -1027,11 +1042,21 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, null, null, false, false, new Date(), methodName);
+            handler.setupFirstProcessStep(userId,
+                                          processGUID,
+                                          actionTypeGUID,
+                                          requestBody,
+                                          null,
+                                          null,
+                                          false,
+                                          false,
+                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                          new Date(),
+                                          methodName);
         }
         catch (Exception error)
         {
@@ -1069,11 +1094,16 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            response.setElement(handler.getFirstActionType(userId, processGUID, null, null, methodName));
+            response.setElement(handler.getFirstProcessStep(userId,
+                                                            processGUID,
+                                                            null,
+                                                            instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                            null,
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1114,11 +1144,15 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            handler.removeFirstActionType(userId, processGUID, null, methodName);
+            handler.removeFirstProcessStep(userId,
+                                           processGUID,
+                                           instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                           null,
+                                           methodName);
         }
         catch (Exception error)
         {
@@ -1164,20 +1198,21 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
-                response.setGUID(handler.setupNextActionType(userId,
-                                                             currentActionTypeGUID,
-                                                             nextActionTypeGUID,
-                                                             requestBody.getGuard(),
-                                                             requestBody.getMandatoryGuard(),
-                                                             null,
-                                                             null,
-                                                             false,
-                                                             false,
-                                                             new Date(),
-                                                             methodName));
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
+                response.setGUID(handler.setupNextProcessStep(userId,
+                                                              currentActionTypeGUID,
+                                                              nextActionTypeGUID,
+                                                              requestBody.getGuard(),
+                                                              requestBody.getMandatoryGuard(),
+                                                              null,
+                                                              null,
+                                                              false,
+                                                              false,
+                                                              instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                              new Date(),
+                                                              methodName));
             }
             else
             {
@@ -1225,16 +1260,16 @@ public class GovernanceActionProcessRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
-                handler.updateNextActionType(userId,
-                                             nextActionLinkGUID,
-                                             requestBody.getGuard(),
-                                             requestBody.getMandatoryGuard(),
-                                             null,
-                                             null,
-                                             methodName);
+                GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName);
+                handler.updateNextProcessStep(userId,
+                                              nextActionLinkGUID,
+                                              requestBody.getGuard(),
+                                              requestBody.getMandatoryGuard(),
+                                              null,
+                                              null,
+                                              methodName);
             }
             else
             {
@@ -1281,11 +1316,17 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            List<Relationship> relationships = handler.getNextGovernanceActionTypes(userId, actionTypeGUID, startFrom, pageSize, null, methodName);
+            List<Relationship> relationships = handler.getNextGovernanceActionProcessSteps(userId,
+                                                                                           actionTypeGUID,
+                                                                                           startFrom,
+                                                                                           pageSize,
+                                                                                           instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                                           null,
+                                                                                           methodName);
 
             if (relationships != null)
             {
@@ -1309,7 +1350,11 @@ public class GovernanceActionProcessRESTServices
                                                                                       relationship.getProperties(),
                                                                                       methodName));
 
-                        element.setNextActionType(handler.getGovernanceActionTypeByGUID(userId, relationship.getEntityTwoProxy().getGUID(), null, methodName));
+                        element.setNextActionType(handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                               relationship.getEntityTwoProxy().getGUID(),
+                                                                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                                               null,
+                                                                                               methodName));
 
                         elements.add(element);
                     }
@@ -1348,7 +1393,7 @@ public class GovernanceActionProcessRESTServices
                                              String          actionLinkGUID,
                                              NullRequestBody requestBody)
     {
-        final String methodName = "removeFirstActionType";
+        final String methodName = "removeNextActionType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1358,11 +1403,11 @@ public class GovernanceActionProcessRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                                                                            serverName,
+                                                                                                                                            methodName);
 
-            handler.removeNextActionType(userId, actionLinkGUID, methodName);
+            handler.removeNextProcessStep(userId, actionLinkGUID, methodName);
         }
         catch (Exception error)
         {

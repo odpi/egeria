@@ -8,9 +8,13 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryServiceProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * DiscoverApacheAtlasProvider is the connector provider for the LoadObservationsByEgeria connector that publishes insights about.
+ * DiscoverApacheAtlasProvider is the connector provider for the DiscoverApacheAtlasConnector that publishes insights about
+ * the types and instances in an Apache Atlas server.
  */
 public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
 {
@@ -22,21 +26,40 @@ public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID      = "7a88982b-c44e-4090-8029-686633352278";
+    private static final String connectorTypeGUID      = "095de44e-fe18-4849-bf08-4d91d9ea3e35";
 
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Catalog:LoadObservationsByEgeria";
-    private static final String connectorDisplayName   = "LoadObservationsByEgeria Integration Connector";
-    private static final String connectorDescription   = "Connector publishes insights about a deployed metadata catalog to a database.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/load-observations-by-egeria/";
+    private static final String connectorQualifiedName = "Egeria:OpenDiscoveryService:DiscoverApacheAtlas";
+    private static final String connectorDisplayName   = "DiscoverApacheAtlas Open Discovery Service";
+    private static final String connectorDescription   = "Connector publishes insights about a deployment of Apache Atlas.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/discovery/apache-atlas-discovery-service/";
 
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasConnector";
+    private static final String connectorClassName     = DiscoverApacheAtlasConnector.class.getName();
 
+    /**
+     * Property name to control how much profiling the discovery service does.
+     */
+    public static final String FINAL_ANALYSIS_STEP_PROPERTY_NAME = "finalAnalysisStep";
+
+    /**
+     * Set finalAnalysisStep to STATS to get the basic statistics from Apache Atlas
+     */
+    public static final String ANALYSIS_STEP_NAME_STATS = "STATS";
+
+    /**
+     * Set finalAnalysisStep to SCHEMA to get the basic statistics and schema extracted from Apache Atlas.
+     */
+    public static final String ANALYSIS_STEP_NAME_SCHEMA = "SCHEMA";
+
+    /**
+     * Set finalAnalysisStep to PROFILE to get the basic statistics, schema extracted and the instances from Apache Atlas profiled.
+     */
+    public static final String ANALYSIS_STEP_NAME_PROFILE = "PROFILE";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
@@ -62,6 +85,10 @@ public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+        recognizedConfigurationProperties.add(FINAL_ANALYSIS_STEP_PROPERTY_NAME);
+        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
 

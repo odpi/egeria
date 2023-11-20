@@ -66,10 +66,9 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
 
     /**
      * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
-     *
      * The connectors are initialized waiting to start.  After start() is called on the
      * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
-     * start() to each of them when they are to run. Similarly for disconnect().
+     * start() to each of them when they are to run. Similar processing is needed for the disconnect() method.
      *
      * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
      */

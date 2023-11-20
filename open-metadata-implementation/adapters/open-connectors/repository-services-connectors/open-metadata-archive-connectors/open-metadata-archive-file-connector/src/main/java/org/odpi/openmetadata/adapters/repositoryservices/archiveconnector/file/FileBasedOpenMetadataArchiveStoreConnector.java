@@ -6,31 +6,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc.FileBasedOpenMetadataArchiveStoreConnectorAuditCode;
+import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc.FileBasedOpenMetadataArchiveStoreConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * FileBasedOpenMetadataArchiveStoreConnector provides a connector that can read an Open Metadata Archive file coded in JSON.
+ */
 public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArchiveStoreConnector
 {
-    /*
+    /**
      * This is the default name of the open metadata archive file that is used if there is no file name in the connection.
      */
     private static final String defaultFilename = "open.metadata.archive";
 
-    /*
+    /**
      * Variables used in writing to the file.
      */
     private String archiveStoreName = null;
 
-    /*
+    /**
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(FileBasedOpenMetadataArchiveStoreConnector.class);
@@ -76,10 +81,13 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      * Return the contents of the archive.
      *
      * @return OpenMetadataArchive object
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
     @Override
-    public OpenMetadataArchive getArchiveContents()
+    public OpenMetadataArchive getArchiveContents() throws RepositoryErrorException
     {
+        final String methodName = "getArchiveContents";
+
         File                archiveStoreFile     = new File(archiveStoreName);
         OpenMetadataArchive newOpenMetadataArchive;
 
@@ -106,9 +114,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
              */
             if (auditLog != null)
             {
-                final String actionDescription = "Unable to open file";
-
-                auditLog.logException(actionDescription,
+                auditLog.logException(methodName,
                                       FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
                                                                                                                         ioException.getClass().getName(),
                                                                                                                         ioException.getMessage()),
@@ -116,9 +122,13 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
             }
 
 
-            log.debug("Create empty archive", ioException);
+            log.error("Error opening archive", ioException);
 
-            newOpenMetadataArchive = new OpenMetadataArchive();
+            throw new RepositoryErrorException(FileBasedOpenMetadataArchiveStoreConnectorErrorCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                                 ioException.getClass().getName(),
+                                                                                                                                 ioException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName);
         }
 
         return newOpenMetadataArchive;

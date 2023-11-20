@@ -170,7 +170,7 @@ public class OpenMetadataTypesArchive3_4
         update0115ITProfile();
         extend0423SecurityDefinitions();
         update0223Events();
-        update0463GovernanceActions();
+        update0463EngineActions();
     }
 
 
@@ -669,19 +669,19 @@ public class OpenMetadataTypesArchive3_4
      */
 
     /**
-     * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
-     * additional properties in the GovernanceAction entity.  This is to improve performance.
+     * Deprecate the use of EngineActionExecutor and GovernanceActionProcessStepUse relationships in favour of
+     * additional properties in the EngineAction entity.  This is to improve performance.
      */
-    private void update0463GovernanceActions()
+    private void update0463EngineActions()
     {
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionExecutorRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionTypeUseRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
+        this.archiveBuilder.addTypeDefPatch(deprecateEngineActionExecutorRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionProcessStepUseRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
     }
 
-    private TypeDefPatch deprecateGovernanceActionExecutorRelationship()
+    private TypeDefPatch deprecateEngineActionExecutorRelationship()
     {
-        final String typeName = "GovernanceActionExecutor";
+        final String typeName = "EngineActionExecutor";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -693,9 +693,9 @@ public class OpenMetadataTypesArchive3_4
     }
 
 
-    private TypeDefPatch deprecateGovernanceActionTypeUseRelationship()
+    private TypeDefPatch deprecateGovernanceActionProcessStepUseRelationship()
     {
-        final String typeName = "GovernanceActionTypeUse";
+        final String typeName = "GovernanceActionProcessStepUse";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -707,12 +707,12 @@ public class OpenMetadataTypesArchive3_4
     }
 
 
-    private TypeDefPatch updateGovernanceActionEntity()
+    private TypeDefPatch updateEngineActionEntity()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceAction";
+        final String typeName = "EngineAction";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -740,11 +740,11 @@ public class OpenMetadataTypesArchive3_4
         final String attribute5Name            = "processName";
         final String attribute5Description     = "Unique name of the process that initiated this request.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "governanceActionTypeGUID";
-        final String attribute6Description     = "Unique identifier of the governance action type that initiated this request.";
+        final String attribute6Name            = "processStepGUID";
+        final String attribute6Description     = "Unique identifier of the governance action process step that initiated this request.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "governanceActionTypeName";
-        final String attribute7Description     = "Unique name of the governance action type that initiated this request.";
+        final String attribute7Name            = "processStepName";
+        final String attribute7Description     = "Unique name of the governance action process step that initiated this request.";
         final String attribute7DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

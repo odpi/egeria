@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStor
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
@@ -52,6 +53,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private static final String kafkaConnectorCategoryDescription   = "Open Metadata connector category for connectors to Apache Kafka.";
     private static final String kafkaConnectorCategoryTargetSource  = "Apache Software Foundation (ASF)";
     private static final String kafkaConnectorCategoryTargetName    = "Apache Kafka.";
+
+    private static final String relationalConnectorCategoryQualifiedName = "OpenMetadataJDBCConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
+    private static final String relationalConnectorCategoryDisplayName   = "Open Metadata JDBC Connector Category Directory";
+    private static final String relationalConnectorCategoryDescription   = "Open Metadata connector category for connectors to relational databases.";
+    private static final String relationalConnectorCategoryTargetSource  = "Java Database Connector (JDBC)";
+    private static final String relationalConnectorCategoryTargetName    = "Relational Database.";
 
     /*
      * Additional AssetTypes for basic file connector
@@ -139,6 +146,17 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                null,
                                                                                null,
                                                                                null);
+
+        String relationalConnectorCategoryGUID = archiveHelper.addConnectorCategory(connectorDirectoryTypeGUID,
+                                                                                    relationalConnectorCategoryQualifiedName,
+                                                                                    relationalConnectorCategoryDisplayName,
+                                                                                    relationalConnectorCategoryDescription,
+                                                                                    relationalConnectorCategoryTargetSource,
+                                                                                    relationalConnectorCategoryTargetName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null);
 
 
         AvroFileStoreProvider avroFileStoreProvider = new AvroFileStoreProvider();
@@ -280,6 +298,29 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                        connectorType.getDescription(),
                                        documentAssetTypeName,
                                        null,
+                                       connectorType.getConnectorProviderClassName(),
+                                       connectorType.getConnectorFrameworkName(),
+                                       connectorType.getConnectorInterfaceLanguage(),
+                                       connectorType.getConnectorInterfaces(),
+                                       connectorType.getTargetTechnologySource(),
+                                       connectorType.getTargetTechnologyName(),
+                                       connectorType.getTargetTechnologyInterfaces(),
+                                       connectorType.getTargetTechnologyVersions(),
+                                       connectorType.getRecognizedSecuredProperties(),
+                                       connectorType.getRecognizedConfigurationProperties(),
+                                       connectorType.getRecognizedAdditionalProperties(),
+                                       connectorType.getAdditionalProperties());
+
+        JDBCResourceConnectorProvider jdbcResourceConnectorProvider = new JDBCResourceConnectorProvider();
+        connectorType = jdbcResourceConnectorProvider.getConnectorType();
+
+        archiveHelper.addConnectorType(relationalConnectorCategoryGUID,
+                                       connectorType.getGUID(),
+                                       connectorType.getQualifiedName(),
+                                       connectorType.getDisplayName(),
+                                       connectorType.getDescription(),
+                                       connectorType.getSupportedAssetTypeName(),
+                                       connectorType.getExpectedDataFormat(),
                                        connectorType.getConnectorProviderClassName(),
                                        connectorType.getConnectorFrameworkName(),
                                        connectorType.getConnectorInterfaceLanguage(),

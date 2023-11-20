@@ -13380,7 +13380,7 @@ public class OpenMetadataTypesArchive1_2
         this.add0445GovernanceRoles();
         this.add0450GovernanceRollout();
         this.add0455ExceptionManagement();
-        this.add0460GovernanceActions();
+        this.add0460GovernanceControls();
         this.add0481Licenses();
         this.add0482Certifications();
     }
@@ -17015,7 +17015,7 @@ public class OpenMetadataTypesArchive1_2
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void add0460GovernanceActions()
+    private void add0460GovernanceControls()
     {
         this.archiveBuilder.addClassificationDef(getControlPointClassification());
         this.archiveBuilder.addClassificationDef(getVerificationPointClassification());

@@ -282,7 +282,7 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionType());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStep());
         this.archiveBuilder.addTypeDefPatch(updateIncidentClassifier());
         this.archiveBuilder.addTypeDefPatch(updateIncidentReport());
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
@@ -1059,12 +1059,12 @@ public class OpenMetadataTypesArchive2_10
      *
      * @return patch
      */
-    private TypeDefPatch updateGovernanceActionType()
+    private TypeDefPatch updateGovernanceActionProcessStep()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceActionType";
+        final String typeName = "GovernanceActionProcessStep";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

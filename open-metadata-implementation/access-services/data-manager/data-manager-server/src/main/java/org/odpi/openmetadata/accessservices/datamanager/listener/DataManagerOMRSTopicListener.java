@@ -157,6 +157,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                             false,
                                                             false,
                                                             false,
+                                                            false,
                                                             supportedZones,
                                                             effectiveTime,
                                                             methodName);
@@ -168,6 +169,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                             entityProxy.getGUID(),
                                                             entityGUIDParameterName,
                                                             instanceTypeName,
+                                                            false,
                                                             false,
                                                             false,
                                                             false,
@@ -311,6 +313,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         false,
                                                         false,
                                                         false,
+                                                        false,
                                                         supportedZones,
                                                         effectiveTime,
                                                         methodName);
@@ -319,6 +322,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                         relationship.getEntityTwoProxy().getGUID(),
                                                         entityProxyTwoGUIDParameterName,
                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                        false,
                                                         false,
                                                         false,
                                                         false,
@@ -858,10 +862,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
