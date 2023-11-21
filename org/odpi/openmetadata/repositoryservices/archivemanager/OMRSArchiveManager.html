@@ -179,7 +179,8 @@ loadScripts(document, 'script');</script>
 <h3>setLocalRepository</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalRepository</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId,
  <a href="../localrepository/repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
- <a href="../localrepository/repositoryconnector/LocalOMRSInstanceEventProcessor.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector">LocalOMRSInstanceEventProcessor</a>&nbsp;instanceProcessor)</span></div>
+ <a href="../localrepository/repositoryconnector/LocalOMRSInstanceEventProcessor.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector">LocalOMRSInstanceEventProcessor</a>&nbsp;instanceProcessor)</span>
+                        throws <span class="exceptions"><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">The local repository is accessed through its inbound event processors.  A server will always have
  the local Content Manager and TypeDef Processor but the local Instance Processor is only available
  if the local server has a metadata repository defined.</div>
@@ -188,6 +189,8 @@ loadScripts(document, 'script');</script>
 <dd><code>localMetadataCollectionId</code> - unique identifier of the local repository</dd>
 <dd><code>repositoryContentManager</code> - typeDef processor for the local repository</dd>
 <dd><code>instanceProcessor</code> - instance processor for the local repository</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem accessing the archive</dd>
 </dl>
 </section>
 </li>
@@ -195,13 +198,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="addOpenMetadataArchive(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector,java.lang.String)">
 <h3>addOpenMetadataArchive</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="../connectors/stores/archivestore/OpenMetadataArchiveStoreConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveStoreConnector</a>&nbsp;archiveStore,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</span>
+                            throws <span class="exceptions"><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Add a new archive to the local repository. If there are problems processing the archive, an exception is thrown.
  This method allows archives to be loaded into a running server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>archiveStore</code> - new open metadata archive to process</dd>
 <dd><code>archiveSource</code> - source of the archive</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem accessing the archive</dd>
 </dl>
 </section>
 </li>

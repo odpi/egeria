@@ -199,53 +199,67 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return any annotations attached to this annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/DataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataField</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNestedDataFields(java.lang.String,int,int)" class="member-name-link">getNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/RelatedDataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">RelatedDataField</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getLinkedDataFields(java.lang.String,int,int)" class="member-name-link">getLinkedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return any annotations attached to this annotation.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNewAnnotationsForAsset(int,int)" class="member-name-link">getNewAnnotationsForAsset</a><wbr>(int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the current list of annotations for this discovery run.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/DataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataField</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNewDataFieldsForAsset(int,int)" class="member-name-link">getNewDataFieldsForAsset</a><wbr>(int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the current list of data fields for this discovery run.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousAnnotationsForAsset(int,int)" class="member-name-link">getPreviousAnnotationsForAsset</a><wbr>(int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the list of Annotations created for the asset by previous runs of the discovery service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousAnnotationsForAsset(org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus,int,int)" class="member-name-link">getPreviousAnnotationsForAsset</a><wbr>(<a href="properties/AnnotationStatus.html" title="enum class in org.odpi.openmetadata.frameworks.discovery.properties">AnnotationStatus</a>&nbsp;status,
- int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the list of annotations from previous runs of the discovery service that are set to a specific status.</div>
+<div class="block">Return any peer data fields attached to this data field.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/DataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataField</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousDataFieldsForAsset(int,int)" class="member-name-link">getPreviousDataFieldsForAsset</a><wbr>(int&nbsp;startingFrom,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNestedDataFields(java.lang.String,int,int)" class="member-name-link">getNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
+ int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return any nested data fields attached to this data field.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNewAnnotationsForAsset(int,int)" class="member-name-link">getNewAnnotationsForAsset</a><wbr>(int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the current list of annotations for this discovery run.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/DataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataField</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNewDataFieldsForAsset(int,int)" class="member-name-link">getNewDataFieldsForAsset</a><wbr>(int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the current list of data fields for this discovery run.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousAnnotationsForAsset(int,int)" class="member-name-link">getPreviousAnnotationsForAsset</a><wbr>(int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the list of Annotations created for the asset by previous runs of the discovery service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousAnnotationsForAsset(org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus,int,int)" class="member-name-link">getPreviousAnnotationsForAsset</a><wbr>(<a href="properties/AnnotationStatus.html" title="enum class in org.odpi.openmetadata.frameworks.discovery.properties">AnnotationStatus</a>&nbsp;status,
+ int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the list of annotations from previous runs of the discovery service that are set to a specific status.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/DataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataField</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPreviousDataFieldsForAsset(int,int)" class="member-name-link">getPreviousDataFieldsForAsset</a><wbr>(int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of data fields from previous runs of the discovery service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypesOfAnnotation()" class="member-name-link">getTypesOfAnnotation</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypesOfAnnotation()" class="member-name-link">getTypesOfAnnotation</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the annotation subtype names.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypesOfAnnotationWithDescriptions()" class="member-name-link">getTypesOfAnnotationWithDescriptions</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypesOfAnnotationWithDescriptions()" class="member-name-link">getTypesOfAnnotationWithDescriptions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the annotation subtype names mapped to their descriptions.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#linkDataFields(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink,java.lang.String)" class="member-name-link">linkDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkFromDataFieldGUID,
+ <a href="properties/DataFieldLink.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataFieldLink</a>&nbsp;relationshipProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkToDataFieldGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Link two exising data fields together in a peer relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateAnnotation(org.odpi.openmetadata.frameworks.discovery.properties.Annotation)" class="member-name-link">updateAnnotation</a><wbr>(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&nbsp;annotation)</code></div>
@@ -616,10 +630,34 @@ loadScripts(document, 'script');</script>
                                              throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Return any annotations attached to this annotation.</div>
+<div class="block">Return any nested data fields attached to this data field.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentDataFieldGUID</code> - parent data field identifier</dd>
+<dd><code>startingFrom</code> - starting position in the list</dd>
+<dd><code>maximumResults</code> - maximum number of annotations that can be returned.</dd>
+<dt>Returns:</dt>
+<dd>list of DataField objects</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem that occurred within the property server.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLinkedDataFields(java.lang.String,int,int)">
+<h3>getLinkedDataFields</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/RelatedDataField.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">RelatedDataField</a>&gt;</span>&nbsp;<span class="element-name">getLinkedDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</span>
+                                                    throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return any peer data fields attached to this data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataFieldGUID</code> - starting data field identifier</dd>
 <dd><code>startingFrom</code> - starting position in the list</dd>
 <dd><code>maximumResults</code> - maximum number of annotations that can be returned.</dd>
 <dt>Returns:</dt>
@@ -689,6 +727,28 @@ loadScripts(document, 'script');</script>
 <dd><code>dataField</code> - data field object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new data field</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem saving data fields in the annotation store.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkDataFields(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink,java.lang.String)">
+<h3>linkDataFields</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkFromDataFieldGUID,
+ <a href="properties/DataFieldLink.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataFieldLink</a>&nbsp;relationshipProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkToDataFieldGUID)</span>
+                             throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Link two exising data fields together in a peer relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>linkFromDataFieldGUID</code> - unique identifier of the data field that is at end 1 of the relationship</dd>
+<dd><code>relationshipProperties</code> - optional properties for the relationship</dd>
+<dd><code>linkToDataFieldGUID</code> - unique identifier of the data field that is at end 1 of the relationship</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>

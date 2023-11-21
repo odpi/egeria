@@ -105,10 +105,10 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#engineHostUserId" class="member-name-link">engineHostUserId</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#engineActionGUID" class="member-name-link">engineActionGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#governanceActionGUID" class="member-name-link">governanceActionGUID</a></code></div>
+<div class="col-second even-row-color"><code><a href="#engineHostUserId" class="member-name-link">engineHostUserId</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#governanceEngineGUID" class="member-name-link">governanceEngineGUID</a></code></div>
@@ -141,11 +141,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.Connector,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceServiceHandler</a><wbr>(<a href="../../../accessservices/governanceengine/properties/GovernanceEngineProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceEngineProperties</a>&nbsp;governanceEngineProperties,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.Connector,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceServiceHandler</a><wbr>(<a href="../../../accessservices/governanceengine/properties/GovernanceEngineProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceEngineProperties</a>&nbsp;governanceEngineProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineHostUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionGUID,
- <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;governanceActionClient,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
+ <a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a>&nbsp;engineActionClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceRequestType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceServiceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceServiceName,
@@ -198,8 +198,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
+ <a href="../../../frameworks/governanceaction/properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;status,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</code></div>
@@ -263,9 +263,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="governanceActionGUID">
-<h3>governanceActionGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">governanceActionGUID</span></div>
+<section class="detail" id="engineActionGUID">
+<h3>engineActionGUID</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">engineActionGUID</span></div>
 </section>
 </li>
 <li>
@@ -289,13 +289,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.Connector,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.Connector,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>GovernanceServiceHandler</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">GovernanceServiceHandler</span><wbr><span class="parameters">(<a href="../../../accessservices/governanceengine/properties/GovernanceEngineProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.properties">GovernanceEngineProperties</a>&nbsp;governanceEngineProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineHostUserId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionGUID,
- <a href="../../../accessservices/governanceengine/client/GovernanceEngineClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineClient</a>&nbsp;governanceActionClient,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
+ <a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a>&nbsp;engineActionClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceRequestType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceServiceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceServiceName,
@@ -309,8 +309,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dd><code>governanceEngineProperties</code> - properties of the governance engine - used for message logging</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine - used for message logging</dd>
 <dd><code>engineHostUserId</code> - userId for making updates to the governance actions</dd>
-<dd><code>governanceActionGUID</code> - unique identifier of the governance action that triggered this governance service</dd>
-<dd><code>governanceActionClient</code> - client for processing governance actions</dd>
+<dd><code>engineActionGUID</code> - unique identifier of the engine action that triggered this governance service</dd>
+<dd><code>engineActionClient</code> - client for processing engine actions</dd>
 <dd><code>serviceRequestType</code> - incoming request type</dd>
 <dd><code>governanceServiceGUID</code> - unique identifier of the governance service</dd>
 <dd><code>governanceServiceName</code> - name of this governance  service - used for message logging</dd>
@@ -361,10 +361,10 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date,java.lang.String)">
+<section class="detail" id="updateActionTargetStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)">
 <h3>updateActionTargetStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateActionTargetStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
+ <a href="../../../frameworks/governanceaction/properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;status,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</span>

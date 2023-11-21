@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">CompletionStatus</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&gt;</span></div>
 <div class="block">CompletionStatus defines the completion status of a governance action service.</div>
 </section>
 <section class="summary">
@@ -107,13 +106,21 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACTIONED" class="member-name-link">ACTIONED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The governance action service for the governance action has successfully completed processing.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FAILED" class="member-name-link">FAILED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The governance action service failed to execute the requested action.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID" class="member-name-link">INVALID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The governance action service has not performed the requested action because it is not appropriate (for example, a false positive).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Undefined or unknown completion status.</div>
+</div>
 </div>
 </section>
 </li>
@@ -198,24 +205,28 @@ the order they are declared.</div>
 <section class="detail" id="ACTIONED">
 <h3>ACTIONED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></span>&nbsp;<span class="element-name">ACTIONED</span></div>
+<div class="block">The governance action service for the governance action has successfully completed processing.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID">
 <h3>INVALID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></span>&nbsp;<span class="element-name">INVALID</span></div>
+<div class="block">The governance action service has not performed the requested action because it is not appropriate (for example, a false positive).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FAILED">
 <h3>FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></span>&nbsp;<span class="element-name">FAILED</span></div>
+<div class="block">The governance action service failed to execute the requested action.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Undefined or unknown completion status.</div>
 </section>
 </li>
 </ul>

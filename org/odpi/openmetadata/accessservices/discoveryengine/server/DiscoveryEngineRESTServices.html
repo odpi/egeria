@@ -269,44 +269,62 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any annotations attached to this annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">DataFieldListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNestedDataFields(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/RelatedDataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">RelatedDataFieldListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedDataFields(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getLinkedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return any peer data fields attached to this data field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">DataFieldListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNestedDataFields(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return any annotations attached to this annotation.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">DataFieldListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewDataFieldsForAsset(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getNewDataFieldsForAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;discoveryReportGUID,
- int&nbsp;startingFrom,
- int&nbsp;maximumResults)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the current list of data fields for this discovery run.</div>
+<div class="block">Return any child data fields attached to this data field.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">DataFieldListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviousDataFieldsForAsset(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getPreviousDataFieldsForAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewDataFieldsForAsset(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getNewDataFieldsForAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;discoveryReportGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the current list of data fields for this discovery run.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">DataFieldListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviousDataFieldsForAsset(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getPreviousDataFieldsForAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;discoveryReportGUID,
+ int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of data fields from previous runs of the discovery service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/NameListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypesOfAnnotation(java.lang.String,java.lang.String)" class="member-name-link">getTypesOfAnnotation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the annotation subtype names.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/StringMapResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringMapResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypesOfAnnotationWithDescriptions(java.lang.String,java.lang.String)" class="member-name-link">getTypesOfAnnotationWithDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/NameListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypesOfAnnotation(java.lang.String,java.lang.String)" class="member-name-link">getTypesOfAnnotation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the annotation subtype names.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/StringMapResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringMapResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypesOfAnnotationWithDescriptions(java.lang.String,java.lang.String)" class="member-name-link">getTypesOfAnnotationWithDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the annotation subtype names mapped to their descriptions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDataFields(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink)" class="member-name-link">linkDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkFromDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkToDataFieldGUID,
+ <a href="../../../frameworks/discovery/properties/DataFieldLink.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataFieldLink</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Link two exising data fields together in a peer relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logAssetAuditMessage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">logAssetAuditMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -389,7 +407,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of unique identifiers for located assets or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -415,7 +432,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of unique identifiers for matching assets or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -441,7 +457,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of unique identifiers for matching assets or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -467,7 +482,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of assets that match the search string or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -492,7 +506,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - number of results to return</dd>
 <dt>Returns:</dt>
 <dd>list of unique identifiers for matching assets or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -517,7 +530,6 @@ loadScripts(document, 'script');</script>
 <dd><code>message</code> - message to log</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -540,7 +552,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - all the other parameters</dd>
 <dt>Returns:</dt>
 <dd>The unique identifier of the new discovery report or
-
   InvalidParameterException one of the parameters is invalid or
   UserNotAuthorizedException the user is not authorized to access the asset and/or report or
   PropertyServerException there was a problem in the store whether the asset/report properties are kept.</dd>
@@ -563,7 +574,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - updated report - this will replace what was previous stored</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -584,7 +594,6 @@ loadScripts(document, 'script');</script>
 <dd><code>discoveryReportGUID</code> - identifier of the discovery request.</dd>
 <dt>Returns:</dt>
 <dd>discovery report or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -649,7 +658,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - status value to use on the query</dd>
 <dt>Returns:</dt>
 <dd>list of annotation (or null if none are registered) or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem retrieving annotations from the annotation store.</dd>
@@ -674,7 +682,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of definitions to return on this call.</dd>
 <dt>Returns:</dt>
 <dd>list of annotations or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -699,7 +706,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of annotations that can be returned.</dd>
 <dt>Returns:</dt>
 <dd>list of Annotation objects or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -721,7 +727,6 @@ loadScripts(document, 'script');</script>
 <dd><code>annotationGUID</code> - unique identifier of the annotation</dd>
 <dt>Returns:</dt>
 <dd>Annotation object or
-
   InvalidParameterException one of the parameters is null or invalid.
   UserNotAuthorizedException user not authorized to issue this request.
   PropertyServerException there was a problem that occurred within the property server.</dd>
@@ -744,7 +749,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - annotation object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new annotation or
-
   InvalidParameterException the annotation is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem retrieving adding the annotation to the annotation store.</dd>
@@ -767,7 +771,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - annotation object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new annotation or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem saving annotations in the annotation store.</dd>
@@ -790,7 +793,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - new properties</dd>
 <dt>Returns:</dt>
 <dd>fully filled out annotation or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem updating the annotation in the annotation store.</dd>
@@ -813,7 +815,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - null request body to satisfy POST semantics</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem deleting the annotation from the annotation store.</dd>
@@ -838,7 +839,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
 <dt>Returns:</dt>
 <dd>list of data fields (or null if none are registered) or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem retrieving data fields from the annotation store.</dd>
@@ -863,7 +863,6 @@ loadScripts(document, 'script');</script>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
 <dt>Returns:</dt>
 <dd>list of data fields (or null if none are registered) or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem retrieving data fields from the annotation store.</dd>
@@ -878,14 +877,38 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</span></div>
-<div class="block">Return any annotations attached to this annotation.</div>
+<div class="block">Return any child data fields attached to this data field.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>parentDataFieldGUID</code> - parent data field identifier</dd>
 <dd><code>startingFrom</code> - starting position in the list</dd>
-<dd><code>maximumResults</code> - maximum number of annotations that can be returned.</dd>
+<dd><code>maximumResults</code> - maximum number of data fields that can be returned.</dd>
+<dt>Returns:</dt>
+<dd>list of DataField objects or
+  InvalidParameterException one of the parameters is null or invalid.
+  UserNotAuthorizedException user not authorized to issue this request.
+  PropertyServerException there was a problem that occurred within the property server.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLinkedDataFields(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<h3>getLinkedDataFields</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/RelatedDataFieldListResponse.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">RelatedDataFieldListResponse</a></span>&nbsp;<span class="element-name">getLinkedDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ int&nbsp;startingFrom,
+ int&nbsp;maximumResults)</span></div>
+<div class="block">Return any peer data fields attached to this data field.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>userId</code> - identifier of calling user</dd>
+<dd><code>dataFieldGUID</code> - parent data field identifier</dd>
+<dd><code>startingFrom</code> - starting position in the list</dd>
+<dd><code>maximumResults</code> - maximum number of data fields that can be returned.</dd>
 <dt>Returns:</dt>
 <dd>list of DataField objects or
   InvalidParameterException one of the parameters is null or invalid.
@@ -908,7 +931,6 @@ loadScripts(document, 'script');</script>
 <dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
 <dt>Returns:</dt>
 <dd>data field object or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem retrieving the data field from the annotation store.</dd>
@@ -931,7 +953,6 @@ loadScripts(document, 'script');</script>
 <dd><code>dataField</code> - dataField object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new data field or
-
   InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
                                    that can not be associated with a data field.
   UserNotAuthorizedException the user id not authorized to issue this request
@@ -955,10 +976,32 @@ loadScripts(document, 'script');</script>
 <dd><code>dataField</code> - data field object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new data field or
-
   InvalidParameterException one of the parameters is invalid
   UserNotAuthorizedException the user id not authorized to issue this request
   PropertyServerException there was a problem saving data fields in the annotation store.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkDataFields(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink)">
+<h3>linkDataFields</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkDataFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkFromDataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;linkToDataFieldGUID,
+ <a href="../../../frameworks/discovery/properties/DataFieldLink.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DataFieldLink</a>&nbsp;relationshipProperties)</span></div>
+<div class="block">Link two exising data fields together in a peer relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - identifier of calling user</dd>
+<dd><code>linkFromDataFieldGUID</code> - unique identifier of the data field that is at end 1 of the relationship</dd>
+<dd><code>relationshipProperties</code> - optional properties for the relationship</dd>
+<dd><code>linkToDataFieldGUID</code> - unique identifier of the data field that is at end 1 of the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException one of the parameters is invalid or
+  UserNotAuthorizedException the user id not authorized to issue this request or
+  PropertyServerException there was a problem deleting the data field from the annotation store.</dd>
 </dl>
 </section>
 </li>

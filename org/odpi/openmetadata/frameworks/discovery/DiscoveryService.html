@@ -312,10 +312,9 @@ implements <a href="OpenDiscoveryService.html" title="interface in org.odpi.open
 <h3>initializeEmbeddedConnectors</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeEmbeddedConnectors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</span></div>
 <div class="block">Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
-
  The connectors are initialized waiting to start.  After start() is called on the
  discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
- start() to each of them when they are to run. Similarly for disconnect().</div>
+ start() to each of them when they are to run. Similar processing is needed for the disconnect() method.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../connectors/VirtualConnectorExtension.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a></code>&nbsp;in interface&nbsp;<code><a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>

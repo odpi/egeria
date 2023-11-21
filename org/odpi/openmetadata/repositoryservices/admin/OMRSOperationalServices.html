@@ -82,7 +82,6 @@ loadScripts(document, 'script');</script>
  This includes managing the local metadata repository, connecting and disconnecting from the metadata
  highway and supporting administrative
  actions captured through the OMAG REST interface.
-
  Examples of the types of capabilities offered by the OMRS Manager include:
  <ul>
      <li>Initialize and Shutdown the OMRS</li>
@@ -128,7 +127,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;openMetadataArchiveConnection,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;openMetadataArchiveConnection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an open metadata archive to the local repository.</div>
@@ -316,12 +316,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="initializeCohortMember(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)">
 <h3>initializeCohortMember</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeCohortMember</span><wbr><span class="parameters">(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeCohortMember</span><wbr><span class="parameters">(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</span>
+                            throws <span class="exceptions"><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
  is taken as is.  Any configuration errors are reported as exceptions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>repositoryServicesConfig</code> - current configuration values</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem accessing an open metadata archive</dd>
 </dl>
 </section>
 </li>
@@ -355,7 +358,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecurityVerifier</span><wbr><span class="parameters">(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</span></div>
 <div class="block">Set up a new security verifier (the handler runs with a default verifier until this
  method is called).
-
  The security verifier provides authorization checks for access and maintenance
  changes to open metadata.  Authorization checks are enabled through the
  OpenMetadataServerSecurityConnector.</div>
@@ -366,15 +368,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addOpenMetadataArchive(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">
+<section class="detail" id="addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">
 <h3>addOpenMetadataArchive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;openMetadataArchiveConnection,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;openMetadataArchiveConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</span>
+                            throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+<a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Add an open metadata archive to the local repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
 <dd><code>openMetadataArchiveConnection</code> - connection to the archive</dd>
 <dd><code>archiveSource</code> - descriptive name of the archive source</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the archive resource is not found</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem with the archive manager</dd>
 </dl>
 </section>
 </li>

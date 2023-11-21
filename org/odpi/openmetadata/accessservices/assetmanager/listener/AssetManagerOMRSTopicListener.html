@@ -109,7 +109,7 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher,org.odpi.openmetadata.commonservices.generichandlers.AssetHandler,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">AssetManagerOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="../outtopic/AssetManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.outtopic">AssetManagerOutTopicPublisher</a>&nbsp;eventPublisher,
- <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceActionProcessElement</a>&gt;&nbsp;assetHandler,
+ <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/AssetElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">AssetElement</a>&gt;&nbsp;assetHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
@@ -432,7 +432,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetManagerOMRSTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="../outtopic/AssetManagerOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.outtopic">AssetManagerOutTopicPublisher</a>&nbsp;eventPublisher,
- <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceActionProcessElement</a>&gt;&nbsp;assetHandler,
+ <a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../metadataelements/AssetElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">AssetElement</a>&gt;&nbsp;assetHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Initialize the topic listener.</div>
@@ -792,7 +792,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorOrganizationName,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</span></div>
 <div class="block">An existing entity has been deleted and purged in a single action.
-
  All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
  will be notified through separate events.</div>
 <dl class="notes">

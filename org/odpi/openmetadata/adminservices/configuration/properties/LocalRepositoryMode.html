@@ -83,10 +83,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">LocalRepositoryMode</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a>&gt;</span></div>
 <div class="block">LocalRepositoryMode classifies the capability of the server's local repository.
-
  This value will influence the server type classification.  It is also useful documentation
  for an administrator to understand the expected capability that each repository is able to perform.
  <ul>
@@ -133,17 +131,30 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#METADATA_CACHE" class="member-name-link">METADATA_CACHE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">This local repository is read only and is able to act as a cache for metadata but not to master new values.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_REPOSITORY" class="member-name-link">NO_REPOSITORY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The server is running without a local repository.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_METADATA_NATIVE" class="member-name-link">OPEN_METADATA_NATIVE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">This local repository is a plugin repository that is part of Egeria and has been built
+ specifically for open metadata and as such is able to dynamically absorb new types of metadata.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PLUGIN_REPOSITORY" class="member-name-link">PLUGIN_REPOSITORY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">This local repository has been built by a third party as a plugin repository.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REPOSITORY_PROXY" class="member-name-link">REPOSITORY_PROXY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">This local repository is actually a proxy to third party metadata repository.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNCLASSIFIED" class="member-name-link">UNCLASSIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The mode of the repository is unknown.</div>
+</div>
 </div>
 </section>
 </li>
@@ -213,36 +224,43 @@ the order they are declared.</div>
 <section class="detail" id="UNCLASSIFIED">
 <h3>UNCLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">UNCLASSIFIED</span></div>
+<div class="block">The mode of the repository is unknown.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_REPOSITORY">
 <h3>NO_REPOSITORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">NO_REPOSITORY</span></div>
+<div class="block">The server is running without a local repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="METADATA_CACHE">
 <h3>METADATA_CACHE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">METADATA_CACHE</span></div>
+<div class="block">This local repository is read only and is able to act as a cache for metadata but not to master new values.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_PROXY">
 <h3>REPOSITORY_PROXY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">REPOSITORY_PROXY</span></div>
+<div class="block">This local repository is actually a proxy to third party metadata repository. It is restricted to the capability of the third party repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_METADATA_NATIVE">
 <h3>OPEN_METADATA_NATIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">OPEN_METADATA_NATIVE</span></div>
+<div class="block">This local repository is a plugin repository that is part of Egeria and has been built
+ specifically for open metadata and as such is able to dynamically absorb new types of metadata.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PLUGIN_REPOSITORY">
 <h3>PLUGIN_REPOSITORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LocalRepositoryMode.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryMode</a></span>&nbsp;<span class="element-name">PLUGIN_REPOSITORY</span></div>
+<div class="block">This local repository has been built by a third party as a plugin repository.</div>
 </section>
 </li>
 </ul>

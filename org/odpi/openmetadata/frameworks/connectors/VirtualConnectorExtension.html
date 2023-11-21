@@ -119,8 +119,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">initializeEmbeddedConnectors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</span></div>
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.
  The connectors are initialized waiting to start.  When start() is called on the
- virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
- disconnect().</div>
+ virtual connector, it needs to pass start() to each of the embedded connectors.
+ Similar processing is needed for the disconnect() method.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>embeddedConnectors</code> - list of connectors</dd>

@@ -427,6 +427,7 @@ org.odpi.openmetadata.adapters.connectors.datastore.datafolder
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
 org.odpi.openmetadata.adapters.connectors.discoveryservices
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas
+org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.ffdc
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discoverduplicates
 org.odpi.openmetadata.adapters.connectors.discoveryservices.ffdc
@@ -849,10 +850,13 @@ org.odpi.openmetadata.samples.governanceengine.discoveryservices
 org.odpi.openmetadata.serverchassis.springboot
 org.odpi.openmetadata.serverchassis.springboot.config
 org.odpi.openmetadata.serverchassis.springboot.exception
+org.odpi.openmetadata.serveroperations.client
+org.odpi.openmetadata.serveroperations.client.rest
 org.odpi.openmetadata.serveroperations.ffdc
 org.odpi.openmetadata.serveroperations.properties
 org.odpi.openmetadata.serveroperations.rest
 org.odpi.openmetadata.serveroperations.server
+org.odpi.openmetadata.serveroperations.server.spring
 org.odpi.openmetadata.test.unittest.utilities
 org.odpi.openmetadata.tokencontroller
 org.odpi.openmetadata.tokencontroller.ffdc

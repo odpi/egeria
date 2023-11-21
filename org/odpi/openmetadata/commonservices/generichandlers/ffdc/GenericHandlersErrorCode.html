@@ -158,24 +158,24 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="block">OMAG-GENERIC-HANDLERS-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
  open metadata access service {2} on server {3}; error message was: {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_GOVERNANCE_ACTION_STATUS" class="member-name-link">INVALID_GOVERNANCE_ACTION_STATUS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INVALID_ENGINE_ACTION_STATUS" class="member-name-link">INVALID_ENGINE_ACTION_STATUS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}</div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PROCESSING_USER" class="member-name-link">INVALID_PROCESSING_USER</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}</div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#MISSING_CONVERTER_METHOD" class="member-name-link">MISSING_CONVERTER_METHOD</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
  bean class {3} and so is unable to create the bean for method {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_GOVERNANCE_ACTION" class="member-name-link">MISSING_GOVERNANCE_ACTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_ENGINE_ACTION" class="member-name-link">MISSING_ENGINE_ACTION</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-500-007 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_GOVERNANCE_ACTION_PROPERTIES" class="member-name-link">MISSING_GOVERNANCE_ACTION_PROPERTIES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MISSING_ENGINE_ACTION_PROPERTIES" class="member-name-link">MISSING_ENGINE_ACTION_PROPERTIES</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-500-008 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties</div>
 </div>
@@ -198,7 +198,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 </div>
 <div class="col-first odd-row-color"><code><a href="#NO_PROCESS_IMPLEMENTATION" class="member-name-link">NO_PROCESS_IMPLEMENTATION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined</div>
+<div class="block">OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action process step defined</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#NO_REQUEST_TYPE_FOR_ENGINE" class="member-name-link">NO_REQUEST_TYPE_FOR_ENGINE</a></code></div>
 <div class="col-last even-row-color">
@@ -232,7 +232,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_EXECUTOR" class="member-name-link">UNKNOWN_EXECUTOR</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship</div>
+<div class="block">OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of an engine action because the governance action process step {0} does not have a Governance Engine linked via the {1} relationship</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_EXTERNAL_IDENTITY" class="member-name-link">UNKNOWN_EXTERNAL_IDENTITY</a></code></div>
 <div class="col-last even-row-color">
@@ -355,14 +355,14 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN_EXECUTOR">
 <h3>UNKNOWN_EXECUTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_EXECUTOR</span></div>
-<div class="block">OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship</div>
+<div class="block">OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of an engine action because the governance action process step {0} does not have a Governance Engine linked via the {1} relationship</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_PROCESS_IMPLEMENTATION">
 <h3>NO_PROCESS_IMPLEMENTATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">NO_PROCESS_IMPLEMENTATION</span></div>
-<div class="block">OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined</div>
+<div class="block">OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action process step defined</div>
 </section>
 </li>
 <li>
@@ -412,14 +412,14 @@ the order they are declared.</div>
 <section class="detail" id="INVALID_PROCESSING_USER">
 <h3>INVALID_PROCESSING_USER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROCESSING_USER</span></div>
-<div class="block">OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}</div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}</div>
 </section>
 </li>
 <li>
-<section class="detail" id="INVALID_GOVERNANCE_ACTION_STATUS">
-<h3>INVALID_GOVERNANCE_ACTION_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">INVALID_GOVERNANCE_ACTION_STATUS</span></div>
-<div class="block">OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}</div>
+<section class="detail" id="INVALID_ENGINE_ACTION_STATUS">
+<h3>INVALID_ENGINE_ACTION_STATUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">INVALID_ENGINE_ACTION_STATUS</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}</div>
 </section>
 </li>
 <li>
@@ -491,16 +491,16 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="MISSING_GOVERNANCE_ACTION">
-<h3>MISSING_GOVERNANCE_ACTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">MISSING_GOVERNANCE_ACTION</span></div>
+<section class="detail" id="MISSING_ENGINE_ACTION">
+<h3>MISSING_ENGINE_ACTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">MISSING_ENGINE_ACTION</span></div>
 <div class="block">OMAG-GENERIC-HANDLERS-500-007 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null</div>
 </section>
 </li>
 <li>
-<section class="detail" id="MISSING_GOVERNANCE_ACTION_PROPERTIES">
-<h3>MISSING_GOVERNANCE_ACTION_PROPERTIES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">MISSING_GOVERNANCE_ACTION_PROPERTIES</span></div>
+<section class="detail" id="MISSING_ENGINE_ACTION_PROPERTIES">
+<h3>MISSING_ENGINE_ACTION_PROPERTIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></span>&nbsp;<span class="element-name">MISSING_ENGINE_ACTION_PROPERTIES</span></div>
 <div class="block">OMAG-GENERIC-HANDLERS-500-008 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties</div>
 </section>
 </li>

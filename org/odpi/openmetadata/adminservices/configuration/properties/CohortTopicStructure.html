@@ -83,11 +83,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">CohortTopicStructure</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<div class="block">PermittedSynchronization defines the permitted directions of flow of metadata updates between open metadata and a third party
- technology.  It is setup in the configuration for an integration connector and is enforced in the integration service
- (in the integration context to be precise).</div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a>&gt;</span></div>
+<div class="block">CohortTopicStructure defines the type of topic organization to use in a cohort.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,11 +106,17 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BOTH_SINGLE_AND_DEDICATED_TOPICS" class="member-name-link">BOTH_SINGLE_AND_DEDICATED_TOPICS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Both the single cohort topic and the dedicated topics are set up and used.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DEDICATED_TOPICS" class="member-name-link">DEDICATED_TOPICS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The cohort members use three topics to exchange information.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SINGLE_TOPIC" class="member-name-link">SINGLE_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">All asynchronous communication between cohort members is via a single topic.</div>
+</div>
 </div>
 </section>
 </li>
@@ -183,18 +186,25 @@ the order they are declared.</div>
 <section class="detail" id="DEDICATED_TOPICS">
 <h3>DEDICATED_TOPICS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a></span>&nbsp;<span class="element-name">DEDICATED_TOPICS</span></div>
+<div class="block">The cohort members use three topics to exchange information.  One for registration requests, one for
+ type validation and one for exchange of instances stored by the cohort members.  This is the preferred and optimal
+ approach.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SINGLE_TOPIC">
 <h3>SINGLE_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a></span>&nbsp;<span class="element-name">SINGLE_TOPIC</span></div>
+<div class="block">All asynchronous communication between cohort members is via a single topic.  This is the original design and may
+ still be used when communicating with back level cohort members.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BOTH_SINGLE_AND_DEDICATED_TOPICS">
 <h3>BOTH_SINGLE_AND_DEDICATED_TOPICS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortTopicStructure.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a></span>&nbsp;<span class="element-name">BOTH_SINGLE_AND_DEDICATED_TOPICS</span></div>
+<div class="block">Both the single cohort topic and the dedicated topics are set up and used.  This is necessary when the cohort
+ has members with different capabilities.  This configuration may cause some events to be processed twice.</div>
 </section>
 </li>
 </ul>
