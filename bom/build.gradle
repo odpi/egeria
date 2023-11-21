@@ -108,7 +108,7 @@ ext {
     cassandraVersion = '4.1.3'
     protobufVersion = '3.25.1'
     osgiVersion = '8.0.0'
-    log4jVersion = '2.20.0'
+    log4jVersion = '2.22.0'
     jacksonjdk8Version = '2.16.0'
     reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.2.0'
