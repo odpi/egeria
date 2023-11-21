@@ -1,0 +1,153 @@
+################################################
+### Additional demo users configuration
+################################################
+
+### 
+###  please override the passwords with your own in the following format
+### 
+
+# default password for all demo users. TO BE CHANGED
+demoUserPassword: secret
+
+egeria:
+  demoUsers:
+    admin:
+      username: admin
+      name: Generic Admin
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_ADMIN
+    garygeeke:
+      username: garygeeke
+      name: Gary Geeke
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER, COCO_PHARMA_ADMIN
+    faith:
+      username: faith
+      name: Faith Broker
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    zach:
+      username: zach
+      name:  Zach Now
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    steves:
+      username: steves
+      name:  Steve Starter
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    terri:
+      username: terri
+      name:  Terri Daring
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    tanyatidie:
+      username: tanyatidie
+      name:  Tanya Tide
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    pollytasker:
+      username: pollytasker
+      name:  Polly Tasker
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    tessatube:
+      username: tessatube
+      name:  Tessa Tube
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    calliequartile:
+      username: calliequartile
+      name:  Callie Quartile
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    ivorpadlock:
+      username: ivorpadlock
+      name:  Ivor Padlock
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    bobnitter:
+      username: bobnitter
+      name:  Bob Nitter
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    faithbroker:
+      username: faithbroker
+      name:  Faith Broker
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    sallycounter:
+      username: sallycounter
+      name:  Sally Counter
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    lemmiestage:
+      username: lemmiestage
+      name:  Lemmie Stage
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    erinoverview:
+      username: erinoverview
+      name:  Erin Overview
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER, COCO_PHARMA_ADMIN
+    harryhopeful:
+      username: harryhopeful
+      name:  Harry Hopeful
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    grantable:
+      username: grantable
+      name:  Grant Able
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    robbierecords:
+      username: robbierecords
+      name:  Robbie Records
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    reggiemint:
+      username: reggiemint
+      name:  Reggie Mint
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    peterprofile:
+      username: peterprofile
+      name: Peter Profile
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER, COCO_PHARMA_ADMIN
+    nancynoah:
+      username: nancynoah
+      name: Nancy Noah
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    sidneyseeker:
+      username: sidneyseeker
+      name: Sidney Seeker
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    tomtally:
+      username: tomtally
+      name: Tom Tally
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    juliestitched:
+      username: juliestitched
+      name: Julies Titched
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    angelacummings:
+      username: angelacummings
+      name: Angel Accumings
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    jukeskeeper:
+      username: jukeskeeper
+      name: Jukes Keeper
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    stewfaster:
+      username: stewfaster
+      name: Steward Faster
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER

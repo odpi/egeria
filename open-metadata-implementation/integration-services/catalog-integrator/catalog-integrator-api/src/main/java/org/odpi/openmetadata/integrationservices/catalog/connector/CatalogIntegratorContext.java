@@ -16,6 +16,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Infrast
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -443,6 +445,48 @@ public class CatalogIntegratorContext extends IntegrationContext
      */
 
 
+    /**
+     * Retrieve the correlation header from the retrieved element that matches this asset manager.
+     *
+     * @param retrievedElement element retrieved from the metadata repository
+     * @return metadata correlation header or null if the element does not have a matching correlation header
+     * @throws InvalidParameterException the element passed is null
+     */
+    public MetadataCorrelationHeader getMetadataCorrelationHeader(MetadataElement retrievedElement) throws InvalidParameterException
+    {
+        final String methodName = "getMetadataCorrelationHeader";
+        final String parameterName = "retrievedElement";
+
+        if (retrievedElement == null)
+        {
+            throw new InvalidParameterException(CatalogIntegratorErrorCode.NULL_ELEMENT_PASSED.getMessageDefinition(connectorName,
+                                                                                                                    methodName,
+                                                                                                                    parameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
+        else if ((retrievedElement.getCorrelationHeaders() == null) || (assetManagerName == null))
+        {
+            return null;
+        }
+        else
+        {
+            for (MetadataCorrelationHeader metadataCorrelationHeader : retrievedElement.getCorrelationHeaders())
+            {
+                if (assetManagerName.equals(metadataCorrelationHeader.getAssetManagerName()))
+                {
+                    return metadataCorrelationHeader;
+                }
+            }
+
+            /*
+             * None of the correlation headers match this asset manager.
+             */
+            return null;
+        }
+    }
+
 
     /**
      * Add a new external identifier to an existing open metadata element.
@@ -525,7 +569,7 @@ public class CatalogIntegratorContext extends IntegrationContext
 
     /**
      * Confirm that the values of a particular metadata element have been synchronized.  This is important
-     * from an audit points of view, and to allow bidirectional updates of metadata using optimistic locking.
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param openMetadataGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element

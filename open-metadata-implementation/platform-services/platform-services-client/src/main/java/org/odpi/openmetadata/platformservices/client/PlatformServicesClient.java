@@ -15,13 +15,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.platformservices.properties.ServerServicesStatus;
-import org.odpi.openmetadata.platformservices.properties.ServerStatus;
-import org.odpi.openmetadata.platformservices.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
-import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
-import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
-import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 
 
 import java.util.List;

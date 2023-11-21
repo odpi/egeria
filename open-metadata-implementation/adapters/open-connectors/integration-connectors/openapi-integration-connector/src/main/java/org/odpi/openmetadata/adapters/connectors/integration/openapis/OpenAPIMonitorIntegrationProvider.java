@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
@@ -37,7 +38,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = OpenAPIMonitorIntegrationConnector.class;
+    private static final String connectorClassName      = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationConnector";
 
     static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
 
@@ -53,7 +54,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -68,6 +69,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 
@@ -77,6 +79,7 @@ public class OpenAPIMonitorIntegrationProvider extends IntegrationConnectorProvi
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
         componentDescription.setComponentName(connectorQualifiedName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

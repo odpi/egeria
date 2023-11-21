@@ -44,23 +44,45 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OpenMetadataExchangeRule implements Serializable
 {
+    /**
+     * Only registration exchange; no TypeDefs or metadata instances.
+     */
     REGISTRATION_ONLY (0,  "Registration Only", "Only registration exchange; no TypeDefs or metadata instances."),
+
+    /**
+     * Only registration and type definitions (TypeDefs) exchange.
+     */
     JUST_TYPEDEFS     (1,  "Just TypeDefs",     "Only registration and type definitions (TypeDefs) exchange."),
+
+    /**
+     * Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) of selected types.
+     */
     SELECTED_TYPES    (2,  "Selected Types",    "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships) of selected types."),
+
+    /**
+     * Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) of types
+     * requested by local users to this server.
+     */
     LEARNED_TYPES     (3,  "Learned Types",     "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships) of types " +
                                                 "requested by local users to this server."),
+
+    /**
+     * Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.
+     */
     DESELECTED_TYPES  (4,  "Deselected Types",  "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships) NOT listed in selected types."),
+
+    /**
+     * Registration plus all type definitions (TypeDefs) and metadata instances (Entities, Classifications and Relationships).
+     */
     ALL               (99, "All",               "Registration plus all type definitions (TypeDefs) and metadata " +
-                                                "instances (Entities and Relationships).");
+                                                "instances (Entities, Classifications and Relationships).");
 
-    private static final long serialVersionUID = 1L;
-
-    private  int    ordinal;
-    private  String name;
-    private  String replicationRuleDescription;
+    private final int    ordinal;
+    private final String name;
+    private final String replicationRuleDescription;
 
     /**
      * Constructor for the metadata instance replication rule.

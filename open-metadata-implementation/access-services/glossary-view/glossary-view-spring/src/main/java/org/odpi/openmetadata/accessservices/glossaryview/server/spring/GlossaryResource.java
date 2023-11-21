@@ -28,11 +28,10 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 @Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 
-@Tag(name="Glossary View OMAS",
+@Tag(name="Metadata Access Server: Glossary View OMAS",
         description="The Glossary View OMAS provides APIs and events for retrieving glossaries, categories and terms.",
-        externalDocs=@ExternalDocumentation(
-                description="Glossary View Open Metadata Access Service (OMAS)",
-                url="https://egeria-project.org/services/omas/glossary-view/overview/"))
+        externalDocs=@ExternalDocumentation(description="Further Information",
+                                            url="https://egeria-project.org/services/omas/glossary-view/overview/"))
 
 public class GlossaryResource {
 

@@ -69,8 +69,8 @@ public class CreateCSVFileAssetSample
     public static void main(String[] args)
     {
         String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
-        String  serverName = "cocoMDS1";
-        String  serverURLRoot = "https://localhost:9444";
+        String  serverName = "simple-metadata-store";
+        String  serverURLRoot = "https://localhost:9443";
         String  clientUserId = "peterprofile";
 
         if (args.length > 0)
@@ -101,7 +101,7 @@ public class CreateCSVFileAssetSample
         System.out.println("Creating file: " + fileName);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {

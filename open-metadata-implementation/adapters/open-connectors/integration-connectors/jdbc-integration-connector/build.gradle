@@ -1,0 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// Artifact names are taken from the directory by default, set in settings.gradle to override
+// The 'name' for the maven artifact, and description are set here
+
+description = 'Egeria integration connector that uses Generic JDBC resource connector to access the database metadata'
+
+dependencies {
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
+    compileOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
+    compileOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-api')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
+
+    compileOnly 'org.apache.commons:commons-lang3'
+    compileOnly 'org.apache.commons:commons-collections4'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+

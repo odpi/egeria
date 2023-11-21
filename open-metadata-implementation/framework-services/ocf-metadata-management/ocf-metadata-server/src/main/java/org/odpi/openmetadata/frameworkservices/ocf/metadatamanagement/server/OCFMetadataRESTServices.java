@@ -1808,6 +1808,7 @@ public class OCFMetadataRESTServices
                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                                           entity,
                                                                                           OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                          true,
                                                                                           false,
                                                                                           false,
                                                                                           false,

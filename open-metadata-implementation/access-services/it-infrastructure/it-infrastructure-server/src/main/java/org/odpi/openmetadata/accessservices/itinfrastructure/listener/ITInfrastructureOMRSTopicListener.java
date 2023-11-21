@@ -531,10 +531,8 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -778,6 +776,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                       fullEntity,
                                                       guidParameterName,
+                                                      false,
                                                       false,
                                                       true,
                                                       false,

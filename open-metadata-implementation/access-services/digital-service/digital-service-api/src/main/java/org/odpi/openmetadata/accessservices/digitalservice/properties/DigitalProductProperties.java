@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DigitalProductProperties extends ClassificationProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String              productName          = null;
     private String              productType          = null;
     private String              description          = null;

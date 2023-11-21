@@ -101,18 +101,19 @@ public class CollectionFolderProperties extends CollectionProperties
     public String toString()
     {
         return "CollectionFolderProperties{" +
-                "collectionOrderingProperty='" + collectionOrderingProperty + '\'' +
-                ", collectionOrdering=" + collectionOrdering +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", effectiveFrom=" + getEffectiveFrom() +
-                ", effectiveTo=" + getEffectiveTo() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "collectionOrderingProperty='" + collectionOrderingProperty + '\'' +
+                       ", collectionOrdering=" + collectionOrdering +
+                       ", name='" + getName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", collectionType='" + getCollectionType() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
     /**

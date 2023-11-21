@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/it-infrastructure/users/{userId}")
 
-@Tag(name="IT Infrastructure OMAS",
+@Tag(name="Metadata Access Server: IT Infrastructure OMAS",
      description="The IT Infrastructure OMAS provides APIs for tools and applications managing the IT infrastructure that supports the data assets.\n",
-     externalDocs=@ExternalDocumentation(description="IT Infrastructure Open Metadata Access Service (OMAS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/it-infrastructure/overview/"))
 
 public class ITInfrastructureResource

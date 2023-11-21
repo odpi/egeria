@@ -21,21 +21,27 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements AuditLogMessageSet
 {
-    OPENING_FILE("OCF-FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
+    /**
+     * FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001 - Opening file {0} for Open Metadata Archive Store
+     */
+    OPENING_FILE("FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
               OMRSAuditLogRecordSeverity.STARTUP,
-              "Opening file \"{0}\" for Open Metadata Archive Store",
+              "Opening file {0} for Open Metadata Archive Store",
               "The local server is requesting the contents of the open metadata archive store which is located in the named file.",
               "Validate that the file name is correct.  Look particularly for extraneous quotes, " +
                       "incorrect directory name (relative files are read from the perspective of the server's home directory) or incorrect characters.  " +
                       "Once the file name is corrected (either in the server's configuration or the command that loaded the archive) then retry the" +
                       "mechanism that loads the archive."),
 
-    BAD_FILE("OCF-FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
-              OMRSAuditLogRecordSeverity.EXCEPTION,
-              "Unable to open file \"{0}\".  Message from {1} exception was {2}",
+    /**
+     * FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002 - Unable to open file {0}.  Message from {1} exception was {2}
+     */
+    BAD_FILE("FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
+              OMRSAuditLogRecordSeverity.ERROR,
+              "Unable to open file {0}.  Message from {1} exception was {2}",
               "The server is is unable to open an open metadata archive store.",
               "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
-                      "Does the caller have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
+                      "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
 
     ;
 

@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RES
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
 import org.odpi.openmetadata.conformance.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 
 /**
@@ -16,7 +18,9 @@ import org.odpi.openmetadata.conformance.rest.*;
  */
 class RESTClient
 {
-    private RESTClientConnector clientConnector;        /* Initialized in constructor */
+    private static final MessageFormatter messageFormatter = new MessageFormatter();
+
+    private final RESTClientConnector clientConnector;        /* Initialized in constructor */
 
 
     /**
@@ -40,16 +44,16 @@ class RESTClient
         }
         catch (Exception     error)
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
+            ConformanceSuiteErrorCode  errorCode         = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(serverName, error.getMessage());
 
 
-            throw new RESTConfigurationException(errorCode.getHTTPErrorCode(),
+            throw new RESTConfigurationException(messageDefinition.getHttpErrorCode(),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
+                                                 messageFormatter.getFormattedMessage(messageDefinition),
+                                                 messageDefinition.getSystemAction(),
+                                                 messageDefinition.getUserAction(),
                                                  error);
         }
     }
@@ -83,16 +87,15 @@ class RESTClient
         }
         catch (Exception     error)
         {
-            ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
+            ConformanceSuiteErrorCode  errorCode         = ConformanceSuiteErrorCode.NULL_LOCAL_SERVER_NAME;
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(serverName, error.getMessage());
 
-
-            throw new RESTConfigurationException(errorCode.getHTTPErrorCode(),
+            throw new RESTConfigurationException(messageDefinition.getHttpErrorCode(),
                                                  this.getClass().getName(),
                                                  methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
+                                                 messageFormatter.getFormattedMessage(messageDefinition),
+                                                 messageDefinition.getSystemAction(),
+                                                 messageDefinition.getUserAction(),
                                                  error);
         }
     }

@@ -951,7 +951,7 @@ public class GovernanceLeadershipSample
         serverURLRoot = args[1];
         clientUserId = args[2];
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
 
         System.out.println("===============================");

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
@@ -13,8 +13,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
+import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -44,7 +44,7 @@ public class EngineHostOperationalServices
     private final String                         localServerPassword;           /* Initialized in constructor */
     private final int                            maxPageSize;                   /* Initialized in constructor */
 
-    private AuditLog                        auditLog           = null;
+    private AuditLog                              auditLog           = null;
     private EngineHostInstance                    engineHostInstance = null;
     private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
 
@@ -159,10 +159,10 @@ public class EngineHostOperationalServices
                                                                                                               maxPageSize,
                                                                                                               auditLog);
 
-            GovernanceEngineClient serverClient = new GovernanceEngineClient(accessServiceServerName,
-                                                                             accessServiceRootURL,
-                                                                             restClient,
-                                                                             maxPageSize);
+            GovernanceContextClient serverClient = new GovernanceContextClient(accessServiceServerName,
+                                                                               accessServiceRootURL,
+                                                                               restClient,
+                                                                               maxPageSize);
 
             /*
              * Initialize each of the integration services and accumulate the integration connector handlers for the
@@ -282,7 +282,7 @@ public class EngineHostOperationalServices
      */
     private List<String> initializeEngineServices(List<EngineServiceConfig>            engineServiceConfigList,
                                                   GovernanceEngineConfigurationClient  configurationClient,
-                                                  GovernanceEngineClient               serverClient,
+                                                  GovernanceContextClient              serverClient,
                                                   Map<String, List<String>>            serviceEngineLists,
                                                   Map<String, GovernanceEngineHandler> governanceEngineHandlers) throws OMAGConfigurationErrorException
     {

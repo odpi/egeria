@@ -12,13 +12,18 @@ import javax.net.ssl.X509TrustManager;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 
-public class HttpHelper {
+/**
+ * Turn off client-side checking of certificates.  There are two options, one to turn it off all the time and the other is
+ * controlled through the -Dstrict.ssl=false property.
+ */
+public class HttpHelper
+{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
     /**
-     * Allows using self signed certificates https connections
-     * makes all the clients and servers trusted no matter the certificate
+     * Allows the use of self-signed certificates on https connections.
+     * The client will trust the server no matter which certificate is sent.
      */
     public static void noStrictSSL(){
 
@@ -26,41 +31,44 @@ public class HttpHelper {
 
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[] {
-                new X509TrustManager() {
+                new X509TrustManager()
+                {
                     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                         return new X509Certificate[0];
                     }
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
+                    {
                     }
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
+                    {
                     }
                 }
         };
 
         // Install the all-trusting trust manager
-        try {
+        try
+        {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
-        } catch (GeneralSecurityException e) {
+        }
+        catch (GeneralSecurityException e)
+        {
             LOGGER.error("The configuration for no strict SSL went wrong");
         }
     }
 
+
     /**
-     * Allows using self signed certificates https connections
-     * makes all the clients and servers trusted no matter the certificate
-     * Only if the override property strict.ssl is set
+     * Allows using self-signed certificates https connections.
+     * If -Dstrict.ssl=false is set, the client will trust the server no matter the certificate passed.
      */
-    public static void noStrictSSLIfConfigured() {
+    public static void noStrictSSLIfConfigured()
+    {
         if ("false".equalsIgnoreCase(System.getProperty("strict.ssl")))
         {
             noStrictSSL();
         }
-
     }
-
 }

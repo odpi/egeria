@@ -66,10 +66,9 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
 
     /**
      * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
-     *
      * The connectors are initialized waiting to start.  After start() is called on the
      * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
-     * start() to each of them when they are to run. Similarly for disconnect().
+     * start() to each of them when they are to run. Similar processing is needed for the disconnect() method.
      *
      * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
      */
@@ -164,7 +163,6 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
      * This is where the function of the discovery service is implemented.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *
@@ -213,24 +211,7 @@ public abstract class DiscoveryService extends ConnectorBase implements OpenDisc
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
+        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
-
-        if (this.embeddedConnectors != null)
-        {
-            for (Connector embeddedConnector : this.embeddedConnectors)
-            {
-                if (embeddedConnector != null)
-                {
-                    try
-                    {
-                        embeddedConnector.disconnect();
-                    }
-                    catch (Exception error)
-                    {
-                        // keep going
-                    }
-                }
-            }
-        }
     }
 }

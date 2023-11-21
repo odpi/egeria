@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 
 /**
@@ -19,6 +20,10 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
     private long    refreshTimeInterval = 60L; // default to once an hour
     private boolean usesBlockingCalls   = false;
 
+    /*
+     * The type name of the asset that this connector supports.
+     */
+    protected static final String supportedAssetTypeName = "IntegrationConnector";
 
     /*
      * Descriptive information about the connector for the connector type and audit log.
@@ -41,6 +46,7 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')

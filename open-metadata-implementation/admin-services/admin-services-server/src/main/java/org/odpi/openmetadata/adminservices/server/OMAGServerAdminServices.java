@@ -3626,6 +3626,110 @@ public class OMAGServerAdminServices
     }
 
 
+
+    /**
+     * Update the URL broadcast across the cohort to allow other members to issue queries to this repository.
+     * This method is needed to reconfigure a server that has moved from one platform to another.  Once the
+     * URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody  String url.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public VoidResponse resetRemoteCohortURL(String         userId,
+                                             String         serverName,
+                                             URLRequestBody requestBody)
+    {
+        final String methodName = "resetRemoteCohortURL";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            String urlRoot = null;
+
+            if (requestBody != null)
+            {
+                urlRoot = requestBody.getUrlRoot();
+            }
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null)
+            {
+                LocalRepositoryConfig localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+
+                if (localRepositoryConfig != null)
+                {
+                    Connection localRepositoryRemoteConnection = localRepositoryConfig.getLocalRepositoryRemoteConnection();
+
+                    if (localRepositoryRemoteConnection != null)
+                    {
+                        if (urlRoot == null)
+                        {
+                            configAuditTrail.add(
+                                    new Date() + " " + userId + " removed configuration for local server's remote repository connector's endpoint address.");
+                        }
+                        else
+                        {
+                            configAuditTrail.add(
+                                    new Date() + " " + userId + " updated configuration for local server's remote repository connector's endpoint address to " + urlRoot + ".");
+                        }
+
+                        Endpoint endpoint = localRepositoryRemoteConnection.getEndpoint();
+
+                        if (endpoint != null)
+                        {
+                            endpoint.setAddress(urlRoot);
+                            localRepositoryRemoteConnection.setEndpoint(endpoint);
+                            localRepositoryConfig.setLocalRepositoryLocalConnection(localRepositoryRemoteConnection);
+                            repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
+                            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+                            serverConfig.setAuditTrail(configAuditTrail);
+
+                            configStore.saveServerConfig(serverName, methodName, serverConfig);
+                        }
+                    }
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Set up the configuration properties for a cohort.  This may reconfigure an existing cohort or create a
      * cohort.  Use setCohortMode to delete a cohort.

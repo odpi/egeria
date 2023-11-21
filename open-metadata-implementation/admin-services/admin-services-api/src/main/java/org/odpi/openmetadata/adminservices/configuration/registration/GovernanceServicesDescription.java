@@ -15,35 +15,54 @@ import java.util.Set;
  */
 public enum GovernanceServicesDescription implements Serializable
 {
+    /**
+     * Store and query asset lineage.
+     */
     OPEN_LINEAGE_SERVICES            (190,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Lineage Services",
                                       "open-lineage",
                                       "Store and query asset lineage",
                                       "https://egeria-project.org/services/open-lineage-services/"),
+
+    /**
+     * Run automated open metadata conformance suite services.
+     */
     CONFORMANCE_SUITE_SERVICES       (191,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Conformance Suite Services",
                                       "conformance-suite",
-                                      "Run automated open metadata conformance suite services",
+                                      "Run automated open metadata conformance suite services.",
                                       "https://egeria-project.org/guides/cts/overview/"),
+
+    /**
+     * Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.
+     */
     DATA_ENGINE_PROXY_SERVICES       (192,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Data Engine Proxy Services",
                                       null,
-                                      "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS",
+                                      "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.",
                                       "https://egeria-project.org/services/data-engine-proxy-services/"),
+
+    /**
+     * Host one or more integration services that are exchanging metadata with third party technologies.
+     */
     INTEGRATION_DAEMON_SERVICES      (193,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Integration Daemon Services",
                                       null,
-                                      "Host one or more integration services that are exchanging metadata with third party technologies",
+                                      "Host one or more integration services that are exchanging metadata with third party technologies.",
                                       "https://egeria-project.org/services/integration-daemon-services/"),
+
+    /**
+     * Host one or more engine services that are actively managing governance of open metadata and the digital landscape.
+     */
     ENGINE_HOST_SERVICES             (194,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Engine Host Services",
                                       null,
-                                      "Host one or more engine services that are actively managing governance of open metadata and the digital landscape",
+                                      "Host one or more engine services that are actively managing governance of open metadata and the digital landscape.",
                                       "https://egeria-project.org/services/engine-host-services/"),
     ;
 

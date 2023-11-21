@@ -70,14 +70,12 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
 
         if (event != null)
         {
-            if (event instanceof WatchdogGovernanceServiceEvent)
+            if (event instanceof WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent)
             {
                 /*
                  * The watchdog event is for all types of changes.  It is necessary to select only the events that concern
                  * an integration group
                  */
-                WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent = (WatchdogGovernanceServiceEvent)event;
-
                 if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogClassificationEvent watchdogClassificationEvent)
                 {
                     String elementTypeName = watchdogClassificationEvent.getMetadataElement().getType().getTypeName();

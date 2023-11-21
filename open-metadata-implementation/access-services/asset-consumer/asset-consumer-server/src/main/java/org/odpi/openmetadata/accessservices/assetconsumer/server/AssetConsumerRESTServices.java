@@ -1064,6 +1064,7 @@ public class AssetConsumerRESTServices
                                                                                  false,
                                                                                  false,
                                                                                  false,
+                                                                                 false,
                                                                                  handler.getSupportedZones(),
                                                                                  new Date(),
                                                                                  methodName);

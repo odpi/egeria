@@ -15,6 +15,8 @@ public class SequentialDiscoveryPipelineProvider extends DiscoveryServiceProvide
     static final String  connectorTypeName = "Sequential Discovery Pipeline Connector";
     static final String  connectorTypeDescription = "Connector supports the sequential execution of discovery services.";
 
+    static final String openPipelineServiceAssetTypeName = "OpenDiscoveryPipeline";
+
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * discovery service implementation.
@@ -32,6 +34,7 @@ public class SequentialDiscoveryPipelineProvider extends DiscoveryServiceProvide
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(openPipelineServiceAssetTypeName);
 
         super.connectorTypeBean = connectorType;
     }

@@ -15,9 +15,8 @@ catalogs files located in a specific directory of a file system.
 They implement the integration connector interface of the
 [Files Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/files-integrator).
 
-The database connectors are located in a separate git repository called 
-[https://github.com/odpi/egeria-database-connectors](https://github.com/odpi/egeria-database-connectors)
-to isolate the specific code dependencies that these connectors bring.
+Details of Egeria's integration connectors are found in the
+[Connector Catalog](https://egeria-project.org/connectors/#integration-connectors)
 
 ----
 

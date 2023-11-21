@@ -19,6 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

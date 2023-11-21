@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
@@ -35,7 +36,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = GovernanceActionOpenLineageIntegrationConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationConnector";
 
 
     /**
@@ -48,7 +49,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -60,6 +61,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 
@@ -69,6 +71,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
         componentDescription.setComponentName(connectorQualifiedName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

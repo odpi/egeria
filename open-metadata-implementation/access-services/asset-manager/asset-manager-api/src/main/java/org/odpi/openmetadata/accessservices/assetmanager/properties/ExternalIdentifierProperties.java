@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,14 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalIdentifierProperties
 {
-    private SynchronizationDirection synchronizationDirection   = null;
-    private String                   synchronizationDescription = null;
-    private String                   externalIdentifier         = null;
-    private String                   externalIdentifierName     = null;
-    private String                   externalIdentifierUsage    = null;
-    private String                   externalIdentifierSource   = null;
-    private KeyPattern               keyPattern                 = null;
-    private Map<String, String>      mappingProperties          = null;
+    private SynchronizationDirection synchronizationDirection       = null;
+    private String                   synchronizationDescription     = null;
+    private String                   externalIdentifier             = null;
+    private String                   externalIdentifierName         = null;
+    private String                   externalIdentifierUsage        = null;
+    private String                   externalIdentifierSource       = null;
+    private KeyPattern               keyPattern                     = null;
+    private String                   externalInstanceCreatedBy      = null;
+    private Date                     externalInstanceCreationTime   = null;
+    private String                   externalInstanceLastUpdatedBy  = null;
+    private Date                     externalInstanceLastUpdateTime = null;
+    private long                     externalInstanceVersion        = 0L;
+    private Map<String, String>      mappingProperties              = null;
 
     /**
      * Default constructor
@@ -55,6 +61,11 @@ public class ExternalIdentifierProperties
             externalIdentifierUsage = template.getExternalIdentifierUsage();
             externalIdentifierSource = template.getExternalIdentifierSource();
             keyPattern = template.getKeyPattern();
+            externalInstanceCreatedBy = template.getExternalInstanceCreatedBy();
+            externalInstanceCreationTime = template.getExternalInstanceCreationTime();
+            externalInstanceLastUpdatedBy = template.getExternalInstanceLastUpdatedBy();
+            externalInstanceLastUpdateTime = template.getExternalInstanceLastUpdateTime();
+            externalInstanceVersion = template.getExternalInstanceVersion();
             mappingProperties = template.getMappingProperties();
         }
     }
@@ -217,6 +228,116 @@ public class ExternalIdentifierProperties
 
 
     /**
+     * Return the username of the person or process that created the instance in the external system.
+     *
+     * @return name
+     */
+    public String getExternalInstanceCreatedBy()
+    {
+        return externalInstanceCreatedBy;
+    }
+
+
+    /**
+     * Set up the username of the person or process that created the instance in the external system.
+     *
+     * @param externalInstanceCreatedBy name
+     */
+    public void setExternalInstanceCreatedBy(String externalInstanceCreatedBy)
+    {
+        this.externalInstanceCreatedBy = externalInstanceCreatedBy;
+    }
+
+
+    /**
+     * Return the date/time when the instance in the external system was created.
+     *
+     * @return date
+     */
+    public Date getExternalInstanceCreationTime()
+    {
+        return externalInstanceCreationTime;
+    }
+
+
+    /**
+     * Set up the date/time when the instance in the external system was created.
+     *
+     * @param externalInstanceCreationTime date
+     */
+    public void setExternalInstanceCreationTime(Date externalInstanceCreationTime)
+    {
+        this.externalInstanceCreationTime = externalInstanceCreationTime;
+    }
+
+
+    /**
+     * Return the username of the person or process that last updated the instance in the external system.
+     *
+     * @return name
+     */
+    public String getExternalInstanceLastUpdatedBy()
+    {
+        return externalInstanceLastUpdatedBy;
+    }
+
+
+    /**
+     * Set up the username of the person or process that last updated the instance in the external system.
+     *
+     * @param externalInstanceLastUpdatedBy name
+     */
+    public void setExternalInstanceLastUpdatedBy(String externalInstanceLastUpdatedBy)
+    {
+        this.externalInstanceLastUpdatedBy = externalInstanceLastUpdatedBy;
+    }
+
+
+    /**
+     * Return the date/time that the instance in the external system was last updated.
+     *
+     * @return date
+     */
+    public Date getExternalInstanceLastUpdateTime()
+    {
+        return externalInstanceLastUpdateTime;
+    }
+
+
+    /**
+     * Set up the date/time that the instance in the external system was last updated.
+     *
+     * @param externalInstanceLastUpdateTime date
+     */
+    public void setExternalInstanceLastUpdateTime(Date externalInstanceLastUpdateTime)
+    {
+        this.externalInstanceLastUpdateTime = externalInstanceLastUpdateTime;
+    }
+
+
+    /**
+     * Return the latest version of the element in the external system.
+     *
+     * @return long
+     */
+    public long getExternalInstanceVersion()
+    {
+        return externalInstanceVersion;
+    }
+
+
+    /**
+     * Set up the latest version of the element in the external system.
+     *
+     * @param externalInstanceVersion long
+     */
+    public void setExternalInstanceVersion(long externalInstanceVersion)
+    {
+        this.externalInstanceVersion = externalInstanceVersion;
+    }
+
+
+    /**
      * Return any additional properties to help with the mapping of the external identifier to open
      * metadata elements.
      *
@@ -265,6 +386,11 @@ public class ExternalIdentifierProperties
                        ", externalIdentifierUsage='" + externalIdentifierUsage + '\'' +
                        ", externalIdentifierSource='" + externalIdentifierSource + '\'' +
                        ", keyPattern=" + keyPattern +
+                       ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +
+                       ", externalInstanceCreationTime=" + externalInstanceCreationTime +
+                       ", externalInstanceLastUpdatedBy='" + externalInstanceLastUpdatedBy + '\'' +
+                       ", externalInstanceLastUpdateTime='" + externalInstanceLastUpdateTime + '\'' +
+                       ", externalInstanceVersion=" + externalInstanceVersion +
                        ", mappingProperties=" + mappingProperties +
                        '}';
     }

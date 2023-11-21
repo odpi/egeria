@@ -156,29 +156,4 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
-
-
-    /**
-     * Retrieve the AuditLog from the service instance.
-     *
-     * @param userId               calling userId
-     * @param serverName           name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException
-     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException
-     */
-    @Override
-    public AuditLog getAuditLog(String userId, String serverName, String serviceOperationName)
-            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
-            org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException,
-            org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
-
-        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-        if (instance != null) {
-            return instance.getAuditLog();
-        }
-        return null;
-    }
 }

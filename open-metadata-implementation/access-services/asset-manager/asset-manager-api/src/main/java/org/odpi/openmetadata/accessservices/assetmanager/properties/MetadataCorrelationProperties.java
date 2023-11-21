@@ -113,16 +113,21 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
     public String toString()
     {
         return "MetadataCorrelationProperties{" +
-                       "synchronizationDirection=" + getSynchronizationDirection() +
+                       "assetManagerGUID='" + assetManagerGUID + '\'' +
+                       ", assetManagerName='" + assetManagerName + '\'' +
+                       ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
                        ", externalIdentifier='" + getExternalIdentifier() + '\'' +
                        ", externalIdentifierName='" + getExternalIdentifierName() + '\'' +
                        ", externalIdentifierUsage='" + getExternalIdentifierUsage() + '\'' +
                        ", externalIdentifierSource='" + getExternalIdentifierSource() + '\'' +
                        ", keyPattern=" + getKeyPattern() +
+                       ", externalInstanceCreatedBy='" + getExternalInstanceCreatedBy() + '\'' +
+                       ", externalInstanceCreationTime=" + getExternalInstanceCreationTime() +
+                       ", externalInstanceLastUpdatedBy='" + getExternalInstanceLastUpdatedBy() + '\'' +
+                       ", externalInstanceLastUpdateTime=" + getExternalInstanceLastUpdateTime() +
+                       ", externalInstanceVersion=" + getExternalInstanceVersion() +
                        ", mappingProperties=" + getMappingProperties() +
-                       ", assetManagerGUID='" + assetManagerGUID + '\'' +
-                       ", assetManagerName='" + assetManagerName + '\'' +
                        '}';
     }
 

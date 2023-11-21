@@ -7,7 +7,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefGallery;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -18,6 +23,7 @@ import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWri
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenMetadataAccess provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
@@ -53,6 +59,170 @@ public class OpenMetadataAccess
         this.externalSourceGUID = externalSourceGUID;
         this.externalSourceName = externalSourceName;
         this.reportWriter       = reportWriter;
+    }
+
+
+
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @return TypeDefGallery  List of different categories of type definitions.
+     *
+     * @throws InvalidParameterException  the userId is null
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public OpenMetadataTypeDefGallery getAllTypes() throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        return openMetadataStore.getAllTypes(userId);
+    }
+
+
+    /**
+     * Returns all the TypeDefs for a specific category.
+     *
+     * @param category enum value for the category of TypeDef to return.
+     *
+     * @return TypeDefs list.
+     *
+     * @throws InvalidParameterException  the TypeDefCategory is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<OpenMetadataTypeDef> findTypeDefsByCategory(OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        return openMetadataStore.findTypeDefsByCategory(userId, category);
+    }
+
+
+    /**
+     * Returns all the AttributeTypeDefs for a specific category.
+     *
+     * @param category enum value for the category of an AttributeTypeDef to return.
+     *
+     * @return AttributeTypeDefs list.
+     *
+     * @throws InvalidParameterException  the TypeDefCategory is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<OpenMetadataAttributeTypeDef> findAttributeTypeDefsByCategory(OpenMetadataAttributeTypeDefCategory category) throws InvalidParameterException,
+                                                                                                                                    PropertyServerException,
+                                                                                                                                    UserNotAuthorizedException
+    {
+        return openMetadataStore.findAttributeTypeDefsByCategory(userId, category);
+    }
+
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param standard     name of the standard null means any.
+     * @param organization name of the organization null means any.
+     * @param identifier   identifier of the element in the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<OpenMetadataTypeDef> findTypesByExternalID(String standard,
+                                                           String organization,
+                                                           String identifier) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        return openMetadataStore.findTypesByExternalId(userId, standard, organization, identifier);
+    }
+
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param guid   String unique id of the TypeDef
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the guid is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public OpenMetadataTypeDef getTypeDefByGUID(String guid) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return openMetadataStore.getTypeDefByGUID(userId, guid);
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param guid   String unique id of the TypeDef
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the guid is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public OpenMetadataAttributeTypeDef getAttributeTypeDefByGUID(String guid) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        return openMetadataStore.getAttributeTypeDefByGUID(userId, guid);
+    }
+
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param name   String name of the TypeDef.
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the name is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public OpenMetadataTypeDef getTypeDefByName(String name) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return openMetadataStore.getTypeDefByName(userId, name);
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param name   String name of the TypeDef.
+     *
+     * @return TypeDef structure describing its category and properties.
+     *
+     * @throws InvalidParameterException  the name is null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public OpenMetadataAttributeTypeDef getAttributeTypeDefByName(String name) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        return openMetadataStore.getAttributeTypeDefByName(userId, name);
     }
 
 
@@ -177,6 +347,43 @@ public class OpenMetadataAccess
 
 
     /**
+     * Retrieve the metadata elements of the requested type that contain the requested string.
+     *
+     * @param searchString name to retrieve
+     * @param typeName    name of the type to limit the results to (maybe null to mean all types)
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
+                                                                    String  typeName,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing,
+                                                                    Date    effectiveTime,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return openMetadataStore.findMetadataElementsWithString(userId,
+                                                                searchString,
+                                                                typeName,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
+                                                                startFrom,
+                                                                pageSize);
+    }
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID unique identifier for the starting metadata element
@@ -213,6 +420,46 @@ public class OpenMetadataAccess
                                                             effectiveTime,
                                                             startFrom,
                                                             pageSize);
+    }
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<RelatedMetadataElements> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
+                                                                         String  metadataElementAtEnd2GUID,
+                                                                         String  relationshipTypeName,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime,
+                                                                         int     startFrom,
+                                                                         int     pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return openMetadataStore.getMetadataElementRelationships(userId,
+                                                                 metadataElementAtEnd1GUID,
+                                                                 metadataElementAtEnd2GUID,
+                                                                 relationshipTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 startFrom,
+                                                                 pageSize);
     }
 
 
@@ -317,6 +564,30 @@ public class OpenMetadataAccess
 
 
     /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param relationshipGUID unique identifier for the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return relationship properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElements getRelationshipByGUID(String  relationshipGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return openMetadataStore.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
      * This version of the method allows access to advanced features such as multiple states and
@@ -354,6 +625,73 @@ public class OpenMetadataAccess
                                                                                     effectiveTo,
                                                                                     properties,
                                                                                     templateGUID);
+
+        if ((metadataElementGUID != null) && (reportWriter != null))
+        {
+            reportWriter.reportElementCreation(metadataElementGUID);
+        }
+
+        return metadataElementGUID;
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         templateGUID,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        String metadataElementGUID = openMetadataStore.createMetadataElementInStore(userId,
+                                                                                    externalSourceGUID,
+                                                                                    externalSourceName,
+                                                                                    metadataElementTypeName,
+                                                                                    initialStatus,
+                                                                                    initialClassifications,
+                                                                                    anchorGUID,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    properties,
+                                                                                    templateGUID,
+                                                                                    parentGUID,
+                                                                                    parentRelationshipTypeName,
+                                                                                    parentRelationshipProperties,
+                                                                                    parentAtEnd1);
 
         if ((metadataElementGUID != null) && (reportWriter != null))
         {

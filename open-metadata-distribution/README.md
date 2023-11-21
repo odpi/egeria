@@ -3,11 +3,11 @@
   
 # Open Metadata Distribution
 
-This module collects together the Egeria artifacts that are designed for
-used by external consuming websites and technologies.  This includes:
+This module collects together the Egeria artifacts for different scenarios.  This includes:
 
-* The **[Maven packages](open-metadata-packages)** used to embed Egeria into different technologies.
-* The **[assemblies](open-metadata-assemblies)** that provide executables for servers and tool kits.
+* The **[OMAG Server Platform Assembly](omag-server-platform)** assembles the libraries and files for the OMAG Server Platform plus optional resources for use with the platform.
+* The **[Egeria UI Application](egeria-ui-application)** contains the runtime for the Egeria's General User UI backend services.
+* The **[Open Metadata Assembly](open-metadata-assemblies)** provides a combination of the OMAG Server Platform and the Egeria UI Application.  This is a legacy and is being replaced with the more specialized assemblies described above.
 
 
 

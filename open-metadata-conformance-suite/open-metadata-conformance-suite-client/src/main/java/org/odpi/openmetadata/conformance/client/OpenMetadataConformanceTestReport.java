@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.conformance.beans.*;
-import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.conformance.ffdc.exception.PropertyServerException;
-import org.odpi.openmetadata.conformance.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.conformance.rest.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import java.io.File;
@@ -29,12 +29,12 @@ public class OpenMetadataConformanceTestReport
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
-    private String     serverName;                        /* Initialized in constructor */
-    private String     serverURLRoot;                     /* Initialized in constructor */
-    private String     testClientUserId;                  /* Initialized in constructor */
-    private RESTClient restClient;                        /* Initialized in constructor */
+    private final String     serverName;                        /* Initialized in constructor */
+    private final String     serverURLRoot;                     /* Initialized in constructor */
+    private final String     testClientUserId;                  /* Initialized in constructor */
+    private final RESTClient restClient;                        /* Initialized in constructor */
 
-    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
     /**
      * Constructor to create a test lab object that is initialized with the server to test.
@@ -81,14 +81,14 @@ public class OpenMetadataConformanceTestReport
     /**
      * Request each registered workbench runs its tests.
      *
-     * @return combined results from all of the workbenches.
+     * @return combined results from all the workbenches.
      * @throws InvalidParameterException the server to test is not a member of the cohort.
      * @throws PropertyServerException the conformance test server is not reachable.
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
     private OpenMetadataConformanceTestLabSummary getConformanceSummary() throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getConformanceSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report/summary";
@@ -96,9 +96,9 @@ public class OpenMetadataConformanceTestReport
         try
         {
             TestLabSummaryResponse restResult = restClient.callSummaryGetRESTCall(methodName,
-                    serverURLRoot + urlTemplate,
-                    serverName,
-                    testClientUserId);
+                                                                                  serverURLRoot + urlTemplate,
+                                                                                  serverName,
+                                                                                  testClientUserId);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -109,12 +109,15 @@ public class OpenMetadataConformanceTestReport
         catch (RESTServerException   error)
         {
             throw new PropertyServerException(error.getReportedHTTPCode(),
-                    error.getReportingClassName(),
-                    error.getReportingActionDescription(),
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                                              error.getReportingClassName(),
+                                              error.getReportingActionDescription(),
+                                              error.getErrorMessage(),
+                                              null,
+                                              null,
+                                              error.getReportedSystemAction(),
+                                              error.getReportedUserAction(),
+                                              error.getClass().getName(),
+                                              null);
         }
     }
 
@@ -128,8 +131,8 @@ public class OpenMetadataConformanceTestReport
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
     private List<String> getProfileNames() throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException
     {
         final String   methodName = "getProfileNames";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report/profiles";
@@ -137,9 +140,9 @@ public class OpenMetadataConformanceTestReport
         try
         {
             ProfileNameListResponse restResult = restClient.callProfilesListREST(methodName,
-                    serverURLRoot + urlTemplate,
-                    serverName,
-                    testClientUserId);
+                                                                                 serverURLRoot + urlTemplate,
+                                                                                 serverName,
+                                                                                 testClientUserId);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -150,12 +153,15 @@ public class OpenMetadataConformanceTestReport
         catch (RESTServerException   error)
         {
             throw new PropertyServerException(error.getReportedHTTPCode(),
-                    error.getReportingClassName(),
-                    error.getReportingActionDescription(),
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                                              error.getReportingClassName(),
+                                              error.getReportingActionDescription(),
+                                              error.getErrorMessage(),
+                                              null,
+                                              null,
+                                              error.getReportedSystemAction(),
+                                              error.getReportedUserAction(),
+                                              error.getClass().getName(),
+                                              null);
         }
     }
 
@@ -170,8 +176,8 @@ public class OpenMetadataConformanceTestReport
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
     private OpenMetadataConformanceProfileResults getProfile(String name) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report/profiles/{2}";
@@ -179,10 +185,10 @@ public class OpenMetadataConformanceTestReport
         try
         {
             ProfileReportResponse restResult = restClient.callProfileGetREST(methodName,
-                    serverURLRoot + urlTemplate,
-                    serverName,
-                    testClientUserId,
-                    name);
+                                                                             serverURLRoot + urlTemplate,
+                                                                             serverName,
+                                                                             testClientUserId,
+                                                                             name);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -193,12 +199,15 @@ public class OpenMetadataConformanceTestReport
         catch (RESTServerException   error)
         {
             throw new PropertyServerException(error.getReportedHTTPCode(),
-                    error.getReportingClassName(),
-                    error.getReportingActionDescription(),
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                                              error.getReportingClassName(),
+                                              error.getReportingActionDescription(),
+                                              error.getErrorMessage(),
+                                              null,
+                                              null,
+                                              error.getReportedSystemAction(),
+                                              error.getReportedUserAction(),
+                                              error.getClass().getName(),
+                                              null);
         }
     }
 
@@ -212,8 +221,8 @@ public class OpenMetadataConformanceTestReport
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
     private List<String> getTestCaseIds() throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException
     {
         final String   methodName = "getTestCaseIds";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report/test-cases";
@@ -221,9 +230,9 @@ public class OpenMetadataConformanceTestReport
         try
         {
             TestCaseListResponse restResult = restClient.callTestCasesListREST(methodName,
-                    serverURLRoot + urlTemplate,
-                    serverName,
-                    testClientUserId);
+                                                                               serverURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               testClientUserId);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -234,12 +243,15 @@ public class OpenMetadataConformanceTestReport
         catch (RESTServerException   error)
         {
             throw new PropertyServerException(error.getReportedHTTPCode(),
-                    error.getReportingClassName(),
-                    error.getReportingActionDescription(),
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                                              error.getReportingClassName(),
+                                              error.getReportingActionDescription(),
+                                              error.getErrorMessage(),
+                                              null,
+                                              null,
+                                              error.getReportedSystemAction(),
+                                              error.getReportedUserAction(),
+                                              error.getClass().getName(),
+                                              null);
         }
     }
 
@@ -254,8 +266,8 @@ public class OpenMetadataConformanceTestReport
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
     private OpenMetadataTestCaseResult getTestCase(String id) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String   methodName = "getTestCase";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report/test-cases/{2}";
@@ -263,10 +275,10 @@ public class OpenMetadataConformanceTestReport
         try
         {
             TestCaseReportResponse restResult = restClient.callTestCaseGetREST(methodName,
-                    serverURLRoot + urlTemplate,
-                    serverName,
-                    testClientUserId,
-                    id);
+                                                                               serverURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               testClientUserId,
+                                                                               id);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -277,12 +289,15 @@ public class OpenMetadataConformanceTestReport
         catch (RESTServerException   error)
         {
             throw new PropertyServerException(error.getReportedHTTPCode(),
-                    error.getReportingClassName(),
-                    error.getReportingActionDescription(),
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                                              error.getReportingClassName(),
+                                              error.getReportingActionDescription(),
+                                              error.getErrorMessage(),
+                                              null,
+                                              null,
+                                              error.getReportedSystemAction(),
+                                              error.getReportedUserAction(),
+                                              error.getClass().getName(),
+                                              null);
         }
     }
 
@@ -332,7 +347,7 @@ public class OpenMetadataConformanceTestReport
             password = args[3];
         }
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         System.out.println("=======================================");
         System.out.println(" Open Metadata Conformance Test Report ");
@@ -370,19 +385,19 @@ public class OpenMetadataConformanceTestReport
         catch (InvalidParameterException  error)
         {
             System.out.println("The server " + serverName + " is not a conformance suite server");
-            System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println("Returned error message is " + error.getReportedErrorMessage() + ".");
             System.out.println();
         }
         catch (PropertyServerException  error)
         {
             System.out.println("The OMAG server platform at " + serverURLRoot + " is not contactable or the conformance suite server " + serverName + " has not been started.");
-            System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println("Returned error message is " + error.getReportedErrorMessage() + ".");
             System.out.println();
         }
         catch (UserNotAuthorizedException  error)
         {
             System.out.println("The userId " + userId + " is not authorized to call the conformance suite tests.");
-            System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println("Returned error message is " + error.getReportedErrorMessage() + ".");
             System.out.println();
         }
 

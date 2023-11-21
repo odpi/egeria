@@ -42,7 +42,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider\"\n    },\n    \"endpoint\": {\n        \"class\": \"Endpoint\",\n        \"address\": \"omag.server.{0}.config\"\n    }\n}"
+					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider\"\n    },\n    \"endpoint\": {\n        \"class\": \"Endpoint\",\n        \"address\": \"data/servers/{0}/config/{0}.config\"\n    }\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection",

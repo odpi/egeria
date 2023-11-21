@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.client;
 
-import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.conformance.ffdc.exception.PropertyServerException;
-import org.odpi.openmetadata.conformance.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.conformance.rest.ConformanceServicesAPIResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.Map;
 
@@ -81,8 +81,12 @@ class RESTExceptionHandler
                                               this.getClass().getName(),
                                               methodName,
                                               restResult.getExceptionErrorMessage(),
+                                              null,
+                                              null,
                                               restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction());
+                                              restResult.getExceptionUserAction(),
+                                              null,
+                                              null);
         }
     }
 

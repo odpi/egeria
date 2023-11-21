@@ -328,10 +328,8 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProcessContainmentProperties)
+                if (requestBody.getProperties() instanceof ProcessContainmentProperties properties)
                 {
-                    ProcessContainmentProperties properties = (ProcessContainmentProperties) requestBody.getProperties();
-
                     handler.setupProcessParent(userId,
                                                requestBody.getAssetManagerGUID(),
                                                requestBody.getAssetManagerName(),
@@ -2244,14 +2242,23 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.setBusinessSignificant(userId, requestBody.getMetadataCorrelationProperties(), elementGUID,
+                handler.setBusinessSignificant(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               elementGUID,
                                                forLineage,
                                                forDuplicateProcessing,
-                                               requestBody.getEffectiveTime(), methodName);
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setBusinessSignificant(userId,
+                                               null,
+                                               elementGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               new Date(),
+                                               methodName);
             }
         }
         catch (Exception error)
@@ -2302,14 +2309,22 @@ public class LineageExchangeRESTServices
 
             if (requestBody != null)
             {
-                handler.clearBusinessSignificant(userId, requestBody.getMetadataCorrelationProperties(), elementGUID,
+                handler.clearBusinessSignificant(userId,
+                                                 requestBody.getMetadataCorrelationProperties(),
+                                                 elementGUID,
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  requestBody.getEffectiveTime(), methodName);
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.clearBusinessSignificant(userId,
+                                                 null,
+                                                 elementGUID,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 new Date(),
+                                                 methodName);
             }
         }
         catch (Exception error)
@@ -2362,10 +2377,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties dataFlowProperties))
             {
-                DataFlowProperties dataFlowProperties = (DataFlowProperties) requestBody.getProperties();
-
                 response.setGUID(handler.setupDataFlow(userId,
                                                        requestBody.getAssetManagerGUID(),
                                                        requestBody.getAssetManagerName(),
@@ -2384,7 +2397,21 @@ public class LineageExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setGUID(handler.setupDataFlow(userId,
+                                                       null,
+                                                       null,
+                                                       assetManagerIsHome,
+                                                       dataSupplierGUID,
+                                                       dataConsumerGUID,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       new Date(),
+                                                       methodName));
             }
         }
         catch (Exception error)
@@ -2504,11 +2531,10 @@ public class LineageExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof DataFlowProperties properties))
             {
                 ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-                DataFlowProperties properties = (DataFlowProperties)requestBody.getProperties();
                 handler.updateDataFlow(userId,
                                        requestBody.getAssetManagerGUID(),
                                        requestBody.getAssetManagerName(),
@@ -2742,7 +2768,6 @@ public class LineageExchangeRESTServices
                                                                      new Date(),
                                                                      methodName));
             }
-
         }
         catch (Exception error)
         {
@@ -2794,10 +2819,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties properties))
             {
-                ControlFlowProperties properties = (ControlFlowProperties)requestBody.getProperties();
-
                 response.setGUID(handler.setupControlFlow(userId,
                                                           requestBody.getAssetManagerGUID(),
                                                           requestBody.getAssetManagerName(),
@@ -2816,7 +2839,21 @@ public class LineageExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setGUID(handler.setupControlFlow(userId,
+                                                          null,
+                                                          null,
+                                                          assetManagerIsHome,
+                                                          currentStepGUID,
+                                                          nextStepGUID,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          new Date(),
+                                                          methodName));
             }
         }
         catch (Exception error)
@@ -2938,10 +2975,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ControlFlowProperties properties))
             {
-                ControlFlowProperties properties = (ControlFlowProperties)requestBody.getProperties();
-
                 handler.updateControlFlow(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
@@ -3080,14 +3115,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getControlFlowNextSteps(userId,
-                                                                    currentStepGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getControlFlowNextSteps(userId,
+                                                                        currentStepGUID,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime(),
+                                                                        methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getControlFlowNextSteps(userId,
+                                                                        currentStepGUID,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        new Date(),
+                                                                        methodName));
+            }
         }
         catch (Exception error)
         {
@@ -3139,14 +3188,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getControlFlowPreviousSteps(userId,
-                                                                        currentStepGUID,
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        requestBody.getEffectiveTime(),
-                                                                        methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getControlFlowPreviousSteps(userId,
+                                                                            currentStepGUID,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
+                                                                            methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getControlFlowPreviousSteps(userId,
+                                                                            currentStepGUID,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            new Date(),
+                                                                            methodName));
+            }
         }
         catch (Exception error)
         {
@@ -3198,9 +3261,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties properties))
             {
-                ProcessCallProperties properties = (ProcessCallProperties)requestBody.getProperties();
                 response.setGUID(handler.setupProcessCall(userId,
                                                           requestBody.getAssetManagerGUID(),
                                                           requestBody.getAssetManagerName(),
@@ -3219,7 +3281,21 @@ public class LineageExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setGUID(handler.setupProcessCall(userId,
+                                                          null,
+                                                          null,
+                                                          assetManagerIsHome,
+                                                          callerGUID,
+                                                          calledGUID,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          new Date(),
+                                                          methodName));
             }
         }
         catch (Exception error)
@@ -3341,10 +3417,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof ProcessCallProperties properties))
             {
-                ProcessCallProperties properties = (ProcessCallProperties) requestBody.getProperties();
-
                 handler.updateProcessCall(userId,
                                           requestBody.getAssetManagerGUID(),
                                           requestBody.getAssetManagerName(),
@@ -3556,14 +3630,28 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getProcessCallers(userId,
-                                                              calledGUID,
-                                                              startFrom,
-                                                              pageSize,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              requestBody.getEffectiveTime(),
-                                                              methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getProcessCallers(userId,
+                                                                  calledGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getProcessCallers(userId,
+                                                                  calledGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  new Date(),
+                                                                  methodName));
+            }
         }
         catch (Exception error)
         {
@@ -3615,12 +3703,11 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            String guid = null;
+            String guid;
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DataFlowProperties)
+                if (requestBody.getProperties() instanceof DataFlowProperties properties)
                 {
-                    DataFlowProperties properties = (DataFlowProperties)requestBody.getProperties();
                     guid = handler.setupLineageMapping(userId,
                                                        requestBody.getAssetManagerGUID(),
                                                        requestBody.getAssetManagerName(),
@@ -3790,9 +3877,8 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getProperties() instanceof LineageMappingProperties))
+            if ((requestBody != null) && (requestBody.getProperties() instanceof LineageMappingProperties properties))
             {
-                LineageMappingProperties properties = (LineageMappingProperties) requestBody.getProperties();
                 handler.updateLineageMapping(userId,
                                             requestBody.getAssetManagerGUID(),
                                             requestBody.getAssetManagerName(),
@@ -3876,7 +3962,7 @@ public class LineageExchangeRESTServices
                                             lineageMappingGUID,
                                             forLineage,
                                             forDuplicateProcessing,
-                                            null,
+                                            new Date(),
                                             methodName);
             }
         }
@@ -3949,7 +4035,7 @@ public class LineageExchangeRESTServices
                                                                               pageSize,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
-                                                                              null,
+                                                                              new Date(),
                                                                               methodName));
             }
         }
@@ -4022,7 +4108,7 @@ public class LineageExchangeRESTServices
                                                                          pageSize,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
-                                                                         null,
+                                                                         new Date(),
                                                                          methodName));
             }
         }

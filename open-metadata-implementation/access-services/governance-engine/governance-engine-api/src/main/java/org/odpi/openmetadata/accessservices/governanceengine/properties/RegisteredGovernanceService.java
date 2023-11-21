@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredGovernanceService extends GovernanceServiceProperties
 {
-    private static final long   serialVersionUID = 1L;
-
     private Map<String, RegisteredGovernanceServiceProperties> requestTypes = null; /* a map from request types to service request type and request parameters */
 
 

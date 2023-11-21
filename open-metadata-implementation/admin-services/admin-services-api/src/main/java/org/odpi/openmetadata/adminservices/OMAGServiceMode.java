@@ -10,14 +10,21 @@ import java.io.Serializable;
  */
 public enum OMAGServiceMode implements Serializable
 {
+    /**
+     * The open metadata and governance service is available and running.
+     */
     ENABLED          (1, "Enabled",         "The open metadata and governance service is available and running."),
+
+    /**
+     * The open metadata and governance service is disabled.
+     */
     DISABLED         (0, "Disabled",        "The open metadata and governance service is disabled.");
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int    typeCode;
+    private final String typeName;
+    private final String typeDescription;
 
 
     /**

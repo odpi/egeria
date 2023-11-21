@@ -437,7 +437,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             {
                 if (relatedMetadataElement != null)
                 {
-                    folderGUID = relatedMetadataElement.getElementProperties().getElementGUID();
+                    folderGUID = relatedMetadataElement.getElement().getElementGUID();
                 }
             }
         }

@@ -21,8 +21,8 @@ public class ActionTargetElement extends NewActionTarget
 {
     private static final long      serialVersionUID  = 1L;
 
-    private GovernanceActionStatus status            = null;
-    private Date                   startDate         = null;
+    private EngineActionStatus status    = null;
+    private Date               startDate = null;
     private Date                   completionDate    = null;
     private String                 completionMessage = null;
 
@@ -65,7 +65,7 @@ public class ActionTargetElement extends NewActionTarget
      *
      * @return status enum
      */
-    public GovernanceActionStatus getStatus()
+    public EngineActionStatus getStatus()
     {
         return status;
     }
@@ -78,7 +78,7 @@ public class ActionTargetElement extends NewActionTarget
      *
      * @param status enum
      */
-    public void setStatus(GovernanceActionStatus status)
+    public void setStatus(EngineActionStatus status)
     {
         this.status = status;
     }

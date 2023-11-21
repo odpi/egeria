@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * OMAGViewServiceRegistration provides static methods to enable an view service to dynamically
  * register itself with the OMAG Server.
- *
  * Static methods are needed to be able to get this information to the Admin Services REST API singletons
  * created by Spring.
  */
@@ -23,7 +22,7 @@ public class OMAGViewServiceRegistration
      * A map is used so multiple registrations from the same view service are ignored.
      * The last registration is used.
      */
-    static private Map<String, ViewServiceRegistrationEntry> viewServiceRegistrationMap = new HashMap<>();
+    static private final Map<String, ViewServiceRegistrationEntry> viewServiceRegistrationMap = new HashMap<>();
 
 
     /**

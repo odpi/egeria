@@ -14,8 +14,8 @@ public interface VirtualConnectorExtension
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.
      * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
+     * virtual connector, it needs to pass start() to each of the embedded connectors.
+     * Similar processing is needed for the disconnect() method.
      *
      * @param embeddedConnectors  list of connectors
      */

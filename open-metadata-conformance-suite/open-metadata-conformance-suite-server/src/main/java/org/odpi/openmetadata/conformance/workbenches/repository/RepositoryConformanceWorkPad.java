@@ -4,7 +4,7 @@ package org.odpi.openmetadata.conformance.workbenches.repository;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -25,13 +25,14 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
-    private final OMRSAuditLog            auditLog;
+    private final AuditLog auditLog;
 
     private String                  tutServerName               = null;
     private String                  tutMetadataCollectionId     = null;
     private String                  tutServerType               = null;
     private String                  tutOrganization             = null;
     private int                     maxSearchResults            = 50;
+    private List<String>            testEntityTypes             = null;
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -68,7 +69,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public RepositoryConformanceWorkPad(String                                localServerUserId,
                                         String                                localServerPassword,
                                         int                                   maxPageSize,
-                                        OMRSAuditLog                          auditLog,
+                                        AuditLog                              auditLog,
                                         RepositoryConformanceWorkbenchConfig  configuration)
     {
         super(workbenchId,
@@ -86,6 +87,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         {
             this.tutServerName = configuration.getTutRepositoryServerName();
             this.maxSearchResults = configuration.getMaxSearchResults();
+            this.testEntityTypes = configuration.getTestEntityTypes();
             super.tutName = this.tutServerName;
         }
     }
@@ -95,7 +97,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      *
      * @return audit log object.
      */
-    public OMRSAuditLog getAuditLog()
+    public AuditLog getAuditLog()
     {
         return auditLog;
     }
@@ -121,6 +123,21 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     {
         return maxSearchResults;
     }
+
+
+
+    /**
+     * Return the list of entity types to test.  If the value is null then all known entities will be used.
+     * The names of the entities are used to drive the spawning of tests since the repository workbench aims to test
+     * each permutation of types.
+     *
+     * @return list of entity type names
+     */
+    public List<String> getTestEntityTypes()
+    {
+        return testEntityTypes;
+    }
+
 
     /**
      * Return the server type of the technology under test.  This is extracted from the registration

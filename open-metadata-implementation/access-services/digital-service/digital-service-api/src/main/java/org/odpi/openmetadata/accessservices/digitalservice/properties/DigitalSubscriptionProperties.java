@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DigitalSubscriptionProperties extends AgreementProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              supportLevel  = null;
     private Map<String, String> serviceLevels = null;
 

@@ -156,11 +156,11 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                  * topics that are not catalogued.
                  */
                 int startFrom = 0;
-                List<TopicElement> cataloguedTopics = myContext.getMyTopics(startFrom, 0);
+                List<TopicElement> cataloguedTopics = myContext.getMyTopics(startFrom, myContext.getMaxPageSize());
 
                 while (cataloguedTopics != null)
                 {
-                    startFrom = startFrom + cataloguedTopics.size();
+                    startFrom = startFrom + myContext.getMaxPageSize();
 
                     for (TopicElement topicElement : cataloguedTopics)
                     {
@@ -188,7 +188,7 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                         }
                     }
 
-                    cataloguedTopics = myContext.getMyTopics(startFrom, 0);
+                    cataloguedTopics = myContext.getMyTopics(startFrom, myContext.getMaxPageSize());
                 }
 
 

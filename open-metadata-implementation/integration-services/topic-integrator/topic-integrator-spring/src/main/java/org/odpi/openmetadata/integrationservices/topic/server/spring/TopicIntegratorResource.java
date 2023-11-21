@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/integration-services/topic-integrator/users/{userId}")
 
-@Tag(name="Topic Integrator OMIS", description="Supports the detection and creation of metadata for topics and event brokers.",
-        externalDocs=@ExternalDocumentation(description="Topic Integrator Open Metadata Integration Service (OMIS)",
+@Tag(name="Integration Daemon: Topic Integrator OMIS", description="Supports the detection and creation of metadata for topics and event brokers.",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omis/topic-integrator/overview/"))
 
 public class TopicIntegratorResource
 {
-    private TopicIntegratorRESTServices restAPI = new TopicIntegratorRESTServices();
+    private final TopicIntegratorRESTServices restAPI = new TopicIntegratorRESTServices();
 
 
     /**
@@ -34,7 +34,6 @@ public class TopicIntegratorResource
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
-     *
      *  InvalidParameterException the connector provider class name is not a valid connector fo this service
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service

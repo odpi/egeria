@@ -1304,7 +1304,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<String> addFileAssetPath(String  userId,
+    public  List<String> addFileAssetPath(String  userId,
                                           String  externalSourceGUID,
                                           String  externalSourceName,
                                           String  fileAssetGUID,

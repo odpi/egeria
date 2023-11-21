@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContextRefreshProxy;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
@@ -47,13 +48,17 @@ public class IntegrationConnectorHandler
     private       boolean                   needDedicatedThread;
     private       long                      minMinutesBetweenRefresh;
     private final IntegrationContextManager contextManager;
-    private       IntegrationContext        integrationContext = null;
     private final AuditLog                  auditLog;
+
+
+
 
 
     /*
      * These values change as the connector handler operates
      */
+    private IntegrationContext                  integrationContext                  = null;
+    private IntegrationContextRefreshProxy      integrationContextRefreshProxy      = null;
     private Connector                           genericConnector                    = null;
     private IntegrationConnector                integrationConnector                = null;
     private IntegrationConnectorDedicatedThread integrationConnectorDedicatedThread = null;
@@ -368,6 +373,8 @@ public class IntegrationConnectorHandler
                                                                 generateIntegrationReport,
                                                                 metadataSourceQualifiedName);
 
+            this.integrationContextRefreshProxy = new IntegrationContextRefreshProxy(this.integrationContext);
+
             this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
         }
         catch (Exception  error)
@@ -546,7 +553,9 @@ public class IntegrationConnectorHandler
                 }
 
                 integrationContext.startRecording();
+                integrationContextRefreshProxy.setRefreshInProgress(true);
                 integrationConnector.refresh();
+                integrationContextRefreshProxy.setRefreshInProgress(false);
                 integrationContext.publishReport();
 
                 if (auditLog != null)

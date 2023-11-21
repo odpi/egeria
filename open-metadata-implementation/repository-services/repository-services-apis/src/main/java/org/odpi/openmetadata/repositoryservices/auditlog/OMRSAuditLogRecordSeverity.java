@@ -91,7 +91,13 @@ public enum OMRSAuditLogRecordSeverity implements AuditLogRecordSeverity
      * PerfMon - This log record contains performance monitoring timing information for specific types of processing. It is not normally logged to any destination but can be added when needed.
      */
     PERFMON   (14, "PerfMon",     "This log record contains performance monitoring timing information for " +
-            "specific types of processing. It is not normally logged to any destination but can be added when needed.")
+            "specific types of processing. It is not normally logged to any destination but can be added when needed."),
+
+
+    /**
+     * Activity - This log record contains user activity information such as the requests being made and the metadata being accessed.
+     */
+    ACTIVITY   (15, "Activity",     "This log record contains user activity information such as the requests being made and the metadata being accessed.")
 
     ;
 

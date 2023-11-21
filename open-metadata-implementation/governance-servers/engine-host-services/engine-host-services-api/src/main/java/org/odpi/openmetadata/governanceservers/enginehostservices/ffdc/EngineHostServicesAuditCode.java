@@ -390,36 +390,35 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                        "the governance service."),
 
     /**
-     * ENGINE-HOST-SERVICES-0032 - Governance action {0} running governance service {1} for governance engine {2} with request type {3} has
+     * ENGINE-HOST-SERVICES-0032 - Engine action {0} running governance service {1} for governance engine {2} with request type {3} has
      * recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}
      */
-    GOVERNANCE_ACTION_TARGET_COMPLETION("ENGINE-HOST-SERVICES-0032",
-                              OMRSAuditLogRecordSeverity.INFO,
-                              "Governance action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}",
-                              "The governance action request has completed processing on one of its action targets.",
-                              "Validate that the processing of this action target is correct."),
+    ENGINE_ACTION_TARGET_COMPLETION("ENGINE-HOST-SERVICES-0032",
+                                    OMRSAuditLogRecordSeverity.INFO,
+                                    "Engine action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}",
+                                    "The governance service has completed the processing for one of its action targets.",
+                                    "Validate that the processing of this action target is correct."),
 
     /**
-     * ENGINE-HOST-SERVICES-0033 - Governance action {0} running governance service {1} for governance engine {2} with request type {3}
+     * ENGINE-HOST-SERVICES-0033 - Engine action {0} running governance service {1} for governance engine {2} with request type {3}
      * has recorded completion status of {4} and output guards of {5}.  Next governance action is given request parameters
      * called {6} and action targets of {7}.  The completion message was {8}
      */
-    GOVERNANCE_ACTION_RECORD_COMPLETION("ENGINE-HOST-SERVICES-0033",
-                                        OMRSAuditLogRecordSeverity.SHUTDOWN,
-                                        "Governance action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion status of {4} and output guards of {5}.  Next governance action is given request parameters called {6} and action targets of {7}.  The completion message was {8}",
-                                        "The governance engine is unable to process the governance action request.  The exception explains the " +
-                                                "reason. The governance action has been marked as FAILED.",
-                                        "Validate that the processing of this governance action request is correct."),
+    ENGINE_ACTION_RECORD_COMPLETION("ENGINE-HOST-SERVICES-0033",
+                                    OMRSAuditLogRecordSeverity.SHUTDOWN,
+                                    "Engine action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion status of {4} and output guards of {5}.  Next engine action is given request parameters called {6} and action targets of {7}.  The completion message was {8}",
+                                    "The governance engine shuts down this request to the governance service.",
+                                    "Validate that the processing of this request is correct."),
 
     /**
-     * ENGINE-HOST-SERVICES-0034 - Failed to execute governance action for governance engine {0}.  The exception was {1} with error message {2}
+     * ENGINE-HOST-SERVICES-0034 - Failed to execute engine action for governance engine {0}.  The exception was {1} with error message {2}
      */
-    GOVERNANCE_ACTION_FAILED("ENGINE-HOST-SERVICES-0034",
-                             OMRSAuditLogRecordSeverity.EXCEPTION,
-                             "Failed to execute governance action for governance engine {0}.  The exception was {1} with error message {2}",
-                             "The governance engine is unable to process the governance action request.  The exception explains the " +
-                                     "reason. The governance action has been marked as FAILED.",
-                             "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
+    ENGINE_ACTION_FAILED("ENGINE-HOST-SERVICES-0034",
+                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         "Failed to execute engine action for governance engine {0}.  The exception was {1} with error message {2}",
+                         "The governance engine is unable to process the engine action request.  The exception explains the " +
+                                     "reason. The engine action has been marked as FAILED.",
+                         "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
                                      "retry the governance action by updating its status back to REQUESTED status."),
 
     /**

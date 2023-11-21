@@ -1,0 +1,67 @@
+{
+  "class": "OMAGServerConfig",
+  "versionId": "V2.0",
+  "localServerName": "cocoMDS1",
+  "localServerUserId": "OMAGServer",
+  "maxPageSize": 1000,
+  "repositoryServicesConfig": {
+    "class": "RepositoryServicesConfig",
+    "auditLogConnections": [
+      {
+        "class": "Connection",
+        "headerVersion": 0,
+        "qualifiedName": "Console- default",
+        "displayName": "Console",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider"
+        },
+        "configurationProperties": {
+          "supportedSeverities": [
+            "<Unknown>",
+            "Information",
+            "Event",
+            "Decision",
+            "Action",
+            "Error",
+            "Exception",
+            "Security",
+            "Startup",
+            "Shutdown",
+            "Asset",
+            "Types",
+            "Cohort"
+          ]
+        }
+      }
+    ],
+    "localRepositoryConfig": {
+      "class": "LocalRepositoryConfig",
+      "metadataCollectionId": "838005fc-e09f-4688-af89-58254a155cc6",
+      "localRepositoryLocalConnection": {
+        "class": "Connection",
+        "headerVersion": 0,
+        "displayName": "In Memory Local Repository Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider"
+        }
+      },
+      "localRepositoryRemoteConnection": {
+        "class": "Connection",
+        "headerVersion": 0,
+        "displayName": "Local Repository Remote Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider"
+        },
+        "endpoint": {
+          "class": "Endpoint",
+          "address": "https://localhost:9443/servers/cocoMDS1"
+        }
+      },
+      "eventsToSaveRule": "ALL",
+      "eventsToSendRule": "ALL"
+    }
+  }
+}

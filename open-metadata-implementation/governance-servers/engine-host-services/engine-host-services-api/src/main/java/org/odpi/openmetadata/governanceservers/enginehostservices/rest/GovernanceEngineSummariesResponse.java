@@ -14,16 +14,14 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
 /**
  * GovernanceEngineSummariesResponse provides a container for transporting the status of a collection of governance engines.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceEngineSummariesResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<GovernanceEngineSummary> governanceEngineSummaries = null;
 
 

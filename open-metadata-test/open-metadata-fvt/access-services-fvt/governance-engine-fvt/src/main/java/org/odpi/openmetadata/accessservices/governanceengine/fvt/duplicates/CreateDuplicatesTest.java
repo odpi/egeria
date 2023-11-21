@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.fvt.duplicates;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * CreateDuplicatesTest calls the GovernanceEngineClient to create different types of duplicates
+ * CreateDuplicatesTest calls the GovernanceContextClient to create different types of duplicates
  * and then retrieve the results with different options.
  */
 public class CreateDuplicatesTest
@@ -113,9 +113,9 @@ public class CreateDuplicatesTest
                                          AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceWiki());
 
-        GovernanceEngineRESTClient restClient = new GovernanceEngineRESTClient(serverName, serverPlatformRootURL, auditLog);
-        GovernanceEngineClient     governanceEngineClient = new GovernanceEngineClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
-        OpenMetadataStoreClient    openMetadataStoreClient     = new OpenMetadataStoreClient(serverName, serverPlatformRootURL);
+        GovernanceEngineRESTClient restClient              = new GovernanceEngineRESTClient(serverName, serverPlatformRootURL, auditLog);
+        GovernanceContextClient    governanceContextClient = new GovernanceContextClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
+        OpenMetadataStoreClient    openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformRootURL);
 
         String activityName;
 
@@ -139,7 +139,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - link duplicate entities";
 
-        thisTest.linkDuplicates(governanceEngineClient, userId, firstAssetGUID, firstAssetDuplicateGUID, 1, testCaseName, activityName);
+        thisTest.linkDuplicates(governanceContextClient, userId, firstAssetGUID, firstAssetDuplicateGUID, 1, testCaseName, activityName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=true";
 
@@ -190,7 +190,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - link memento entity as duplicate";
 
-        thisTest.linkDuplicates(governanceEngineClient, userId, firstAssetGUID, mementoAssetGUID, 1, testCaseName, activityName);
+        thisTest.linkDuplicates(governanceContextClient, userId, firstAssetGUID, mementoAssetGUID, 1, testCaseName, activityName);
 
         openMetadataStoreClient.classifyMetadataElementInStore(userId, mementoAssetGUID, "Memento", true, true, null, null, null, null);
 
@@ -234,7 +234,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - link ineffective entity as duplicate";
 
-        thisTest.linkDuplicates(governanceEngineClient, userId, firstAssetGUID, ineffectiveAssetGUID, 1, testCaseName, activityName);
+        thisTest.linkDuplicates(governanceContextClient, userId, firstAssetGUID, ineffectiveAssetGUID, 1, testCaseName, activityName);
 
         try
         {
@@ -502,15 +502,15 @@ public class CreateDuplicatesTest
         return validateMetadataElements(retrievedElements, typeName, retrievedGUID, retrievedPrefix, retrievedName, activityName, testCaseName);
     }
 
-    private void linkDuplicates(GovernanceEngineClient client,
-                                String                 userId,
-                                String                 element1GUID,
-                                String                 element2GUID,
-                                int                    statusIdentifier,
-                                String                 testCaseName,
-                                String                 activityName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    private void linkDuplicates(GovernanceContextClient client,
+                                String                  userId,
+                                String                  element1GUID,
+                                String                  element2GUID,
+                                int                     statusIdentifier,
+                                String                  testCaseName,
+                                String                  activityName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         client.linkElementsAsPeerDuplicates(userId, element1GUID, element2GUID, statusIdentifier, testCaseName, null, null, testCaseName, null, true);
 

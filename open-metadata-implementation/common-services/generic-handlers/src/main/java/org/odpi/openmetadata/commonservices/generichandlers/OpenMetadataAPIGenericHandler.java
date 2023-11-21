@@ -54,6 +54,7 @@ public class OpenMetadataAPIGenericHandler<B>
     protected RepositoryErrorHandler             errorHandler;
 
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
+    private static final String assetActionDescription = "userAssetMonitoring";
 
     protected AuditLog                           auditLog;
 
@@ -468,6 +469,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              beanEntity,
                                                              beanGUIDParameterName,
                                                              true,
+                                                             true,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              serviceSupportedZones,
@@ -653,6 +655,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanEntity,
                                                           beanGUIDParameterName,
                                                           true,
+                                                          true,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           serviceSupportedZones,
@@ -831,6 +834,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanEntity,
                                                           beanGUIDParameterName,
                                                           true,
+                                                          true,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           serviceSupportedZones,
@@ -986,6 +990,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       entityOneParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
+                                      false,
                                       forLineage,
                                       forDuplicateProcessing,
                                       serviceSupportedZones,
@@ -996,6 +1001,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1197,6 +1203,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       entityOneParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
+                                      false,
                                       forLineage,
                                       forDuplicateProcessing,
                                       serviceSupportedZones,
@@ -1207,6 +1214,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1304,6 +1312,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       entityOneParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                       false,
+                                      false,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
@@ -1314,6 +1323,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
                                       OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1472,6 +1482,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanGUIDTypeName,
                                                           beanEntity,
                                                           beanGUIDParameterName,
+                                                          true,
                                                           true,
                                                           forLineage,
                                                           forDuplicateProcessing,
@@ -2214,7 +2225,7 @@ public class OpenMetadataAPIGenericHandler<B>
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   connectionGUID,
                                                                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                                                                  false,
+                                                                                  true,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                   forLineage,
@@ -2987,6 +2998,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param connectToGUID       unique id for the object to connect the attachment to.
      * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
      * @param connectToType       type of the connectToElement.
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isUpdate         is this an update request?
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -3002,6 +3014,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String       connectToGUID,
                                              String       connectToGUIDParameterName,
                                              String       connectToType,
+                                             boolean      isExplicitGetRequest,
                                              boolean      isUpdate,
                                              boolean      forLineage,
                                              boolean      forDuplicateProcessing,
@@ -3031,6 +3044,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          connectToType,
                                          connectToEntity,
                                          connectToGUIDParameterName,
+                                         isExplicitGetRequest,
                                          isUpdate,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -3059,6 +3073,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param connectToType    name of type of connectToEntity
      * @param connectToEntity  entity retrieved from the repository
      * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isUpdate         is this an update request?
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -3078,6 +3093,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String        connectToType,
                                              EntityDetail  connectToEntity,
                                              String        connectToGUIDParameterName,
+                                             boolean       isExplicitGetRequest,
                                              boolean       isUpdate,
                                              boolean       forLineage,
                                              boolean       forDuplicateProcessing,
@@ -3130,6 +3146,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                       connectToGUID,
                                                       connectToGUIDParameterName,
                                                       connectToEntity,
+                                                      isExplicitGetRequest,
                                                       suppliedSupportedZones,
                                                       repositoryHelper,
                                                       serviceName,
@@ -4369,6 +4386,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  resultingElementTypeName,
                                  entity,
                                  startingElementGUIDParameterName,
+                                 true,
                                  false,
                                  forLineage,
                                  forDuplicateProcessing,
@@ -5197,6 +5215,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingTypeName,
                                   startingEntity,
                                   startingGUIDParameterName,
+                                  true,
                                   false,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -5355,6 +5374,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               entityOneParameterName,
                                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                               false,
+                                              false,
                                               forLineage,
                                               forDuplicateProcessing,
                                               serviceSupportedZones,
@@ -5365,6 +5385,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               relationship.getEntityTwoProxy().getGUID(),
                                               entityTwoParameterName,
                                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                              false,
                                               false,
                                               forLineage,
                                               forDuplicateProcessing,
@@ -5428,15 +5449,28 @@ public class OpenMetadataAPIGenericHandler<B>
                                  effectiveTime,
                                  methodName);
 
-        return repositoryHandler.createEntity(userId,
-                                              entityTypeGUID,
-                                              entityTypeName,
-                                              externalSourceGUID,
-                                              externalSourceName,
-                                              propertyBuilder.getInstanceProperties(methodName),
-                                              propertyBuilder.getEntityClassifications(),
-                                              propertyBuilder.getInstanceStatus(),
-                                              methodName);
+        String entityGUID = repositoryHandler.createEntity(userId,
+                                                           entityTypeGUID,
+                                                           entityTypeName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           propertyBuilder.getInstanceProperties(methodName),
+                                                           propertyBuilder.getEntityClassifications(),
+                                                           propertyBuilder.getInstanceStatus(),
+                                                           methodName);
+
+
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        {
+            auditLog.logMessage(assetActionDescription,
+                                GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                    entityTypeName,
+                                                                                                    entityGUID,
+                                                                                                    methodName,
+                                                                                                    serviceName));
+        }
+
+        return entityGUID;
     }
 
 
@@ -5608,6 +5642,16 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  relationshipProperties,
                                                  methodName);
 
+            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                        entityTypeName,
+                                                                                                        templateProgress.newBeanGUID,
+                                                                                                        methodName,
+                                                                                                        serviceName));
+            }
+
             return templateProgress.newBeanGUID;
         }
 
@@ -5742,6 +5786,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           entityTypeName,
                                                                           templateEntity,
                                                                           templateGUIDParameterName,
+                                                                          true,
                                                                           false,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
@@ -6027,6 +6072,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           null,
                                                                                           nextTemplateEntity,
                                                                                           nextTemplateEntityGUIDParameterName,
+                                                                                          true,
                                                                                           false,
                                                                                           forLineage,
                                                                                           forDuplicateProcessing,
@@ -6476,6 +6522,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
                                                                   true,
+                                                                  true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
@@ -6732,6 +6779,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
                                                                   true,
+                                                                  true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
@@ -6972,6 +7020,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   entityTypeName,
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
+                                                                  true,
                                                                   true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -7261,6 +7310,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               entityGUID,
                                                               entityGUIDParameterName,
                                                               entityTypeName,
+                                                              true,
                                                               true,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -7692,6 +7742,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               entityTypeName,
                                                               entity,
                                                               entityGUIDParameterName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -8213,6 +8264,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    guidParameterName,
                                                    attachmentEntityTypeName,
                                                    false,
+                                                   false,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    serviceSupportedZones,
@@ -8397,6 +8449,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   guidParameterName,
                                                   attachmentEntityTypeName,
                                                   false,
+                                                  false,
                                                   forLineage,
                                                   forDuplicateProcessing,
                                                   serviceSupportedZones,
@@ -8508,6 +8561,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  startingElementTypeName,
                                  entity,
                                  startingElementGUIDParameterName,
+                                 true,
                                  false,
                                  forLineage,
                                  forDuplicateProcessing,
@@ -8577,6 +8631,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingGUID,
                                                               startingGUIDParameterName,
                                                               startingTypeName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -8792,6 +8847,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingGUID,
                                                               startingGUIDParameterName,
                                                               startingTypeName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -8957,6 +9013,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           attachmentEntityTypeName,
                                           entity,
                                           guidParameterName,
+                                          true,
                                           false,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -9017,7 +9074,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
-     *
      * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
      * <ul>
      * <li> with the relationship relationshipTypeName</li>
@@ -9552,6 +9608,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   requestedEntityTypeName,
                                   retrievedEntity,
                                   requestedEntityGUIDParameterName,
+                                  true,
                                   false,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -10127,6 +10184,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         true,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -10297,6 +10355,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         true,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -10390,6 +10449,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   guid,
                                   guidParameterName,
                                   entityTypeName,
+                                  true,
                                   true,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -10861,6 +10921,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           entity,
                                           entityGUIDParameterName,
                                           false,
+                                          false,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
@@ -11229,6 +11290,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         false,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -11763,6 +11825,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          entity,
                                          entityParameterName,
                                          false,
+                                         false,
                                          forLineage,
                                          forDuplicateProcessing,
                                          serviceSupportedZones,
@@ -12197,6 +12260,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entity,
                                              entityParameterName,
                                              false,
+                                             false,
                                              forLineage,
                                              forDuplicateProcessing,
                                              serviceSupportedZones,
@@ -12491,6 +12555,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         false,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -12897,6 +12962,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -12925,6 +12991,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -13260,8 +13327,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 InstanceProperties relationshipProperties,
                                                 Date               effectiveTime,
                                                 String             methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingGUIDParameterName, methodName);
@@ -13292,6 +13359,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -13320,6 +13388,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -13511,6 +13580,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -13539,6 +13609,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -13839,6 +13910,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  startingElementTypeName,
                                                                                  startingElementEntity,
                                                                                  startingGUIDParameterName,
+                                                                                 true,
                                                                                  false,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
@@ -13867,6 +13939,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   attachingElementTypeName,
                                                                                   attachingElementEntity,
                                                                                   attachingGUIDParameterName,
+                                                                                  true,
                                                                                   false,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
@@ -14150,6 +14223,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -14178,6 +14252,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  newAttachingElementTypeName,
                                                                                  newAttachingElementEntity,
                                                                                  newAttachingGUIDParameterName,
+                                                                                 true,
                                                                                  false,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
@@ -14704,6 +14779,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -14736,6 +14812,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              attachedElementTypeName,
                                                                              attachedElementEntity,
                                                                              attachedGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,

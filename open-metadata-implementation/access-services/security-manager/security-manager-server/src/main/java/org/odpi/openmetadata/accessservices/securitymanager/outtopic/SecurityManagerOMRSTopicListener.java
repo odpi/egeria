@@ -783,6 +783,7 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                              fullEntity,
                                                              guidParameterName,
                                                              false,
+                                                             false,
                                                              true,
                                                              false,
                                                              supportedZones,

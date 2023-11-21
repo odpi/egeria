@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -196,6 +197,34 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
         isActive = false;
+    }
+
+
+    /**
+     * Disconnect all of the connectors in the supplied list.  Any failures are ignored.
+     * This method is typically used by virtual connectors to disconnect their embedded connectors.
+     *
+     * @param activeConnectors connectors to disconnect.
+     */
+    protected void disconnectConnectors(List<Connector> activeConnectors)
+    {
+        if (activeConnectors != null)
+        {
+            for (Connector embeddedConnector : activeConnectors)
+            {
+                if (embeddedConnector != null)
+                {
+                    try
+                    {
+                        embeddedConnector.disconnect();
+                    }
+                    catch (Exception error)
+                    {
+                        // keep going
+                    }
+                }
+            }
+        }
     }
 
 

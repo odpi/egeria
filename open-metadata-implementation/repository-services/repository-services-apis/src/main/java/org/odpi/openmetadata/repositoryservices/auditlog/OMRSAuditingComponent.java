@@ -66,7 +66,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                      "Enterprise Repository Connector",
                                      "Supports enterprise access to the list of open metadata repositories registered " +
                                              "with the OMRS Enterprise Connector Manager.",
-                                     "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-repository-connector.md"),
+                                     "https://egeria-project.org/services/omrs/component-descriptions/enterprise-repository-connector/"),
 
     /**
      * Local Repository Connector - Supports access to metadata stored in the local server's repository and ensures repository events are generated when metadata changes in the local repository.
@@ -215,7 +215,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Open Metadata Archive Store Connector - Reads and writes open metadata types and instances to an open metadata archive.
      */
     ARCHIVE_STORE_CONNECTOR(22,
-                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                            ComponentDevelopmentStatus.STABLE,
                             "Open Metadata Archive Store Connector",
                             "Reads and writes open metadata types and instances to an open metadata archive.",
                             "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),

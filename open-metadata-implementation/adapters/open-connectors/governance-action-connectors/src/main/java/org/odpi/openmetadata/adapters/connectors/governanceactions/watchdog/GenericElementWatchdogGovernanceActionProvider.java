@@ -100,6 +100,7 @@ public class GenericElementWatchdogGovernanceActionProvider extends GenericWatch
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(INTERESTING_TYPE_NAME_PROPERTY);

@@ -129,12 +129,23 @@ public class SimpleDataCatalogArchiveBuilder
 
 
     /**
-     * Returns the open metadata type archive containing all the elements extracted from the connector
-     * providers of the featured open connectors.
+     * Construct the builder using a shared archive builder and helper.  Used to create a
+     * combination archive.
      *
-     * @return populated open metadata archive object
+     * @param archiveBuilder archive builder
+     * @param archiveHelper archive helper
      */
-    public OpenMetadataArchive getOpenMetadataArchive()
+    public SimpleDataCatalogArchiveBuilder(OMRSArchiveBuilder archiveBuilder, SimpleCatalogArchiveHelper archiveHelper)
+    {
+        this.archiveBuilder = archiveBuilder;
+        this.archiveHelper = archiveHelper;
+    }
+
+
+    /**
+     * Fills the archive builder with all the elements for this catalog.
+     */
+    public void fillBuilder()
     {
         String databaseGUID = archiveHelper.addAsset(databaseAssetTypeName,
                                                      branchQualifiedName,
@@ -220,7 +231,17 @@ public class SimpleDataCatalogArchiveBuilder
         archiveHelper.addNestedSchemaAttribute(relationalTableGUID, relationalColumnGUID);
 
         archiveHelper.saveGUIDs();
+    }
 
+
+    /**
+     * Returns the open metadata type archive containing all the elements for this catalog.
+     *
+     * @return populated open metadata archive object
+     */
+    public OpenMetadataArchive getOpenMetadataArchive()
+    {
+        fillBuilder();
         return archiveBuilder.getOpenMetadataArchive();
     }
 }

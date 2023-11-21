@@ -3,32 +3,33 @@
 package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
-import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValueDetail;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -73,7 +74,6 @@ public class OpenMetadataStoreRESTServices
      * @param message        message to log
      *                       
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -129,6 +129,435 @@ public class OpenMetadataStoreRESTServices
     }
 
 
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefGalleryResponse:
+     * List of different categories of type definitions or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @SuppressWarnings(value = "unused")
+    public TypeDefGalleryResponse getAllTypes(String   serverName,
+                                              String   serviceURLMarker,
+                                              String   userId)
+    {
+        final String methodName = "getAllTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefGalleryResponse response = new TypeDefGalleryResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs()));
+            response.setAttributeTypeDefs(this.getAttributeTypeDefs(repositoryHelper.getKnownAttributeTypeDefs()));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Returns all the TypeDefs for a specific category.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param category find parameters used to limit the returned results.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @SuppressWarnings(value = "unused")
+    public TypeDefListResponse findTypeDefsByCategory(String                      serverName,
+                                                      String                      serviceURLMarker,
+                                                      String                      userId,
+                                                      OpenMetadataTypeDefCategory category)
+    {
+        final String methodName = "findTypeDefsByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefListResponse response = new TypeDefListResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            List<TypeDef> allTypeDefs = repositoryHelper.getKnownTypeDefs();
+            if (allTypeDefs != null)
+            {
+                List<OpenMetadataTypeDef> openMetadataTypeDefList = new ArrayList<>();
+
+                for (TypeDef typeDef : allTypeDefs)
+                {
+                    if (((category == OpenMetadataTypeDefCategory.ENTITY_DEF) && (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)) ||
+                        ((category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF) && (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)) ||
+                        ((category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF) && (typeDef.getCategory() == TypeDefCategory.CLASSIFICATION_DEF)))
+                    {
+                        openMetadataTypeDefList.add(this.getTypeDef(typeDef));
+                    }
+                }
+
+                if (! openMetadataTypeDefList.isEmpty())
+                {
+                    response.setTypeDefs(openMetadataTypeDefList);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns all the AttributeTypeDefs for a specific category.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param category find parameters used to limit the returned results.
+     * @return AttributeTypeDefListResponse:
+     * AttributeTypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @SuppressWarnings(value = "unused")
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                               serverName,
+                                                                        String                               serviceURLMarker,
+                                                                        String                               userId,
+                                                                        OpenMetadataAttributeTypeDefCategory category)
+    {
+        final String methodName = "findAttributeTypeDefsByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        AttributeTypeDefListResponse response = new AttributeTypeDefListResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            List<AttributeTypeDef> allAttributeTypeDefs = repositoryHelper.getKnownAttributeTypeDefs();
+            if (allAttributeTypeDefs != null)
+            {
+                List<OpenMetadataAttributeTypeDef> openMetadataAttributeTypeDefList = new ArrayList<>();
+
+                for (AttributeTypeDef attributeTypeDef : allAttributeTypeDefs)
+                {
+                    if (((category == OpenMetadataAttributeTypeDefCategory.ENUM_DEF) && (attributeTypeDef.getCategory() == AttributeTypeDefCategory.ENUM_DEF)) ||
+                                ((category == OpenMetadataAttributeTypeDefCategory.COLLECTION) && (attributeTypeDef.getCategory() == AttributeTypeDefCategory.COLLECTION)) ||
+                                ((category == OpenMetadataAttributeTypeDefCategory.PRIMITIVE) && (attributeTypeDef.getCategory() == AttributeTypeDefCategory.PRIMITIVE)))
+                    {
+                        openMetadataAttributeTypeDefList.add(this.getAttributeTypeDef(attributeTypeDef));
+                    }
+                }
+
+                if (! openMetadataAttributeTypeDefList.isEmpty())
+                {
+                    response.setAttributeTypeDefs(openMetadataAttributeTypeDefList);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param standard name of the standard null means any.
+     * @param organization name of the organization null means any.
+     * @param identifier identifier of the element in the standard null means any.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @SuppressWarnings(value = "unused")
+    public TypeDefListResponse findTypesByExternalId(String    serverName,
+                                                     String    serviceURLMarker,
+                                                     String    userId,
+                                                     String    standard,
+                                                     String    organization,
+                                                     String    identifier)
+    {
+        final String methodName = "getTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefListResponse response = new TypeDefListResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            List<TypeDef> allTypeDefs = repositoryHelper.getKnownTypeDefs();
+            if (allTypeDefs != null)
+            {
+                List<OpenMetadataTypeDef> openMetadataTypeDefList = new ArrayList<>();
+
+                for (TypeDef typeDef : allTypeDefs)
+                {
+                    if (typeDef.getExternalStandardMappings() != null)
+                    {
+                        for (ExternalStandardMapping externalStandardMapping : typeDef.getExternalStandardMappings())
+                        {
+                            if (((standard == null) || (standard.equals(externalStandardMapping.getStandardName()))) &&
+                                ((organization == null) || (organization.equals(externalStandardMapping.getStandardOrganization()))) &&
+                                ((identifier == null) || (identifier.equals(externalStandardMapping.getStandardTypeName()))))
+                            {
+                                openMetadataTypeDefList.add(this.getTypeDef(typeDef));
+                            }
+                        }
+                    }
+                }
+
+                if (! openMetadataTypeDefList.isEmpty())
+                {
+                    response.setTypeDefs(openMetadataTypeDefList);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef.
+     * @return TypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the guid is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefResponse getTypeDefByGUID(String    serverName,
+                                            String    serviceURLMarker,
+                                            String    userId,
+                                            String    guid)
+    {
+        final String methodName = "getTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefResponse response = new TypeDefResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            TypeDef typeDef = repositoryHelper.getTypeDef(instanceHandler.getServiceName(serviceURLMarker),
+                                                          guidParameterName,
+                                                          guid,
+                                                          methodName);
+            response.setTypeDef(this.getTypeDef(typeDef));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef
+     * @return AttributeTypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the guid is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public AttributeTypeDefResponse getAttributeTypeDefByGUID(String    serverName,
+                                                              String    serviceURLMarker,
+                                                              String    userId,
+                                                              String    guid)
+    {
+        final String methodName = "getAttributeTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            AttributeTypeDef attributeTypeDef = repositoryHelper.getAttributeTypeDef(instanceHandler.getServiceName(serviceURLMarker),
+                                                                                     guidParameterName,
+                                                                                     guid,
+                                                                                     methodName);
+            response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the name is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefResponse getTypeDefByName(String    serverName,
+                                            String    serviceURLMarker,
+                                            String    userId,
+                                            String    name)
+    {
+        final String methodName = "getTypeDefByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefResponse response = new TypeDefResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(serviceURLMarker), name);
+            response.setTypeDef(this.getTypeDef(typeDef));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return AttributeTypeDefResponse:
+     * AttributeTypeDef structure describing its category and properties or
+     * InvalidParameterException the name is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  AttributeTypeDefResponse getAttributeTypeDefByName(String    serverName,
+                                                               String    serviceURLMarker,
+                                                               String    userId,
+                                                               String    name)
+    {
+        final String methodName = "getAttributeTypeDefByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+
+            AttributeTypeDef attributeTypeDef = repositoryHelper.getAttributeTypeDefByName(instanceHandler.getServiceName(serviceURLMarker), name);
+            response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    
 
     /**
      * Retrieve the metadata element using its unique identifier.
@@ -142,7 +571,6 @@ public class OpenMetadataStoreRESTServices
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
-     * 
      *  InvalidParameterException the unique identifier is null or not known.
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
@@ -330,7 +758,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
-     *
      *  InvalidParameterException the qualified name is null
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
@@ -362,6 +789,7 @@ public class OpenMetadataStoreRESTServices
 
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
+                                                                               requestBody.getTypeName(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -401,7 +829,6 @@ public class OpenMetadataStoreRESTServices
      * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
-     *
      *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
@@ -442,6 +869,73 @@ public class OpenMetadataStoreRESTServices
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElementsListResponse getMetadataElementRelationships(String  serverName,
+                                                                               String  serviceURLMarker,
+                                                                               String  userId,
+                                                                               String  metadataElementAtEnd1GUID,
+                                                                               String  relationshipTypeName,
+                                                                               String  metadataElementAtEnd2GUID,
+                                                                               boolean forLineage,
+                                                                               boolean forDuplicateProcessing,
+                                                                               long    effectiveTime,
+                                                                               int     startFrom,
+                                                                               int     pageSize)
+    {
+        final String methodName = "getMetadataElementRelationships";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                            auditLog = null;
+        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            response.setElementList(handler.getMetadataElementRelationships(userId,
+                                                                            metadataElementAtEnd1GUID,
+                                                                            relationshipTypeName,
+                                                                            metadataElementAtEnd2GUID,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                            this.getEffectiveTimeFromLong(effectiveTime),
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            methodName));
         }
         catch (Exception error)
         {
@@ -542,7 +1036,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody properties defining the search criteria
      *
      * @return a list of relationships - null means no matching relationships - or
-     *
      *  InvalidParameterException one of the search parameters are is invalid
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
@@ -602,6 +1095,73 @@ public class OpenMetadataStoreRESTServices
     }
 
 
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @SuppressWarnings(value = "unused")
+    public RelatedMetadataElementsResponse getRelationshipByGUID(String  serverName,
+                                                                 String  serviceURLMarker,
+                                                                 String  userId,
+                                                                 String  relationshipGUID,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing,
+                                                                 long    effectiveTime)
+    {
+        final String methodName = "getRelationshipByGUID";
+        final String guidParameterName = "relationshipGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        RelatedMetadataElementsResponse response = new RelatedMetadataElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            Relationship relationship = handler.getAttachmentLink(userId,
+                                                                 relationshipGUID,
+                                                                 guidParameterName,
+                                                                 null,
+                                                                 this.getEffectiveTimeFromLong(effectiveTime),
+                                                                 methodName);
+
+            if (relationship != null)
+            {
+                RelatedElementsConverter<RelatedMetadataElements> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
+                                                                                                             handler.getServiceName(),
+                                                                                                             serverName);
+                response.setElement(converter.getNewRelationshipBean(RelatedMetadataElements.class,
+                                                                     relationship,
+                                                                     methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
@@ -614,7 +1174,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody properties for the new element
      *
      * @return unique identifier of the new metadata element
-     *
      *  InvalidParameterException the type name, status or one of the properties is invalid
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
@@ -644,10 +1203,16 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getExternalSourceName(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getInitialStatus(),
+                                                                      requestBody.getInitialClassifications(),
+                                                                      requestBody.getAnchorGUID(),
                                                                       requestBody.getEffectiveFrom(),
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
                                                                       requestBody.getTemplateGUID(),
+                                                                      requestBody.getParentGUID(),
+                                                                      requestBody.getParentRelationshipTypeName(),
+                                                                      requestBody.getParentRelationshipProperties(),
+                                                                      requestBody.getParentAtEnd1(),
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                       requestBody.getEffectiveTime(),
                                                                       methodName));
@@ -679,7 +1244,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody new properties
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the properties are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -743,7 +1307,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody new status values - use null to leave as is
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -805,7 +1368,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody new status values - use null to leave as is
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -868,7 +1430,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this element
      *  PropertyServerException there is a problem with the metadata store
@@ -933,7 +1494,6 @@ public class OpenMetadataStoreRESTServices
      *                   classification name
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
@@ -1001,7 +1561,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody new properties for the classification
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
@@ -1069,7 +1628,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody the dates when this element is active / inactive - null for no restriction
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -1135,7 +1693,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier or classification name is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
@@ -1201,7 +1758,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody the properties of the relationship
      *
      * @return unique identifier of the new relationship or
-     *
      *  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
@@ -1267,7 +1823,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody new properties for the relationship
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      *  UserNotAuthorizedException the governance action service is not authorized to update this relationship
@@ -1332,7 +1887,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody the dates when this element is active / inactive - null for no restriction
      *
      * @return void or
-     *
      *  InvalidParameterException either the unique identifier or the status are invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
@@ -1395,7 +1949,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
@@ -1456,7 +2009,6 @@ public class OpenMetadataStoreRESTServices
      * @param requestBody properties for the new incident report
      *
      * @return unique identifier of the resulting incident report or
-     *
      *  InvalidParameterException null or non-unique qualified name for the incident report
      *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
      *  PropertyServerException there is a problem with the metadata store
@@ -2045,7 +2597,7 @@ public class OpenMetadataStoreRESTServices
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
+     * <p>
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -2897,5 +3449,838 @@ public class OpenMetadataStoreRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param typeDef omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataTypeDef getTypeDef(TypeDef typeDef)
+    {
+        if (typeDef != null)
+        {
+            OpenMetadataTypeDef openMetadataTypeDef;
+
+            if (typeDef instanceof EntityDef)
+            {
+                openMetadataTypeDef = new OpenMetadataEntityDef();;
+                openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.ENTITY_DEF);
+            }
+            else if (typeDef instanceof RelationshipDef relationshipDef)
+            {
+                OpenMetadataRelationshipDef openMetadataRelationshipDef = new OpenMetadataRelationshipDef();
+
+                openMetadataRelationshipDef.setPropagationRule(this.getPropagationRule(relationshipDef.getPropagationRule()));
+                openMetadataRelationshipDef.setEndDef1(this.getRelationshipEndDef(relationshipDef.getEndDef1()));
+                openMetadataRelationshipDef.setEndDef2(this.getRelationshipEndDef(relationshipDef.getEndDef2()));
+                openMetadataRelationshipDef.setMultiLink(relationshipDef.getMultiLink());
+
+                openMetadataTypeDef = openMetadataRelationshipDef;
+                openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+            }
+            else if (typeDef instanceof ClassificationDef classificationDef)
+            {
+                OpenMetadataClassificationDef openMetadataClassificationDef = new OpenMetadataClassificationDef();
+
+                openMetadataClassificationDef.setValidEntityDefs(this.getTypeDefLinks(classificationDef.getValidEntityDefs()));
+                openMetadataClassificationDef.setPropagatable(classificationDef.isPropagatable());
+
+                openMetadataTypeDef = openMetadataClassificationDef;
+                openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+            }
+            else
+            {
+                return null;
+            }
+
+            openMetadataTypeDef.setGUID(typeDef.getGUID());
+            openMetadataTypeDef.setName(typeDef.getName());
+            openMetadataTypeDef.setStatus(this.getTypeDefStatus(typeDef.getStatus()));
+            openMetadataTypeDef.setReplacedByTypeGUID(typeDef.getReplacedByTypeGUID());
+            openMetadataTypeDef.setReplacedByTypeName(typeDef.getReplacedByTypeName());
+            openMetadataTypeDef.setVersionName(typeDef.getVersionName());
+            openMetadataTypeDef.setVersion(typeDef.getVersion());
+            openMetadataTypeDef.setSuperType(this.getTypeDefLink(typeDef.getSuperType()));
+            openMetadataTypeDef.setDescription(typeDef.getDescription());
+            openMetadataTypeDef.setDescriptionGUID(typeDef.getDescriptionGUID());
+            openMetadataTypeDef.setOrigin(typeDef.getOrigin());
+            openMetadataTypeDef.setCreatedBy(typeDef.getCreatedBy());
+            openMetadataTypeDef.setUpdatedBy(typeDef.getUpdatedBy());
+            openMetadataTypeDef.setCreateTime(typeDef.getCreateTime());
+            openMetadataTypeDef.setUpdateTime(typeDef.getUpdateTime());
+            openMetadataTypeDef.setOptions(typeDef.getOptions());
+            openMetadataTypeDef.setExternalStandardMappings(this.getExternalStandardMappings(typeDef.getExternalStandardMappings()));
+            openMetadataTypeDef.setValidElementStatusList(this.getElementStatuses(typeDef.getValidInstanceStatusList()));
+            openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(typeDef.getPropertiesDefinition()));
+            openMetadataTypeDef.setInitialStatus(this.getElementStatus(typeDef.getInitialStatus()));
+
+            return openMetadataTypeDef;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param typeDefAttributes list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<OpenMetadataTypeDefAttribute> getTypeDefAttributes(List<TypeDefAttribute> typeDefAttributes)
+    {
+        if (typeDefAttributes != null)
+        {
+            List<OpenMetadataTypeDefAttribute> externalStandardTypeMappings = new ArrayList<>();
+
+            for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
+            {
+                externalStandardTypeMappings.add(this.getTypeDefAttribute(typeDefAttribute));
+            }
+
+            if (! externalStandardTypeMappings.isEmpty())
+            {
+                return externalStandardTypeMappings;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param typeDefAttribute omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataTypeDefAttribute getTypeDefAttribute(TypeDefAttribute typeDefAttribute)
+    {
+        if (typeDefAttribute != null)
+        {
+            OpenMetadataTypeDefAttribute openMetadataTypeDefAttribute = new OpenMetadataTypeDefAttribute();
+
+            openMetadataTypeDefAttribute.setAttributeName(typeDefAttribute.getAttributeName());
+            openMetadataTypeDefAttribute.setAttributeType(this.getAttributeTypeDef(typeDefAttribute.getAttributeType()));
+            openMetadataTypeDefAttribute.setAttributeStatus(this.getAttributeStatus(typeDefAttribute.getAttributeStatus()));
+            openMetadataTypeDefAttribute.setReplacedByAttribute(typeDefAttribute.getReplacedByAttribute());
+            openMetadataTypeDefAttribute.setAttributeDescription(typeDefAttribute.getAttributeDescription());
+            openMetadataTypeDefAttribute.setAttributeDescriptionGUID(typeDefAttribute.getAttributeDescriptionGUID());
+            openMetadataTypeDefAttribute.setAttributeCardinality(this.getAttributeCardinality(typeDefAttribute.getAttributeCardinality()));
+            openMetadataTypeDefAttribute.setValuesMinCount(typeDefAttribute.getValuesMinCount());
+            openMetadataTypeDefAttribute.setValuesMaxCount(typeDefAttribute.getValuesMaxCount());
+            openMetadataTypeDefAttribute.setUnique(typeDefAttribute.isUnique());
+            openMetadataTypeDefAttribute.setIndexable(typeDefAttribute.isIndexable());
+            openMetadataTypeDefAttribute.setDefaultValue(typeDefAttribute.getDefaultValue());
+            openMetadataTypeDefAttribute.setExternalStandardMappings(this.getExternalStandardMappings(typeDefAttribute.getExternalStandardMappings()));
+
+            return openMetadataTypeDefAttribute;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param attributeCardinality omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataAttributeCardinality getAttributeCardinality(AttributeCardinality attributeCardinality)
+    {
+        if (attributeCardinality != null)
+        {
+            switch (attributeCardinality)
+            {
+                case UNKNOWN ->
+                {
+                    return OpenMetadataAttributeCardinality.UNKNOWN;
+                }
+                case AT_MOST_ONE ->
+                {
+                    return OpenMetadataAttributeCardinality.AT_MOST_ONE;
+                }
+                case ONE_ONLY ->
+                {
+                    return OpenMetadataAttributeCardinality.ONE_ONLY;
+                }
+                case AT_LEAST_ONE_ORDERED ->
+                {
+                    return OpenMetadataAttributeCardinality.AT_LEAST_ONE_ORDERED;
+                }
+                case AT_LEAST_ONE_UNORDERED ->
+                {
+                    return OpenMetadataAttributeCardinality.AT_LEAST_ONE_UNORDERED;
+                }
+                case ANY_NUMBER_ORDERED ->
+                {
+                    return OpenMetadataAttributeCardinality.ANY_NUMBER_ORDERED;
+                }
+                case ANY_NUMBER_UNORDERED ->
+                {
+                    return OpenMetadataAttributeCardinality.ANY_NUMBER_UNORDERED;
+                }
+            }
+        }
+
+        return OpenMetadataAttributeCardinality.UNKNOWN;
+
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param typeDefAttributeStatus omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataTypeDefAttributeStatus getAttributeStatus(TypeDefAttributeStatus typeDefAttributeStatus)
+    {
+        if (typeDefAttributeStatus != null)
+        {
+            switch (typeDefAttributeStatus)
+            {
+                case ACTIVE_ATTRIBUTE ->
+                {
+                    return OpenMetadataTypeDefAttributeStatus.ACTIVE_ATTRIBUTE;
+                }
+                case RENAMED_ATTRIBUTE ->
+                {
+                    return OpenMetadataTypeDefAttributeStatus.RENAMED_ATTRIBUTE;
+                }
+                case DEPRECATED_ATTRIBUTE ->
+                {
+                    return OpenMetadataTypeDefAttributeStatus.DEPRECATED_ATTRIBUTE;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param externalStandardMappings list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<ExternalStandardTypeMapping> getExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
+    {
+        if (externalStandardMappings != null)
+        {
+            List<ExternalStandardTypeMapping> externalStandardTypeMappings = new ArrayList<>();
+
+            for (ExternalStandardMapping externalStandardMapping : externalStandardMappings)
+            {
+                externalStandardTypeMappings.add(this.getExternalStandardMapping(externalStandardMapping));
+            }
+
+            if (! externalStandardTypeMappings.isEmpty())
+            {
+                return externalStandardTypeMappings;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param externalStandardMapping omrs type
+     * @return open metadata type
+     */
+    private ExternalStandardTypeMapping getExternalStandardMapping(ExternalStandardMapping externalStandardMapping)
+    {
+        if (externalStandardMapping != null)
+        {
+            ExternalStandardTypeMapping externalStandardTypeMapping = new ExternalStandardTypeMapping();
+
+            externalStandardTypeMapping.setStandardName(externalStandardMapping.getStandardName());
+            externalStandardTypeMapping.setStandardOrganization(externalStandardMapping.getStandardOrganization());
+            externalStandardTypeMapping.setStandardTypeName(externalStandardMapping.getStandardTypeName());
+
+            return externalStandardTypeMapping;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param instanceStatusList list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<ElementStatus> getElementStatuses(List<InstanceStatus> instanceStatusList)
+    {
+        if (instanceStatusList != null)
+        {
+            List<ElementStatus> elementStatusList = new ArrayList<>();
+
+            for (InstanceStatus instanceStatus : instanceStatusList)
+            {
+                elementStatusList.add(this.getElementStatus(instanceStatus));
+            }
+
+            if (! elementStatusList.isEmpty())
+            {
+                return elementStatusList;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    protected ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN ->
+                {
+                    return ElementStatus.UNKNOWN;
+                }
+                case DRAFT ->
+                {
+                    return ElementStatus.DRAFT;
+                }
+                case PREPARED ->
+                {
+                    return ElementStatus.PREPARED;
+                }
+                case PROPOSED ->
+                {
+                    return ElementStatus.PROPOSED;
+                }
+                case APPROVED ->
+                {
+                    return ElementStatus.APPROVED;
+                }
+                case REJECTED ->
+                {
+                    return ElementStatus.REJECTED;
+                }
+                case APPROVED_CONCEPT ->
+                {
+                    return ElementStatus.APPROVED_CONCEPT;
+                }
+                case UNDER_DEVELOPMENT ->
+                {
+                    return ElementStatus.UNDER_DEVELOPMENT;
+                }
+                case DEVELOPMENT_COMPLETE ->
+                {
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+                }
+                case APPROVED_FOR_DEPLOYMENT ->
+                {
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+                }
+                case STANDBY ->
+                {
+                    return ElementStatus.STANDBY;
+                }
+                case ACTIVE ->
+                {
+                    return ElementStatus.ACTIVE;
+                }
+                case FAILED ->
+                {
+                    return ElementStatus.FAILED;
+                }
+                case DISABLED ->
+                {
+                    return ElementStatus.DISABLED;
+                }
+                case COMPLETE ->
+                {
+                    return ElementStatus.COMPLETE;
+                }
+                case DEPRECATED ->
+                {
+                    return ElementStatus.DEPRECATED;
+                }
+                case OTHER ->
+                {
+                    return ElementStatus.OTHER;
+                }
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param typeDefs list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<OpenMetadataTypeDef> getTypeDefs(List<TypeDef> typeDefs)
+    {
+        if (typeDefs != null)
+        {
+            List<OpenMetadataTypeDef> openMetadataTypeDefs = new ArrayList<>();
+            for (TypeDef typeDef : typeDefs)
+            {
+                openMetadataTypeDefs.add(this.getTypeDef(typeDef));
+            }
+
+            if (! openMetadataTypeDefs.isEmpty())
+            {
+                return openMetadataTypeDefs;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param propagationRule omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataClassificationPropagationRule getPropagationRule(ClassificationPropagationRule propagationRule)
+    {
+        if (propagationRule != null)
+        {
+            switch (propagationRule)
+            {
+                case NONE ->
+                {
+                    return OpenMetadataClassificationPropagationRule.NONE;
+                }
+                case ONE_TO_TWO ->
+                {
+                    return OpenMetadataClassificationPropagationRule.ONE_TO_TWO;
+                }
+                case TWO_TO_ONE ->
+                {
+                    return OpenMetadataClassificationPropagationRule.TWO_TO_ONE;
+                }
+                case BOTH ->
+                {
+                    return OpenMetadataClassificationPropagationRule.BOTH;
+                }
+            }
+        }
+
+        return OpenMetadataClassificationPropagationRule.NONE;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param relationshipEndDef omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataRelationshipEndDef getRelationshipEndDef(RelationshipEndDef relationshipEndDef)
+    {
+        if (relationshipEndDef != null)
+        {
+            OpenMetadataRelationshipEndDef openMetadataRelationshipEndDef = new OpenMetadataRelationshipEndDef();
+
+            openMetadataRelationshipEndDef.setEntityType(this.getTypeDefLink(relationshipEndDef.getEntityType()));
+            openMetadataRelationshipEndDef.setAttributeName(relationshipEndDef.getAttributeName());
+            openMetadataRelationshipEndDef.setAttributeCardinality(this.getRelationshipEndCardinality(relationshipEndDef.getAttributeCardinality()));
+            openMetadataRelationshipEndDef.setAttributeDescription(relationshipEndDef.getAttributeDescription());
+            openMetadataRelationshipEndDef.setAttributeDescriptionGUID(relationshipEndDef.getAttributeDescriptionGUID());
+
+            return openMetadataRelationshipEndDef;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param typeDefLinks list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<OpenMetadataTypeDefLink> getTypeDefLinks(List<TypeDefLink> typeDefLinks)
+    {
+        if (typeDefLinks != null)
+        {
+            List<OpenMetadataTypeDefLink> openMetadataTypeDefs = new ArrayList<>();
+
+            for (TypeDefLink typeDefLink : typeDefLinks)
+            {
+                openMetadataTypeDefs.add(this.getTypeDefLink(typeDefLink));
+            }
+
+            if (! openMetadataTypeDefs.isEmpty())
+            {
+                return openMetadataTypeDefs;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param typeDefLink omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataTypeDefLink getTypeDefLink(TypeDefLink typeDefLink)
+    {
+        if (typeDefLink != null)
+        {
+            OpenMetadataTypeDefLink openMetadataTypeDefLink = new OpenMetadataTypeDefLink();
+
+            openMetadataTypeDefLink.setGUID(typeDefLink.getGUID());
+            openMetadataTypeDefLink.setName(typeDefLink.getName());
+            openMetadataTypeDefLink.setStatus(getTypeDefStatus(typeDefLink.getStatus()));
+            openMetadataTypeDefLink.setReplacedByTypeGUID(typeDefLink.getReplacedByTypeGUID());
+            openMetadataTypeDefLink.setReplacedByTypeName(typeDefLink.getReplacedByTypeName());
+
+            return openMetadataTypeDefLink;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param typeDefStatus omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataTypeDefStatus getTypeDefStatus(TypeDefStatus typeDefStatus)
+    {
+        if (typeDefStatus != null)
+        {
+            switch (typeDefStatus)
+            {
+                case ACTIVE_TYPEDEF ->
+                {
+                    return OpenMetadataTypeDefStatus.ACTIVE_TYPEDEF;
+                }
+                case RENAMED_TYPEDEF ->
+                {
+                    return OpenMetadataTypeDefStatus.RENAMED_TYPEDEF;
+                }
+                case DEPRECATED_TYPEDEF ->
+                {
+                    return OpenMetadataTypeDefStatus.DEPRECATED_TYPEDEF;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param relationshipEndCardinality omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataRelationshipEndCardinality getRelationshipEndCardinality(RelationshipEndCardinality relationshipEndCardinality)
+    {
+        if (relationshipEndCardinality != null)
+        {
+            switch (relationshipEndCardinality)
+            {
+                case UNKNOWN ->
+                {
+                    return OpenMetadataRelationshipEndCardinality.UNKNOWN;
+                }
+                case ANY_NUMBER ->
+                {
+                    return OpenMetadataRelationshipEndCardinality.ANY_NUMBER;
+                }
+                case AT_MOST_ONE ->
+                {
+                    return OpenMetadataRelationshipEndCardinality.AT_MOST_ONE;
+                }
+            }
+        }
+
+        return OpenMetadataRelationshipEndCardinality.UNKNOWN;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param attributeTypeDef omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataAttributeTypeDef getAttributeTypeDef(AttributeTypeDef attributeTypeDef)
+    {
+        if (attributeTypeDef != null)
+        {
+            OpenMetadataAttributeTypeDef openMetadataAttributeTypeDef;
+
+            if (attributeTypeDef instanceof PrimitiveDef primitiveDef)
+            {
+                OpenMetadataPrimitiveDef openMetadataPrimitiveDef = new OpenMetadataPrimitiveDef();
+
+                openMetadataPrimitiveDef.setPrimitiveDefCategory(this.getPrimitiveDefCategory(primitiveDef.getPrimitiveDefCategory()));
+
+                openMetadataAttributeTypeDef = openMetadataPrimitiveDef;
+                openMetadataAttributeTypeDef.setCategory(OpenMetadataAttributeTypeDefCategory.PRIMITIVE);
+            }
+            else if (attributeTypeDef instanceof CollectionDef collectionDef)
+            {
+                OpenMetadataCollectionDef openMetadataCollectionDef = new OpenMetadataCollectionDef();
+
+                openMetadataCollectionDef.setCollectionDefCategory(this.getCollectionDefCategory(collectionDef.getCollectionDefCategory()));
+                openMetadataCollectionDef.setArgumentCount(collectionDef.getArgumentCount());
+
+                if (collectionDef.getArgumentTypes() != null)
+                {
+                    List<OpenMetadataPrimitiveDefCategory> argumentTypes = new ArrayList<>();
+
+                    for (PrimitiveDefCategory argumentType : collectionDef.getArgumentTypes())
+                    {
+                        argumentTypes.add(this.getPrimitiveDefCategory(argumentType));
+                    }
+
+                    if (! argumentTypes.isEmpty())
+                    {
+                        openMetadataCollectionDef.setArgumentTypes(argumentTypes);
+                    }
+                }
+
+                openMetadataAttributeTypeDef = openMetadataCollectionDef;
+                openMetadataAttributeTypeDef.setCategory(OpenMetadataAttributeTypeDefCategory.COLLECTION);
+            }
+            else if (attributeTypeDef instanceof EnumDef enumDef)
+            {
+                OpenMetadataEnumDef openMetadataEnumDef = new OpenMetadataEnumDef();
+
+                openMetadataEnumDef.setElementDefs(getEnumElementDefs(enumDef.getElementDefs()));
+                openMetadataEnumDef.setDefaultValue(getEnumElementDef(enumDef.getDefaultValue()));
+
+                openMetadataAttributeTypeDef = openMetadataEnumDef;
+                openMetadataAttributeTypeDef.setCategory(OpenMetadataAttributeTypeDefCategory.ENUM_DEF);
+            }
+            else
+            {
+                return null;
+            }
+
+            openMetadataAttributeTypeDef.setGUID(attributeTypeDef.getGUID());
+            openMetadataAttributeTypeDef.setName(attributeTypeDef.getName());
+            openMetadataAttributeTypeDef.setDescription(attributeTypeDef.getDescription());
+            openMetadataAttributeTypeDef.setDescriptionGUID(attributeTypeDef.getDescriptionGUID());
+            openMetadataAttributeTypeDef.setVersion(attributeTypeDef.getVersion());
+            openMetadataAttributeTypeDef.setVersionName(attributeTypeDef.getVersionName());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a list of open metadata type equivalents to the OMRS types supplied in the parameter.
+     *
+     * @param enumElementDefs omrs types
+     * @return open metadata type
+     */
+    private List<OpenMetadataEnumElementDef> getEnumElementDefs(List<EnumElementDef> enumElementDefs)
+    {
+        if (enumElementDefs != null)
+        {
+            List<OpenMetadataEnumElementDef> openMetadataEnumElementDefs = new ArrayList<>();
+
+            for (EnumElementDef enumElementDef : enumElementDefs)
+            {
+                if (enumElementDef != null)
+                {
+                    openMetadataEnumElementDefs.add(getEnumElementDef(enumElementDef));
+                }
+            }
+
+            if (! openMetadataEnumElementDefs.isEmpty())
+            {
+                return openMetadataEnumElementDefs;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
+     *
+     * @param enumElementDef omrs type
+     * @return open metadata type
+     */
+    private OpenMetadataEnumElementDef getEnumElementDef(EnumElementDef enumElementDef)
+    {
+        if (enumElementDef != null)
+        {
+            OpenMetadataEnumElementDef openMetadataEnumElementDef = new OpenMetadataEnumElementDef();
+
+            openMetadataEnumElementDef.setOrdinal(enumElementDef.getOrdinal());
+            openMetadataEnumElementDef.setValue(enumElementDef.getValue());
+            openMetadataEnumElementDef.setDescription(enumElementDef.getDescription());
+            openMetadataEnumElementDef.setDescriptionGUID(enumElementDef.getDescriptionGUID());
+
+            return openMetadataEnumElementDef;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the OMRS category to the open metadata version of the category.
+     *
+     * @param primitiveDefCategory omrs category
+     * @return open metadata category
+     */
+    private OpenMetadataPrimitiveDefCategory getPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
+    {
+        if (primitiveDefCategory != null)
+        {
+            switch (primitiveDefCategory)
+            {
+                case OM_PRIMITIVE_TYPE_UNKNOWN ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
+                }
+                case OM_PRIMITIVE_TYPE_BOOLEAN ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+                }
+                case OM_PRIMITIVE_TYPE_BYTE ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE;
+                }
+                case OM_PRIMITIVE_TYPE_CHAR ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR;
+                }
+                case OM_PRIMITIVE_TYPE_SHORT ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT;
+                }
+                case OM_PRIMITIVE_TYPE_INT ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT;
+                }
+                case OM_PRIMITIVE_TYPE_LONG ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG;
+                }
+                case OM_PRIMITIVE_TYPE_FLOAT ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT;
+                }
+                case OM_PRIMITIVE_TYPE_DOUBLE ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+                }
+                case OM_PRIMITIVE_TYPE_BIGINTEGER ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+                }
+                case OM_PRIMITIVE_TYPE_BIGDECIMAL ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+                }
+                case OM_PRIMITIVE_TYPE_STRING ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+                }
+                case OM_PRIMITIVE_TYPE_DATE ->
+                {
+                    return OpenMetadataPrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the OMRS category to the open metadata version of the category.
+     *
+     * @param collectionDefCategory omrs category
+     * @return open metadata category
+     */
+    private OpenMetadataCollectionDefCategory getCollectionDefCategory(CollectionDefCategory collectionDefCategory)
+    {
+        if (collectionDefCategory != null)
+        {
+            switch(collectionDefCategory)
+            {
+                case OM_COLLECTION_UNKNOWN ->
+                {
+                    return OpenMetadataCollectionDefCategory.OM_COLLECTION_UNKNOWN;
+                }
+                case OM_COLLECTION_MAP ->
+                {
+                    return OpenMetadataCollectionDefCategory.OM_COLLECTION_MAP;
+                }
+                case OM_COLLECTION_ARRAY ->
+                {
+                    return OpenMetadataCollectionDefCategory.OM_COLLECTION_ARRAY;
+                }
+                case OM_COLLECTION_STRUCT ->
+                {
+                    return OpenMetadataCollectionDefCategory.OM_COLLECTION_STRUCT;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
+     *
+     * @param attributeTypeDefs list of OMRS types
+     * @return list of open metadata types
+     */
+    private List<OpenMetadataAttributeTypeDef> getAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
+    {
+        if (attributeTypeDefs != null)
+        {
+            List<OpenMetadataAttributeTypeDef> openMetadataAttributeTypeDefs = new ArrayList<>();
+            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
+            {
+                openMetadataAttributeTypeDefs.add(this.getAttributeTypeDef(attributeTypeDef));
+            }
+
+            if (! openMetadataAttributeTypeDefs.isEmpty())
+            {
+                return openMetadataAttributeTypeDefs;
+            }
+        }
+
+        return null;
     }
 }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreProviderBase;
 
@@ -34,7 +35,7 @@ public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchi
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = FileBasedOpenMetadataArchiveStoreConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreConnector";
 
     /**
      * Constructor to initialize the ConnectorProviderBase class.
@@ -46,7 +47,7 @@ public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchi
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -67,6 +68,7 @@ public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchi
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorQualifiedName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

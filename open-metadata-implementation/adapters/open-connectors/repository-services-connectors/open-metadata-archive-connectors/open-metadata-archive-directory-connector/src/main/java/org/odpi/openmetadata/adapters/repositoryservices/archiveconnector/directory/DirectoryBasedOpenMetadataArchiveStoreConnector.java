@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,9 +136,10 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * Return the contents of the archive.
      *
      * @return OpenMetadataArchive object
+     * @throws RepositoryErrorException there is a problem accessing the archive
      */
     @Override
-    public OpenMetadataArchive getArchiveContents()
+    public OpenMetadataArchive getArchiveContents() throws RepositoryErrorException
     {
         OpenMetadataArchive newOpenMetadataArchive = new OpenMetadataArchive();
 

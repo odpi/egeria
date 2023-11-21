@@ -4,7 +4,7 @@ package org.odpi.openmetadata.conformance.workbenches.performance;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.*;
@@ -21,7 +21,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
-    private OMRSAuditLog            auditLog;
+    private final AuditLog auditLog;
 
     private String                  tutServerName               = null;
     private String                  tutMetadataCollectionId     = null;
@@ -58,7 +58,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     public PerformanceWorkPad(String                                localServerUserId,
                               String                                localServerPassword,
                               int                                   maxPageSize,
-                              OMRSAuditLog                          auditLog,
+                              AuditLog                              auditLog,
                               RepositoryPerformanceWorkbenchConfig  configuration)
     {
         super(workbenchId,
@@ -89,7 +89,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
      *
      * @return audit log object.
      */
-    public OMRSAuditLog getAuditLog()
+    public AuditLog getAuditLog()
     {
         return auditLog;
     }

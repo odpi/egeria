@@ -6,6 +6,7 @@
 
 dependencies {
     implementation 'org.slf4j:slf4j-api'
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')

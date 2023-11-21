@@ -506,9 +506,6 @@ public class DisplayIntegratorContext extends IntegrationContext
     /**
      * Remove the metadata element representing a report.
      *
-     * @param userId calling user
-     * @param applicationGUID unique identifier of software server capability representing the event broker
-     * @param applicationName unique name of software server capability representing the event broker
      * @param reportGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -516,15 +513,12 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeReport(String userId,
-                             String applicationGUID,
-                             String applicationName,
-                             String reportGUID,
+    public void removeReport(String reportGUID,
                              String qualifiedName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        client.removeReport(userId, applicationGUID, applicationName, reportGUID, qualifiedName);
+        client.removeReport(userId, externalSourceGUID, externalSourceName, reportGUID, qualifiedName);
 
         if (integrationReportWriter != null)
         {
@@ -767,9 +761,6 @@ public class DisplayIntegratorContext extends IntegrationContext
     /**
      * Remove the metadata element representing a query.
      *
-     * @param userId calling user
-     * @param applicationGUID unique identifier of software server capability representing the event broker
-     * @param applicationName unique name of software server capability representing the event broker
      * @param queryGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -777,15 +768,12 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeQuery(String userId,
-                            String applicationGUID,
-                            String applicationName,
-                            String queryGUID,
+    public void removeQuery(String queryGUID,
                             String qualifiedName) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        client.removeQuery(userId, applicationGUID, applicationName, queryGUID, qualifiedName);
+        client.removeQuery(userId, externalSourceGUID, externalSourceName, queryGUID, qualifiedName);
 
         if (integrationReportWriter != null)
         {
@@ -1040,7 +1028,6 @@ public class DisplayIntegratorContext extends IntegrationContext
     /**
      * Return the data container associated with a specific open metadata element (data asset, process or port).
      *
-     * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this data container is connected to
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1051,8 +1038,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataContainerElement> getDataContainersForElement(String userId,
-                                                                  String parentElementGUID,
+    public List<DataContainerElement> getDataContainersForElement(String parentElementGUID,
                                                                   int    startFrom,
                                                                   int    pageSize) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
@@ -1259,23 +1245,17 @@ public class DisplayIntegratorContext extends IntegrationContext
     /**
      * Remove the metadata element representing a data field.
      *
-     * @param userId calling user
-     * @param applicationGUID unique identifier of software server capability representing the event broker
-     * @param applicationName unique name of software server capability representing the event broker
      * @param dataFieldGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDataField(String userId,
-                                String applicationGUID,
-                                String applicationName,
-                                String dataFieldGUID) throws InvalidParameterException,
+    public void removeDataField(String dataFieldGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        client.removeDataField(userId, applicationGUID, applicationName, dataFieldGUID);
+        client.removeDataField(userId, externalSourceGUID, externalSourceName, dataFieldGUID);
 
         if (integrationReportWriter != null)
         {
@@ -1358,7 +1338,6 @@ public class DisplayIntegratorContext extends IntegrationContext
     /**
      * Retrieve the data field metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      *
      * @return requested metadata element
@@ -1367,8 +1346,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldElement getDataFieldByGUID(String userId,
-                                               String guid) throws InvalidParameterException,
+    public DataFieldElement getDataFieldByGUID(String guid) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {

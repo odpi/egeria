@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = Annotation.class, name = "Annotation"),
                 @JsonSubTypes.Type(value = DataField.class, name = "DataField"),
+                @JsonSubTypes.Type(value = DataFieldLink.class, name = "DataFieldLink"),
                 @JsonSubTypes.Type(value = DiscoveryAnalysisReport.class, name = "DiscoveryAnalysisReport"),
                 @JsonSubTypes.Type(value = DiscoveryEngineProperties.class, name = "DiscoveryEngineProperties"),
                 @JsonSubTypes.Type(value = DiscoveryServiceProperties.class, name = "DiscoveryServiceProperties")

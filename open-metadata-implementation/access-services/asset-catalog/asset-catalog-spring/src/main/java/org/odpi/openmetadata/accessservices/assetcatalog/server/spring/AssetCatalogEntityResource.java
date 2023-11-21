@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 
-@Tag(name="Asset Catalog OMAS", description="The Asset Catalog OMAS provides services to search for data assets including data stores, event feeds, APIs, data sets.",
-     externalDocs=@ExternalDocumentation(description="Asset Catalog Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Asset Catalog OMAS", description="The Asset Catalog OMAS provides services to search for data assets including data stores, event feeds, APIs, data sets.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
      url="https://egeria-project.org/services/omas/asset-catalog/overview/"))
 public class AssetCatalogEntityResource {
 

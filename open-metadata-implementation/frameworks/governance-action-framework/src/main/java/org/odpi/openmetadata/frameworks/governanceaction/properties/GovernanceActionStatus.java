@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,23 +15,61 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum GovernanceActionStatus implements Serializable
+@Deprecated
+public enum GovernanceActionStatus
 {
-    REQUESTED       (0,  0,  "Requested",  "The governance action has been created and is pending"),
-    APPROVED        (1,  1,  "Approved",   "The governance action is approved to run"),
-    WAITING         (2,  2,  "Waiting",    "The governance action is waiting for its start time or the right conditions to run"),
-    ACTIVATING      (3,  3,  "Activating", "The governance action service for the governance action is being initialized in the governance engine"),
-    IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance action service for the governance action"),
-    ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing"),
-    INVALID         (6,  11, "Invalid",    "The governance action has not been run because it is not appropriate (for example, a false positive)"),
-    IGNORED         (7,  12, "Ignored",    "The governance action has not been run because a different governance action was chosen"),
-    FAILED          (8,  13, "Failed",     "The governance action service for the governance action failed to execute"),
-    OTHER           (99, 99, "Other",      "Undefined or unknown governance action status");
+    /**
+     * The governance action has been created and is pending.
+     */
+    REQUESTED       (0,  0,  "Requested",  "The governance action has been created and is pending.", EngineActionStatus.REQUESTED),
 
-    private static final long     serialVersionUID = 1L;
+    /**
+     * The governance action is approved to run.
+     */
+    APPROVED        (1,  1,  "Approved",   "The governance action is approved to run.", EngineActionStatus.APPROVED),
+
+    /**
+     * The governance action is waiting for its start time or the right conditions to run.
+     */
+    WAITING         (2,  2,  "Waiting",    "The governance action is waiting for its start time or the right conditions to run.", EngineActionStatus.WAITING),
+
+    /**
+     * The governance action service for the governance action is being initialized in the governance engine.
+     */
+    ACTIVATING      (3,  3,  "Activating", "The governance action service for the governance action is being initialized in the governance engine.", EngineActionStatus.ACTIVATING),
+
+    /**
+     * The governance engine is running the associated governance action service for the governance action.
+     */
+    IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance action service for the governance action.", EngineActionStatus.IN_PROGRESS),
+
+    /**
+     * The governance action service for the governance action has successfully completed processing.
+     */
+    ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing.", EngineActionStatus.ACTIONED),
+
+    /**
+     * The governance action has not been run because it is not appropriate (for example, a false positive).
+     */
+    INVALID         (6,  11, "Invalid",    "The governance action has not been run because it is not appropriate (for example, a false positive).", EngineActionStatus.INVALID),
+
+    /**
+     * The governance action has not been run because a different governance action was chosen.
+     */
+    IGNORED         (7,  12, "Ignored",    "The governance action has not been run because a different governance action was chosen.", EngineActionStatus.IGNORED),
+
+    /**
+     * The governance action service for the governance action failed to execute.
+     */
+    FAILED          (8,  13, "Failed",     "The governance action service for the governance action failed to execute.", EngineActionStatus.FAILED),
+
+    /**
+     * Undefined or unknown governance action status.
+     */
+    OTHER           (99, 99, "Other",      "Undefined or unknown governance action status.", EngineActionStatus.OTHER);
 
     private static final String ENUM_TYPE_GUID  = "a6e698b0-a4f7-4a39-8c80-db0bb0f972e";
-    private static final String ENUM_TYPE_NAME  = "GovernanceActionStatus";
+    private static final String ENUM_TYPE_NAME  = "EngineActionStatus";
 
     private final String statusName;
     private final String statusDescription;
@@ -41,22 +77,28 @@ public enum GovernanceActionStatus implements Serializable
 
     private final int openTypeOrdinal;
 
+    private final EngineActionStatus engineActionStatus;
+
     /**
      * Typical Constructor
      *
      * @param statusCode ordinal
+     * @param openTypeOrdinal ordinal used in the open metadata types
      * @param statusName short name
      * @param statusDescription longer explanation
+     * @param engineActionStatus equivalent engine action status
      */
-    GovernanceActionStatus(int    statusCode,
-                           int    openTypeOrdinal,
-                           String statusName,
-                           String statusDescription)
+    GovernanceActionStatus(int                statusCode,
+                           int                openTypeOrdinal,
+                           String             statusName,
+                           String             statusDescription,
+                           EngineActionStatus engineActionStatus)
     {
         this.statusCode        = statusCode;
         this.openTypeOrdinal   = openTypeOrdinal;
         this.statusName        = statusName;
         this.statusDescription = statusDescription;
+        this.engineActionStatus = engineActionStatus;
     }
 
 
@@ -122,6 +164,17 @@ public enum GovernanceActionStatus implements Serializable
 
 
     /**
+     * Return the equivalent action status.
+     *
+     * @return enum
+     */
+    public EngineActionStatus getEngineActionStatus()
+    {
+        return engineActionStatus;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -129,6 +182,6 @@ public enum GovernanceActionStatus implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceActionStatus{" + statusName + "}";
+        return "EngineActionStatus{" + statusName + "}";
     }
 }

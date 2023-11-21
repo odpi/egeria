@@ -781,6 +781,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
                                                               fullEntity,
                                                               guidParameterName,
                                                               false,
+                                                              false,
                                                               true,
                                                               false,
                                                               supportedZones,

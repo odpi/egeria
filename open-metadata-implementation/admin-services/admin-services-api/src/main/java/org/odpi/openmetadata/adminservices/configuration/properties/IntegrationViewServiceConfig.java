@@ -8,13 +8,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/*
+/**
  * The IntegrationViewServiceConfig class is a specialization of ViewServiceConfig for integration-level view services
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -25,7 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 
-public class IntegrationViewServiceConfig extends ViewServiceConfig {
+public class IntegrationViewServiceConfig extends ViewServiceConfig
+{
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private List<ResourceEndpointConfig> resourceEndpoints;
 

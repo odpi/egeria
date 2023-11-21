@@ -21,22 +21,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OpenMetadataConformanceStatus implements Serializable
 {
+    /**
+     * There is not enough evidence to determine the conformance of the technology under test.
+     */
     UNKNOWN_STATUS               (0, "Unknown status",
                                      "There is not enough evidence to determine the conformance of the technology under test."),
+
+    /**
+     * The technology provides correctly functioning support for all features in this profile.
+     */
     CONFORMANT_FULL_SUPPORT      (1, "Conformant with full support",
                                      "The technology provides correctly functioning support for all features in this profile."),
+
+    /**
+     * The technology provides correctly functioning support for some of the features in this profile and responds appropriately for features it does not support.
+     */
     CONFORMANT_PARTIAL_SUPPORT   (2, "Conformant with partial support",
                                      "The technology provides correctly functioning support for some of the features in this profile and responds appropriately for features it does not support."),
+
+    /**
+     * The technology provides correctly functioning responses that indicate it has no support for the features in this profile.
+     */
     CONFORMANT_NO_SUPPORT        (3, "Conformant with no support",
                                      "The technology provides correctly functioning responses that indicate it has no support for the features in this profile."),
+
+    /**
+     * The technology is not functioning according to the open metadata specifications.
+     */
     NOT_CONFORMANT               (4, "Not Conformant",
-                                     "The technology is not functioning according to the open metadata specifications.");
+                                  "The technology is not functioning according to the open metadata specifications.");
 
     private static final long serialVersionUID = 1L;
 
-    private int                ordinal;
-    private String             name;
-    private String             description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

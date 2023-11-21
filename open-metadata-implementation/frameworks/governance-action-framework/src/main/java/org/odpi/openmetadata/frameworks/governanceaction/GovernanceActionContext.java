@@ -6,13 +6,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagementInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceCompletionInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.WatchDogEventInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
@@ -58,41 +62,58 @@ public class GovernanceActionContext implements GovernanceContext,
 
     private volatile CompletionStatus        completionStatus = null;
 
-    private final String               governanceActionGUID;
-    private final OpenGovernanceClient openGovernanceClient;
-    private final OpenMetadataClient   openMetadataClient;
-    private final OpenMetadataStore    openMetadataStore;
-    private final PropertyHelper       propertyHelper = new PropertyHelper();
+    private final String                           engineActionGUID;
+    private final ActionControlInterface           actionControlClient;
+    private final DuplicateManagementInterface     duplicateManagementClient;
+    private final GovernanceActionProcessInterface governanceActionProcessClient;
+    private final GovernanceCompletionInterface    governanceCompletionClient;
+    private final WatchDogEventInterface           watchDogEventClient;
+    private final OpenMetadataClient               openMetadataClient;
+    private final OpenMetadataStore                openMetadataStore;
+    private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param engineActionGUID unique identifier of the engine action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openGovernanceClient client to the metadata store for use by the governance action service
+     * @param openMetadataClient client to the metadata store for use by the governance action service
+     * @param actionControlClient client to the open governance services for use by the governance action service
+     * @param duplicateManagementClient client to the open governance services for use by the governance action service
+     * @param governanceActionProcessClient client to the open governance services for use by the governance action service
+     * @param governanceCompletionClient client to the open governance services for use by the governance action service
+     * @param watchdogEventClient client to the open governance services for use by the governance action service
      */
-    public GovernanceActionContext(String                     userId,
-                                   String                     governanceActionGUID,
-                                   String                     requestType,
-                                   Map<String, String>        requestParameters,
-                                   List<RequestSourceElement> requestSourceElements,
-                                   List<ActionTargetElement>  actionTargetElements,
-                                   OpenMetadataClient         openMetadataClient,
-                                   OpenGovernanceClient       openGovernanceClient)
+    public GovernanceActionContext(String                           userId,
+                                   String                           engineActionGUID,
+                                   String                           requestType,
+                                   Map<String, String>              requestParameters,
+                                   List<RequestSourceElement>       requestSourceElements,
+                                   List<ActionTargetElement>        actionTargetElements,
+                                   OpenMetadataClient               openMetadataClient,
+                                   ActionControlInterface           actionControlClient,
+                                   DuplicateManagementInterface     duplicateManagementClient,
+                                   GovernanceActionProcessInterface governanceActionProcessClient,
+                                   GovernanceCompletionInterface    governanceCompletionClient,
+                                   WatchDogEventInterface           watchdogEventClient)
     {
         this.userId = userId;
-        this.governanceActionGUID = governanceActionGUID;
+        this.engineActionGUID = engineActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
         this.actionTargetElements = actionTargetElements;
         this.openMetadataClient = openMetadataClient;
-        this.openGovernanceClient = openGovernanceClient;
+        this.actionControlClient = actionControlClient;
+        this.duplicateManagementClient = duplicateManagementClient;
+        this.governanceActionProcessClient = governanceActionProcessClient;
+        this.governanceCompletionClient = governanceCompletionClient;
+        this.watchDogEventClient = watchdogEventClient;
         this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId);
     }
 
@@ -103,9 +124,9 @@ public class GovernanceActionContext implements GovernanceContext,
      * @return string guid
      */
     @Override
-    public String getGovernanceActionGUID()
+    public String getEngineActionGUID()
     {
-        return governanceActionGUID;
+        return engineActionGUID;
     }
 
 
@@ -202,14 +223,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                                   PropertyServerException
     {
         return openMetadataClient.createIncidentReport(userId,
-                                                         qualifiedName,
-                                                         domainIdentifier,
-                                                         background,
-                                                         impactedResources,
-                                                         previousIncidents,
-                                                         incidentClassifiers,
-                                                         additionalProperties,
-                                                         governanceActionGUID);
+                                                       qualifiedName,
+                                                       domainIdentifier,
+                                                       background,
+                                                       impactedResources,
+                                                       previousIncidents,
+                                                       incidentClassifiers,
+                                                       additionalProperties,
+                                                       engineActionGUID);
     }
 
 
@@ -231,14 +252,14 @@ public class GovernanceActionContext implements GovernanceContext,
      */
     @Override
     public void updateActionTargetStatus(String                 actionTargetGUID,
-                                         GovernanceActionStatus status,
+                                         EngineActionStatus     status,
                                          Date                   startDate,
                                          Date                   completionDate,
                                          String                 completionMessage) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        openGovernanceClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate, completionMessage);
+        governanceCompletionClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 
 
@@ -261,7 +282,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         this.completionStatus = status;
 
-        openGovernanceClient.recordCompletionStatus(userId, governanceActionGUID, requestParameters, status, outputGuards, null, null);
+        governanceCompletionClient.recordCompletionStatus(userId, engineActionGUID, requestParameters, status, outputGuards, null, null);
     }
 
 
@@ -286,7 +307,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         this.completionStatus = status;
 
-        openGovernanceClient.recordCompletionStatus(userId, governanceActionGUID, requestParameters, status, outputGuards, newActionTargets, null);
+        governanceCompletionClient.recordCompletionStatus(userId, engineActionGUID, requestParameters, status, outputGuards, newActionTargets, null);
     }
 
 
@@ -352,13 +373,13 @@ public class GovernanceActionContext implements GovernanceContext,
             combinedRequestParameters.putAll(newRequestParameters);
         }
 
-        openGovernanceClient.recordCompletionStatus(userId,
-                                                    governanceActionGUID,
-                                                    combinedRequestParameters,
-                                                    status,
-                                                    outputGuards,
-                                                    newActionTargets,
-                                                    completionMessage);
+        governanceCompletionClient.recordCompletionStatus(userId,
+                                                          engineActionGUID,
+                                                          combinedRequestParameters,
+                                                          status,
+                                                          outputGuards,
+                                                          newActionTargets,
+                                                          completionMessage);
     }
 
 
@@ -1073,12 +1094,72 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                PropertyServerException
     {
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 metadataElementTypeName,
-                                                                 ElementStatus.ACTIVE,
-                                                                 null,
-                                                                 null,
-                                                                 properties,
-                                                                 templateGUID);
+                                                               metadataElementTypeName,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               templateGUID);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         templateGUID,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               null,
+                                                               null,
+                                                               metadataElementTypeName,
+                                                               initialStatus,
+                                                               initialClassifications,
+                                                               anchorGUID,
+                                                               effectiveFrom,
+                                                               effectiveTo,
+                                                               properties,
+                                                               templateGUID,
+                                                               parentGUID,
+                                                               parentRelationshipTypeName,
+                                                               parentRelationshipProperties,
+                                                               parentAtEnd1);
     }
 
 
@@ -1668,16 +1749,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        openGovernanceClient.linkElementsAsPeerDuplicates(userId,
-                                                          metadataElement1GUID,
-                                                          metadataElement2GUID,
-                                                          statusIdentifier,
-                                                          steward,
-                                                          stewardTypeName,
-                                                          stewardPropertyName,
-                                                          source,
-                                                          notes,
-                                                          setKnownDuplicate);
+        duplicateManagementClient.linkElementsAsPeerDuplicates(userId,
+                                                               metadataElement1GUID,
+                                                               metadataElement2GUID,
+                                                               statusIdentifier,
+                                                               steward,
+                                                               stewardTypeName,
+                                                               stewardPropertyName,
+                                                               source,
+                                                               notes,
+                                                               setKnownDuplicate);
     }
 
 
@@ -1710,15 +1791,15 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        openGovernanceClient.linkConsolidatedDuplicate(userId,
-                                                       consolidatedElementGUID,
-                                                       statusIdentifier,
-                                                       steward,
-                                                       stewardTypeName,
-                                                       stewardPropertyName,
-                                                       source,
-                                                       notes,
-                                                       sourceElementGUIDs);
+        duplicateManagementClient.linkConsolidatedDuplicate(userId,
+                                                            consolidatedElementGUID,
+                                                            statusIdentifier,
+                                                            steward,
+                                                            stewardTypeName,
+                                                            stewardPropertyName,
+                                                            source,
+                                                            notes,
+                                                            sourceElementGUIDs);
     }
 
 
@@ -1903,11 +1984,11 @@ public class GovernanceActionContext implements GovernanceContext,
      * There can be only one registered listener.  If this method is called more than once, the new parameters
      * replace the existing parameters.  This means the watchdog governance action service can change the
      * listener and the parameters that control the types of events received while it is running.
-     *
+     * <br><br>
      * The types of events passed to the listener are controlled by the combination of the interesting event types and
      * the interesting metadata types.  That is an event is only passed to the listener if it matches both
      * the interesting event types and the interesting metadata types.
-     *
+     * <br><br>
      * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
      * The type name specified in the interestingMetadataTypes refers to the subject of the event - so it is the type of the metadata element
@@ -1927,7 +2008,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                  List<String>               interestingMetadataTypes,
                                  String                     specificInstance) throws InvalidParameterException
     {
-        openGovernanceClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        watchDogEventClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
@@ -1937,7 +2018,7 @@ public class GovernanceActionContext implements GovernanceContext,
     @Override
     public void disconnectListener()
     {
-        openGovernanceClient.disconnectListener();
+        watchDogEventClient.disconnectListener();
     }
 
 
@@ -1964,35 +2045,35 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceAction(String                qualifiedName,
-                                           int                   domainIdentifier,
-                                           String                displayName,
-                                           String                description,
-                                           List<String>          requestSourceGUIDs,
-                                           List<NewActionTarget> actionTargets,
-                                           Date                  startTime,
-                                           String                governanceEngineName,
-                                           String                requestType,
-                                           Map<String, String>   requestParameters) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public String initiateEngineAction(String                qualifiedName,
+                                       int                   domainIdentifier,
+                                       String                displayName,
+                                       String                description,
+                                       List<String>          requestSourceGUIDs,
+                                       List<NewActionTarget> actionTargets,
+                                       Date                  startTime,
+                                       String                governanceEngineName,
+                                       String                requestType,
+                                       Map<String, String>   requestParameters) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
-        return openGovernanceClient.initiateGovernanceAction(userId,
-                                                             qualifiedName,
-                                                             domainIdentifier,
-                                                             displayName,
-                                                             description,
-                                                             requestSourceGUIDs,
-                                                             actionTargets,
-                                                             null,
-                                                             startTime,
-                                                             governanceEngineName,
-                                                             requestType,
-                                                             requestParameters,
-                                                             null,
-                                                             null,
-                                                             governanceActionGUID,
-                                                             governanceEngineName);
+        return actionControlClient.initiateEngineAction(userId,
+                                                        qualifiedName,
+                                                        domainIdentifier,
+                                                        displayName,
+                                                        description,
+                                                        requestSourceGUIDs,
+                                                        actionTargets,
+                                                        null,
+                                                        startTime,
+                                                        governanceEngineName,
+                                                        requestType,
+                                                        requestParameters,
+                                                        null,
+                                                        null,
+                                                        engineActionGUID,
+                                                        governanceEngineName);
     }
 
 
@@ -2020,36 +2101,36 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceAction(String                qualifiedName,
-                                           int                   domainIdentifier,
-                                           String                displayName,
-                                           String                description,
-                                           List<String>          requestSourceGUIDs,
-                                           List<NewActionTarget> actionTargets,
-                                           Date                  startTime,
-                                           String                governanceEngineName,
-                                           String                requestType,
-                                           Map<String, String>   requestParameters,
-                                           String                processName) throws InvalidParameterException,
+    public String initiateEngineAction(String                qualifiedName,
+                                       int                   domainIdentifier,
+                                       String                displayName,
+                                       String                description,
+                                       List<String>          requestSourceGUIDs,
+                                       List<NewActionTarget> actionTargets,
+                                       Date                  startTime,
+                                       String                governanceEngineName,
+                                       String                requestType,
+                                       Map<String, String>   requestParameters,
+                                       String                processName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return openGovernanceClient.initiateGovernanceAction(userId,
-                                                             qualifiedName,
-                                                             domainIdentifier,
-                                                             displayName,
-                                                             description,
-                                                             requestSourceGUIDs,
-                                                             actionTargets,
-                                                             null,
-                                                             startTime,
-                                                             governanceEngineName,
-                                                             requestType,
-                                                             requestParameters,
-                                                             processName,
-                                                             null,
-                                                             governanceActionGUID,
-                                                             governanceEngineName);
+        return actionControlClient.initiateEngineAction(userId,
+                                                        qualifiedName,
+                                                        domainIdentifier,
+                                                        displayName,
+                                                        description,
+                                                        requestSourceGUIDs,
+                                                        actionTargets,
+                                                        null,
+                                                        startTime,
+                                                        governanceEngineName,
+                                                        requestType,
+                                                        requestParameters,
+                                                        processName,
+                                                        null,
+                                                        engineActionGUID,
+                                                        governanceEngineName);
     }
 
 
@@ -2077,14 +2158,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return openGovernanceClient.initiateGovernanceActionProcess(userId,
-                                                                    processQualifiedName,
-                                                                    requestSourceGUIDs,
-                                                                    actionTargets,
-                                                                    startTime,
-                                                                    requestParameters,
-                                                                    null,
-                                                                    null);
+        return actionControlClient.initiateGovernanceActionProcess(userId,
+                                                                   processQualifiedName,
+                                                                   requestSourceGUIDs,
+                                                                   actionTargets,
+                                                                   startTime,
+                                                                   requestParameters,
+                                                                   null,
+                                                                   null);
     }
 
 
@@ -2096,14 +2177,21 @@ public class GovernanceActionContext implements GovernanceContext,
     @Override
     public String toString()
     {
-        return "GovernanceContext{" +
+        return "GovernanceActionContext{" +
                        "userId='" + userId + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
                        ", completionStatus=" + completionStatus +
-                       ", openMetadataStore=" + openGovernanceClient +
+                       ", engineActionGUID='" + engineActionGUID + '\'' +
+                       ", actionControlClient=" + actionControlClient +
+                       ", duplicateManagementClient=" + duplicateManagementClient +
+                       ", governanceActionProcessClient=" + governanceActionProcessClient +
+                       ", governanceCompletionClient=" + governanceCompletionClient +
+                       ", watchDogEventClient=" + watchDogEventClient +
+                       ", openMetadataClient=" + openMetadataClient +
+                       ", openMetadataStore=" + openMetadataStore +
                        ", propertyHelper=" + propertyHelper +
                        '}';
     }

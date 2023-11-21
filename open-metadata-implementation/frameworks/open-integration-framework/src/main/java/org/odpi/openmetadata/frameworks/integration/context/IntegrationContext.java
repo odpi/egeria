@@ -23,7 +23,6 @@ import java.util.Map;
  * IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
  * services.  Each integration service specializes this class to provide the method appropriate for the particular type of technology it
  * is supporting.
- *
  * This base class supports the common methods available to all types of integration connectors.
  */
 public class IntegrationContext
@@ -34,6 +33,7 @@ public class IntegrationContext
     protected final String                   externalSourceGUID;
     protected final String                   externalSourceName;
     protected       boolean                  externalSourceIsHome    = true;
+    protected final String                   connectorName;
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
 
@@ -42,6 +42,7 @@ public class IntegrationContext
 
     protected final int maxPageSize;
 
+    private boolean isRefreshInProgress = false;
 
     /**
      * Constructor handles standard values for all integration contexts.
@@ -76,6 +77,7 @@ public class IntegrationContext
         this.openMetadataStoreClient      = openMetadataStoreClient;
         this.permittedSynchronization     = permittedSynchronization;
         this.userId                       = connectorUserId;
+        this.connectorName                = connectorName;
         this.externalSourceGUID           = externalSourceGUID;
         this.externalSourceName           = externalSourceName;
         this.integrationConnectorGUID     = integrationConnectorGUID;
@@ -324,6 +326,29 @@ public class IntegrationContext
     }
 
 
+    /**
+     * Return whether there is a refresh in progress.  This method is used in processEvent() to enable to connector to ignore
+     * events while it is running refresh() since many of the events are caused by the refresh process.  Using this flag
+     * prevents the connector from processing the same elements multiple times.
+     *
+     * @return boolean flag
+     */
+    public boolean isRefreshInProgress()
+    {
+        return isRefreshInProgress;
+    }
+
+
+    /**
+     * Set up whether the refresh is in progress or not.
+     *
+     * @param refreshInProgress boolean flag
+     */
+    void setRefreshInProgress(boolean refreshInProgress)
+    {
+        isRefreshInProgress = refreshInProgress;
+    }
+
 
     /**
      * Retrieve the anchorGUID from the Anchors classification.
@@ -389,7 +414,20 @@ public class IntegrationContext
     public boolean isTypeOf(ElementHeader  elementHeader,
                             String         typeName)
     {
-        ElementType elementType = elementHeader.getType();
+        return isTypeOf(elementHeader.getType(), typeName);
+    }
+
+
+    /**
+     * Understand the type of element.  It checks the type and super types.
+     *
+     * @param elementType element to validate
+     * @param typeName type to test
+     * @return boolean flag
+     */
+    public boolean isTypeOf(ElementType  elementType,
+                            String       typeName)
+    {
         if (elementType != null)
         {
             List<String> elementTypeNames = new ArrayList<>();
