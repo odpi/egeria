@@ -2101,9 +2101,6 @@ public class LineageExchangeService extends SchemaExchangeService
      * is more than one relationship between these two elements since it is used to disambiguate
      * the request.  This is often used in conjunction with update.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the element that is making the call
      * @param destinationElementGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
@@ -2117,10 +2114,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public LineageMappingElement getLineageMapping(String  userId,
-                                                   String  assetManagerGUID,
-                                                   String  assetManagerName,
-                                                   String  sourceElementGUID,
+    public LineageMappingElement getLineageMapping(String  sourceElementGUID,
                                                    String  destinationElementGUID,
                                                    String  qualifiedName,
                                                    Date    effectiveTime,

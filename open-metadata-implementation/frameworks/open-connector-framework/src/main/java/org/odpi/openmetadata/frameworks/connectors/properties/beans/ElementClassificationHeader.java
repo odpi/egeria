@@ -61,6 +61,17 @@ public class ElementClassificationHeader extends ElementControlHeader
 
 
     /**
+     * Copy/clone constructor
+     *
+     * @param template template to copy
+     */
+    public ElementClassificationHeader(ElementControlHeader template)
+    {
+        super(template);
+    }
+
+
+    /**
      * Return whether the classification was added explicitly to this asset or propagated from another entity.
      *
      * @return classification origin enum

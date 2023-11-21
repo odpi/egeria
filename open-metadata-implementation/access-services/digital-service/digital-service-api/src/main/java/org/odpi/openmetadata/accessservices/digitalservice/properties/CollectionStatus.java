@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,14 +23,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CollectionStatus implements Serializable
+public enum CollectionStatus
 {
-    ACTIVE   (0,  "Active",   "all the collection members with a current effective dates (default)."),
-    PAST     (1,  "Past",     "all the collection members that have effective dates in the past."),
-    FUTURE   (2,  "Future",   "all the collection members that become effective in the future."),
-    ALL      (99, "All",      "all the collection members linked to the collection irrespective of their effective dates.");
+    /**
+     * All the collection members with a current effective dates (default).
+     */
+    ACTIVE   (0,  "Active",   "All the collection members with a current effective dates (default)."),
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * All the collection members that have effective dates in the past.
+     */
+    PAST     (1,  "Past",     "All the collection members that have effective dates in the past."),
+
+    /**
+     * All the collection members that become effective in the future.
+     */
+    FUTURE   (2,  "Future",   "All the collection members that become effective in the future."),
+
+    /**
+     * All the collection members linked to the collection irrespective of their effective dates.
+     */
+    ALL      (99, "All",      "All the collection members linked to the collection irrespective of their effective dates.");
+
 
     private final int            ordinal;
     private final String         name;

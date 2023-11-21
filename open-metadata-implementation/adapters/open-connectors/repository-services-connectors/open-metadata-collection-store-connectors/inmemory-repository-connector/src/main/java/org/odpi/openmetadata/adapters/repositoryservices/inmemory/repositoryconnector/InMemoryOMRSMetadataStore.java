@@ -230,6 +230,8 @@ class InMemoryOMRSMetadataStore
      */
     synchronized EntityDetail createEntityInStore(EntityDetail entity) throws RepositoryErrorException
     {
+        entity.setGUID(generateGUID(entity.getType().getTypeDefName(), entity.getGUID()));
+
         StoredEntity newStoredEntity = new StoredEntity(entity);
 
         /*
@@ -241,12 +243,26 @@ class InMemoryOMRSMetadataStore
         while (existingStoredEntity != null)
         {
             entityStore.put(entity.getGUID(), existingStoredEntity);
-            entity.setGUID(UUID.randomUUID().toString());
+            entity.setGUID(generateGUID(entity.getType().getTypeDefName(), UUID.randomUUID().toString()));
             newStoredEntity = new StoredEntity(entity);
             existingStoredEntity = entityStore.put(entity.getGUID(), newStoredEntity);
         }
 
         return entity;
+    }
+
+
+    /**
+     * Create a GUID that includes the type name.  This is to help with debugging.
+     *
+     * @param typeName typeName of element.
+     * @param guid random UUID.
+     * @return composite GUID
+     */
+    private String generateGUID(String typeName,
+                                String guid)
+    {
+        return typeName + "-" + guid;
     }
 
 
@@ -258,6 +274,8 @@ class InMemoryOMRSMetadataStore
      */
     synchronized Relationship createRelationshipInStore(Relationship relationship)
     {
+        relationship.setGUID(generateGUID(relationship.getType().getTypeDefName(), relationship.getGUID()));
+
         StoredRelationship newStoredRelationship = new StoredRelationship(relationship);
 
         /*
@@ -269,7 +287,7 @@ class InMemoryOMRSMetadataStore
         while (existingStoredRelationship != null)
         {
             relationshipStore.put(relationship.getGUID(), existingStoredRelationship);
-            relationship.setGUID(UUID.randomUUID().toString());
+            relationship.setGUID(generateGUID(relationship.getType().getTypeDefName(), UUID.randomUUID().toString()));
             newStoredRelationship = new StoredRelationship(relationship);
             existingStoredRelationship = relationshipStore.put(relationship.getGUID(), newStoredRelationship);
         }
@@ -1366,7 +1384,7 @@ class InMemoryOMRSMetadataStore
                                                                boolean oldestFirst)
         {
             List<Relationship> historyResults = new ArrayList<>();
-            Date               followingUpdateTime = null;
+            Date               followingUpdateTime;
 
             /*
              * Do not have a relationship

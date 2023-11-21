@@ -4,8 +4,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.direc
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreProviderBase;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreProvider extends OpenMetadata
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = DirectoryBasedOpenMetadataArchiveStoreConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.DirectoryBasedOpenMetadataArchiveStoreConnector";
 
     /*
      * Names of configuration properties
@@ -55,7 +55,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreProvider extends OpenMetadata
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -80,6 +80,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreProvider extends OpenMetadata
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.IN_DEVELOPMENT);
         componentDescription.setComponentName(connectorQualifiedName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

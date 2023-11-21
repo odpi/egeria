@@ -7,9 +7,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummariesResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummaryResponse;
 import org.slf4j.LoggerFactory;
@@ -41,7 +38,6 @@ public class EngineHostRESTServices
      * @param userId identifier of calling user
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  GovernanceEngineException there was a problem detected by the governance engine.
@@ -121,7 +117,6 @@ public class EngineHostRESTServices
      * @param userId calling user
      * @param serviceURLMarker URL marker of the engine service
      * @return list of statuses - on for each assigned governance engines or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -159,7 +154,6 @@ public class EngineHostRESTServices
      * @param serverName engine host server name
      * @param userId calling user
      * @return list of statuses - on for each assigned governance engines or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */

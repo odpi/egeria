@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import java.util.Map;
 
 /**
- * OMAGNotAuthorizedException is used when invalid parameters are passed on an OMAG call.
+ * OMAGNotAuthorizedException is used when the calling user does not have permission to issue an OMAG call.
  */
 public class OMAGNotAuthorizedException extends OMAGCheckedExceptionBase
 {

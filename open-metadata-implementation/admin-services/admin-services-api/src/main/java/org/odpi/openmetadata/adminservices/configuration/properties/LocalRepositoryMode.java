@@ -7,14 +7,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * LocalRepositoryMode classifies the capability of the server's local repository.
- *
  * This value will influence the server type classification.  It is also useful documentation
  * for an administrator to understand the expected capability that each repository is able to perform.
  * <ul>
@@ -44,24 +41,46 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum LocalRepositoryMode implements Serializable
+public enum LocalRepositoryMode
 {
+    /**
+     * The mode of the repository is unknown.
+     */
     UNCLASSIFIED         (0,  "Unclassified",        "The mode of the repository is unknown."),
+
+    /**
+     * The server is running without a local repository.
+     */
     NO_REPOSITORY        (1,  "No Repository",       "The server is running without a local repository."),
+
+    /**
+     * This local repository is read only and is able to act as a cache for metadata but not to master new values.
+     */
     METADATA_CACHE       (2,  "Metadata Cache",      "This local repository is read only and is able to act as a cache " +
                                                              "for metadata but not to master new values."),
+
+    /**
+     * This local repository is actually a proxy to third party metadata repository. It is restricted to the capability of the third party repository.
+     */
     REPOSITORY_PROXY     (3,  "Repository Proxy",    "This local repository is actually a proxy to third party " +
                                                              "metadata repository. It is restricted to the capability of the third party repository."),
+
+    /**
+     * This local repository is a plugin repository that is part of Egeria and has been built
+     * specifically for open metadata and as such is able to dynamically absorb new types of metadata.
+     */
     OPEN_METADATA_NATIVE (4,  "Open Metadata Native","This local repository is a plugin repository that is " +
                                                              "part of Egeria and has been built " +
                                                 "specifically for open metadata and as such is able to dynamically absorb new types of metadata."),
+
+    /**
+     * This local repository has been built by a third party as a plugin repository.
+     */
     PLUGIN_REPOSITORY    (5,  "Plugin Repository",   "This local repository has been built by a third party as a plugin repository.");
 
-    private static final long serialVersionUID = 1L;
-
-    private  int    ordinal;
-    private  String name;
-    private  String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

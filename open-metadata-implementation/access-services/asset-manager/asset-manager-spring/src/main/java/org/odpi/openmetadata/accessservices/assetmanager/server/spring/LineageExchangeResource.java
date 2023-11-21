@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-manager/users/{userId}")
 
-@Tag(name="Asset Manager OMAS",
+@Tag(name="Metadata Access Server: Asset Manager OMAS",
      description="The Asset Manager OMAS provides APIs and events for managing metadata exchange with third party asset managers, such as data catalogs.",
-     externalDocs=@ExternalDocumentation(description="Asset Manager Open Metadata Access Service (OMAS)",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/asset-manager/overview"))
 
 public class LineageExchangeResource
@@ -1019,10 +1019,11 @@ public class LineageExchangeResource
                                                @PathVariable String                        userId,
                                                @PathVariable String                        elementGUID,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forLineage,
+                                                             boolean                      forLineage,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forDuplicateProcessing,
-                                               @RequestBody  UpdateRequestBody requestBody)
+                                                             boolean                      forDuplicateProcessing,
+                                               @RequestBody  (required = false)
+                                                             UpdateRequestBody            requestBody)
     {
         return restAPI.setBusinessSignificant(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1049,10 +1050,11 @@ public class LineageExchangeResource
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        elementGUID,
                                                  @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                      forLineage,
+                                                               boolean                      forLineage,
                                                  @RequestParam (required = false, defaultValue = "false")
-                                                         boolean                      forDuplicateProcessing,
-                                                 @RequestBody  UpdateRequestBody requestBody)
+                                                               boolean                      forDuplicateProcessing,
+                                                 @RequestBody  (required = false)
+                                                                UpdateRequestBody           requestBody)
     {
         return restAPI.clearBusinessSignificant(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1086,7 +1088,8 @@ public class LineageExchangeResource
                                                     boolean                 forLineage,
                                       @RequestParam (required = false, defaultValue = "false")
                                                     boolean                 forDuplicateProcessing,
-                                      @RequestBody  RelationshipRequestBody requestBody)
+                                      @RequestBody  (required = false)
+                                                    RelationshipRequestBody requestBody)
     {
         return restAPI.setupDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1120,7 +1123,8 @@ public class LineageExchangeResource
                                                              boolean         forLineage,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean         forDuplicateProcessing,
-                                               @RequestBody  NameRequestBody requestBody)
+                                               @RequestBody  (required = false)
+                                                             NameRequestBody requestBody)
     {
         return restAPI.getDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1143,14 +1147,15 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/data-flows/{dataFlowGUID}/update")
 
-    public VoidResponse updateDataFlow(@PathVariable String              serverName,
-                                       @PathVariable String              userId,
+    public VoidResponse updateDataFlow(@PathVariable String                  serverName,
+                                       @PathVariable String                  userId,
                                        @PathVariable String                  dataFlowGUID,
                                        @RequestParam (required = false, defaultValue = "false")
-                                               boolean                       forLineage,
+                                                     boolean                 forLineage,
                                        @RequestParam (required = false, defaultValue = "false")
-                                               boolean                       forDuplicateProcessing,
-                                       @RequestBody  RelationshipRequestBody requestBody)
+                                                     boolean                 forDuplicateProcessing,
+                                       @RequestBody  (required = false)
+                                                     RelationshipRequestBody requestBody)
     {
         return restAPI.updateDataFlow(serverName, userId, dataFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1173,14 +1178,15 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/data-flows/{dataFlowGUID}/remove")
 
-    public VoidResponse clearDataFlow(@PathVariable String                             serverName,
-                                      @PathVariable String                             userId,
-                                      @PathVariable String                             dataFlowGUID,
+    public VoidResponse clearDataFlow(@PathVariable String                        serverName,
+                                      @PathVariable String                        userId,
+                                      @PathVariable String                        dataFlowGUID,
                                       @RequestParam (required = false, defaultValue = "false")
-                                              boolean                      forLineage,
+                                                    boolean                       forLineage,
                                       @RequestParam (required = false, defaultValue = "false")
-                                              boolean                      forDuplicateProcessing,
-                                      @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                    boolean                       forDuplicateProcessing,
+                                      @RequestBody  (required = false)
+                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearDataFlow(serverName, userId, dataFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1205,16 +1211,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/data-flows/suppliers/{dataSupplierGUID}/consumers/retrieve")
 
-    public DataFlowElementsResponse getDataFlowConsumers(@PathVariable String                             serverName,
-                                                         @PathVariable String                             userId,
-                                                         @PathVariable String                             dataSupplierGUID,
-                                                         @RequestParam int                    startFrom,
-                                                         @RequestParam int                    pageSize,
+    public DataFlowElementsResponse getDataFlowConsumers(@PathVariable String                       serverName,
+                                                         @PathVariable String                       userId,
+                                                         @PathVariable String                       dataSupplierGUID,
+                                                         @RequestParam int                          startFrom,
+                                                         @RequestParam int                          pageSize,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forLineage,
+                                                                       boolean                      forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forDuplicateProcessing,
-                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                       boolean                      forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1239,16 +1246,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/data-flows/consumers/{dataConsumerGUID}/suppliers/retrieve")
 
-    public DataFlowElementsResponse getDataFlowSuppliers(@PathVariable String                             serverName,
-                                                         @PathVariable String                             userId,
-                                                         @PathVariable String                             dataConsumerGUID,
-                                                         @RequestParam int                    startFrom,
-                                                         @RequestParam int                    pageSize,
+    public DataFlowElementsResponse getDataFlowSuppliers(@PathVariable String                        serverName,
+                                                         @PathVariable String                        userId,
+                                                         @PathVariable String                        dataConsumerGUID,
+                                                         @RequestParam int                           startFrom,
+                                                         @RequestParam int                           pageSize,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forLineage,
+                                                                       boolean                       forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forDuplicateProcessing,
-                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                       boolean                       forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1273,16 +1281,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/next-steps/{nextStepGUID}")
 
-    public GUIDResponse setupControlFlow(@PathVariable String                 serverName,
-                                         @PathVariable String                 userId,
-                                         @PathVariable String                 currentStepGUID,
-                                         @PathVariable String                 nextStepGUID,
-                                         @RequestParam boolean                assetManagerIsHome,
+    public GUIDResponse setupControlFlow(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @PathVariable String                  currentStepGUID,
+                                         @PathVariable String                  nextStepGUID,
+                                         @RequestParam boolean                 assetManagerIsHome,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forLineage,
+                                                       boolean                 forLineage,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forDuplicateProcessing,
-                                         @RequestBody  RelationshipRequestBody requestBody)
+                                                       boolean                 forDuplicateProcessing,
+                                         @RequestBody  (required = false)
+                                                       RelationshipRequestBody requestBody)
     {
         return restAPI.setupControlFlow(serverName, userId, currentStepGUID, nextStepGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1313,10 +1322,11 @@ public class LineageExchangeResource
                                                      @PathVariable String          currentStepGUID,
                                                      @PathVariable String          nextStepGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forLineage,
+                                                                   boolean         forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forDuplicateProcessing,
-                                                     @RequestBody  NameRequestBody requestBody)
+                                                                   boolean         forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                                   NameRequestBody requestBody)
     {
         return restAPI.getControlFlow(serverName, userId, currentStepGUID, nextStepGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1343,10 +1353,11 @@ public class LineageExchangeResource
                                           @PathVariable String                 userId,
                                           @PathVariable String                 controlFlowGUID,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                  boolean                      forLineage,
+                                                        boolean                      forLineage,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                  boolean                      forDuplicateProcessing,
-                                          @RequestBody  RelationshipRequestBody requestBody)
+                                                        boolean                      forDuplicateProcessing,
+                                          @RequestBody  (required = false)
+                                                        RelationshipRequestBody requestBody)
     {
         return restAPI.updateControlFlow(serverName, userId, controlFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1369,14 +1380,15 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/control-flows/{controlFlowGUID}/remove")
 
-    public VoidResponse clearControlFlow(@PathVariable String                             serverName,
-                                         @PathVariable String                             userId,
-                                         @PathVariable String                             controlFlowGUID,
+    public VoidResponse clearControlFlow(@PathVariable String                        serverName,
+                                         @PathVariable String                        userId,
+                                         @PathVariable String                        controlFlowGUID,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forLineage,
+                                                       boolean                       forLineage,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forDuplicateProcessing,
-                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                       boolean                       forDuplicateProcessing,
+                                         @RequestBody  (required = false)
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearControlFlow(serverName, userId, controlFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1401,16 +1413,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/next-steps/retrieve")
 
-    public ControlFlowElementsResponse getControlFlowNextSteps(@PathVariable String                             serverName,
-                                                               @PathVariable String                             userId,
-                                                               @PathVariable String                             currentStepGUID,
-                                                               @RequestParam int                    startFrom,
-                                                               @RequestParam int                    pageSize,
+    public ControlFlowElementsResponse getControlFlowNextSteps(@PathVariable String                         serverName,
+                                                               @PathVariable String                         userId,
+                                                               @PathVariable String                         currentStepGUID,
+                                                               @RequestParam int                            startFrom,
+                                                               @RequestParam int                            pageSize,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                      forLineage,
+                                                                              boolean                       forLineage,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                      forDuplicateProcessing,
-                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                              boolean                       forDuplicateProcessing,
+                                                               @RequestBody  (required = false)
+                                                                              EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1435,16 +1448,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/previous-steps/retrieve")
 
-    public ControlFlowElementsResponse getControlFlowPreviousSteps(@PathVariable String                             serverName,
-                                                                   @PathVariable String                             userId,
-                                                                   @PathVariable String                             currentStepGUID,
-                                                                   @RequestParam int                    startFrom,
-                                                                   @RequestParam int                    pageSize,
+    public ControlFlowElementsResponse getControlFlowPreviousSteps(@PathVariable String                         serverName,
+                                                                   @PathVariable String                         userId,
+                                                                   @PathVariable String                         currentStepGUID,
+                                                                   @RequestParam int                            startFrom,
+                                                                   @RequestParam int                            pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forLineage,
+                                                                                  boolean                       forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forDuplicateProcessing,
-                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                                  boolean                       forDuplicateProcessing,
+                                                                   @RequestBody  (required = false)
+                                                                                  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1509,10 +1523,11 @@ public class LineageExchangeResource
                                                      @PathVariable String          callerGUID,
                                                      @PathVariable String          calledGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forLineage,
+                                                                   boolean         forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                             boolean                      forDuplicateProcessing,
-                                                     @RequestBody  NameRequestBody requestBody)
+                                                                   boolean         forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                                   NameRequestBody requestBody)
     {
         return restAPI.getProcessCall(serverName, userId, callerGUID, calledGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1542,7 +1557,8 @@ public class LineageExchangeResource
                                                   boolean                      forLineage,
                                           @RequestParam (required = false, defaultValue = "false")
                                                   boolean                      forDuplicateProcessing,
-                                          @RequestBody  RelationshipRequestBody requestBody)
+                                          @RequestBody  (required = false)
+                                                        RelationshipRequestBody requestBody)
     {
         return restAPI.updateProcessCall(serverName, userId, processCallGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1565,14 +1581,15 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/process-calls/{processCallGUID}/remove")
 
-    public VoidResponse clearProcessCall(@PathVariable String                             serverName,
-                                         @PathVariable String                             userId,
-                                         @PathVariable String                             processCallGUID,
+    public VoidResponse clearProcessCall(@PathVariable String                        serverName,
+                                         @PathVariable String                        userId,
+                                         @PathVariable String                        processCallGUID,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forLineage,
+                                                       boolean                       forLineage,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forDuplicateProcessing,
-                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                       boolean                       forDuplicateProcessing,
+                                         @RequestBody  (required = false)
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearProcessCall(serverName, userId, processCallGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1597,16 +1614,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/process-calls/callers/{callerGUID}/called/retrieve")
 
-    public ProcessCallElementsResponse getProcessCalled(@PathVariable String                             serverName,
-                                                        @PathVariable String                             userId,
-                                                        @PathVariable String                             callerGUID,
-                                                        @RequestParam int                    startFrom,
-                                                        @RequestParam int                    pageSize,
+    public ProcessCallElementsResponse getProcessCalled(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @PathVariable String                        callerGUID,
+                                                        @RequestParam int                           startFrom,
+                                                        @RequestParam int                           pageSize,
                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                boolean                      forLineage,
+                                                                      boolean                       forLineage,
                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                boolean                      forDuplicateProcessing,
-                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                      boolean                       forDuplicateProcessing,
+                                                        @RequestBody  (required = false)
+                                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getProcessCalled(serverName, userId, callerGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1631,16 +1649,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/process-calls/called/{calledGUID}/callers/retrieve")
 
-    public ProcessCallElementsResponse getProcessCallers(@PathVariable String                             serverName,
-                                                         @PathVariable String                             userId,
-                                                         @PathVariable String                             calledGUID,
-                                                         @RequestParam int                    startFrom,
-                                                         @RequestParam int                    pageSize,
+    public ProcessCallElementsResponse getProcessCallers(@PathVariable String                        serverName,
+                                                         @PathVariable String                        userId,
+                                                         @PathVariable String                        calledGUID,
+                                                         @RequestParam int                           startFrom,
+                                                         @RequestParam int                           pageSize,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forLineage,
+                                                                       boolean                       forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                      forDuplicateProcessing,
-                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                       boolean                       forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getProcessCallers(serverName, userId, calledGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1674,7 +1693,8 @@ public class LineageExchangeResource
                                                           boolean                            forLineage,
                                             @RequestParam (required = false, defaultValue = "false")
                                                           boolean                            forDuplicateProcessing,
-                                            @RequestBody  RelationshipRequestBody requestBody)
+                                            @RequestBody  (required = false)
+                                                          RelationshipRequestBody            requestBody)
     {
         return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1705,10 +1725,11 @@ public class LineageExchangeResource
                                                            @PathVariable String          sourceElementGUID,
                                                            @PathVariable String          destinationElementGUID,
                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean         forLineage,
+                                                                         boolean         forLineage,
                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean         forDuplicateProcessing,
-                                                           @RequestBody  NameRequestBody requestBody)
+                                                                         boolean         forDuplicateProcessing,
+                                                           @RequestBody  (required = false)
+                                                                         NameRequestBody requestBody)
     {
         return restAPI.getLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1735,10 +1756,11 @@ public class LineageExchangeResource
                                              @PathVariable String                       userId,
                                              @PathVariable String                       lineageMappingGUID,
                                              @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                      forLineage,
+                                                           boolean                      forLineage,
                                              @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                      forDuplicateProcessing,
-                                             @RequestBody   RelationshipRequestBody      requestBody)
+                                                           boolean                      forDuplicateProcessing,
+                                             @RequestBody  (required = false)
+                                                           RelationshipRequestBody      requestBody)
     {
         return restAPI.updateLineageMapping(serverName, userId, lineageMappingGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1761,14 +1783,15 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/lineage-mappings/{lineageMappingGUID}/remove")
 
-    public VoidResponse clearLineageMapping(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             lineageMappingGUID,
+    public VoidResponse clearLineageMapping(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        lineageMappingGUID,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forLineage,
+                                                          boolean                       forLineage,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forDuplicateProcessing,
-                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                          boolean                       forDuplicateProcessing,
+                                            @RequestBody  (required = false)
+                                                          EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearLineageMapping(serverName, userId, lineageMappingGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1799,10 +1822,11 @@ public class LineageExchangeResource
                                                                         @RequestParam int                           startFrom,
                                                                         @RequestParam int                           pageSize,
                                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                                boolean                       forLineage,
+                                                                                      boolean                       forLineage,
                                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                                boolean                       forDuplicateProcessing,
-                                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                                      boolean                       forDuplicateProcessing,
+                                                                        @RequestBody  (required = false)
+                                                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1833,10 +1857,11 @@ public class LineageExchangeResource
                                                                    @RequestParam int                    startFrom,
                                                                    @RequestParam int                    pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forLineage,
+                                                                                 boolean                      forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forDuplicateProcessing,
-                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                                                                 boolean                      forDuplicateProcessing,
+                                                                   @RequestBody  (required = false)
+                                                                                 EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }

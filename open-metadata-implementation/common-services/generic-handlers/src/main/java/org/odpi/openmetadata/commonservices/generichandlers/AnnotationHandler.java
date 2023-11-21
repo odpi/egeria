@@ -27,7 +27,6 @@ import java.util.*;
  * ODF annotation beans and generic support for retrieving annotations.  The reason for this hybrid approach is that there are a huge range
  * of annotation types in ODF and currently all OMASs that work with discovery metadata use the ODF beans on their API.
  * Therefore, it makes sense to have support for these beans in a common location so that the implementation can be shared.
- *
  * Note: this handler only supports current effective time with lineage and deduplication set to false since this is all the current
  * discovery use cases need.
  */
@@ -173,24 +172,18 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         // todo add all the other types
-        if (annotation instanceof ClassificationAnnotation)
+        if (annotation instanceof ClassificationAnnotation classificationAnnotation)
         {
-            ClassificationAnnotation classificationAnnotation = (ClassificationAnnotation) annotation;
-
             builder.setClassificationSubtypeProperties(classificationAnnotation.getCandidateClassifications());
         }
-        else if (annotation instanceof DataClassAnnotation)
+        else if (annotation instanceof DataClassAnnotation dataClassAnnotation)
         {
-            DataClassAnnotation dataClassAnnotation = (DataClassAnnotation) annotation;
-
             builder.setDataClassSubtypeProperties(dataClassAnnotation.getCandidateDataClassGUIDs(),
                                                   dataClassAnnotation.getMatchingValues(),
                                                   dataClassAnnotation.getNonMatchingValues());
         }
-        else if (annotation instanceof DataProfileAnnotation)
+        else if (annotation instanceof DataProfileAnnotation dataProfileAnnotation)
         {
-            DataProfileAnnotation dataProfileAnnotation = (DataProfileAnnotation) annotation;
-
             builder.setDataProfileSubtypeProperties(dataProfileAnnotation.getLength(),
                                                     dataProfileAnnotation.getInferredDataType(),
                                                     dataProfileAnnotation.getInferredFormat(),
@@ -206,73 +199,55 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                     dataProfileAnnotation.getValueRangeTo(),
                                                     dataProfileAnnotation.getAverageValue());
         }
-        else if (annotation instanceof DataSourcePhysicalStatusAnnotation)
+        else if (annotation instanceof DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation)
         {
-            DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation = (DataSourcePhysicalStatusAnnotation) annotation;
-
             builder.setDataSourcePhysicalStatusSubtypeProperties(dataSourcePhysicalStatusAnnotation.getDataSourceProperties(),
                                                                  dataSourcePhysicalStatusAnnotation.getCreateTime(),
                                                                  dataSourcePhysicalStatusAnnotation.getModifiedTime(),
                                                                  dataSourcePhysicalStatusAnnotation.getSize(),
                                                                  dataSourcePhysicalStatusAnnotation.getEncoding());
         }
-        else if (annotation instanceof DataSourceMeasurementAnnotation)
+        else if (annotation instanceof DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation)
         {
-            DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation = (DataSourceMeasurementAnnotation) annotation;
-
             builder.setDataSourceMeasurementSubtypeProperties(dataSourceMeasurementAnnotation.getDataSourceProperties());
         }
-        else if (annotation instanceof QualityAnnotation)
+        else if (annotation instanceof QualityAnnotation qualityAnnotation)
         {
-            QualityAnnotation qualityAnnotation = (QualityAnnotation) annotation;
-
             builder.setQualitySubtypeProperties(qualityAnnotation.getQualityDimension(),
                                                 qualityAnnotation.getQualityScore());
         }
-        else if (annotation instanceof RelationshipAdviceAnnotation)
+        else if (annotation instanceof RelationshipAdviceAnnotation relationshipAdviceAnnotation)
         {
-            RelationshipAdviceAnnotation relationshipAdviceAnnotation = (RelationshipAdviceAnnotation) annotation;
-
             builder.setRelationshipAdviceSubtypeProperties(relationshipAdviceAnnotation.getRelatedEntityGUID(),
                                                            relationshipAdviceAnnotation.getRelationshipTypeName(),
                                                            relationshipAdviceAnnotation.getRelationshipProperties());
         }
-        else if (annotation instanceof RequestForActionAnnotation)
+        else if (annotation instanceof RequestForActionAnnotation requestForActionAnnotation)
         {
-            RequestForActionAnnotation requestForActionAnnotation = (RequestForActionAnnotation) annotation;
-
             builder.setRequestForActionSubtypeProperties(requestForActionAnnotation.getDiscoveryActivity(),
                                                          requestForActionAnnotation.getActionRequested(),
                                                          requestForActionAnnotation.getActionProperties());
         }
-        else if (annotation instanceof SchemaAnalysisAnnotation)
+        else if (annotation instanceof SchemaAnalysisAnnotation schemaAnalysisAnnotation)
         {
-            SchemaAnalysisAnnotation schemaAnalysisAnnotation = (SchemaAnalysisAnnotation) annotation;
-
             builder.setSchemaAnalysisSubTypeProperties(schemaAnalysisAnnotation.getSchemaName(),
                                                        schemaAnalysisAnnotation.getSchemaName());
         }
-        else if (annotation instanceof SemanticAnnotation)
+        else if (annotation instanceof SemanticAnnotation semanticAnnotation)
         {
-            SemanticAnnotation semanticAnnotation = (SemanticAnnotation) annotation;
-
             builder.setSemanticSubTypeProperties(semanticAnnotation.getInformalTerm(),
                                                  semanticAnnotation.getInformalTopic(),
                                                  semanticAnnotation.getCandidateGlossaryTermGUIDs(),
                                                  semanticAnnotation.getCandidateGlossaryCategoryGUIDs());
         }
-        else if (annotation instanceof SuspectDuplicateAnnotation)
+        else if (annotation instanceof SuspectDuplicateAnnotation suspectDuplicateAnnotation)
         {
-            SuspectDuplicateAnnotation suspectDuplicateAnnotation = (SuspectDuplicateAnnotation) annotation;
-
             builder.setSuspectDuplicateSubTypeProperties(suspectDuplicateAnnotation.getDuplicateAnchorGUIDs(),
                                                          suspectDuplicateAnnotation.getMatchingPropertyNames(),
                                                          suspectDuplicateAnnotation.getMatchingClassificationNames(),
                                                          suspectDuplicateAnnotation.getMatchingAttachmentGUIDs(),
                                                          suspectDuplicateAnnotation.getMatchingRelationshipGUIDs());
         }
-
-
 
         return builder;
     }
@@ -397,6 +372,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               discoveryReportGUID,
                                                               discoveryReportGUIDParameterName,
                                                               OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -471,6 +447,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               parentDataFieldGUID,
                                                               dataFieldGUIDParameterName,
                                                               OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -543,6 +520,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               parentAnnotationGUID,
                                                               parentAnnotationGUIDParameterName,
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -704,6 +682,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                               annotationGUID,
                                                               annotationGUIDParameterName,
                                                               OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,

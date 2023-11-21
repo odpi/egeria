@@ -1096,6 +1096,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Investigate and correct the cause of the conversion failure."),
 
     /**
+     * OMRS-AUDIT-LOG-400-009 - The archive manager is not active in server {0}
+     */
+    ARCHIVE_MANAGER_NOT_ACTIVE(400, "OMRS-AUDIT-LOG-400-009",
+                                      "The archive manager is not active in server {0}",
+                                      "The system is unable to load an open metadata archive because the archive manager is not active in this server.",
+                                      "Redirect the load request to a metadata access server."),
+
+    /**
      * OMRS-REPOSITORY-404-001 - The open metadata repository connector for server {0} is not active and is unable to service the {1} request
      */
     REPOSITORY_NOT_AVAILABLE(404, "OMRS-REPOSITORY-404-001",

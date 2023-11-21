@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.client;
 
+import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalIdentifierManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
@@ -17,9 +19,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProp
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
@@ -35,7 +39,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -44,13 +50,18 @@ import java.util.Map;
 /**
  * AssetManagerBaseClient supports the common properties and functions for the Asset Manager OMAS.
  */
-public class AssetManagerBaseClient
+public class AssetManagerBaseClient implements ExternalIdentifierManagerInterface
 {
+    protected final String assetManagerGUIDParameterName = "assetManagerGUID";
+    protected final String assetManagerNameParameterName = "assetManagerName";
+
     final protected String serverName;               /* Initialized in constructor */
     final protected String serverPlatformURLRoot;    /* Initialized in constructor */
 
     final protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    final protected PropertyHelper          propertyHelper          = new PropertyHelper();
     final protected AssetManagerRESTClient  restClient;               /* Initialized in constructor */
+    final protected OpenMetadataStoreClient openMetadataStoreClient;   /* Initialized in constructor */
     final protected NullRequestBody nullRequestBody = new NullRequestBody();
 
     final protected String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}";
@@ -72,7 +83,8 @@ public class AssetManagerBaseClient
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
@@ -96,7 +108,8 @@ public class AssetManagerBaseClient
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
@@ -124,7 +137,8 @@ public class AssetManagerBaseClient
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
@@ -154,7 +168,8 @@ public class AssetManagerBaseClient
     {
         final String methodName = "Client Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
@@ -184,7 +199,8 @@ public class AssetManagerBaseClient
     {
         final String methodName = "Client Constructor (with REST client)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
@@ -330,7 +346,6 @@ public class AssetManagerBaseClient
 
         return correlationProperties;
     }
-
 
 
     /**
@@ -584,6 +599,359 @@ public class AssetManagerBaseClient
 
         return requestBody;
     }
+
+
+    /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public void addExternalIdentifier(String                       userId,
+                                      String                       assetManagerGUID,
+                                      String                       assetManagerName,
+                                      String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        final String methodName                      = "addExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
+        final String externalIdentifierPropertiesParameterName = "externalIdentifierProperties";
+        final String externalIdentifierParameterName = "externalIdentifierProperties.externalIdentifier";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
+        invalidParameterHandler.validateObject(externalIdentifierProperties, externalIdentifierPropertiesParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalIdentifierProperties.getExternalIdentifier(), externalIdentifierParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/add";
+
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        openMetadataElementTypeName,
+                                        openMetadataElementGUID);
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public void updateExternalIdentifier(String                       userId,
+                                         String                       assetManagerGUID,
+                                         String                       assetManagerName,
+                                         String                       openMetadataElementGUID,
+                                         String                       openMetadataElementTypeName,
+                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        final String methodName                      = "updateExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
+        final String externalIdentifierPropertiesParameterName = "externalIdentifierProperties";
+        final String externalIdentifierParameterName = "externalIdentifierProperties.externalIdentifier";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
+        invalidParameterHandler.validateObject(externalIdentifierProperties, externalIdentifierPropertiesParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalIdentifierProperties.getExternalIdentifier(), externalIdentifierParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/update";
+
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        openMetadataElementTypeName,
+                                        openMetadataElementGUID);
+    }
+
+
+    /**
+     * Remove an external identifier from an existing open metadata element.  The open metadata element is not
+     * affected.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifier unique identifier of this element in the third party asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public void removeExternalIdentifier(String                   userId,
+                                         String                   assetManagerGUID,
+                                         String                   assetManagerName,
+                                         String                   openMetadataElementGUID,
+                                         String                   openMetadataElementTypeName,
+                                         String                   externalIdentifier) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName                      = "removeExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
+        final String externalIdentifierParameterName = "externalIdentifier";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/remove";
+
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalIdentifier(externalIdentifier);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        openMetadataElementTypeName,
+                                        openMetadataElementGUID);
+    }
+
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifier unique identifier of this element in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public void confirmSynchronization(String userId,
+                                       String assetManagerGUID,
+                                       String assetManagerName,
+                                       String openMetadataElementGUID,
+                                       String openMetadataElementTypeName,
+                                       String externalIdentifier) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName                      = "confirmSynchronization";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String externalIdentifierParameterName = "externalIdentifier";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/synchronized";
+
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalIdentifier(externalIdentifier);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        openMetadataElementTypeName,
+                                        openMetadataElementGUID);
+    }
+
+
+    /**
+     * Return the list of headers for open metadata elements that are associated with a particular
+     * external identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalIdentifier unique identifier of this element in the external asset manager
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element headers
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public List<ElementHeader> getElementsForExternalIdentifier(String userId,
+                                                                String assetManagerGUID,
+                                                                String assetManagerName,
+                                                                String externalIdentifier,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName                      = "getElementsForExternalIdentifier";
+        final String externalIdentifierParameterName = "externalIdentifier";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/external-identifiers/open-metadata-elements?startFrom={2}&pageSize={3}";
+
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalIdentifier(externalIdentifier);
+
+        ElementHeadersResponse restResult = restClient.callElementHeadersPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Check that the supplied external identifier matches the element GUID.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID element guid used for the lookup
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param elementExternalIdentifier external identifier value
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    protected void validateExternalIdentifier(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  openMetadataElementGUID,
+                                              String  openMetadataElementTypeName,
+                                              String  elementExternalIdentifier) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        if ((elementExternalIdentifier != null) && (assetManagerGUID != null) && (assetManagerName != null))
+        {
+            this.confirmSynchronization(userId,
+                                        openMetadataElementGUID,
+                                        openMetadataElementTypeName,
+                                        elementExternalIdentifier,
+                                        assetManagerGUID,
+                                        assetManagerName);
+        }
+    }
+
+
+    /**
+     * Assemble the correlation headers attached to the supplied element guid.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     *
+     * @return list of correlation headers (note if asset manager identifiers are present, only the matching correlation header is returned)
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    protected List<MetadataCorrelationHeader> getMetadataCorrelationHeaders(String userId,
+                                                                            String assetManagerGUID,
+                                                                            String assetManagerName,
+                                                                            String openMetadataElementGUID,
+                                                                            String openMetadataElementTypeName) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
+    {
+        final String methodName = "getMetadataCorrelationHeaders";
+        final String guidParameterName = "openMetadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(openMetadataElementGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/correlation-headers";
+
+        MetadataCorrelationHeadersResponse restResult = restClient.callCorrelationHeadersPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, null),
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      openMetadataElementTypeName,
+                                                                                                      openMetadataElementGUID);
+
+        return restResult.getElementList();
+    }
+
 
     /* =====================================================================================================================
      * Basic client methods

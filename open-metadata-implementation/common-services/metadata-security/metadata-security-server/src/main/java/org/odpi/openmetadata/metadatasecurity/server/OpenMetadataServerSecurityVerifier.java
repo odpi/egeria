@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.metadatasecurity.*;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
@@ -118,6 +119,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private static final String OWNER_PROPERTY_NAME_PROPERTY_NAME         = "ownerPropertyName";                   /* from Area 4 */
     private static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType"; /* deprecated */
 
+    private static final String assetActionDescription = "userAssetMonitoring";
 
     private OpenMetadataRepositorySecurity repositorySecurityConnector = null;
     private OpenMetadataEventsSecurity     eventsSecurityConnector     = null;
@@ -127,7 +129,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private OpenMetadataAssetSecurity      assetSecurityConnector      = null;
     private OpenMetadataGlossarySecurity   glossarySecurityConnector   = null;
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler  invalidParameterHandler     = new InvalidParameterHandler();
+
+    private AuditLog                       auditLog                     = null;
 
     /**
      * Default constructor
@@ -153,6 +157,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
     {
         OpenMetadataServerSecurityConnector connector;
+        this.auditLog = auditLog;
 
         try
         {
@@ -281,7 +286,6 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * Determine the appropriate setting for the asset zones depending on the content of the asset and the
      * settings of both default zones and supported zones.  This method is called whenever an asset's
      * values are changed.
-     *
      * The default behavior is to keep the updated zones as they are.
      *
      * @param defaultZones setting of the default zones for the service
@@ -320,7 +324,6 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     /**
      * Determine the appropriate setting for the asset zones depending on the content of the asset and the
      * default zones.  This is called whenever a new asset is created.
-     *
      * The default behavior is to use the default values, unless the zones have been explicitly set up,
      * in which case, they are left unchanged.
      *
@@ -1283,6 +1286,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName name of parameter supplying the assetGUID
      * @param assetEntity entity storing the asset's properties
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param suppliedSupportedZones list of supported zones from the caller.
      * @param repositoryHelper helper for OMRS objects
      * @param serviceName calling service
@@ -1295,6 +1299,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          String               assetGUID,
                                          String               assetGUIDParameterName,
                                          EntityDetail         assetEntity,
+                                         boolean              isExplicitGetRequest,
                                          List<String>         suppliedSupportedZones,
                                          OMRSRepositoryHelper repositoryHelper,
                                          String               serviceName,
@@ -1321,6 +1326,28 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             Asset assetBean = this.getAssetBeanFromEntity(assetEntity, repositoryHelper, serviceName, methodName);
 
             assetSecurityConnector.validateUserForAssetRead(userId, assetBean);
+        }
+
+        if (auditLog != null)
+        {
+            if (isExplicitGetRequest)
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_READ.getMessageDefinition(userId,
+                                                                                                           assetEntity.getType().getTypeDefName(),
+                                                                                                           assetGUID,
+                                                                                                           methodName,
+                                                                                                           serviceName));
+            }
+            else
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_SEARCH.getMessageDefinition(userId,
+                                                                                                             assetEntity.getType().getTypeDefName(),
+                                                                                                             assetGUID,
+                                                                                                             methodName,
+                                                                                                             serviceName));
+            }
         }
     }
 
@@ -1393,6 +1420,40 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 assetSecurityConnector.validateUserForAssetRead(userId, asset);
             }
         }
+
+        if (auditLog != null)
+        {
+            if (isUpdate)
+            {
+                if (isFeedback)
+                {
+                    auditLog.logMessage(assetActionDescription,
+                                        OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition(userId,
+                                                                                                                          assetEntity.getType().getTypeDefName(),
+                                                                                                                          assetGUID,
+                                                                                                                          methodName,
+                                                                                                                          serviceName));
+                }
+                else
+                {
+                    auditLog.logMessage(assetActionDescription,
+                                        OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition(userId,
+                                                                                                                            assetEntity.getType().getTypeDefName(),
+                                                                                                                            assetGUID,
+                                                                                                                            methodName,
+                                                                                                                            serviceName));
+                }
+            }
+            else
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
+                                                                                                                      assetEntity.getType().getTypeDefName(),
+                                                                                                                      assetGUID,
+                                                                                                                      methodName,
+                                                                                                                      serviceName));
+            }
+        }
     }
 
 
@@ -1437,6 +1498,16 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
             assetSecurityConnector.validateUserForAssetDetailUpdate(userId, originalAsset, assetAuditHeader, updatedAsset);
         }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(assetActionDescription,
+                                OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_UPDATE.getMessageDefinition(userId,
+                                                                                                         originalAssetEntity.getType().getTypeDefName(),
+                                                                                                         originalAssetEntity.getGUID(),
+                                                                                                         methodName,
+                                                                                                         serviceName));
+        }
     }
 
 
@@ -1465,6 +1536,16 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             Asset asset = this.getAssetBeanFromEntity(assetEntity, repositoryHelper, serviceName, methodName);
 
             assetSecurityConnector.validateUserForAssetDelete(userId, asset);
+        }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(assetActionDescription,
+                                OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_DELETE.getMessageDefinition(userId,
+                                                                                                         assetEntity.getType().getTypeDefName(),
+                                                                                                         assetEntity.getGUID(),
+                                                                                                         methodName,
+                                                                                                         serviceName));
         }
     }
 

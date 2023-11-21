@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHa
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
@@ -72,6 +71,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -109,6 +110,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -145,6 +148,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -185,6 +190,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -229,6 +236,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -272,6 +281,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -315,6 +326,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
@@ -354,6 +367,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
         log.debug(METHOD_WITH_RESPONSE, methodName, response);
 
@@ -386,6 +401,8 @@ public class AssetCatalogRESTService {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
 
         log.debug(METHOD_WITH_RESPONSE, methodName, response);

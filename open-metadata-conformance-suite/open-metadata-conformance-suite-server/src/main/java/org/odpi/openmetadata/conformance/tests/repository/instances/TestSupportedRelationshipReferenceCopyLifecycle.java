@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
@@ -374,27 +374,26 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         EntityDetail refCopyEntityTwo = null;
 
 
-        try {
+        try
+        {
             Integer remainingCount = this.pollCount;
-            while (refCopyEntityOne == null && remainingCount > 0) {
+            while (refCopyEntityOne == null && remainingCount > 0)
+            {
                 refCopyEntityOne = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entityOne.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
-            if (refCopyEntityOne == null && remainingCount == 0) {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+            if (refCopyEntityOne == null && remainingCount == 0)
+            {
                 workPad.getAuditLog()
-                        .logRecord(assertion1 + "-" + entityOne.getGUID(),
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion1 + "-" + entityOne.getGUID(),
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
             if (refCopyEntityOne != null)
                 createdEntityRefCopiesTUT.add(refCopyEntityOne);
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -410,28 +409,27 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         }
 
 
-        try {
+        try
+        {
             Integer remainingCount = this.pollCount;
-            while (refCopyEntityTwo == null && remainingCount > 0) {
+            while (refCopyEntityTwo == null && remainingCount > 0)
+            {
 
                 refCopyEntityTwo = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entityTwo.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
-            if (refCopyEntityTwo == null && remainingCount == 0) {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+            if (refCopyEntityTwo == null && remainingCount == 0)
+            {
                 workPad.getAuditLog()
-                        .logRecord(assertion1 + "-" + entityTwo.getGUID(),
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion1 + "-" + entityTwo.getGUID(),
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
             if (refCopyEntityTwo != null)
                 createdEntityRefCopiesTUT.add(refCopyEntityTwo);
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -454,27 +452,26 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         Relationship refRelationship = null;
 
-        try {
+        try
+        {
             Integer remainingCount = this.pollCount;
-            while (refRelationship == null && remainingCount > 0) {
+            while (refRelationship == null && remainingCount > 0)
+            {
                 refRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
-            if (refRelationship == null && remainingCount == 0) {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+            if (refRelationship == null && remainingCount == 0)
+            {
                 workPad.getAuditLog()
-                        .logRecord(assertion1 + "-" + newRelationship.getGUID(),
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion1 + "-" + newRelationship.getGUID(),
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
             if (refRelationship != null)
                 createdRelationshipRefCopiesTUT.add(refRelationship);
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -943,15 +940,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             }
             if (refreshedRelationshipRefCopy == null && remainingCount == 0)
             {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
-                        .logRecord(assertion10,
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion10,
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
         }
         catch (Exception exc)
@@ -1067,15 +1058,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             if (survivingRelRefCopy == null && remainingCount == 0)
             {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
-                        .logRecord(assertion12,
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion12,
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
         }
         catch (Exception exc)

@@ -7,9 +7,9 @@ lifecycle_state: 'active'
 project_category: 'metadata'
 project_lead: &odpi_releng_ptl
     name: 'Mandy Chessell'
-    email: 'mandy_chessell@uk.ibm.com'
+    email: 'mandy.chessell@pdr-associates.com'
     github_id: 'mandy-chessell'
-    company: 'IBM'
+    company: 'Pragmatic Data Research Ltd'
     timezone: 'Europe/London'
 primary_contact: *odpi_egeria_ptl
 issue_tracking:

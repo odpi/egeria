@@ -1,0 +1,263 @@
+{
+  "class": "OMAGServerConfig",
+  "versionId": "V2.0",
+  "localServerId": "996892b6-7299-4046-8928-b6687a7818ee",
+  "localServerName": "cocoMDS1",
+  "localServerType": "Open Metadata and Governance Server",
+  "localServerURL": "https://localhost:9443",
+  "localServerUserId": "cocoMDS1npa",
+  "maxPageSize": 1000,
+  "accessServicesConfig": [
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 200,
+      "accessServiceDevelopmentStatus": "IN_DEVELOPMENT",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogAdmin",
+      "accessServiceName": "Asset Catalog",
+      "accessServiceFullName": "Asset Catalog OMAS",
+      "accessServiceURLMarker": "asset-catalog",
+      "accessServiceDescription": "Search and understand your assets",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/asset-catalog/overview/",
+      "accessServiceOperationalStatus": "ENABLED",
+      "accessServiceOptions": {
+        "SupportedTypesForSearch": [
+          "RelationalTable",
+          "TabularColumn",
+          "TabularFileColumn",
+          "RelationalColumn",
+          "GlossaryTerm",
+          "GlossaryCategory",
+          "Process",
+          "DataFile",
+          "Asset",
+          "Application",
+          "SoftwareServerCapability"
+        ]
+      }
+    },
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 204,
+      "accessServiceDevelopmentStatus": "IN_DEVELOPMENT",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetmanager.admin.AssetManagerAdmin",
+      "accessServiceName": "Asset Manager",
+      "accessServiceFullName": "Asset Manager OMAS",
+      "accessServiceURLMarker": "asset-manager",
+      "accessServiceDescription": "Manage metadata from a third party asset manager",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/asset-manager/overview/",
+      "accessServiceOperationalStatus": "ENABLED",
+      "accessServiceOptions": {
+        "SupportedTypesForSearch": [
+          "RelationalTable",
+          "TabularColumn",
+          "TabularFileColumn",
+          "RelationalColumn",
+          "GlossaryTerm",
+          "GlossaryCategory",
+          "Process",
+          "DataFile",
+          "Asset",
+          "Application",
+          "SoftwareServerCapability"
+        ]
+      }
+    },
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 210,
+      "accessServiceDevelopmentStatus": "TECHNICAL_PREVIEW",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.datamanager.admin.DataManagerAdmin",
+      "accessServiceName": "Data Manager",
+      "accessServiceFullName": "Data Manager OMAS",
+      "accessServiceURLMarker": "data-manager",
+      "accessServiceDescription": "Capture changes to the data stores and data set managed by a data manager such as a database server, content manager or file system.",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/data-manager/overview/",
+      "accessServiceOperationalStatus": "ENABLED"
+    }
+  ],
+  "repositoryServicesConfig": {
+    "class": "RepositoryServicesConfig",
+    "auditLogConnections": [
+      {
+        "class": "Connection",
+        "headerVersion": 0,
+        "qualifiedName": "SLF4J- [<Unknown>, Information, Event, Decision, Action, Error, Exception, Security, Startup, Shutdown, Asset, Types, Cohort]",
+        "displayName": "SLF4J",
+        "connectorType": {
+          "class": "ConnectorType",
+          "headerVersion": 0,
+          "type": {
+            "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "typeName": "ConnectorType",
+            "typeVersion": 1,
+            "typeDescription": "A set of properties describing a type of connector."
+          },
+          "guid": "e8303911-ba1c-4640-974e-c4d57ee1b310",
+          "qualifiedName": "Egeria:AuditLogDestinationConnector:SLF4J",
+          "displayName": "SLF4J Audit Log Destination Connector",
+          "description": "Connector supports logging of audit log messages to the slf4j logger ecosystem.",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider",
+          "connectorFrameworkName": "Open Connector Framework (OCF)",
+          "connectorInterfaceLanguage": "Java",
+          "connectorInterfaces": [
+            "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+            "org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore"
+          ],
+          "recognizedConfigurationProperties": [
+            "supportedSeverities"
+          ]
+        },
+        "configurationProperties": {
+          "supportedSeverities": [
+            "Startup",
+            "Shutdown"
+          ]
+        }
+      }
+    ],
+    "localRepositoryConfig": {
+      "class": "LocalRepositoryConfig",
+      "metadataCollectionId": "838005fc-e09f-4688-af89-58254a155cc6",
+      "localRepositoryMode": "OPEN_METADATA_NATIVE",
+      "localRepositoryLocalConnection": {
+        "class": "Connection",
+        "headerVersion": 0,
+        "displayName": "In Memory Local Repository Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "headerVersion": 0,
+          "type": {
+            "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "typeName": "ConnectorType",
+            "typeVersion": 1,
+            "typeDescription": "A set of properties describing a type of connector."
+          },
+          "guid": "65cc9091-757f-4bcd-b937-426160be8bc2",
+          "qualifiedName": "Egeria:OMRSRepositoryConnector:InMemory",
+          "displayName": "In Memory OMRS Repository Connector",
+          "description": "Native open metadata repository connector that maps open metadata calls to a set of in memory hash maps - demo use only.",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider",
+          "connectorFrameworkName": "Open Connector Framework (OCF)",
+          "connectorInterfaceLanguage": "Java",
+          "connectorInterfaces": [
+            "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+            "org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent",
+            "org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager"
+          ]
+        }
+      },
+      "localRepositoryRemoteConnection": {
+        "class": "Connection",
+        "headerVersion": 0,
+        "displayName": "Local Repository Remote Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "headerVersion": 0,
+          "type": {
+            "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "typeName": "ConnectorType",
+            "typeVersion": 1,
+            "typeDescription": "A set of properties describing a type of connector."
+          },
+          "guid": "75ea56d1-656c-43fb-bc0c-9d35c5553b9e",
+          "qualifiedName": "Egeria:OMRSRepositoryConnector:CohortMemberClient:REST",
+          "displayName": "REST Cohort Member Client Connector",
+          "description": "Cohort member client connector that provides access to open metadata located in a remote repository via REST calls.",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider",
+          "connectorFrameworkName": "Open Connector Framework (OCF)",
+          "connectorInterfaceLanguage": "Java",
+          "connectorInterfaces": [
+            "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+            "org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent",
+            "org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager"
+          ]
+        },
+        "endpoint": {
+          "class": "Endpoint",
+          "headerVersion": 0,
+          "address": "https://localhost:9443/servers/cocoMDS1"
+        }
+      },
+      "eventsToSaveRule": "ALL",
+      "eventsToSendRule": "ALL"
+    },
+    "enterpriseAccessConfig": {
+      "class": "EnterpriseAccessConfig",
+      "enterpriseMetadataCollectionName": "cocoMDS1 Enterprise Metadata Collection",
+      "enterpriseMetadataCollectionId": "df77a8e6-ef88-48a6-9462-ce5e9697c347",
+      "enterpriseOMRSTopicConnection": {
+        "class": "VirtualConnection",
+        "headerVersion": 0,
+        "displayName": "Enterprise OMRS Topic Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "headerVersion": 0,
+          "type": {
+            "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "typeName": "ConnectorType",
+            "typeVersion": 1,
+            "typeDescription": "A set of properties describing a type of connector."
+          },
+          "qualifiedName": "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider",
+          "displayName": "OMRS Topic Connector",
+          "description": "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, or to notify Open Metadata Access Services (OMASs) of changes to metadata in the enterprise.",
+          "connectorProviderClassName": "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider",
+          "connectorFrameworkName": "Open Connector Framework (OCF)",
+          "connectorInterfaceLanguage": "Java",
+          "connectorInterfaces": [
+            "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+            "org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent",
+            "org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener",
+            "org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension",
+            "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopic"
+          ]
+        },
+        "embeddedConnections": [
+          {
+            "class": "EmbeddedConnection",
+            "headerVersion": 0,
+            "position": 0,
+            "displayName": "Enterprise OMRS Events",
+            "embeddedConnection": {
+              "class": "Connection",
+              "headerVersion": 0,
+              "displayName": "Kafka Event Bus Connection",
+              "connectorType": {
+                "class": "ConnectorType",
+                "headerVersion": 0,
+                "type": {
+                  "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+                  "typeName": "ConnectorType",
+                  "typeVersion": 1,
+                  "typeDescription": "A set of properties describing a type of connector."
+                },
+                "guid": "ed8e682b-2fec-4403-b551-02f8c46322ef",
+                "qualifiedName": "Egeria:OpenMetadataTopicConnector:InMemory",
+                "displayName": "In Memory Open Metadata Topic Connector",
+                "description": "In Memory Open Metadata Topic Connector supports string based events over an in memory event bus.",
+                "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider",
+                "connectorFrameworkName": "Open Connector Framework (OCF)",
+                "connectorInterfaceLanguage": "Java",
+                "connectorInterfaces": [
+                  "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+                  "org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent",
+                  "java.lang.Runnable",
+                  "org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic"
+                ]
+              },
+              "endpoint": {
+                "class": "Endpoint",
+                "headerVersion": 0,
+                "address": "cocoMDS1.openmetadata.repositoryservices.enterprise.cocoMDS1.OMRSTopic"
+              },
+              "configurationProperties": {
+                "local.server.id": "996892b6-7299-4046-8928-b6687a7818ee"
+              }
+            }
+          }
+        ]
+      },
+      "enterpriseOMRSTopicProtocolVersion": "V1"
+    }
+  }
+}

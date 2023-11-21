@@ -18,6 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-topic-connectors')
     implementation 'org.springframework:spring-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

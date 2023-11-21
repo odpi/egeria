@@ -20,6 +20,7 @@ import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorE
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -254,6 +255,41 @@ public class OpenMetadataExchangeService
 
 
     /**
+     * Retrieve the metadata elements of the requested type that contain the requested string.
+     *
+     * @param searchString           name to retrieve
+     * @param typeName               name of the type to limit the results to (may be null to mean all types)
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     *
+     * @throws InvalidParameterException  the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
+                                                                    String  typeName,
+                                                                    Date    effectiveTime,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return openMetadataStoreClient.findMetadataElementsWithString(userId,
+                                                                      searchString,
+                                                                      typeName,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      startFrom,
+                                                                      pageSize);
+    }
+
+
+
+    /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID            unique identifier for the starting metadata element
@@ -287,6 +323,46 @@ public class OpenMetadataExchangeService
                                                                   effectiveTime,
                                                                   startFrom,
                                                                   pageSize);
+    }
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<RelatedMetadataElements> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
+                                                                         String  metadataElementAtEnd2GUID,
+                                                                         String  relationshipTypeName,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime,
+                                                                         int     startFrom,
+                                                                         int     pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return openMetadataStoreClient.getMetadataElementRelationships(userId,
+                                                                       metadataElementAtEnd1GUID,
+                                                                       metadataElementAtEnd2GUID,
+                                                                       relationshipTypeName,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       startFrom,
+                                                                       pageSize);
     }
 
 
@@ -449,6 +525,101 @@ public class OpenMetadataExchangeService
                                                                         templateGUID);
         }
     }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         templateGUID,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String methodName = "createMetadataElementInStore";
+
+        if (synchronizationDirection == SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+
+        if (assetManagerIsHome)
+        {
+            return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                        null,
+                                                                        null,
+                                                                        metadataElementTypeName,
+                                                                        initialStatus,
+                                                                        initialClassifications,
+                                                                        anchorGUID,
+                                                                        effectiveFrom,
+                                                                        effectiveTo,
+                                                                        properties,
+                                                                        templateGUID,
+                                                                        parentGUID,
+                                                                        parentRelationshipTypeName,
+                                                                        parentRelationshipProperties,
+                                                                        parentAtEnd1);
+        }
+        else
+        {
+            return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                        assetManagerGUID,
+                                                                        assetManagerName,
+                                                                        metadataElementTypeName,
+                                                                        initialStatus,
+                                                                        initialClassifications,
+                                                                        anchorGUID,
+                                                                        effectiveFrom,
+                                                                        effectiveTo,
+                                                                        properties,
+                                                                        templateGUID,
+                                                                        parentGUID,
+                                                                        parentRelationshipTypeName,
+                                                                        parentRelationshipProperties,
+                                                                        parentAtEnd1);
+        }
+    }
+
 
 
     /**

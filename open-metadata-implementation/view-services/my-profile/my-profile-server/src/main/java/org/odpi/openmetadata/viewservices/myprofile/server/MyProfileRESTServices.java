@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.myprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.viewservices.myprofile.properties.PersonalProfileProperties;
 import org.odpi.openmetadata.viewservices.myprofile.rest.PersonalProfileResponse;
@@ -22,7 +23,7 @@ import java.util.Map;
  * The MyProfileRESTServices provides the server-side implementation of the My Profile Open Metadata
  * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
  */
-public class MyProfileRESTServices
+public class MyProfileRESTServices extends TokenController
 {
     private static final MyProfileInstanceHandler instanceHandler = new MyProfileInstanceHandler();
 
@@ -38,29 +39,32 @@ public class MyProfileRESTServices
     {
     }
 
+
     /**
      * Return the profile for this user.
      *
      * @param serverName name of the server instances for this request
-     * @param userId userId of the user making the request.
      *
      * @return profile response object or or null or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public PersonalProfileResponse getMyProfile(String serverName,
-                                                String userId)
+    public PersonalProfileResponse getMyProfile(String serverName)
     {
         final String methodName = "getMyProfile";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OrganizationManagement client = instanceHandler.getOrganizationManagementClient(userId, serverName, methodName);
 

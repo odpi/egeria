@@ -10,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CollectionProperties describes the core properties of a collection.
+ * CollectionProperties describes the core properties of a collection.  The collection is a managed list of elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,8 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class CollectionProperties extends ReferenceableProperties
 {
-    private String          name               = null;
-    private String          description        = null;
+    private String name           = null;
+    private String description    = null;
+    private String collectionType = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class CollectionProperties extends ReferenceableProperties
         {
             this.name = template.getName();
             this.description = template.getDescription();
+            this.collectionType = template.getCollectionType();
         }
     }
 
@@ -99,6 +101,28 @@ public class CollectionProperties extends ReferenceableProperties
 
 
     /**
+     * Return a descriptive name for the collection's type.
+     *
+     * @return string name
+     */
+    public String getCollectionType()
+    {
+        return collectionType;
+    }
+
+
+    /**
+     * Set up a descriptive name for the collection's type.
+     *
+     * @param collectionType string name
+     */
+    public void setCollectionType(String collectionType)
+    {
+        this.collectionType = collectionType;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -109,6 +133,7 @@ public class CollectionProperties extends ReferenceableProperties
         return "CollectionProperties{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
+                       ", collectionType='" + collectionType + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", typeName='" + getTypeName() + '\'' +
@@ -139,7 +164,7 @@ public class CollectionProperties extends ReferenceableProperties
             return false;
         }
         CollectionProperties that = (CollectionProperties) objectToCompare;
-        return Objects.equals(getName(), that.getName()) &&
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getCollectionType(), that.getCollectionType()) &&
                        Objects.equals(getDescription(), that.getDescription());
     }
 
@@ -152,6 +177,6 @@ public class CollectionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionType());
     }
 }

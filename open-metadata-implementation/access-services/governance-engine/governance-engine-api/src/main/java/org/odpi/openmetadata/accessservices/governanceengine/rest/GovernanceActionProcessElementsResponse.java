@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessElementsResponse extends GovernanceEngineOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<GovernanceActionProcessElement> elements = null;
 
     /**

@@ -23,15 +23,18 @@ dependencies {
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
-    implementation project(':open-metadata-implementation:platform-services:platform-services-server')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-server')
+    runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.slf4j:slf4j-api'
     runtimeOnly 'org.hibernate:hibernate-validator'
+    runtimeOnly project(':open-metadata-implementation:user-security:user-authn')
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'

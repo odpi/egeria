@@ -100,24 +100,24 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                     }
                 }
             }
-            else if (event instanceof GovernanceActionEvent)
+            else if (event instanceof EngineActionEvent)
             {
-                GovernanceActionEvent   governanceActionEvent = (GovernanceActionEvent)event;
-                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.get(governanceActionEvent.getGovernanceEngineName());
+                EngineActionEvent       engineActionEvent       = (EngineActionEvent)event;
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.get(engineActionEvent.getGovernanceEngineName());
 
                 if (governanceEngineHandler != null)
                 {
                     try
                     {
-                        governanceEngineHandler.executeGovernanceAction(governanceActionEvent.getGovernanceActionGUID());
+                        governanceEngineHandler.executeEngineAction(engineActionEvent.getEngineActionGUID());
                     }
                     catch (Exception error)
                     {
                         auditLog.logException(actionDescription,
-                                              EngineHostServicesAuditCode.GOVERNANCE_ACTION_FAILED.getMessageDefinition(governanceActionEvent.getGovernanceEngineName(),
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        error.getMessage()),
-                                              governanceActionEvent.toString(),
+                                              EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionEvent.getGovernanceEngineName(),
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                              engineActionEvent.toString(),
                                               error);
                     }
                 }
@@ -140,7 +140,7 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                         catch (Exception error)
                         {
                             auditLog.logException(actionDescription,
-                                                  EngineHostServicesAuditCode.GOVERNANCE_ACTION_FAILED.getMessageDefinition(
+                                                  EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(
                                                           watchdogGovernanceServiceEvent.getGovernanceEngineName(),
                                                           error.getClass().getName(),
                                                           error.getMessage()),

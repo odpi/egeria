@@ -65,7 +65,7 @@ Postman supports the definition of variables like hostname, kafka queue, userId,
 specific Postman commands.  This makes it easier for them to be used by multiple users, or with different
 configurations.
 
-A superset of all of the potential variables that we use in our samples (along with default values) are provided in:
+A superset of all the potential variables that we use in our samples (along with default values) are provided in:
 [Egeria.postman_environment.json](Egeria.postman_environment.json).
 
 You can either download the linked file and import it into Postman, or always import the latest version by importing
@@ -85,7 +85,7 @@ the following:
 - `cohort`: the name of the cohort with which the server should interact
 - `kafkaep`: the Apache Kafka endpoint (hostname:port) to use for Egeria's event bus
 
-[Learn more more about Postman Environments](https://learning.getpostman.com/docs/postman/environments-and-globals/intro-to-environments-and-globals/).
+[Learn more about Postman Environments](https://learning.getpostman.com/docs/postman/environments-and-globals/intro-to-environments-and-globals/).
 
 
 ----

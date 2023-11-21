@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
@@ -33,10 +33,10 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected String                     governanceServiceGUID;
     protected String                     governanceServiceName;
 
-    private final GovernanceEngineClient governanceActionClient;
+    private final GovernanceContextClient engineActionClient;
 
     protected Connector governanceService;
-    protected String    governanceActionGUID;
+    protected String    engineActionGUID;
     protected String    serviceRequestType;
     protected AuditLog  auditLog;
 
@@ -49,8 +49,8 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param governanceEngineProperties properties of the governance engine - used for message logging
      * @param governanceEngineGUID unique identifier of the governance engine - used for message logging
      * @param engineHostUserId userId for making updates to the governance actions
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param governanceActionClient client for processing governance actions
+     * @param engineActionGUID unique identifier of the engine action that triggered this governance service
+     * @param engineActionClient client for processing engine actions
      * @param serviceRequestType incoming request type
      * @param governanceServiceGUID unique identifier of the governance service
      * @param governanceServiceName name of this governance  service - used for message logging
@@ -60,8 +60,8 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,
                                        String                     governanceEngineGUID,
                                        String                     engineHostUserId,
-                                       String                     governanceActionGUID,
-                                       GovernanceEngineClient     governanceActionClient,
+                                       String                     engineActionGUID,
+                                       GovernanceContextClient    engineActionClient,
                                        String                     serviceRequestType,
                                        String                     governanceServiceGUID,
                                        String                     governanceServiceName,
@@ -73,8 +73,8 @@ public abstract class GovernanceServiceHandler implements Runnable
         this.engineHostUserId           = engineHostUserId;
         this.governanceServiceGUID      = governanceServiceGUID;
         this.governanceServiceName      = governanceServiceName;
-        this.governanceActionGUID       = governanceActionGUID;
-        this.governanceActionClient     = governanceActionClient;
+        this.engineActionGUID           = engineActionGUID;
+        this.engineActionClient         = engineActionClient;
         this.serviceRequestType         = serviceRequestType;
         this.governanceService          = governanceService;
         this.auditLog                   = auditLog;
@@ -130,13 +130,13 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void updateActionTargetStatus(String                 actionTargetGUID,
-                                         GovernanceActionStatus status,
-                                         Date                   startDate,
-                                         Date                   completionDate,
-                                         String                 completionMessage) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public void updateActionTargetStatus(String             actionTargetGUID,
+                                         EngineActionStatus status,
+                                         Date               startDate,
+                                         Date               completionDate,
+                                         String             completionMessage) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName = "updateActionTargetStatus";
 
@@ -161,18 +161,18 @@ public abstract class GovernanceServiceHandler implements Runnable
                 completionTime = completionDate.toString();
             }
 
-            auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_TARGET_COMPLETION.getMessageDefinition(governanceActionGUID,
-                                                                                                                                 governanceServiceName,
-                                                                                                                                 getGovernanceEngineName(),
-                                                                                                                                 serviceRequestType,
-                                                                                                                                 actionTargetGUID,
-                                                                                                                                 statusString,
-                                                                                                                                 startTime,
-                                                                                                                                 completionTime,
-                                                                                                                                 completionMessage));
+            auditLog.logMessage(methodName, EngineHostServicesAuditCode.ENGINE_ACTION_TARGET_COMPLETION.getMessageDefinition(engineActionGUID,
+                                                                                                                             governanceServiceName,
+                                                                                                                             getGovernanceEngineName(),
+                                                                                                                             serviceRequestType,
+                                                                                                                             actionTargetGUID,
+                                                                                                                             statusString,
+                                                                                                                             startTime,
+                                                                                                                             completionTime,
+                                                                                                                             completionMessage));
         }
 
-        governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate, completionMessage);
+        engineActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 
 
@@ -233,24 +233,24 @@ public abstract class GovernanceServiceHandler implements Runnable
                 }
             }
 
-            auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_RECORD_COMPLETION.getMessageDefinition(governanceActionGUID,
-                                                                                                                                 governanceServiceName,
-                                                                                                                                 getGovernanceEngineName(),
-                                                                                                                                 serviceRequestType,
-                                                                                                                                 statusString,
-                                                                                                                                 guardsString,
-                                                                                                                                 requestParameterNames,
-                                                                                                                                 actionTargetMap.toString(),
-                                                                                                                                 completionMessage));
+            auditLog.logMessage(methodName, EngineHostServicesAuditCode.ENGINE_ACTION_RECORD_COMPLETION.getMessageDefinition(engineActionGUID,
+                                                                                                                             governanceServiceName,
+                                                                                                                             getGovernanceEngineName(),
+                                                                                                                             serviceRequestType,
+                                                                                                                             statusString,
+                                                                                                                             guardsString,
+                                                                                                                             requestParameterNames,
+                                                                                                                             actionTargetMap.toString(),
+                                                                                                                             completionMessage));
         }
 
-        governanceActionClient.recordCompletionStatus(engineHostUserId,
-                                                      governanceActionGUID,
-                                                      requestParameters,
-                                                      status,
-                                                      outputGuards,
-                                                      newActionTargets,
-                                                      completionMessage);
+        engineActionClient.recordCompletionStatus(engineHostUserId,
+                                                  engineActionGUID,
+                                                  requestParameters,
+                                                  status,
+                                                  outputGuards,
+                                                  newActionTargets,
+                                                  completionMessage);
     }
 
 

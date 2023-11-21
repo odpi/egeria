@@ -8,11 +8,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManager
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -336,6 +340,11 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalIdentifierUsage(),
                                                 requestBody.getExternalIdentifierSource(),
                                                 requestBody.getMappingProperties(),
+                                                requestBody.getExternalInstanceCreatedBy(),
+                                                requestBody.getExternalInstanceCreationTime(),
+                                                requestBody.getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getExternalInstanceLastUpdateTime(),
+                                                requestBody.getExternalInstanceVersion(),
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
@@ -439,6 +448,11 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalIdentifierUsage(),
                                                 requestBody.getExternalIdentifierSource(),
                                                 requestBody.getMappingProperties(),
+                                                requestBody.getExternalInstanceCreatedBy(),
+                                                requestBody.getExternalInstanceCreationTime(),
+                                                requestBody.getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getExternalInstanceLastUpdateTime(),
+                                                requestBody.getExternalInstanceVersion(),
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
@@ -451,6 +465,97 @@ public class AssetManagerRESTServices
                                                 false,
                                                 new Date(),
                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * That the external identifier matches the open metadata GUID.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public BooleanResponse validateExternalIdentifier(String                        serverName,
+                                                      String                        userId,
+                                                      String                        openMetadataElementGUID,
+                                                      String                        openMetadataElementTypeName,
+                                                      MetadataCorrelationProperties requestBody)
+    {
+        final String methodName                      = "validateExternalIdentifier";
+        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
+        final String assetManagerGUIDParameterName   = "assetManagerGUID";
+        final String externalIdentifierParameterName = "requestBody.externalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler =
+                        instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+
+                if ((requestBody.getExternalIdentifier() != null) &&
+                    (requestBody.getAssetManagerGUID() != null) &&
+                    (requestBody.getAssetManagerName() != null))
+                {
+                    response.setFlag(handler.confirmSynchronization(userId,
+                                                                    openMetadataElementGUID,
+                                                                    openMetadataGUIDParameterName,
+                                                                    openMetadataElementTypeName,
+                                                                    requestBody.getExternalIdentifier(),
+                                                                    externalIdentifierParameterName,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    assetManagerGUIDParameterName,
+                                                                    requestBody.getAssetManagerName(),
+                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    null,
+                                                                    methodName) != null);
+                }
+                else
+                {
+                    response.setFlag(true);
+                }
             }
             else
             {
@@ -497,10 +602,10 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse removeExternalIdentifier(String                        serverName,
-                                                 String                        userId,
-                                                 String                        openMetadataElementGUID,
-                                                 String                        openMetadataElementTypeName,
+    public VoidResponse removeExternalIdentifier(String            serverName,
+                                                 String            userId,
+                                                 String            openMetadataElementGUID,
+                                                 String            openMetadataElementTypeName,
                                                  boolean           forLineage,
                                                  boolean           forDuplicateProcessing,
                                                  UpdateRequestBody requestBody)
@@ -603,13 +708,13 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse confirmSynchronization(String            serverName,
-                                               String            userId,
-                                               String            openMetadataElementGUID,
-                                               String            openMetadataElementTypeName,
-                                               boolean           forLineage,
-                                               boolean           forDuplicateProcessing,
-                                               UpdateRequestBody requestBody)
+    public VoidResponse confirmSynchronization(String                        serverName,
+                                               String                        userId,
+                                               String                        openMetadataElementGUID,
+                                               String                        openMetadataElementTypeName,
+                                               boolean                       forLineage,
+                                               boolean                       forDuplicateProcessing,
+                                               MetadataCorrelationProperties requestBody)
     {
         final String methodName                           = "confirmSynchronization";
         final String openMetadataElementGUIDParameterName = "openMetadataElementGUID";
@@ -625,7 +730,7 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            if (requestBody != null)
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
@@ -635,21 +740,107 @@ public class AssetManagerRESTServices
                                                openMetadataElementGUID,
                                                openMetadataElementGUIDParameterName,
                                                openMetadataElementTypeName,
-                                               requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                               requestBody.getExternalIdentifier(),
                                                externalIdentifierParameterName,
-                                               requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                               requestBody.getAssetManagerGUID(),
                                                assetManagerGUIDParameterName,
-                                               requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                               requestBody.getAssetManagerName(),
                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
-                                               requestBody.getEffectiveTime(),
+                                               null,
                                                methodName);
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the unique identifier of the external asset manager from its qualified name.
+     * Typically, the qualified name comes from the integration connector configuration.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody details of the external identifier and its scope
+     *
+     * @return list of correlation header elements, null if null or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public MetadataCorrelationHeadersResponse getMetadataCorrelationHeaders(String                        serverName,
+                                                                            String                        userId,
+                                                                            String                        openMetadataElementGUID,
+                                                                            String                        openMetadataElementTypeName,
+                                                                            boolean                       forLineage,
+                                                                            boolean                       forDuplicateProcessing,
+                                                                            EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName                    = "getMetadataCorrelationHeaders";
+        final String openMetadataGUIDParameterName = "openMetadataElementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        MetadataCorrelationHeadersResponse response = new MetadataCorrelationHeadersResponse();
+        AuditLog                           auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+
+                response.setElementList(handler.getExternalIdentifiersForScope(userId,
+                                                                               openMetadataElementGUID,
+                                                                               openMetadataGUIDParameterName,
+                                                                               openMetadataElementTypeName,
+                                                                               requestBody.getAssetManagerGUID(),
+                                                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                               requestBody.getAssetManagerName(),
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               0,
+                                                                               0,
+                                                                               requestBody.getEffectiveTime(),
+                                                                               methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+
         }
         catch (InvalidParameterException error)
         {
@@ -757,5 +948,4 @@ public class AssetManagerRESTServices
 
         return response;
     }
-
 }

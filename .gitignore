@@ -105,11 +105,15 @@ egeria-lineage-repositories/**
 /OpenConnectorsArchive.json
 /OpenMetadataTypes.json
 /SimpleAPICatalog.json
+/SimpleCatalog.json
 /SimpleDataCatalog.json
 /SimpleEventCatalog.json
 /SimpleGovernanceCatalog.json
 /*Archive.json
 /BigGlossary*.json
+
+# Ignore report output
+component-id-report.md
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.IntegrationGroupElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement;
@@ -31,7 +30,6 @@ public class IntegrationGroupHandler
 {
     protected String                     serverName;        /* Initialized in constructor */
     protected String                     serverUserId;      /* Initialized in constructor */
-    protected GovernanceEngineClient     serverClient;      /* Initialized in constructor */
     protected AuditLog                   auditLog;          /* Initialized in constructor */
     protected int                        maxPageSize;       /* Initialized in constructor */
     protected String                     integrationGroupName;   /* Initialized in constructor */
@@ -57,7 +55,6 @@ public class IntegrationGroupHandler
      * @param serverName the name of the integration daemon server where the integration group is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param serverClient client to control the execution of governance action requests
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -68,7 +65,6 @@ public class IntegrationGroupHandler
                                    String                                 serverName,
                                    String                                 serverUserId,
                                    IntegrationGroupConfigurationClient    configurationClient,
-                                   GovernanceEngineClient                 serverClient,
                                    AuditLog                               auditLog,
                                    int                                    maxPageSize)
     {
@@ -79,7 +75,6 @@ public class IntegrationGroupHandler
         this.serverName                      = serverName;
         this.serverUserId                    = serverUserId;
         this.configurationClient             = configurationClient;
-        this.serverClient                    = serverClient;
         this.auditLog                        = auditLog;
         this.maxPageSize                     = maxPageSize;
     }

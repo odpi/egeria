@@ -1,0 +1,407 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+plugins {
+    id 'distribution'
+}
+
+apply plugin: 'distribution'
+
+jar.enabled=false
+
+description = 'OMAG Server Platform Assembly'
+
+dependencies {
+
+    // Dependencies for the main platform assembly - this is modeled on the pom.xml
+    // In future we may be able to select by type or label
+    implementation project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
+    implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
+    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
+    implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
+    implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
+    implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
+    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
+    implementation project(':open-metadata-implementation:access-services:data-privacy:data-privacy-client')
+    implementation project(':open-metadata-implementation:access-services:dev-ops:dev-ops-client')
+    implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
+    implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
+    implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
+    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
+    implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
+    implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
+    implementation project(':open-metadata-implementation:access-services:security-officer:security-officer-client')
+    implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
+    implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
+    implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
+    implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
+    implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
+    implementation project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
+    implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
+    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
+    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
+    implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
+    implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
+    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
+    implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
+    implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
+    implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample')
+}
+
+distributions {
+    egeriaomag {
+        //distributionBaseName = "${rootProject.name}-distribution"
+        contents {
+            into('') {
+                // Describe the docker build script
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/docker-build" }
+                fileMode = 0755
+            }
+            into('') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/docker/platform" }
+                        {
+                            include 'Dockerfile'
+                            include 'dist/*'
+                        }
+                fileMode = 0755
+            }
+            into('') {
+                from(rootProject.projectDir) {
+                    include 'NOTICE'
+                    include 'LICENSE'
+                }
+                fileMode = 0755
+            }
+            into('assembly') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly" }
+                fileMode = 0755
+            }
+            into('assembly/platform') {
+                from(rootProject.projectDir) {
+                    include 'truststore.p12'
+                    include 'keystore.p12'
+                    include 'application.properties'
+                }
+                fileMode = 0755
+            }
+            into('assembly/platform') {
+                // OMAG Server Platform - new name consistent with documentation
+                from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
+                rename { String fileName ->
+                    fileName.replace("platform-chassis-spring", "omag-server-platform")
+                }
+                fileMode = 0755
+            }
+            into('assembly/platform') {
+                // Identify how the platform is started
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
+                fileMode = 0755
+            }
+            into('assembly/platform/data') {
+                // Describe the data files
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
+                fileMode = 0755
+            }
+            into('assembly/platform/logs') {
+                // Describe the log files
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
+                fileMode = 0755
+            }
+            into('assembly/platform/lib') {
+                // Describe connectors
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
+                fileMode = 0755
+            }
+            into('assembly/platform/lib') {
+                // All our connectors, plus discovery sample & the sample Coco security connectors
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').fatJar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
+                fileMode = 0755
+            }
+            into('assembly/platform/extra') {
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
+                fileMode = 0755
+            }
+            into('assembly/etc') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
+                fileMode = 0755
+            }
+            into('assembly/etc') {
+                from(rootProject.projectDir) {
+                    include 'logback.xml'
+                }
+                fileMode = 0755
+            }
+            into('assembly/etc/utilities') {
+                // Describe the deployment layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/utilities" }
+                fileMode = 0755
+            }
+            into('assembly/etc/utilities') {
+                from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-dev-utilities:egeria-ops-utility').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-jar-with-dependencies", "")
+                }
+                fileMode = 0755
+            }
+            into('assembly/etc/reports') {
+                // Describe the reports layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports" }
+                fileMode = 0755
+            }
+            into('assembly/etc/reports') {
+                from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-$rootProject.version-jar-with-dependencies", "")
+                }
+                fileMode = 0755
+            }
+            into('assembly/opt') {
+                // Describe the opt layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
+                fileMode = 0755
+            }
+            into('assembly/opt') {
+                from(rootProject.projectDir) {
+                    include 'content-packs/*'
+                    include 'sample-data/*/*'
+                }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-data') {
+                // Describe the sample-data layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-data') {
+                // Add all sample data
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals" }
+                        {
+                            include 'data-files/*.csv'
+                            include 'database/*/*.sql'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-configs') {
+                // Add all sample configs
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-clients') {
+                // Describe the sample-clients layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-clients" }
+                fileMode = 0755
+            }
+            into('assembly/opt/sample-clients') {
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-look-up-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-set-up-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample').shadowJar }
+                rename { String fileName ->
+                    fileName.replace("-$rootProject.version-jar-with-dependencies", "")
+                }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections') {
+                // Describe the sample-clients layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/postman-collections" }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/postman-rest-samples" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation" }
+                        {
+                            include 'admin-services/Egeria*.json'
+                            include 'repository-services/Egeria*.json'
+                            include 'platform-services/Egeria*.json'
+                            include 'access-services/*/Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections/framework-services') {
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections/sample-configs') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment" }
+                        {
+                            include 'Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+        }
+    }
+}
+// Override the distribution filenames to match what we use with maven (replaces baseName above)
+egeriaomagDistTar.compression = Compression.GZIP
+//egeriaomagDistTar.archiveExtension = 'tar.gz'
+egeriaomagDistTar.archiveFileName = (rootProject.name + '-platform-' + rootProject.version + '-distribution.tar.gz')
+egeriaomagDistZip.enabled=false // TODO: does not seem to work
+
+// Ditto for the deploy distribution
+
+
+task unzip(type: Copy) {
+    String zipFile = "${project.buildDir}/distributions/${rootProject.name}-platform-${rootProject.version}-distribution.tar.gz"
+    //def zipFile = (project.buildDir + '/distributions/' + rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
+    def outputDir = file("${buildDir}/unpacked")
+
+    from tarTree(zipFile)
+    into outputDir
+}
+
+egeriaomagDistTar.finalizedBy unzip
+
+// Define the output from this module - in this case our distributions
+sourceSets {
+    main {
+        output.dir("${project.buildDir}/distributions")
+    }
+}
+
+// Only complete when unzip is done
+build.dependsOn unzip
+
+// We don't want a published artifact from this module, as it's creating the final assembly
+// So disable all publish tasks inherited from the top level
+publish.onlyIf { false }
+generatePomFileForMavenmodulePublication.onlyIf { false }
+publishMavenmodulePublicationToMavenLocal.onlyIf { false }
+publishToMavenLocal.onlyIf { false }
+publishAllPublicationsToOSSRHRepository.onlyIf { false }
+publishMavenmodulePublicationToOSSRHRepository.onlyIf { false }
+generateMetadataFileForMavenmodulePublication.onlyIf { false }
+
+
+
+
+

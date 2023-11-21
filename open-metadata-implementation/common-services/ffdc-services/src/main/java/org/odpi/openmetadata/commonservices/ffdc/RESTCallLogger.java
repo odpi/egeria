@@ -11,8 +11,8 @@ import org.slf4j.Logger;
  */
 public class RESTCallLogger
 {
-    private  Logger  log;
-    private  String  serviceName;
+    private final Logger log;
+    private final String serviceName;
 
     /**
      * Create a REST Call logger for a REST Service.
@@ -50,6 +50,50 @@ public class RESTCallLogger
         else
         {
             return null;
+        }
+    }
+
+
+    /**
+     * Log the start of an inbound REST Call.
+     *
+     * @param serverName destination server
+     * @param methodName called method
+     * @return stop watch measuring the call execution length
+     */
+    public RESTCallToken logRESTCall(String serverName,
+                                     String methodName)
+    {
+        if (log.isDebugEnabled())
+        {
+            RESTCallToken token = new RESTCallToken(serviceName, serverName, methodName);
+
+            log.debug(token.getRESTCallStartText());
+
+            return token;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Allow the userId to be added retrospectively
+     *
+     * @param token REST call token
+     * @param userId calling user
+     */
+    public void setUserId(RESTCallToken  token,
+                          String         userId)
+    {
+        if (log.isDebugEnabled())
+        {
+            if (token != null)
+            {
+                token.setUserId(userId);
+            }
         }
     }
 

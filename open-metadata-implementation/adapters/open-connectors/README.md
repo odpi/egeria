@@ -51,6 +51,8 @@ Java.
 
 * **[secrets-store-connectors](secrets-store-connectors)** provides connectors to access secrets (passwords, certificates etc) at runtime.
 
+* **[system-connectors](system-connectors)** provides connectors to access data and function from different systems.
+
 In addition, there is the **[connector-configuration-factory](connector-configuration-factory)**
 that creates **Connection** objects to configure these connectors.
 

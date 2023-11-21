@@ -622,7 +622,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         final String methodName = "getPathNameFromConnection";
 
         OpenMetadataStore   store = governanceContext.getOpenMetadataStore();
-        OpenMetadataElement connection = connectionLink.getElementProperties();
+        OpenMetadataElement connection = connectionLink.getElement();
 
         if (connection == null)
         {
@@ -672,7 +672,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
             else
             {
-                OpenMetadataElement endpoint = endpointLinks.get(0).getElementProperties();
+                OpenMetadataElement endpoint = endpointLinks.get(0).getElement();
 
                 if (endpoint == null)
                 {
@@ -878,7 +878,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             {
                 if (relatedMetadataElement != null)
                 {
-                    folderGUID = relatedMetadataElement.getElementProperties().getElementGUID();
+                    folderGUID = relatedMetadataElement.getElement().getElementGUID();
                 }
             }
         }

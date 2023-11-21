@@ -144,12 +144,12 @@ public class GovernanceEngineOutTopicPublisher
         {
             try
             {
-                GovernanceActionEvent newEvent = new GovernanceActionEvent();
+                EngineActionEvent newEvent = new EngineActionEvent();
 
                 newEvent.setEventType(GovernanceEngineEventType.REQUESTED_GOVERNANCE_ACTION_EVENT);
                 newEvent.setGovernanceEngineGUID(governanceEngineGUID);
                 newEvent.setGovernanceEngineName(governanceEngineName);
-                newEvent.setGovernanceActionGUID(governanceActionGUID);
+                newEvent.setEngineActionGUID(governanceActionGUID);
 
                 outTopicServerConnector.sendEvent(newEvent);
 

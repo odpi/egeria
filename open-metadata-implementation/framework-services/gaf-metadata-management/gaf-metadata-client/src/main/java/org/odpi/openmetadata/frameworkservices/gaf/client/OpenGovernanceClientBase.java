@@ -5,15 +5,23 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagementInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 
@@ -22,17 +30,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OpenGovernanceClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
- * It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
- * listener for the watchdog governance services.
+ * OpenGovernanceClientBase provides common governance services that originate in the Governance Action Framework (GAF).
+ * This includes the ability to define and execute governance action processes as well as manage duplicates.
  */
-public class OpenGovernanceClientBase extends OpenGovernanceClient
+public class OpenGovernanceClientBase implements ActionControlInterface,
+                                                 GovernanceActionProcessInterface,
+                                                 DuplicateManagementInterface
 {
+    protected final String serverName;               /* Initialized in constructor */
+    protected final String serviceURLMarker;         /* Initialized in constructor */
+    protected final String serverPlatformURLRoot;    /* Initialized in constructor */
+
     private   final GAFRESTClient           restClient;               /* Initialized in constructor */
-    protected  GovernanceListenerManager governanceListenerManager = null;
-    protected  String                    listenerId = null;
 
     protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    protected final NullRequestBody         nullRequestBody = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -48,26 +60,75 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                     String                    serverName,
                                     String                    serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
-
         final String methodName = "Constructor (no security)";
-        
+
+        this.serviceURLMarker = serviceURLMarker;
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
     /**
-     * Set up the listener manager.
+     * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param governanceListenerManager aggregates listeners from governance services
-     * @param listenerId             identifier used to maintain topic event pointer in event manager
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize           pre-initialized parameter limit
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
      */
-    public void setListenerManager(GovernanceListenerManager governanceListenerManager,
-                                   String                    listenerId)
+    public OpenGovernanceClientBase(String serviceURLMarker,
+                                    String serverName,
+                                    String serverPlatformURLRoot,
+                                    int    maxPageSize) throws InvalidParameterException
     {
-        this.governanceListenerManager = governanceListenerManager;
-        this.listenerId = listenerId;
+        final String methodName = "Constructor (no security)";
+
+        this.serviceURLMarker = serviceURLMarker;
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverUserId          caller's userId embedded in all HTTP requests
+     * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize           pre-initialized parameter limit
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public OpenGovernanceClientBase(String serviceURLMarker,
+                                    String serverName,
+                                    String serverPlatformURLRoot,
+                                    String serverUserId,
+                                    String serverPassword,
+                                    int    maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor (with security)";
+
+        this.serviceURLMarker = serviceURLMarker;
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
     }
 
 
@@ -90,9 +151,11 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                     String serverUserId,
                                     String serverPassword) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
-
         final String methodName = "Client Constructor (with security)";
+
+        this.serviceURLMarker = serviceURLMarker;
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
 
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
@@ -117,9 +180,11 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                     GAFRESTClient restClient,
                                     int           maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
-
         final String methodName = "Client Constructor (with REST client)";
+
+        this.serviceURLMarker = serviceURLMarker;
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
         
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -128,165 +193,65 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     }
 
 
-    /**
-     * Update the status of a specific action target. By default, these values are derived from
-     * the values for the governance action service.  However, if the governance action service has to process name
-     * target elements, then setting the status on each individual target will show the progress of the
-     * governance action service.
-     *
-     * @param userId caller's userId
-     * @param actionTargetGUID unique identifier of the governance action service.
-     * @param status status enum to show its progress
-     * @param startDate date/time that the governance action service started processing the target
-     * @param completionDate date/time that the governance process completed processing this target.
-     * @param completionMessage message to describe completion results or reasons for failure
-     *
-     * @throws InvalidParameterException the action target GUID is not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
-     * @throws PropertyServerException there is a problem connecting to the metadata store
-     */
-    @Override
-    public void updateActionTargetStatus(String                 userId,
-                                         String                 actionTargetGUID,
-                                         GovernanceActionStatus status,
-                                         Date                   startDate,
-                                         Date                   completionDate,
-                                         String                 completionMessage) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        final String methodName = "updateActionTargetStatus";
-        final String guidParameterName = "actionTargetGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-actions/action-targets/update";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(actionTargetGUID, guidParameterName, methodName);
-
-        ActionTargetStatusRequestBody requestBody = new ActionTargetStatusRequestBody();
-
-        requestBody.setActionTargetGUID(actionTargetGUID);
-        requestBody.setStatus(status);
-        requestBody.setStartDate(startDate);
-        requestBody.setCompletionDate(completionDate);
-        requestBody.setCompletionMessage(completionMessage);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId);
-    }
-    
-
-    /**
-     * Declare that all the processing for the governance action service is finished and the status of the work.
-     *
-     * @param userId caller's userId
-     * @param governanceActionGUID unique identifier of the governance action to update
-     * @param requestParameters request properties from the caller (will be passed onto any follow-on actions)
-     * @param status completion status enum value
-     * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
-     * @param completionMessage message to describe completion results or reasons for failure
-     *
-     * @throws InvalidParameterException the completion status is null
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
-     */
-    @Override
-    public void recordCompletionStatus(String                userId,
-                                       String                governanceActionGUID,
-                                       Map<String, String>   requestParameters,
-                                       CompletionStatus      status,
-                                       List<String>          outputGuards,
-                                       List<NewActionTarget> newActionTargets,
-                                       String                completionMessage) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        final String methodName = "recordCompletionStatus";
-        final String statusParameterName = "status";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-actions/{3}/completion-status";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateEnum(status, statusParameterName, methodName);
-
-        CompletionStatusRequestBody requestBody = new CompletionStatusRequestBody();
-
-        requestBody.setRequestParameters(requestParameters);
-        requestBody.setStatus(status);
-        requestBody.setOutputGuards(outputGuards);
-        requestBody.setNewActionTargets(newActionTargets);
-        requestBody.setCompletionMessage(completionMessage);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        serviceURLMarker,
-                                        userId,
-                                        governanceActionGUID);
-    }
 
 
     /**
-     * Create a governance action in the metadata store which will trigger the governance action service
-     * associated with the supplied request type.  The governance action remains to act as a record
+     * Create a engine action in the metadata store which will trigger the governance service
+     * associated with the supplied request type.  The engine action remains to act as a record
      * of the actions taken for auditing.
      *
      * @param userId caller's userId
-     * @param qualifiedName unique identifier to give this governance action
+     * @param qualifiedName unique identifier to give this engine action
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
-     * @param receivedGuards list of guards to initiate the governance action
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param receivedGuards list of guards to initiate the engine action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType governance request type from the caller
-     * @param requestParameters properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance service
      * @param processName name of the process that this action is a part of
      * @param requestSourceName source of the request
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
      *
-     * @return unique identifier of the governance action
+     * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
+     * @throws UserNotAuthorizedException the caller is not authorized to create a engine action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceAction(String                userId,
-                                           String                qualifiedName,
-                                           int                   domainIdentifier,
-                                           String                displayName,
-                                           String                description,
-                                           List<String>          requestSourceGUIDs,
-                                           List<NewActionTarget> actionTargets,
-                                           List<String>          receivedGuards,
-                                           Date                  startTime,
-                                           String                governanceEngineName,
-                                           String                requestType,
-                                           Map<String, String>   requestParameters,
-                                           String                processName,
-                                           String                requestSourceName,
-                                           String                originatorServiceName,
-                                           String                originatorEngineName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public String initiateEngineAction(String                userId,
+                                       String                qualifiedName,
+                                       int                   domainIdentifier,
+                                       String                displayName,
+                                       String                description,
+                                       List<String>          requestSourceGUIDs,
+                                       List<NewActionTarget> actionTargets,
+                                       List<String>          receivedGuards,
+                                       Date                  startTime,
+                                       String                governanceEngineName,
+                                       String                requestType,
+                                       Map<String, String>   requestParameters,
+                                       String                processName,
+                                       String                requestSourceName,
+                                       String                originatorServiceName,
+                                       String                originatorEngineName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        final String methodName = "initiateGovernanceAction";
+        final String methodName = "initiateEngineAction";
         final String qualifiedNameParameterName = "qualifiedName";
         final String engineNameParameterName = "governanceEngineName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-engines/{3}/governance-actions/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-engines/{3}/engine-actions/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(governanceEngineName, engineNameParameterName, methodName);
 
-        GovernanceActionRequestBody requestBody = new GovernanceActionRequestBody();
+        EngineActionRequestBody requestBody = new EngineActionRequestBody();
 
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setDomainIdentifier(domainIdentifier);
@@ -316,20 +281,20 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
 
 
     /**
-     * Using the named governance action process as a template, initiate a chain of governance actions.
+     * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param userId caller's userId
      * @param processQualifiedName unique name of the governance action process to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance service
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the first governance action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
-     * @return unique identifier of the first governance action of the process
+     * @return unique identifier of the first engine action of the process
      * @throws InvalidParameterException null or unrecognized qualified name of the process
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     * @throws UserNotAuthorizedException the caller is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -372,6 +337,210 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     }
 
 
+
+    /**
+     * Request the status of an executing engine action request.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request.
+     *
+     * @return status enum
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public EngineActionElement getEngineAction(String userId,
+                                               String engineActionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "getEngineAction";
+        final String guidParameterName = "engineActionGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/engine-actions/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
+
+        EngineActionElementResponse restResult = restClient.callEngineActionGetRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        serverName,
+                                                                                        serviceURLMarker,
+                                                                                        userId,
+                                                                                        engineActionGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the engine actions known to the server.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @return list of engine action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<EngineActionElement>  getEngineActions(String userId,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "getEngineActions";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/engine-actions?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          serviceURLMarker,
+                                                                                          userId,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the engine actions that are still in process.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @return list of engine action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<EngineActionElement>  getActiveEngineActions(String userId,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "getActiveEngineActions";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/engine-actions/active?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of engine action metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<EngineActionElement> findEngineActions(String userId,
+                                                       String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "findEngineActions";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/engine-actions/by-search-string?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          serviceURLMarker,
+                                                                                          userId,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of engine action metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<EngineActionElement> getEngineActionsByName(String userId,
+                                                            String name,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName = "getEngineActionsByName";
+        final String nameParameterName = "name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/engine-actions/by-name?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          serviceURLMarker,
+                                                                                          userId,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+    
+    
     /**
      * Link elements as peer duplicates. Create a simple relationship between two elements.
      * If the relationship already exists, the properties are updated.
@@ -388,7 +557,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param setKnownDuplicate boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws UserNotAuthorizedException the caller is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -451,7 +620,7 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      *                           have the KnownDuplicateClassification.
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws UserNotAuthorizedException the caller is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -497,41 +666,872 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
 
 
 
+
+    /* =====================================================================================================================
+     * A governance action process describes a well defined series of steps that gets something done.
+     * The steps are defined using GovernanceActionProcessSteps.
+     */
+
     /**
-     * Register a listener to receive events about changes to metadata elements in the open metadata store.
-     * There can be only one registered listener.  If this method is called more than once, the new parameters
-     * replace the existing parameters.  This means the watchdog governance action service can change the
-     * listener and the parameters that control the types of events received while it is running.
+     * Create a new metadata element to represent a governance action process.
      *
-     * The types of events passed to the listener are controlled by the combination of the interesting event types and
-     * the interesting metadata types.  That is an event is only passed to the listener if it matches both
-     * the interesting event types and the interesting metadata types.
+     * @param userId calling user
+     * @param processProperties properties about the process to store
+     * @param initialStatus status value for the new process (default = ACTIVE)
      *
-     * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
-     * If the listener parameter is null, no more events are passed to the listener.
+     * @return unique identifier of the new process
      *
-     * @param listener listener object to receive events
-     * @param interestingEventTypes types of events that should be passed to the listener
-     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
-     * @param specificInstance unique identifier of a specific instance to watch for
-     *
-     * @throws InvalidParameterException one or more of the type names are unrecognized
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public  void registerListener(WatchdogGovernanceListener listener,
-                                  List<WatchdogEventType>    interestingEventTypes,
-                                  List<String>               interestingMetadataTypes,
-                                  String                     specificInstance) throws InvalidParameterException
+    public String createGovernanceActionProcess(String                            userId,
+                                                GovernanceActionProcessProperties processProperties,
+                                                ProcessStatus                     initialStatus) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
-        governanceListenerManager.registerListener(listenerId, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        final String methodName = "createGovernanceActionProcess";
+        final String propertiesParameterName = "processProperties";
+        final String qualifiedNameParameterName = "processProperties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/new";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        NewGovernanceActionProcessRequestBody requestBody = new NewGovernanceActionProcessRequestBody();
+
+        requestBody.setProcessStatus(initialStatus);
+        requestBody.setProperties(processProperties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Update the metadata element representing a governance action process.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param processStatus new status for the process
+     * @param processProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateGovernanceActionProcess(String                            userId,
+                                              String                            processGUID,
+                                              boolean                           isMergeUpdate,
+                                              ProcessStatus                     processStatus,
+                                              GovernanceActionProcessProperties processProperties) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
+        final String methodName = "updateGovernanceActionProcess";
+        final String guidParameterName = "processGUID";
+        final String propertiesParameterName = "processProperties";
+        final String qualifiedNameParameterName = "processProperties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
+            invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        UpdateGovernanceActionProcessRequestBody requestBody = new UpdateGovernanceActionProcessRequestBody();
+
+        requestBody.setMergeUpdate(isMergeUpdate);
+        requestBody.setProcessStatus(processStatus);
+        requestBody.setProperties(processProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
     }
 
 
     /**
-     * Called during the disconnect processing of the watchdog governance action service.
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Governance Engine OMAS).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void disconnectListener()
+    @Override
+    public void publishGovernanceActionProcess(String userId,
+                                               String processGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        governanceListenerManager.removeListener(listenerId);
+        final String methodName = "publishGovernanceActionProcess";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/publish";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
+    }
+
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Governance Engine OMAS.  This is the setting when the process is first created).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void withdrawGovernanceActionProcess(String userId,
+                                                String processGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "withdrawGovernanceActionProcess";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/withdraw";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a governance action process.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeGovernanceActionProcess(String userId,
+                                              String processGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName = "removeGovernanceActionProcess";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
+    }
+
+
+
+    /**
+     * Retrieve the list of governance action process metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionProcessElement> findGovernanceActionProcesses(String userId,
+                                                                              String searchString,
+                                                                              int    startFrom,
+                                                                              int    pageSize) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName = "findGovernanceActionProcesses";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
+                                                                                                                        urlTemplate,
+                                                                                                                        requestBody,
+                                                                                                                        serverName,
+                                                                                                                        userId,
+                                                                                                                        Integer.toString(startFrom),
+                                                                                                                        Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+
+    /**
+     * Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionProcessElement> getGovernanceActionProcessesByName(String userId,
+                                                                                   String name,
+                                                                                   int    startFrom,
+                                                                                   int    pageSize) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        final String methodName = "getGovernanceActionProcessesByName";
+        final String nameParameterName = "name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
+                                                                                                                        urlTemplate,
+                                                                                                                        requestBody,
+                                                                                                                        serverName,
+                                                                                                                        userId,
+                                                                                                                        Integer.toString(startFrom),
+                                                                                                                        Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GovernanceActionProcessElement getGovernanceActionProcessByGUID(String userId,
+                                                                           String processGUID) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName = "getGovernanceActionProcessByGUID";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        GovernanceActionProcessElementResponse restResult = restClient.callGovernanceActionProcessGetRESTCall(methodName,
+                                                                                                              urlTemplate,
+                                                                                                              serverName,
+                                                                                                              userId,
+                                                                                                              processGUID);
+
+        return restResult.getElement();
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A governance action process step describes a step in a governance action process
+     */
+
+    /**
+     * Create a new metadata element to represent a governance action process step.
+     *
+     * @param userId calling user
+     * @param processStepProperties properties about the process step to store
+     *
+     * @return unique identifier of the new governance action process step
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createGovernanceActionProcessStep(String                                userId,
+                                                    GovernanceActionProcessStepProperties processStepProperties) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        final String methodName = "createGovernanceActionProcessStep";
+        final String propertiesParameterName = "processStepProperties";
+        final String qualifiedNameParameterName = "processStepProperties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/new";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(processStepProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(processStepProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  processStepProperties,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Update the metadata element representing a governance action process step.
+     *
+     * @param userId calling user
+     * @param processStepGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param processStepProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateGovernanceActionProcessStep(String                         userId,
+                                                  String                         processStepGUID,
+                                                  boolean                        isMergeUpdate,
+                                                  GovernanceActionProcessStepProperties processStepProperties) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        final String methodName = "updateGovernanceActionProcess";
+        final String guidParameterName = "processStepGUID";
+        final String propertiesParameterName = "processStepProperties";
+        final String qualifiedNameParameterName = "processStepProperties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(processStepProperties, propertiesParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(processStepProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        UpdateGovernanceActionProcessStepRequestBody requestBody = new UpdateGovernanceActionProcessStepRequestBody();
+
+        requestBody.setMergeUpdate(isMergeUpdate);
+        requestBody.setProperties(processStepProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processStepGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a governance action process step.
+     *
+     * @param userId calling user
+     * @param processStepGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeGovernanceActionProcessStep(String userId,
+                                                  String processStepGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "removeGovernanceActionProcessStep";
+        final String guidParameterName = "processStepGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processStepGUID);
+    }
+
+
+    /**
+     * Retrieve the list of governance action process step metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String userId,
+                                                                                     String searchString,
+                                                                                     int    startFrom,
+                                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        final String methodName = "findGovernanceActionProcessSteps";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/by-search-string?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        GovernanceActionProcessStepsResponse restResult = restClient.callGovernanceProcessStepsPostRESTCall(methodName,
+                                                                                                            urlTemplate,
+                                                                                                            requestBody,
+                                                                                                            serverName,
+                                                                                                            userId,
+                                                                                                            Integer.toString(startFrom),
+                                                                                                            Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of governance action process step metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String userId,
+                                                                                          String name,
+                                                                                          int    startFrom,
+                                                                                          int    pageSize) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        final String methodName = "getGovernanceActionProcessStepsByName";
+        final String nameParameterName = "name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/by-name?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        GovernanceActionProcessStepsResponse restResult = restClient.callGovernanceProcessStepsPostRESTCall(methodName,
+                                                                                                            urlTemplate,
+                                                                                                            requestBody,
+                                                                                                            serverName,
+                                                                                                            userId,
+                                                                                                            Integer.toString(startFrom),
+                                                                                                            Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the governance action process step metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param processStepGUID unique identifier of the governance action process step
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GovernanceActionProcessStepElement getGovernanceActionProcessStepByGUID(String userId,
+                                                                                   String processStepGUID) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        final String methodName = "getGovernanceActionProcessStepByGUID";
+        final String guidParameterName = "processStepGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
+
+        GovernanceActionProcessStepResponse restResult = restClient.callGovernanceActionProcessStepGetRESTCall(methodName,
+                                                                                                               urlTemplate,
+                                                                                                               serverName,
+                                                                                                               userId,
+                                                                                                               processStepGUID);
+
+        return restResult.getElement();
+    }
+
+
+
+    /**
+     * Set up a link between a governance action process and a governance action process step.  This defines the first
+     * step in the process.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the governance action process
+     * @param processStepGUID unique identifier of the governance action process step
+     * @param guard optional guard for the first governance service to run
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupFirstActionProcessStep(String userId,
+                                            String processGUID,
+                                            String processStepGUID,
+                                            String guard) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String methodName = "setupFirstActionProcessStep";
+        final String processGUIDParameterName = "processGUID";
+        final String processStepGUIDParameterName = "processStepGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step/{3}/new";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(processStepGUID, processStepGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        guard,
+                                        serverName,
+                                        userId,
+                                        processGUID,
+                                        processStepGUID);
+    }
+
+
+    /**
+     * Return the governance action process step that is the first step in a governance action process.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the governance action process
+     *
+     * @return properties of the governance action process step
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GovernanceActionProcessStepElement getFirstActionProcessStep(String userId,
+                                                                        String processGUID) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String methodName = "getFirstActionProcessStep";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        GovernanceActionProcessStepResponse restResult = restClient.callGovernanceActionProcessStepGetRESTCall(methodName,
+                                                                                                               urlTemplate,
+                                                                                                               serverName,
+                                                                                                               userId,
+                                                                                                               processGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Remove the link between a governance process and that governance action process step that defines its first step.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the governance action process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeFirstActionProcessStep(String userId,
+                                             String processGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "removeFirstActionProcessStep";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processGUID);
+    }
+
+
+
+    /**
+     * Add a link between two governance action process steps to show that one follows on from the other when a governance action process
+     * is executing.
+     *
+     * @param userId calling user
+     * @param currentActionProcessStepGUID unique identifier of the governance action process step that defines the previous step in the governance action process
+     * @param nextActionProcessStepGUID unique identifier of the governance action process step that defines the next step in the governance action process
+     * @param guard guard required for this next step to proceed - or null for always run the next step.
+     * @param mandatoryGuard means that no next steps can run if this guard is not returned
+     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     *
+     * @return unique identifier of the new link
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String setupNextActionProcessStep(String  userId,
+                                             String  currentActionProcessStepGUID,
+                                             String  nextActionProcessStepGUID,
+                                             String  guard,
+                                             boolean mandatoryGuard,
+                                             boolean ignoreMultipleTriggers) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName = "setupNextActionProcessStep";
+        final String currentGUIDParameterName = "currentActionProcessStepGUID";
+        final String nextGUIDParameterName = "nextActionProcessStepGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/next-process-steps/{3}/new";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentActionProcessStepGUID, currentGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextActionProcessStepGUID, nextGUIDParameterName, methodName);
+
+        NextGovernanceActionProcessStepRequestBody requestBody = new NextGovernanceActionProcessStepRequestBody();
+
+        requestBody.setGuard(guard);
+        requestBody.setMandatoryGuard(mandatoryGuard);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  currentActionProcessStepGUID,
+                                                                  nextActionProcessStepGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
+     * action process is executing.
+     *
+     * @param userId calling user
+     * @param nextProcessStepLinkGUID unique identifier of the relationship between the governance action process steps
+     * @param guard guard required for this next step to proceed - or null for always run the next step.
+     * @param mandatoryGuard means that no next steps can run if this guard is not returned
+     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateNextActionProcessStep(String  userId,
+                                            String nextProcessStepLinkGUID,
+                                            String  guard,
+                                            boolean mandatoryGuard,
+                                            boolean ignoreMultipleTriggers) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName = "updateNextActionProcessStep";
+        final String guidParameterName = "nextActionLinkGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/next-process-steps/{2}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(nextProcessStepLinkGUID, guidParameterName, methodName);
+
+        NextGovernanceActionProcessStepRequestBody requestBody = new NextGovernanceActionProcessStepRequestBody();
+
+        requestBody.setGuard(guard);
+        requestBody.setMandatoryGuard(mandatoryGuard);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        nextProcessStepLinkGUID);
+    }
+
+
+    /**
+     * Return the list of next action process step defined for the governance action process.
+     *
+     * @param userId calling user
+     * @param processStepGUID unique identifier of the current governance action process step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return return the list of relationships and attached governance action process steps.
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<NextGovernanceActionProcessStepElement> getNextGovernanceActionProcessSteps(String userId,
+                                                                                            String processStepGUID,
+                                                                                            int    startFrom,
+                                                                                            int    pageSize) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        final String methodName = "getNextGovernanceActionProcessSteps";
+        final String guidParameterName = "processStepGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/next-process-step?startFrom={4}&pageSize={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
+
+        NextGovernanceActionProcessStepsResponse restResult = restClient.callNextGovernanceActionProcessStepsGetRESTCall(methodName,
+                                                                                                                         urlTemplate,
+                                                                                                                         serverName,
+                                                                                                                         userId,
+                                                                                                                         processStepGUID,
+                                                                                                                         Integer.toString(startFrom),
+                                                                                                                         Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Remove a follow-on step from a governance action process.
+     *
+     * @param userId calling user
+     * @param processStepLinkGUID unique identifier of the relationship between the governance action process steps
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeNextActionProcessStep(String userId,
+                                            String processStepLinkGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "removeFirstActionProcessStep";
+        final String guidParameterName = "processGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/next-process-step/{2}/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processStepLinkGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        processStepLinkGUID);
     }
 }

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
@@ -38,8 +38,8 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionEngineProperties properties of the governance action engine - used for message logging
      * @param governanceActionEngineGUID unique Identifier of the governance action engine - used for message logging
      * @param governanceActionUserId user id for use by the engine host services
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param governanceActionClient client for managing governance actions
+     * @param engineActionGUID unique identifier of the engine action that triggered this governance service
+     * @param engineActionClient client for managing engine actions
      * @param serviceRequestType incoming request
      * @param requestParameters parameters associated with the request type
      * @param requestSourceElements the elements that caused this service to run
@@ -49,15 +49,14 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionServiceConnector connector that does the work
      * @param partnerServerName name of the metadata server used by the governance service
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
-     * @param governanceEngineClient client for use by the engine host services
      * @param auditLog destination for log messages
      * @throws InvalidParameterException problem with the governance service definitions
      */
     GovernanceActionServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
                                    String                     governanceActionEngineGUID,
                                    String                     governanceActionUserId,
-                                   String                     governanceActionGUID,
-                                   GovernanceEngineClient     governanceActionClient,
+                                   String                     engineActionGUID,
+                                   GovernanceContextClient    engineActionClient,
                                    String                     serviceRequestType,
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
@@ -67,14 +66,14 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    Connector                  governanceActionServiceConnector,
                                    String                     partnerServerName,
                                    String                     partnerServerPlatformURLRoot,
-                                   GovernanceEngineClient     governanceEngineClient,
+                                   GovernanceContextClient    governanceContextClient,
                                    AuditLog                   auditLog) throws InvalidParameterException
     {
         super(governanceActionEngineProperties,
               governanceActionEngineGUID,
               governanceActionUserId,
-              governanceActionGUID,
-              governanceActionClient,
+              engineActionGUID,
+              engineActionClient,
               serviceRequestType,
               governanceActionServiceGUID,
               governanceActionServiceName,
@@ -93,22 +92,22 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
-                                                                                     partnerServerPlatformURLRoot);
+            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName, partnerServerPlatformURLRoot);
 
-
-            if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector)
+            if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector service)
             {
                 GovernanceActionContext context = new GovernanceActionContext(governanceActionUserId,
-                                                                              governanceActionGUID,
+                                                                              engineActionGUID,
                                                                               serviceRequestType,
                                                                               requestParameters,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
                                                                               openMetadataClient,
-                                                                              governanceEngineClient);
-
-                GovernanceActionServiceConnector service = (GovernanceActionServiceConnector) governanceActionServiceConnector;
+                                                                              governanceContextClient,
+                                                                              governanceContextClient,
+                                                                              governanceContextClient,
+                                                                              governanceContextClient,
+                                                                              governanceContextClient);
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);

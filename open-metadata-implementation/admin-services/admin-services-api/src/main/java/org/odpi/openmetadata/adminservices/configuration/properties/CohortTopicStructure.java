@@ -6,42 +6,49 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PermittedSynchronization defines the permitted directions of flow of metadata updates between open metadata and a third party
- * technology.  It is setup in the configuration for an integration connector and is enforced in the integration service
- * (in the integration context to be precise).
+ * CohortTopicStructure defines the type of topic organization to use in a cohort.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CohortTopicStructure implements Serializable
+public enum CohortTopicStructure
 {
+    /**
+     * The cohort members use three topics to exchange information.  One for registration requests, one for
+     * type validation and one for exchange of instances stored by the cohort members.  This is the preferred and optimal
+     * approach.
+     */
     DEDICATED_TOPICS   (0, "Dedicated Cohort Topics",
                        "The cohort members use three topics to exchange information.  One for registration requests, one for " +
                                "type validation and one for exchange of instances stored by the cohort members.  This is the preferred and optimal " +
                                "approach."),
 
+    /**
+     * All asynchronous communication between cohort members is via a single topic.  This is the original design and may
+     * still be used when communicating with back level cohort members.
+     */
     SINGLE_TOPIC    (1, "Single Topic",
                        "All asynchronous communication between cohort members is via a single topic.  This is the original design and may " +
                                "still be used when communicating with back level cohort members."),
 
+
+    /**
+     * Both the single cohort topic and the dedicated topics are set up and used.  This is necessary when the cohort
+     * has members with different capabilities.  This configuration may cause some events to be processed twice.
+     */
     BOTH_SINGLE_AND_DEDICATED_TOPICS  ( 2,"Both Single and Dedicated Topics",
                        "Both the single cohort topic and the dedicated topics are set up and used.  This is necessary when the cohort" +
                                "has members with different capabilities.  This configuration may cause some events to be processed twice."),
     ;
 
 
-    private int    ordinal;
-    private String name;
-    private String description;
-
-    private static final long     serialVersionUID = 1L;
-
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     /**
      * Constructor to set up the instance of this enum.

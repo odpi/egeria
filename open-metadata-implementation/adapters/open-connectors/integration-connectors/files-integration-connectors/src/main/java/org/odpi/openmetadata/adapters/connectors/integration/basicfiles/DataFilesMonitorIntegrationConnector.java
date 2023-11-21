@@ -178,7 +178,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             }
                         }
 
-                        startFrom = startFrom + cataloguedFiles.size();
+                        startFrom = startFrom + pageSize;
                         cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
                     }
                 }

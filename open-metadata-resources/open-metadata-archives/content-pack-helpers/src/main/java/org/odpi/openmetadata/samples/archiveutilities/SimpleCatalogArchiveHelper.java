@@ -140,6 +140,7 @@ public class SimpleCatalogArchiveHelper
     private static final String GLOSSARY_TYPE_NAME                       = "Glossary";
     private static final String CANONICAL_VOCABULARY_TYPE_NAME           = "CanonicalVocabulary";
     private static final String GLOSSARY_CATEGORY_TYPE_NAME              = "GlossaryCategory";
+    private static final String ROOT_CATEGORY_CLASSIFICATION_NAME        = "RootCategory";
     private static final String CATEGORY_ANCHOR_TYPE_NAME                = "CategoryAnchor";
     private static final String CATEGORY_HIERARCHY_LINK_TYPE_NAME        = "CategoryHierarchyLink";
     private static final String GLOSSARY_TERM_TYPE_NAME                  = "GlossaryTerm";
@@ -4454,7 +4455,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Add a glossary category to the archive and connect it to glossary.
+     * Add a glossary category to the archive and connect it to its glossary.
      *
      * @param glossaryGUID identifier of the glossary.
      * @param qualifiedName unique name for the category.
@@ -4470,12 +4471,12 @@ public class SimpleCatalogArchiveHelper
                               String              description,
                               String              subjectArea)
     {
-        return addCategory(glossaryGUID, qualifiedName, displayName, description, subjectArea, null);
+        return addCategory(glossaryGUID, false, qualifiedName, displayName, description, subjectArea, null);
     }
 
 
     /**
-     * Add a glossary category to the archive and connect it to glossary.
+     * Add a glossary category to the archive and connect it to its glossary.
      *
      * @param glossaryGUID identifier of the glossary.
      * @param qualifiedName unique name for the category.
@@ -4493,6 +4494,32 @@ public class SimpleCatalogArchiveHelper
                               String              subjectArea,
                               Map<String, String> additionalProperties)
     {
+        return addCategory(glossaryGUID, false, qualifiedName, displayName, description, subjectArea, additionalProperties);
+
+    }
+
+
+    /**
+     * Add a glossary category to the archive and connect it to its glossary.
+     *
+     * @param glossaryGUID identifier of the glossary.
+     * @param isRootCategory is this the top-level category for the glossary
+     * @param qualifiedName unique name for the category.
+     * @param displayName display name for the category.
+     * @param description description of the category.
+     * @param subjectArea name of the subject area if this category contains terms for the subject area.
+     * @param additionalProperties any other properties.
+     *
+     * @return identifier of the category
+     */
+    public String addCategory(String              glossaryGUID,
+                              boolean             isRootCategory,
+                              String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              subjectArea,
+                              Map<String, String> additionalProperties)
+    {
         final String methodName = "addCategory";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -4500,7 +4527,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
-        List<Classification> classifications = null;
+        List<Classification> classifications = new ArrayList<>();
 
         if (subjectArea != null)
         {
@@ -4512,8 +4539,22 @@ public class SimpleCatalogArchiveHelper
                                                                                                                                   methodName),
                                                                                         InstanceStatus.ACTIVE);
 
-            classifications = new ArrayList<>();
             classifications.add(subjectAreaClassification);
+        }
+
+        if (isRootCategory)
+        {
+            Classification  rootCategoryClassification = archiveHelper.getClassification(ROOT_CATEGORY_CLASSIFICATION_NAME,
+                                                                                         null,
+                                                                                         InstanceStatus.ACTIVE);
+
+            classifications.add(rootCategoryClassification);
+        }
+
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
         }
 
         EntityDetail  categoryEntity = archiveHelper.getEntityDetail(GLOSSARY_CATEGORY_TYPE_NAME,

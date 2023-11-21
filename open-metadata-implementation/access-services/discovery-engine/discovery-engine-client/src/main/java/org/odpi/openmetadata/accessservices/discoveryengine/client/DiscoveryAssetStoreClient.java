@@ -14,14 +14,14 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
  * Discovery Asset Store that provides a Discovery service with access to the connector for the
  * asset to be discovered.  From the connector, the Discovery service is able to extract the known properties
  * about the asset and access its data.
- *
+ * <br><br>
  * An instance of this client is created for each discovery service instance that runs.  This is
  * why the REST client is passed in on the constructor (since creating a new RestTemplate object is
  * very expensive).
  */
 public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
 {
-    private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
+    private final DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
     /**
      * Constructor sets up the key parameters for accessing the asset store.
@@ -63,7 +63,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      *
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
-     * @return Connector   connector instance
+     * @return Connector  instance
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing

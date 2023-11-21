@@ -25,7 +25,7 @@ public class SLF4JAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = SLF4JAuditLogStoreConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreConnector";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -38,7 +38,7 @@ public class SLF4JAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

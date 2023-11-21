@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
 
-@Tag(name="Administration Services - Configuration Document Store Configuration",
+@Tag(name="Administration Services - Set up Configuration Document Store",
      description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default Encrypted File Configuration Document Store).",
         externalDocs=@ExternalDocumentation(description="Further information",
         url="https://egeria-project.org/services/admin-services/overview/#dynamically-configuring-the-configuration-document-store-connector"))

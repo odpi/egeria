@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-science/users/{userId}")
 
-@Tag(name="Data Science OMAS", description="The Data Science OMAS provides APIs and events for tools and applications focused on building all types of analytics models such as predictive models and machine learning models.", externalDocs=@ExternalDocumentation(description="Data Science Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/data-science/overview/"))
+@Tag(name="Metadata Access Server: Data Science OMAS", description="The Data Science OMAS provides APIs and events for tools and applications focused on building all types of analytics models such as predictive models and machine learning models.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
+                                         url="https://egeria-project.org/services/omas/data-science/overview/"))
 
 public class DataScienceResource
 {

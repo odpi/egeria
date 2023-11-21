@@ -3,10 +3,12 @@
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -74,12 +76,26 @@ public class RelatedElementsConverter<B> extends OpenMetadataStoreConverter<B>
                 }
 
                 EntityProxy entityProxy = relationship.getEntityOneProxy();
+                ElementStub elementStub = new ElementStub();
 
                 bean.setElementGUIDAtEnd1(entityProxy.getGUID());
+                fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
+                bean.setElementAtEnd1(elementStub);
 
                 entityProxy = relationship.getEntityTwoProxy();
+                elementStub = new ElementStub();
 
                 bean.setElementGUIDAtEnd2(entityProxy.getGUID());
+                fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
+                bean.setElementAtEnd2(elementStub);
+
+                if (repositoryHelper.getTypeDefByName(serviceName, relationship.getType().getTypeDefName()) instanceof RelationshipDef relationshipDef)
+                {
+                    bean.setLabelAtEnd1(relationshipDef.getEndDef1().getAttributeName());
+                    bean.setLabelAtEnd2(relationshipDef.getEndDef2().getAttributeName());
+                }
             }
 
             return returnBean;

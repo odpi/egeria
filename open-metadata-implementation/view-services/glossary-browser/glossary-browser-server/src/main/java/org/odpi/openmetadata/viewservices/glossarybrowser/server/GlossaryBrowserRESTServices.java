@@ -43,6 +43,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody;
@@ -65,7 +66,7 @@ import java.util.Arrays;
  * This interface provides view interfaces for glossary UIs.
  */
 
-public class GlossaryBrowserRESTServices
+public class GlossaryBrowserRESTServices extends TokenController
 {
     private static final GlossaryBrowserInstanceHandler instanceHandler = new GlossaryBrowserInstanceHandler();
 
@@ -87,21 +88,23 @@ public class GlossaryBrowserRESTServices
      * Return the list of glossary term status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermStatusListResponse getGlossaryTermStatuses(String serverName,
-                                                                  String userId)
+    public GlossaryTermStatusListResponse getGlossaryTermStatuses(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermStatusListResponse response = new GlossaryTermStatusListResponse();
         AuditLog                       auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setStatuses(Arrays.asList(GlossaryTermStatus.values()));
@@ -121,21 +124,23 @@ public class GlossaryBrowserRESTServices
      * Return the list of glossary term relationship status enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(String serverName,
-                                                                                          String userId)
+    public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermRelationshipStatusListResponse response = new GlossaryTermRelationshipStatusListResponse();
         AuditLog                       auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setStatuses(Arrays.asList(GlossaryTermRelationshipStatus.values()));
@@ -155,21 +160,23 @@ public class GlossaryBrowserRESTServices
      * Return the list of glossary term activity types enum values.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @return list of enum values
      */
-    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(String serverName,
-                                                                             String userId)
+    public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(String serverName)
     {
         final String methodName = "getGlossaryTermStatuses";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermActivityTypeListResponse response = new GlossaryTermActivityTypeListResponse();
         AuditLog                             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setTypes(Arrays.asList(GlossaryTermActivityType.values()));
@@ -190,7 +197,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -206,7 +212,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryElementsResponse findGlossaries(String                  serverName,
-                                                   String                  userId,
                                                    int                     startFrom,
                                                    int                     pageSize,
                                                    boolean                 startsWith,
@@ -218,13 +223,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findGlossaries";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryElementsResponse response = new GlossaryElementsResponse();
         AuditLog                 auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -260,7 +269,6 @@ public class GlossaryBrowserRESTServices
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -273,7 +281,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryElementsResponse   getGlossariesByName(String          serverName,
-                                                          String          userId,
                                                           int             startFrom,
                                                           int             pageSize,
                                                           boolean         forLineage,
@@ -282,13 +289,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossariesByName";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryElementsResponse response = new GlossaryElementsResponse();
         AuditLog                 auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -323,7 +334,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -335,7 +345,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryElementResponse getGlossaryByGUID(String                        serverName,
-                                                     String                        userId,
                                                      String                        glossaryGUID,
                                                      boolean                       forLineage,
                                                      boolean                       forDuplicateProcessing,
@@ -343,13 +352,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryByGUID";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryElementResponse response = new GlossaryElementResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -386,7 +399,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary metadata element for the requested category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -398,7 +410,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryElementResponse getGlossaryForCategory(String                        serverName,
-                                                          String                        userId,
                                                           String                        glossaryCategoryGUID,
                                                           boolean                       forLineage,
                                                           boolean                       forDuplicateProcessing,
@@ -406,13 +417,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryForCategory";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryElementResponse response = new GlossaryElementResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -451,7 +466,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary metadata element for the requested term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -463,21 +477,24 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryElementResponse getGlossaryForTerm(String                        serverName,
-                                                          String                        userId,
-                                                          String                        glossaryTermGUID,
-                                                          boolean                       forLineage,
-                                                          boolean                       forDuplicateProcessing,
-                                                          EffectiveTimeQueryRequestBody requestBody)
+                                                      String                        glossaryTermGUID,
+                                                      boolean                       forLineage,
+                                                      boolean                       forDuplicateProcessing,
+                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossaryForTerm";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryElementResponse response = new GlossaryElementResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -515,7 +532,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -531,7 +547,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementsResponse findGlossaryCategories(String                          serverName,
-                                                                   String                          userId,
                                                                    int                             startFrom,
                                                                    int                             pageSize,
                                                                    boolean                         startsWith,
@@ -543,13 +558,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findGlossaryCategories";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
         AuditLog                         auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -585,7 +604,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of categories associated with a glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -599,7 +617,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementsResponse getCategoriesForGlossary(String                        serverName,
-                                                                     String                        userId,
                                                                      String                        glossaryGUID,
                                                                      int                           startFrom,
                                                                      int                           pageSize,
@@ -609,13 +626,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getCategoriesForGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
         AuditLog                 auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -656,7 +677,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of categories associated with a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -670,7 +690,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementsResponse getCategoriesForTerm(String                        serverName,
-                                                                 String                        userId,
                                                                  String                        glossaryTermGUID,
                                                                  int                           startFrom,
                                                                  int                           pageSize,
@@ -680,13 +699,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getCategoriesForTerm";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
         AuditLog                 auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -728,7 +751,6 @@ public class GlossaryBrowserRESTServices
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param requestBody name to search for and correlators
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -741,7 +763,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(String                  serverName,
-                                                                          String                  userId,
                                                                           int                     startFrom,
                                                                           int                     pageSize,
                                                                           boolean                 forLineage,
@@ -750,13 +771,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryCategoriesByName";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
         AuditLog                         auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -792,7 +817,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -804,7 +828,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(String                        serverName,
-                                                                     String                        userId,
                                                                      String                        glossaryCategoryGUID,
                                                                      boolean                       forLineage,
                                                                      boolean                       forDuplicateProcessing,
@@ -812,13 +835,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryCategoryByGUID";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementResponse response = new GlossaryCategoryElementResponse();
         AuditLog                        auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -856,7 +883,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -868,7 +894,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementResponse getGlossaryCategoryParent(String                        serverName,
-                                                                     String                        userId,
                                                                      String                        glossaryCategoryGUID,
                                                                      boolean                       forLineage,
                                                                      boolean                       forDuplicateProcessing,
@@ -876,13 +901,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryCategoryParent";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementResponse response = new GlossaryCategoryElementResponse();
         AuditLog                        auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -919,7 +948,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -933,7 +961,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryCategoryElementsResponse getGlossarySubCategories(String                        serverName,
-                                                                     String                        userId,
                                                                      String                        glossaryCategoryGUID,
                                                                      int                           startFrom,
                                                                      int                           pageSize,
@@ -943,13 +970,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossarySubCategories";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
         AuditLog                         auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -992,7 +1023,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -1008,7 +1038,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementsResponse findGlossaryTerms(String                          serverName,
-                                                          String                          userId,
                                                           int                             startFrom,
                                                           int                             pageSize,
                                                           boolean                         startsWith,
@@ -1020,13 +1049,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findGlossaryTerms";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                 auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1063,7 +1096,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the list of glossary terms associated with a glossary.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1077,7 +1109,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementsResponse getTermsForGlossary(String                        serverName,
-                                                            String                        userId,
                                                             String                        glossaryGUID,
                                                             int                           startFrom,
                                                             int                           pageSize,
@@ -1087,13 +1118,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getTermsForGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1134,7 +1169,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1148,7 +1182,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                              serverName,
-                                                                    String                              userId,
                                                                     String                              glossaryCategoryGUID,
                                                                     int                                 startFrom,
                                                                     int                                 pageSize,
@@ -1158,13 +1191,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getTermsForGlossaryCategory";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1207,7 +1244,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the list of glossary terms associated with the requested term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1221,7 +1257,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementsResponse getRelatedTerms(String                              serverName,
-                                                        String                              userId,
                                                         String                              glossaryTermGUID,
                                                         int                                 startFrom,
                                                         int                                 pageSize,
@@ -1231,13 +1266,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getTermsForGlossary";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1281,7 +1320,6 @@ public class GlossaryBrowserRESTServices
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -1294,7 +1332,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementsResponse   getGlossaryTermsByName(String                  serverName,
-                                                                 String                  userId,
                                                                  int                     startFrom,
                                                                  int                     pageSize,
                                                                  boolean                 forLineage,
@@ -1303,13 +1340,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryTermsByName";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1346,7 +1387,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary term metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1358,20 +1398,24 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GlossaryTermElementResponse getGlossaryTermByGUID(String                        serverName,
-                                                             String                        userId,
                                                              String                        guid,
                                                              boolean                       forLineage,
                                                              boolean                       forDuplicateProcessing,
                                                              EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGlossaryTermByGUID";
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementResponse response = new GlossaryTermElementResponse();
         AuditLog                    auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
@@ -1408,7 +1452,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve all the versions of a glossary term.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param guid unique identifier of object to retrieve
      * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
      *                         versions beyond the first page of results. Zero means start from the first element.
@@ -1424,7 +1467,6 @@ public class GlossaryBrowserRESTServices
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GlossaryTermElementsResponse getGlossaryTermHistory(String             serverName,
-                                                               String             userId,
                                                                String             guid,
                                                                int                startFrom,
                                                                int                pageSize,
@@ -1435,13 +1477,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGlossaryTermHistory";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog                     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1480,7 +1526,6 @@ public class GlossaryBrowserRESTServices
      * a rating then the original one is over-ridden.
      *
      * @param serverName name of the server instances for this request
-     * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the element.
      * @param isPublic is this visible to other people
      * @param requestBody containing the StarRating and user review of referenceable (probably element).
@@ -1492,20 +1537,23 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse addRatingToElement(String           serverName,
-                                           String           userId,
                                            String           guid,
                                            boolean          isPublic,
                                            RatingProperties requestBody)
     {
         final String methodName = "addRatingToElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             if (requestBody != null)
             {
                 CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -1533,7 +1581,6 @@ public class GlossaryBrowserRESTServices
      * Removes a star rating that was added to the element by this user.
      *
      * @param serverName name of the server instances for this request
-     * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the rating object
      * @param requestBody null request body needed to satisfy the HTTP Post request
      *
@@ -1545,20 +1592,23 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse removeRatingFromElement(String          serverName,
-                                                String          userId,
                                                 String          guid,
                                                 NullRequestBody requestBody)
     {
         final String methodName = "removeRatingFromElement";
         final String guidParameterName = "guid";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -1578,7 +1628,6 @@ public class GlossaryBrowserRESTServices
      * Adds a "LikeProperties" to the element.
      *
      * @param serverName name of the server instances for this request
-     * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the element.
      * @param isPublic is this visible to other people
      * @param requestBody feedback request body .
@@ -1591,20 +1640,23 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse addLikeToElement(String          serverName,
-                                         String          userId,
                                          String          guid,
                                          boolean         isPublic,
                                          NullRequestBody requestBody)
     {
         final String methodName        = "addLikeToElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -1624,7 +1676,6 @@ public class GlossaryBrowserRESTServices
      * Removes a "LikeProperties" added to the element by this user.
      *
      * @param serverName name of the server instances for this request
-     * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the like object
      * @param requestBody null request body needed to satisfy the HTTP Post request
      *
@@ -1636,20 +1687,23 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse removeLikeFromElement(String          serverName,
-                                              String          userId,
                                               String          guid,
                                               NullRequestBody requestBody)
     {
         final String methodName        = "removeLikeFromElement";
         final String guidParameterName = "guid";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -1669,7 +1723,6 @@ public class GlossaryBrowserRESTServices
      * Adds a comment to the element.
      *
      * @param serverName name of the server instances for this request
-     * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the element.
      * @param isPublic is this visible to other people
      * @param forLineage return elements marked with the Memento classification?
@@ -1683,7 +1736,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse addCommentToElement(String                         serverName,
-                                            String                         userId,
                                             String                         guid,
                                             boolean                        isPublic,
                                             boolean                        forLineage,
@@ -1692,13 +1744,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "addCommentToElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1739,7 +1795,6 @@ public class GlossaryBrowserRESTServices
      * Adds a reply to a comment.
      *
      * @param serverName name of the server instances for this request
-     * @param userId       String - userId of user making request.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param isPublic is this visible to other people
      * @param forLineage return elements marked with the Memento classification?
@@ -1753,7 +1808,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse addCommentReply(String                         serverName,
-                                        String                         userId,
                                         String                         commentGUID,
                                         boolean                        isPublic,
                                         boolean                        forLineage,
@@ -1762,13 +1816,19 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "addCommentReply";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
                 if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
@@ -1807,7 +1867,6 @@ public class GlossaryBrowserRESTServices
      * Update an existing comment.
      *
      * @param serverName   name of the server instances for this request.
-     * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment to change.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param isPublic is this visible to other people
@@ -1821,7 +1880,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse   updateComment(String                         serverName,
-                                        String                         userId,
                                         String                         commentGUID,
                                         boolean                        isMergeUpdate,
                                         boolean                        isPublic,
@@ -1831,13 +1889,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "updateComment";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -1879,7 +1941,6 @@ public class GlossaryBrowserRESTServices
      * Link a comment that contains the best answer to a question posed in another comment.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param forLineage return elements marked with the Memento classification?
@@ -1892,7 +1953,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse setupAcceptedAnswer(String                  serverName,
-                                            String                  userId,
                                             String                  questionCommentGUID,
                                             String                  answerCommentGUID,
                                             boolean                 forLineage,
@@ -1901,13 +1961,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "setupAcceptedAnswer";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -1949,7 +2013,6 @@ public class GlossaryBrowserRESTServices
      * Unlink a comment that contains an answer to a question posed in another comment.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param forLineage return elements marked with the Memento classification?
@@ -1962,7 +2025,6 @@ public class GlossaryBrowserRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearAcceptedAnswer(String                        serverName,
-                                            String                        userId,
                                             String                        questionCommentGUID,
                                             String                        answerCommentGUID,
                                             boolean                       forLineage,
@@ -1971,13 +2033,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "clearAcceptedAnswer";
 
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -2016,7 +2082,6 @@ public class GlossaryBrowserRESTServices
      * Removes a comment added to the element by this user.
      *
      * @param serverName name of the server instances for this request
-     * @param userId  String - userId of user making request.
      * @param elementGUID  String - unique id for the element object
      * @param commentGUID  String - unique id for the comment object
      * @param forLineage return elements marked with the Memento classification?
@@ -2031,7 +2096,6 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse removeCommentFromElement(String                         serverName,
-                                                 String                         userId,
                                                  String                         elementGUID,
                                                  String                         commentGUID,
                                                  boolean                        forLineage,
@@ -2041,13 +2105,17 @@ public class GlossaryBrowserRESTServices
         final String guidParameterName = "commentGUID";
         final String methodName        = "removeElementComment";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -2083,7 +2151,6 @@ public class GlossaryBrowserRESTServices
      * Return the requested comment.
      *
      * @param serverName name of the server instances for this request
-     * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment object.
      * @param forLineage               return elements marked with the Memento classification?
      * @param forDuplicateProcessing   do not merge elements marked as duplicates?
@@ -2094,7 +2161,6 @@ public class GlossaryBrowserRESTServices
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public CommentElementResponse getCommentByGUID(String                        serverName,
-                                                   String                        userId,
                                                    String                        commentGUID,
                                                    boolean                       forLineage,
                                                    boolean                       forDuplicateProcessing,
@@ -2102,13 +2168,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getComment";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         CommentElementResponse response = new CommentElementResponse();
         AuditLog            auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2144,7 +2214,6 @@ public class GlossaryBrowserRESTServices
      * Return the comments attached to an element.
      *
      * @param serverName name of the server instances for this request
-     * @param userId       userId of user making request.
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -2157,7 +2226,6 @@ public class GlossaryBrowserRESTServices
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public CommentElementsResponse getAttachedComments(String                        serverName,
-                                                       String                        userId,
                                                        String                        elementGUID,
                                                        int                           startFrom,
                                                        int                           pageSize,
@@ -2167,13 +2235,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getAttachedComments";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         CommentElementsResponse response = new CommentElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2214,7 +2286,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -2230,7 +2301,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public CommentElementsResponse findComments(String                  serverName,
-                                                String                  userId,
                                                 int                     startFrom,
                                                 int                     pageSize,
                                                 boolean                 startsWith,
@@ -2242,13 +2312,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findComments";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         CommentElementsResponse response = new CommentElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2282,7 +2356,6 @@ public class GlossaryBrowserRESTServices
      * Creates a new informal tag and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId       userId of user making request
      * @param requestBody  contains the name of the tag and (optional) description of the tag
      *
      * @return guid for new tag or
@@ -2291,18 +2364,21 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createInformalTag(String        serverName,
-                                          String        userId,
                                           TagProperties requestBody)
     {
         final String   methodName = "createTag";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDResponse  response = new GUIDResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             if (requestBody != null)
             {
                 CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -2329,7 +2405,6 @@ public class GlossaryBrowserRESTServices
      * Updates the description of an existing tag (either private or public).
      *
      * @param serverName   name of the server instances for this request
-     * @param userId       userId of user making request.
      * @param tagGUID      unique id for the tag.
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
@@ -2339,19 +2414,22 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   updateTagDescription(String                       serverName,
-                                               String                       userId,
                                                String                       tagGUID,
                                                InformalTagUpdateRequestBody requestBody)
     {
         final String methodName = "updateTagDescription";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             if (requestBody != null)
             {
                 CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -2380,7 +2458,6 @@ public class GlossaryBrowserRESTServices
      * Removes a tag from the repository.  All the relationships to referenceables are lost.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
      * @param requestBody  null request body.
      *
@@ -2391,20 +2468,23 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse   deleteTag(String          serverName,
-                                    String          userId,
                                     String          tagGUID,
                                     NullRequestBody requestBody)
     {
         final String methodName           = "deleteTag";
         final String tagGUIDParameterName = "tagGUID";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2424,7 +2504,6 @@ public class GlossaryBrowserRESTServices
      * Return the tag for the supplied unique identifier (guid).
      *
      * @param serverName   name of the server instances for this request
-     * @param userId userId of the user making the request.
      * @param guid unique identifier of the tag.
      *
      * @return Tag object or
@@ -2433,18 +2512,21 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagResponse getTag(String serverName,
-                                      String userId,
                                       String guid)
     {
         final String methodName = "getTag";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         InformalTagResponse response = new InformalTagResponse();
         AuditLog            auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2464,7 +2546,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
-     * @param userId the name of the calling user.
      * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -2475,20 +2556,23 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse getTagsByName(String          serverName,
-                                              String          userId,
                                               NameRequestBody requestBody,
                                               int             startFrom,
                                               int             pageSize)
     {
         final String methodName = "getTagsByName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         InformalTagsResponse response = new InformalTagsResponse();
         AuditLog             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2519,7 +2603,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of the calling user's private tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
-     * @param userId the name of the calling user.
      * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -2530,20 +2613,23 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse getMyTagsByName(String          serverName,
-                                                String          userId,
                                                 NameRequestBody requestBody,
                                                 int             startFrom,
                                                 int             pageSize)
     {
         final String methodName = "getMyTagsByName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         InformalTagsResponse response = new InformalTagsResponse();
         AuditLog             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2574,7 +2660,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -2588,7 +2673,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse findTags(String                  serverName,
-                                         String                  userId,
                                          int                     startFrom,
                                          int                     pageSize,
                                          boolean                 startsWith,
@@ -2598,13 +2682,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findTags";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         InformalTagsResponse response = new InformalTagsResponse();
         AuditLog             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2635,7 +2723,6 @@ public class GlossaryBrowserRESTServices
      * Return the list of the calling user's private tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -2649,7 +2736,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse findMyTags(String                  serverName,
-                                           String                  userId,
                                            int                     startFrom,
                                            int                     pageSize,
                                            boolean                 startsWith,
@@ -2659,13 +2745,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findMyTags";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         InformalTagsResponse response = new InformalTagsResponse();
         AuditLog             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2696,7 +2786,6 @@ public class GlossaryBrowserRESTServices
      * Adds a tag (either private of public) to an element.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId       userId of user making request.
      * @param elementGUID    unique id for the element.
      * @param tagGUID      unique id of the tag.
      * @param requestBody  feedback request body.
@@ -2707,14 +2796,13 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public VoidResponse   addTagToElement(String              serverName,
-                                          String              userId,
                                           String              elementGUID,
                                           String              tagGUID,
                                           FeedbackProperties requestBody)
     {
-        final String methodName             = "addTagToElement";
+        final String methodName = "addTagToElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         boolean  isPublic = false;
 
@@ -2728,6 +2816,10 @@ public class GlossaryBrowserRESTServices
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2747,7 +2839,6 @@ public class GlossaryBrowserRESTServices
      * Removes a tag from the element that was added by this user.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId    userId of user making request.
      * @param elementGUID unique id for the element.
      * @param tagGUID   unique id for the tag.
      * @param requestBody  null request body needed for correct protocol exchange.
@@ -2759,20 +2850,23 @@ public class GlossaryBrowserRESTServices
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse   removeTagFromElement(String          serverName,
-                                               String          userId,
                                                String          elementGUID,
                                                String          tagGUID,
                                                NullRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromElement";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2794,7 +2888,6 @@ public class GlossaryBrowserRESTServices
      * of its schema elements.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId the name of the calling user.
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -2805,20 +2898,23 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDListResponse getElementsByTag(String serverName,
-                                             String userId,
                                              String tagGUID,
                                              int    startFrom,
                                              int    pageSize)
     {
         final String methodName = "getElementsByTag";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GUIDListResponse  response = new GUIDListResponse();
         AuditLog          auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -2845,7 +2941,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -2861,7 +2956,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogElementsResponse findNoteLogs(String                  serverName,
-                                                String                  userId,
                                                 int                     startFrom,
                                                 int                     pageSize,
                                                 boolean                 startsWith,
@@ -2873,13 +2967,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findNoteLogs";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteLogElementsResponse response = new NoteLogElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -2915,7 +3013,6 @@ public class GlossaryBrowserRESTServices
      * There are no wildcards supported on this request.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -2928,7 +3025,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogElementsResponse getNoteLogsByName(String          serverName,
-                                                     String          userId,
                                                      int             startFrom,
                                                      int             pageSize,
                                                      boolean         forLineage,
@@ -2937,13 +3033,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getNoteLogsByName";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteLogElementsResponse response = new NoteLogElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -2979,7 +3079,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the list of note log metadata elements attached to the element.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param elementGUID unique identifier of the note log of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -2993,7 +3092,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogElementsResponse getNoteLogsForElement(String                        serverName,
-                                                         String                        userId,
                                                          String                        elementGUID,
                                                          int                           startFrom,
                                                          int                           pageSize,
@@ -3003,13 +3101,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getNotesForNoteLog";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteLogElementsResponse response = new NoteLogElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3051,7 +3153,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the note log metadata element with the supplied unique identifier.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3063,7 +3164,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogElementResponse getNoteLogByGUID(String                        serverName,
-                                                   String                        userId,
                                                    String                        noteLogGUID,
                                                    boolean                       forLineage,
                                                    boolean                       forDuplicateProcessing,
@@ -3071,13 +3171,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getNoteLogByGUID";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteLogElementResponse response = new NoteLogElementResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -3118,7 +3222,6 @@ public class GlossaryBrowserRESTServices
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param startsWith does the value start with the supplied string?
@@ -3134,7 +3237,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteElementsResponse findNotes(String                  serverName,
-                                          String                  userId,
                                           int                     startFrom,
                                           int                     pageSize,
                                           boolean                 startsWith,
@@ -3146,13 +3248,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "findNotes";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteElementsResponse response = new NoteElementsResponse();
         AuditLog                auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (requestBody != null)
@@ -3187,7 +3293,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the list of notes associated with a note log.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteLogGUID unique identifier of the note log of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -3201,7 +3306,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteElementsResponse getNotesForNoteLog(String                        serverName,
-                                                   String                        userId,
                                                    String                        noteLogGUID,
                                                    int                           startFrom,
                                                    int                           pageSize,
@@ -3211,13 +3315,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getNotesForNoteLog";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteElementsResponse response = new NoteElementsResponse();
-        AuditLog                auditLog = null;
+        AuditLog             auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
@@ -3258,7 +3366,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the note metadata element with the supplied unique identifier.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId calling user
      * @param noteGUID unique identifier of the requested metadata element
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3270,7 +3377,6 @@ public class GlossaryBrowserRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteElementResponse getNoteByGUID(String                        serverName,
-                                             String                        userId,
                                              String                        noteGUID,
                                              boolean                       forLineage,
                                              boolean                       forDuplicateProcessing,
@@ -3278,13 +3384,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getNoteByGUID";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         NoteElementResponse response = new NoteElementResponse();
         AuditLog            auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
 
@@ -3320,7 +3430,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the data field classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3333,7 +3442,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getDataFieldClassifiedElements(String                      serverName,
-                                                               String                      userId,
                                                                int                         startFrom,
                                                                int                         pageSize,
                                                                boolean                     forLineage,
@@ -3342,13 +3450,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getDataFieldClassifiedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3404,7 +3516,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3417,7 +3528,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getConfidenceClassifiedElements(String                      serverName,
-                                                                String                      userId,
                                                                 int                         startFrom,
                                                                 int                         pageSize,
                                                                 boolean                     forLineage,
@@ -3426,13 +3536,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getConfidenceClassifiedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3491,7 +3605,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the criticality classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3504,7 +3617,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getCriticalityClassifiedElements(String                      serverName,
-                                                                 String                      userId,
                                                                  int                         startFrom,
                                                                  int                         pageSize,
                                                                  boolean                     forLineage,
@@ -3513,13 +3625,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getCriticalityClassifiedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3578,7 +3694,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the confidentiality classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3591,7 +3706,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getConfidentialityClassifiedElements(String                      serverName,
-                                                                     String                      userId,
                                                                      int                         startFrom,
                                                                      int                         pageSize,
                                                                      boolean                     forLineage,
@@ -3600,13 +3714,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getConfidentialityClassifiedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3665,7 +3783,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3678,7 +3795,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getRetentionClassifiedElements(String                      serverName,
-                                                               String                      userId,
                                                                int                         startFrom,
                                                                int                         pageSize,
                                                                boolean                     forLineage,
@@ -3687,13 +3803,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getRetentionClassifiedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3752,7 +3872,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the security tags classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3765,7 +3884,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getSecurityTaggedElements(String                      serverName,
-                                                          String                      userId,
                                                           int                         startFrom,
                                                           int                         pageSize,
                                                           boolean                     forLineage,
@@ -3774,13 +3892,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getSecurityTaggedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3817,7 +3939,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3830,7 +3951,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getOwnersElements(String                      serverName,
-                                                  String                      userId,
                                                   int                         startFrom,
                                                   int                         pageSize,
                                                   boolean                     forLineage,
@@ -3839,13 +3959,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getOwnersElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3901,7 +4025,6 @@ public class GlossaryBrowserRESTServices
      * Return information about the elements classified with the confidence classification.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -3914,7 +4037,6 @@ public class GlossaryBrowserRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getMembersOfSubjectArea(String                      serverName,
-                                                        String                      userId,
                                                         int                         startFrom,
                                                         int                         pageSize,
                                                         boolean                     forLineage,
@@ -3923,13 +4045,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getMembersOfSubjectArea";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -3985,7 +4111,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -3999,7 +4124,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public GlossaryTermElementsResponse getMeanings(String                        serverName,
-                                                    String                        userId,
                                                     String                        elementGUID,
                                                     int                           startFrom,
                                                     int                           pageSize,
@@ -4009,13 +4133,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getMeanings";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4054,7 +4182,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -4068,7 +4195,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public RelatedElementsResponse getSemanticAssignees(String                        serverName,
-                                                        String                        userId,
                                                         String                        glossaryTermGUID,
                                                         int                           startFrom,
                                                         int                           pageSize,
@@ -4078,13 +4204,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getSemanticAssignees";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         RelatedElementsResponse response = new RelatedElementsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4123,7 +4253,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -4137,7 +4266,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public RelatedElementsResponse getGovernedElements(String                        serverName,
-                                                       String                        userId,
                                                        String                        governanceDefinitionGUID,
                                                        int                           startFrom,
                                                        int                           pageSize,
@@ -4147,13 +4275,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGovernedElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         RelatedElementsResponse response = new RelatedElementsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4192,7 +4324,6 @@ public class GlossaryBrowserRESTServices
      * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -4206,7 +4337,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public GovernanceDefinitionsResponse getGovernedByDefinitions(String                        serverName,
-                                                                  String                        userId,
                                                                   String                        elementGUID,
                                                                   int                           startFrom,
                                                                   int                           pageSize,
@@ -4216,13 +4346,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getGovernedByDefinitions";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4262,7 +4396,6 @@ public class GlossaryBrowserRESTServices
      * The elements returned were used to create the requested element.  Typically only one element is returned.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the governance definition that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -4276,7 +4409,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public RelatedElementsResponse getSourceElements(String                        serverName,
-                                                     String                        userId,
                                                      String                        elementGUID,
                                                      int                           startFrom,
                                                      int                           pageSize,
@@ -4286,13 +4418,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getSourceElements";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         RelatedElementsResponse response = new RelatedElementsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -4332,7 +4468,6 @@ public class GlossaryBrowserRESTServices
      * The elements returned were created using the requested element as a template.
      *
      * @param serverName  name of the server instance to connect to
-     * @param userId calling user
      * @param elementGUID unique identifier of the element that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -4346,7 +4481,6 @@ public class GlossaryBrowserRESTServices
      * UserNotAuthorizedException security access problem
      */
     public RelatedElementsResponse getElementsSourceFrom(String                        serverName,
-                                                         String                        userId,
                                                          String                        elementGUID,
                                                          int                           startFrom,
                                                          int                           pageSize,
@@ -4356,13 +4490,17 @@ public class GlossaryBrowserRESTServices
     {
         final String methodName = "getElementsSourceFrom";
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         RelatedElementsResponse response = new RelatedElementsResponse();
         AuditLog     auditLog = null;
 
         try
         {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 

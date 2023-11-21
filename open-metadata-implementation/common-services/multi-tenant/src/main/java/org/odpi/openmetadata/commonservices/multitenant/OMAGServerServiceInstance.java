@@ -6,7 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.platformservices.properties.ServerInstanceStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerInstanceStatus;
 
 /**
  * OMAGServerServiceInstance represents an instance of a service in an OMAG Server.

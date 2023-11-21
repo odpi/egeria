@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataFieldLink;
+import org.odpi.openmetadata.frameworks.discovery.properties.RelatedDataField;
 
 import java.util.List;
 import java.util.Map;
@@ -16,14 +18,13 @@ import java.util.Map;
 /**
  * DiscoveryAnnotationStoreClient provides a client-side implementation of the ODF DiscoveryAnnotationStore
  * that is backed by calls to the Discovery Engine OMAS.
- *
  * An instance of this client is created for each discovery service instance that runs.  This is
  * why the REST client is passed in on the constructor (since creating a new RestTemplate object is
  * very expensive).
  */
 public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
 {
-    private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
+    private final DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
 
     /**
@@ -305,7 +306,7 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
      *
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param maximumResults maximum number of data fields that can be returned.
      *
      * @return list of DataField objects
      *
@@ -321,6 +322,29 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                                  PropertyServerException
     {
         return discoveryEngineClient.getNestedDataFields(userId, parentDataFieldGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param dataFieldGUID starting data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of data fields that can be returned.
+     *
+     * @return list of DataField objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    public  List<RelatedDataField>  getLinkedDataFields(String   dataFieldGUID,
+                                                        int      startingFrom,
+                                                        int      maximumResults) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return discoveryEngineClient.getLinkedDataFields(userId, dataFieldGUID, startingFrom, maximumResults);
     }
 
 
@@ -380,6 +404,27 @@ public class DiscoveryAnnotationStoreClient extends DiscoveryAnnotationStore
                                                                         PropertyServerException
     {
         return discoveryEngineClient.addDataFieldToDataField(userId, parentDataFieldGUID, dataField);
+    }
+
+
+    /**
+     * Link two exising data fields together in a peer relationship.
+     *
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipProperties optional properties for the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    @Override
+    public void linkDataFields(String        linkFromDataFieldGUID,
+                               DataFieldLink relationshipProperties,
+                               String        linkToDataFieldGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        discoveryEngineClient.linkDataFields(userId, linkFromDataFieldGUID, relationshipProperties, linkToDataFieldGUID);
     }
 
 

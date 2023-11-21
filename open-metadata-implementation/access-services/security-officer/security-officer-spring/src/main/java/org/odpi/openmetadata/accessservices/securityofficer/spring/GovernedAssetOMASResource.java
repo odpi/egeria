@@ -21,14 +21,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 
-@Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
-     externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",
+@Tag(name="Metadata Access Server: Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/security-officer/overview/"))
 
 public class GovernedAssetOMASResource
 {
 
-    private GovernedAssetRESTServices restAPI = new GovernedAssetRESTServices();
+    private final GovernedAssetRESTServices restAPI = new GovernedAssetRESTServices();
 
     /**
      * Returns the list of governed asset

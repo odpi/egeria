@@ -19,6 +19,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -885,6 +886,13 @@ public class OMAGServerAdminForEngineServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig.getRepositoryServicesConfig() == null)
+            {
+                OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
+
+                serverConfig.setRepositoryServicesConfig(omrsConfigurationFactory.getDefaultRepositoryServicesConfig());
+            }
 
             List<String>  configAuditTrail = serverConfig.getAuditTrail();
 

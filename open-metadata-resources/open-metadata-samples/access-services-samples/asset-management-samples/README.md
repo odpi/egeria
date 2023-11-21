@@ -21,7 +21,6 @@ Since the Asset Consumer OMAS is using metadata set up by the Asset Owner OMAS i
 two interfaces together, which is why the samples are combined.
 
 
-
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

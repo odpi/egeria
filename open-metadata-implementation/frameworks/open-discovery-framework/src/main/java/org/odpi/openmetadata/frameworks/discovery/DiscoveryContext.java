@@ -22,6 +22,7 @@ public class DiscoveryContext
     private DiscoveryAssetStore        assetStore;
     private DiscoveryAnnotationStore   annotationStore;
     private DiscoveryAssetCatalogStore assetCatalogStore;
+    private DiscoveryOpenMetadataStore openMetadataStore;
 
 
     /**
@@ -34,6 +35,7 @@ public class DiscoveryContext
      * @param assetStore discovery asset store for the discovery service
      * @param annotationStore annotation store for the discovery service
      * @param assetCatalogStore the asset catalog store that provides the ability to query assets.
+     * @param openMetadataStore generic metadata API from the Governance Action Framework (GAF)
      */
     public    DiscoveryContext(String                     userId,
                                String                     assetGUID,
@@ -41,7 +43,8 @@ public class DiscoveryContext
                                List<String>               requestedAnnotationTypes,
                                DiscoveryAssetStore        assetStore,
                                DiscoveryAnnotationStore   annotationStore,
-                               DiscoveryAssetCatalogStore assetCatalogStore)
+                               DiscoveryAssetCatalogStore assetCatalogStore,
+                               DiscoveryOpenMetadataStore openMetadataStore)
     {
         this.userId = userId;
         this.assetGUID = assetGUID;
@@ -50,6 +53,7 @@ public class DiscoveryContext
         this.assetStore = assetStore;
         this.annotationStore = annotationStore;
         this.assetCatalogStore = assetCatalogStore;
+        this.openMetadataStore = openMetadataStore;
     }
 
 
@@ -69,6 +73,7 @@ public class DiscoveryContext
             assetStore = template.getAssetStore();
             annotationStore = template.getAnnotationStore();
             assetCatalogStore = template.getAssetCatalogStore();
+            openMetadataStore = template.getOpenMetadataStore();
         }
     }
 
@@ -141,6 +146,16 @@ public class DiscoveryContext
     }
 
 
+    /**
+     * Return a generic interface for accessing and updating open metadata elements, classifications and relationships.
+     *
+     * @return open metadata store
+     */
+    public DiscoveryOpenMetadataStore getOpenMetadataStore()
+    {
+        return openMetadataStore;
+    }
+
 
     /**
      * Standard toString method.
@@ -151,14 +166,15 @@ public class DiscoveryContext
     public String toString()
     {
         return "DiscoveryContext{" +
-                "userId='" + userId + '\'' +
-                ", assetGUID='" + assetGUID + '\'' +
-                ", analysisParameters=" + analysisParameters +
-                ", requestedAnnotationTypes=" + requestedAnnotationTypes +
-                ", assetStore=" + assetStore +
-                ", annotationStore=" + annotationStore +
-                ", assetCatalogStore=" + assetCatalogStore +
-                '}';
+                       "userId='" + userId + '\'' +
+                       ", assetGUID='" + assetGUID + '\'' +
+                       ", analysisParameters=" + analysisParameters +
+                       ", requestedAnnotationTypes=" + requestedAnnotationTypes +
+                       ", assetStore=" + assetStore +
+                       ", annotationStore=" + annotationStore +
+                       ", assetCatalogStore=" + assetCatalogStore +
+                       ", openMetadataStore=" + openMetadataStore +
+                       '}';
     }
 
 

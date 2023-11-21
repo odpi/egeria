@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
@@ -896,6 +897,29 @@ public class ConfigRepositoryServicesResource
                                                    @PathVariable String serverName)
     {
         return adminAPI.clearLocalRepositoryConfig(userId, serverName);
+    }
+
+
+
+    /**
+     * Update the URL broadcast across the cohort to allow other members to issue queries to this repository.
+     * This method is needed to reconfigure a server that has moved from one platform to another.  Once the
+     * URL is updated, and the server restarted, it will broadcast its new URL to the rest of the cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody  String url.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    @PostMapping(path = "/local-repository/configuration/remote-repository-connector-url")
+
+    public VoidResponse resetRemoteCohortURL(@PathVariable String         userId,
+                                             @PathVariable String         serverName,
+                                             @RequestBody  URLRequestBody requestBody)
+    {
+        return adminAPI.resetRemoteCohortURL(userId, serverName, requestBody);
     }
 
 

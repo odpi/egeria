@@ -18,6 +18,27 @@ type system, frameworks, APIs, event payloads and interchange protocols to enabl
 engines and platforms to exchange metadata in order to get the best
 value from data, whilst ensuring it is properly governed.
 
+This git repository contains the core Egeria code and resources.  This includes the build for Egeria's runtimes.
+The project is built using `gradle`.  Clone or download the contents of this repository.
+You will also need the [Java 17 SDK installed](https://adoptium.net/).
+Then run the following gradle command from the top-level directory to build the code and run the tests.
+
+```bash
+./gradlew clean build
+```
+
+Once you see the "Build Successful" message, go to the `open-metadata-distributions` directory.
+There are three choices of assembly to use:
+
+* `open-metadata-assemblies` contains all of the Egeria runtimes. This is the assembly that is used in our standard [Docker containers](https://hub.docker.com/r/odpi/egeria).
+* `omag-server-platform` contains just the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) runtime.
+* `egeria-ui-application` contains the Egeria UI REST Services application.
+
+Change into the directory for the assembly you need and then look in `build/unpacked`.
+There you will see the built and assembled libraries and associated content.
+
+Details on how to run Egeria can be found on [our website](https://egeria-project.org/education/tutorials/omag-server-tutorial/overview/).
+
 ## Egeria governance
 
 This project aims to operate in a transparent, accessible way for the benefit of the Egeria community.

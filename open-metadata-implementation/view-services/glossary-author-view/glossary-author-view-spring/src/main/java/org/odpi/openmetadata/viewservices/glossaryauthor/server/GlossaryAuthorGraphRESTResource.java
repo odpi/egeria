@@ -16,14 +16,16 @@ import java.util.Date;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the server-side implementation of the SubjectArea Open Metadata
- * Access Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
+ * The GlossaryAuthorGraphRESTResource provides the server-side implementation of the Glossary Author OMVS.
+ * This interface provides term authoring interfaces for subject area experts.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}")
-@Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.",
-     externalDocs=@ExternalDocumentation(description="Glossary Author Open Metadata View Service (OMVS)",
+
+@Tag(name="View Server: Glossary Author OMVS", description="Glossary Author OMVS supports subject matter experts who are documenting their knowledge in a glossary.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-author/overview/"))
+
 public class GlossaryAuthorGraphRESTResource {
     private final GlossaryAuthorViewGraphRESTServices restAPI = new GlossaryAuthorViewGraphRESTServices();
     /**

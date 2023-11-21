@@ -56,9 +56,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement bean)
             {
-                SoftwareCapabilityElement bean                   = (SoftwareCapabilityElement) returnBean;
                 AssetManagerProperties    assetManagerProperties = new AssetManagerProperties();
 
                 if (entity != null)

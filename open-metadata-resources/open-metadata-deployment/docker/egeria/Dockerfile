@@ -17,7 +17,7 @@
 #FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
 FROM registry.access.redhat.com/ubi9/openjdk-17
 
-ARG version=4.3-SNAPSHOT
+ARG version=4.4-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -46,7 +46,7 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
 # Copy egeria distribution
 COPY build/assembly /deployments
 
-# Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
+# Expose port 9443 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
 
 # By default, we run the OMAG Server Platform

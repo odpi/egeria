@@ -19,16 +19,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OpenMetadataConformanceProfilePriority implements Serializable
 {
+    /**
+     * This profile must be supported for the technology under test to be compliant.
+     */
     MANDATORY_PROFILE   (0, "Mandatory Profile",
                             "This profile must be supported for the technology under test to be compliant."),
+
+    /**
+     * This profile must either be supported, or a conformant response is required to signal that the feature is not supported.
+     */
     OPTIONAL_PROFILE    (1, "Optional Profile",
-                            "This profile must either be supported, or a conformant response is required.");
+                            "This profile must either be supported, or a conformant response is required to signal that the feature is not supported.");
 
     private static final long serialVersionUID = 1L;
 
-    private int                ordinal;
-    private String             name;
-    private String             description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
 

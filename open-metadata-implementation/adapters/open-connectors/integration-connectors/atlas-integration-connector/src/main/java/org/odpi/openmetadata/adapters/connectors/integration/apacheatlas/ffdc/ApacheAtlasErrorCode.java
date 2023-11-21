@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The ApacheAtlasErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the Apache Atlas integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -57,21 +57,20 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                       "the connection information is stored in the connector's RegisteredIntegrationConnector relationship in the open metadata ecosystem."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Glossary category {0} already exists in Apache Atlas
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Integration connector {0} is unable to create an Apache Atlas REST Connector
      */
-    CATEGORY_ALREADY_EXISTS(400, "APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004",
-             "Glossary category {0} already exists in Apache Atlas",
-             "The connector attempts to add a numerical post-fix to the category name to ensure it has a unique name.",
-             "No action is required. The connector will validate whether it has already created the category on another thread, or it will try the request with a new name."),
+    NULL_ATLAS_CLIENT(400, "APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004",
+                       "Integration connector {0} is unable to create an Apache Atlas REST Connector",
+                       "The connector uses the Apache Atlas REST Connector to make REST calls to Apache Atlas. The connector is moved to FAILED status and will no longer be called to synchronize metadata until the problem creating the Apache Atlas REST Connector is resolved.",
+                       "Ensure that the jar file for the Apache Atlas REST Connector is in the class path of the platform."),
 
     /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-404-001 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}
      */
-    TERM_ALREADY_EXISTS(400, "APACHE-ATLAS-INTEGRATION-CONNECTOR-400-005",
-                            "Glossary term {0} already exists in Apache Atlas",
-                            "The connector attempts to add a numerical post-fix to the term name to ensure it has a unique name.",
-                            "No action is required. The connector will validate whether it has already created the term on another thread, or it will try the request with a new name."),
-
+    MISSING_CORRELATION(404, "APACHE-ATLAS-INTEGRATION-CONNECTOR-404-001",
+                        "The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}",
+                        "The correlation information that should be associated with the open metadata entity is missing and the integration connector is not able to confidently synchronize it with the Apache Atlas entity.",
+                        "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to delete the open metadata entity.  However, if this entity has been enhanced with many attachments and classifications then it is also possible to add the correlation information to the open metadata entity to allow the synchronization to continue."),
 
     /**
      * APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -80,16 +79,7 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * APACHE-ATLAS-INTEGRATION-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}
-     */
-    CLIENT_SIDE_REST_API_ERROR(503, "APACHE-ATLAS-INTEGRATION-CONNECTOR-503-001",
-                                       "A client-side exception of {0} was received from API call {1} to URL {2}.  The error message was {3}",
-                                       "The integration has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                       "Look for errors in the local server's console to understand and correct the source of the error."),
-
-    ;
+   ;
 
     private final ExceptionMessageDefinition messageDefinition;
 

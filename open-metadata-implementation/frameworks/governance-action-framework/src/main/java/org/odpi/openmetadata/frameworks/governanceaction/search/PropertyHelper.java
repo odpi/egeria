@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.governanceaction.search;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 
@@ -19,9 +20,9 @@ public class PropertyHelper
     /**
      * Throw an exception if the supplied GUID is null
      *
-     * @param guid           unique identifier to validate
-     * @param guidParameter  name of the parameter that passed the guid.
-     * @param methodName     name of the method making the call.
+     * @param guid          unique identifier to validate
+     * @param guidParameter name of the parameter that passed the guid.
+     * @param methodName    name of the method making the call.
      *
      * @throws InvalidParameterException the guid is null
      */
@@ -42,9 +43,9 @@ public class PropertyHelper
     /**
      * Throw an exception if the supplied name is null
      *
-     * @param name           unique name to validate
-     * @param nameParameter  name of the parameter that passed the name.
-     * @param methodName     name of the method making the call.
+     * @param name          unique name to validate
+     * @param nameParameter name of the parameter that passed the name.
+     * @param methodName    name of the method making the call.
      *
      * @throws InvalidParameterException the name is null
      */
@@ -61,6 +62,81 @@ public class PropertyHelper
         }
     }
 
+
+    /**
+     * Test the type of the element to determine if it matches the desired type.  This method works for all categories of elements,
+     * ie entities, relationships and classifications.
+     *
+     * @param elementControlHeader header of the element to test
+     * @param expectedType         expected type - nul means any type
+     *
+     * @return boolean result
+     */
+    public boolean isTypeOf(ElementControlHeader elementControlHeader,
+                            String expectedType)
+    {
+        if (expectedType == null)
+        {
+            return true;
+        }
+
+        if ((elementControlHeader != null) && (elementControlHeader.getType() != null))
+        {
+            List<String> typeList = elementControlHeader.getType().getSuperTypeNames();
+
+            if (typeList == null)
+            {
+                typeList = new ArrayList<>();
+            }
+
+            typeList.add(expectedType);
+
+            return typeList.contains(expectedType);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return the search properties that requests elements with an exactly matching name in any of the listed property names.
+     *
+     * @param propertyNames list of property names
+     * @param name name to match on
+     * @return search properties
+     */
+    public SearchProperties getSearchPropertiesByName(List<String> propertyNames,
+                                                      String       name)
+    {
+        if ((propertyNames != null) && (! propertyNames.isEmpty()))
+        {
+            SearchProperties searchProperties = new SearchProperties();
+
+            PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
+            propertyValue.setTypeName("string");
+            propertyValue.setPrimitiveValue(name);
+
+            List<PropertyCondition> propertyConditions = new ArrayList<>();
+
+            for (String propertyName : propertyNames)
+            {
+                PropertyCondition propertyCondition = new PropertyCondition();
+
+                propertyCondition.setValue(propertyValue);
+                propertyCondition.setProperty(propertyName);
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                propertyConditions.add(propertyCondition);
+            }
+
+            searchProperties.setConditions(propertyConditions);
+            searchProperties.setMatchCriteria(MatchCriteria.ANY);
+
+            return searchProperties;
+        }
+
+        return null;
+    }
 
     /**
      * Add the supplied primitive property to an element properties object.  If the element property object
@@ -188,9 +264,14 @@ public class PropertyHelper
                                              String            propertyName,
                                              Date              propertyValue)
     {
-        Long longValue = propertyValue.getTime();
+        if (propertyValue != null)
+        {
+            Long longValue = propertyValue.getTime();
 
-        return addPrimitivePropertyToInstance(properties, propertyName, longValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
+            return addPrimitivePropertyToInstance(properties, propertyName, longValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
+        }
+
+        return properties;
     }
 
 
@@ -237,8 +318,7 @@ public class PropertyHelper
         {
             resultingProperties = properties;
         }
-
-
+        
         EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
 
         enumTypePropertyValue.setSymbolicName(symbolicName);
@@ -504,7 +584,7 @@ public class PropertyHelper
                     resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
-                else if (mapPropertyValue instanceof List propertyAsList)
+                else if (mapPropertyValue instanceof List<?> propertyAsList)
                 {
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
@@ -666,6 +746,395 @@ public class PropertyHelper
         return properties;
     }
 
+
+    /**
+     * Return the requested property or null if property is not found.  If the property is found, it is removed from
+     * the InstanceProperties structure.  If the property is not a string property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public String removeStringProperty(String             sourceName,
+                                       String             propertyName,
+                                       ElementProperties  properties,
+                                       String             methodName)
+    {
+        String  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+    /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return symbolic name
+     */
+    public String removeEnumProperty(String             sourceName,
+                                     String             propertyName,
+                                     ElementProperties  properties,
+                                     String             methodName)
+    {
+        String  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getEnumPropertySymbolicName(sourceName, propertyName, properties, methodName);
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, String> removeStringMapFromProperty(String             sourceName,
+                                                           String             propertyName,
+                                                           ElementProperties  properties,
+                                                           String             methodName)
+    {
+        Map<String, String>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public int    removeIntProperty(String             sourceName,
+                                    String             propertyName,
+                                    ElementProperties  properties,
+                                    String             methodName)
+    {
+        int  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Return the requested property or null if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a date property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public Date    removeDateProperty(String             sourceName,
+                                      String             propertyName,
+                                      ElementProperties  properties,
+                                      String             methodName)
+    {
+        Date  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getDateProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Return the requested property or false if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public boolean removeBooleanProperty(String             sourceName,
+                                         String             propertyName,
+                                         ElementProperties  properties,
+                                         String             methodName)
+    {
+        boolean  retrievedProperty = false;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getBooleanProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public long   removeLongProperty(String             sourceName,
+                                     String             propertyName,
+                                     ElementProperties properties,
+                                     String             methodName)
+    {
+        long  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getLongProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a string array property and extracts its values.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an array property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return array property value or null
+     */
+    public List<String> removeStringArrayProperty(String             sourceName,
+                                                  String             propertyName,
+                                                  ElementProperties properties,
+                                                  String             methodName)
+    {
+        List<String>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringArrayProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Object> removeMapFromProperty(String             sourceName,
+                                                     String             propertyName,
+                                                     ElementProperties properties,
+                                                     String             methodName)
+    {
+        Map<String, Object>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Long> removeLongMapFromProperty(String             sourceName,
+                                                       String             propertyName,
+                                                       ElementProperties  properties,
+                                                       String             methodName)
+    {
+        Map<String, Long>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getLongMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Integer> removeIntegerMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             ElementProperties  properties,
+                                                             String             methodName)
+    {
+        Map<String, Integer>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntegerMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Boolean> removeBooleanMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             ElementProperties  properties,
+                                                             String             methodName)
+    {
+        Map<String, Boolean>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getBooleanMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Remove the named property from the instance properties object.
+     *
+     * @param propertyName name of property to remove
+     * @param properties instance properties object to work on
+     */
+    protected void removeProperty(String    propertyName, ElementProperties properties)
+    {
+        if (properties != null)
+        {
+            Map<String, PropertyValue> instancePropertyValueMap = properties.getPropertyValueMap();
+
+            if (instancePropertyValueMap != null)
+            {
+                instancePropertyValueMap.remove(propertyName);
+                properties.setPropertyValueMap(instancePropertyValueMap);
+            }
+        }
+    }
 
 
     /**
@@ -852,14 +1321,12 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof MapTypePropertyValue)
+                    if (propertyValue instanceof MapTypePropertyValue mapTypePropertyValue)
                     {
-                        MapTypePropertyValue mapTypePropertyValue = (MapTypePropertyValue) propertyValue;
-                        
                         return this.getElementPropertiesAsMap(mapTypePropertyValue.getMapValues());
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -868,7 +1335,32 @@ public class PropertyHelper
 
         return null;
     }
-    
+
+
+    /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    public String getEnumPropertySymbolicName(String             sourceName,
+                                              String             propertyName,
+                                              ElementProperties  properties,
+                                              String             methodName)
+    {
+        PropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+        if (instancePropertyValue instanceof EnumTypePropertyValue enumTypePropertyValue)
+        {
+            return enumTypePropertyValue.getSymbolicName();
+        }
+
+        return null;
+    }
+
 
     /**
      * Convert an element properties object into a map.
@@ -891,9 +1383,8 @@ public class PropertyHelper
 
                     if (actualPropertyValue != null)
                     {
-                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue)
+                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                         {
-                            PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) actualPropertyValue;
                             resultingMap.put(mapPropertyName, primitiveTypePropertyValue.getPrimitiveValue());
                         }
                         else
@@ -936,10 +1427,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -949,7 +1438,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -959,6 +1448,91 @@ public class PropertyHelper
         return null;
     }
 
+
+    /**
+     * Locates and extracts a string array property and extracts its values.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all the properties of the instance
+     * @param callingMethodName method of caller
+     * @return array property value or null
+     */
+    public List<String> getStringArrayProperty(String             sourceName,
+                                               String             propertyName,
+                                               ElementProperties properties,
+                                               String             callingMethodName)
+    {
+        final String  thisMethodName = "getStringArrayProperty";
+
+        if (properties != null)
+        {
+            PropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue != null)
+            {
+                /*
+                 * The property exists in the supplied properties.   It should be of category ARRAY.
+                 * If it is then it can be cast to an ArrayPropertyValue in order to extract the
+                 * array size and the values.
+                 */
+
+                try
+                {
+                    if (instancePropertyValue instanceof ArrayTypePropertyValue arrayPropertyValue)
+                    {
+                        if (arrayPropertyValue.getArrayCount() > 0)
+                        {
+                            /*
+                             * There are values to extract
+                             */
+                            return getPropertiesAsArray(arrayPropertyValue.getArrayValues());
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, callingMethodName, thisMethodName);
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the values in the instance properties into a String Array.  It assumes all the elements are primitives.
+     *
+     * @param elementProperties instance properties containing the values.  They should all be primitive Strings.
+     * @return list of strings
+     */
+    private List<String> getPropertiesAsArray(ElementProperties     elementProperties)
+    {
+        if (elementProperties != null)
+        {
+            Map<String, PropertyValue> instancePropertyValues = elementProperties.getPropertyValueMap();
+            List<String>               resultingArray = new ArrayList<>();
+
+            for (String arrayOrdinalName : instancePropertyValues.keySet())
+            {
+                if (arrayOrdinalName != null)
+                {
+                    int           arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
+                    PropertyValue actualPropertyValue = elementProperties.getPropertyValue(arrayOrdinalName);
+
+                    if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    {
+                        resultingArray.add(arrayOrdinalNumber, primitiveTypePropertyValue.getPrimitiveValue().toString());
+                    }
+                }
+            }
+
+            return resultingArray;
+        }
+
+        return null;
+    }
 
 
     /**
@@ -986,10 +1560,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -999,13 +1571,61 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
             }
         }
         
+        return 0;
+    }
+
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public long  getLongProperty(String             sourceName,
+                                 String             propertyName,
+                                 ElementProperties properties,
+                                 String             methodName)
+    {
+        final String  thisMethodName = "getLongProperty";
+
+        if (properties != null)
+        {
+            PropertyValue propertyValue = properties.getPropertyValue(propertyName);
+
+            if (propertyValue != null)
+            {
+                try
+                {
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    {
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG)
+                        {
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Long.parseLong(primitiveTypePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
         return 0;
     }
 
@@ -1035,10 +1655,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -1050,7 +1668,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -1088,10 +1706,8 @@ public class PropertyHelper
             {
                 try
                 {
-                    if (propertyValue instanceof PrimitiveTypePropertyValue)
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
                     {
-                        PrimitiveTypePropertyValue primitiveTypePropertyValue = (PrimitiveTypePropertyValue) propertyValue;
-
                         if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
                         {
                             if (primitiveTypePropertyValue.getPrimitiveValue() != null)
@@ -1101,7 +1717,7 @@ public class PropertyHelper
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -1193,7 +1809,7 @@ public class PropertyHelper
     private void throwHelperLogicError(String     sourceName,
                                        String     originatingMethodName,
                                        String     localMethodName,
-                                       Throwable  unexpectedException)
+                                       Exception  unexpectedException)
     {
         throw new GAFRuntimeException(GAFErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
                                                                                                localMethodName,

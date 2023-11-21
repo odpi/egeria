@@ -19,10 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String          name               = null;
     private String          description        = null;
+    private String          collectionType     = null;
     private CollectionOrder collectionOrdering = null;
     private String          orderPropertyName  = null;
 
@@ -49,6 +48,7 @@ public class CollectionProperties extends ReferenceableProperties
         {
             this.name = template.getName();
             this.description = template.getDescription();
+            this.collectionType = template.getCollectionType();
             this.collectionOrdering = template.getCollectionOrdering();
             this.orderPropertyName = template.getOrderPropertyName();
         }
@@ -96,6 +96,28 @@ public class CollectionProperties extends ReferenceableProperties
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+    /**
+     * Return a descriptive name for the collection's type.
+     *
+     * @return string name
+     */
+    public String getCollectionType()
+    {
+        return collectionType;
+    }
+
+
+    /**
+     * Set up a descriptive name for the collection's type.
+     *
+     * @param collectionType string name
+     */
+    public void setCollectionType(String collectionType)
+    {
+        this.collectionType = collectionType;
     }
 
 
@@ -154,6 +176,7 @@ public class CollectionProperties extends ReferenceableProperties
         return "CollectionProperties{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
+                       ", collectionType='" + collectionType + '\'' +
                        ", collectionOrdering=" + collectionOrdering +
                        ", orderPropertyName='" + orderPropertyName + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -191,6 +214,7 @@ public class CollectionProperties extends ReferenceableProperties
         return getCollectionOrdering() == that.getCollectionOrdering() &&
                        Objects.equals(getName(), that.getName()) &&
                        Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getCollectionType(), that.getCollectionType()) &&
                        Objects.equals(getOrderPropertyName(), that.getOrderPropertyName());
     }
 
@@ -203,6 +227,6 @@ public class CollectionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionOrdering(), getOrderPropertyName());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionType(), getCollectionOrdering(), getOrderPropertyName());
     }
 }

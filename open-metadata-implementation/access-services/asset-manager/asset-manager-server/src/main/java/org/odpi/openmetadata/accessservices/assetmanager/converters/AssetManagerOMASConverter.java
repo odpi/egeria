@@ -247,7 +247,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
 
 
     /**
-     * Retrieve and delete the GovernanceActionStatus enum property from the instance properties of an entity
+     * Retrieve and delete the EngineActionStatus enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return OwnerType  enum value

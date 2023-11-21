@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.metadatasecurity.samples;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.http.HttpHeadersThreadLocal;
+import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSecurityConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +100,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
 
     private List<String> getUserActionsFromToken(String userId)
     {
-        Map<String, String> headersMap = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
+        Map<String, String> headersMap = HTTPHeadersThreadLocal.getHeadersThreadLocal().get();
         if (headersMap != null && !headersMap.isEmpty())
         {
 //            Jws<Claims> jwtClaims = Jwts.parserBuilder()

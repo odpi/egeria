@@ -779,6 +779,7 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
                                                               fullEntity,
                                                               guidParameterName,
                                                               false,
+                                                              false,
                                                               true,
                                                               false,
                                                               supportedZones,

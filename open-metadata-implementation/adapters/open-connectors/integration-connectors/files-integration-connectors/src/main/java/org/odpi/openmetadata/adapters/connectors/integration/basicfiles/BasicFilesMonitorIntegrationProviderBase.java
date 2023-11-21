@@ -30,7 +30,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
      * @param connectorDisplayName the printable name for this connector
      * @param connectorDescription the description of this connector
      * @param connectorWikiPage the URL of the connector page in the connector catalog
-     * @param connectorClass the name of the connector class that the connector provider creates
+     * @param connectorClassName the name of the connector class that the connector provider creates
      */
     BasicFilesMonitorIntegrationProviderBase(String   connectorTypeGUID,
                                              int      connectorComponentId,
@@ -38,14 +38,14 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
                                              String   connectorDisplayName,
                                              String   connectorDescription,
                                              String   connectorWikiPage,
-                                             Class<?> connectorClass)
+                                             String   connectorClassName)
     {
         super();
 
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -63,6 +63,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 
@@ -72,7 +73,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorQualifiedName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

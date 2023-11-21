@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -99,17 +99,11 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     {
         if (workPad != null)
         {
-            OMRSAuditLog auditLog = repositoryConformanceWorkPad.getAuditLog();
+            AuditLog auditLog = repositoryConformanceWorkPad.getAuditLog();
 
-            ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.TEST_CASE_INITIALIZING;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(testCaseId,
-                                                                testCaseDescriptionURL),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.TEST_CASE_INITIALIZING.getMessageDefinition(testCaseId,
+                                                                                                      testCaseDescriptionURL));
         }
     }
 
@@ -123,7 +117,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     {
         if (workPad != null)
         {
-            Integer    exceptionCount;
+            int exceptionCount;
 
             if (exceptionBean == null)
             {
@@ -134,38 +128,26 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 exceptionCount = 1;
             }
 
-            OMRSAuditLog auditLog = repositoryConformanceWorkPad.getAuditLog();
+            AuditLog auditLog = repositoryConformanceWorkPad.getAuditLog();
 
             if (successMessage == null)
             {
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.TEST_CASE_COMPLETED;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(testCaseId,
-                                                                    Integer.toString(successfulAssertions.size()),
-                                                                    Integer.toString(unsuccessfulAssertions.size()),
-                                                                    Integer.toString(exceptionCount),
-                                                                    Integer.toString(discoveredProperties.size())),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.TEST_CASE_COMPLETED.getMessageDefinition(testCaseId,
+                                                                                                       Integer.toString(successfulAssertions.size()),
+                                                                                                       Integer.toString(unsuccessfulAssertions.size()),
+                                                                                                       Integer.toString(exceptionCount),
+                                                                                                       Integer.toString(discoveredProperties.size())));
             }
             else
             {
-                ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.TEST_CASE_COMPLETED_SUCCESSFULLY;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(testCaseId,
-                                                                    Integer.toString(successfulAssertions.size()),
-                                                                    Integer.toString(unsuccessfulAssertions.size()),
-                                                                    Integer.toString(exceptionCount),
-                                                                    Integer.toString(discoveredProperties.size()),
-                                                                    successMessage),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    ConformanceSuiteAuditCode.TEST_CASE_COMPLETED_SUCCESSFULLY.getMessageDefinition(testCaseId,
+                                                                                                                    Integer.toString(successfulAssertions.size()),
+                                                                                                                    Integer.toString(unsuccessfulAssertions.size()),
+                                                                                                                    Integer.toString(exceptionCount),
+                                                                                                                    Integer.toString(discoveredProperties.size()),
+                                                                                                                    successMessage));
             }
         }
     }

@@ -77,6 +77,9 @@ and the servers that run on it.
 * **[user-interfaces](user-interfaces)** - basic user interfaces to demonstrate the power of the open
 metadata and governance capabilities.
 
+* **[user-security](user-security)** - modules to enable token-based authentication/authorization for the 
+OMAG Server Platform and OMAG Server runtimes.
+
 * **[view-services](view-services)** - the view services support the REST API interfaces
 called by the user interfaces.  These services run in a view server on the OMAG Server Platform.
  

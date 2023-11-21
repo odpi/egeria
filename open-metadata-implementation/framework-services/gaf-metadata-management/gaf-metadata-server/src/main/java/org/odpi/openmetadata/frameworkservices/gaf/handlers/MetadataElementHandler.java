@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
-import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -17,14 +15,33 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ClassificationCondition;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.EnumTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
@@ -32,7 +49,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * MetadataElementHandler manages MetadataElement objects from the Governance Action Framework (GAF).
@@ -289,6 +312,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public List<B> findMetadataElementsWithString(String       userId,
                                                   String       searchString,
+                                                  String       typeName,
                                                   boolean      forLineage,
                                                   boolean      forDuplicateProcessing,
                                                   List<String> serviceSupportedZones,
@@ -304,11 +328,24 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
+        String searchTypeName = OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            searchTypeName = typeName;
+        }
+
+        String searchTypeGUID = invalidParameterHandler.validateTypeName(searchTypeName,
+                                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                              searchTypeGUID,
+                              searchTypeName,
                               forLineage,
                               forDuplicateProcessing,
                               serviceSupportedZones,
@@ -463,6 +500,87 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             {
                 return results;
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *
+     * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<RelatedMetadataElements> getMetadataElementRelationships(String       userId,
+                                                                         String       metadataElementAtEnd1GUID,
+                                                                         String       relationshipTypeName,
+                                                                         String       metadataElementAtEnd2GUID,
+                                                                         boolean      forLineage,
+                                                                         boolean      forDuplicateProcessing,
+                                                                         List<String> serviceSupportedZones,
+                                                                         Date         effectiveTime,
+                                                                         int          startFrom,
+                                                                         int          pageSize,
+                                                                         String       methodName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        final String end1ParameterName = "metadataElementAtEnd1GUID";
+
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            null,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    metadataElementAtEnd1GUID,
+                                                                    end1ParameterName,
+                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    relationshipTypeGUID,
+                                                                    relationshipTypeName,
+                                                                    metadataElementAtEnd2GUID,
+                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    0,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    serviceSupportedZones,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        if (relationships != null)
+        {
+            List<RelatedMetadataElements> results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                results.add(relatedElementsConverter.getNewRelationshipBean(RelatedMetadataElements.class,
+                                                                            relationship,
+                                                                            methodName));
+            }
+
+            return results;
         }
 
         return null;
@@ -660,37 +778,26 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             invalidParameterHandler.validateObject(typeDef, typeParameterName, methodName);
 
-            if (propertyValue instanceof ArrayTypePropertyValue)
+            if (propertyValue instanceof ArrayTypePropertyValue gafPropertyValue)
             {
-                ArrayTypePropertyValue gafPropertyValue = (ArrayTypePropertyValue)propertyValue;
-
                 return this.getArrayPropertyValue(typeDef,
                                                   gafPropertyValue.getArrayCount(),
                                                   propertyHelper.getElementPropertiesAsMap(gafPropertyValue.getArrayValues()));
             }
-            else if (propertyValue instanceof EnumTypePropertyValue)
+            else if (propertyValue instanceof EnumTypePropertyValue gafPropertyValue)
             {
-                EnumTypePropertyValue gafPropertyValue = (EnumTypePropertyValue)propertyValue;
-
-                return this.getEnumPropertyValue(typeDef,
-                                                 gafPropertyValue.getSymbolicName());
+                return this.getEnumPropertyValue(typeDef, gafPropertyValue.getSymbolicName());
             }
-            else if (propertyValue instanceof MapTypePropertyValue)
+            else if (propertyValue instanceof MapTypePropertyValue gafPropertyValue)
             {
-                MapTypePropertyValue gafPropertyValue = (MapTypePropertyValue)propertyValue;
-
                 return this.getMapPropertyValue(typeDef, propertyHelper.getElementPropertiesAsMap(gafPropertyValue.getMapValues()));
             }
-            else if (propertyValue instanceof PrimitiveTypePropertyValue)
+            else if (propertyValue instanceof PrimitiveTypePropertyValue gafPropertyValue)
             {
-                PrimitiveTypePropertyValue gafPropertyValue = (PrimitiveTypePropertyValue)propertyValue;
-
                 return this.getPrimitivePropertyValue(typeDef, gafPropertyValue.getPrimitiveTypeCategory(), gafPropertyValue.getPrimitiveValue());
             }
-            else if (propertyValue instanceof StructTypePropertyValue)
+            else if (propertyValue instanceof StructTypePropertyValue gafPropertyValue)
             {
-                StructTypePropertyValue gafPropertyValue = (StructTypePropertyValue)propertyValue;
-
                 return this.getStructPropertyValue(typeDef, propertyHelper.getElementPropertiesAsMap(gafPropertyValue.getAttributes()));
             }
         }
@@ -758,10 +865,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateName(symbolicName, symbolicNameParameterName, methodName);
         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue omrsPropertyValue = null;
 
-        if (typeDef instanceof EnumDef)
+        if (typeDef instanceof EnumDef enumDef)
         {
-            EnumDef enumDef = (EnumDef)typeDef;
-
             List<EnumElementDef> enumElementDefs = enumDef.getElementDefs();
 
             if ((enumElementDefs != null) && (! enumElementDefs.isEmpty()))
@@ -873,48 +978,35 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         if (gafPrimitiveTypeCategory != null)
         {
-            switch (gafPrimitiveTypeCategory)
-            {
-                case OM_PRIMITIVE_TYPE_UNKNOWN:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
-
-                case OM_PRIMITIVE_TYPE_BOOLEAN:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
-
-                case OM_PRIMITIVE_TYPE_BYTE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE;
-
-                case OM_PRIMITIVE_TYPE_CHAR:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR;
-
-                case OM_PRIMITIVE_TYPE_SHORT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT;
-
-                case OM_PRIMITIVE_TYPE_INT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT;
-
-                case OM_PRIMITIVE_TYPE_LONG:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG;
-
-                case OM_PRIMITIVE_TYPE_FLOAT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT;
-
-                case OM_PRIMITIVE_TYPE_DOUBLE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE;
-
-                case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
-
-                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
-
-                case OM_PRIMITIVE_TYPE_STRING:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
-
-                case OM_PRIMITIVE_TYPE_DATE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
-
-            }
+            return switch (gafPrimitiveTypeCategory)
+                           {
+                               case OM_PRIMITIVE_TYPE_UNKNOWN ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
+                               case OM_PRIMITIVE_TYPE_BOOLEAN ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+                               case OM_PRIMITIVE_TYPE_BYTE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE;
+                               case OM_PRIMITIVE_TYPE_CHAR ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR;
+                               case OM_PRIMITIVE_TYPE_SHORT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT;
+                               case OM_PRIMITIVE_TYPE_INT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT;
+                               case OM_PRIMITIVE_TYPE_LONG ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG;
+                               case OM_PRIMITIVE_TYPE_FLOAT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT;
+                               case OM_PRIMITIVE_TYPE_DOUBLE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+                               case OM_PRIMITIVE_TYPE_BIGINTEGER ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+                               case OM_PRIMITIVE_TYPE_BIGDECIMAL ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+                               case OM_PRIMITIVE_TYPE_STRING ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+                               case OM_PRIMITIVE_TYPE_DATE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
+                           };
         }
 
         return null;
@@ -969,17 +1061,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         if (gafMatchCriteria != null)
         {
-            switch (gafMatchCriteria)
-            {
-                case ALL:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ALL;
-
-                case ANY:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ANY;
-
-                case NONE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.NONE;
-            }
+            return switch (gafMatchCriteria)
+                           {
+                               case ALL ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ALL;
+                               case ANY ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.ANY;
+                               case NONE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria.NONE;
+                           };
         }
 
         return null;
@@ -997,38 +1087,29 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         if (gafPropertyComparisonOperator != null)
         {
-            switch (gafPropertyComparisonOperator)
-            {
-                case EQ:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.EQ;
-
-                case NEQ:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.NEQ;
-
-                case LT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LT;
-
-                case LTE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LTE;
-
-                case GT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GT;
-
-                case GTE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GTE;
-
-                case IN:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IN;
-
-                case IS_NULL:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IS_NULL;
-
-                case NOT_NULL:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.NOT_NULL;
-
-                case LIKE:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LIKE;
-            }
+            return switch (gafPropertyComparisonOperator)
+                           {
+                               case EQ ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.EQ;
+                               case NEQ ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.NEQ;
+                               case LT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LT;
+                               case LTE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LTE;
+                               case GT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GT;
+                               case GTE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GTE;
+                               case IN ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IN;
+                               case IS_NULL ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IS_NULL;
+                               case NOT_NULL ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.NOT_NULL;
+                               case LIKE ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.LIKE;
+                           };
         }
 
         return null;
@@ -1046,32 +1127,25 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         if (gafSequencingOrder != null)
         {
-            switch (gafSequencingOrder)
-            {
-                case ANY:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.ANY;
-
-                case GUID:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.GUID;
-
-                case CREATION_DATE_RECENT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_RECENT;
-
-                case CREATION_DATE_OLDEST:
-                    return  org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_OLDEST;
-
-                case LAST_UPDATE_RECENT:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.LAST_UPDATE_RECENT;
-
-                case LAST_UPDATE_OLDEST:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.LAST_UPDATE_OLDEST;
-
-                case PROPERTY_ASCENDING:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.PROPERTY_ASCENDING;
-
-                case PROPERTY_DESCENDING:
-                    return org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.PROPERTY_DESCENDING;
-            }
+            return switch (gafSequencingOrder)
+                           {
+                               case ANY ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.ANY;
+                               case GUID ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.GUID;
+                               case CREATION_DATE_RECENT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_RECENT;
+                               case CREATION_DATE_OLDEST ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_OLDEST;
+                               case LAST_UPDATE_RECENT ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.LAST_UPDATE_RECENT;
+                               case LAST_UPDATE_OLDEST ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.LAST_UPDATE_OLDEST;
+                               case PROPERTY_ASCENDING ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.PROPERTY_ASCENDING;
+                               case PROPERTY_DESCENDING ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.PROPERTY_DESCENDING;
+                           };
         }
 
         return null;
@@ -1117,59 +1191,26 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         if (elementStatus != null)
         {
-            switch (elementStatus)
-            {
-                case UNKNOWN:
-                    return InstanceStatus.UNKNOWN;
-
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case PREPARED:
-                    return InstanceStatus.PREPARED;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
-
-                case REJECTED:
-                    return InstanceStatus.REJECTED;
-
-                case APPROVED_CONCEPT:
-                    return InstanceStatus.APPROVED_CONCEPT;
-
-                case UNDER_DEVELOPMENT:
-                    return InstanceStatus.UNDER_DEVELOPMENT;
-
-                case DEVELOPMENT_COMPLETE:
-                    return InstanceStatus.DEVELOPMENT_COMPLETE;
-
-                case APPROVED_FOR_DEPLOYMENT:
-                    return InstanceStatus.APPROVED_FOR_DEPLOYMENT;
-
-                case STANDBY:
-                    return InstanceStatus.STANDBY;
-
-                case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-
-                case FAILED:
-                    return InstanceStatus.FAILED;
-
-                case DISABLED:
-                    return InstanceStatus.DISABLED;
-
-                case COMPLETE:
-                    return InstanceStatus.COMPLETE;
-
-                case DEPRECATED:
-                    return InstanceStatus.DEPRECATED;
-
-                case OTHER:
-                    return InstanceStatus.OTHER;
-            }
+            return switch (elementStatus)
+                           {
+                               case UNKNOWN -> InstanceStatus.UNKNOWN;
+                               case DRAFT -> InstanceStatus.DRAFT;
+                               case PREPARED -> InstanceStatus.PREPARED;
+                               case PROPOSED -> InstanceStatus.PROPOSED;
+                               case APPROVED -> InstanceStatus.APPROVED;
+                               case REJECTED -> InstanceStatus.REJECTED;
+                               case APPROVED_CONCEPT -> InstanceStatus.APPROVED_CONCEPT;
+                               case UNDER_DEVELOPMENT -> InstanceStatus.UNDER_DEVELOPMENT;
+                               case DEVELOPMENT_COMPLETE -> InstanceStatus.DEVELOPMENT_COMPLETE;
+                               case APPROVED_FOR_DEPLOYMENT -> InstanceStatus.APPROVED_FOR_DEPLOYMENT;
+                               case STANDBY -> InstanceStatus.STANDBY;
+                               case ACTIVE -> InstanceStatus.ACTIVE;
+                               case FAILED -> InstanceStatus.FAILED;
+                               case DISABLED -> InstanceStatus.DISABLED;
+                               case COMPLETE -> InstanceStatus.COMPLETE;
+                               case DEPRECATED -> InstanceStatus.DEPRECATED;
+                               case OTHER -> InstanceStatus.OTHER;
+                           };
         }
 
         return null;
@@ -1271,11 +1312,18 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementTypeName type name of the new metadata element
      * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      * @param serviceSupportedZones list of supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
@@ -1286,26 +1334,39 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElementInStore(String            userId,
-                                               String            externalSourceGUID,
-                                               String            externalSourceName,
-                                               String            metadataElementTypeName,
-                                               ElementStatus     initialStatus,
-                                               Date              effectiveFrom,
-                                               Date              effectiveTo,
-                                               ElementProperties properties,
-                                               String            templateGUID,
-                                               List<String>      serviceSupportedZones,
-                                               Date              effectiveTime,
-                                               String            methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public String createMetadataElementInStore(String                         userId,
+                                               String                         externalSourceGUID,
+                                               String                         externalSourceName,
+                                               String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         templateGUID,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1,
+                                               List<String>                   serviceSupportedZones,
+                                               Date                           effectiveTime,
+                                               String                         methodName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String elementTypeParameterName  = "metadataElementTypeName";
         final String templateGUIDParameterName = "templateGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
+
+        if (parentGUID != null)
+        {
+            final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
+
+            invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+        }
 
         String metadataElementTypeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
                                                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1323,32 +1384,106 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     serviceName,
                                                                     serverName);
 
+        if (anchorGUID != null)
+        {
+            builder.setAnchors(userId, anchorGUID, methodName);
+        }
+
+        if (initialClassifications != null)
+        {
+            for (String classificationName : initialClassifications.keySet())
+            {
+                Classification classification = new Classification();
+
+                classification.setMetadataCollectionName(classificationName);
+
+                ElementProperties classificationProperties = initialClassifications.get(classificationName);
+
+                if (classificationProperties != null)
+                {
+                    Map<String,InstancePropertyValue> instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
+
+                    classification.setProperties(builder.getInstanceProperties(instancePropertyValueMap, null, null));
+                }
+
+                builder.setClassification(classification);
+            }
+        }
+
+        String metadataElementGUID;
+
         if (templateGUID == null)
         {
-            return this.createBeanInRepository(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               metadataElementTypeGUID,
-                                               metadataElementTypeName,
-                                               builder,
-                                               effectiveTime,
-                                               methodName);
+            metadataElementGUID = this.createBeanInRepository(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              metadataElementTypeGUID,
+                                                              metadataElementTypeName,
+                                                              builder,
+                                                              effectiveTime,
+                                                              methodName);
         }
         else
         {
-            return this.createBeanFromTemplate(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               templateGUID,
-                                               templateGUIDParameterName,
-                                               metadataElementTypeGUID,
-                                               metadataElementTypeName,
-                                               null,
-                                               null,
-                                               builder,
-                                               serviceSupportedZones,
-                                               methodName);
+            metadataElementGUID = this.createBeanFromTemplate(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              templateGUID,
+                                                              templateGUIDParameterName,
+                                                              metadataElementTypeGUID,
+                                                              metadataElementTypeName,
+                                                              null,
+                                                              null,
+                                                              builder,
+                                                              serviceSupportedZones,
+                                                              methodName);
         }
+
+        if (metadataElementGUID != null)
+        {
+            if (parentGUID != null)
+            {
+
+                if (parentAtEnd1)
+                {
+                    createRelatedElementsInStore(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 parentRelationshipTypeName,
+                                                 parentGUID,
+                                                 metadataElementGUID,
+                                                 false,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentRelationshipProperties,
+                                                 serviceSupportedZones,
+                                                 effectiveTime,
+                                                 methodName);
+                }
+                else
+                {
+                    createRelatedElementsInStore(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 parentRelationshipTypeName,
+                                                 metadataElementGUID,
+                                                 parentGUID,
+                                                 false,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentRelationshipProperties,
+                                                 serviceSupportedZones,
+                                                 effectiveTime,
+                                                 methodName);
+                }
+            }
+
+            return metadataElementGUID;
+        }
+
+        return null;
     }
 
 

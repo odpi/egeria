@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -63,18 +62,7 @@ public class DataAssetElementsResponse extends AssetManagerOMASAPIResponse
      */
     public List<DataAssetElement> getElementList()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementList);
-        }
+        return elementList;
     }
 
 

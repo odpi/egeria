@@ -345,7 +345,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<TypeDef> findTypeDefsByCategory(String userId,
+    public List<TypeDef> findTypeDefsByCategory(String          userId,
                                                 TypeDefCategory category) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
                                                                                  UserNotAuthorizedException

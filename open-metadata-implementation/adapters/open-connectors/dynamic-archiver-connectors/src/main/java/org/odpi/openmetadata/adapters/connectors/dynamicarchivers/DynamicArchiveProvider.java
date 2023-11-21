@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.dynamicarchivers;
 
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceProvider;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * DynamicArchiveProvider implements the base class for the connector provider for a archive service.
  */
-public abstract class DynamicArchiveProvider extends GovernanceActionServiceProviderBase
+public abstract class DynamicArchiveProvider extends RepositoryGovernanceProvider
 {
     static final String ARCHIVE_NAME_PROPERTY = "archiveName";
     static final String ARCHIVE_GUID_PROPERTY = "archiveGUID";

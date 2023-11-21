@@ -46,10 +46,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private final GlossaryExchangeHandler                                             glossaryExchangeHandler;
     private final ProcessExchangeHandler                                              processExchangeHandler;
     private final SchemaExchangeHandler                                               schemaExchangeHandler;
-    private final GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
     private final GovernanceDefinitionHandler<GovernanceDefinitionElement>            governanceDefinitionHandler;
-    private final AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
-    private final GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
     private final InformalTagHandler<InformalTagElement>                              informalTagHandler;
     private final LikeHandler<LikeElement>                                            likeHandler;
     private final RatingHandler<RatingElement>                                        ratingHandler;
@@ -245,48 +242,6 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                publishZones,
                                                                auditLog);
 
-        this.governanceActionHandler = new GovernanceActionHandler<>(new GovernanceActionConverter<>(repositoryHelper, serviceName, serverName),
-                                                                     GovernanceActionElement.class,
-                                                                     serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHandler,
-                                                                     repositoryHelper,
-                                                                     localServerUserId,
-                                                                     securityVerifier,
-                                                                     supportedZones,
-                                                                     defaultZones,
-                                                                     publishZones,
-                                                                     auditLog);
-
-        this.governanceActionProcessHandler = new AssetHandler<>(new GovernanceActionProcessConverter<>(repositoryHelper, serviceName, serverName),
-                                                                 GovernanceActionProcessElement.class,
-                                                                 serviceName,
-                                                                 serverName,
-                                                                 invalidParameterHandler,
-                                                                 repositoryHandler,
-                                                                 repositoryHelper,
-                                                                 localServerUserId,
-                                                                 securityVerifier,
-                                                                 supportedZones,
-                                                                 defaultZones,
-                                                                 publishZones,
-                                                                 auditLog);
-
-        this.governanceActionTypeHandler = new GovernanceActionTypeHandler<>(new GovernanceActionTypeConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             GovernanceActionTypeElement.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
-
         this.governanceDefinitionHandler = new GovernanceDefinitionHandler<>(new GovernanceDefinitionConverter<>(repositoryHelper, serviceName, serverName),
                                                                              GovernanceDefinitionElement.class,
                                                                              serviceName,
@@ -391,7 +346,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    public AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
@@ -542,55 +497,6 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return schemaExchangeHandler;
-    }
-
-
-
-    /**
-     * Return the handler for governance action process requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()  throws PropertyServerException
-    {
-        final String methodName = "getGovernanceActionProcessHandler";
-
-        validateActiveRepository(methodName);
-
-        return governanceActionProcessHandler;
-    }
-
-
-    /**
-     * Return the handler for governance action type requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler() throws PropertyServerException
-    {
-        final String methodName = "getGovernanceActionTypeHandler";
-
-        validateActiveRepository(methodName);
-
-        return governanceActionTypeHandler;
-    }
-
-
-    /**
-     * Return the handler for governance action requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler() throws PropertyServerException
-    {
-        final String methodName = "getGovernanceActionHandler";
-
-        validateActiveRepository(methodName);
-
-        return governanceActionHandler;
     }
 
 

@@ -976,15 +976,20 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                PropertyServerException
     {
         final String userGUIDParameterName = "userIdentity.getGUID";
-        EntityDetail userIdentity = this.getEntityByUniqueQualifiedName(userId,
-                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                                                        profileUserId,
-                                                                        profileUserIdParameterName,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
+
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME);
+
+        EntityDetail userIdentity = this.getEntityByValue(userId,
+                                                          profileUserId,
+                                                          profileUserIdParameterName,
+                                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                          specificMatchPropertyNames,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
 
         if (userIdentity != null)
         {

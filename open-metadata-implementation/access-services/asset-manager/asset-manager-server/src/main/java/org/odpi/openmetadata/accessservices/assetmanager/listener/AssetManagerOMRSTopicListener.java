@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.listener;
 
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEventType;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionProcessElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -29,10 +29,10 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(AssetManagerOMRSTopicListener.class);
 
-    private final AssetManagerOutTopicPublisher                 eventPublisher;
-    private final AssetHandler<GovernanceActionProcessElement>  assetHandler;
-    private final String                                        localServerUserId;
-    private final List<String>                                  supportedZones;
+    private final AssetManagerOutTopicPublisher eventPublisher;
+    private final AssetHandler<AssetElement>    assetHandler;
+    private final String                        localServerUserId;
+    private final List<String>                  supportedZones;
 
 
     /**
@@ -45,12 +45,12 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetManagerOMRSTopicListener(String                                       serviceName,
-                                         String                                       localServerUserId,
-                                         AssetManagerOutTopicPublisher                eventPublisher,
-                                         AssetHandler<GovernanceActionProcessElement> assetHandler,
-                                         List<String>                                 supportedZones,
-                                         AuditLog                                     auditLog)
+    public AssetManagerOMRSTopicListener(String                        serviceName,
+                                         String                        localServerUserId,
+                                         AssetManagerOutTopicPublisher eventPublisher,
+                                         AssetHandler<AssetElement>    assetHandler,
+                                         List<String>                  supportedZones,
+                                         AuditLog                      auditLog)
     {
         super(serviceName, auditLog);
 
@@ -529,10 +529,8 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -1002,6 +1000,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                   fullEntity,
                                                   guidParameterName,
+                                                  false,
                                                   false,
                                                   true,
                                                   false,

@@ -4,8 +4,9 @@ package org.odpi.openmetadata.engineservices.assetanalysis.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
@@ -16,6 +17,7 @@ import org.odpi.openmetadata.engineservices.assetanalysis.handlers.DiscoveryEngi
 import org.odpi.openmetadata.engineservices.assetanalysis.server.AssetAnalysisInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 
@@ -51,7 +53,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceEngineClient              governanceActionClient,
+                                                           GovernanceContextClient             governanceActionClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -179,7 +181,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                             String                              accessServiceServerName,
                                                                             String                              localServerUserId,
                                                                             GovernanceEngineConfigurationClient configurationClient,
-                                                                            GovernanceEngineClient              governanceActionClient,
+                                                                            GovernanceContextClient             governanceActionClient,
                                                                             ODFRESTClient                       odfRESTClient,
                                                                             int                                 maxPageSize) throws OMAGConfigurationErrorException
     {
@@ -192,6 +194,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
             if (discoveryEngine != null)
             {
                 DiscoveryEngineClient discoveryEngineClient;
+                OpenMetadataClient    openMetadataClient;
                 try
                 {
                     discoveryEngineClient = new DiscoveryEngineClient(accessServiceServerName,
@@ -199,6 +202,8 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                           odfRESTClient,
                                                                           auditLog);
 
+                    openMetadataClient = new OpenMetadataStoreClient(accessServiceServerName,
+                                                                     accessServiceRootURL);
                 }
                 catch (Exception  error)
                 {
@@ -223,6 +228,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                              configurationClient,
                                                                              governanceActionClient,
                                                                              discoveryEngineClient,
+                                                                             openMetadataClient,
                                                                              auditLog,
                                                                              maxPageSize);
 
