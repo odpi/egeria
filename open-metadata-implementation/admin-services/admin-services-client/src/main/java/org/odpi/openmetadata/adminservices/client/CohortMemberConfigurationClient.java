@@ -72,7 +72,6 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
 
     /**
      * Enable registration of server to an open metadata repository cohort using the default topic structure (SINGLE_TOPIC).
-     *
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration

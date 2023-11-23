@@ -180,18 +180,25 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connection for the file-based audit log.
-     * By default, the File-based Audit log is stored in a directory called localServerName.auditlog.
+     * By default, the File-based Audit log is stored in a directory called localServerName.ffdc.
      *
      * @param localServerName   name of the local server
+     * @param directoryName name of directory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the file based audit logger
      */
     public Connection getFileBasedAuditLogConnection(String       localServerName,
+                                                     String       directoryName,
                                                      List<String> supportedSeverities)
     {
         final String destinationName = "Files";
 
-        String endpointAddress = "data/servers/" + localServerName + "/logs/auditlog";
+        String endpointAddress = "data/servers/" + localServerName + "/logs/ffdc";
+
+        if (directoryName != null)
+        {
+            endpointAddress = directoryName;
+        }
 
         Endpoint endpoint = new Endpoint();
 
@@ -212,7 +219,7 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connection for the file-based audit log.
-     * By default, the File-based Audit log is stored in a directory called localServerName.auditlog.
+     * By default, the File-based Audit log is stored in a directory called localServerName.ffdc.
      *
      * @param qualifier unique qualifier for the connection
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
@@ -237,7 +244,7 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connection for the event topic audit log.
-     * By default, the topic name is called openmetadata.repositoryservices.{localServerName}.auditlog.
+     * By default, the topic name is called openmetadata.repositoryservices.{localServerName}.ffdc.
      *
      * @param localServerName   name of the local server
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
@@ -257,7 +264,7 @@ public class ConnectorConfigurationFactory
                                                       Map<String, Object> eventBusConfigurationProperties)
     {
         final String destinationName = "EventTopic";
-        String topicName = defaultTopicRootName + localServerName + ".auditlog";
+        String topicName = defaultTopicRootName + localServerName + ".ffdc";
 
         if (suppliedTopicName != null)
         {

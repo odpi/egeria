@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.client;
 
+import org.odpi.openmetadata.adminservices.client.rest.AdminServicesRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -21,11 +22,11 @@ import java.util.Set;
  */
 public class ConfigurationManagementClient
 {
-    private String adminUserId;              /* Initialized in constructor */
-    private String serverPlatformRootURL;    /* Initialized in constructor */
+    private final String adminUserId;              /* Initialized in constructor */
+    private final String serverPlatformRootURL;    /* Initialized in constructor */
 
-    private InvalidParameterHandler         invalidParameterHandler = new InvalidParameterHandler();
-    private AdminServicesRESTClient         restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final AdminServicesRESTClient restClient;               /* Initialized in constructor */
 
     private static final String NULL_SERVER_NAME = "<*>";
 

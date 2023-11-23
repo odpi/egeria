@@ -1205,6 +1205,7 @@ public class ServerAuthorViewRESTServices {
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param serverToBeConfiguredName name of server to pass the request to
      * @param cohortName  name of the cohort.
      * @return VoidResponse or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
