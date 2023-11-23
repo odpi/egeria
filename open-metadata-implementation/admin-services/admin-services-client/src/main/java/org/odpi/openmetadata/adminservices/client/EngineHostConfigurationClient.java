@@ -36,8 +36,8 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      *                                       REST API calls.
      */
     public EngineHostConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL) throws OMAGInvalidParameterException
+                                         String serverName,
+                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -56,10 +56,10 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      *                                       REST API calls.
      */
     public EngineHostConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL,
-                                  String connectionUserId,
-                                  String connectionPassword) throws OMAGInvalidParameterException
+                                         String serverName,
+                                         String serverPlatformRootURL,
+                                         String connectionUserId,
+                                         String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

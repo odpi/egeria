@@ -188,22 +188,22 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                        auditLog,
                                                                                        connectorId);
 
-            FilesIntegratorContext integratorContext = new FilesIntegratorContext(connectorId,
-                                                                                  connectorName,
-                                                                                  connectorUserId,
-                                                                                  partnerOMASServerName,
-                                                                                  openIntegrationClient,
-                                                                                  openMetadataStoreClient,
-                                                                                  filesAndFoldersClient,
-                                                                                  connectionManagerClient,
-                                                                                  validValueManagement,
-                                                                                  dataManagerEventClient,
-                                                                                  generateIntegrationReport,
-                                                                                  permittedSynchronization,
-                                                                                  integrationConnectorGUID,
-                                                                                  externalSourceGUID,
-                                                                                  externalSourceName,
-                                                                                  maxPageSize);
+            FilesIntegratorContext integratorContext = new FilesIntegratorContextImpl(connectorId,
+                                                                                      connectorName,
+                                                                                      connectorUserId,
+                                                                                      partnerOMASServerName,
+                                                                                      openIntegrationClient,
+                                                                                      openMetadataStoreClient,
+                                                                                      filesAndFoldersClient,
+                                                                                      connectionManagerClient,
+                                                                                      validValueManagement,
+                                                                                      dataManagerEventClient,
+                                                                                      generateIntegrationReport,
+                                                                                      permittedSynchronization,
+                                                                                      integrationConnectorGUID,
+                                                                                      externalSourceGUID,
+                                                                                      externalSourceName,
+                                                                                      maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);
 

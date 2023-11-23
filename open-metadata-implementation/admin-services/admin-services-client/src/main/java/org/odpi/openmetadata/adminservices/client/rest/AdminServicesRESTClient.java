@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.client;
+package org.odpi.openmetadata.adminservices.client.rest;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
@@ -16,7 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 /**
  * AssetOwnerRESTClient is responsible for issuing calls to the Admin Services REST APIs.
  */
-class AdminServicesRESTClient
+public class AdminServicesRESTClient
 {
     private final String                          serverPlatformURLRoot;  /* Initialized in constructor */
     private final AdminClientRESTExceptionHandler exceptionHandler = new AdminClientRESTExceptionHandler();
@@ -32,8 +32,8 @@ class AdminServicesRESTClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AdminServicesRESTClient(String serverName,
-                            String serverPlatformURLRoot) throws OMAGInvalidParameterException
+    public AdminServicesRESTClient(String serverName,
+                                   String serverPlatformURLRoot) throws OMAGInvalidParameterException
     {
         final String  methodName = "RESTClient(no authentication)";
 
@@ -65,10 +65,10 @@ class AdminServicesRESTClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AdminServicesRESTClient(String serverName,
-                            String serverPlatformURLRoot,
-                            String userId,
-                            String password) throws OMAGInvalidParameterException
+    public AdminServicesRESTClient(String serverName,
+                                   String serverPlatformURLRoot,
+                                   String userId,
+                                   String password) throws OMAGInvalidParameterException
     {
         final String  methodName = "RESTClient(userId and password)";
 
@@ -106,12 +106,12 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    VoidResponse callVoidPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws OMAGInvalidParameterException,
-                                                               OMAGNotAuthorizedException,
-                                                               OMAGConfigurationErrorException
+    public VoidResponse callVoidPostRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object    requestBody,
+                                             Object... params) throws OMAGInvalidParameterException,
+                                                                      OMAGNotAuthorizedException,
+                                                                      OMAGConfigurationErrorException
     {
         VoidResponse restResult =  this.callPostRESTCall(methodName,
                                                          VoidResponse.class,
@@ -137,11 +137,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    VoidResponse callVoidDeleteRESTCall(String    methodName,
-                                        String    urlTemplate,
-                                        Object... params) throws OMAGInvalidParameterException,
-                                                                 OMAGNotAuthorizedException,
-                                                                 OMAGConfigurationErrorException
+    public VoidResponse callVoidDeleteRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object... params) throws OMAGInvalidParameterException,
+                                                                        OMAGNotAuthorizedException,
+                                                                        OMAGConfigurationErrorException
     {
         VoidResponse restResult =  this.callDeleteRESTCall(methodName,
                                                            VoidResponse.class,
@@ -168,12 +168,12 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    SuccessMessageResponse callSuccessMessagePostRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object    requestBody,
-                                                          Object... params) throws OMAGInvalidParameterException,
-                                                                                   OMAGNotAuthorizedException,
-                                                                                   OMAGConfigurationErrorException
+    public SuccessMessageResponse callSuccessMessagePostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws OMAGInvalidParameterException,
+                                                                                          OMAGNotAuthorizedException,
+                                                                                          OMAGConfigurationErrorException
     {
         SuccessMessageResponse restResult =  this.callPostRESTCall(methodName,
                                                                    SuccessMessageResponse.class,
@@ -199,11 +199,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    StringResponse callStringGetRESTCall(String    methodName,
-                                         String    urlTemplate,
-                                         Object... params) throws OMAGInvalidParameterException,
-                                                                  OMAGNotAuthorizedException,
-                                                                  OMAGConfigurationErrorException
+    public StringResponse callStringGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws OMAGInvalidParameterException,
+                                                                         OMAGNotAuthorizedException,
+                                                                         OMAGConfigurationErrorException
     {
         StringResponse restResult = this.callGetRESTCall(methodName, StringResponse.class, urlTemplate, params);
 
@@ -226,11 +226,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    DedicatedTopicListResponse callDedicatedTopicListGetRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object... params) throws OMAGInvalidParameterException,
-                                                                                          OMAGNotAuthorizedException,
-                                                                                          OMAGConfigurationErrorException
+    public DedicatedTopicListResponse callDedicatedTopicListGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws OMAGInvalidParameterException,
+                                                                                                 OMAGNotAuthorizedException,
+                                                                                                 OMAGConfigurationErrorException
     {
         DedicatedTopicListResponse restResult = this.callGetRESTCall(methodName, DedicatedTopicListResponse.class, urlTemplate, params);
 
@@ -252,11 +252,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    GUIDResponse callGUIDGetRESTCall(String    methodName,
-                                     String    urlTemplate,
-                                     Object... params) throws OMAGInvalidParameterException,
-                                                              OMAGNotAuthorizedException,
-                                                              OMAGConfigurationErrorException
+    public GUIDResponse callGUIDGetRESTCall(String    methodName,
+                                            String    urlTemplate,
+                                            Object... params) throws OMAGInvalidParameterException,
+                                                                     OMAGNotAuthorizedException,
+                                                                     OMAGConfigurationErrorException
     {
         GUIDResponse restResult = this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
 
@@ -278,11 +278,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    StringMapResponse callStringMapGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws OMAGInvalidParameterException,
-                                                                        OMAGNotAuthorizedException,
-                                                                        OMAGConfigurationErrorException
+    public StringMapResponse callStringMapGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws OMAGInvalidParameterException,
+                                                                               OMAGNotAuthorizedException,
+                                                                               OMAGConfigurationErrorException
     {
         StringMapResponse restResult = this.callGetRESTCall(methodName, StringMapResponse.class, urlTemplate, params);
 
@@ -304,11 +304,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    OMAGServerConfigResponse callOMAGServerConfigGetRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object... params) throws OMAGInvalidParameterException,
-                                                                                      OMAGNotAuthorizedException,
-                                                                                      OMAGConfigurationErrorException
+    public OMAGServerConfigResponse callOMAGServerConfigGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params) throws OMAGInvalidParameterException,
+                                                                                             OMAGNotAuthorizedException,
+                                                                                             OMAGConfigurationErrorException
     {
         OMAGServerConfigResponse restResult = this.callGetRESTCall(methodName, OMAGServerConfigResponse.class, urlTemplate, params);
 
@@ -330,11 +330,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    OMAGServerConfigsResponse callGetAllServerConfigurationsRESTCall(String    methodName,
-                                                                     String    urlTemplate,
-                                                                     Object... params) throws OMAGInvalidParameterException,
-                                                                                      OMAGNotAuthorizedException,
-                                                                                      OMAGConfigurationErrorException
+    public OMAGServerConfigsResponse callGetAllServerConfigurationsRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object... params) throws OMAGInvalidParameterException,
+                                                                                                     OMAGNotAuthorizedException,
+                                                                                                     OMAGConfigurationErrorException
     {
         OMAGServerConfigsResponse restResult = this.callGetRESTCall(methodName, OMAGServerConfigsResponse.class, urlTemplate, params);
 
@@ -356,11 +356,12 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    OMAGServerStatusResponse callOMAGServerStatusGetRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object... params) throws OMAGInvalidParameterException,
-                                                                                      OMAGNotAuthorizedException,
-                                                                                      OMAGConfigurationErrorException
+    @Deprecated
+    public OMAGServerStatusResponse callOMAGServerStatusGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params) throws OMAGInvalidParameterException,
+                                                                                             OMAGNotAuthorizedException,
+                                                                                             OMAGConfigurationErrorException
     {
         OMAGServerStatusResponse restResult = this.callGetRESTCall(methodName, OMAGServerStatusResponse.class, urlTemplate, params);
 
@@ -382,11 +383,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    ConnectionResponse callConnectionGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws OMAGInvalidParameterException,
-                                                                          OMAGNotAuthorizedException,
-                                                                          OMAGConfigurationErrorException
+    public ConnectionResponse callConnectionGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws OMAGInvalidParameterException,
+                                                                                 OMAGNotAuthorizedException,
+                                                                                 OMAGConfigurationErrorException
     {
         ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
 
@@ -408,11 +409,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    ServerTypeClassificationResponse callServerClassificationGetRESTCall(String    methodName,
-                                                                         String    urlTemplate,
-                                                                         Object... params) throws OMAGInvalidParameterException,
-                                                                                                  OMAGNotAuthorizedException,
-                                                                                                  OMAGConfigurationErrorException
+    public ServerTypeClassificationResponse callServerClassificationGetRESTCall(String    methodName,
+                                                                                String    urlTemplate,
+                                                                                Object... params) throws OMAGInvalidParameterException,
+                                                                                                         OMAGNotAuthorizedException,
+                                                                                                         OMAGConfigurationErrorException
     {
         ServerTypeClassificationResponse restResult = this.callGetRESTCall(methodName, ServerTypeClassificationResponse.class, urlTemplate, params);
 
@@ -434,11 +435,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    RegisteredOMAGServicesResponse callRegisteredOMAGServicesGetRESTCall(String    methodName,
-                                                                         String    urlTemplate,
-                                                                         Object... params) throws OMAGInvalidParameterException,
-                                                                                                  OMAGNotAuthorizedException,
-                                                                                                  OMAGConfigurationErrorException
+    public RegisteredOMAGServicesResponse callRegisteredOMAGServicesGetRESTCall(String    methodName,
+                                                                                String    urlTemplate,
+                                                                                Object... params) throws OMAGInvalidParameterException,
+                                                                                                         OMAGNotAuthorizedException,
+                                                                                                         OMAGConfigurationErrorException
     {
         RegisteredOMAGServicesResponse restResult = this.callGetRESTCall(methodName, RegisteredOMAGServicesResponse.class, urlTemplate, params);
 
@@ -460,11 +461,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    AccessServicesResponse callAccessServicesGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws OMAGInvalidParameterException,
-                                                                                  OMAGNotAuthorizedException,
-                                                                                  OMAGConfigurationErrorException
+    public AccessServicesResponse callAccessServicesGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws OMAGInvalidParameterException,
+                                                                                         OMAGNotAuthorizedException,
+                                                                                         OMAGConfigurationErrorException
     {
         AccessServicesResponse restResult = this.callGetRESTCall(methodName, AccessServicesResponse.class, urlTemplate, params);
 
@@ -486,11 +487,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    EngineHostServicesResponse callEngineHostServicesGetRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object... params) throws OMAGInvalidParameterException,
-                                                                                          OMAGNotAuthorizedException,
-                                                                                          OMAGConfigurationErrorException
+    public EngineHostServicesResponse callEngineHostServicesGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws OMAGInvalidParameterException,
+                                                                                                 OMAGNotAuthorizedException,
+                                                                                                 OMAGConfigurationErrorException
     {
         EngineHostServicesResponse restResult = this.callGetRESTCall(methodName, EngineHostServicesResponse.class, urlTemplate, params);
 
@@ -512,11 +513,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    EngineServiceConfigResponse callEngineServiceConfigGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params) throws OMAGInvalidParameterException,
-                                                                                            OMAGNotAuthorizedException,
-                                                                                            OMAGConfigurationErrorException
+    public EngineServiceConfigResponse callEngineServiceConfigGetRESTCall(String    methodName,
+                                                                          String    urlTemplate,
+                                                                          Object... params) throws OMAGInvalidParameterException,
+                                                                                                   OMAGNotAuthorizedException,
+                                                                                                   OMAGConfigurationErrorException
     {
         EngineServiceConfigResponse restResult = this.callGetRESTCall(methodName, EngineServiceConfigResponse.class, urlTemplate, params);
 
@@ -538,11 +539,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    IntegrationServicesResponse callIntegrationServicesGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params) throws OMAGInvalidParameterException,
-                                                                                            OMAGNotAuthorizedException,
-                                                                                            OMAGConfigurationErrorException
+    public IntegrationServicesResponse callIntegrationServicesGetRESTCall(String    methodName,
+                                                                          String    urlTemplate,
+                                                                          Object... params) throws OMAGInvalidParameterException,
+                                                                                                   OMAGNotAuthorizedException,
+                                                                                                   OMAGConfigurationErrorException
     {
         IntegrationServicesResponse restResult = this.callGetRESTCall(methodName, IntegrationServicesResponse.class, urlTemplate, params);
 
@@ -564,11 +565,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    IntegrationServiceConfigResponse callIntegrationServiceConfigGetRESTCall(String    methodName,
-                                                                             String    urlTemplate,
-                                                                             Object... params) throws OMAGInvalidParameterException,
-                                                                                                      OMAGNotAuthorizedException,
-                                                                                                      OMAGConfigurationErrorException
+    public IntegrationServiceConfigResponse callIntegrationServiceConfigGetRESTCall(String    methodName,
+                                                                                    String    urlTemplate,
+                                                                                    Object... params) throws OMAGInvalidParameterException,
+                                                                                                             OMAGNotAuthorizedException,
+                                                                                                             OMAGConfigurationErrorException
     {
         IntegrationServiceConfigResponse restResult = this.callGetRESTCall(methodName, IntegrationServiceConfigResponse.class, urlTemplate, params);
 
@@ -591,11 +592,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    IntegrationGroupsResponse callIntegrationGroupsGetRESTCall(String    methodName,
-                                                               String    urlTemplate,
-                                                               Object... params) throws OMAGInvalidParameterException,
-                                                                                        OMAGNotAuthorizedException,
-                                                                                        OMAGConfigurationErrorException
+    public IntegrationGroupsResponse callIntegrationGroupsGetRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object... params) throws OMAGInvalidParameterException,
+                                                                                               OMAGNotAuthorizedException,
+                                                                                               OMAGConfigurationErrorException
     {
         IntegrationGroupsResponse restResult = this.callGetRESTCall(methodName, IntegrationGroupsResponse.class, urlTemplate, params);
 
@@ -617,11 +618,11 @@ class AdminServicesRESTClient
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    ViewServicesResponse callViewServicesGetRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object... params) throws OMAGInvalidParameterException,
-                                                                              OMAGNotAuthorizedException,
-                                                                              OMAGConfigurationErrorException
+    public ViewServicesResponse callViewServicesGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws OMAGInvalidParameterException,
+                                                                                     OMAGNotAuthorizedException,
+                                                                                     OMAGConfigurationErrorException
     {
         ViewServicesResponse restResult = this.callGetRESTCall(methodName, ViewServicesResponse.class, urlTemplate, params);
 
@@ -813,7 +814,4 @@ class AdminServicesRESTClient
 
         return null;
     }
-
-
-
 }

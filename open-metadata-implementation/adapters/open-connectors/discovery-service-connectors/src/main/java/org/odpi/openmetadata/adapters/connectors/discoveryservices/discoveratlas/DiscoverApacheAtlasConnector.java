@@ -50,18 +50,11 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
     private final Map<String, String> typeNameToDataFieldGUIDMap = new HashMap<>();
 
     /**
-     * Tracks the current analysis step - this is stored in the discovery analysis report so an external observer can track how far
-     * the processing has got.
-     */
-    private String currentAnalysisStep = DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS;
-
-    /**
      * This is the point after which the processing stops.  The default is PROFILE - which
      * is the last analysis step.  It can be changed through configuration properties or
      * analysis properties passed when this discovery service is called.
      */
-    private String finalAnalysisStep   = DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE;
-
+    private String finalAnalysisStep = DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE;
 
 
     /**
@@ -120,10 +113,10 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
             DiscoveryAnnotationStore annotationStore = discoveryContext.getAnnotationStore();
             DiscoveryAnalysisReportStore discoveryAnalysisReportStore = annotationStore.getDiscoveryReport();
 
-            discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS);
-
             if (connectorToAsset instanceof ApacheAtlasRESTConnector atlasConnector)
             {
+                discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS);
+
                 AtlasVersion  atlasVersion = atlasConnector.getAtlasVersion();
                 AtlasMetrics  atlasMetrics = atlasConnector.getAtlasMetrics();
 
@@ -140,8 +133,8 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
 
                     if (atlasMetricsGeneral != null)
                     {
-                        metrics.put("entityCount", Integer.toString(atlasMetricsGeneral.getEntityCount()));
-                        metrics.put("tagCount", Integer.toString(atlasMetricsGeneral.getTagCount()));
+                        metrics.put("entityInstanceCount", Integer.toString(atlasMetricsGeneral.getEntityCount()));
+                        metrics.put("classificationCount", Integer.toString(atlasMetricsGeneral.getTagCount()));
                         metrics.put("typeUnusedCount", Integer.toString(atlasMetricsGeneral.getTypeUnusedCount()));
                         metrics.put("typeCount", Integer.toString(atlasMetricsGeneral.getTypeCount()));
                     }
@@ -174,49 +167,55 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
                     annotationStore.addAnnotationToDiscoveryReport(measurementAnnotation);
                 }
 
-                discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
-
-                SchemaAnalysisAnnotation schemaAnalysisAnnotation = new SchemaAnalysisAnnotation();
-
-                schemaAnalysisAnnotation.setAnnotationType("Apache Atlas Type Analysis");
-                schemaAnalysisAnnotation.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
-                schemaAnalysisAnnotation.setSchemaTypeName(atlasVersion.getName());
-
-                String schemaAnalysisAnnotationGUID = annotationStore.addAnnotationToDiscoveryReport(schemaAnalysisAnnotation);
-
-                AtlasTypesDef atlasTypesDef = atlasConnector.getAllTypes();
-
-                for (AtlasEntityDef atlasEntityDef : atlasTypesDef.getEntityDefs())
+                if (! DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS.equals(finalAnalysisStep))
                 {
-                    if (atlasEntityDef != null)
-                    {
-                        this.getDataFieldForAtlasEntityDef(atlasEntityDef,
-                                                           schemaAnalysisAnnotationGUID,
-                                                           annotationStore);
-                    }
-                }
+                    /*
+                     * The
+                     */
+                    discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
 
-                for (AtlasClassificationDef atlasClassificationDef : atlasTypesDef.getClassificationDefs())
-                {
-                    if (atlasClassificationDef != null)
-                    {
-                        this.getDataFieldForAtlasClassificationDef(atlasClassificationDef,
-                                                                   schemaAnalysisAnnotationGUID,
-                                                                   annotationStore);
-                    }
-                }
+                    SchemaAnalysisAnnotation schemaAnalysisAnnotation = new SchemaAnalysisAnnotation();
 
-                for (AtlasRelationshipDef atlasRelationshipDef : atlasTypesDef.getRelationshipDefs())
-                {
-                    if (atlasRelationshipDef != null)
-                    {
-                        this.getDataFieldForAtlasRelationshipDef(atlasRelationshipDef,
-                                                                 schemaAnalysisAnnotationGUID,
-                                                                 annotationStore);
-                    }
-                }
+                    schemaAnalysisAnnotation.setAnnotationType("Apache Atlas Type Analysis");
+                    schemaAnalysisAnnotation.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
+                    schemaAnalysisAnnotation.setSchemaTypeName(atlasVersion.getName());
 
-                discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
+                    String schemaAnalysisAnnotationGUID = annotationStore.addAnnotationToDiscoveryReport(schemaAnalysisAnnotation);
+
+                    AtlasTypesDef atlasTypesDef = atlasConnector.getAllTypes();
+
+                    for (AtlasEntityDef atlasEntityDef : atlasTypesDef.getEntityDefs())
+                    {
+                        if (atlasEntityDef != null)
+                        {
+                            this.getDataFieldForAtlasEntityDef(atlasEntityDef,
+                                                               schemaAnalysisAnnotationGUID,
+                                                               annotationStore);
+                        }
+                    }
+
+                    for (AtlasClassificationDef atlasClassificationDef : atlasTypesDef.getClassificationDefs())
+                    {
+                        if (atlasClassificationDef != null)
+                        {
+                            this.getDataFieldForAtlasClassificationDef(atlasClassificationDef,
+                                                                       schemaAnalysisAnnotationGUID,
+                                                                       annotationStore);
+                        }
+                    }
+
+                    for (AtlasRelationshipDef atlasRelationshipDef : atlasTypesDef.getRelationshipDefs())
+                    {
+                        if (atlasRelationshipDef != null)
+                        {
+                            this.getDataFieldForAtlasRelationshipDef(atlasRelationshipDef,
+                                                                     schemaAnalysisAnnotationGUID,
+                                                                     annotationStore);
+                        }
+                    }
+
+                    discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
+                }
 
             }
             else
