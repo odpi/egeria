@@ -16,7 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
@@ -30,7 +29,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefAttribute;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefLink;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
 import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.ArrayList;
@@ -514,7 +515,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         AtlasTypesDef newTypes = this.callPostRESTCallNoParams(methodName, AtlasTypesDef.class, url, newTypeDefinitions);
 
         this.addTypeDefinitions(newTypes);
-
     }
 
 
@@ -533,24 +533,44 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         AtlasTypesDef newTypes = this.callPutRESTCallNoParams(methodName, AtlasTypesDef.class, url, newTypeDefinitions);
 
         this.addTypeDefinitions(newTypes);
-
     }
 
 
     /**
      * Copy the contents of an open metadata element into Apache Atlas and return the
-     * unique identifier of the new Apache Atlas element.
+     * unique identifier of the new Apache Atlas element.  Note: this method assumes the type has been defined.
      *
      * @param openMetadataElement element to copy into Apache Atlas
      * @return unique identifier of the resulting Atlas entity
      * @throws PropertyServerException problem with communicating with Apache Atlas
-     * @throws InvalidParameterException type not defined in Apache Atlas
      */
-    public String addOpenMetadataElement(OpenMetadataElement openMetadataElement) throws PropertyServerException,
-                                                                                         InvalidParameterException
+    public String addOpenMetadataElement(OpenMetadataElement openMetadataElement) throws PropertyServerException
     {
-        // todo
-        return null;
+        AtlasEntity         atlasEntity           = new AtlasEntity();
+
+        atlasEntity.setTypeName(OPEN_METADATA_TYPE_PREFIX + openMetadataElement.getType().getTypeName());
+        atlasEntity.setIncomplete(false);
+        atlasEntity.setStatus(AtlasInstanceStatus.ACTIVE);
+        atlasEntity.setVersion(1L);
+
+        if (openMetadataElement.getElementProperties() != null)
+        {
+            Map<String, Object> attributes = new HashMap<>();
+
+            for (String attributeName : openMetadataElement.getElementProperties().getPropertyValueMap().keySet())
+            {
+                PropertyValue propertyValue = openMetadataElement.getElementProperties().getPropertyValueMap().get(attributeName);
+
+                attributes.put(attributeName, propertyValue.valueAsObject());
+            }
+
+            if (! attributes.isEmpty())
+            {
+                atlasEntity.setAttributes(attributes);
+            }
+        }
+
+        return this.addEntity(atlasEntity);
     }
 
 
@@ -559,34 +579,126 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
      *
      * @param atlasGUID unique identifier of the atlas entity to update
      * @param openMetadataElement entity from the open metadata ecosystem to copy into Apache Atlas
-     * @return unique identifier of the resulting Atlas entity
      * @throws PropertyServerException problem with communicating with Apache Atlas
-     * @throws InvalidParameterException entity not defined in Apache Atlas
      */
-    public String updateOpenMetadataElement(String              atlasGUID,
-                                            OpenMetadataElement openMetadataElement) throws PropertyServerException,
-                                                                                            InvalidParameterException
+    public void   updateOpenMetadataElement(String              atlasGUID,
+                                            OpenMetadataElement openMetadataElement) throws PropertyServerException
     {
-        // todo
-        return null;
+        AtlasEntityWithExtInfo atlasEntity = this.getEntityByGUID(atlasGUID);
+
+        if (openMetadataElement.getElementProperties() != null)
+        {
+            Map<String, Object> attributes = new HashMap<>();
+
+            for (String attributeName : openMetadataElement.getElementProperties().getPropertyValueMap().keySet())
+            {
+                PropertyValue propertyValue = openMetadataElement.getElementProperties().getPropertyValueMap().get(attributeName);
+
+                attributes.put(attributeName, propertyValue.valueAsObject());
+            }
+
+            if (! attributes.isEmpty())
+            {
+                atlasEntity.getEntity().setAttributes(attributes);
+            }
+        }
+
+        this.updateEntity(atlasEntity);
     }
 
 
     /**
-     * Create a relationship to an Apache Atlas entity.  The Apache Atlas entity and associated relationship may or may not exist.
-     * If either element exists, it is updated.  If it does not exist, it is created.
-     * In all cases, the unique identifier of the Apache Atlas entity is returned.
+     * Create an open metadata ecosystem relationship between Apache Atlas entities.
+     * The associated relationship may or may not exist in Apache Atlas.
+     * If the relationship exists, it is updated.  If it does not exist, it is created.
+     * Note: this method assumes the type has been defined.
+     * Also note that this logic is assuming uni-link relationships.
+     * todo - add support for multi-link relationships
      *
-     * @param relatedMetadataElement relationship and entity from the open metadata ecosystem
-     * @return unique identifier of the resulting Atlas entity
+     * @param relationshipTypeName relationship from the open metadata ecosystem
+     * @param relationshipProperties properties from open metadata ecosystem
+     * @param end1AtlasGUID unique identifier of Atlas entity at end 1 of the relationship
+     * @param end2AtlasGUID unique identifier of Atlas entity at end 2 of the relationship
      * @throws PropertyServerException problem with communicating with Apache Atlas
-     * @throws InvalidParameterException type not defined in Apache Atlas
      */
-    public String addRelatedMetadataElement(RelatedMetadataElement relatedMetadataElement) throws PropertyServerException,
-                                                                                                  InvalidParameterException
+    public void setupRelatedMetadataEntities(String            relationshipTypeName,
+                                             ElementProperties relationshipProperties,
+                                             String            end1AtlasGUID,
+                                             String            end2AtlasGUID) throws PropertyServerException
     {
-        // todo
-        return null;
+        String atlasRelationshipTypeName = OPEN_METADATA_TYPE_PREFIX + relationshipTypeName;
+
+        AtlasEntityWithExtInfo end1EntityWithExt = this.getEntityByGUID(end1AtlasGUID);
+        AtlasEntity atlasEntity = end1EntityWithExt.getEntity();
+
+        AtlasRelationship   atlasRelationship = new AtlasRelationship();
+
+        atlasRelationship.setTypeName(atlasRelationshipTypeName);
+
+        AtlasObjectId end1 = new AtlasObjectId();
+
+        end1.setGuid(end1AtlasGUID);
+        atlasRelationship.setEnd1(end1);
+
+        AtlasObjectId end2 = new AtlasObjectId();
+
+        end2.setGuid(end2AtlasGUID);
+        atlasRelationship.setEnd2(end2);
+
+        if (relationshipProperties != null)
+        {
+            Map<String, Object> attributes = new HashMap<>();
+
+            for (String attributeName : relationshipProperties.getPropertyValueMap().keySet())
+            {
+                PropertyValue propertyValue = relationshipProperties.getPropertyValueMap().get(attributeName);
+
+                attributes.put(attributeName, propertyValue.valueAsObject());
+            }
+
+            if (! attributes.isEmpty())
+            {
+                atlasRelationship.setAttributes(attributes);
+            }
+        }
+
+        if (atlasEntity.getRelationshipAttributes() != null)
+        {
+            Map<String, Object> relationships = atlasEntity.getRelationshipAttributes();
+
+            boolean shouldAddRelationship = true;
+
+            for (Object relationshipObject : relationships.values())
+            {
+                if (relationshipObject instanceof Map<?,?> relationshipDetails)
+                {
+                    if (atlasRelationshipTypeName.equals(relationshipDetails.get("relationshipType")))
+                    {
+                        if (end2AtlasGUID.equals(relationshipDetails.get("guid")))
+                        {
+                            shouldAddRelationship = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (shouldAddRelationship)
+            {
+                this.addRelationship(atlasRelationship);
+            }
+            else
+            {
+                this.updateRelationship(atlasRelationship);
+            }
+        }
+        else
+        {
+            /*
+             * No relationships to this entity so relationship must be new
+             */
+            this.addRelationship(atlasRelationship);
+        }
     }
 
 
@@ -1077,21 +1189,22 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
 
     /**
-     * Create an attribute of the requested type.
+     * Create an attribute of the requested type.  Note enums are represented as strings in Apache Atlas.
      *
      * @param propertyName name of the attribute
      * @param propertyDescription description of the attribute
      * @param openMetadataAttributeTypeDef type of the attribute
      * @return attribute definition
-     * @throws PropertyServerException problem calling Apache Atlas
      */
     public AtlasAttributeDef getStandardAttributeDef(String                       propertyName,
                                                      String                       propertyDescription,
-                                                     OpenMetadataAttributeTypeDef openMetadataAttributeTypeDef) throws PropertyServerException
+                                                     OpenMetadataAttributeTypeDef openMetadataAttributeTypeDef)
     {
-        if (openMetadataAttributeTypeDef instanceof OpenMetadataEnumDef openMetadataEnumDef)
+        if (openMetadataAttributeTypeDef instanceof OpenMetadataEnumDef)
         {
-            this.addOpenMetadataEnumType(openMetadataEnumDef);
+            return this.getStandardAttributeDef(propertyName,
+                                                propertyDescription,
+                                                "string");
         }
 
         return this.getStandardAttributeDef(propertyName,
@@ -1330,6 +1443,22 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         final String url = targetRootURL + "/api/atlas/v2/relationship";
 
         return this.callPostRESTCallNoParams(methodName, AtlasRelationship.class, url, atlasRelationship);
+    }
+
+
+    /**
+     * Add a relationship.
+     *
+     * @param atlasRelationship description of relationship
+     * @return description of the operation
+     * @throws PropertyServerException problem connecting to Apache Atlas
+     */
+    public AtlasRelationship updateRelationship(AtlasRelationship  atlasRelationship) throws PropertyServerException
+    {
+        final String methodName = "updateRelationship()";
+        final String url = targetRootURL + "/api/atlas/v2/relationship";
+
+        return this.callPutRESTCallNoParams(methodName, AtlasRelationship.class, url, atlasRelationship);
     }
 
 

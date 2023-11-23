@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adminservices.client;
 
+import org.odpi.openmetadata.adminservices.client.rest.AdminServicesRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -11,7 +12,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
@@ -492,6 +492,32 @@ public class OMAGServerConfigurationClient
                                         supportedSeverities,
                                         adminUserId,
                                         serverName);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log records as JSON files in a shared directory.
+     *
+     * @param directoryName optional directory name
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addFileAuditLogDestination(String       directoryName,
+                                           List<String> supportedSeverities) throws OMAGNotAuthorizedException,
+                                                                                    OMAGInvalidParameterException,
+                                                                                    OMAGConfigurationErrorException
+    {
+        final String methodName  = "addFileAuditLogDestination";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/files?directoryName={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        supportedSeverities,
+                                        adminUserId,
+                                        serverName,
+                                        directoryName);
     }
 
 

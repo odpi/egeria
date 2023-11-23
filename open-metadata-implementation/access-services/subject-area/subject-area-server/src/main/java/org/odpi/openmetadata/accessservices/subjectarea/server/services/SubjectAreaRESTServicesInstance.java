@@ -344,7 +344,7 @@ public class SubjectAreaRESTServicesInstance {
      * Get the appropriate response from the supplied Exception
      *
      * @param exception      - supplied exception
-     * @param auditLog   - auditlog (may be null if unable to initialize)
+     * @param auditLog   - ffdc (may be null if unable to initialize)
      * @param className  - calling class's Name
      * @param restAPIName - calling method's name
      * @return response corresponding to the exception.

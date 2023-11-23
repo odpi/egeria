@@ -107,6 +107,7 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param directoryName name of directory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -115,9 +116,11 @@ public class ConfigRepositoryServicesResource
     @PostMapping(path = "/audit-log-destinations/files")
     public VoidResponse addFileAuditLogDestination(@PathVariable String       userId,
                                                    @PathVariable String       serverName,
+                                                   @RequestParam (required = false)
+                                                                 String       directoryName,
                                                    @RequestBody  List<String> supportedSeverities)
     {
-        return adminAPI.addFileAuditLogDestination(userId, serverName, supportedSeverities);
+        return adminAPI.addFileAuditLogDestination(userId, serverName, directoryName, supportedSeverities);
     }
 
 

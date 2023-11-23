@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adminservices.client;
+package org.odpi.openmetadata.adminservices.client.rest;
 
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * AdminClientRESTExceptionHandler is managing the receipt of exceptions in the response from a REST call
  * and converting them into Admin Exceptions.
  */
-class AdminClientRESTExceptionHandler extends RESTExceptionHandler
+public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
 {
     private static final Logger log = LoggerFactory.getLogger(AdminClientRESTExceptionHandler.class);
 
@@ -30,9 +30,9 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException configuration error
      */
-    void detectAndThrowAdminExceptions(FFDCResponseBase restResult) throws OMAGInvalidParameterException,
-                                                                           OMAGNotAuthorizedException,
-                                                                           OMAGConfigurationErrorException
+    public void detectAndThrowAdminExceptions(FFDCResponseBase restResult) throws OMAGInvalidParameterException,
+                                                                                  OMAGNotAuthorizedException,
+                                                                                  OMAGConfigurationErrorException
     {
         final String   invalidParameterExceptionClassName = OMAGInvalidParameterException.class.getName();
         final String   userNotAuthorizedExceptionClassName = OMAGNotAuthorizedException.class.getName();
@@ -149,9 +149,9 @@ class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      * @param error resulting exception
      * @throws OMAGConfigurationErrorException wrapping exception
      */
-    void logRESTCallException(String    serverPlatformURLRoot,
-                              String    methodName,
-                              Throwable error) throws OMAGConfigurationErrorException
+    public void logRESTCallException(String    serverPlatformURLRoot,
+                                     String    methodName,
+                                     Throwable error) throws OMAGConfigurationErrorException
     {
         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                                      serverPlatformURLRoot,
