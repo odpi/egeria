@@ -27,7 +27,7 @@ ext {
     xtdbVersion = '1.24.0'
     clojureVersion = '1.11.1'
     classgraphVersion = '4.8.165'
-    classmateVersion = '1.5.1'
+    classmateVersion = '1.6.0'
     collections4Version = '4.4'
     commonscodecVersion = '1.16.0'
     commonsconfiguration2Version = '2.9.0'
