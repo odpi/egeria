@@ -41,8 +41,9 @@ public class ComponentIdReport
     private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider";
     private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
     private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
-    private static final String foldersIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
-    private static final String jdbcIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
+    private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
+    private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.CSVLineageImporterProvider";
+    private static final String jdbcIntegrationConnectorProviderClassName               = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
     private static final String kafkaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider";
     private static final String openAPIIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
     private static final String apiBasedOpenLineageLogStoreIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider";
@@ -208,6 +209,7 @@ public class ComponentIdReport
         this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(filesIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(foldersIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(csvLineageImporterIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(kafkaIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openAPIIntegrationConnectorProviderClassName, report);
