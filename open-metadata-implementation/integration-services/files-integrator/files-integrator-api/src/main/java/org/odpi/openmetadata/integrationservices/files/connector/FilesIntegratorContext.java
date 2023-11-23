@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ import java.util.Map;
  * It provides the simplified interface to open metadata needed by the FilesIntegratorConnector.
  * It is designed to be used either for cataloguing folders and files
  */
-public class FilesIntegratorContext extends IntegrationContext
+public abstract class FilesIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final FilesAndFoldersClient   filesAndFoldersClient;
@@ -117,6 +119,81 @@ public class FilesIntegratorContext extends IntegrationContext
     {
         eventClient.registerListener(userId, listener);
     }
+
+
+    /* ========================================================
+     * Register for inbound events from the Data Manager OMAS OutTopic
+     */
+
+
+    /**
+     * Register a listener object that will be called each time a specific file is created, changed or deleted.
+     *
+     * @param listener listener object
+     * @param fileToMonitor name of the file to monitor
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract void registerFileListener(FileListenerInterface listener,
+                                              File                  fileToMonitor) throws InvalidParameterException,
+                                                                                          ConnectionCheckedException,
+                                                                                          ConnectorCheckedException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException;
+
+
+    /**
+     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
+     * The file filter lets you request that only certain types of files are returned.
+     *
+     * @param listener listener object
+     * @param directoryToMonitor details of the file directory to monitor
+     * @param fileFilter a file filter implementation that restricts the files/directories that will be returned to the listener
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract void registerDirectoryListener(FileDirectoryListenerInterface listener,
+                                                   File                           directoryToMonitor,
+                                                   FileFilter                     fileFilter) throws InvalidParameterException,
+                                                                                                     ConnectionCheckedException,
+                                                                                                     ConnectorCheckedException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException;
+
+
+    /**
+     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
+     * and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.
+     *
+     * @param listener listener object
+     * @param directoryToMonitor details of the root file directory to monitor from
+     * @param fileFilter a file filter implementation that restricts the files/directories that will be returned to the listener
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                       File                           directoryToMonitor,
+                                                       FileFilter                     fileFilter) throws InvalidParameterException,
+                                                                                                         ConnectionCheckedException,
+                                                                                                         ConnectorCheckedException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException;
+
 
 
     /*============================================================================================================
