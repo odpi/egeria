@@ -1136,6 +1136,7 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param directoryName name of directory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -1143,6 +1144,7 @@ public class OMAGServerAdminServices
      */
     public VoidResponse addFileAuditLogDestination(String       userId,
                                                    String       serverName,
+                                                   String       directoryName,
                                                    List<String> supportedSeverities)
     {
         final String methodName = "addFileAuditLogDestination";
@@ -1158,7 +1160,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getFileBasedAuditLogConnection(serverName, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getFileBasedAuditLogConnection(serverName, directoryName, supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {

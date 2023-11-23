@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adminservices.client;
 
+import org.odpi.openmetadata.adminservices.client.rest.AdminServicesRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
