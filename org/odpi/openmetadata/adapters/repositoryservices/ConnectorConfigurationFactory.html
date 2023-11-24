@@ -231,7 +231,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the connection for the event topic audit log.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileBasedAuditLogConnection(java.lang.String,java.util.List)" class="member-name-link">getFileBasedAuditLogConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileBasedAuditLogConnection(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">getFileBasedAuditLogConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;directoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection for the file-based audit log.</div>
@@ -371,15 +372,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getFileBasedAuditLogConnection(java.lang.String,java.util.List)">
+<section class="detail" id="getFileBasedAuditLogConnection(java.lang.String,java.lang.String,java.util.List)">
 <h3>getFileBasedAuditLogConnection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getFileBasedAuditLogConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;directoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</span></div>
 <div class="block">Return the connection for the file-based audit log.
- By default, the File-based Audit log is stored in a directory called localServerName.auditlog.</div>
+ By default, the File-based Audit log is stored in a directory called localServerName.ffdc.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - name of the local server</dd>
+<dd><code>directoryName</code> - name of directory</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>OCF Connection used to create the file based audit logger</dd>
@@ -392,7 +395,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getSLF4JAuditLogConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifier,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</span></div>
 <div class="block">Return the connection for the file-based audit log.
- By default, the File-based Audit log is stored in a directory called localServerName.auditlog.</div>
+ By default, the File-based Audit log is stored in a directory called localServerName.ffdc.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>qualifier</code> - unique qualifier for the connection</dd>
@@ -413,7 +416,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;eventBusConfigurationProperties)</span></div>
 <div class="block">Return the connection for the event topic audit log.
- By default, the topic name is called openmetadata.repositoryservices.{localServerName}.auditlog.</div>
+ By default, the topic name is called openmetadata.repositoryservices.{localServerName}.ffdc.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - name of the local server</dd>
