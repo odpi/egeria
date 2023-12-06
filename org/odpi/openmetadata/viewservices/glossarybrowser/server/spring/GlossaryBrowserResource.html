@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">GlossaryBrowserResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">The GlossaryBrowserResource provides the Spring API endpoints of the Glossary Browser Open Metadata View Service (OMVS).
- This interface provides an interfaces for Egeria UIs.</div>
+ This interface provides a service for Egeria UIs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -613,13 +613,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return information about the elements classified with the security tags classification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../../rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../accessservices/assetmanager/rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary terms associated with the requested glossary term.</div>
 </div>
@@ -691,13 +691,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of glossary terms associated with a glossary.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getTermsForGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)" class="member-name-link">getTermsForGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../../rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../accessservices/assetmanager/rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of glossary terms associated with a glossary category.</div>
 </div>
@@ -1329,7 +1329,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody)">
+<section class="detail" id="getTermsForGlossaryCategory(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)">
 <h3>getTermsForGlossaryCategory</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/categories/{glossaryCategoryGUID}/terms/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></span>&nbsp;<span class="element-name">getTermsForGlossaryCategory</span><wbr><span class="parameters">(@PathVariable
@@ -1345,7 +1345,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestBody(required=false)
- <a href="../../rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../accessservices/assetmanager/rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of glossary terms associated with a glossary category.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1365,7 +1365,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelatedTerms(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody)">
+<section class="detail" id="getRelatedTerms(java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody)">
 <h3>getRelatedTerms</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/glossaries/terms/{glossaryTermGUID}/related-terms")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetmanager/rest/GlossaryTermElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermElementsResponse</a></span>&nbsp;<span class="element-name">getRelatedTerms</span><wbr><span class="parameters">(@PathVariable
@@ -1381,7 +1381,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestBody(required=false)
- <a href="../../rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../accessservices/assetmanager/rest/GlossaryTermRelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">GlossaryTermRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of glossary terms associated with the requested glossary term.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

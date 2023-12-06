@@ -711,10 +711,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of glossary term metadata elements with a matching qualified or display name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../properties/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermRelationshipStatus</a>&gt;&nbsp;limitResultsByStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -3393,12 +3394,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelatedTerms(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date,boolean,boolean)">
+<section class="detail" id="getRelatedTerms(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date,boolean,boolean)">
 <h3>getRelatedTerms</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedTerms</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../properties/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermRelationshipStatus</a>&gt;&nbsp;limitResultsByStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -3415,6 +3417,7 @@ loadScripts(document, 'script');</script>
 <dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term of interest</dd>
+<dd><code>relationshipTypeName</code> - optional name of relationship</dd>
 <dd><code>limitResultsByStatus</code> - list of statuses that the term must have</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>

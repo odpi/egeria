@@ -287,6 +287,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection for the file-based audit log.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getXTDBInMemLocalRepositoryLocalConnection()" class="member-name-link">getXTDBInMemLocalRepositoryLocalConnection</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the local XTDB repository's connection for an in memory repository.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getXTDBKVLocalRepositoryLocalConnection(java.lang.String)" class="member-name-link">getXTDBKVLocalRepositoryLocalConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the local XTDB repository's connection.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getXTDBLocalRepositoryLocalConnection(java.util.Map)" class="member-name-link">getXTDBLocalRepositoryLocalConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the local XTDB repository's connection.</div>
+</div>
 </div>
 </div>
 </div>
@@ -498,6 +513,56 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>storageProperties</code> - properties used to configure Egeria Graph DB</dd>
+<dt>Returns:</dt>
+<dd>Connection object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getXTDBInMemLocalRepositoryLocalConnection()">
+<h3>getXTDBInMemLocalRepositoryLocalConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getXTDBInMemLocalRepositoryLocalConnection</span>()</div>
+<div class="block">Return the local XTDB repository's connection for an in memory repository.  This is using the XTDBOMRSRepositoryConnector.
+ Note there is no endpoint defined.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Connection object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getXTDBKVLocalRepositoryLocalConnection(java.lang.String)">
+<h3>getXTDBKVLocalRepositoryLocalConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getXTDBKVLocalRepositoryLocalConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
+ Note there is no endpoint defined.
+
+ "configurationProperties": {
+     "xtdbConfig": {
+         "xtdb.lucene/lucene-store": { "db-dir": "data/servers/" + serverName + "/xtdb/lucene" },
+         "xtdb/index-store": { "kv-store": { "xtdb/module": "xtdb.rocksdb/->kv-store",
+                                             "db-dir"     : "data/servers/" + serverName + "/xtdb/rdb-index" } },
+         "xtdb/document-store": { "kv-store": { "xtdb/module" : "xtdb.rocksdb/->kv-store",
+                                                "db-dir"      : "data/servers/" + serverName + "/xtdb/rdb-docs" } },
+         "xtdb/tx-log": { "kv-store": { "xtdb/module" : "xtdb.rocksdb/->kv-store",
+                                        "db-dir"      : "data/servers/" + serverName + "/xtdb/rdb-tx" } }
+     }
+   }</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Connection object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getXTDBLocalRepositoryLocalConnection(java.util.Map)">
+<h3>getXTDBLocalRepositoryLocalConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getXTDBLocalRepositoryLocalConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;storageProperties)</span></div>
+<div class="block">Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
+ Note there is no endpoint defined.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>storageProperties</code> - properties used to configure Egeria XTDB DB</dd>
 <dt>Returns:</dt>
 <dd>Connection object</dd>
 </dl>

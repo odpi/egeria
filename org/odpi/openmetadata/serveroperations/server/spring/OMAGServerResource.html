@@ -135,6 +135,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the status for the current active instance of the server.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ServerServicesListResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerServicesListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServices(java.lang.String,java.lang.String)" class="member-name-link">getActiveServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.</div>
+</div>
 </div>
 </div>
 </div>
@@ -207,6 +213,24 @@ loadScripts(document, 'script');</script>
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException the server name is invalid or not running or
  OMAGConfigurationErrorException there is a problem using the supplied configuration.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getActiveServices(java.lang.String,java.lang.String)">
+<h3>getActiveServices</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/servers/{serverName}/services")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ServerServicesListResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">ServerServicesListResponse</a></span>&nbsp;<span class="element-name">getActiveServices</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - name of the user making the request</dd>
+<dd><code>serverName</code> - name of the server of interest</dd>
+<dt>Returns:</dt>
+<dd>server name and list od services running within</dd>
 </dl>
 </section>
 </li>

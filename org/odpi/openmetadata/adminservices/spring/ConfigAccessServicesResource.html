@@ -177,13 +177,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the topic names for this access service</div>
+<div class="block">Retrieve the topic names for this access service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/StringMapResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringMapResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllAccessServiceTopicNames(java.lang.String,java.lang.String)" class="member-name-link">getAllAccessServiceTopicNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the topic names for all access services</div>
+<div class="block">Retrieve the topic names for all access services.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/RegisteredOMAGServicesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGServicesResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredAccessServices(java.lang.String,java.lang.String)" class="member-name-link">getConfiguredAccessServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -401,8 +401,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Disable the access services.  This removes all configuration for the access services
- and disables the enterprise repository services.</div>
+<div class="block">Disable the access services.  This removes all configuration for the access services and disables the enterprise repository services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
@@ -449,7 +448,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span></div>
-<div class="block">Retrieve the topic names for this access service</div>
+<div class="block">Retrieve the topic names for this access service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
@@ -470,7 +469,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Retrieve the topic names for all access services</div>
+<div class="block">Retrieve the topic names for all access services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
@@ -568,8 +567,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestBody
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/AccessServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AccessServiceConfig</a>&gt;&nbsp;accessServicesConfig)</span></div>
-<div class="block">Set up the configuration for selected open metadata access services (OMASs).  This overrides
- the current default values.</div>
+<div class="block">Set up the configuration for selected open metadata access services (OMASs).  This overrides the current configured values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>

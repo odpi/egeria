@@ -614,6 +614,7 @@ org.odpi.openmetadata.frameworks.governanceaction
 org.odpi.openmetadata.frameworks.governanceaction.client
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
+org.odpi.openmetadata.frameworks.governanceaction.mapper
 org.odpi.openmetadata.frameworks.governanceaction.properties
 org.odpi.openmetadata.frameworks.governanceaction.search
 org.odpi.openmetadata.frameworks.integration.client
@@ -899,6 +900,16 @@ org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules
 org.odpi.openmetadata.userinterface.uichassis.springboot.service.view
 org.odpi.openmetadata.utilities.serverconfig
 org.odpi.openmetadata.utilities.serverops
+org.odpi.openmetadata.viewservices.assetcatalog.admin
+org.odpi.openmetadata.viewservices.assetcatalog.beans
+org.odpi.openmetadata.viewservices.assetcatalog.ffdc
+org.odpi.openmetadata.viewservices.assetcatalog.rest
+org.odpi.openmetadata.viewservices.assetcatalog.server
+org.odpi.openmetadata.viewservices.assetcatalog.server.spring
+org.odpi.openmetadata.viewservices.collectionmanager.admin
+org.odpi.openmetadata.viewservices.collectionmanager.ffdc
+org.odpi.openmetadata.viewservices.collectionmanager.server
+org.odpi.openmetadata.viewservices.collectionmanager.server.spring
 org.odpi.openmetadata.viewservices.dino.admin
 org.odpi.openmetadata.viewservices.dino.api.ffdc
 org.odpi.openmetadata.viewservices.dino.api.properties
@@ -930,6 +941,7 @@ org.odpi.openmetadata.viewservices.glossarybrowser.ffdc
 org.odpi.openmetadata.viewservices.glossarybrowser.rest
 org.odpi.openmetadata.viewservices.glossarybrowser.server
 org.odpi.openmetadata.viewservices.glossarybrowser.server.spring
+org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans
 org.odpi.openmetadata.viewservices.glossaryworkflow.admin
 org.odpi.openmetadata.viewservices.glossaryworkflow.ffdc
 org.odpi.openmetadata.viewservices.glossaryworkflow.rest

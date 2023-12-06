@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../viewservices/dino/server/DinoViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dino.server">DinoViewInstanceHandler</a></code>, <code><a href="../../viewservices/glossaryauthor/initialization/GlossaryAuthorViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossaryauthor.initialization">GlossaryAuthorViewInstanceHandler</a></code>, <code><a href="../../viewservices/glossarybrowser/server/GlossaryBrowserInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.server">GlossaryBrowserInstanceHandler</a></code>, <code><a href="../../viewservices/glossaryworkflow/server/GlossaryWorkflowInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossaryworkflow.server">GlossaryWorkflowInstanceHandler</a></code>, <code><a href="../../viewservices/myprofile/server/MyProfileInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.myprofile.server">MyProfileInstanceHandler</a></code>, <code><a href="../../viewservices/rex/server/RexViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.rex.server">RexViewInstanceHandler</a></code>, <code><a href="../../viewservices/serverauthor/initialization/ServerAuthorViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.serverauthor.initialization">ServerAuthorViewInstanceHandler</a></code>, <code><a href="../../viewservices/tex/server/TexViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.tex.server">TexViewInstanceHandler</a></code></dd>
+<dd><code><a href="../../viewservices/assetcatalog/server/AssetCatalogInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.server">AssetCatalogInstanceHandler</a></code>, <code><a href="../../viewservices/collectionmanager/server/CollectionManagerInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.server">CollectionManagerInstanceHandler</a></code>, <code><a href="../../viewservices/dino/server/DinoViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.dino.server">DinoViewInstanceHandler</a></code>, <code><a href="../../viewservices/glossaryauthor/initialization/GlossaryAuthorViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossaryauthor.initialization">GlossaryAuthorViewInstanceHandler</a></code>, <code><a href="../../viewservices/glossarybrowser/server/GlossaryBrowserInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossarybrowser.server">GlossaryBrowserInstanceHandler</a></code>, <code><a href="../../viewservices/glossaryworkflow/server/GlossaryWorkflowInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.glossaryworkflow.server">GlossaryWorkflowInstanceHandler</a></code>, <code><a href="../../viewservices/myprofile/server/MyProfileInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.myprofile.server">MyProfileInstanceHandler</a></code>, <code><a href="../../viewservices/rex/server/RexViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.rex.server">RexViewInstanceHandler</a></code>, <code><a href="../../viewservices/serverauthor/initialization/ServerAuthorViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.serverauthor.initialization">ServerAuthorViewInstanceHandler</a></code>, <code><a href="../../viewservices/tex/server/TexViewInstanceHandler.html" title="class in org.odpi.openmetadata.viewservices.tex.server">TexViewInstanceHandler</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OMVSServiceInstanceHandler</span>
@@ -127,11 +127,33 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../ffdc/RESTExceptionHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">RESTExceptionHandler</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExceptionHandler()" class="member-name-link">getExceptionHandler</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndsWithRegex(java.lang.String,boolean)" class="member-name-link">getEndsWithRegex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;insensitive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+ to search for the string with an "ends with" semantic.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../ffdc/RESTExceptionHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">RESTExceptionHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExceptionHandler()" class="member-name-link">getExceptionHandler</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the exception handler that can package up common exceptions and pack them into
  a REST Response.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSearchString(java.lang.String,boolean,boolean,boolean)" class="member-name-link">getSearchString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedSearch,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Construct a regular expression from the string supplied by the caller.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStartsWithRegex(java.lang.String,boolean)" class="member-name-link">getStartsWithRegex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;insensitive)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+ to search for the string with a "starts with" semantic.</div>
 </div>
 </div>
 </div>
@@ -184,6 +206,62 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>exception handler object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStartsWithRegex(java.lang.String,boolean)">
+<h3>getStartsWithRegex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getStartsWithRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;insensitive)</span></div>
+<div class="block">Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+ to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
+ if you intend to use both a "starts with" semantic and a regular expression within the string, simply construct your
+ own regular expression directly (not with this helper method).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>searchString</code> - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "starts with" semantic</dd>
+<dd><code>insensitive</code> - set to true to have a case-insensitive "starts with" regular expression</dd>
+<dt>Returns:</dt>
+<dd>string that is interpreted literally, wrapped for a "starts with" semantic</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEndsWithRegex(java.lang.String,boolean)">
+<h3>getEndsWithRegex</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getEndsWithRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;insensitive)</span></div>
+<div class="block">Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+ to search for the string with an "ends with" semantic. The passed string will NOT be treated as a regular expression;
+ if you intend to use both an "ends with" semantic and a regular expression within the string, simply construct your
+ own regular expression directly (not with this helper method).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>searchString</code> - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "ends with" semantic</dd>
+<dd><code>insensitive</code> - set to true to have a case-insensitive "ends with" regular expression</dd>
+<dt>Returns:</dt>
+<dd>string that is interpreted literally, wrapped for an "ends with" semantic</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSearchString(java.lang.String,boolean,boolean,boolean)">
+<h3>getSearchString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSearchString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedSearch,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase)</span></div>
+<div class="block">Construct a regular expression from the string supplied by the caller.  If their string includes regular expression characters then
+ they will be ignored.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>requestedSearch</code> - the supplied string</dd>
+<dd><code>startsWith</code> - set to true if the requested string is at the front of the search</dd>
+<dd><code>endsWith</code> - set to true if the requested string is at the end of the search</dd>
+<dd><code>ignoreCase</code> - set to true to have a case-insensitive search</dd>
+<dt>Returns:</dt>
+<dd>string that is interpreted literally rather than as a regular expression</dd>
 </dl>
 </section>
 </li>

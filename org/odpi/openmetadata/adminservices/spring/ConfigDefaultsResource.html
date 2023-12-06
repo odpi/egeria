@@ -192,9 +192,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the default root URL for this server that is used to construct full URL paths to calls for
  this server's REST interfaces.  It is a value that is sent to other servers to allow
  them to call this server.
-
  The default value is "localhost:9443".
-
  ServerURLRoot is used as a default value during the configuration of the server's subsystems.
  If it is updated after a subsystem is configured then the new value is ignored.</div>
 <dl class="notes">
@@ -222,9 +220,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the default root URL for this server's platform that is used to construct full URL paths to calls for
  this server's REST interfaces.  It is a value that is sent to other servers to allow
  them to call this server.
-
  The default value is "https://localhost:9443".
-
  ServerRootURL is used as a default value during the configuration of the server's subsystems.
  If it is updated after a subsystem is configured then the new value is ignored.</div>
 <dl class="notes">
@@ -256,7 +252,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the default event bus for embedding in event-driven connector.   The resulting connector will
  be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
  possibly the local repository's event mapper.
-
  When the event bus is configured, it is used only on future configuration.  It does not effect
  existing configuration.</div>
 <dl class="notes">
@@ -303,7 +298,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Delete the current configuration for the event bus.</div>
+<div class="block">Delete the current configuration for the event bus.
+ This does not impact that existing configuration for the server, only future configuration requests.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>

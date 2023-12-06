@@ -162,9 +162,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the unique identifier of the external metadata source.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishIntegrationReport(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties)" class="member-name-link">publishIntegrationReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishIntegrationReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties)" class="member-name-link">publishIntegrationReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorTypeName,
  <a href="../../../frameworks/integration/properties/IntegrationReportProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationReportProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new integration report for an element (identified by anchorGUID).</div>
@@ -266,11 +267,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="publishIntegrationReport(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties)">
+<section class="detail" id="publishIntegrationReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties)">
 <h3>publishIntegrationReport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">publishIntegrationReport</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorTypeName,
  <a href="../../../frameworks/integration/properties/IntegrationReportProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationReportProperties</a>&nbsp;properties)</span></div>
 <div class="block">Create a new integration report for an element (identified by anchorGUID).</div>
 <dl class="notes">
@@ -278,6 +280,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>anchorGUID</code> - element to attach the integration report to</dd>
+<dd><code>anchorTypeName</code> - typeName of the anchor for the integration report</dd>
 <dd><code>properties</code> - properties of the report</dd>
 <dt>Returns:</dt>
 <dd>void or

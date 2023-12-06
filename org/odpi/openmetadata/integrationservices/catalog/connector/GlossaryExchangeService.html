@@ -464,7 +464,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of glossary term metadata elements with a matching qualified or display name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedTerms(java.lang.String,java.util.List,int,int,java.util.Date)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedTerms(java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date)" class="member-name-link">getRelatedTerms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/properties/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermRelationshipStatus</a>&gt;&nbsp;limitResultsByStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2189,9 +2190,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelatedTerms(java.lang.String,java.util.List,int,int,java.util.Date)">
+<section class="detail" id="getRelatedTerms(java.lang.String,java.lang.String,java.util.List,int,int,java.util.Date)">
 <h3>getRelatedTerms</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedTerms</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/properties/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermRelationshipStatus</a>&gt;&nbsp;limitResultsByStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2203,6 +2205,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary of interest</dd>
+<dd><code>relationshipTypeName</code> - optional name of relationship</dd>
 <dd><code>limitResultsByStatus</code> - By default, term relationships in all statuses are returned.  However, it is possible
                              to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>startFrom</code> - paging start point</dd>
