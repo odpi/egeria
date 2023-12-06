@@ -250,6 +250,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        final String anchorGUIDParameterName     = "anchorGUID";
         final String propertiesParameterName     = "schemaTypeProperties";
         final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
 
@@ -267,7 +268,18 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         if (anchorGUID != null)
         {
-            builder.setAnchors(userId, anchorGUID, methodName);
+            EntityDetail anchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                          anchorGUID,
+                                                                          anchorGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+            if (anchorEntity != null)
+            {
+                builder.setAnchors(userId, anchorGUID, anchorEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         String schemaTypeGUID = schemaTypeHandler.addSchemaType(userId,

@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -15,8 +15,11 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConn
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -28,11 +31,11 @@ import java.util.Map;
  * ConnectionHandler manages Connection objects.  These describe the network addresses where services are running.  They are used by connection
  * objects to describe the service that the connector should call.  They are linked to servers to show their network address where the services that
  * they are hosting are running.
- *
+ * <br>
  * Most OMASs that work with Connection objects use the Open Connector Framework (OCF) Bean since this can be passed to the OCF Connector
  * Broker to create an instance of a connector to the attached asset.  Therefore, this handler has a default bean and converter which
  * is the one that works with the OCF bean.  The call can either use these values or override with their own bean/converter implementations.
- *
+ * <br>
  * ConnectionHandler runs server-side in the OMAG Server Platform and retrieves Connection entities through the OMRSRepositoryConnector via the
  * generic handler and repository handler.
  */
@@ -321,6 +324,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param anchorGUID unique identifier of the anchor entity if applicable
+     * @param anchorTypeName type name of anchor
      * @param connectionGUID unique identifier of connected connection
      * @param endpoint endpoint object or null
      * @param connectorType connector type object or null
@@ -338,6 +342,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   String                   externalSourceGUID,
                                                   String                   externalSourceName,
                                                   String                   anchorGUID,
+                                                  String                   anchorTypeName,
                                                   String                   connectionGUID,
                                                   Endpoint                 endpoint,
                                                   ConnectorType            connectorType,
@@ -507,7 +512,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-                        embeddedConnectionBuilder.setAnchors(userId, anchorGUID, methodName);
+                        embeddedConnectionBuilder.setAnchors(userId, anchorGUID, anchorTypeName, methodName);
 
                         repositoryHandler.createRelationship(userId,
                                                              OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
@@ -565,6 +570,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException
     {
         final String  connectionParameterName     = "connection";
+        final String  anchorGUIDParameterName     = "anchorGUID";
 
         invalidParameterHandler.validateObject(connection.getConnectorType(), connectionParameterName, methodName);
 
@@ -572,14 +578,33 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         String                   connectionTypeName  = OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
         List<EmbeddedConnection> embeddedConnections = null;
 
-        if (connection instanceof VirtualConnection)
+        if (connection instanceof VirtualConnection virtualConnection)
         {
             connectionTypeGUID = OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_GUID;
             connectionTypeName = OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME;
 
-            VirtualConnection  virtualConnection = (VirtualConnection)connection;
-
             embeddedConnections = virtualConnection.getEmbeddedConnections();
+        }
+
+        String anchorTypeName = null;
+
+        if (anchorGUID != null)
+        {
+            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
+                                                                     anchorGUID,
+                                                                     anchorGUIDParameterName,
+                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+            if (anchorEntity != null)
+            {
+                anchorTypeName = anchorEntity.getType().getTypeDefName();
+            }
         }
 
         ConnectionBuilder connectionBuilder = new ConnectionBuilder(connection.getQualifiedName(),
@@ -600,7 +625,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         if (anchorGUID != null)
         {
-            connectionBuilder.setAnchors(userId, anchorGUID, methodName);
+            connectionBuilder.setAnchors(userId, anchorGUID, anchorTypeName, methodName);
         }
 
         String connectionGUID = this.createBeanInRepository(userId,
@@ -618,6 +643,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceGUID,
                                                   externalSourceName,
                                                   anchorGUID,
+                                                  anchorTypeName,
                                                   connectionGUID,
                                                   connection.getEndpoint(),
                                                   connection.getConnectorType(),
@@ -706,11 +732,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         String                   connectionTypeName  = OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
         List<EmbeddedConnection> embeddedConnections = null;
 
-        if (connection instanceof VirtualConnection)
+        if (connection instanceof VirtualConnection virtualConnection)
         {
             connectionTypeName = OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME;
-
-            VirtualConnection  virtualConnection = (VirtualConnection)connection;
 
             embeddedConnections = virtualConnection.getEmbeddedConnections();
         }
@@ -744,6 +768,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                               externalSourceGUID,
                                               externalSourceName,
                                               anchorGUID,
+                                              null,
                                               existingConnectionGUID,
                                               connection.getEndpoint(),
                                               connection.getConnectorType(),
@@ -1207,7 +1232,18 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         if (assetGUID != null)
         {
-            builder.setAnchors(userId, assetGUID, methodName);
+            EntityDetail  assetEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                          assetGUID,
+                                                                          assetGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+            if (assetEntity != null)
+            {
+                builder.setAnchors(userId, assetGUID, assetEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         String connectionGUID = this.createBeanInRepository(userId,
@@ -1848,6 +1884,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter for assetGUID
+
      * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connectionGUID unique identifier of the  connection
      * @param connectionGUIDParameterName parameter for connectionGUID
@@ -1904,15 +1941,28 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   effectiveTime,
                                   methodName);
 
-        this.addAnchorsClassification(userId,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                      assetGUID,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
+        EntityDetail  assetEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                      assetGUID,
+                                                                      assetGUIDParameterName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      methodName);
+
+        if (assetEntity != null)
+        {
+            this.addAnchorsClassification(userId,
+                                          connectionGUID,
+                                          connectionGUIDParameterName,
+                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                          assetGUID,
+                                          assetEntity.getType().getTypeDefName(),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+        }
     }
 
 

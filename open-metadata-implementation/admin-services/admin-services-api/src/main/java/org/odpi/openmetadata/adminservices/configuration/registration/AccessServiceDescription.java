@@ -15,7 +15,7 @@ public enum AccessServiceDescription implements Serializable
      * Search and understand your assets.
      */
     ASSET_CATALOG_OMAS               (200,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Asset Catalog",
                                       "Asset Catalog OMAS",
                                       "asset-catalog",
@@ -236,7 +236,7 @@ public enum AccessServiceDescription implements Serializable
      * Support glossary terms visualization.
      */
     GLOSSARY_VIEW_OMAS               (218,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Glossary View",
                                       "Glossary View OMAS",
                                       "glossary-view",
@@ -249,7 +249,7 @@ public enum AccessServiceDescription implements Serializable
      * Set up an operational governance engine.
      */
     GOVERNANCE_ENGINE_OMAS           (219,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Governance Engine",
                                       "Governance Engine OMAS",
                                       "governance-engine",

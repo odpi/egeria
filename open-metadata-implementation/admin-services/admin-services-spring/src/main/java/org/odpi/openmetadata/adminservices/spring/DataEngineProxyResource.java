@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerDataEngineProxyService;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
@@ -10,8 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * DataEngineProxyResource provides the API for configuring a data engine proxy in an OMAG
- * server.
+ * DataEngineProxyResource provides the API for configuring a data engine proxy in an OMAG server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/data-engine-proxy-service")
@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.*;
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria-project.org/guides/admin/servers/"))
 
-public class DataEngineProxyResource {
-
+public class DataEngineProxyResource
+{
     private final OMAGServerDataEngineProxyService adminAPI = new OMAGServerDataEngineProxyService();
 
     /**
-     * Store the provided Data Engine Proxy configuration
+     * Store the provided Data Engine Proxy configuration.
      *
      * @param userId                user that is issuing the request
      * @param serverName            local server name
@@ -37,12 +37,19 @@ public class DataEngineProxyResource {
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
     @PostMapping(path = "/configuration")
+
+    @Operation(summary="setDataEngineProxyConfig",
+               description="Store the provided Data Engine Proxy configuration.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/data-engine-proxy/"))
+
     public VoidResponse setDataEngineProxyConfig(@PathVariable String                userId,
                                                  @PathVariable String                serverName,
                                                  @RequestBody  DataEngineProxyConfig dataEngineProxyConfig)
     {
         return adminAPI.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig);
     }
+
 
     /**
      * Remove this Data Engine Proxy from the server configuration.
@@ -52,10 +59,15 @@ public class DataEngineProxyResource {
      * @return void response
      */
     @DeleteMapping(path = "")
+
+    @Operation(summary="deleteDataEngineProxy",
+               description="Remove this Data Engine Proxy from the server configuration.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/data-engine-proxy/"))
+
     public VoidResponse deleteDataEngineProxy(@PathVariable String userId, 
                                               @PathVariable String serverName)
     {
         return adminAPI.deleteDataEngineProxy(userId, serverName);
     }
-
 }

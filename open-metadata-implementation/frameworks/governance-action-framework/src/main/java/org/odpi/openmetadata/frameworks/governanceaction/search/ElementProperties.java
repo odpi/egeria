@@ -199,6 +199,29 @@ public class ElementProperties
 
 
     /**
+     * Return all the properties as a string map.
+     *
+     * @return map of property name to property value as string.
+     */
+    public Map<String, String> getPropertiesAsStrings()
+    {
+        if ((propertyValueMap != null) && (! propertyValueMap.isEmpty()))
+        {
+            Map<String, String> stringStringMap = new HashMap<>();
+
+            for (String propertyName : propertyValueMap.keySet())
+            {
+                stringStringMap.put(propertyName, propertyValueMap.get(propertyName).valueAsString());
+            }
+
+            return stringStringMap;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.

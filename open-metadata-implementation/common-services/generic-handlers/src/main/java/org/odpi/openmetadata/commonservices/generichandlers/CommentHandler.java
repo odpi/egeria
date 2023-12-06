@@ -216,6 +216,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
     {
         final String textParameter = "commentText";
         final String commentGUIDParameter = "commentGUID";
+        final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
@@ -239,29 +240,15 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                     serviceName,
                                                     serverName);
 
-        EntityDetail parentEntity = this.getEntityFromRepository(userId,
-                                                                 parentGUID,
-                                                                 parentGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 supportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
-
-        String parentAnchorGUID = anchorGUID;
-
-        if (parentEntity != null)
-        {
-            parentAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
-        }
-
-        if (parentAnchorGUID != null)
-        {
-            builder.setAnchors(userId, parentAnchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 

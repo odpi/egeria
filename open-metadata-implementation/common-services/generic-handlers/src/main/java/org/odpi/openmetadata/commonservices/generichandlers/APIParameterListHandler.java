@@ -190,7 +190,15 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
-        builder.setAnchors(userId, apiOperationGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    apiOperationGUID,
+                                    apiOperationGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String apiParameterListGUID = this.createBeanInRepository(userId,
                                                                   externalSourceGUID,

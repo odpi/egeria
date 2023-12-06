@@ -2436,7 +2436,15 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                                serverName);
                     columnCount ++;
 
-                    schemaAttributeBuilder.setAnchors(userId, fileAssetGUID, methodName);
+                    schemaAttributeHandler.addAnchorGUIDToBuilder(userId,
+                                                                  fileAssetGUID,
+                                                                  fileAssetGUIDParameterName,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
+                                                                  schemaAttributeHandler.getSupportedZones(),
+                                                                  schemaAttributeBuilder,
+                                                                  methodName);
 
                     SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(columnQualifiedName + ":columnType",
                                                                                 OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID,

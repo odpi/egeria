@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.EventBusConfigResponse;
@@ -34,9 +35,7 @@ public class ConfigDefaultsResource
      * Set up the default root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
-     *
      * The default value is "localhost:9443".
-     *
      * ServerURLRoot is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
      *
@@ -49,6 +48,17 @@ public class ConfigDefaultsResource
      */
     @Deprecated
     @PostMapping(path = "/server-url-root")
+
+    @Operation(summary="setServerURLRoot",
+               description="Set up the default root URL for this server that is used to construct full URL paths to calls for" +
+                                   " this server's REST interfaces.  It is a value that is sent to other servers to allow" +
+                                   " them to call this server." +
+                                   " The default value is \"localhost:9443\"." +
+                                   " ServerURLRoot is used as a default value during the configuration of the server's subsystems." +
+                                   " If it is updated after a subsystem is configured then the new value is ignored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse setServerURLRoot(@PathVariable String userId,
                                          @PathVariable String serverName,
                                          @RequestParam String url)
@@ -61,9 +71,7 @@ public class ConfigDefaultsResource
      * Set up the default root URL for this server's platform that is used to construct full URL paths to calls for
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
-     *
      * The default value is "https://localhost:9443".
-     *
      * ServerRootURL is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
      *
@@ -75,6 +83,17 @@ public class ConfigDefaultsResource
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
     @PostMapping(path = "/server-url-root-for-caller")
+
+    @Operation(summary="setServerRootURL",
+               description="Set up the default root URL for this server that is used to construct full URL paths to calls for" +
+                                   " this server's REST interfaces.  It is a value that is sent to other servers to allow" +
+                                   " them to call this server." +
+                                   " The default value is \"https://localhost:9443\"." +
+                                   " ServerURLRoot is used as a default value during the configuration of the server's subsystems." +
+                                   " If it is updated after a subsystem is configured then the new value is ignored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse setServerRootURL(@PathVariable String         userId,
                                          @PathVariable String         serverName,
                                          @RequestBody  URLRequestBody requestBody)
@@ -87,7 +106,6 @@ public class ConfigDefaultsResource
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
      * be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
      * possibly the local repository's event mapper.
-     *
      * When the event bus is configured, it is used only on future configuration.  It does not effect
      * existing configuration.
      *
@@ -102,6 +120,16 @@ public class ConfigDefaultsResource
      * OMAGInvalidParameterException invalid serverName or serviceMode parameter.
      */
     @PostMapping(path = "/event-bus")
+
+    @Operation(summary="setEventBus",
+               description="Set up the default event bus for embedding in event-driven connector.   The resulting connector will" +
+                                   " be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and" +
+                                   " possibly the local repository's event mapper." +
+                                   " When the event bus is configured, it is used only on future configuration.  It does not effect" +
+                                   " existing configuration.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse setEventBus(@PathVariable                   String              userId,
                                     @PathVariable                   String              serverName,
                                     @RequestParam(required = false) String              connectorProvider,
@@ -123,6 +151,12 @@ public class ConfigDefaultsResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @GetMapping(path = "/event-bus")
+
+    @Operation(summary="getEventBus",
+               description="Return the current configuration for the event bus.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public EventBusConfigResponse getEventBus(@PathVariable String userId,
                                               @PathVariable String serverName)
     {
@@ -132,6 +166,7 @@ public class ConfigDefaultsResource
 
     /**
      * Delete the current configuration for the event bus.
+     * This does not impact that existing configuration for the server, only future configuration requests.
      *
      * @param userId  user that is issuing the request.
      * @param serverName local server name.
@@ -141,6 +176,12 @@ public class ConfigDefaultsResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @DeleteMapping(path = "/event-bus")
+
+    @Operation(summary="deleteEventBus",
+               description="Delete the current configuration for the event bus.  This does not impact that existing configuration for the server, only future configuration requests.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse deleteEventBus(@PathVariable String userId,
                                        @PathVariable String serverName)
     {

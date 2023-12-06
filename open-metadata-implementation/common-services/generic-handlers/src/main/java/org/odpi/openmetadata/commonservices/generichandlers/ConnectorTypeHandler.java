@@ -338,6 +338,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                              UserNotAuthorizedException
     {
         final String nameParameter = "qualifiedName";
+        final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
@@ -378,10 +379,15 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
-        if (anchorGUID != null)
-        {
-            builder.setAnchors(userId, anchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 

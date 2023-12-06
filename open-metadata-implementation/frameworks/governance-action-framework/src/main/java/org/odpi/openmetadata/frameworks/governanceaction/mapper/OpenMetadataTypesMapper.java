@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworkservices.gaf.client.converters;
+package org.odpi.openmetadata.frameworks.governanceaction.mapper;
 
 /**
- * OpenMetadataTypesMapper provides property name mapping for the generic builder, handler and converter.
- * It includes identifiers for all the types that need specialist processing at this level in the stack
+ * OpenMetadataTypesMapper provides property name mapping for the open metadata types.
+ * It includes identifiers for all the types.
  */
 public class OpenMetadataTypesMapper
 {
@@ -1241,6 +1241,35 @@ public class OpenMetadataTypesMapper
     public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID           = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
     public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME           = "TermRelationshipStatus";     /* from Area 3 */
 
+    public static final String RELATED_TERM_RELATIONSHIP_GUID            = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
+    public static final String RELATED_TERM_RELATIONSHIP_NAME            = "RelatedTerm";
+
+    public static final String SYNONYM_RELATIONSHIP_GUID            = "74f4094d-dba2-4ad9-874e-d422b69947e2";
+    public static final String SYNONYM_RELATIONSHIP_NAME            = "Synonym";
+
+    public static final String ANTONYM_RELATIONSHIP_GUID            = "ea5e126a-a8fa-4a43-bcfa-309a98aa0185";
+    public static final String ANTONYM_RELATIONSHIP_NAME            = "Antonym";
+
+    public static final String PREFERRED_TERM_RELATIONSHIP_GUID     = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
+    public static final String PREFERRED_TERM_RELATIONSHIP_NAME     = "PreferredTerm";
+
+    public static final String REPLACEMENT_TERM_RELATIONSHIP_GUID   = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
+    public static final String REPLACEMENT_TERM_RELATIONSHIP_NAME   = "ReplacementTerm";
+
+    public static final String TRANSLATION_RELATIONSHIP_GUID        = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
+    public static final String TRANSLATION_RELATIONSHIP_NAME        = "Translation";
+
+    public static final String ISA_RELATIONSHIP_GUID                = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
+    public static final String ISA_RELATIONSHIP_NAME                = "ISARelationship";
+
+    public static final String VALID_VALUE_RELATIONSHIP_GUID        = "707a156b-e579-4482-89a5-de5889da1971";
+    public static final String VALID_VALUE_RELATIONSHIP_NAME        = "ValidValue";
+
+    public static final String USED_IN_CONTEXT_RELATIONSHIP_GUID    = "2dc524d2-e29f-4186-9081-72ea956c75de";
+    public static final String USED_IN_CONTEXT_RELATIONSHIP_NAME     = "UsedInContext";
+
+
+
     public static final String TERM_ANCHOR_TYPE_GUID                             = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     public static final String TERM_ANCHOR_TYPE_NAME                             = "TermAnchor";     /* from Area 3 */
 
@@ -1282,6 +1311,15 @@ public class OpenMetadataTypesMapper
     public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID        = "3d1e4389-27de-44fa-8df4-d57bfaf809ea";
     public static final String OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME        = "ObjectIdentifier";   /* from Area 3 */
     /* GlossaryTerm */
+
+    public static final String TERM_HAS_A_RELATIONSHIP_GUID                      = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
+    public static final String TERM_HAS_A_RELATIONSHIP_NAME                      = "TermHASARelationship";
+
+    public static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID               = "71f83296-2007-46a5-a4c7-919a7c4a12f5";
+    public static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME               = "TermISATYPEOFRelationship";
+
+    public static final String TERM_TYPED_BY_RELATIONSHIP_GUID                   = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
+    public static final String TERM_TYPED_BY_RELATIONSHIP_NAME                   = "TermTYPEDBYRelationship";
 
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_GUID         = "43be51a9-2d19-4044-b399-3ba36af10929";
     public static final String GLOSSARY_PROJECT_CLASSIFICATION_TYPE_NAME         = "GlossaryProject";   /* from Area 3 */

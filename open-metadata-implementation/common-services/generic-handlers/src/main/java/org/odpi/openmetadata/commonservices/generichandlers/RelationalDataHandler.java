@@ -2705,7 +2705,15 @@ public class RelationalDataHandler<DATABASE,
                                                                                    serviceName,
                                                                                    serverName);
 
-        schemaAttributeBuilder.setAnchors(userId, databaseSchemaTypeGUID, methodName);
+        databaseTableHandler.addAnchorGUIDToBuilder(userId,
+                                                    databaseSchemaTypeGUID,
+                                                    schemaTypeGUIDParameterName,
+                                                    false,
+                                                    false,
+                                                    effectiveTime,
+                                                    databaseTableHandler.getSupportedZones(),
+                                                    schemaAttributeBuilder,
+                                                    methodName);
 
         SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
                                                                     OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
@@ -2829,7 +2837,15 @@ public class RelationalDataHandler<DATABASE,
                                                                         serviceName,
                                                                         serverName);
 
-            builder.setAnchors(userId, databaseAssetGUID, methodName);
+            databaseTableHandler.addAnchorGUIDToBuilder(userId,
+                                                        databaseAssetGUID,
+                                                        parentElementGUIDParameterName,
+                                                        false,
+                                                        false,
+                                                        effectiveTime,
+                                                        databaseTableHandler.getSupportedZones(),
+                                                        builder,
+                                                        methodName);
 
             String databaseTableGUID = databaseTableHandler.createBeanFromTemplate(userId,
                                                                                    databaseManagerGUID,
@@ -3512,7 +3528,15 @@ public class RelationalDataHandler<DATABASE,
                                                                                    serviceName,
                                                                                    serverName);
 
-        schemaAttributeBuilder.setAnchors(userId, databaseSchemaTypeGUID, methodName);
+        databaseTableHandler.addAnchorGUIDToBuilder(userId,
+                                                    databaseSchemaTypeGUID,
+                                                    schemaTypeGUIDParameterName,
+                                                    false,
+                                                    false,
+                                                    effectiveTime,
+                                                    databaseTableHandler.getSupportedZones(),
+                                                    schemaAttributeBuilder,
+                                                    methodName);
 
         SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
                                                                     OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
@@ -4242,10 +4266,11 @@ public class RelationalDataHandler<DATABASE,
             /*
              * If the database table is set up with an anchor then this is propagated to the column
              */
-            String anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
-            if (anchorGUID != null)
+            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers =
+                    databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+            if (anchorIdentifiers != null)
             {
-                schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
+                schemaAttributeBuilder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
             }
 
             /*
@@ -4518,11 +4543,11 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
 
-        String anchorGUID = null;
-        String parentTypeName = null;
-        String parentAttachmentTypeGUID = null;
-        String parentAttachmentTypeName = null;
-        String parentGUID = null;
+        OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers  = null;
+        String                                          parentTypeName = null;
+        String                                          parentAttachmentTypeGUID = null;
+        String                                          parentAttachmentTypeName = null;
+        String                                          parentGUID = null;
 
         /*
          * Retrieve and validate the table that this column is for
@@ -4544,7 +4569,7 @@ public class RelationalDataHandler<DATABASE,
             /*
              * If the database table is set up with an anchor then this is propagated to the column
              */
-            anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
 
             /*
              * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
@@ -4611,9 +4636,9 @@ public class RelationalDataHandler<DATABASE,
                                                                     serviceName,
                                                                     serverName);
 
-        if (anchorGUID != null)
+        if (anchorIdentifiers != null)
         {
-            builder.setAnchors(userId, anchorGUID, methodName);
+            builder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
         }
 
         /*

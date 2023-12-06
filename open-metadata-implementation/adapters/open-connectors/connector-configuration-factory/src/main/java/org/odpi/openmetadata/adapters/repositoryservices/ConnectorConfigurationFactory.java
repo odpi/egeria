@@ -59,6 +59,7 @@ public class ConnectorConfigurationFactory
     private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
     private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
     private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
     private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
     private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
     private static final String OMRSREST_REPOSITORY_CONNECTOR_PROVIDER                     = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
@@ -392,6 +393,117 @@ public class ConnectorConfigurationFactory
 
         connection.setDisplayName("Local Graph Repository");
         connection.setConnectorType(getConnectorType(GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
+        connection.setConfigurationProperties(storageProperties);
+
+        return connection;
+    }
+
+
+    /**
+     * Return the local XTDB repository's connection for an in memory repository.  This is using the XTDBOMRSRepositoryConnector.
+     * Note there is no endpoint defined.
+     **
+     * @return Connection object
+     */
+    public Connection getXTDBInMemLocalRepositoryLocalConnection()
+    {
+        Connection connection = new Connection();
+
+        connection.setDisplayName("Local In Memory XTDB Repository");
+        connection.setConnectorType(getConnectorType(XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
+
+        return connection;
+    }
+
+
+
+    /**
+     * Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
+     * Note there is no endpoint defined.
+     *
+     * "configurationProperties": {
+     *     "xtdbConfig": {
+     *         "xtdb.lucene/lucene-store": { "db-dir": "data/servers/" + serverName + "/xtdb/lucene" },
+     *         "xtdb/index-store": { "kv-store": { "xtdb/module": "xtdb.rocksdb/->kv-store",
+     *                                             "db-dir"     : "data/servers/" + serverName + "/xtdb/rdb-index" } },
+     *         "xtdb/document-store": { "kv-store": { "xtdb/module" : "xtdb.rocksdb/->kv-store",
+     *                                                "db-dir"      : "data/servers/" + serverName + "/xtdb/rdb-docs" } },
+     *         "xtdb/tx-log": { "kv-store": { "xtdb/module" : "xtdb.rocksdb/->kv-store",
+     *                                        "db-dir"      : "data/servers/" + serverName + "/xtdb/rdb-tx" } }
+     *     }
+     *   }
+     *
+     * @return Connection object
+     */
+    public Connection getXTDBKVLocalRepositoryLocalConnection(String serverName)
+    {
+        Map<String, Object> luceneProperties = new HashMap<>();
+
+        luceneProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/lucene");
+
+        Map<String, Object> indexStoreKVProperties = new HashMap<>();
+
+        indexStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
+        indexStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-index");
+
+        Map<String, Object> indexStoreProperties = new HashMap<>();
+
+        indexStoreProperties.put("kv-store", indexStoreKVProperties);
+
+        Map<String, Object> documentStoreKVProperties = new HashMap<>();
+
+        documentStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
+        documentStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-docs");
+
+        Map<String, Object> documentStoreProperties = new HashMap<>();
+
+        documentStoreProperties.put("kv-store", documentStoreKVProperties);
+
+        Map<String, Object> txLogKVProperties = new HashMap<>();
+
+        txLogKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
+        txLogKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-tx");
+
+        Map<String, Object> txLogProperties = new HashMap<>();
+
+        txLogProperties.put("kv-store", txLogKVProperties);
+
+        Map<String, Object> xtdbConfigProperties = new HashMap<>();
+
+        xtdbConfigProperties.put("xtdb.lucene/lucene-store", luceneProperties);
+        xtdbConfigProperties.put("xtdb/index-store", indexStoreProperties);
+        xtdbConfigProperties.put("xtdb/document-store", documentStoreProperties);
+        xtdbConfigProperties.put("xtdb/tx-log", txLogProperties);
+
+        Map<String, Object> storageProperties = new HashMap<>();
+
+        storageProperties.put("xtdbConfig", xtdbConfigProperties);
+
+        Connection connection = new Connection();
+
+        connection.setDisplayName("Local KV XTDB Repository");
+        connection.setConnectorType(getConnectorType(XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
+        connection.setConfigurationProperties(storageProperties);
+
+        return connection;
+    }
+
+
+
+    /**
+     * Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
+     * Note there is no endpoint defined.
+     *
+     * @param storageProperties  properties used to configure Egeria XTDB DB
+     *
+     * @return Connection object
+     */
+    public Connection getXTDBLocalRepositoryLocalConnection(Map<String, Object> storageProperties)
+    {
+        Connection connection = new Connection();
+
+        connection.setDisplayName("Local XTDB Repository");
+        connection.setConnectorType(getConnectorType(XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
         connection.setConfigurationProperties(storageProperties);
 
         return connection;

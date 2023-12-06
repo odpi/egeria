@@ -144,10 +144,15 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        if (profileGUID != null)
-        {
-            builder.setAnchors(userId, profileGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    profileGUID,
+                                    profileGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String userIdentityGUID = this.createBeanInRepository(userId,
                                                               externalSourceGUID,

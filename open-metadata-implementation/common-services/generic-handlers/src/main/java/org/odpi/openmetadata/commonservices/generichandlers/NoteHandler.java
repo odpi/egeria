@@ -147,6 +147,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
     {
         final String textParameter = "text";
         final String noteGUIDParameter = "noteGUID";
+        final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(noteLogGUID, noteLogGUIDParameterName, methodName);
@@ -164,29 +165,15 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                               serviceName,
                                               serverName);
 
-        EntityDetail parentEntity = this.getEntityFromRepository(userId,
-                                                                 noteLogGUID,
-                                                                 noteLogGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 supportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
-
-        String parentAnchorGUID = anchorGUID;
-
-        if (parentEntity != null)
-        {
-            parentAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
-        }
-
-        if (parentAnchorGUID != null)
-        {
-            builder.setAnchors(userId, parentAnchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 

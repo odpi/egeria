@@ -5478,10 +5478,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                /*
-                 * No property facet exists - so create one.
-                 */
-                builder.setAnchors(userId, referenceableGUID, methodName);
+                this.addAnchorGUIDToBuilder(userId,
+                                            referenceableGUID,
+                                            referenceableGUIDParameter,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            supportedZones,
+                                            builder,
+                                            methodName);
 
                 String propertyFacetGUID = createBeanInRepository(userId,
                                                                   null,
@@ -5516,6 +5521,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      null,
                                      effectiveTime,
                                      methodName);
+
             }
         }
         else

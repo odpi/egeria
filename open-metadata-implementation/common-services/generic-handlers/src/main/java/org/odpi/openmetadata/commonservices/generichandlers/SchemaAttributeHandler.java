@@ -297,10 +297,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             /*
              * If the parent is set up with an anchor then this is propagated to the schema attribute
              */
-            String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
-            if (anchorGUID != null)
+            AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
+            if (anchorIdentifiers != null)
             {
-                schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
+                schemaAttributeBuilder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
             }
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
 

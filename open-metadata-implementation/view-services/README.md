@@ -12,6 +12,14 @@ The Open Metadata View Services (OMVS) provide task oriented, domain-specific se
 
 The view services are as follows:
 
+* **[asset-catalog](asset-catalog)** - search for assets.
+
+  The Asset Catalog OMVS provides search and query capabilities for tools and applications to support an asset catalog function. It supports search requests for assets with specific characteristics and returns summaries of the matching assets, plus methods to allow drill-down into the details of a specific asset to related metadata.
+
+* **[collection-manager](collection-manager)** - manage collections of assets and other elements.
+
+  The Collection Manager OMVS provides the REST APIs to create collections of asset and other elements such as glossary terms or policies.  The collections can be nested (like folders in a file system) and they can be classified to describe the type of collection.  For example, one type of classification for a collection is a *DigitalProduct* that allows the collections of assets and other related material to describe data and or services for a specific consumer or purpose.
+
 * **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
 
   The My Profile OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about themselves and their network as well as set up and use personalized collections of metadata elements.

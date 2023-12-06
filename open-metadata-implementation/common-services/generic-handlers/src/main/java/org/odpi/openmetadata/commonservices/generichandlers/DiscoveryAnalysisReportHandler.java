@@ -159,7 +159,15 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
 
         if (assetGUID != null)
         {
-            builder.setAnchors(userId, assetGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        assetGUID,
+                                        assetGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
         }
 
         builder.setEffectivityDates(effectiveFrom,effectiveTo);

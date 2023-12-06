@@ -709,6 +709,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         final String qualifiedNameParameterName  = "qualifiedName";
         final String engineNameParameterName     = "governanceEngineName";
         final String requestTypeParameterName    = "requestType";
+        final String anchorGUIDParameterName     = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -749,10 +750,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        if (anchorGUID != null)
-        {
-            builder.setAnchors(userId, anchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameterName,
+                                    false,
+                                    false,
+                                    null,
+                                    serviceSupportedZones,
+                                    builder,
+                                    methodName);
 
         String engineActionGUID = this.createBeanInRepository(userId,
                                                                   null,
@@ -1734,7 +1740,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                      * The anchor GUID is set if this is part of a governance action process.  It points to the first engine action entity
                      * created when the governance action process was initiated.
                      */
-                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
 
                     String processName = repositoryHelper.getStringProperty(serviceName,
                                                                             OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
@@ -1743,7 +1749,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     this.initiateNextEngineActions(userId,
                                                    engineActionGUID,
                                                    governanceActionProcessStepGUID,
-                                                   anchorGUID,
+                                                   anchorIdentifiers.anchorGUID,
                                                    processName,
                                                    outputGuards,
                                                    newActionTargets,

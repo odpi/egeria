@@ -236,7 +236,15 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                               serviceName,
                                                                               serverName);
 
-            builder.setAnchors(userId, profileGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        profileGUID,
+                                        profileGUIDParameterName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
 
             String contributionRecordGUID = this.createBeanInRepository(userId,
                                                                         null,

@@ -24,9 +24,9 @@ public class FFDCRESTClientBase
     protected String               serverPlatformURLRoot;  /* Initialized in constructor */
     protected AuditLog             auditLog = null;        /* Initialized in constructor */
 
-    protected RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
+    protected final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
-    private RESTClientConnector    clientConnector;        /* Initialized in constructor */
+    private final RESTClientConnector clientConnector;        /* Initialized in constructor */
 
 
     /**

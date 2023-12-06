@@ -6,12 +6,9 @@ package org.odpi.openmetadata.viewservices.glossaryworkflow.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The GlossaryWorkflowAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -42,7 +39,7 @@ public enum GlossaryWorkflowAuditCode implements AuditLogMessageSet
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is initialized",
                          "The Glossary Workflow OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
-                         "No action is required.  This is part of the normal operation of the Glossary Workflow Open Metadata View Service. Once the OMRS is configured and the server is started, Glossary Workflowview service requests can be accepted."),
+                         "No action is required.  This is part of the normal operation of the Glossary Workflow Open Metadata View Service. Once the OMRS is configured and the server is started, Glossary Workflow view service requests can be accepted."),
 
     /**
      * OMVS-GLOSSARY-WORKFLOW-0003 The Glossary Workflow Open Metadata View Service (OMVS) is shutting down
@@ -81,24 +78,23 @@ public enum GlossaryWorkflowAuditCode implements AuditLogMessageSet
                          "This is probably a logic error. Review the stack trace to identify where the error occurred and work to resolve the cause.")
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
-    private static final Logger log = LoggerFactory.getLogger(GlossaryWorkflowAuditCode.class);
 
 
     /**
      * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
      * OMRSAuditCode above.   For example:
-     *
+     * <br><br>
      *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique identifier for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

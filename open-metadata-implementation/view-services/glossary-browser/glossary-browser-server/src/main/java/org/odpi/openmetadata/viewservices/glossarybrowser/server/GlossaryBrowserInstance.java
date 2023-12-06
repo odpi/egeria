@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
@@ -22,6 +23,7 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
     private final CollaborationManagementClient collaborationManagementClient;
     private final GlossaryManagementClient      glossaryManagementClient;
     private final StewardshipManagementClient   stewardshipManagementClient;
+    private final OpenMetadataStoreClient       openMetadataStoreClient;
 
     /**
      * Set up the Glossary Browser OMVS instance*
@@ -51,6 +53,7 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
         collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog);
         glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog);
         stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog);
+        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL);
     }
 
 
@@ -85,5 +88,16 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
     public StewardshipManagementClient getStewardshipManagementClient()
     {
         return stewardshipManagementClient;
+    }
+
+
+    /**
+     * Return the open metadata store client.  This client is from Asset Manager OMAS and is for accessing all types of metadata.
+     *
+     * @return client
+     */
+    public OpenMetadataStoreClient getOpenMetadataStoreClient()
+    {
+        return openMetadataStoreClient;
     }
 }

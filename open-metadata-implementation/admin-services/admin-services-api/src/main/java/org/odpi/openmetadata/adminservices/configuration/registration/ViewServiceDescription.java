@@ -98,6 +98,28 @@ public enum ViewServiceDescription implements Serializable
                       "my-profile",
                       "Manage information about the logged on user as well as their preferences.",
                       "https://egeria-project.org/services/omvs/my-profile/overview/"),
+
+    /**
+     * Search and understand your assets.
+     */
+    ASSET_CATALOG (808,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Asset Catalog",
+                   "Asset Catalog OMVS",
+                   "asset-catalog",
+                   "Search and understand your assets.",
+                   "https://egeria-project.org/services/omvs/asset-catalog/overview/"),
+
+    /**
+     * Build collections of asset and other metadata.
+     */
+    COLLECTION_MANAGER  (809,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         "Collection Manager",
+                         "Collection Manager OMVS",
+                         "collection-manager",
+                         "Build collections of asset and other metadata.",
+                         "https://egeria-project.org/services/omvs/collection-manager/overview/"),
     ;
 
     private static final long serialVersionUID = 1L;

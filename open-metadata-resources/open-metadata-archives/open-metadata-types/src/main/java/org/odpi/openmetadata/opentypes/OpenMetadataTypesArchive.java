@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -162,16 +163,60 @@ public class OpenMetadataTypesArchive
         /*
          * Add the type updates
          */
+        update0010BaseModel();
         update0021Collections();
         update0137Actions();
         update0130Projects();
         update0210DataStores();
+        update0380TermInheritance();
         update0461GovernanceEngines();
         add00475ContextEvents();
         update0615SchemaExtraction();
         add0755UltimateSourcesDestinations();
     }
 
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAnchors());
+    }
+
+    private TypeDefPatch updateAnchors()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Anchors";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "anchorTypeName";
+        final String attribute1Description     = "Unique name of the type of the anchor.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -476,6 +521,136 @@ public class OpenMetadataTypesArchive
 
         return classificationDef;
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0380TermInheritance()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateIsATypeOfRelationship());
+        this.archiveBuilder.addRelationshipDef(addTermISATYPEOFRelationship());
+    }
+
+    /**
+     * Deprecate the IsATypeOfRelationship - use TermISATYPEOFRelationship
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecateIsATypeOfRelationship()
+    {
+        final String typeName = "IsATypeOfRelationship";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Defines an inheritance relationship between two spine objects. It provides a type for a Spine Object.
+     * @return RelationshipDef
+     */
+    private RelationshipDef addTermISATYPEOFRelationship()
+    {
+        final String guid            = "71f83296-2007-46a5-a4c7-919a7c4a12f5";
+        final String name            = "TermISATYPEOFRelationship";
+        final String description     = "Defines an inheritance relationship between two spine objects.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "GlossaryTerm";
+        final String                     end1AttributeName            = "inherited";
+        final String                     end1AttributeDescription     = "Inherited (Subtypes) for this object.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2AttributeName            = "inheritedFrom";
+        final String                     end2AttributeDescription     = "Inherited from type (Supertypes) for this object.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Description of the relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "status";
+        final String attribute2Description     = "The status of or confidence in the relationship.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "steward";
+        final String attribute3Description     = "Person responsible for the relationship.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "source";
+        final String attribute4Description     = "Person, organization or automated process that created the relationship.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

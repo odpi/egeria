@@ -143,8 +143,17 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       repositoryHelper,
                                                                       serviceName,
                                                                       serverName);
-        
-        builder.setAnchors(userId, glossaryGUID, methodName);
+
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
+
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         if (rootCategory)
@@ -240,7 +249,15 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
-        builder.setAnchors(userId, glossaryGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    null,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String glossaryCategoryGUID = this.createBeanFromTemplate(userId,
                                                                   externalSourceGUID,
@@ -637,9 +654,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                   effectiveTime,
                                                   methodName);
 
-                        String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                        if (glossaryGUID.equals(anchorGUID))
+                        if (glossaryGUID.equals(anchorIdentifiers.anchorGUID))
                         {
                             matchCount ++;
                             if (matchCount > startFrom)
@@ -875,9 +892,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                   effectiveTime,
                                                   methodName);
 
-                        String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                        if (glossaryGUID.equals(anchorGUID))
+                        if (glossaryGUID.equals(anchorIdentifiers.anchorGUID))
                         {
                             matchCount ++;
                             if (matchCount > startFrom)

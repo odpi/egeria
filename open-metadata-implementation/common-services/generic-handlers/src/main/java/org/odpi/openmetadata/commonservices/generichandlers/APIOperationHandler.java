@@ -178,7 +178,16 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
-        builder.setAnchors(userId, apiGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    apiGUID,
+                                    apiGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
+
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String apiOperationGUID = this.createBeanInRepository(userId,
@@ -849,7 +858,15 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-            builder.setAnchors(userId, apiGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        apiGUID,
+                                        apiGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
 
             apiSchemaTypeGUID = repositoryHandler.createEntity(userId,
                                                                OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_GUID,

@@ -818,10 +818,10 @@ public class PlatformServicesClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<String> getActiveServices(String   userId,
-                                          String   serverName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<String> getActiveServicesForServer(String   userId,
+                                                   String   serverName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "getActiveServices";
         final String serverNameParameter = "serverName";

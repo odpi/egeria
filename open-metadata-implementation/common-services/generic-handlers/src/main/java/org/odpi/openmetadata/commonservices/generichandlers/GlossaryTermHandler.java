@@ -217,7 +217,16 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        builder.setAnchors(userId, glossaryGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
+
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String glossaryTermGUID = this.createBeanInRepository(userId,
@@ -315,7 +324,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        builder.setAnchors(userId, glossaryGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    null,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String glossaryTermGUID = this.createBeanFromTemplate(userId,
                                                               externalSourceGUID,
@@ -2111,9 +2128,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                               effectiveTime,
                                               methodName);
 
-                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorGUID))) &&
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorIdentifiers.anchorGUID))) &&
                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(entity.getStatus()))))
                     {
                         matchCount ++;
@@ -2219,9 +2236,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                               effectiveTime,
                                               methodName);
 
-                    String termAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
+                    AnchorIdentifiers termAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
 
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorGUID))) &&
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorIdentifiers.anchorGUID))) &&
                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
                     {
                         matchCount ++;
@@ -2259,9 +2276,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                             {
                                 if (categoryEntity != null)
                                 {
-                                    String categoryAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(categoryEntity, methodName);
+                                    AnchorIdentifiers categoryAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(categoryEntity, methodName);
 
-                                    if ((glossaryGUID.equals(categoryAnchorGUID)) &&
+                                    if ((glossaryGUID.equals(categoryAnchorIdentifiers.anchorGUID)) &&
                                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
                                     {
                                         matchCount ++;
@@ -2462,6 +2479,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param glossaryGUIDParameterName property supplying the glossaryGUID
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
@@ -2480,6 +2498,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
     public List<B>  getRelatedTerms(String        userId,
                                     String        glossaryGUID,
                                     String        glossaryGUIDParameterName,
+                                    String        relationshipTypeName,
                                     List<Integer> limitResultsByStatus,
                                     int           startFrom,
                                     int           pageSize,
@@ -2490,14 +2509,25 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            relationshipTypeName,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
         if ((limitResultsByStatus == null) || (limitResultsByStatus.isEmpty()))
         {
             return this.getAttachedElements(userId,
                                             glossaryGUID,
                                             glossaryGUIDParameterName,
                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                            null,
-                                            null,
+                                            relationshipTypeGUID,
+                                            relationshipTypeName,
                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,
@@ -2515,8 +2545,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                             glossaryGUID,
                                             glossaryGUIDParameterName,
                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                            null,
-                                            null,
+                                            relationshipTypeGUID,
+                                            relationshipTypeName,
                                             OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,

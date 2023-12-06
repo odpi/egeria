@@ -879,7 +879,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                           serviceName,
                                                                           serverName);
 
-        builder.setAnchors(userId, scopeGUID, methodName);
+        builder.setAnchors(userId, scopeGUID, scopeTypeName, methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
