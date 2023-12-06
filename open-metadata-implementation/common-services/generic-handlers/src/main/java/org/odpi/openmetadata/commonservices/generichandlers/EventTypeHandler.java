@@ -178,7 +178,15 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                           serviceName,
                                                           serverName);
 
-        builder.setAnchors(userId, topicGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    topicGUID,
+                                    topicGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String eventTypeGUID = this.createBeanInRepository(userId,
                                                            externalSourceGUID,
@@ -787,7 +795,16 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-            builder.setAnchors(userId, topicGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        topicGUID,
+                                        topicGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
+
             builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
             eventTypeListGUID = repositoryHandler.createEntity(userId,

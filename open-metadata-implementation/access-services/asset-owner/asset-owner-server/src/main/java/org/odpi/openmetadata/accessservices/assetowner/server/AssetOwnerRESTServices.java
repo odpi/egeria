@@ -1265,9 +1265,19 @@ public class AssetOwnerRESTServices
                                                                    serverName,
                                                                    methodName);
 
-        if (assetGUID != null)
+        EntityDetail  assetEntity = handler.getEntityFromRepository(userId,
+                                                                    assetGUID,
+                                                                    assetGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    null,
+                                                                    methodName);
+        if (assetEntity != null)
         {
-            schemaTypeBuilder.setAnchors(userId, assetGUID, methodName);
+            schemaTypeBuilder.setAnchors(userId, assetGUID, assetEntity.getType().getTypeDefName(), methodName);
         }
 
         String schemaTypeGUID = handler.addSchemaType(userId,
@@ -1283,24 +1293,23 @@ public class AssetOwnerRESTServices
 
         if (schemaTypeGUID != null)
         {
-            handler.linkElementToElement(userId,
-                                         null,
-                                         null,
-                                         assetGUID,
-                                         assetGUIDParameterName,
-                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                         schemaTypeGUID,
-                                         schemaTypeGUIDParameterName,
-                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                         false,
-                                         false,
-                                         OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                         OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                         (InstanceProperties) null,
-                                         null,
-                                         null,
-                                         new Date(),
-                                         methodName);
+            handler.uncheckedLinkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  assetGUID,
+                                                  assetGUIDParameterName,
+                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                  schemaTypeGUID,
+                                                  schemaTypeGUIDParameterName,
+                                                  OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                  false,
+                                                  false,
+                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                  null,
+                                                  new Date(),
+                                                  methodName);
         }
 
         return schemaTypeGUID;
@@ -1383,6 +1392,8 @@ public class AssetOwnerRESTServices
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        final String assetGUIDParameterName = "assetGUID";
+
         SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler =
                 instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
@@ -1423,9 +1434,26 @@ public class AssetOwnerRESTServices
                                                handler.getServiceName(),
                                                serverName);
 
+            String assetTypeName = null;
             if (assetGUID != null)
             {
-                schemaAttributeBuilder.setAnchors(userId, assetGUID, methodName);
+                EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
+                                                                            assetGUID,
+                                                                            assetGUIDParameterName,
+                                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                            null,
+                                                                            null,
+                                                                            false,
+                                                                            false,
+                                                                            new Date(),
+                                                                            methodName);
+
+                if (anchorEntity != null)
+                {
+                    assetTypeName = anchorEntity.getType().getTypeDefName();
+                }
+
+                schemaAttributeBuilder.setAnchors(userId, assetGUID, assetTypeName, methodName);
             }
 
             if (schemaAttribute.getAttributeType() != null)
@@ -1448,7 +1476,10 @@ public class AssetOwnerRESTServices
                                                                                      handler.getServiceName(),
                                                                                      serverName);
 
-                attributeSchemaTypeBuilder.setAnchors(userId, assetGUID, methodName);
+                if (assetGUID != null)
+                {
+                    attributeSchemaTypeBuilder.setAnchors(userId, assetGUID, assetTypeName, methodName);
+                }
                 schemaAttributeBuilder.setSchemaType(userId, attributeSchemaTypeBuilder, methodName);
 
                 final String schemaTypeGUIDParameterName = "schemaTypeGUID";
@@ -1676,6 +1707,7 @@ public class AssetOwnerRESTServices
                                          SchemaTypeProperties requestBody)
     {
         final String methodName = "createSchemaType";
+        final String  anchorGUIDParameterName     = "anchorGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1707,7 +1739,21 @@ public class AssetOwnerRESTServices
 
                 if (anchorGUID != null)
                 {
-                    builder.setAnchors(userId, anchorGUID, methodName);
+                    EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
+                                                                                anchorGUID,
+                                                                                anchorGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                null,
+                                                                                methodName);
+
+                    if (anchorEntity != null)
+                    {
+                        builder.setAnchors(userId, anchorGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                    }
                 }
 
                 response.setGUID(handler.addSchemaType(userId,
@@ -2650,6 +2696,7 @@ public class AssetOwnerRESTServices
                                             List<SchemaAttributeProperties> requestBody)
     {
         final String methodName = "addSchemaAttributes";
+        final String anchorGUIDParameterName     = "assetGUID";
         final String schemaElementGUIDParameterName = "parentGUID";
         final String qualifiedNameParameterName = "qualifiedName";
 
@@ -2675,7 +2722,21 @@ public class AssetOwnerRESTServices
 
                     if (assetGUID != null)
                     {
-                        schemaAttributeBuilder.setAnchors(userId, assetGUID, methodName);
+                        EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
+                                                                                    assetGUID,
+                                                                                    anchorGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    null,
+                                                                                    null,
+                                                                                    false,
+                                                                                    false,
+                                                                                    null,
+                                                                                    methodName);
+
+                        if (anchorEntity != null)
+                        {
+                            schemaAttributeBuilder.setAnchors(userId, assetGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                        }
                     }
 
                     handler.createNestedSchemaAttribute(userId,
@@ -2731,7 +2792,8 @@ public class AssetOwnerRESTServices
                                            String                     parentGUID,
                                            SchemaAttributeProperties  requestBody)
     {
-        final String   methodName = "addSchemaAttribute";
+        final String methodName = "addSchemaAttribute";
+        final String anchorGUIDParameterName     = "assetGUID";
         final String schemaElementGUIDParameterName = "parentGUID";
         final String qualifiedNameParameterName = "qualifiedName";
 
@@ -2755,7 +2817,21 @@ public class AssetOwnerRESTServices
 
                 if (assetGUID != null)
                 {
-                    schemaAttributeBuilder.setAnchors(userId, assetGUID, methodName);
+                    EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
+                                                                                assetGUID,
+                                                                                anchorGUIDParameterName,
+                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                null,
+                                                                                methodName);
+
+                    if (anchorEntity != null)
+                    {
+                        schemaAttributeBuilder.setAnchors(userId, assetGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                    }
                 }
 
                 response.setGUID(handler.createNestedSchemaAttribute(userId,

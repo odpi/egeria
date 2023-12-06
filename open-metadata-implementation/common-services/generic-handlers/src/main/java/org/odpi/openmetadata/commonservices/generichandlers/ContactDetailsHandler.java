@@ -171,10 +171,15 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   serviceName,
                                                                   serverName);
 
-        if (profileGUID != null)
-        {
-            builder.setAnchors(userId, profileGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    profileGUID,
+                                    profileGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 

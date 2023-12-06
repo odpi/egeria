@@ -228,6 +228,7 @@ public class OpenIntegrationRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
+     * @param anchorTypeName typeName of the anchor for the integration report
      * @param properties properties of the report
      *
      * @return void or
@@ -238,6 +239,7 @@ public class OpenIntegrationRESTServices
     public VoidResponse publishIntegrationReport(String                      serverName,
                                                  String                      userId,
                                                  String                      anchorGUID,
+                                                 String                      anchorTypeName,
                                                  IntegrationReportProperties properties)
     {
         final String methodName = "publishIntegrationReport";
@@ -252,7 +254,7 @@ public class OpenIntegrationRESTServices
             OpenIntegrationHandler handler = instanceHandler.getOpenIntegrationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
-            handler.publishIntegrationReport(userId, anchorGUID, properties);
+            handler.publishIntegrationReport(userId, anchorGUID, anchorTypeName, properties);
         }
         catch (Exception error)
         {

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The GlossaryWorkflowResource provides the Spring API endpoints of the Glossary Workflow Open Metadata View Service (OMVS).
- * This interface provides an interfaces for Egeria UIs.
+ * This interface provides a service for Egeria UIs.
  */
 
 @RestController

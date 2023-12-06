@@ -84,7 +84,7 @@ public class GlossaryViewOmasBase {
     protected static final String SEMANTIC_ASSIGNMENT_RELATIONSHIP_GUID = "semantic-assignment-relationship-guid";
     protected static final String TERM_HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
     protected static final String TERM_HAS_A_RELATIONSHIP_GUID = "term-has-a-relationship-guid";
-    protected static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOFRelationship";
+    protected static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOfRelationship";
     protected static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID = "term-is-a-type-of-relationship-guid";
     protected static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
     protected static final String TERM_TYPED_BY_RELATIONSHIP_GUID = "term-typed-by-relationship-guid";

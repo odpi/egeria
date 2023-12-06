@@ -3559,6 +3559,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
@@ -3578,6 +3579,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                         String                               assetManagerGUID,
                                                         String                               assetManagerName,
                                                         String                               glossaryTermGUID,
+                                                        String                               relationshipTypeName,
                                                         List<GlossaryTermRelationshipStatus> limitResultsByStatus,
                                                         int                                  startFrom,
                                                         int                                  pageSize,
@@ -3598,7 +3600,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, limitResultsByStatus, effectiveTime),
+                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, relationshipTypeName, limitResultsByStatus, effectiveTime),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryTermGUID,
@@ -3657,7 +3659,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, limitResultsByStatus, effectiveTime),
+                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, null, limitResultsByStatus, effectiveTime),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryCategoryGUID,

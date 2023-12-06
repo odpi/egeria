@@ -53,6 +53,7 @@ public class OpenMetadataAPIMapper
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
     public static final String ANCHOR_GUID_PROPERTY_NAME                         = "anchorGUID";
+    public static final String ANCHOR_TYPE_NAME_PROPERTY_NAME                    = "anchorTypeName";
 
     public static final String LATEST_CHANGE_TARGET_ENUM_TYPE_GUID               = "a0b7d7a0-4af5-4539-9b81-cbef52d8cc5d";
     public static final String LATEST_CHANGE_TARGET_ENUM_TYPE_NAME               = "LatestChangeTarget";

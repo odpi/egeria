@@ -352,6 +352,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
     {
         final String nameParameter       = "qualifiedName";
         final String setParameter        = "setGUID";
+        final String anchorGUIDParameter = "anchorGUID";
         final String definitionParameter = "definitionGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -381,10 +382,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        if (anchorGUID != null)
-        {
-            builder.setAnchors(userId, anchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String definitionGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,

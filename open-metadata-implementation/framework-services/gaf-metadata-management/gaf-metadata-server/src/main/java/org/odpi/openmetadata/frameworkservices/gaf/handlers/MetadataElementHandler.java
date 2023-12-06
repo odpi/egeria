@@ -1357,6 +1357,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         final String elementTypeParameterName  = "metadataElementTypeName";
         final String templateGUIDParameterName = "templateGUID";
+        final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -1386,7 +1387,22 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         if (anchorGUID != null)
         {
-            builder.setAnchors(userId, anchorGUID, methodName);
+            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
+                                                                     anchorGUID,
+                                                                     anchorGUIDParameterName,
+                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+            if (anchorEntity != null)
+            {
+                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         if (initialClassifications != null)

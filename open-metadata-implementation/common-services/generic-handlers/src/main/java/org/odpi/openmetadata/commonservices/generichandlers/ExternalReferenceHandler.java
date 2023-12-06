@@ -4,13 +4,11 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -120,6 +118,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
+        final String anchorGUIDParameterName = "anchorGUID";
+
         String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
 
         if (suppliedTypeName != null)
@@ -149,10 +149,15 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        if (anchorGUID != null)
-        {
-            builder.setAnchors(userId, anchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,

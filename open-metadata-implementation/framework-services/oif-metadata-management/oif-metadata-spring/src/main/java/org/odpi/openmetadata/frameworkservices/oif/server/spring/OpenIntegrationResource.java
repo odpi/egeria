@@ -110,6 +110,7 @@ public class OpenIntegrationResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
+     * @param anchorTypeName typeName of the anchor for the integration report
      * @param properties properties of the report
      *
      * @return void or
@@ -117,14 +118,15 @@ public class OpenIntegrationResource
      *  UserNotAuthorizedException user not authorized to issue this request,
      *  PropertyServerException problem with the metadata server.
      */
-    @PostMapping(path = "/integration-reports/{anchorGUID}/new")
+    @PostMapping(path = "/integration-reports/{anchorGUID}/{anchorTypeName}/new")
 
     public VoidResponse publishIntegrationReport(@PathVariable String                      serverName,
                                                  @PathVariable String                      userId,
                                                  @PathVariable String                      anchorGUID,
+                                                 @PathVariable String                      anchorTypeName,
                                                  @RequestBody  IntegrationReportProperties properties)
     {
-        return restAPI.publishIntegrationReport(serverName, userId, anchorGUID, properties);
+        return restAPI.publishIntegrationReport(serverName, userId, anchorGUID, anchorTypeName, properties);
     }
 
 

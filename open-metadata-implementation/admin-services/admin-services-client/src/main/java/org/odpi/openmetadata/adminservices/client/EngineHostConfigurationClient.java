@@ -419,7 +419,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Clear the configuration for the metadata server that provides the governance engine definitions through the
+     * Clear the configuration for the metadata access server that provides the governance engine definitions through the
      * Governance Engine OMAS.
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
@@ -462,7 +462,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Disable the engine services.  This removes all configuration for the engine host server.
+     * Disable the engine services.  This removes all configuration for the engine services from the engine host server.
      *
      * @param serviceURLMarker engine service name used in URL
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.

@@ -357,6 +357,21 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                        connectorType.getRecognizedAdditionalProperties(),
                                        connectorType.getAdditionalProperties());
 
+        /*
+
+    Text Files: .DOC, .DOCX, .EML, .LOG, .MSG, .ODT, .PAGES, .RTF, .TEX, .TXT, .WPD
+    Data Files: .AAE, .BIN, .CSV, .DAT, .KEY, .MPP, .OBB, .PPT, .PPTX, .RPT, .TAR, .VCF, .XML
+    Audio Files: .AIF, .FLAC, .M3U, .M4A, .MID, .MP3, .OGG, .WAV, .WMA
+    Video Files: .3GP, .ASF, .AVI, .FLV, .M4V, .MOV, .MP4, .MPG, .SRT, .SWF, .TS, .VOB, .WMV
+    3D Image Files: .3DM, .3DS, .BLEND, .DAE, .FBX, .MAX, .OBJ
+    Raster Image Files: .BMP, .DCM, .DDS, .DJVU, .GIF, .HEIC, .JPG, .PNG, .PSD, .TGA, .TIF
+    Vector Image Files: .AI, .CDR, .EMF, .EPS, .PS, .SKETCH, .SVG, .VSDX
+    Page Layout Files: .INDD, .OXPS, .PDF, .PMD, .PUB, .QXP, .XPS
+    Spreadsheet Files: .NUMBERS, .ODS, .XLR, .XLS, .XLSX
+    Database Files: .ACCDB, .CRYPT14, .DB, .MDB, .ODB, .PDB, .SQL, .SQLITE
+    Executable Files: .APP, .BAT, .COM, .EXE, .GADGET, .JAR, .WSF
+
+         */
         archiveHelper.saveGUIDs();
 
         /*

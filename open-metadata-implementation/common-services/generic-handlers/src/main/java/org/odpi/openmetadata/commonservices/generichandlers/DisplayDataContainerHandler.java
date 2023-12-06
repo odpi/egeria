@@ -233,7 +233,15 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                        serviceName,
                                                                                        serverName);
 
-            schemaAttributeBuilder.setAnchors(userId, parentGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        parentGUID,
+                                        parentElementGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        schemaAttributeBuilder,
+                                        methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":containerType",
                                                                         OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
@@ -269,7 +277,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                          vendorProperties,
                                                          forLineage,
                                                          forDuplicateProcessing,
-                                                         effectiveTime, methodName);
+                                                         effectiveTime,
+                                                         methodName);
             }
 
             return dataContainerGUID;
@@ -360,7 +369,15 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                         serviceName,
                                                                         serverName);
 
-            builder.setAnchors(userId, parentGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        parentGUID,
+                                        parentElementGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
 
             String dataContainerGUID = dataContainerHandler.createBeanFromTemplate(userId,
                                                                                    externalSourceGUID,

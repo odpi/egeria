@@ -143,7 +143,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               serviceName,
                                               serverName);
 
-        builder.setAnchors(userId, processGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    processGUID,
+                                    processGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String portGUID = this.createBeanInRepository(userId,
                                                       externalSourceGUID,

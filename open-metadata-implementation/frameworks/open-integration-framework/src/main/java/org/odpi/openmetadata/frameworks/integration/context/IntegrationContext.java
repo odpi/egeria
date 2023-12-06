@@ -240,12 +240,37 @@ public class IntegrationContext
      *
      * @param elementGUID unique identifier of the element
      * @param anchorGUID unique identifier of the associated anchor
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    protected void reportAnchorGUID(String elementGUID, String anchorGUID)
+    protected void reportAnchorGUID(String elementGUID,
+                                    String anchorGUID) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         if (integrationReportWriter != null)
         {
             integrationReportWriter.setAnchor(elementGUID, anchorGUID);
+        }
+    }
+
+
+    /**
+     * Save the relationship between an element and its anchor.  This is called by the methods of the context that
+     * create, update, archive or delete elements.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param anchorGUID unique identifier of the associated anchor
+     * @param anchorTypeName type name of the associated anchor
+     */
+    protected void reportAnchorGUID(String elementGUID,
+                                    String anchorGUID,
+                                    String anchorTypeName)
+    {
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(elementGUID, anchorGUID, anchorTypeName);
         }
     }
 

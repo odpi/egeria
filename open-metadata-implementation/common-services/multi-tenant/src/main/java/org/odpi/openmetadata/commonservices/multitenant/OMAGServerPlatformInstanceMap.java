@@ -127,7 +127,7 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Set up the available access services.
          */
-        if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
+        if (! accessServiceRegistrationList.isEmpty())
         {
             for (AccessServiceRegistrationEntry registration : accessServiceRegistrationList)
             {
@@ -178,7 +178,7 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Set up the available engine services.
          */
-        if ((engineServiceRegistrationList != null) && (! engineServiceRegistrationList.isEmpty()))
+        if (! engineServiceRegistrationList.isEmpty())
         {
             for (EngineServiceRegistrationEntry registration : engineServiceRegistrationList)
             {
@@ -245,7 +245,7 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Set up the available view services.
          */
-        if ((viewServiceRegistrationList != null) && (! viewServiceRegistrationList.isEmpty()))
+        if (! viewServiceRegistrationList.isEmpty())
         {
             for (ViewServiceRegistrationEntry registration : viewServiceRegistrationList)
             {
@@ -272,6 +272,8 @@ public class OMAGServerPlatformInstanceMap
 
         return response;
     }
+
+
     /**
      * Return the list of governance services that are registered (supported) in this OMAG Server Platform
      * and can be configured as part of a governance server.
@@ -294,21 +296,17 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Set up the available governance services.
          */
-        if (governanceServicesDescriptions.length != 0)
+        for (GovernanceServicesDescription registration : governanceServicesDescriptions)
         {
-            for (GovernanceServicesDescription registration : governanceServicesDescriptions)
+            if (registration != null)
             {
-                if (registration != null)
-                {
-                    response.add(getServiceDescription(registration.getServiceCode(),
-                                                       registration.getServiceName(),
-                                                       registration.getServiceDevelopmentStatus(),
-                                                       registration.getServiceURLMarker(),
-                                                       registration.getServiceDescription(),
-                                                       registration.getServiceWiki()));
-                }
+                response.add(getServiceDescription(registration.getServiceCode(),
+                                                   registration.getServiceName(),
+                                                   registration.getServiceDevelopmentStatus(),
+                                                   registration.getServiceURLMarker(),
+                                                   registration.getServiceDescription(),
+                                                   registration.getServiceWiki()));
             }
-
         }
 
         if (response.isEmpty())
@@ -342,19 +340,16 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Set up the available governance services.
          */
-        if (commonServicesDescriptions.length != 0)
+        for (CommonServicesDescription registration : commonServicesDescriptions)
         {
-            for (CommonServicesDescription registration : commonServicesDescriptions)
+            if (registration != null)
             {
-                if (registration != null)
-                {
-                    response.add(getServiceDescription(registration.getServiceCode(),
-                                                       registration.getServiceName(),
-                                                       registration.getServiceDevelopmentStatus(),
-                                                       registration.getServiceURLMarker(),
-                                                       registration.getServiceDescription(),
-                                                       registration.getServiceWiki()));
-                }
+                response.add(getServiceDescription(registration.getServiceCode(),
+                                                   registration.getServiceName(),
+                                                   registration.getServiceDevelopmentStatus(),
+                                                   registration.getServiceURLMarker(),
+                                                   registration.getServiceDescription(),
+                                                   registration.getServiceWiki()));
             }
         }
 
@@ -894,11 +889,11 @@ public class OMAGServerPlatformInstanceMap
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    private static synchronized List<String>   getActiveServiceListForServerOnPlatform(String userId,
-                                                                                       String serverName) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException
+    private static synchronized List<String> getActiveServicesForServerOnPlatform(String userId,
+                                                                                  String serverName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException
     {
-        final String  methodName = "getActiveServiceListForServerOnPlatform";
+        final String  methodName = "getActiveServicesForServerOnPlatform";
 
         OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
@@ -969,15 +964,14 @@ public class OMAGServerPlatformInstanceMap
             try
             {
                 serverInstance.shutdown(methodName);
+                inActiveServerInstanceMap.put(serverName, serverInstance);
+                activeServerInstanceMap.remove(serverName);
             }
             catch (Exception error)
             {
-                throw error;
-            }
-            finally
-            {
                 inActiveServerInstanceMap.put(serverName, serverInstance);
                 activeServerInstanceMap.remove(serverName);
+                throw error;
             }
         }
     }
@@ -1313,10 +1307,10 @@ public class OMAGServerPlatformInstanceMap
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    public List<String>   getActiveServiceListForServer(String  userId,
-                                                        String  serverName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException
+    public List<String> getActiveServicesForServer(String  userId,
+                                                   String  serverName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException
     {
-        return OMAGServerPlatformInstanceMap.getActiveServiceListForServerOnPlatform(userId, serverName);
+        return OMAGServerPlatformInstanceMap.getActiveServicesForServerOnPlatform(userId, serverName);
     }
 }

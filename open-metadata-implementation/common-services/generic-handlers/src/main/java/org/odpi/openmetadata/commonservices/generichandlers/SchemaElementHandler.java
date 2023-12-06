@@ -171,7 +171,15 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-            builder.setAnchors(userId, assetGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        assetGUID,
+                                        assetGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
 
             String schemaTypeGUID = this.createBeanInRepository(userId,
                                                                 externalSourceGUID,

@@ -359,7 +359,7 @@ public class OMAGServerPlatformActiveResource
      * @return server name and list od services running within
      */
     @GetMapping(path = "/servers/{serverName}/services")
-    @Operation( summary = "getActiveServiceListForServer",
+    @Operation( summary = "getActiveServicesForServer",
             description="Return the list of services that are active on the server on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="details of server status",
@@ -370,9 +370,9 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-    public ServerServicesListResponse getActiveServiceListForServer(@Parameter(description="calling user") @PathVariable String    userId,
-                                                                    @Parameter(description="server name")  @PathVariable String    serverName)
+    public ServerServicesListResponse getActiveServicesForServer(@Parameter(description="calling user") @PathVariable String    userId,
+                                                                 @Parameter(description="server name")  @PathVariable String    serverName)
     {
-        return platformAPI.getActiveServiceListForServer(userId, serverName);
+        return platformAPI.getActiveServicesForServer(userId, serverName);
     }
 }

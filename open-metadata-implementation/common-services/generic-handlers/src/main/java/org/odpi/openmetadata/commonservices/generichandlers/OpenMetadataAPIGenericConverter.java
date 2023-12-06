@@ -3745,6 +3745,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the anchorTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeAnchorTypeName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeAnchorTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ANCHOR_TYPE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the anchorGUID property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

@@ -207,7 +207,15 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               serviceName,
                                               serverName);
 
-        builder.setAnchors(userId, elementGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    elementGUID,
+                                    elementGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String likeGUID = this.createBeanInRepository(userId,
                                                       externalSourceGUID,

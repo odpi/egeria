@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryRequestBody
 {
     private String                               glossaryGUID         = null;
+    private String                               relationshipTypeName = null;
     private List<GlossaryTermRelationshipStatus> limitResultsByStatus = null;
 
     /**
@@ -48,6 +49,7 @@ public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryReque
         if (template != null)
         {
             glossaryGUID = template.getGlossaryGUID();
+            relationshipTypeName = template.getRelationshipTypeName();
             limitResultsByStatus = template.getLimitResultsByStatus();
         }
     }
@@ -72,6 +74,30 @@ public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryReque
     public void setGlossaryGUID(String glossaryGUID)
     {
         this.glossaryGUID = glossaryGUID;
+    }
+
+
+    /**
+     * Return the optional relationship name for this request.  This value limits the types of relationships
+     * returned.
+     *
+     * @return string name
+     */
+    public String getRelationshipTypeName()
+    {
+        return relationshipTypeName;
+    }
+
+
+    /**
+     * Set up the optional relationship name for this request.  This value limits the types of relationships
+     * returned.
+     *
+     * @param relationshipTypeName string name
+     */
+    public void setRelationshipTypeName(String relationshipTypeName)
+    {
+        this.relationshipTypeName = relationshipTypeName;
     }
 
 
@@ -107,6 +133,7 @@ public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryReque
     {
         return "GlossaryTermRelationshipRequestBody{" +
                        "glossaryGUID='" + glossaryGUID + '\'' +
+                       ", relationshipTypeName=" + relationshipTypeName +
                        ", limitResultsByStatus=" + limitResultsByStatus +
                        ", effectiveTime=" + getEffectiveTime() +
                        ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
@@ -138,7 +165,8 @@ public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryReque
         }
         GlossaryTermRelationshipRequestBody that = (GlossaryTermRelationshipRequestBody) objectToCompare;
         return Objects.equals(glossaryGUID, that.glossaryGUID) &&
-                Objects.equals(limitResultsByStatus, that.limitResultsByStatus);
+                       Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
+                       Objects.equals(limitResultsByStatus, that.limitResultsByStatus);
     }
 
 
@@ -150,6 +178,6 @@ public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryReque
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), glossaryGUID, limitResultsByStatus);
+        return Objects.hash(super.hashCode(), glossaryGUID, relationshipTypeName, limitResultsByStatus);
     }
 }

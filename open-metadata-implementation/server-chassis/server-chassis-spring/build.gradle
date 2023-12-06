@@ -50,6 +50,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')

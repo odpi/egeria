@@ -705,9 +705,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                effectiveTime,
                                                                                methodName);
 
-                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
 
-                    if (assetGUID.equals(anchorGUID))
+                    if (assetGUID.equals(anchorIdentifiers.anchorGUID))
                     {
                         InstanceProperties endpointProperties = endpointEntity.getProperties();
 

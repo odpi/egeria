@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The GlossaryBrowserAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -38,7 +37,7 @@ public enum GlossaryBrowserAuditCode implements AuditLogMessageSet
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Glossary Browser Open Metadata View Service (OMVS) is initialized",
                          "The Glossary Browser OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
-                         "No action is required.  This is part of the normal operation of the Glossary Browser Open Metadata View Service. Once the OMRS is configured and the server is started, Glossary Browserview service requests can be accepted."),
+                         "No action is required.  This is part of the normal operation of the Glossary Browser Open Metadata View Service. Once the OMRS is configured and the server is started, Glossary Browser view service requests can be accepted."),
 
     /**
      * OMVS-GLOSSARY-BROWSER-0003 The Glossary Browser Open Metadata View Service (OMVS) is shutting down
@@ -87,12 +86,12 @@ public enum GlossaryBrowserAuditCode implements AuditLogMessageSet
     /**
      * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
      * OMRSAuditCode above.   For example:
-     *
+     * <br><br>
      *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique identifier for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

@@ -141,7 +141,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
 
                 builder.setEffectivityDates(effectiveFrom, effectiveTo);
-                builder.setAnchors(userId, glossaryGuid, methodName);
+                builder.setAnchors(userId, glossaryGuid, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME, methodName);
 
                 createdTermGuid = genericHandler.createBeanInRepository(userId,
                                                                         null,

@@ -527,7 +527,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(parentEntityGUID, parentEntityParameterName, methodName);
         invalidParameterHandler.validateName(dataFieldName, dataFieldNameParameterName, methodName);
 
-        String       assetGUID    = null;
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               parentEntityGUID,
                                                               parentEntityParameterName,
@@ -539,11 +538,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               supportedZones,
                                                               effectiveTime,
                                                               methodName);
-
-        if (anchorEntity != null)
-        {
-            assetGUID = anchorEntity.getGUID();
-        }
 
         DataFieldBuilder builder = new DataFieldBuilder(dataFieldName,
                                                         dataFieldType,
@@ -559,9 +553,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         serverName);
 
-        if (assetGUID != null)
+        if (anchorEntity != null)
         {
-            builder.setAnchors(userId, assetGUID, methodName);
+            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
         }
 
         String dataFieldGUID = this.createBeanInRepository(userId,
@@ -751,6 +745,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceGUID unique identifier of the external source (null for local)
      * @param externalSourceName unique name of the external source (null for local)
      * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 2 of the relationship
      * @param relationshipEnd the logical end of the relationship.  Use 0 if this does not make sense.
      * @param relationshipTypeName the name of this relationship between data fields.
      * @param additionalProperties any additional properties

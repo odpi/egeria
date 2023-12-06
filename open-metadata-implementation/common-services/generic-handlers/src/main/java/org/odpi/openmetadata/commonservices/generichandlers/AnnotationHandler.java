@@ -317,6 +317,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
+        final String assetGUIDParameterName = "assetGUID";
+
         String typeName = this.getAnnotationTypeName(annotation);
         String typeGUID = this.getAnnotationTypeGUID(typeName, methodName);
 
@@ -325,10 +327,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                          annotation,
                                                          methodName);
 
-        if (assetGUID != null)
-        {
-            builder.setAnchors(userId, assetGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    assetGUID,
+                                    assetGUIDParameterName,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         return this.createBeanInRepository(userId,
                                            null,
@@ -692,7 +699,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {
-            builder.setAnchors(userId, anchorEntity.getGUID(), methodName);
+            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
         }
 
         String annotationReviewGUID = this.createBeanInRepository(userId,

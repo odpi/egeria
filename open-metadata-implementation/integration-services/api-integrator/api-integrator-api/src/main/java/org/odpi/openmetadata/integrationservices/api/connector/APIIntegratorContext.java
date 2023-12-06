@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
@@ -364,8 +365,16 @@ public class APIIntegratorContext extends IntegrationContext
 
         if ((apiGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
-            integrationReportWriter.reportElementCreation(apiGUID);
+            if ((apiProperties != null) && (apiProperties.getTypeName() != null))
+            {
+                integrationReportWriter.setAnchor(apiGUID, apiGUID, apiProperties.getTypeName());
+                integrationReportWriter.reportElementCreation(apiGUID);
+            }
+            else
+            {
+                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataTypesMapper.DEPLOYED_API_TYPE_NAME);
+                integrationReportWriter.reportElementCreation(apiGUID);
+            }
         }
 
         return apiGUID;

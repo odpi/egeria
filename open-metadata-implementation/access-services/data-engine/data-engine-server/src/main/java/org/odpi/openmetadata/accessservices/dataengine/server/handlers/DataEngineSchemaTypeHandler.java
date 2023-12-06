@@ -98,7 +98,8 @@ public class DataEngineSchemaTypeHandler {
     public String upsertSchemaType(String userId, SchemaType schemaType, String anchorGUID, String externalSourceName) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
-        String methodName = "upsertSchemaType";
+        final String methodName = "upsertSchemaType";
+        final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(schemaType.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -107,8 +108,23 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> originalSchemaTypeEntity = findSchemaTypeEntity(userId, schemaType.getQualifiedName());
 
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
-        if (anchorGUID != null) {
-            schemaTypeBuilder.setAnchors(userId, anchorGUID, methodName);
+        if (anchorGUID != null)
+        {
+            EntityDetail anchorEntity = schemaTypeHandler.getEntityFromRepository(userId,
+                                                                                  anchorGUID,
+                                                                                  anchorGUIDParameterName,
+                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  false,
+                                                                                  false,
+                                                                                  null,
+                                                                                  methodName);
+
+            if (anchorEntity != null)
+            {
+                schemaTypeBuilder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);

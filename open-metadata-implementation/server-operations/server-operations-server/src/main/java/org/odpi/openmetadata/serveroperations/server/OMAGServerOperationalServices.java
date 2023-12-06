@@ -37,6 +37,7 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineP
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -1638,6 +1639,39 @@ public class OMAGServerOperationalServices
         return response;
     }
 
+
+    /**
+     * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
+     *
+     * @param userId name of the user making the request
+     * @param serverName name of the server of interest
+     * @return List of service names
+     */
+    public ServerServicesListResponse getActiveServices(String    userId,
+                                                        String    serverName)
+    {
+        final String   methodName = "getActiveServiceListForServer";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ServerServicesListResponse response = new ServerServicesListResponse();
+
+        try
+        {
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+
+            response.setServerName(serverName);
+            response.setServerServicesList(instance.getActiveServiceListForServer());
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.captureExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**

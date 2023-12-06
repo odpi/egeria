@@ -4498,6 +4498,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
@@ -4517,6 +4518,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                         String                               assetManagerGUID,
                                                         String                               assetManagerName,
                                                         String                               glossaryTermGUID,
+                                                        String                               relationshipTypeName,
                                                         List<GlossaryTermRelationshipStatus> limitResultsByStatus,
                                                         int                                  startFrom,
                                                         int                                  pageSize,
@@ -4530,6 +4532,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         List<GlossaryTermElement> results = glossaryTermHandler.getRelatedTerms(userId,
                                                                                 glossaryTermGUID,
                                                                                 glossaryTermGUIDParameterName,
+                                                                                relationshipTypeName,
                                                                                 getEnumOrdinals(limitResultsByStatus),
                                                                                 startFrom,
                                                                                 pageSize,
