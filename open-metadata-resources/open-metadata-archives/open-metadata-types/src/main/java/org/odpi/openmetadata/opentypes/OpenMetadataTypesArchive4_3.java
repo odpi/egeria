@@ -176,6 +176,7 @@ public class OpenMetadataTypesArchive4_3
     private void update0010Base()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
+        this.archiveBuilder.addTypeDefPatch(updateInfrastructure());
     }
 
 
@@ -199,6 +200,39 @@ public class OpenMetadataTypesArchive4_3
 
         final String attribute1Name            = "deployedImplementationType";
         final String attribute1Description     = "Name of the technology used to implement this data set.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateInfrastructure()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Infrastructure";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "deployedImplementationType";
+        final String attribute1Description     = "Name of the technology used to implement this component.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

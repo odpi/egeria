@@ -2601,16 +2601,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed software server platform.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the platformVersion attribute to define the version number of software server platform.";
         final String attribute3DescriptionGUID = null;
@@ -2671,16 +2661,6 @@ public class OpenMetadataTypesArchive2_4
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed software server.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
         properties.add(property);
 
         final String attribute3Name            = "version";
@@ -3276,9 +3256,9 @@ public class OpenMetadataTypesArchive2_4
         TypeDefAttribute       property;
 
         final String attribute1Name            = "type";
-        final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of business capability.";
+        final String attribute1Description     = "Deprecated attribute. Use the businessImplementationType attribute to describe the type of business capability.";
         final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "deployedImplementationType";
+        final String attribute1ReplacedBy      = "businessImplementationType";
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
                                                          attribute1Name,
@@ -3288,7 +3268,7 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "deployedImplementationType";
+        final String attribute2Name            = "businessImplementationType";
         final String attribute2Description     = "Type of implemented or deployed business capability.";
         final String attribute2DescriptionGUID = null;
 
