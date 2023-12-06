@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name="Metadata Access Server: Asset Catalog OMAS", description="The Asset Catalog OMAS provides services to search for data assets including data stores, event feeds, APIs, data sets.",
      externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omas/asset-catalog/overview/"))
-
+@Deprecated
 public class AssetCatalogRelationshipResource {
 
     private final AssetCatalogRelationshipRESTService relationshipService = new AssetCatalogRelationshipRESTService();
