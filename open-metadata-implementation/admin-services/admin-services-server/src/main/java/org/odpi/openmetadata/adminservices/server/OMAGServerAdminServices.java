@@ -200,31 +200,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String> configAuditTrail = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if (name != null && (name.length() == 0))
-            {
-                name = null;
-            }
-
-            if (name == null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's owning organization's name.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-            serverConfig.setOrganizationName(name);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
+            this.setOrganizationName(serverConfig, userId, serverName, name, methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -242,6 +218,51 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the name of the organization that is running this server.  This value is added to distributed events to
+     * make it easier to understand the source of events.  The default value is null.
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId     user that is issuing the request.
+     * @param serverName local server name.
+     * @param name       String name of the organization.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or organizationName parameter.
+     */
+    private void setOrganizationName(OMAGServerConfig serverConfig,
+                                     String           userId,
+                                     String           serverName,
+                                     String           name,
+                                     String           methodName) throws OMAGInvalidParameterException
+    {
+        List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null)
+        {
+            configAuditTrail = new ArrayList<>();
+        }
+
+        if (name != null && (name.length() == 0))
+        {
+            name = null;
+        }
+
+        if (name == null)
+        {
+            configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's owning organization's name.");
+        }
+        else
+        {
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
+        }
+
+        serverConfig.setAuditTrail(configAuditTrail);
+        serverConfig.setOrganizationName(name);
+
+        configStore.saveServerConfig(serverName, methodName, serverConfig);
     }
 
 
@@ -273,31 +294,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String> configAuditTrail = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if (description != null && (description.length() == 0))
-            {
-                description = null;
-            }
-
-            if (description == null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's description.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's description to " + description + ".");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-            serverConfig.setLocalServerDescription(description);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
+            this.setServerDescription(serverConfig, userId, serverName, description, methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -315,6 +312,50 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the description of this server. The default value is null.
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId      user that is issuing the request.
+     * @param serverName  local server description.
+     * @param description String description of the server.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or organizationName parameter.
+     */
+    private void setServerDescription(OMAGServerConfig serverConfig,
+                                      String           userId,
+                                      String           serverName,
+                                      String           description,
+                                      String           methodName) throws OMAGInvalidParameterException
+    {
+        List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null)
+        {
+            configAuditTrail = new ArrayList<>();
+        }
+
+        if (description != null && (description.length() == 0))
+        {
+            description = null;
+        }
+
+        if (description == null)
+        {
+            configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's description.");
+        }
+        else
+        {
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's description to " + description + ".");
+        }
+
+        serverConfig.setAuditTrail(configAuditTrail);
+        serverConfig.setLocalServerDescription(description);
+
+        configStore.saveServerConfig(serverName, methodName, serverConfig);
     }
 
 
@@ -346,31 +387,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if ((serverUserId != null) && (serverUserId.length() == 0))
-            {
-                serverUserId = null;
-            }
-
-            if (serverUserId == null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's userId.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-            serverConfig.setLocalServerUserId(serverUserId);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
+            this.setServerUserId(serverConfig, userId, serverName, serverUserId, methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -388,6 +405,51 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the user id to use when there is no external user driving the work (for example when processing events
+     * from another server).
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverUserId  String user is for the server.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    private void setServerUserId(OMAGServerConfig serverConfig,
+                                 String           userId,
+                                 String           serverName,
+                                 String           serverUserId,
+                                 String           methodName) throws OMAGInvalidParameterException
+    {
+        List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null)
+        {
+            configAuditTrail = new ArrayList<>();
+        }
+
+        if ((serverUserId != null) && (serverUserId.length() == 0))
+        {
+            serverUserId = null;
+        }
+
+        if (serverUserId == null)
+        {
+            configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's userId.");
+        }
+        else
+        {
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
+        }
+
+        serverConfig.setAuditTrail(configAuditTrail);
+        serverConfig.setLocalServerUserId(serverUserId);
+
+        configStore.saveServerConfig(serverName, methodName, serverConfig);
     }
 
 
@@ -419,31 +481,7 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            if ((serverPassword != null) && (serverPassword.length() == 0))
-            {
-                serverPassword = null;
-            }
-
-            if (serverPassword == null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's password.");
-            }
-            else
-            {
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's password to " + serverPassword + ".");
-            }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-            serverConfig.setLocalServerPassword(serverPassword);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
+            this.setServerPassword(serverConfig, userId, serverName, serverPassword, methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -461,6 +499,51 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the user id to use when there is no external user driving the work (for example when processing events
+     * from another server).
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverPassword  String password for the server.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    private void setServerPassword(OMAGServerConfig serverConfig,
+                                   String           userId,
+                                   String           serverName,
+                                   String           serverPassword,
+                                   String           methodName) throws OMAGInvalidParameterException
+    {
+        List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null)
+        {
+            configAuditTrail = new ArrayList<>();
+        }
+
+        if ((serverPassword != null) && (serverPassword.length() == 0))
+        {
+            serverPassword = null;
+        }
+
+        if (serverPassword == null)
+        {
+            configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's password.");
+        }
+        else
+        {
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's password to " + serverPassword + ".");
+        }
+
+        serverConfig.setAuditTrail(configAuditTrail);
+        serverConfig.setLocalServerPassword(serverPassword);
+
+        configStore.saveServerConfig(serverName, methodName, serverConfig);
     }
 
 
@@ -493,30 +576,109 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            if (maxPageSize >= 0)
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            this.setMaxPageSize(serverConfig, userId, serverName, maxPageSize, methodName);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set an upper limit in the page size that can be requested on a REST call to the server.  The default
+     * value is 1000.
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId - user that is issuing the request.
+     * @param serverName - local server name.
+     * @param maxPageSize - max number of elements that can be returned on a request.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
+     */
+    private void setMaxPageSize(OMAGServerConfig serverConfig,
+                                String           userId,
+                                String           serverName,
+                                int              maxPageSize,
+                                String           methodName) throws OMAGInvalidParameterException
+    {
+        if (maxPageSize >= 0)
+        {
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
             {
-                OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-                List<String>  configAuditTrail          = serverConfig.getAuditTrail();
-
-                if (configAuditTrail == null)
-                {
-                    configAuditTrail = new ArrayList<>();
-                }
-
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for maximum page size to " + maxPageSize + ".");
-
-                serverConfig.setAuditTrail(configAuditTrail);
-                serverConfig.setMaxPageSize(maxPageSize);
-
-                configStore.saveServerConfig(serverName, methodName, serverConfig);
+                configAuditTrail = new ArrayList<>();
             }
-            else
-            {
-                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE.getMessageDefinition(serverName, Integer.toString(maxPageSize)),
-                                                        this.getClass().getName(),
-                                                        methodName);
-            }
+
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for maximum page size to " + maxPageSize + ".");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setMaxPageSize(maxPageSize);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        else
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_MAX_PAGE_SIZE.getMessageDefinition(serverName, Integer.toString(maxPageSize)),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+    }
+
+
+    /**
+     * Set up the basic server properties in a single request.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody property details
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
+     */
+
+    public VoidResponse setBasicServerProperties(String                      userId,
+                                                 String                      serverName,
+                                                 ServerPropertiesRequestBody requestBody)
+    {
+        final String methodName = "setBasicServerProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(response, "serverProperties", serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            this.setOrganizationName(serverConfig, userId, serverName, requestBody.getOrganizationName(), methodName);
+            this.setServerDescription(serverConfig, userId, serverName, requestBody.getLocalServerDescription(), methodName);
+            this.setServerUserId(serverConfig, userId, serverName, requestBody.getLocalServerUserId(), methodName);
+            this.setServerPassword(serverConfig, userId, serverName, requestBody.getLocalServerPassword(), methodName);
+            this.setServerRootURL(serverConfig, userId, serverName, requestBody.getLocalServerURL(), methodName);
+            this.setMaxPageSize(serverConfig, userId, serverName, requestBody.getMaxPageSize(), methodName);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -882,33 +1044,14 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
-
-            if (configAuditTrail == null)
-            {
-                configAuditTrail = new ArrayList<>();
-            }
-
-            String urlRoot = null;
-
             if (requestBody != null)
             {
-                urlRoot = requestBody.getUrlRoot();
-            }
-
-            if (urlRoot == null)
-            {
-                configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's URL root.");
+                this.setServerRootURL(serverConfig, userId, serverName, requestBody.getUrlRoot(), methodName);
             }
             else
             {
-                configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's URL root to " + urlRoot + ".");
+                this.setServerRootURL(serverConfig, userId, serverName, null, methodName);
             }
-
-            serverConfig.setAuditTrail(configAuditTrail);
-            serverConfig.setLocalServerURL(urlRoot);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -926,6 +1069,50 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the root URL for this server that is used to construct full URL paths to calls for
+     * this server's REST interfaces that is used by other members of the cohorts that this server
+     * connects to.
+     * The default value is "localhost:9443".
+     * ServerURLRoot is used during the configuration of the local repository.  If called
+     * after the local repository is configured, it has no effect.
+     *
+     * @param serverConfig server configuration document to update
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param urlRoot  String url.
+     * @param methodName calling method
+     * @throws OMAGInvalidParameterException invalid serverName or serverURLRoot parameter or
+     */
+    private void setServerRootURL(OMAGServerConfig serverConfig,
+                                  String           userId,
+                                  String           serverName,
+                                  String           urlRoot,
+                                  String           methodName) throws  OMAGInvalidParameterException
+    {
+        List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+        if (configAuditTrail == null)
+        {
+            configAuditTrail = new ArrayList<>();
+        }
+
+        if (urlRoot == null)
+        {
+            configAuditTrail.add(new Date() + " " + userId + " removed configuration for local server's URL root.");
+        }
+        else
+        {
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for local server's URL root to " + urlRoot + ".");
+        }
+
+        serverConfig.setAuditTrail(configAuditTrail);
+        serverConfig.setLocalServerURL(urlRoot);
+
+        configStore.saveServerConfig(serverName, methodName, serverConfig);
     }
 
 
@@ -1338,7 +1525,6 @@ public class OMAGServerAdminServices
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
-
 
             this.setLocalRepositoryConfig(userId,
                                           serverName,
