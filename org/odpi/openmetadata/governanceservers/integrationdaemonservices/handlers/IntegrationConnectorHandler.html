@@ -179,9 +179,23 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the configuration properties of the connector and restart it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnectorDetails(org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement)" class="member-name-link">updateConnectorDetails</a><wbr>(<a href="../../../accessservices/governanceengine/metadataelements/RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredIntegrationConnectorElement</a>&nbsp;registeredIntegrationConnectorElement)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnectorConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">updateConnectorConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the connection for a specific integration connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnectorDetails(org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement)" class="member-name-link">updateConnectorDetails</a><wbr>(<a href="../../../accessservices/governanceengine/metadataelements/RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredIntegrationConnectorElement</a>&nbsp;registeredIntegrationConnectorElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the connector properties with as little disruption to the running connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEndpointNetworkAddress(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">updateEndpointNetworkAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the endpoint network address for a specific integration connector.</div>
 </div>
 </div>
 </div>
@@ -337,6 +351,36 @@ loadScripts(document, 'script');</script>
 <dd><code>actionDescription</code> - external caller's activity</dd>
 <dd><code>isMergeUpdate</code> - should the properties be merged into the existing properties or replace them</dd>
 <dd><code>configurationProperties</code> - new configuration properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateEndpointNetworkAddress(java.lang.String,java.lang.String,java.lang.String)">
+<h3>updateEndpointNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateEndpointNetworkAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
+<div class="block">Update the endpoint network address for a specific integration connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>actionDescription</code> - external caller's activity</dd>
+<dd><code>networkAddress</code> - name of a specific connector or null for all connectors and the properties to change</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateConnectorConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>updateConnectorConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateConnectorConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
+<div class="block">Update the connection for a specific integration connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>actionDescription</code> - external caller's activity</dd>
+<dd><code>connection</code> - new connection object</dd>
 </dl>
 </section>
 </li>

@@ -119,7 +119,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor.</div>
+</div>
 </div>
 </section>
 </li>
@@ -197,6 +199,27 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  int&nbsp;maxPageSize)</span></div>
+<div class="block">Constructor.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
+<dd><code>connectorName</code> - name of connector from config</dd>
+<dd><code>connectorUserId</code> - userId for the connector</dd>
+<dd><code>serverName</code> - name of the integration daemon</dd>
+<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
+<dd><code>openMetadataStoreClient</code> - client for calling the metadata server</dd>
+<dd><code>filesAndFoldersClient</code> - client to map request to</dd>
+<dd><code>connectionManagerClient</code> - client for managing connections</dd>
+<dd><code>validValueManagement</code> - client for managing valid value sets and definitions</dd>
+<dd><code>eventClient</code> - client to register for events</dd>
+<dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
+<dd><code>permittedSynchronization</code> - the direction of integration permitted by the integration connector</dd>
+<dd><code>integrationConnectorGUID</code> - unique identifier for the integration connector if it is started via an integration group (otherwise it is
+                                 null).</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the asset manager</dd>
+<dd><code>externalSourceName</code> - unique name of the software server capability for the asset manager</dd>
+<dd><code>maxPageSize</code> - max number of elements that can be returned on a query</dd>
+</dl>
 </section>
 </li>
 </ul>

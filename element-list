@@ -416,7 +416,6 @@ org.odpi.openmetadata.accessservices.subjectarea.utils
 org.odpi.openmetadata.accessservices.subjectarea.validators
 org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
-org.odpi.openmetadata.adapters.connectors.datastore.avrofile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
@@ -855,6 +854,14 @@ org.odpi.openmetadata.repositoryservices.rest.server
 org.odpi.openmetadata.repositoryservices.rest.server.spring
 org.odpi.openmetadata.repositoryservices.rest.services
 org.odpi.openmetadata.samples.archiveutilities
+org.odpi.openmetadata.samples.archiveutilities.businesssystems
+org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates
+org.odpi.openmetadata.samples.archiveutilities.combo
+org.odpi.openmetadata.samples.archiveutilities.governanceengines
+org.odpi.openmetadata.samples.archiveutilities.governanceprogram
+org.odpi.openmetadata.samples.archiveutilities.organization
+org.odpi.openmetadata.samples.archiveutilities.sustainability
+org.odpi.openmetadata.samples.archiveutilities.types
 org.odpi.openmetadata.samples.governanceengine
 org.odpi.openmetadata.samples.governanceengine.discoveryservices
 org.odpi.openmetadata.serverchassis.springboot

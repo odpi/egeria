@@ -185,6 +185,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the configuration properties of the connectors, or specific connector if a connector name is supplied.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnectorConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">updateConnectorConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the connection for a specific integration connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEndpointNetworkAddress(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">updateEndpointNetworkAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the endpoint network address for a specific integration connector.</div>
+</div>
 </div>
 </div>
 </div>
@@ -230,7 +246,6 @@ loadScripts(document, 'script');</script>
 <dd><code>connectorName</code> - name of a specific connector</dd>
 <dt>Returns:</dt>
 <dd>properties map or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -251,7 +266,50 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - name of a specific connector or null for all connectors and the properties to change</dd>
 <dt>Returns:</dt>
 <dd>void or
-
+  InvalidParameterException one of the parameters is null or invalid or
+  UserNotAuthorizedException user not authorized to issue this request or
+  PropertyServerException there was a problem detected by the integration service.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateEndpointNetworkAddress(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<h3>updateEndpointNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateEndpointNetworkAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the endpoint network address for a specific integration connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - integration daemon server name</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>connectorName</code> - name of a specific connector</dd>
+<dd><code>requestBody</code> - name of a specific connector or null for all connectors and the properties to change</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException one of the parameters is null or invalid or
+  UserNotAuthorizedException user not authorized to issue this request or
+  PropertyServerException there was a problem detected by the integration service.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateConnectorConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>updateConnectorConnection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateConnectorConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the connection for a specific integration connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - integration daemon server name</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>connectorName</code> - name of a specific connector</dd>
+<dd><code>requestBody</code> - new connection object</dd>
+<dt>Returns:</dt>
+<dd>void or
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -272,7 +330,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -293,7 +350,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -316,7 +372,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - name of a specific connector to refresh - if null all connectors are refreshed</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -339,7 +394,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - name of a specific connector to refresh - if null all connectors are restarted.</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration service.</dd>
@@ -358,7 +412,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>list of statuses - on for each assigned integration services or group
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration daemon.</dd>
@@ -377,7 +430,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>list of statuses - on for each assigned integration services
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   PropertyServerException there was a problem detected by the integration daemon.</dd>
@@ -401,7 +453,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dt>Returns:</dt>
 <dd>void or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or
   IntegrationGroupException there was a problem detected by the integration group.</dd>
@@ -440,7 +491,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dt>Returns:</dt>
 <dd>list of statuses - on for each assigned integration groups or
-
   InvalidParameterException one of the parameters is null or invalid or
   UserNotAuthorizedException user not authorized to issue this request or</dd>
 </dl>
