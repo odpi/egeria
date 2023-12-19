@@ -1293,6 +1293,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                  validValueProperties.getUsage());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataTypesMapper.CATEGORY_PROPERTY_NAME,
+                                                                 validValueProperties.getUsage());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataTypesMapper.PREFERRED_VALUE_PROPERTY_NAME,
                                                                  validValueProperties.getPreferredValue());
 
@@ -1303,6 +1307,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                   OpenMetadataTypesMapper.IS_DEPRECATED_PROPERTY_NAME,
                                                                   validValueProperties.getIsDeprecated());
+
+            elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                  OpenMetadataTypesMapper.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                                  validValueProperties.getIsCaseSensitive());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,

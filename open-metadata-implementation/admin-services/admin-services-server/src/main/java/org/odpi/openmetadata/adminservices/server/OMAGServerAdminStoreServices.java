@@ -530,8 +530,8 @@ public class OMAGServerAdminStoreServices
                 }
             }
         }
-        return serverConfig;
 
+        return serverConfig;
     }
 
 

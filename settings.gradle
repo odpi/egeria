@@ -53,7 +53,6 @@ include(':open-metadata-implementation:adapters:open-connectors:repository-servi
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
-include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')

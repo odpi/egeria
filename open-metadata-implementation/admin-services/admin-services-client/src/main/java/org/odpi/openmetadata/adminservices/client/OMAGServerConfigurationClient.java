@@ -156,7 +156,7 @@ public class OMAGServerConfigurationClient
      * this server's REST interfaces.  Typically, this is the URL root of the OMAG Server Platform
      * Where the server is deployed to.  However, it may be a DNS name - particularly if the server is
      * deployed to multiple platforms for high availability (HA).
-     * The default value is "https://localhost:9443".
+     * The default value is "<a href="https://localhost:9443">"https://localhost:9443"</a>".
      *
      * @param serverURLRoot  String url.
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
@@ -293,8 +293,8 @@ public class OMAGServerConfigurationClient
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setServerDescription(String   description) throws OMAGNotAuthorizedException,
-                                                                       OMAGInvalidParameterException,
-                                                                       OMAGConfigurationErrorException
+                                                                  OMAGInvalidParameterException,
+                                                                  OMAGConfigurationErrorException
     {
         final String methodName  = "setServerDescription";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-description";
@@ -402,6 +402,47 @@ public class OMAGServerConfigurationClient
                                         Integer.toString(maxPageSize));
     }
 
+
+    /**
+     * Set up the basic server properties in a single request.
+     *
+     * @param organizationName  String name of the organization.
+     * @param serverDescription  String description of the server
+     * @param serverUserId  String user that the server will use on connections and requests not associated with an end user.
+     * @param serverPassword  String password that the server will use on connections.
+     * @param serverURLRoot  String url.
+     * @param maxPageSize  max number of elements that can be returned on a request.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setBasicServerProperties(String organizationName,
+                                         String serverDescription,
+                                         String serverUserId,
+                                         String serverPassword,
+                                         String serverURLRoot,
+                                         int    maxPageSize) throws OMAGNotAuthorizedException,
+                                                                    OMAGInvalidParameterException,
+                                                                    OMAGConfigurationErrorException
+    {
+        final String methodName  = "setBasicServerProperties";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-properties";
+
+        ServerPropertiesRequestBody requestBody = new ServerPropertiesRequestBody();
+
+        requestBody.setOrganizationName(organizationName);
+        requestBody.setLocalServerDescription(serverDescription);
+        requestBody.setLocalServerUserId(serverUserId);
+        requestBody.setLocalServerPassword(serverPassword);
+        requestBody.setLocalServerURL(serverURLRoot);
+        requestBody.setMaxPageSize(maxPageSize);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        adminUserId,
+                                        serverName);
+    }
 
 
     /**

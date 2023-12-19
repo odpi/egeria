@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.rest.ServerPropertiesRequestBody;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -207,5 +208,30 @@ public class ConfigPropertiesResource
                                        @RequestParam int     limit)
     {
         return adminAPI.setMaxPageSize(userId, serverName, limit);
+    }
+
+
+    /**
+     * Set up the basic server properties in a single request.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody property details
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
+     */
+    @PostMapping(path = "/server-properties")
+
+    @Operation(summary="setBasicServerProperties",
+               description="Set up the basic server properties in a single request.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/omag-server/"))
+
+    public VoidResponse setBasicServerProperties(@PathVariable String                      userId,
+                                                 @PathVariable String                      serverName,
+                                                 @RequestBody  ServerPropertiesRequestBody requestBody)
+    {
+        return adminAPI.setBasicServerProperties(userId, serverName, requestBody);
     }
 }

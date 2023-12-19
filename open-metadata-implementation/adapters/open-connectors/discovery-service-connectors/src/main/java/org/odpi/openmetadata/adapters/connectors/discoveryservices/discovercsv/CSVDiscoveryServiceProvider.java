@@ -22,9 +22,9 @@ public class CSVDiscoveryServiceProvider extends DiscoveryServiceProvider
     {
         super();
 
-        Class<?>   connectorClass = CSVDiscoveryService.class;
+        String   connectorClass = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv.CSVDiscoveryService";
 
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClass);
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());

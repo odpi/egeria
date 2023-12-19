@@ -16,6 +16,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 {
     private final String  displayName;
     private final String  description;
+    private final String  category;
     private final String  usage;
     private final String  scope;
     private final String  preferredValue;
@@ -28,6 +29,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
+     * @param category   what is the category of reference data does this fall into?
      * @param usage guidance on how the schema should be used.
      * @param scope arena where this valid value is applicable.
      * @param preferredValue preferredValue where the schema is defined.
@@ -41,6 +43,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     ValidValuesBuilder(String               qualifiedName,
                        String               displayName,
                        String               description,
+                       String               category,
                        String               usage,
                        String               scope,
                        String               preferredValue,
@@ -62,6 +65,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
+        this.category = category;
         this.usage = usage;
         this.scope = scope;
         this.preferredValue = preferredValue;
@@ -91,6 +95,12 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataAPIMapper.VALID_VALUE_DESCRIPTION_PROPERTY_NAME,
                                                                   description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VALID_VALUE_CATEGORY_PROPERTY_NAME,
+                                                                  category,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

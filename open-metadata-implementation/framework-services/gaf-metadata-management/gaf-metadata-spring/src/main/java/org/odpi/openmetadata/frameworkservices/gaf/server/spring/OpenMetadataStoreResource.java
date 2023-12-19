@@ -1580,16 +1580,107 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/valid-metadata-values/get-valid-metadata-values/{propertyName}")
 
-    public ValidMetadataValueListResponse getValidMetadataValues(@PathVariable String serverName,
-                                                                 @PathVariable String serviceURLMarker,
-                                                                 @PathVariable String userId,
-                                                                 @RequestParam(required = false)
+    public ValidMetadataValueDetailListResponse getValidMetadataValues(@PathVariable String serverName,
+                                                                       @PathVariable String serviceURLMarker,
+                                                                       @PathVariable String userId,
+                                                                       @RequestParam(required = false)
                                                                                String typeName,
-                                                                 @PathVariable String propertyName,
-                                                                 @RequestParam int    startFrom,
-                                                                 @RequestParam int    pageSize)
+                                                                       @PathVariable String propertyName,
+                                                                       @RequestParam int    startFrom,
+                                                                       @RequestParam int    pageSize)
     {
         return restAPI.getValidMetadataValues(serverName, serviceURLMarker, userId, typeName, propertyName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve all the consistent valid values for the requested property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional name of map key that this valid value applies
+     * @param preferredValue the value to match against
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/{propertyName}/consistent-metadata-values")
+
+    public ValidMetadataValueListResponse getConsistentMetadataValues(@PathVariable String serverName,
+                                                                      @PathVariable String serviceURLMarker,
+                                                                      @PathVariable String userId,
+                                                                      @RequestParam(required = false)
+                                                                                    String typeName,
+                                                                      @PathVariable String propertyName,
+                                                                      @RequestParam(required = false)
+                                                                                    String mapName,
+                                                                      @RequestParam String preferredValue,
+                                                                      @RequestParam int    startFrom,
+                                                                      @RequestParam int    pageSize)
+    {
+        return restAPI.getConsistentMetadataValues(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
+    }
+
+
+    /**
+     * Set up consistent metadata values relationship between the two property values.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName1 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName1 name of property that this valid value applies
+     * @param mapName1 optional name of map key that this valid value applies
+     * @param preferredValue1 the value to match against
+     * @param typeName2 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName2 name of property that this valid value applies
+     * @param mapName2 optional name of map key that this valid value applies
+     * @param preferredValue2 the value to match against
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/{propertyName1}/consistent-metadata-values/{propertyName2}")
+
+    public VoidResponse setConsistentMetadataValues(@PathVariable String          serverName,
+                                                    @PathVariable String          serviceURLMarker,
+                                                    @PathVariable String          userId,
+                                                    @RequestParam(required = false)
+                                                                  String          typeName1,
+                                                    @PathVariable String          propertyName1,
+                                                    @RequestParam(required = false)
+                                                                  String          mapName1,
+                                                    @RequestParam String          preferredValue1,
+                                                    @RequestParam(required = false)
+                                                                  String          typeName2,
+                                                    @PathVariable String          propertyName2,
+                                                    @RequestParam(required = false)
+                                                                  String          mapName2,
+                                                    @RequestParam String          preferredValue2,
+                                                    @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.setConsistentMetadataValues(serverName,
+                                                   serviceURLMarker,
+                                                   userId,
+                                                   typeName1,
+                                                   propertyName1,
+                                                   mapName1,
+                                                   preferredValue1,
+                                                   typeName2,
+                                                   propertyName2,
+                                                   mapName2,
+                                                   preferredValue2,
+                                                   requestBody);
     }
 
 

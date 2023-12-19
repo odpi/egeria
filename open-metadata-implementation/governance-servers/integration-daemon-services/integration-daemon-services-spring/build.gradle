@@ -6,6 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-server')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

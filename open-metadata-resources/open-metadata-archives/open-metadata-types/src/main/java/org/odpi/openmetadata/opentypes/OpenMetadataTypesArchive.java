@@ -164,12 +164,18 @@ public class OpenMetadataTypesArchive
          * Add the type updates
          */
         update0010BaseModel();
+        update0011UpdateTemplates();
         update0021Collections();
         update0137Actions();
         update0130Projects();
         update0210DataStores();
+        update0220DataFiles();
+        update0221MediaFiles();
+        update0226ArchiveFiles();
+        update0280SoftwareArtifacts();
         update0380TermInheritance();
         update0461GovernanceEngines();
+        update0545ReferenceData();
         add00475ContextEvents();
         update0615SchemaExtraction();
         add0755UltimateSourcesDestinations();
@@ -290,7 +296,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
         this.archiveBuilder.addTypeDefPatch(updateActionsRelationship());
     }
-
 
 
     private EntityDef addActionEntity()
@@ -430,6 +435,103 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0011UpdateTemplates()
+    {
+        this.archiveBuilder.addRelationshipDef(addCatalogTemplateRelationship());
+    }
+
+
+    private RelationshipDef addCatalogTemplateRelationship()
+    {
+        final String guid            = "e0a32163-00d3-4748-afdb-478a1dfbba23";
+        final String name            = "CatalogTemplate";
+        final String description     = "Provides the template for creating a metadata representation of the deployed implementation type.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1AttributeName            = "implementationTypes";
+        final String                     end1AttributeDescription     = "Description of a type of technology.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "OpenMetadataRoot";
+        final String                     end2AttributeName            = "templatesForCataloguing";
+        final String                     end2AttributeDescription     = "Template element for a new catalog entry.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "templateName";
+        final String attribute1Description     = "The display name for the template to help requester choose the template to use.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "templateDescription";
+        final String attribute2Description     = "The description of the template to help requester choose the template to use.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "replacementProperties";
+        final String attribute3Description     = "Map of property names to description for properties from the template that need to be supplied in order to use the template.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
+                                                                    attribute3Description,
+                                                                    attribute3DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0210DataStores()
     {
         this.archiveBuilder.addClassificationDef(getDataScopeClassification());
@@ -520,6 +622,479 @@ public class OpenMetadataTypesArchive
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0220DataFiles()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataFile());
+        this.archiveBuilder.addEntityDef(addXMLFileEntity());
+        this.archiveBuilder.addEntityDef(addSpreadsheetFileEntity());
+    }
+
+    private TypeDefPatch updateDataFile()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataFile";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fileExtension";
+        final String attribute1Description     = "The file extension used at the end of the file's name.  This identifies the format of the file.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private EntityDef addSpreadsheetFileEntity()
+    {
+        final String guid = "2f38d248-8633-402b-b085-c88fcbc33fa8";
+
+        final String name            = "SpreadsheetFile";
+        final String description     = "A file containing tabular data with formula.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addXMLFileEntity()
+    {
+        final String guid = "e1d8d6f1-3e75-41c7-a038-6e25ab985b44";
+
+        final String name            = "XMLFile";
+        final String description     = "A file containing an XML structure.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0221MediaFiles()
+    {
+        this.archiveBuilder.addEntityDef(addAudioFileEntity());
+        this.archiveBuilder.addEntityDef(addVideoFileEntity());
+        this.archiveBuilder.addEntityDef(add3DImageFileEntity());
+        this.archiveBuilder.addEntityDef(addRasterFileEntity());
+        this.archiveBuilder.addEntityDef(addVectorFileEntity());
+        this.archiveBuilder.addTypeDefPatch(deprecateGroupedMedia());
+    }
+
+    private EntityDef addAudioFileEntity()
+    {
+        final String guid = "713c26b6-7158-4cd7-918b-7d6f9d216893";
+
+        final String name            = "AudioFile";
+        final String description     = "A file containing an audio recording.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addVideoFileEntity()
+    {
+        final String guid = "68f06c88-083e-42f0-8268-f4f822aeab0e";
+
+        final String name            = "VideoFile";
+        final String description     = "A file containing a video recording.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef add3DImageFileEntity()
+    {
+        final String guid = "b2d56d90-ef55-4fa4-b1d6-a6049fd49466";
+
+        final String name            = "3DImageFile";
+        final String description     = "A file containing a three dimensional image.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addRasterFileEntity()
+    {
+        final String guid = "6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147";
+
+        final String name            = "RasterFile";
+        final String description     = "A file containing an image as a matrix of pixels.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addVectorFileEntity()
+    {
+        final String guid = "007620a2-960e-4c3b-b625-cbefebefc737";
+
+        final String name            = "VectorFile";
+        final String description     = "A file containing an image described using mathematical formulas.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /**
+     * Deprecate the GroupedMedia - use DataContentForDataSet
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecateGroupedMedia()
+    {
+        final String typeName = "GroupedMedia";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0226ArchiveFiles()
+    {
+        this.archiveBuilder.addEntityDef(addArchiveFileEntity());
+        this.archiveBuilder.addRelationshipDef(addArchiveContentsRelationship());
+    }
+
+    private EntityDef addArchiveFileEntity()
+    {
+        final String guid = "ba5111df-3878-4694-82d7-0b0e47565523";
+
+        final String name            = "ArchiveFile";
+        final String description     = "A file containing compressed files.  These files may be organized into a directory (folder) structure.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private RelationshipDef addArchiveContentsRelationship()
+    {
+        final String guid            = "51e59b71-013b-4f77-9a51-2d6fbb3dfeeb";
+        final String name            = "ArchiveContents";
+        final String description     = "Links an archive to a collection that has a description of the archive's contents as its members.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ArchiveFile";
+        final String                     end1AttributeName            = "packagedInArchiveFiles";
+        final String                     end1AttributeDescription     = "Associated archive file.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Collection";
+        final String                     end2AttributeName            = "archiveFileContents";
+        final String                     end2AttributeDescription     = "Collection describing the archive's contents.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0280SoftwareArtifacts()
+    {
+        this.archiveBuilder.addEntityDef(addSourceCodeFileEntity());
+        this.archiveBuilder.addEntityDef(addBuildInstructionFileEntity());
+        this.archiveBuilder.addEntityDef(addExecutableFileEntity());
+        this.archiveBuilder.addEntityDef(addScriptFileEntity());
+        this.archiveBuilder.addEntityDef(addYAMLFileEntity());
+        this.archiveBuilder.addEntityDef(addPropertiesFileEntity());
+    }
+
+    private EntityDef addSourceCodeFileEntity()
+    {
+        final String guid = "5b26a2d2-3159-4e8e-bf28-e71904113fc8";
+
+        final String name            = "SourceCodeFile";
+        final String description     = "A file containing an audio recording.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "language";
+        final String attribute1Description     = "The programming language used in the code.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addBuildInstructionFileEntity()
+    {
+        final String guid = "b1697a55-c731-4ef8-a9ff-d29c143cc1c3";
+
+        final String name            = "BuildInstructionFile";
+        final String description     = "A file containing instructions to run a build of a software artifact or system.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "language";
+        final String attribute1Description     = "The programming language used in the code.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addExecutableFileEntity()
+    {
+        final String guid = "314219ed-4b81-4e1d-b66b-22958a05f0c9";
+
+        final String name            = "ExecutableFile";
+        final String description     = "A file containing compiled code that can be executed.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "language";
+        final String attribute1Description     = "The programming language used in the code.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addScriptFileEntity()
+    {
+        final String guid = "cae5d609-16b0-4812-8582-adb742bbef89";
+
+        final String name            = "ScriptFile";
+        final String description     = "A file containing code that is interpreted when it is run.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "language";
+        final String attribute1Description     = "The programming language used in the code.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addYAMLFileEntity()
+    {
+        final String guid = "2bd6feb5-1b79-417a-b430-4e8e1e0a63dd";
+
+        final String name            = "YAMLFile";
+        final String description     = "A file containing properties in YAML format.  This it typically used for configuration";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addPropertiesFileEntity()
+    {
+        final String guid = "febdb5b9-92cc-4eb1-b058-86934f2ec18b";
+
+        final String name            = "PropertiesFile";
+        final String description     = "A file containing a list of properties, typically used for configuration.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
 
@@ -1332,6 +1907,114 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0545ReferenceData()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateValidValueDefinition());
+        this.archiveBuilder.addRelationshipDef(getConsistentValidValuesRelationship());
+    }
+
+    private TypeDefPatch updateValidValueDefinition()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValueDefinition";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "category";
+        final String attribute1Description     = "Descriptive name of the concept that this valid value describes a possible value for.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "isCaseSensitive";
+        final String attribute2Description     = "Is this valid value case-sensitive, or should the values match irrespective of case?";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private RelationshipDef getConsistentValidValuesRelationship()
+    {
+        final String guid            = "16f08074-1f66-4394-98f0-f81a2fb65f18";
+        final String name            = "ConsistentValidValues";
+        final String description     = "Represents an association between two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ValidValueDefinition";
+        final String                     end1AttributeName            = "consistentValue";
+        final String                     end1AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "ValidValueDefinition";
+        final String                     end2AttributeName            = "consistentValue";
+        final String                     end2AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+
     private void update0615SchemaExtraction()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataFieldEntity());
@@ -1522,6 +2205,22 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
                                                         attribute2Description,
                                                         attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute5Name,
+                                                        attribute5Description,
+                                                        attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
+                                                        attribute6Description,
+                                                        attribute6DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute7Name,
                                                                     attribute7Description,

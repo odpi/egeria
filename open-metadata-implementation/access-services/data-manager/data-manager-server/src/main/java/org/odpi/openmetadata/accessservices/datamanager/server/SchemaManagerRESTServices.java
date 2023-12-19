@@ -351,6 +351,7 @@ public class SchemaManagerRESTServices
                                                                     pageSize,
                                                                     false,
                                                                     false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     new Date(),
                                                                     methodName));
             }
@@ -414,6 +415,7 @@ public class SchemaManagerRESTServices
                                                                 pageSize,
                                                                 false,
                                                                 false,
+                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                 new Date(),
                                                                 methodName));
             }

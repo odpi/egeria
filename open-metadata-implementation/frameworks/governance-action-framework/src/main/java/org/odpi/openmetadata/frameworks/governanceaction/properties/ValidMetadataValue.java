@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,16 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidMetadataValue implements Serializable
+public class ValidMetadataValue
 {
-    private static final long     serialVersionUID = 1L;
-
     private String  displayName    = null;
     private String  description    = null;
-    private String  usage          = null;
-    private String  scope          = null;
     private String  preferredValue = null;
     private boolean isDeprecated   = false;
+    private boolean isCaseSensitive = false;
 
     private Map<String, String> additionalProperties = null;
 
@@ -57,10 +53,9 @@ public class ValidMetadataValue implements Serializable
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
-            usage = template.getUsage();
-            scope = template.getScope();
             preferredValue = template.getPreferredValue();
             isDeprecated = template.getIsDeprecated();
+            isCaseSensitive = template.getIsCaseSensitive();
             additionalProperties = template.getAdditionalProperties();
             effectiveFrom        = template.getEffectiveFrom();
             effectiveTo          = template.getEffectiveTo();
@@ -115,50 +110,6 @@ public class ValidMetadataValue implements Serializable
 
 
     /**
-     * Return the description of how this valid value should be used.
-     *
-     * @return String text
-     */
-    public String getUsage()
-    {
-        return usage;
-    }
-
-
-    /**
-     * Set up the description of how this valid value should be used.
-     *
-     * @param usage String text
-     */
-    public void setUsage(String usage)
-    {
-        this.usage = usage;
-    }
-
-
-    /**
-     * Return the scope of values that this valid value covers (normally used with sets)
-     *
-     * @return String text
-     */
-    public String getScope()
-    {
-        return scope;
-    }
-
-
-    /**
-     * Set up the scope of values that this valid value covers (normally used with sets)
-     *
-     * @param scope String text
-     */
-    public void setScope(String scope)
-    {
-        this.scope = scope;
-    }
-
-
-    /**
      * Return the preferred values to use in implementations (normally used with definitions)
      *
      * @return String value
@@ -201,6 +152,27 @@ public class ValidMetadataValue implements Serializable
         isDeprecated = deprecated;
     }
 
+
+    /**
+     * Return whether this valid value is case-sensitive, or will match irrespective of case.
+     *
+     * @return boolean flag
+     */
+    public boolean getIsCaseSensitive()
+    {
+        return isCaseSensitive;
+    }
+
+
+    /**
+     * Set up whether this valid value is case-sensitive, or will match irrespective of case.
+     *
+     * @param caseSensitive boolean flag
+     */
+    public void setIsCaseSensitive(boolean caseSensitive)
+    {
+        isCaseSensitive = caseSensitive;
+    }
 
 
     /**
@@ -291,10 +263,9 @@ public class ValidMetadataValue implements Serializable
         return "ValidMetadataValue{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", usage='" + usage + '\'' +
-                       ", scope='" + scope + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", isDeprecated=" + isDeprecated +
+                       ", isCaseSensitive=" + isCaseSensitive +
                        ", additionalProperties=" + additionalProperties +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
@@ -315,16 +286,14 @@ public class ValidMetadataValue implements Serializable
         {
             return true;
         }
-        if (! (objectToCompare instanceof ValidMetadataValue))
+        if (! (objectToCompare instanceof ValidMetadataValue that))
         {
             return false;
         }
-        ValidMetadataValue that = (ValidMetadataValue) objectToCompare;
         return isDeprecated == that.isDeprecated &&
+                       isCaseSensitive == isCaseSensitive &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(usage, that.usage) &&
-                       Objects.equals(scope, that.scope) &&
                        Objects.equals(preferredValue, that.preferredValue) &&
                        Objects.equals(additionalProperties, that.additionalProperties) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
@@ -340,6 +309,6 @@ public class ValidMetadataValue implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(displayName, description, usage, scope, preferredValue, isDeprecated, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(displayName, description, preferredValue, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

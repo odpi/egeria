@@ -673,6 +673,32 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a ValidMetadataValueDetailListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ValidMetadataValueDetailListResponse callValidMetadataValueDetailListGetRESTCall(String    methodName,
+                                                                                            String    urlTemplate,
+                                                                                            Object... params) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        ValidMetadataValueDetailListResponse restResult = this.callGetRESTCall(methodName, ValidMetadataValueDetailListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a ValidMetadataValueListResponse object.
      *
      * @param methodName  name of the method being called.

@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,6 @@ public class IntegrationDaemonResource
      * @param serverName integration daemon name
      * @param userId calling user
      * @return list of statuses - one for each assigned integration services or integration group
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -57,7 +58,6 @@ public class IntegrationDaemonResource
      * @param connectorName name of a specific connector
      *
      * @return properties map or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -80,7 +80,6 @@ public class IntegrationDaemonResource
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -96,6 +95,54 @@ public class IntegrationDaemonResource
 
 
     /**
+     * Update the endpoint network address for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param requestBody name of a specific connector or null for all connectors and the properties to change
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @PostMapping(path = "/integration-connectors/{connectorName}/endpoint-network-address")
+
+    public  VoidResponse updateEndpointNetworkAddress(@PathVariable String            serverName,
+                                                      @PathVariable String            userId,
+                                                      @PathVariable String            connectorName,
+                                                      @RequestBody  StringRequestBody requestBody)
+    {
+        return restAPI.updateEndpointNetworkAddress(serverName, userId, connectorName, requestBody);
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param requestBody new connection object
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @PostMapping(path = "/integration-connectors/{connectorName}/connection")
+
+    public  VoidResponse updateConnectorConnection(@PathVariable String     serverName,
+                                                   @PathVariable String     userId,
+                                                   @PathVariable String     connectorName,
+                                                   @RequestBody  Connection requestBody)
+    {
+        return restAPI.updateConnectorConnection(serverName, userId, connectorName,requestBody);
+    }
+
+
+    /**
      * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
@@ -104,7 +151,6 @@ public class IntegrationDaemonResource
      *                      connectors managed by this integration service are refreshed.
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -128,7 +174,6 @@ public class IntegrationDaemonResource
      *                      connectors managed by this integration service are refreshed.
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -153,7 +198,6 @@ public class IntegrationDaemonResource
      *                      connectors managed by this integration service are refreshed.
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -178,7 +222,6 @@ public class IntegrationDaemonResource
      * @param requestBody name of a specific connector to restart - if null all connectors are restarted.
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -202,7 +245,6 @@ public class IntegrationDaemonResource
      * @param serverName integration daemon name
      * @param userId calling user
      * @return list of statuses - on for each assigned integration services
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -223,7 +265,6 @@ public class IntegrationDaemonResource
      * @param userId calling user
      * @param integrationGroupName name of integration group of interest
      * @return list of statuses - on for each assigned integration groups or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -244,7 +285,6 @@ public class IntegrationDaemonResource
      * @param serverName integration daemon server name
      * @param userId calling user
      * @return list of statuses - one for each assigned integration groups
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -269,7 +309,6 @@ public class IntegrationDaemonResource
      * @param integrationGroupName unique name of the integration group
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  IntegrationGroupException there was a problem detected by the integration group.

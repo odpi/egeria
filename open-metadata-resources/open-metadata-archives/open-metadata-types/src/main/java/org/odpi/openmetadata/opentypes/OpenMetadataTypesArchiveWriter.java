@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
  */
 public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
 {
-    private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
+    private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.omarchive";
 
     /**
      * Default constructor

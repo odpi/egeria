@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -15,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_REQUEST_TYPE_NAME;
-import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_RESPONSE_TYPE_NAME;
 
 /**
  * SimpleAPICatalogArchiveBuilder provides API metadata.
@@ -27,7 +26,6 @@ public class SimpleAPICatalogArchiveBuilder
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "9e594f24-2494-4000-ac20-59f374eaa0e6";
-    private static final String                  archiveName        = "SimpleAPICatalog";
     private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Sample metadata showing API assets and their payloads.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
@@ -164,7 +162,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 null);
 
         String requestGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                               API_REQUEST_TYPE_NAME,
+                                                               OpenMetadataTypesMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME,
                                                                getCustomerQualifiedName + "_request",
                                                                getCustomerDisplayName + " Request Parameter List",
                                                                null,
@@ -185,7 +183,7 @@ public class SimpleAPICatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(requestGUID, parameterGUID);
 
         String responseGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                                API_RESPONSE_TYPE_NAME,
+                                                                OpenMetadataTypesMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
                                                                 getCustomerQualifiedName + "_response",
                                                                 getCustomerDisplayName + " Response Parameter List",
                                                                 null,

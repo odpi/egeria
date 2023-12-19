@@ -2,23 +2,50 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
-import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider;
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv.CSVDiscoveryServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.CSVLineageImporterProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.FileBasedOpenLineageLogStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
+import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
+
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenConnectorArchiveWriter creates an open metadata archive that includes the connector type
@@ -26,7 +53,7 @@ import java.util.List;
  */
 public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 {
-    private static final String archiveFileName = "OpenConnectorsArchive.json";
+    private static final String archiveFileName = "OpenConnectorsArchive.omarchive";
 
     /*
      * This is the header information for the archive.
@@ -49,24 +76,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private static final String fileConnectorCategoryDisplayName    = "Open Metadata File Connector Category";
     private static final String fileConnectorCategoryDescription    = "Open Metadata connector category for connectors that work with files.";
     private static final String kafkaConnectorCategoryQualifiedName = "OpenMetadataKafkaConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String kafkaConnectorCategoryDisplayName   = "Open Metadata Apache Kafka Connector Category Directory";
+    private static final String kafkaConnectorCategoryDisplayName   = "Open Metadata Apache Kafka Connector Category";
     private static final String kafkaConnectorCategoryDescription   = "Open Metadata connector category for connectors to Apache Kafka.";
     private static final String kafkaConnectorCategoryTargetSource  = "Apache Software Foundation (ASF)";
-    private static final String kafkaConnectorCategoryTargetName    = "Apache Kafka.";
+    private static final String kafkaConnectorCategoryTargetName    = "Apache Kafka";
 
     private static final String relationalConnectorCategoryQualifiedName = "OpenMetadataJDBCConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String relationalConnectorCategoryDisplayName   = "Open Metadata JDBC Connector Category Directory";
+    private static final String relationalConnectorCategoryDisplayName   = "Open Metadata JDBC Connector Category";
     private static final String relationalConnectorCategoryDescription   = "Open Metadata connector category for connectors to relational databases.";
     private static final String relationalConnectorCategoryTargetSource  = "Java Database Connector (JDBC)";
-    private static final String relationalConnectorCategoryTargetName    = "Relational Database.";
-
-    /*
-     * Additional AssetTypes for basic file connector
-     */
-    private static final String jsonFileAssetTypeName  = "JSONFile";
-    private static final String jsonFileFormat         = "json";
-    private static final String mediaFileAssetTypeName = "MediaFile";
-    private static final String documentAssetTypeName  = "Document";
+    private static final String relationalConnectorCategoryTargetName    = "Relational Database";
 
 
     /*
@@ -75,8 +94,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private static final long   versionNumber = 1L;
     private static final String versionName   = "1.0";
 
-    private final OMRSArchiveBuilder         archiveBuilder;
-    private final SimpleCatalogArchiveHelper archiveHelper;
+    private final OMRSArchiveBuilder      archiveBuilder;
+    private final GovernanceArchiveHelper archiveHelper;
 
     /**
      * Default constructor initializes the archive.
@@ -99,14 +118,14 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                      creationDate,
                                                      dependentOpenMetadataArchives);
 
-        this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
-                                                            archiveGUID,
-                                                            archiveName,
-                                                            archiveName,
-                                                            originatorName,
-                                                            creationDate,
-                                                            versionNumber,
-                                                            versionName);
+        this.archiveHelper = new GovernanceArchiveHelper(archiveBuilder,
+                                                         archiveGUID,
+                                                         archiveName,
+                                                         archiveName,
+                                                         originatorName,
+                                                         creationDate,
+                                                         versionNumber,
+                                                         versionName);
     }
 
 
@@ -118,8 +137,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      */
     private OpenMetadataArchive getOpenMetadataArchive()
     {
-        ConnectorType connectorType;
-
         String connectorDirectoryTypeGUID = archiveHelper.addConnectorTypeDirectory(connectorTypeDirectoryQualifiedName,
                                                                                     connectorTypeDirectoryDisplayName,
                                                                                     connectorTypeDirectoryDescription,
@@ -159,225 +176,454 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                     null);
 
 
-        AvroFileStoreProvider avroFileStoreProvider = new AvroFileStoreProvider();
-        connectorType = avroFileStoreProvider.getConnectorType();
+        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new CSVFileStoreProvider());
+        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new DataFolderProvider());
+        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFileStoreProvider());
+        archiveHelper.addConnectorType(relationalConnectorCategoryGUID, new JDBCResourceConnectorProvider());
+        archiveHelper.addConnectorType(kafkaConnectorCategoryGUID, new KafkaOpenMetadataTopicProvider());
+        archiveHelper.addConnectorType(null, new ApacheAtlasRESTProvider());
+        archiveHelper.addConnectorType(null, new ApacheAtlasIntegrationProvider());
+        archiveHelper.addConnectorType(null, new EgeriaCataloguerIntegrationProvider());
+        archiveHelper.addConnectorType(null, new CSVLineageImporterProvider());
+        archiveHelper.addConnectorType(null, new DataFilesMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(null, new DataFolderMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(null, new JDBCIntegrationConnectorProvider());
+        archiveHelper.addConnectorType(null, new DistributeAuditEventsFromKafkaProvider());
+        archiveHelper.addConnectorType(null, new KafkaMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(null, new OpenAPIMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(null, new APIBasedOpenLineageLogStoreProvider());
+        archiveHelper.addConnectorType(null, new FileBasedOpenLineageLogStoreProvider());
+        archiveHelper.addConnectorType(null, new GovernanceActionOpenLineageIntegrationProvider());
+        archiveHelper.addConnectorType(null, new OpenLineageCataloguerIntegrationProvider());
+        archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
+        archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
 
-        CSVFileStoreProvider csvFileStoreProvider = new CSVFileStoreProvider();
-        connectorType = csvFileStoreProvider.getConnectorType();
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
 
-        DataFolderProvider dataFolderProvider = new DataFolderProvider();
-        connectorType = dataFolderProvider.getConnectorType();
+        String fileProvisionerGUID = this.getFileProvisioningGovernanceActionService();
+        String watchDogServiceGUID = this.getWatchdogGovernanceActionService();
+        String originSeekerGUID = this.getOriginSeekerGovernanceActionService();
+        String zonePublisherGUID = this.getZonePublisherGovernanceActionService();
+        String csvDiscoveryGUID = this.getCSVAssetDiscoveryService();
+        String atlasDiscoveryGUID = this.getApacheAtlasDiscoveryService();
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
+        String fileProvisioningEngineGUID = this.getFileProvisioningEngine();
 
-        BasicFileStoreProvider basicFileStoreProvider = new BasicFileStoreProvider();
-        connectorType = basicFileStoreProvider.getConnectorType();
+        this.addCopyFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
+        this.addMoveFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
+        this.addDeleteFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
+        String assetGovernanceEngineGUID = this.getAssetGovernanceEngine();
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName() + jsonFileAssetTypeName,
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       jsonFileAssetTypeName,
-                                       jsonFileFormat,
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
+        this.addFTPFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
+        this.addWatchNestedInFolderRequestType(assetGovernanceEngineGUID, watchDogServiceGUID);
+        this.addSeekOriginRequestType(assetGovernanceEngineGUID, originSeekerGUID);
+        this.addSetZoneMembershipRequestType(assetGovernanceEngineGUID, zonePublisherGUID);
+        this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
+        this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName() + mediaFileAssetTypeName,
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       mediaFileAssetTypeName,
-                                       null,
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
+        String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
 
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName() + documentAssetTypeName,
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       documentAssetTypeName,
-                                       null,
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
+        this.addSmallCSVRequestType(assetDiscoveryEngineGUID, csvDiscoveryGUID);
+        this.addApacheAtlasRequestType(assetDiscoveryEngineGUID, atlasDiscoveryGUID);
 
-        JDBCResourceConnectorProvider jdbcResourceConnectorProvider = new JDBCResourceConnectorProvider();
-        connectorType = jdbcResourceConnectorProvider.getConnectorType();
-
-        archiveHelper.addConnectorType(relationalConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
-
-        KafkaOpenMetadataTopicProvider kafkaOpenMetadataTopicProvider = new KafkaOpenMetadataTopicProvider();
-        connectorType = kafkaOpenMetadataTopicProvider.getConnectorType();
-
-        archiveHelper.addConnectorType(kafkaConnectorCategoryGUID,
-                                       connectorType.getGUID(),
-                                       connectorType.getQualifiedName(),
-                                       connectorType.getDisplayName(),
-                                       connectorType.getDescription(),
-                                       connectorType.getSupportedAssetTypeName(),
-                                       connectorType.getExpectedDataFormat(),
-                                       connectorType.getConnectorProviderClassName(),
-                                       connectorType.getConnectorFrameworkName(),
-                                       connectorType.getConnectorInterfaceLanguage(),
-                                       connectorType.getConnectorInterfaces(),
-                                       connectorType.getTargetTechnologySource(),
-                                       connectorType.getTargetTechnologyName(),
-                                       connectorType.getTargetTechnologyInterfaces(),
-                                       connectorType.getTargetTechnologyVersions(),
-                                       connectorType.getRecognizedSecuredProperties(),
-                                       connectorType.getRecognizedConfigurationProperties(),
-                                       connectorType.getRecognizedAdditionalProperties(),
-                                       connectorType.getAdditionalProperties());
-
-        /*
-
-    Text Files: .DOC, .DOCX, .EML, .LOG, .MSG, .ODT, .PAGES, .RTF, .TEX, .TXT, .WPD
-    Data Files: .AAE, .BIN, .CSV, .DAT, .KEY, .MPP, .OBB, .PPT, .PPTX, .RPT, .TAR, .VCF, .XML
-    Audio Files: .AIF, .FLAC, .M3U, .M4A, .MID, .MP3, .OGG, .WAV, .WMA
-    Video Files: .3GP, .ASF, .AVI, .FLV, .M4V, .MOV, .MP4, .MPG, .SRT, .SWF, .TS, .VOB, .WMV
-    3D Image Files: .3DM, .3DS, .BLEND, .DAE, .FBX, .MAX, .OBJ
-    Raster Image Files: .BMP, .DCM, .DDS, .DJVU, .GIF, .HEIC, .JPG, .PNG, .PSD, .TGA, .TIF
-    Vector Image Files: .AI, .CDR, .EMF, .EPS, .PS, .SKETCH, .SVG, .VSDX
-    Page Layout Files: .INDD, .OXPS, .PDF, .PMD, .PUB, .QXP, .XPS
-    Spreadsheet Files: .NUMBERS, .ODS, .XLR, .XLS, .XLSX
-    Database Files: .ACCDB, .CRYPT14, .DB, .MDB, .ODB, .PDB, .SQL, .SQLITE
-    Executable Files: .APP, .BAT, .COM, .EXE, .GADGET, .JAR, .WSF
-
-         */
         archiveHelper.saveGUIDs();
 
         /*
          * The completed archive is ready to be packaged up and returned
          */
         return this.archiveBuilder.getOpenMetadataArchive();
+    }
+
+
+    private String addDeployedImplementationType(String deployedImplementationType,
+                                                 String associatedTypeName,
+                                                 String description)
+    {
+        String qualifiedName = constructValidValueQualifiedName(associatedTypeName,
+                                                                OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                null,
+                                                                deployedImplementationType);
+
+        String category = constructValidValueCategory(associatedTypeName,
+                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                      null);
+
+        return this.archiveHelper.addValidValue(associatedTypeName,
+                                                qualifiedName,
+                                                deployedImplementationType,
+                                                description,
+                                                category,
+                                                OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                deployedImplementationType,
+                                                false,
+                                                false,
+                                                null);
+    }
+
+
+    private String addFileType()
+    {
+        return null;
+    }
+
+
+    private String addFileName()
+    {
+        return null;
+    }
+
+
+    private String addFileExtension()
+    {
+        return null;
+    }
+
+    /**
+     * Create an entity for the FileProvisioner governance engine.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getFileProvisioningEngine()
+    {
+        final String governanceEngineName        = "FileProvisioning";
+        final String governanceEngineDisplayName = "File Provisioning Governance Action Engine";
+        final String governanceEngineDescription = "Copies, moves or deletes a file on request.";
+
+        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+                                                 governanceEngineName,
+                                                 governanceEngineDisplayName,
+                                                 governanceEngineDescription,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null);
+    }
+
+
+    /**
+     * Create an entity for the AssetGovernance governance engine.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getAssetGovernanceEngine()
+    {
+        final String assetGovernanceEngineName        = "AssetGovernance";
+        final String assetGovernanceEngineDisplayName = "AssetGovernance Governance Action Engine";
+        final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
+
+        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+                                                 assetGovernanceEngineName,
+                                                 assetGovernanceEngineDisplayName,
+                                                 assetGovernanceEngineDescription,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null);
+    }
+
+
+    /**
+     * Create an entity for the AssetDiscovery governance engine.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getAssetDiscoveryEngine()
+    {
+        final String assetDiscoveryEngineName        = "AssetDiscovery";
+        final String assetDiscoveryEngineDisplayName = "AssetDiscovery Open Discovery Engine";
+        final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
+
+        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.OPEN_DISCOVERY_ENGINE_TYPE_NAME,
+                                                 assetDiscoveryEngineName,
+                                                 assetDiscoveryEngineDisplayName,
+                                                 assetDiscoveryEngineDescription,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null);
+    }
+
+
+
+    /**
+     * Create an entity for the FileProvisioning governance action service.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getFileProvisioningGovernanceActionService()
+    {
+        final String governanceServiceName        = "file-provisioning-governance-action-service";
+        final String governanceServiceDisplayName = "File {move, copy, delete} Governance Action Service";
+        final String governanceServiceDescription = "Works with files.  The request type defines which action is taken.  " +
+                                                            "The request parameters define the source file and destination, along with lineage options";
+        final String ftpGovernanceServiceProviderClassName = MoveCopyFileGovernanceActionProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+                                                  ftpGovernanceServiceProviderClassName,
+                                                  null,
+                                                  governanceServiceName,
+                                                  governanceServiceDisplayName,
+                                                  governanceServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    /**
+     * Create an entity for the generic watchdog governance action service.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getWatchdogGovernanceActionService()
+    {
+        final String governanceServiceName = "new-measurements-watchdog-governance-action-service";
+        final String governanceServiceDisplayName = "New Measurements Watchdog Governance Action Service";
+        final String governanceServiceDescription = "Initiates a governance action process when a new weekly measurements file arrives.";
+        final String governanceServiceProviderClassName = GenericFolderWatchdogGovernanceActionProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+                                                  governanceServiceProviderClassName,
+                                                  null,
+                                                  governanceServiceName,
+                                                  governanceServiceDisplayName,
+                                                  governanceServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    /**
+     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.  If found, the same origin is added
+     * to the asset.
+     *
+     * @return unique identifier fo the governance service
+     */
+    private String getZonePublisherGovernanceActionService()
+    {
+        final String governanceServiceName = "zone-publisher-governance-action-service";
+        final String governanceServiceDisplayName = "Update Asset's Zone Membership Governance Action Service";
+        final String governanceServiceDescription = "Set up the zone membership for one or more assets supplied as action targets.";
+        final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+                                                  governanceServiceProviderClassName,
+                                                  null,
+                                                  governanceServiceName,
+                                                  governanceServiceDisplayName,
+                                                  governanceServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @return unique identifier fo the governance service
+     */
+    private String getOriginSeekerGovernanceActionService()
+    {
+        final String governanceServiceName = "origin-seeker-governance-action-service";
+        final String governanceServiceDisplayName = "Locate and Set Origin Governance Action Service";
+        final String governanceServiceDescription = "Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.";
+        final String governanceServiceProviderClassName = OriginSeekerGovernanceActionProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+                                                  governanceServiceProviderClassName,
+                                                  null,
+                                                  governanceServiceName,
+                                                  governanceServiceDisplayName,
+                                                  governanceServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addFTPFileRequestType(String governanceEngineGUID,
+                                       String governanceServiceGUID)
+    {
+        final String governanceRequestType = "simulate-ftp";
+        final String serviceRequestType = "copy-file";
+        final String noLineagePropertyName = "noLineage";
+
+        Map<String, String> requestParameters = new HashMap<>();
+
+        requestParameters.put(noLineagePropertyName, "");
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, requestParameters, governanceServiceGUID);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addWatchNestedInFolderRequestType(String governanceEngineGUID,
+                                                   String governanceServiceGUID)
+    {
+        final String governanceRequestType = "watch-for-new-files";
+        final String serviceRequestType = "watch-nested-in-folder";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, serviceRequestType, null, governanceServiceGUID);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addCopyFileRequestType(String governanceEngineGUID,
+                                        String governanceServiceGUID)
+    {
+        final String governanceRequestType = "copy-file";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addMoveFileRequestType(String governanceEngineGUID,
+                                        String governanceServiceGUID)
+    {
+        final String governanceRequestType = "move-file";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addDeleteFileRequestType(String governanceEngineGUID,
+                                          String governanceServiceGUID)
+    {
+        final String governanceRequestType = "delete-file";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addSeekOriginRequestType(String governanceEngineGUID,
+                                          String governanceServiceGUID)
+    {
+        final String governanceServiceRequestType = "seek-origin";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceServiceGUID unique identifier of the governance service
+     */
+    private void addSetZoneMembershipRequestType(String governanceEngineGUID,
+                                                 String governanceServiceGUID)
+    {
+        final String governanceServiceRequestType = "set-zone-membership";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+    /**
+     * Create an entity for the CSV Asset Discovery governance service.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getCSVAssetDiscoveryService()
+    {
+        final String discoveryServiceName = "csv-asset-discovery-service";
+        final String discoveryServiceDisplayName = "CSV Asset Discovery Service";
+        final String discoveryServiceDescription = "Discovers columns for CSV Files.";
+        final String discoveryServiceProviderClassName = CSVDiscoveryServiceProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
+                                                  discoveryServiceProviderClassName,
+                                                  null,
+                                                  discoveryServiceName,
+                                                  discoveryServiceDisplayName,
+                                                  discoveryServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    /**
+     * Create an entity for the Apache Atlas Discovery governance service.
+     *
+     * @return unique identifier for the governance engine
+     */
+    private String getApacheAtlasDiscoveryService()
+    {
+        final String discoveryServiceName = "apache-atlas-discovery-service";
+        final String discoveryServiceDisplayName = "Apache Atlas Discovery Service";
+        final String discoveryServiceDescription = "Discovers the types and instances found in an Apache Atlas server.";
+        final String discoveryServiceProviderClassName = DiscoverApacheAtlasProvider.class.getName();
+
+        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
+                                                  discoveryServiceProviderClassName,
+                                                  null,
+                                                  discoveryServiceName,
+                                                  discoveryServiceDisplayName,
+                                                  discoveryServiceDescription,
+                                                  null,
+                                                  null);
+    }
+
+
+    private void addSmallCSVRequestType(String governanceEngineGUID,
+                                        String governanceServiceGUID)
+    {
+        final String discoveryServiceRequestType = "small-csv";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, discoveryServiceRequestType, null, null, governanceServiceGUID);
+    }
+
+
+    private void addApacheAtlasRequestType(String governanceEngineGUID,
+                                           String governanceServiceGUID)
+    {
+        final String discoveryServiceRequestType = "apache-atlas";
+
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID, discoveryServiceRequestType, null, null, governanceServiceGUID);
     }
 
 
@@ -395,7 +641,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
         catch (Exception error)
         {
-            System.out.println("error is " + error.toString());
+            System.out.println("error is " + error);
         }
     }
 
@@ -416,7 +662,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
         catch (Exception error)
         {
-            System.err.println("Exception: " + error.toString());
+            System.err.println("Exception: " + error);
             System.exit(-1);
         }
     }
