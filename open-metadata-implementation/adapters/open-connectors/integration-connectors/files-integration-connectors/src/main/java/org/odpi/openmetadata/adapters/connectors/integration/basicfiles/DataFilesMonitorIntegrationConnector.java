@@ -103,7 +103,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
-     *
+     * <br>
      * This method performs two sweeps.  It first retrieves the files in the directory and validates that are in the
      * catalog - adding or updating them if necessary.  The second sweep is to ensure that all the assets catalogued
      * in this directory actually exist on the file system.
@@ -349,7 +349,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     break;
 
                 case "avro":
-                    assetTypeName = "AvroFileName";
+                    assetTypeName = "AvroFile";
                     break;
 
                 case "pdf":

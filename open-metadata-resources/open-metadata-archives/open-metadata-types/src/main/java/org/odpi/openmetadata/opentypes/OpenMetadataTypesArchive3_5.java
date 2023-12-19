@@ -239,6 +239,9 @@ public class OpenMetadataTypesArchive3_5
         final String attribute6Name            = "source";
         final String attribute6Description     = "Supplier of the software server capability.";
         final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "deployedImplementationType";
+        final String attribute7Description     = "Class of technology for the software capability.";
+        final String attribute7DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -263,6 +266,11 @@ public class OpenMetadataTypesArchive3_5
         property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
                                                            attribute6Description,
                                                            attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);

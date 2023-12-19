@@ -5,10 +5,8 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.MeaningProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     private Map<String, Object>         extendedProperties   = null;
     private String                      displayName          = null;
     private String                      description          = null;
+    private String                      category             = null;
     private String                      usage                = null;
     private String                      scope                = null;
     private String                      preferredValue       = null;
@@ -65,6 +64,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
             this.extendedProperties = template.getExtendedProperties();
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
+            this.category = template.getCategory();
             this.usage = template.getUsage();
             this.scope = template.getScope();
             this.preferredValue = template.getPreferredValue();
@@ -257,6 +257,28 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
+     * Return the category of reference data for this valid value.
+     *
+     * @return String name
+     */
+    public String getCategory()
+    {
+        return category;
+    }
+
+
+    /**
+     * Set up the category of reference data for this valid value.
+     *
+     * @param category String name
+     */
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+
+    /**
      * Return the description of how this valid value should be used.
      *
      * @return String text
@@ -360,6 +382,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                        ", extendedProperties=" + extendedProperties +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
+                       ", category='" + category + '\'' +
                        ", usage='" + usage + '\'' +
                        ", scope='" + scope + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
@@ -397,6 +420,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
+                Objects.equals(category, that.category) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(isDeprecated, that.isDeprecated) &&
@@ -414,6 +438,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     {
         return Objects.hash(super.hashCode(), getTypeName(), getClassifications(), getQualifiedName(),
                             getAdditionalProperties(), getExtendedProperties(),
-                            displayName, description, usage, scope, isDeprecated, preferredValue);
+                            displayName, description, category, usage, scope, isDeprecated, preferredValue);
     }
 }

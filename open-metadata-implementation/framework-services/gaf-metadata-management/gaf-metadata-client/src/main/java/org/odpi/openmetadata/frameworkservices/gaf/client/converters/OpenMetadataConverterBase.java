@@ -5886,6 +5886,50 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the category property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeCategory(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCategory";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataTypesMapper.CATEGORY_PROPERTY_NAME,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the isCaseSensitive property from the supplied element properties.
+     *
+     * @param elementProperties properties from ValidValueDefinition entity
+     * @return boolean
+     */
+    protected boolean removeIsCaseSensitive(ElementProperties  elementProperties)
+    {
+        final String methodName = "getStrictRequirement";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeBooleanProperty(serviceName,
+                                                     OpenMetadataTypesMapper.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
      * Extract the strictRequirement property from the supplied element properties.
      *
      * @param elementProperties properties from ValidValuesAssignment relationship

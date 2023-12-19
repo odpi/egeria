@@ -2716,23 +2716,13 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of software server capability.";
         final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "deployedImplementationType";
+        final String attribute1ReplacedBy      = "capabilityType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "deployedImplementationType";
-        final String attribute2Description     = "Type of implemented or deployed software server capability.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
         properties.add(property);
 
         final String attribute3Name            = "version";

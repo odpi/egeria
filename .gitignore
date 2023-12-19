@@ -111,6 +111,7 @@ egeria-lineage-repositories/**
 /SimpleGovernanceCatalog.json
 /*Archive.json
 /BigGlossary*.json
+/*.omarchive
 
 # Ignore report output
 component-id-report.md

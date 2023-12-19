@@ -17,13 +17,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidMetadataValueListResponse is a response object for passing back a list of ValidMetadataValue properties
+ * ValidMetadataValueDetailListResponse is a response object for passing back a list of ValidMetadataValue properties
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
+public class ValidMetadataValueDetailListResponse extends OMAGGAFAPIResponse
 {
    private List<ValidMetadataValueDetail> elementList = null;
 
@@ -31,7 +31,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
     /**
      * Default constructor
      */
-    public ValidMetadataValueListResponse()
+    public ValidMetadataValueDetailListResponse()
     {
     }
 
@@ -41,7 +41,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
      *
      * @param template object to copy
      */
-    public ValidMetadataValueListResponse(ValidMetadataValueListResponse template)
+    public ValidMetadataValueDetailListResponse(ValidMetadataValueDetailListResponse template)
     {
         super(template);
 
@@ -93,7 +93,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "ValidMetadataValueListResponse{" +
+        return "ValidMetadataValueDetailListResponse{" +
                        "elementList=" + elementList +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -130,7 +130,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        ValidMetadataValueListResponse that = (ValidMetadataValueListResponse) objectToCompare;
+        ValidMetadataValueDetailListResponse that = (ValidMetadataValueDetailListResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

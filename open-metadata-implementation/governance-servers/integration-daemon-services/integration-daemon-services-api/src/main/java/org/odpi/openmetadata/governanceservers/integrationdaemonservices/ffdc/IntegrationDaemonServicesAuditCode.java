@@ -187,7 +187,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                          OMRSAuditLogRecordSeverity.INFO,
                                          "User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}",
                                          "The connector will be restarted once the new properties are in place.",
-                                         "Ensure that the connector does not report any errors during the restart processing as it operated on its new properties."),
+                                         "Ensure that the connector does not report any errors during the restart processing as it operates using its new properties."),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0016 - User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}
@@ -557,6 +557,34 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                               "No action is required as long as all the expected integration connectors are started." +
                                                    "If there are any errors reported by the integration connectors then validate the configuration " +
                                                    "of the integration connector and its associated integration group in the metadata server."),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0057 - User {0} has updated the endpoint network address for the integration connector {1} in integration daemon {2} to: {3}
+     */
+    DAEMON_CONNECTOR_ENDPOINT_UPDATE("INTEGRATION-DAEMON-SERVICES-0057",
+                                         OMRSAuditLogRecordSeverity.INFO,
+                                         "User {0} has updated the endpoint network address for the integration connector {1} in integration daemon {2} to: {3}",
+                                         "The connector will be restarted once the new endpoint network address is in place.",
+                                         "Ensure that the connector does not report any errors during the restart processing as it connects to the new endpoint."),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0058 - User {0} has attempted to update the endpoint network address for the integration connector {1} in integration daemon {2} to {3} but this connector does not have an endpoint defined
+     */
+    DAEMON_CONNECTOR_NO_ENDPOINT_TO_UPDATE("INTEGRATION-DAEMON-SERVICES-0058",
+                                     OMRSAuditLogRecordSeverity.ERROR,
+                                     "User {0} has attempted to update the endpoint network address for the integration connector {1} in integration daemon {2} to {3} but this connector does not have an endpoint defined",
+                                     "The connector continues to operate as before.",
+                                     "If the connector should have an endpoint then update the whole connection for the connector."),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0059 - User {0} has updated the connection for the integration connector {1} in integration daemon {2}
+     */
+    DAEMON_CONNECTOR_CONNECTION_UPDATE("INTEGRATION-DAEMON-SERVICES-0059",
+                                     OMRSAuditLogRecordSeverity.INFO,
+                                     "User {0} has updated the connection for the integration connector {1} in integration daemon {2}",
+                                     "The connector will be restarted once the new connection is in place.",
+                                     "Ensure that the connector does not report any errors during the restart processing as it operates with this new connection information."),
+
     ;
 
 

@@ -69,8 +69,7 @@ public class ValidMetadataValueConverter<B> extends OpenMetadataStoreConverter<B
                     bean.setDescription(this.removeDescription(instanceProperties));
                     bean.setPreferredValue(this.removePreferredValue(instanceProperties));
                     bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-                    bean.setScope(this.removeScope(instanceProperties));
-                    bean.setUsage(this.removeUsage(instanceProperties));
+                    bean.setIsCaseSensitive(this.removeIsCaseSensitive(instanceProperties));
 
                     bean.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     bean.setEffectiveTo(instanceProperties.getEffectiveToTime());

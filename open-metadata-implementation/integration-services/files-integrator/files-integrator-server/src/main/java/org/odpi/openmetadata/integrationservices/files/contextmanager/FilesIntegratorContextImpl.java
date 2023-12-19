@@ -28,6 +28,28 @@ public class FilesIntegratorContextImpl extends FilesIntegratorContext
 {
     private final FilesListenerManager listenerManager = new FilesListenerManager();
 
+
+    /**
+     * Constructor.
+     *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
+     * @param filesAndFoldersClient client to map request to
+     * @param connectionManagerClient client for managing connections
+     * @param validValueManagement client for managing valid value sets and definitions
+     * @param eventClient client to register for events
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param maxPageSize max number of elements that can be returned on a query
+     */
     public FilesIntegratorContextImpl(String                       connectorId,
                                       String                       connectorName,
                                       String                       connectorUserId,

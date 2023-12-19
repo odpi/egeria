@@ -21,9 +21,9 @@ public class DuplicateSuspectDiscoveryProvider extends DiscoveryServiceProvider
      */
     public DuplicateSuspectDiscoveryProvider()
     {
-        Class<?> connectorClass = DuplicateSuspectDiscoveryService.class;
+        String connectorClass = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoverduplicates.DuplicateSuspectDiscoveryService";
 
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClass);
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());

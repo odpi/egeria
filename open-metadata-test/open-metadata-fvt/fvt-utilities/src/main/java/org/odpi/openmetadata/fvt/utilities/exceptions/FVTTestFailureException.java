@@ -5,13 +5,19 @@ package org.odpi.openmetadata.fvt.utilities.exceptions;
 
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 
+import java.io.Serial;
+
 /**
  * FVTTestFailureException is the exception thrown when a test fails.
  */
 public class FVTTestFailureException extends Exception
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
+    /**
+     * Results
+     */
     private final FVTResults results;
 
     /**

@@ -39,7 +39,7 @@ public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName     = DiscoverApacheAtlasConnector.class.getName();
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasConnector";
 
     /**
      * Property name to control how much profiling the discovery service does.

@@ -4987,6 +4987,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the category property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeCategory(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeCategory";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.VALID_VALUE_CATEGORY_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and delete the "implications" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -6276,7 +6299,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the description property from the supplied instance properties.
+     * Extract and delete the preferredValue property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -6294,6 +6317,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract the isCaseSensitive property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ValidValueDefinition relationship
+     * @return boolean
+     */
+    protected boolean removeIsCaseSensitive(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIsCaseSensitive";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
     }
 
 

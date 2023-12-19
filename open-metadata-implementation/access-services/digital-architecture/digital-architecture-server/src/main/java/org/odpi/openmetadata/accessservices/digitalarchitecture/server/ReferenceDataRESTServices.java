@@ -94,11 +94,13 @@ public class ReferenceDataRESTServices
                                                              requestBody.getQualifiedName(),
                                                              requestBody.getDisplayName(),
                                                              requestBody.getDescription(),
+                                                             requestBody.getCategory(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
                                                              requestBody.getIsDeprecated(),
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
+                                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                              null,
                                                              null,
                                                              new Date(),
@@ -169,12 +171,14 @@ public class ReferenceDataRESTServices
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
+                                                                    requestBody.getCategory(),
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
                                                                     requestBody.getIsDeprecated(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     null,
                                                                     null,
                                                                     false,
@@ -248,12 +252,14 @@ public class ReferenceDataRESTServices
                                          requestBody.getQualifiedName(),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
+                                         requestBody.getCategory(),
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
                                          requestBody.getIsDeprecated(),
                                          requestBody.getPreferredValue(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
+                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                          null,
                                          null,
                                          isMergeUpdate,
@@ -395,6 +401,7 @@ public class ReferenceDataRESTServices
                                           isDefaultValue,
                                           null,
                                           null,
+                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
                                           false,
                                           false,
                                           new Date(),
@@ -767,6 +774,7 @@ public class ReferenceDataRESTServices
                                                strictRequirement,
                                                null,
                                                null,
+                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                false,
                                                false,
                                                new Date(),
@@ -911,6 +919,7 @@ public class ReferenceDataRESTServices
                                                stewardTypeName,
                                                stewardPropertyName,
                                                notes,
+                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                null,
                                                null,
                                                false,
@@ -1174,6 +1183,7 @@ public class ReferenceDataRESTServices
                                                                        validValueGUID,
                                                                        false,
                                                                        false,
+                                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                        new Date(),
                                                                        methodName);
             response.setElement(validValue);
@@ -1239,6 +1249,7 @@ public class ReferenceDataRESTServices
                                                                                    pageSize,
                                                                                    false,
                                                                                    false,
+                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                    new Date(),
                                                                                    methodName);
                 response.setElementList(validValues);
@@ -1305,6 +1316,7 @@ public class ReferenceDataRESTServices
                                                                                pageSize,
                                                                                false,
                                                                                false,
+                                                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                new Date(),
                                                                                methodName);
                 response.setElementList(validValues);
@@ -1368,6 +1380,7 @@ public class ReferenceDataRESTServices
                                                                                    pageSize,
                                                                                    false,
                                                                                    false,
+                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                    new Date(),
                                                                                    methodName);
             response.setElementList(validValues);
@@ -1430,6 +1443,7 @@ public class ReferenceDataRESTServices
                                                                                 pageSize,
                                                                                 false,
                                                                                 false,
+                                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                 new Date(),
                                                                                 methodName);
             response.setElementList(validValues);
@@ -1816,6 +1830,7 @@ public class ReferenceDataRESTServices
                                                                                validValueGUID,
                                                                                false,
                                                                                false,
+                                                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                new Date(),
                                                                                methodName);
 

@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
@@ -36,6 +37,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
+
 
 /**
  * The OpenMetadataStoreRESTServices provides the server-side implementation of the services used by the governance
@@ -51,9 +55,11 @@ public class OpenMetadataStoreRESTServices
                                                                                         instanceHandler.getServiceName());
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final String propertyNameParameter = "propertyName";
+    private final String propertyNameParameter   = "propertyName";
     private final String preferredValueParameter = "preferredValue";
-    private final String actualValueParameter = "actualValue";
+    private final String actualValueParameter    = "actualValue";
+    private final String validValueGUIDParameter = "element.getGUID";
+
 
     /**
      * Default constructor
@@ -171,7 +177,6 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -2208,66 +2213,6 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Creates the qualifiedName of the element based on the properties supplied.
-     *
-     * <ul>
-     *     <li><i>Egeria:ValidMetadataValue:</i> - This is the name of the top level set.</li>
-     *     <li><i>Egeria:ValidMetadataValue:typeName:</i> - This is the name of a set for a specific type.</li>
-     *     <li><i>Egeria:ValidMetadataValue:typeName:propertyName-</i> - This is the name of the set for a property name for a specific type.</li>
-     *     <li><i>Egeria:ValidMetadataValue::propertyName-</i> - This is the name of the set for a property name for all types where the property name appears.</li>
-     *     <li><i>Egeria:ValidMetadataValue:typeName:propertyName-(preferredValue)</i> - This is one of the valid metadata values for the property name when used with a specific type.</li>
-     *     <li><i>Egeria:ValidMetadataValue::propertyName-(preferredValue)</i> - This is one of the valid metadata values for the property name when used with any type.</li>
-     *     <li><i>Egeria:ValidMetadataValue:typeName:propertyName--mapName--</i> - This is a valid map name for a property name used within a specific type.</li>
-     *     <li><i>Egeria:ValidMetadataValue::propertyName--mapName--</i> This is a valid map name for a property name used with any type</li>
-     *     <li><i>Egeria:ValidMetadataValue:typeName:propertyName--mapName--(preferredValue)</i> - This is a valid metadata map value for a property name used within a specific type.</li>
-     *     <li><i>Egeria:ValidMetadataValue::propertyName--mapName--(preferredValue)</i> - This is a valid metadata map value for a property name used with any type.</li>
-     * </ul>
-     *
-     * @param typeName name of the type (can be null)
-     * @param propertyName name of the property (can be null)
-     * @param mapName name of the mapName (can be null)
-     * @param preferredValue name of the valid value (can be null)
-     * @return string (never null)
-     */
-    private String constructValidValueQualifiedName(String typeName,
-                                                    String propertyName,
-                                                    String mapName,
-                                                    String preferredValue)
-    {
-        String qualifiedName = "Egeria:ValidMetadataValue:";
-
-        if ((typeName != null) || (propertyName != null))
-        {
-            if (typeName != null)
-            {
-                qualifiedName = qualifiedName + typeName + ":";
-            }
-            else
-            {
-                qualifiedName = qualifiedName + ":";
-            }
-
-            if (propertyName != null)
-            {
-                qualifiedName = qualifiedName + propertyName + "-";
-
-                if (mapName != null)
-                {
-                    qualifiedName = qualifiedName + "-" + mapName + "--";
-                }
-
-                if (preferredValue != null)
-                {
-                    qualifiedName = qualifiedName + "(" + preferredValue + ")";
-                }
-            }
-        }
-
-        return qualifiedName;
-    }
-
-
-    /**
      * Find or create the parent set for a valid value.
      *
      * @param userId calling user
@@ -2291,8 +2236,6 @@ public class OpenMetadataStoreRESTServices
                                                                                           UserNotAuthorizedException
     {
         final String parentDescription = "Organizing set for valid metadata values";
-        final String parentScope = "Open Metadata Ecosystem";
-        final String parentUsage = "Used to control valid values in the open metadata ecosystem.";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -2338,10 +2281,12 @@ public class OpenMetadataStoreRESTServices
                                             parentQualifiedName,
                                             parentDisplayName,
                                             parentDescription,
-                                            parentUsage,
-                                            parentScope,
+                                            constructValidValueCategory(typeName, propertyName, mapName),
+                                            OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                            OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                             null,
                                             false,
+                                            null,
                                             null,
                                             null,
                                             null,
@@ -2356,6 +2301,7 @@ public class OpenMetadataStoreRESTServices
             return parentSet.getGUID();
         }
     }
+
 
     /**
      * Retrieve a valid metadata value entity from the open metadata ecosystem.
@@ -2476,14 +2422,16 @@ public class OpenMetadataStoreRESTServices
                                          setGUID,
                                          OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
                                          false,
-                                         this.constructValidValueQualifiedName(typeName, propertyName, null, requestBody.getPreferredValue()),
+                                         constructValidValueQualifiedName(typeName, propertyName, null, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         requestBody.getUsage(),
-                                         requestBody.getScope(),
+                                         constructValidValueCategory(typeName, propertyName, null),
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
                                          requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
+                                         null,
                                          null,
                                          requestBody.getEffectiveFrom(),
                                          requestBody.getEffectiveTo(),
@@ -2511,7 +2459,6 @@ public class OpenMetadataStoreRESTServices
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -2562,14 +2509,16 @@ public class OpenMetadataStoreRESTServices
                                          setGUID,
                                          OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
                                          false,
-                                         this.constructValidValueQualifiedName(typeName, propertyName, requestBody.getPreferredValue(), null),
+                                         constructValidValueQualifiedName(typeName, propertyName, requestBody.getPreferredValue(), null),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         requestBody.getUsage(),
-                                         requestBody.getScope(),
+                                         constructValidValueCategory(typeName, propertyName, null),
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
                                          requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
+                                         null,
                                          null,
                                          requestBody.getEffectiveFrom(),
                                          requestBody.getEffectiveTo(),
@@ -2650,14 +2599,16 @@ public class OpenMetadataStoreRESTServices
                                          setGUID,
                                          OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
                                          false,
-                                         this.constructValidValueQualifiedName(typeName, propertyName, mapName, requestBody.getPreferredValue()),
+                                         constructValidValueQualifiedName(typeName, propertyName, mapName, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         requestBody.getUsage(),
-                                         requestBody.getScope(),
+                                         constructValidValueCategory(typeName, propertyName, mapName),
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
                                          requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
+                                         null,
                                          null,
                                          requestBody.getEffectiveFrom(),
                                          requestBody.getEffectiveTo(),
@@ -2724,7 +2675,7 @@ public class OpenMetadataStoreRESTServices
 
                 ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-                String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, null, preferredValue);
+                String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, null, preferredValue);
 
                 EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -2802,7 +2753,7 @@ public class OpenMetadataStoreRESTServices
 
                 ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-                String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, preferredValue, null);
+                String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, preferredValue, null);
 
                 EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -2882,7 +2833,7 @@ public class OpenMetadataStoreRESTServices
 
                 ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-                String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
+                String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
 
                 EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -2957,7 +2908,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, null, actualValue);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, null, actualValue);
 
             EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -2969,7 +2920,7 @@ public class OpenMetadataStoreRESTServices
             }
             else if (typeName != null)
             {
-                qualifiedName = this.constructValidValueQualifiedName(null, propertyName,null,  actualValue);
+                qualifiedName = constructValidValueQualifiedName(null, propertyName,null,  actualValue);
 
                 element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3028,7 +2979,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, actualValue, null);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, actualValue, null);
 
             EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3040,7 +2991,7 @@ public class OpenMetadataStoreRESTServices
             }
             else if (typeName != null)
             {
-                qualifiedName = this.constructValidValueQualifiedName(null, propertyName, actualValue, null);
+                qualifiedName = constructValidValueQualifiedName(null, propertyName, actualValue, null);
 
                 element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3101,7 +3052,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, mapName, actualValue);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, actualValue);
 
             EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3113,7 +3064,7 @@ public class OpenMetadataStoreRESTServices
             }
             else if (typeName != null)
             {
-                qualifiedName = this.constructValidValueQualifiedName(null, propertyName, mapName, actualValue);
+                qualifiedName = constructValidValueQualifiedName(null, propertyName, mapName, actualValue);
 
                 element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3171,7 +3122,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, null, preferredValue);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, null, preferredValue);
 
             ValidMetadataValue element = this.getValidMetadataBean(userId, qualifiedName, handler, methodName);
 
@@ -3237,7 +3188,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, preferredValue, null);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, preferredValue, null);
 
             ValidMetadataValue element = this.getValidMetadataBean(userId, qualifiedName, handler, methodName);
 
@@ -3305,7 +3256,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
 
             ValidMetadataValue element = this.getValidMetadataBean(userId, qualifiedName, handler, methodName);
 
@@ -3349,20 +3300,20 @@ public class OpenMetadataStoreRESTServices
      * UserNotAuthorizedException the service is not able to create/access the element
      * PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValueListResponse getValidMetadataValues(String serverName,
-                                                                 String serviceURLMarker,
-                                                                 String userId,
-                                                                 String typeName,
-                                                                 String propertyName,
-                                                                 int    startFrom,
-                                                                 int    pageSize)
+    public ValidMetadataValueDetailListResponse getValidMetadataValues(String serverName,
+                                                                       String serviceURLMarker,
+                                                                       String userId,
+                                                                       String typeName,
+                                                                       String propertyName,
+                                                                       int    startFrom,
+                                                                       int    pageSize)
     {
         final String methodName = "getValidMetadataValues";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AuditLog auditLog = null;
-        ValidMetadataValueListResponse response = new ValidMetadataValueListResponse();
+        AuditLog                             auditLog = null;
+        ValidMetadataValueDetailListResponse response = new ValidMetadataValueDetailListResponse();
 
         try
         {
@@ -3372,7 +3323,7 @@ public class OpenMetadataStoreRESTServices
 
             ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
 
-            String qualifiedName = this.constructValidValueQualifiedName(typeName, propertyName, null, null);
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, null, null);
 
             EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3382,11 +3333,12 @@ public class OpenMetadataStoreRESTServices
 
                 List<ValidMetadataValueDetail> details = detailsHandler.getValidValueSetMembers(userId,
                                                                                                 element.getGUID(),
-                                                                                                "element.getGUID()",
+                                                                                                validValueGUIDParameter,
                                                                                                 startFrom,
                                                                                                 pageSize,
                                                                                                 false,
                                                                                                 false,
+                                                                                                null,
                                                                                                 null,
                                                                                                 methodName);
 
@@ -3395,7 +3347,7 @@ public class OpenMetadataStoreRESTServices
                     for (ValidMetadataValueDetail detail : details)
                     {
                         EntityDetail detailElement = this.getValidMetadataElement(userId,
-                                                                                  this.constructValidValueQualifiedName(typeName,
+                                                                                  constructValidValueQualifiedName(typeName,
                                                                                                                         propertyName,
                                                                                                                         null,
                                                                                                                         detail.getPreferredValue()),
@@ -3405,7 +3357,7 @@ public class OpenMetadataStoreRESTServices
                         if (detailElement == null)
                         {
                             detailElement = this.getValidMetadataElement(userId,
-                                                                         this.constructValidValueQualifiedName(typeName,
+                                                                         constructValidValueQualifiedName(typeName,
                                                                                                                propertyName,
                                                                                                                detail.getPreferredValue(),
                                                                                                                null),
@@ -3417,11 +3369,12 @@ public class OpenMetadataStoreRESTServices
                         {
                             List<ValidMetadataValue> mapDetails = handler.getValidValueSetMembers(userId,
                                                                                                   detailElement.getGUID(),
-                                                                                                  "detail.getGUID()",
+                                                                                                  validValueGUIDParameter,
                                                                                                   0,
                                                                                                   0,
                                                                                                   false,
                                                                                                   false,
+                                                                                                  null,
                                                                                                   null,
                                                                                                   methodName);
 
@@ -3441,6 +3394,189 @@ public class OpenMetadataStoreRESTServices
                                                             serverName,
                                                             methodName);
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve all the consistent valid values for the requested property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional name of map key that this valid value applies
+     * @param preferredValue the value to match against
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    public ValidMetadataValueListResponse getConsistentMetadataValues(String serverName,
+                                                                      String serviceURLMarker,
+                                                                      String userId,
+                                                                      String typeName,
+                                                                      String propertyName,
+                                                                      String mapName,
+                                                                      String preferredValue,
+                                                                      int    startFrom,
+                                                                      int    pageSize)
+    {
+        final String methodName = "getConsistentMetadataValues";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                       auditLog = null;
+        ValidMetadataValueListResponse response = new ValidMetadataValueListResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateName(propertyName, propertyNameParameter, methodName);
+
+            ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
+
+            String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
+
+            EntityDetail element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
+
+            if (element != null)
+            {
+                List<ValidMetadataValue> details = handler.getConsistentValidValues(userId,
+                                                                                    element.getGUID(),
+                                                                                    validValueGUIDParameter,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    false,
+                                                                                    false,
+                                                                                    null,
+                                                                                    null,
+                                                                                    methodName);
+
+                response.setElementList(details);
+            }
+            else
+            {
+                invalidParameterHandler.throwUnknownElement(userId,
+                                                            qualifiedName,
+                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                            instanceHandler.getServiceName(serviceURLMarker),
+                                                            serverName,
+                                                            methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Set up consistent metadata values relationship between the two property values.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName1 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName1 name of property that this valid value applies
+     * @param mapName1 optional name of map key that this valid value applies
+     * @param preferredValue1 the value to match against
+     * @param typeName2 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName2 name of property that this valid value applies
+     * @param mapName2 optional name of map key that this valid value applies
+     * @param preferredValue2 the value to match against
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse setConsistentMetadataValues(String          serverName,
+                                                    String          serviceURLMarker,
+                                                    String          userId,
+                                                    String          typeName1,
+                                                    String          propertyName1,
+                                                    String          mapName1,
+                                                    String          preferredValue1,
+                                                    String          typeName2,
+                                                    String          propertyName2,
+                                                    String          mapName2,
+                                                    String          preferredValue2,
+                                                    NullRequestBody requestBody)
+    {
+        final String methodName = "setConsistentMetadataValues";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateName(propertyName1, propertyNameParameter, methodName);
+
+            ValidValuesHandler<ValidMetadataValue> handler = instanceHandler.getValidMetadataValuesHandler(userId, serverName, methodName);
+
+            String qualifiedName = constructValidValueQualifiedName(typeName1, propertyName1, mapName1, preferredValue1);
+
+            EntityDetail element1 = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
+
+            if (element1 == null)
+            {
+                invalidParameterHandler.throwUnknownElement(userId,
+                                                            qualifiedName,
+                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                            instanceHandler.getServiceName(serviceURLMarker),
+                                                            serverName,
+                                                            methodName);
+            }
+
+            qualifiedName = constructValidValueQualifiedName(typeName2, propertyName2, mapName2, preferredValue2);
+
+            EntityDetail element2 = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
+
+            if (element2 == null)
+            {
+                invalidParameterHandler.throwUnknownElement(userId,
+                                                            qualifiedName,
+                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                            instanceHandler.getServiceName(serviceURLMarker),
+                                                            serverName,
+                                                            methodName);
+            }
+
+            handler.attachConsistentValidValues(userId,
+                                                null,
+                                                null,
+                                                element1.getGUID(),
+                                                element2.getGUID(),
+                                                null,
+                                                null,
+                                                null,
+                                                false,
+                                                false,
+                                                null,
+                                                methodName);
         }
         catch (Exception error)
         {

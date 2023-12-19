@@ -7,11 +7,15 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
 
+
 /**
  * IntegrationServiceDescription provides a list of registered integration services.
  */
 public enum IntegrationServiceDescription implements Serializable
 {
+    /**
+     * Catalog Integrator OMIS - Exchange metadata with third party data catalogs.
+     */
     CATALOG_INTEGRATOR_OMIS(600,
                             ComponentDevelopmentStatus.IN_DEVELOPMENT,
                             "Catalog Integrator",
@@ -22,6 +26,10 @@ public enum IntegrationServiceDescription implements Serializable
                             "Asset Manager OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
+
+    /**
+     * API Integrator OMIS - Exchange metadata with third party API Gateways.
+     */
     API_INTEGRATOR_OMIS(601,
                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                         "API Integrator",
@@ -32,6 +40,9 @@ public enum IntegrationServiceDescription implements Serializable
                         "Data Manager OMAS",
                         PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Topic Integrator OMIS - Exchange metadata with third party event-based brokers.
+     */
     TOPIC_INTEGRATOR_OMIS(602,
                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                           "Topic Integrator",
@@ -42,6 +53,9 @@ public enum IntegrationServiceDescription implements Serializable
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Display Integrator OMIS - Exchange metadata with applications that display data to users.
+     */
     DISPLAY_INTEGRATOR_OMIS(603,
                             ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                             "Display Integrator",
@@ -52,6 +66,9 @@ public enum IntegrationServiceDescription implements Serializable
                             "Data Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Database Integrator OMIS - Extract metadata such as schema, tables and columns from database managers.
+     */
     DATABASE_INTEGRATOR_OMIS     (604,
                                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                   "Database Integrator",
@@ -62,6 +79,9 @@ public enum IntegrationServiceDescription implements Serializable
                                   "Data Manager OMAS",
                                   PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Files Integrator OMIS - Extract metadata about files stored in a file system or file manager.
+     */
     FILES_INTEGRATOR_OMIS(605,
                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                           "Files Integrator",
@@ -72,16 +92,22 @@ public enum IntegrationServiceDescription implements Serializable
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Lineage Integrator OMIS - Manage exchange of lineage with a third party tool.
+     */
     LINEAGE_INTEGRATOR_OMIS(606,
                             ComponentDevelopmentStatus.IN_DEVELOPMENT,
                             "Lineage Integrator",
                             "Lineage Integrator OMIS",
                             "lineage-integrator",
-                            "Manage capture of lineage from a third party tool.",
+                            "Manage exchange of lineage with a third party tool.",
                             "https://egeria-project.org/services/omis/lineage-integrator/overview/",
                             "Asset Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Organization Integrator OMIS - Load information about the teams and people in an organization and return collaboration activity.
+     */
     ORGANIZATION_INTEGRATOR_OMIS     (607,
                                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Organization Integrator",
@@ -92,6 +118,9 @@ public enum IntegrationServiceDescription implements Serializable
                                       "Community Profile OMAS",
                                       PermittedSynchronization.FROM_THIRD_PARTY),
 
+    /**
+     * Security Integrator OMIS - Distribute security properties to security enforcement points.
+     */
     SECURITY_INTEGRATOR_OMIS(608,
                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
                              "Security Integrator",
@@ -102,6 +131,9 @@ public enum IntegrationServiceDescription implements Serializable
                              "Security Manager OMAS",
                              PermittedSynchronization.TO_THIRD_PARTY),
 
+    /**
+     * Analytics Integrator OMIS - Exchange metadata with third party analytics tools.
+     */
     ANALYTICS_INTEGRATOR_OMIS(609,
                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
                               "Analytics Integrator",
@@ -112,6 +144,10 @@ public enum IntegrationServiceDescription implements Serializable
                               "Data Science OMAS",
                               PermittedSynchronization.BOTH_DIRECTIONS),
 
+
+    /**
+     * Search Integrator OMIS - Store metadata with a third party technology that is focused on search efficiency.
+     */
     SEARCH_INTEGRATOR_OMIS(610,
                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
                            "Search Integrator",
@@ -122,6 +158,9 @@ public enum IntegrationServiceDescription implements Serializable
                            "Asset Catalog OMAS",
                            PermittedSynchronization.BOTH_DIRECTIONS),
 
+    /**
+     * Infrastructure Integrator OMIS - Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.
+     */
     INFRASTRUCTURE_INTEGRATOR_OMIS(611,
                                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                    "Infrastructure Integrator",
@@ -135,15 +174,15 @@ public enum IntegrationServiceDescription implements Serializable
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                        integrationServiceCode;
-    private ComponentDevelopmentStatus integrationServiceDevelopmentStatus   = null;
-    private String                     integrationServiceName;
-    private String                     integrationServiceFullName;
-    private String                     integrationServiceURLMarker;
-    private String                     integrationServiceDescription;
-    private String                     integrationServiceWiki;
-    private String                     integrationServicePartnerOMAS;
-    private PermittedSynchronization   defaultPermittedSynchronization;
+    private final int                        integrationServiceCode;
+    private final ComponentDevelopmentStatus integrationServiceDevelopmentStatus;
+    private final String                     integrationServiceName;
+    private final String                     integrationServiceFullName;
+    private final String                     integrationServiceURLMarker;
+    private final String                     integrationServiceDescription;
+    private final String                     integrationServiceWiki;
+    private final String                     integrationServicePartnerOMAS;
+    private final PermittedSynchronization   defaultPermittedSynchronization;
 
 
     /**

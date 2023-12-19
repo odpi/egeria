@@ -12,10 +12,10 @@ import org.odpi.openmetadata.http.HttpHelper;
  */
 public class CreateAvroFileAssetSample
 {
-    private String  fileName;
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String fileName;
+    private final String serverName;
+    private final String serverURLRoot;
+    private final String clientUserId;
 
 
     /**

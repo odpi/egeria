@@ -2367,8 +2367,10 @@ public class OpenMetadataAPIMapper
 
     public static final String VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME  = "name";                 /* from ValidValueDefinition entity */
     public static final String VALID_VALUE_DESCRIPTION_PROPERTY_NAME   = "description";          /* from ValidValueDefinition entity */
+    public static final String VALID_VALUE_CATEGORY_PROPERTY_NAME      = "category";                /* from ValidValueDefinition entity */
     public static final String VALID_VALUE_SCOPE_PROPERTY_NAME         = "scope";                /* from ValidValueDefinition entity */
     public static final String PREFERRED_VALUE_PROPERTY_NAME           = "preferredValue";       /* from ValidValueDefinition entity */
+    public static final String IS_CASE_SENSITIVE_PROPERTY_NAME         = "isCaseSensitive";      /* from ValidValueDefinition entity */
 
     public static final String VALID_VALUE_SET_TYPE_GUID                = "7de10805-7c44-40e3-a410-ffc51306801b";   /* from Area 5 */
     public static final String VALID_VALUE_SET_TYPE_NAME                = "ValidValuesSet";
@@ -2389,15 +2391,19 @@ public class OpenMetadataAPIMapper
     /* End1 = Referenceable; End 2 = ValidValuesDefinition */
 
     public static final String IS_STRICT_REQUIREMENT_PROPERTY_NAME      = "strictRequirement";     /* from ValidValuesAssignment relationship */
-    public static final String IS_DEFAULT_VALUE_PROPERTY_NAME      = "isDefaultValue";             /* from ValidValuesMember relationship */
+    public static final String IS_DEFAULT_VALUE_PROPERTY_NAME           = "isDefaultValue";        /* from ValidValuesMember relationship */
 
     public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID = "6337c9cd-8e5a-461b-97f9-5151bcb97a9e";  /* from Area 5 */
     public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME = "ValidValueMember";
-    /* End1 = ValidValuesSet; End 2 = ValidValuesDefinition */
+    /* End 1 = ValidValuesSet; End 2 = ValidValuesDefinition */
+
+    public static final String CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID = "16f08074-1f66-4394-98f0-f81a2fb65f18";  /* from Area 5 */
+    public static final String CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME = "ConsistentValidValues";
+    /* End 1 = ValidValuesDefinition; End 2 = ValidValuesDefinition */
 
     public static final String VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID = "d9a39553-6a47-4477-a217-844300c07cf2";  /* from Area 5 */
     public static final String VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME = "ValidValuesImplementation";
-    /* End1 = ValidValuesDefinition; End 2 = Asset */
+    /* End 1 = ValidValuesDefinition; End 2 = Asset */
 
     public static final String SYMBOLIC_NAME_PROPERTY_NAME             = "symbolicName";            /* from ValidValuesImplementation relationship */
     public static final String IMPLEMENTATION_VALUE_PROPERTY_NAME      = "implementationValue";     /* from ValidValuesImplementation relationship */
