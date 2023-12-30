@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * CONNECTED-ASSET-SERVICES-0001 - The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance
      */
     SERVICE_INITIALIZING("CONNECTED-ASSET-SERVICES-0001",
-             OMRSAuditLogRecordSeverity.STARTUP,
+                         AuditLogRecordSeverityLevel.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance",
              "The local server has started up a new instance of the service which provides the metadata lookup services " +
                                  "for OCF Connectors.",
@@ -35,7 +35,7 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * CONNECTED-ASSET-SERVICES-0003 - The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}
      */
     SERVICE_INITIALIZED("CONNECTED-ASSET-SERVICES-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
+                        AuditLogRecordSeverityLevel.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}",
              "The service has completed initialization of a new server instance.",
              "Verify that the service has started correctly."),
@@ -44,7 +44,7 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * CONNECTED-ASSET-SERVICES-0004 - The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}
      */
     SERVICE_SHUTDOWN("CONNECTED-ASSET-SERVICES-0004",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
              "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}",
              "The local administrator has requested shut down of a server instance.",
              "No action is required if the server is shutting down."),
@@ -53,14 +53,19 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * CONNECTED-ASSET-SERVICES-0005 - he Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}
      */
     SERVICE_INSTANCE_FAILURE("CONNECTED-ASSET-SERVICES-0005",
-            OMRSAuditLogRecordSeverity.ERROR,
+                             AuditLogRecordSeverityLevel.ERROR,
             "The Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}",
             "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
     ;
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
+    
 
     /**
      * The constructor for OCFMetadataAuditCode expects to be passed one of the enumeration rows defined in
@@ -68,7 +73,7 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * <br><br>
      *     OCFMetadataAuditCode   auditCode = OCFMetadataAuditCode.SERVER_NOT_AVAILABLE;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -76,17 +81,17 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    OCFMetadataAuditCode(String                     messageId,
-                         OMRSAuditLogRecordSeverity severity,
-                         String                     message,
-                         String                     systemAction,
-                         String                     userAction)
+    OCFMetadataAuditCode(String                      messageId,
+                         AuditLogRecordSeverityLevel severity,
+                         String                      message,
+                         String                      systemAction,
+                         String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -98,7 +103,11 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -109,8 +118,13 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -124,8 +138,12 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OCFMetadataAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

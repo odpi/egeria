@@ -2,16 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
  * The DataEngineProxyAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -22,63 +21,63 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 public enum DataEngineProxyAuditCode implements AuditLogMessageSet {
 
     SERVICE_INITIALIZING("DATA-ENGINE-PROXY-0001",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Data Engine Proxy is initializing a new server instance",
-            "The local server has started up a new instance of the Data Engine Proxy.",
-            "No action is required.  This is part of the normal operation of the service."),
+                         AuditLogRecordSeverityLevel.INFO,
+                         "The Data Engine Proxy is initializing a new server instance",
+                         "The local server has started up a new instance of the Data Engine Proxy.",
+                         "No action is required.  This is part of the normal operation of the service."),
     SERVICE_INITIALIZED("DATA-ENGINE-PROXY-0005",
-            OMRSAuditLogRecordSeverity.INFO,
+                        AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy has initialized a new instance for server {0}",
             "The local server has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
     INIT_POLLING("DATA-ENGINE-PROXY-0006",
-            OMRSAuditLogRecordSeverity.INFO,
+                 AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy is initializing polling for changes",
             "The local server has started up a new change poller for the Data Engine Proxy.",
             "No action is required.  This is part of the normal operation of the service."),
     SERVICE_SHUTDOWN("DATA-ENGINE-PROXY-0007",
-            OMRSAuditLogRecordSeverity.INFO,
+                     AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy is shutting down its instance for server {0}",
             "The local server has requested shut down of a Data Engine Proxy instance.",
             "No action is required.  This is part of the normal operation of the service."),
     ERROR_SHUTDOWN("DATA-ENGINE-PROXY-0008",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+                   AuditLogRecordSeverityLevel.EXCEPTION,
             "The service is not shutdown properly.",
             "The connection could not be shutdown.",
             "Try again. "),
     POLLING("DATA-ENGINE-PROXY-0009",
-            OMRSAuditLogRecordSeverity.INFO,
+            AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy is polling for changes between {0} and {1}",
             "The local server is looking for changes since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
     USER_NOT_AUTHORIZED("DATA-ENGINE-PROXY-0011",
-            OMRSAuditLogRecordSeverity.ERROR,
+                        AuditLogRecordSeverityLevel.ERROR,
             "The user is not authorized for the Data Engine OMAS operation: {0}",
             "The system is unable to process the operation due to the user not being authorized to do so.",
             "Check your OMAS configuration and user authorizations."),
     POLLING_TYPE_START("DATA-ENGINE-PROXY-0012",
-            OMRSAuditLogRecordSeverity.INFO,
+                       AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy is polling for changes to {0}",
             "The local server is looking for changes to the specified information since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
     POLLING_TYPE_FINISH("DATA-ENGINE-PROXY-0013",
-            OMRSAuditLogRecordSeverity.INFO,
+                        AuditLogRecordSeverityLevel.INFO,
             "The Data Engine Proxy has completed polling for changes to {0}",
             "The local server has completed looking for changes to the specified type since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
     RUNTIME_EXCEPTION("DATA-ENGINE-PROXY-0014",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+                      AuditLogRecordSeverityLevel.EXCEPTION,
             "The Data Engine Proxy processing interrupted due to runtime error.",
             "The system was unable to complete processing because the sub-system error. System will attempt to retry the process if possible.",
             "Check diagnostic message from audit log to determine the cause if the problem persists."),
 
     ;
 
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String logMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
@@ -87,15 +86,15 @@ public enum DataEngineProxyAuditCode implements AuditLogMessageSet {
      * <p>
      * OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
      * <p>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
-     * @param messageId    - unique Id for the message
+     * @param messageId    - unique id for the message
      * @param severity     - the severity of the message
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    DataEngineProxyAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
+    DataEngineProxyAuditCode(String messageId, AuditLogRecordSeverityLevel severity, String message,
                              String systemAction, String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;

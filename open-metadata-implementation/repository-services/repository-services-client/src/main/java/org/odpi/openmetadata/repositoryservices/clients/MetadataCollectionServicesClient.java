@@ -76,7 +76,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
@@ -124,7 +124,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),

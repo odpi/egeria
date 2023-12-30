@@ -17,7 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorContext;
 import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorAuditCode;
@@ -149,15 +149,14 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof SearchIntegratorConnector) {
+        if (integrationConnector instanceof SearchIntegratorConnector serviceSpecificConnector)
+        {
             auditLog.logMessage(methodName,
                     SearchIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
                             connectorId,
                             metadataSourceQualifiedName,
                             permittedSynchronizationName,
                             serviceOptionsString));
-
-            SearchIntegratorConnector serviceSpecificConnector = (SearchIntegratorConnector) integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
             String externalSourceName = metadataSourceQualifiedName;

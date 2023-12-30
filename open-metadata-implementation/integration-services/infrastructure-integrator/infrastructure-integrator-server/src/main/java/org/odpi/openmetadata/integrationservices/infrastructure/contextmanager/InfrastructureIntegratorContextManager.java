@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorContext;
 import org.odpi.openmetadata.integrationservices.infrastructure.ffdc.InfrastructureIntegratorAuditCode;
@@ -159,7 +159,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof InfrastructureIntegratorConnector)
+        if (integrationConnector instanceof InfrastructureIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 InfrastructureIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -167,8 +167,6 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                                                     metadataSourceQualifiedName,
                                                                                                                     permittedSynchronizationName,
                                                                                                                     serviceOptionsString));
-
-            InfrastructureIntegratorConnector serviceSpecificConnector = (InfrastructureIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "Catalog", null);
             String externalSourceName = metadataSourceQualifiedName;
@@ -207,6 +205,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                                     integrationConnectorGUID,
                                                                                                     externalSourceGUID,
                                                                                                     externalSourceName,
+                                                                                                    auditLog,
                                                                                                     maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

@@ -8,17 +8,48 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManager
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EnumSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.LiteralSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.MapSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeChoiceProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.StructSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +58,12 @@ import java.util.Map;
  * It provides the simplified interface to open metadata needed by the FilesIntegratorConnector.
  * It is designed to be used either for cataloguing folders and files
  */
-public abstract class FilesIntegratorContext extends IntegrationContext
+public class FilesIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final FilesAndFoldersClient   filesAndFoldersClient;
-    private final DataManagerEventClient eventClient;
-    private final ValidValueManagement   validValueManagement;
+    private final DataManagerEventClient  eventClient;
+    private final ValidValueManagement    validValueManagement;
 
 
     /**
@@ -54,6 +85,7 @@ public abstract class FilesIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public FilesIntegratorContext(String                       connectorId,
@@ -71,6 +103,7 @@ public abstract class FilesIntegratorContext extends IntegrationContext
                                   String                       integrationConnectorGUID,
                                   String                       externalSourceGUID,
                                   String                       externalSourceName,
+                                  AuditLog                     auditLog,
                                   int                          maxPageSize)
     {
         super(connectorId,
@@ -84,6 +117,7 @@ public abstract class FilesIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.filesAndFoldersClient    = filesAndFoldersClient;
@@ -120,79 +154,135 @@ public abstract class FilesIntegratorContext extends IntegrationContext
         eventClient.registerListener(userId, listener);
     }
 
-
-    /* ========================================================
-     * Register for inbound events from the Data Manager OMAS OutTopic
+    /*============================================================================================================
+     * Path name management functions
      */
 
 
     /**
-     * Register a listener object that will be called each time a specific file is created, changed or deleted.
+     * Extract the name of the file system from the path name of a file or directory (folder).  This is everything in front of this string pattern "://".
+     * If the string pattern is not found then null is returned.
      *
-     * @param listener listener object
-     * @param fileToMonitor name of the file to monitor
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @param pathName path name of file or directory
+     * @return file system name or null
      */
-    public abstract void registerFileListener(FileListenerInterface listener,
-                                              File                  fileToMonitor) throws InvalidParameterException,
-                                                                                          ConnectionCheckedException,
-                                                                                          ConnectorCheckedException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException;
+    public String getFileSystemName(String  pathName)
+    {
+        final String fileSystemRegEx = "://";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileSystemRegEx);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[0] + fileSystemRegEx;
+            }
+        }
+
+        return result;
+    }
 
 
     /**
-     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
-     * The file filter lets you request that only certain types of files are returned.
+     * Return a list of directory (folder) names extracted from a path name.  For example, if the pathname is "one/two/three.txt", the method
+     * returns ["one", "two" ].
      *
-     * @param listener listener object
-     * @param directoryToMonitor details of the file directory to monitor
-     * @param fileFilter a file filter implementation that restricts the files/directories that will be returned to the listener
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @param pathName path name of file or directory
+     * @return list of names
      */
-    public abstract void registerDirectoryListener(FileDirectoryListenerInterface listener,
-                                                   File                           directoryToMonitor,
-                                                   FileFilter                     fileFilter) throws InvalidParameterException,
-                                                                                                     ConnectionCheckedException,
-                                                                                                     ConnectorCheckedException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException;
+    public List<String> getDirectoryNames(String pathName)
+    {
+        final String  folderDivider = "/";
+
+        List<String> result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(folderDivider);
+
+            if (tokens.length > 1)
+            {
+                int startingToken = 0;
+                if (this.getFileSystemName(pathName) != null)
+                {
+                    startingToken = 2;
+                }
+
+                int endingToken = tokens.length;
+                if (this.getFileName(pathName) != null)
+                {
+                    endingToken = endingToken - 1;
+                }
+
+                if (startingToken != endingToken)
+                {
+                    result = new ArrayList<>();
+
+                    for (int i=startingToken; i<endingToken; i++)
+                    {
+                        result.add(tokens[i]);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 
 
     /**
-     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
-     * and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.
+     * Retrieves the file name from a pathname.  For example, if the pathname is "one/two/three.txt", the method
+     * returns "three.txt".
      *
-     * @param listener listener object
-     * @param directoryToMonitor details of the root file directory to monitor from
-     * @param fileFilter a file filter implementation that restricts the files/directories that will be returned to the listener
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @param pathName path name of file or directory
+     * @return file name with its extension (if present)
      */
-    public abstract void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
-                                                       File                           directoryToMonitor,
-                                                       FileFilter                     fileFilter) throws InvalidParameterException,
-                                                                                                         ConnectionCheckedException,
-                                                                                                         ConnectorCheckedException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException;
+    private String getFileName(String pathName)
+    {
+        final String  folderDivider = "/";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(folderDivider);
+
+            result = tokens[tokens.length - 1];
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Retrieves the extension from a path name.  For example, if the pathname is "one/two/three.txt", the method
+     * returns "txt".  If the path name has multiple extensions, such as "my-jar.jar.gz", the final extension is returned (ie "gz").
+     * Null is returned if there is no file extension in the path name.
+     *
+     * @param pathName path name of file or directory
+     * @return file extension
+     */
+    private String getFileExtension(String pathName)
+    {
+        final String  fileTypeDivider = "\\.";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileTypeDivider);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[tokens.length - 1];
+            }
+        }
+
+        return result;
+    }
 
 
 

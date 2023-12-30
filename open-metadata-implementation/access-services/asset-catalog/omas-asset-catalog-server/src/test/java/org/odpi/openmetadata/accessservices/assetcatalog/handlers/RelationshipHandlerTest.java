@@ -107,13 +107,12 @@ public class RelationshipHandlerTest {
     }
 
     @Test
-    public void getRelationshipBetweenEntities_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+    public void getRelationshipBetweenEntities_throwsInvalidParameterException() throws InvalidParameterException {
 
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        InvalidParameterException mockedException = new org.odpi.openmetadata.commonservices.ffdc.exceptions.
-                InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
+        InvalidParameterException mockedException = new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
 
         doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 

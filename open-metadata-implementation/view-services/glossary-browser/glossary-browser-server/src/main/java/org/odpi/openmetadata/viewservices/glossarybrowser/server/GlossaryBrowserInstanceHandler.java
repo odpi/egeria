@@ -8,12 +8,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.management.Colla
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.regex.Pattern;
 
 
 /**

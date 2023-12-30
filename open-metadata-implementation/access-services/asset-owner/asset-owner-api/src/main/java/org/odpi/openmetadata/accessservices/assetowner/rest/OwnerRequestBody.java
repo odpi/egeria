@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private OwnerType ownerType = null;
     private String    ownerId   = null;
     private String    ownerTypeName = null;
@@ -103,24 +99,44 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
     }
 
 
+    /**
+     * Return the type of element used to represent the owner.
+     *
+     * @return string type name
+     */
     public String getOwnerTypeName()
     {
         return ownerTypeName;
     }
 
 
+    /**
+     * Set up the type of element used to represent the owner.
+     *
+     * @param ownerTypeName string type name
+     */
     public void setOwnerTypeName(String ownerTypeName)
     {
         this.ownerTypeName = ownerTypeName;
     }
 
 
+    /**
+     * Return the property name used to identify the owner. For example guid or qualifiedName.
+     *
+     * @return string property name
+     */
     public String getOwnerPropertyName()
     {
         return ownerPropertyName;
     }
 
 
+    /**
+     * Set up the property name used to identify the owner. For example guid or qualifiedName.
+     *
+     * @param ownerPropertyName string property name
+     */
     public void setOwnerPropertyName(String ownerPropertyName)
     {
         this.ownerPropertyName = ownerPropertyName;

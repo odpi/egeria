@@ -595,7 +595,7 @@ public class AssetCatalogHandler {
                         methodName);
                 Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
                 searchResults.add(elements);
-            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+            } catch (InvalidParameterException e) {
                 log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
             }
         }
@@ -603,8 +603,7 @@ public class AssetCatalogHandler {
     }
 
     private List<AssetCatalogBean> getAssetCatalogBeansAfterValidation(String methodName,
-                                                                       List<EntityDetail> entities)
-            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                       List<EntityDetail> entities) throws InvalidParameterException {
         List<AssetCatalogBean> result = new ArrayList<>();
 
         for (EntityDetail asset : entities) {
@@ -1232,7 +1231,7 @@ public class AssetCatalogHandler {
             }
 
             getAsset(userId, assetCatalogItemElement, dataSet);
-        } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+        } catch (InvalidParameterException e) {
             if (CollectionUtils.isNotEmpty(assetCatalogItemElement.getContext())) {
                 assetCatalogItemElement.getContext().remove(assetCatalogItemElement.getContext().size() - 1);
             }

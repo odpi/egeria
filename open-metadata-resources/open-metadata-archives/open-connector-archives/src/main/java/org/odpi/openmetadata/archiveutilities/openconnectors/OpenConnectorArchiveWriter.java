@@ -12,9 +12,9 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.O
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.CSVLineageImporterProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider;
@@ -29,8 +29,19 @@ import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtla
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileExtension;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileName;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
@@ -38,14 +49,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
 
-import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
-import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * OpenConnectorArchiveWriter creates an open metadata archive that includes the connector type
@@ -97,6 +108,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private final OMRSArchiveBuilder      archiveBuilder;
     private final GovernanceArchiveHelper archiveHelper;
 
+    private final Map<String, String>     parentValidValueQNameToGUIDMap = new HashMap<>();
+
     /**
      * Default constructor initializes the archive.
      */
@@ -127,7 +140,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                          versionNumber,
                                                          versionName);
     }
-
 
 
     /**
@@ -176,6 +188,177 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                     null);
 
 
+        Map<String, String> deployedImplementationTypeGUIDs = new HashMap<>();
+
+        for (DeployedImplementationType deployedImplementationType : DeployedImplementationType.values())
+        {
+            String guid = this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                             deployedImplementationType.getQualifiedName(),
+                                                             deployedImplementationType.getCategory(),
+                                                             deployedImplementationType.getDescription(),
+                                                             deployedImplementationType.getWikiLink());
+
+            deployedImplementationTypeGUIDs.put(deployedImplementationType.getDeployedImplementationType(), guid);
+        }
+
+        Map<String, String> serverTypeGUIDs = new HashMap<>();
+        Map<String, String> serviceGUIDs    = new HashMap<>();
+
+        for (ServerTypeClassification serverTypeClassification : ServerTypeClassification.values())
+        {
+            String guid = this.addDeployedImplementationType(serverTypeClassification.getServerTypeName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVER_TYPE_NAME,
+                                                             serverTypeClassification.getServerTypeDescription(),
+                                                             serverTypeClassification.getServerTypeWiki());
+
+            serverTypeGUIDs.put(serverTypeClassification.getServerTypeName(), guid);
+        }
+
+        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName());
+        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_SERVER.getServerTypeName());
+
+        for (CommonServicesDescription commonServicesDescription : CommonServicesDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             commonServicesDescription.getServiceDescription(),
+                                                             commonServicesDescription.getServiceWiki());
+
+            serviceGUIDs.put(commonServicesDescription.getServiceName(), guid);
+        }
+
+        for (GovernanceServicesDescription governanceServicesDescription : GovernanceServicesDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             governanceServicesDescription.getServiceDescription(),
+                                                             governanceServicesDescription.getServiceWiki());
+
+            serviceGUIDs.put(governanceServicesDescription.getServiceName(), guid);
+        }
+
+        for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             accessServiceDescription.getAccessServiceDescription(),
+                                                             accessServiceDescription.getAccessServiceWiki());
+
+            serviceGUIDs.put(accessServiceDescription.getAccessServiceFullName(), guid);
+
+            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                            guid,
+                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+
+            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID2,
+                                                            guid,
+                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+        }
+
+        serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.VIEW_SERVER.getServerTypeName());
+
+        for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             viewServiceDescription.getViewServiceDescription(),
+                                                             viewServiceDescription.getViewServiceWiki());
+
+            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                            guid,
+                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+
+            archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                            serviceGUIDs.get(viewServiceDescription.getViewServicePartnerService()),
+                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+        }
+
+        serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.ENGINE_HOST.getServerTypeName());
+
+        for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             engineServiceDescription.getEngineServiceDescription(),
+                                                             engineServiceDescription.getEngineServiceWiki());
+
+            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                            guid,
+                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+
+            archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                            serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
+                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+
+            String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineType());
+            String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceType());
+
+            if (governanceEngineGUID != null)
+            {
+                archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                governanceEngineGUID,
+                                                                OpenMetadataValidValues.HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE);
+
+                if (governanceServiceGUID != null)
+                {
+                    archiveHelper.addResourceListRelationshipByGUID(governanceEngineGUID,
+                                                                    governanceServiceGUID,
+                                                                    OpenMetadataValidValues.HOSTED_CONNECTOR_RESOURCE_USE);
+                }
+            }
+        }
+
+        for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
+        {
+            String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
+                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             integrationServiceDescription.getIntegrationServiceDescription(),
+                                                             integrationServiceDescription.getIntegrationServiceWiki());
+
+            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                            guid,
+                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+
+            archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                            serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
+                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+
+            String connectorTypeGUID = deployedImplementationTypeGUIDs.get(integrationServiceDescription.getConnectorDeployedImplementationType());
+
+            if (connectorTypeGUID != null)
+            {
+                archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                connectorTypeGUID,
+                                                                OpenMetadataValidValues.HOSTED_CONNECTOR_RESOURCE_USE);
+            }
+        }
+
+        for (FileType fileType : FileType.values())
+        {
+            this.addFileType(fileType.getFileTypeName(),
+                             fileType.getEncoding(),
+                             fileType.getAssetSubTypeName(),
+                             fileType.getDeployedImplementationType(),
+                             fileType.getDescription());
+        }
+
+        for (FileName fileName : FileName.values())
+        {
+            this.addFileName(fileName.getFileName(),
+                             fileName.getFileType(),
+                             fileName.getDeployedImplementationType());
+        }
+
+        for (FileExtension fileExtension : FileExtension.values())
+        {
+            this.addFileExtension(fileExtension.getFileExtension(), fileExtension.getFileTypes());
+        }
+
+
+        /*
+         * Integration Connector Types may need to link to deployedImplementationType valid value element
+         */
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new CSVFileStoreProvider());
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new DataFolderProvider());
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFileStoreProvider());
@@ -197,9 +380,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new OpenLineageCataloguerIntegrationProvider());
         archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
-
-
-
 
         String fileProvisionerGUID = this.getFileProvisioningGovernanceActionService();
         String watchDogServiceGUID = this.getWatchdogGovernanceActionService();
@@ -237,9 +417,19 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     }
 
 
+    /**
+     * Add a new valid values record for a deployed implementation type.
+     *
+     * @param deployedImplementationType preferred value
+     * @param associatedTypeName         specific type name to tie it to (maybe null)
+     * @param description                description of this value
+     * @param wikiLink                   optional URL link to more information
+     * @return unique identifier of the deployedImplementationType
+     */
     private String addDeployedImplementationType(String deployedImplementationType,
                                                  String associatedTypeName,
-                                                 String description)
+                                                 String description,
+                                                 String wikiLink)
     {
         String qualifiedName = constructValidValueQualifiedName(associatedTypeName,
                                                                 OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
@@ -250,36 +440,327 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                       OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
                                                       null);
 
-        return this.archiveHelper.addValidValue(associatedTypeName,
-                                                qualifiedName,
-                                                deployedImplementationType,
-                                                description,
-                                                category,
-                                                OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                                OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                                deployedImplementationType,
-                                                false,
-                                                false,
-                                                null);
+        return this.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, category, description, wikiLink);
     }
 
 
-    private String addFileType()
+    /**
+     * Add a new valid values record for a deployed implementation type.
+     *
+     * @param deployedImplementationType preferred value
+     * @param associatedTypeName         specific type name to tie it to (maybe null)
+     * @param qualifiedName              qualifiedName for this value
+     * @param category                   category for this value
+     * @param description                description of this value
+     * @param wikiLink                   optional URL link to more information
+     * @return unique identifier of the deployedImplementationType
+     */
+    private String addDeployedImplementationType(String deployedImplementationType,
+                                                 String associatedTypeName,
+                                                 String qualifiedName,
+                                                 String category,
+                                                 String description,
+                                                 String wikiLink)
     {
-        return null;
+        String parentSetGUID = this.getParentSet(associatedTypeName,
+                                                 OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                 null);
+
+        String validValueGUID = this.archiveHelper.addValidValue(parentSetGUID,
+                                                                 parentSetGUID,
+                                                                 OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                 OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                 qualifiedName,
+                                                                 deployedImplementationType,
+                                                                 description,
+                                                                 category,
+                                                                 OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                 OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                                 deployedImplementationType,
+                                                                 false,
+                                                                 false,
+                                                                 null);
+
+        if (wikiLink != null)
+        {
+            String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
+                                                                                   qualifiedName + "_wikiLink",
+                                                                                   "More information about deployedImplementationType: " + deployedImplementationType,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   0,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null);
+
+            this.archiveHelper.addExternalReferenceLink(validValueGUID, externalReferenceGUID, null, null, null);
+        }
+
+        return validValueGUID;
     }
 
 
-    private String addFileName()
+    /**
+     * Add reference data that describes a specific file type.
+     *
+     * @param fileTypeName               the name of the file type
+     * @param encoding                   the optional name of the encoding method used in the file
+     * @param deployedImplementationType value for deployedImplementationType
+     * @param assetSubTypeName           the open metadata type where this value is used
+     * @param description                description of the type
+     */
+    private void addFileType(String                     fileTypeName,
+                             String                     encoding,
+                             String                     assetSubTypeName,
+                             DeployedImplementationType deployedImplementationType,
+                             String                     description)
     {
-        return null;
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                                                                null,
+                                                                fileTypeName);
+
+        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                                                      null);
+
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        if (encoding != null)
+        {
+            additionalProperties.put(OpenMetadataTypesMapper.ENCODING_PROPERTY_NAME, encoding);
+        }
+
+
+        if (assetSubTypeName != null)
+        {
+            additionalProperties.put("assetSubTypeName", assetSubTypeName);
+        }
+
+        if (additionalProperties.isEmpty())
+        {
+            additionalProperties = null;
+        }
+
+        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                                                 null);
+
+        this.archiveHelper.addValidValue(parentSetGUID,
+                                         parentSetGUID,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         qualifiedName,
+                                         fileTypeName,
+                                         description,
+                                         category,
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                         fileTypeName,
+                                         false,
+                                         false,
+                                         additionalProperties);
+
+        if (deployedImplementationType != null)
+        {
+            String deployedImplementationTypeQName = constructValidValueQualifiedName(deployedImplementationType.getAssociatedTypeName(),
+                                                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                      null,
+                                                                                      deployedImplementationType.getDeployedImplementationType());
+            this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, deployedImplementationTypeQName);
+        }
+
     }
 
 
-    private String addFileExtension()
+    /**
+     * Add reference data for a file name.
+     *
+     * @param fileName                   name of the file
+     * @param fileType                   the file type
+     * @param deployedImplementationType value for deployedImplementationType
+     */
+    private void addFileName(String                     fileName,
+                             FileType                   fileType,
+                             DeployedImplementationType deployedImplementationType)
     {
-        return null;
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+                                                                null,
+                                                                fileName);
+
+        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+                                                      null);
+
+        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+                                                 null);
+
+        this.archiveHelper.addValidValue(parentSetGUID,
+                                         parentSetGUID,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         qualifiedName,
+                                         fileName,
+                                         null,
+                                         category,
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                         fileName,
+                                         false,
+                                         false,
+                                         null);
+
+        if (deployedImplementationType != null)
+        {
+            String deployedImplementationTypeQName = constructValidValueQualifiedName(deployedImplementationType.getAssociatedTypeName(),
+                                                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                      null,
+                                                                                      deployedImplementationType.getDeployedImplementationType());
+            this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, deployedImplementationTypeQName);
+        }
+
+        if (fileType != null)
+        {
+            String fileTypeQName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                                    OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                                                                    null,
+                                                                    fileType.getFileTypeName());
+            this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, fileTypeQName);
+        }
     }
+
+
+    /**
+     * Add reference data for a file extension.
+     *
+     * @param fileExtension   name of the file
+     * @param fileTypes      list of matching file types
+     */
+    private void addFileExtension(String                     fileExtension,
+                                  List<FileType>             fileTypes)
+    {
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+                                                                null,
+                                                                fileExtension);
+
+        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+                                                      null);
+
+        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+                                                 null);
+
+        this.archiveHelper.addValidValue(parentSetGUID,
+                                         parentSetGUID,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         qualifiedName,
+                                         fileExtension,
+                                         null,
+                                         category,
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                         fileExtension,
+                                         false,
+                                         false,
+                                         null);
+
+        if (fileTypes != null)
+        {
+            for (FileType fileType : fileTypes)
+            {
+                String fileTypeQName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
+                                                                        OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                                                                        null,
+                                                                        fileType.getFileTypeName());
+                this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, fileTypeQName);
+            }
+        }
+    }
+
+
+    /**
+     * Find or create the parent set for a valid value.
+     *
+     * @param typeName name of the type (can be null)
+     * @param propertyName name of the property (can be null)
+     * @param mapName name of the mapName (can be null)
+     * @return unique identifier (guid) of the parent set
+     */
+    private String getParentSet(String                                 typeName,
+                                String                                 propertyName,
+                                String                                 mapName)
+    {
+        final String parentDescription = "Organizing set for valid metadata values";
+
+        String parentQualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, null);
+        String parentSetGUID = parentValidValueQNameToGUIDMap.get(parentQualifiedName);
+
+        if (parentSetGUID == null)
+        {
+            String grandParentSetGUID = null;
+            String parentDisplayName = parentQualifiedName.substring(26);
+
+            if (mapName != null)
+            {
+                grandParentSetGUID = getParentSet(typeName, propertyName, null);
+            }
+            else if (propertyName != null)
+            {
+                grandParentSetGUID = getParentSet(typeName, null, null);
+            }
+            else if (typeName != null)
+            {
+                grandParentSetGUID = getParentSet(null, null, null);
+            }
+
+            parentSetGUID =  archiveHelper.addValidValue(grandParentSetGUID,
+                                                         grandParentSetGUID,
+                                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                         parentQualifiedName,
+                                                         parentDisplayName,
+                                                         parentDescription,
+                                                         constructValidValueCategory(typeName, propertyName, mapName),
+                                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         null);
+
+            parentValidValueQNameToGUIDMap.put(parentQualifiedName, parentSetGUID);
+
+            return parentSetGUID;
+        }
+        else
+        {
+            return parentSetGUID;
+        }
+    }
+
 
     /**
      * Create an entity for the FileProvisioner governance engine.

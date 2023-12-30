@@ -1,17 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
+package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-
-import java.io.Serializable;
 
 
 /**
  * IntegrationServiceDescription provides a list of registered integration services.
  */
-public enum IntegrationServiceDescription implements Serializable
+public enum IntegrationServiceDescription
 {
     /**
      * Catalog Integrator OMIS - Exchange metadata with third party data catalogs.
@@ -23,7 +22,8 @@ public enum IntegrationServiceDescription implements Serializable
                             "catalog-integrator",
                             "Exchange metadata with third party data catalogs.",
                             "https://egeria-project.org/services/omis/catalog-integrator/overview/",
-                            "Asset Manager OMAS",
+                            DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                            AccessServiceDescription.ASSET_MANAGER_OMAS,
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
 
@@ -37,7 +37,8 @@ public enum IntegrationServiceDescription implements Serializable
                         "api-integrator",
                         "Exchange metadata with third party API Gateways.",
                         "https://egeria-project.org/services/omis/api-integrator/overview/",
-                        "Data Manager OMAS",
+                        DeployedImplementationType.API_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                        AccessServiceDescription.DATA_MANAGER_OMAS,
                         PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -50,7 +51,8 @@ public enum IntegrationServiceDescription implements Serializable
                           "topic-integrator",
                           "Exchange metadata with third party event-based brokers.",
                           "https://egeria-project.org/services/omis/topic-integrator/overview/",
-                          "Data Manager OMAS",
+                          DeployedImplementationType.TOPIC_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                          AccessServiceDescription.DATA_MANAGER_OMAS,
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -63,7 +65,8 @@ public enum IntegrationServiceDescription implements Serializable
                             "display-integrator",
                             "Exchange metadata with applications that display data to users.",
                             "https://egeria-project.org/services/omis/display-integrator/overview/",
-                            "Data Manager OMAS",
+                            DeployedImplementationType.DISPLAY_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                            AccessServiceDescription.DATA_MANAGER_OMAS,
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -76,7 +79,8 @@ public enum IntegrationServiceDescription implements Serializable
                                   "database-integrator",
                                   "Extract metadata such as schema, tables and columns from database managers.",
                                   "https://egeria-project.org/services/omis/database-integrator/overview/",
-                                  "Data Manager OMAS",
+                                  DeployedImplementationType.DATABASE_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                  AccessServiceDescription.DATA_MANAGER_OMAS,
                                   PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -89,7 +93,8 @@ public enum IntegrationServiceDescription implements Serializable
                           "files-integrator",
                           "Extract metadata about files stored in a file system or file manager.",
                           "https://egeria-project.org/services/omis/files-integrator/overview/",
-                          "Data Manager OMAS",
+                          DeployedImplementationType.FILES_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                          AccessServiceDescription.DATA_MANAGER_OMAS,
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -102,7 +107,8 @@ public enum IntegrationServiceDescription implements Serializable
                             "lineage-integrator",
                             "Manage exchange of lineage with a third party tool.",
                             "https://egeria-project.org/services/omis/lineage-integrator/overview/",
-                            "Asset Manager OMAS",
+                            DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                            AccessServiceDescription.ASSET_MANAGER_OMAS,
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -115,7 +121,8 @@ public enum IntegrationServiceDescription implements Serializable
                                       "organization-integrator",
                                       "Load information about the teams and people in an organization and return collaboration activity.",
                                       "https://egeria-project.org/services/omis/organization-integrator/overview/",
-                                      "Community Profile OMAS",
+                                      DeployedImplementationType.ORGANIZATION_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                      AccessServiceDescription.COMMUNITY_PROFILE_OMAS,
                                       PermittedSynchronization.FROM_THIRD_PARTY),
 
     /**
@@ -128,7 +135,8 @@ public enum IntegrationServiceDescription implements Serializable
                              "security-integrator",
                              "Distribute security properties to security enforcement points.",
                              "https://egeria-project.org/services/omis/security-integrator/overview/",
-                             "Security Manager OMAS",
+                             DeployedImplementationType.SECURITY_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                             AccessServiceDescription.SECURITY_MANAGER_OMAS,
                              PermittedSynchronization.TO_THIRD_PARTY),
 
     /**
@@ -141,7 +149,8 @@ public enum IntegrationServiceDescription implements Serializable
                               "analytics-integrator",
                               "Exchange metadata with third party analytics tools.",
                               "https://egeria-project.org/services/omis/analytics-integrator/overview/",
-                              "Data Science OMAS",
+                              DeployedImplementationType.ANALYTICS_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                              AccessServiceDescription.DATA_SCIENCE_OMAS,
                               PermittedSynchronization.BOTH_DIRECTIONS),
 
 
@@ -155,7 +164,8 @@ public enum IntegrationServiceDescription implements Serializable
                            "search-integrator",
                            "Store metadata with a third party technology that is focused on search efficiency.",
                            "https://egeria-project.org/services/omis/search-integrator/overview/",
-                           "Asset Catalog OMAS",
+                           DeployedImplementationType.SEARCH_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                           AccessServiceDescription.ASSET_CATALOG_OMAS,
                            PermittedSynchronization.BOTH_DIRECTIONS),
 
     /**
@@ -168,11 +178,11 @@ public enum IntegrationServiceDescription implements Serializable
                                    "infrastructure-integrator",
                                    "Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.",
                                    "https://egeria-project.org/services/omis/infrastructure-integrator/overview/",
-                                   "IT infrastructure OMAS",
+                                   DeployedImplementationType.INFRASTRUCTURE_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                   AccessServiceDescription.IT_INFRASTRUCTURE_OMAS,
                                    PermittedSynchronization.BOTH_DIRECTIONS)
     ;
 
-    private static final long     serialVersionUID    = 1L;
 
     private final int                        integrationServiceCode;
     private final ComponentDevelopmentStatus integrationServiceDevelopmentStatus;
@@ -181,7 +191,8 @@ public enum IntegrationServiceDescription implements Serializable
     private final String                     integrationServiceURLMarker;
     private final String                     integrationServiceDescription;
     private final String                     integrationServiceWiki;
-    private final String                     integrationServicePartnerOMAS;
+    private final String                     connectorDeployedImplementationType;
+    private final AccessServiceDescription   integrationServicePartnerOMAS;
     private final PermittedSynchronization   defaultPermittedSynchronization;
 
 
@@ -195,6 +206,8 @@ public enum IntegrationServiceDescription implements Serializable
      * @param integrationServiceURLMarker string used in URLs
      * @param integrationServiceDescription short description for this integration service
      * @param integrationServiceWiki wiki page for the integration service for this integration service
+     * @param connectorDeployedImplementationType the deployedImplementationType that represents the specific type of
+     *                                            integration connector supported by this integration service
      * @param integrationServicePartnerOMAS name of the OMAS that is partnered with this integration service
      * @param defaultPermittedSynchronization synchronization pattern
      */
@@ -205,7 +218,8 @@ public enum IntegrationServiceDescription implements Serializable
                                   String                     integrationServiceURLMarker,
                                   String                     integrationServiceDescription,
                                   String                     integrationServiceWiki,
-                                  String                     integrationServicePartnerOMAS,
+                                  String                     connectorDeployedImplementationType,
+                                  AccessServiceDescription   integrationServicePartnerOMAS,
                                   PermittedSynchronization   defaultPermittedSynchronization)
     {
         /*
@@ -218,6 +232,7 @@ public enum IntegrationServiceDescription implements Serializable
         this.integrationServiceURLMarker         = integrationServiceURLMarker;
         this.integrationServiceDescription       = integrationServiceDescription;
         this.integrationServiceWiki              = integrationServiceWiki;
+        this.connectorDeployedImplementationType = connectorDeployedImplementationType;
         this.integrationServicePartnerOMAS       = integrationServicePartnerOMAS;
         this.defaultPermittedSynchronization     = defaultPermittedSynchronization;
     }
@@ -322,11 +337,22 @@ public enum IntegrationServiceDescription implements Serializable
     /**
      * Return the full name of the Open Metadata Access Service (OMAS) that this integration service is partnered with.
      *
-     * @return  Full name of OMAS
+     * @return  Description of OMAS
      */
-    public String getIntegrationServicePartnerOMAS()
+    public AccessServiceDescription getIntegrationServicePartnerOMAS()
     {
         return integrationServicePartnerOMAS;
+    }
+
+
+    /**
+     * Return the deployedImplementationType for the specific type of integration connector supported by this service.
+     *
+     * @return deployedImplementationType
+     */
+    public String getConnectorDeployedImplementationType()
+    {
+        return connectorDeployedImplementationType;
     }
 
 

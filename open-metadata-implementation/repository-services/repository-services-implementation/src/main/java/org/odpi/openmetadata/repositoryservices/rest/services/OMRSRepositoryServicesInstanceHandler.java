@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 /**
  * OMRSRepositoryServicesInstanceHandler provides the mapping for inbound REST requests to the appropriate instances
  * for the requested server.  The map is maintained in a static, so it is scoped to the class loader.
- *
  * Instances of this class call the synchronized static methods to work with the map.
  */
 public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInstanceHandler
@@ -50,15 +49,15 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
         {
             return (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException  error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException(error);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException(error, error.getParameterName());
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException error)
         {
             throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException(error);
         }

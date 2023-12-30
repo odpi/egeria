@@ -6,6 +6,8 @@ import org.codehaus.plexus.util.Base64;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
@@ -41,6 +43,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
     private String       serverName               = null;
     private String       serverPlatformURLRoot    = null;
     private HttpHeaders  basicAuthorizationHeader = null;
+
+    private final MessageFormatter messageFormatter = new MessageFormatter();
 
     private static final Logger log = LoggerFactory.getLogger(SpringRESTClientConnector.class);
 
@@ -198,19 +202,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -283,19 +288,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                          methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          serverPlatformURLRoot,
+                                                                                          error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -373,19 +379,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -469,19 +476,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -553,19 +561,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -626,19 +635,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -713,19 +723,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -787,19 +798,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
             log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -883,19 +895,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -968,19 +981,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -1041,19 +1055,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
             log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }
@@ -1125,19 +1140,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
                       methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     urlTemplate,
-                                                                                                     serverName,
-                                                                                                     serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
 
-            throw new RESTServerException(errorCode.getHTTPErrorCode(),
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
                                           this.getClass().getName(),
                                           methodName,
                                           errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
                                           error);
         }
     }

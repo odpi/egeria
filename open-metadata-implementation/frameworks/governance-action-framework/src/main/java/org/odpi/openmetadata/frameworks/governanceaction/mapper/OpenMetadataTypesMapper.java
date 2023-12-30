@@ -1060,6 +1060,10 @@ public class OpenMetadataTypesMapper
     public static final String DATABASE_TYPE_NAME                        = "Database";
     /* DataStore */
 
+    public static final String RELATIONAL_DATABASE_TYPE_GUID             = "6a28e242-4eca-4664-81cb-e2096d769568";  /* from Area 2 */
+    public static final String RELATIONAL_DATABASE_TYPE_NAME             = "RelationalDatabase";
+    /* Database */
+
     public static final String DATABASE_TYPE_PROPERTY_NAME               = "deployedImplementationType";          /* from Database entity */
     public static final String DATABASE_TYPE_PROPERTY_NAME_DEP           = "type";          /* from Database entity */
     public static final String DATABASE_VERSION_PROPERTY_NAME            = "databaseVersion";       /* from Database entity */
@@ -1088,8 +1092,9 @@ public class OpenMetadataTypesMapper
     public static final String DATA_FILE_TYPE_NAME                       = "DataFile";
     /* DataStore */
 
-    public static final String FILE_TYPE_PROPERTY_NAME                   = "fileType";                   /* from DataFile entity */
     public static final String FILE_NAME_PROPERTY_NAME                   = "fileName";                   /* from DataFile entity */
+    public static final String FILE_TYPE_PROPERTY_NAME                   = "fileType";                   /* from DataFile entity */
+    public static final String FILE_EXTENSION_PROPERTY_NAME              = "fileExtension";              /* from DataFile entity */
 
     public static final String MEDIA_FILE_TYPE_GUID                      = "c5ce5499-9582-42ea-936c-9771fbd475f8";  /* from Area 2 */
     public static final String MEDIA_FILE_TYPE_NAME                      = "MediaFile";
@@ -1185,6 +1190,11 @@ public class OpenMetadataTypesMapper
     public static final String TOPIC_TYPE_GUID                           = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
     public static final String TOPIC_TYPE_NAME                           = "Topic";
     /* DataSet */
+
+    public static final String KAFKA_TOPIC_TYPE_GUID                     = "f2f5dae9-8410-420f-81f4-5d08543e07aa";  /* from Area 2 */
+    public static final String KAFKA_TOPIC_TYPE_NAME                     = "KafkaTopic";
+    /* Topic */
+
     public static final String TOPIC_TYPE_PROPERTY_NAME                  = "topicType";                             /* from Topic entity */
 
     public static final String SUBSCRIBER_LIST_TYPE_GUID                 = "69751093-35f9-42b1-944b-ba6251ff513d";  /* from Area 2 */
@@ -1220,6 +1230,11 @@ public class OpenMetadataTypesMapper
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID     = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
     public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME     = "DeployedSoftwareComponent";
     /* Process */
+
+    public static final String DEPLOYED_CONNECTOR_TYPE_GUID              = "c9a183ab-67f4-46a4-8836-16fa041769b7";  /* from Area 2 */
+    public static final String DEPLOYED_CONNECTOR_TYPE_NAME              = "DeployedConnector";
+    /* Process */
+
     public static final String IMPLEMENTATION_LANGUAGE_PROPERTY_NAME     = "implementationLanguage";                /* from Topic entity */
 
     public static final String PROCESS_HIERARCHY_TYPE_GUID               = "70dbbda3-903f-49f7-9782-32b503c43e0e";  /* from Area 2 */
@@ -1905,7 +1920,15 @@ public class OpenMetadataTypesMapper
     /* GovernanceEngine */
 
     public static final String GOVERNANCE_ACTION_SERVICE_TYPE_GUID       = "ececb378-31ac-4cc3-99b4-1c44e5fbc4d9";
-    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GeneralGovernanceActionService";
+    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GovernanceActionService";
+    /* DeployedConnector */
+
+    public static final String EVENT_ACTION_ENGINE_TYPE_GUID             = "796f6493-3c3e-4091-8b21-46ea4e54d011";
+    public static final String EVENT_ACTION_ENGINE_TYPE_NAME             = "EventActionEngine";
+    /* GovernanceEngine */
+
+    public static final String EVENT_ACTION_SERVICE_TYPE_GUID            = "464bb4d8-f865-4b9d-a06e-7ed19518ff13";
+    public static final String EVENT_ACTION_SERVICE_TYPE_NAME            = "EventActionService";
     /* DeployedConnector */
 
     public static final String OPEN_DISCOVERY_ENGINE_TYPE_GUID           = "be650674-790b-487a-a619-0a9002488055";
@@ -1914,6 +1937,15 @@ public class OpenMetadataTypesMapper
 
     public static final String OPEN_DISCOVERY_SERVICE_TYPE_GUID          = "2f278dfc-4640-4714-b34b-303e84e4fc40";
     public static final String OPEN_DISCOVERY_SERVICE_TYPE_NAME          = "OpenDiscoveryService";
+    /* DeployedConnector */
+
+
+    public static final String REPOSITORY_GOVERNANCE_ENGINE_TYPE_GUID    = "2b3bed05-c227-47d7-87a3-139ab0568361";
+    public static final String REPOSITORY_GOVERNANCE_ENGINE_TYPE_NAME    = "RepositoryGovernanceEngine";
+    /* GovernanceEngine */
+
+    public static final String REPOSITORY_GOVERNANCE_SERVICE_TYPE_GUID   = "978e7674-8231-4158-a4e3-a5ccdbcad60e";
+    public static final String REPOSITORY_GOVERNANCE_SERVICE_TYPE_NAME   = "RepositoryGovernanceService";
     /* DeployedConnector */
 
 

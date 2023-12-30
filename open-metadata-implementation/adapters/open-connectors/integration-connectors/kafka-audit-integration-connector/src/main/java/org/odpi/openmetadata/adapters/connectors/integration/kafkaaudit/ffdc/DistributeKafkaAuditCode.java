@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,18 +25,18 @@ public enum DistributeKafkaAuditCode implements AuditLogMessageSet
      * DISTRIBUTE-KAFKA-AUDIT-LOG-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("DISTRIBUTE-KAFKA-AUDIT-LOG-0001",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to catalog one or more metadata elements in the observations database.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;
 
-    private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
-    private final String                     logMessage;
-    private final String                     systemAction;
-    private final String                     userAction;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -45,7 +45,7 @@ public enum DistributeKafkaAuditCode implements AuditLogMessageSet
      * <br>
      *     DistributeKafkaAuditCode   auditCode = DistributeKafkaAuditCode.SERVER_NOT_AVAILABLE;
      * <br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -53,11 +53,11 @@ public enum DistributeKafkaAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    DistributeKafkaAuditCode(String                     messageId,
-                             OMRSAuditLogRecordSeverity severity,
-                             String                     message,
-                             String                     systemAction,
-                             String                     userAction)
+    DistributeKafkaAuditCode(String                      messageId,
+                             AuditLogRecordSeverityLevel severity,
+                             String                      message,
+                             String                      systemAction,
+                             String                      userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;

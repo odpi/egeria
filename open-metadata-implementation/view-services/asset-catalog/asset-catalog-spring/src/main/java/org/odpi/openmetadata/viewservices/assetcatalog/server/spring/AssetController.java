@@ -32,6 +32,9 @@ import java.util.List;
      description="Search for assets, retrieve their properties, lineage and related glossary information.",
      externalDocs=@ExternalDocumentation(description="Further Information", url="https://egeria-project.org/services/omvs/asset-catalog/overview/"))
 
+/**
+ * Original REST Resource
+ */
 @Deprecated
 public class AssetController
 {

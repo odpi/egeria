@@ -56,8 +56,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
                            ViewServiceConfig            viewServiceConfig,
                            AuditLog                     auditLog,
                            String                       serverUserName,
-                           int                          maxPageSize)
-    throws OMAGConfigurationErrorException
+                           int                          maxPageSize) throws OMAGConfigurationErrorException
 
     {
 
