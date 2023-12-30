@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.organization.connector.OrganizationIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.organization.connector.OrganizationIntegratorContext;
 import org.odpi.openmetadata.integrationservices.organization.ffdc.OrganizationIntegratorAuditCode;
@@ -164,7 +164,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof OrganizationIntegratorConnector)
+        if (integrationConnector instanceof OrganizationIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 OrganizationIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -172,8 +172,6 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                                                                     metadataSourceQualifiedName,
                                                                                                                     permittedSynchronizationName,
                                                                                                                     serviceOptionsString));
-
-            OrganizationIntegratorConnector serviceSpecificConnector = (OrganizationIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
             String externalSourceName = metadataSourceQualifiedName;

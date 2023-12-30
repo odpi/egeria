@@ -78,7 +78,7 @@ public class OpenMetadataStoreRESTServices
      * @param assetGUID      unique identifier for asset.
      * @param governanceService name of governance service
      * @param message        message to log
-     *                       
+     *
      * @return void or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
@@ -218,8 +218,8 @@ public class OpenMetadataStoreRESTServices
                 for (TypeDef typeDef : allTypeDefs)
                 {
                     if (((category == OpenMetadataTypeDefCategory.ENTITY_DEF) && (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF)) ||
-                        ((category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF) && (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)) ||
-                        ((category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF) && (typeDef.getCategory() == TypeDefCategory.CLASSIFICATION_DEF)))
+                                ((category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF) && (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)) ||
+                                ((category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF) && (typeDef.getCategory() == TypeDefCategory.CLASSIFICATION_DEF)))
                     {
                         openMetadataTypeDefList.add(this.getTypeDef(typeDef));
                     }
@@ -351,8 +351,8 @@ public class OpenMetadataStoreRESTServices
                         for (ExternalStandardMapping externalStandardMapping : typeDef.getExternalStandardMappings())
                         {
                             if (((standard == null) || (standard.equals(externalStandardMapping.getStandardName()))) &&
-                                ((organization == null) || (organization.equals(externalStandardMapping.getStandardOrganization()))) &&
-                                ((identifier == null) || (identifier.equals(externalStandardMapping.getStandardTypeName()))))
+                                        ((organization == null) || (organization.equals(externalStandardMapping.getStandardOrganization()))) &&
+                                        ((identifier == null) || (identifier.equals(externalStandardMapping.getStandardTypeName()))))
                             {
                                 openMetadataTypeDefList.add(this.getTypeDef(typeDef));
                             }
@@ -562,7 +562,7 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-    
+
 
     /**
      * Retrieve the metadata element using its unique identifier.
@@ -628,7 +628,6 @@ public class OpenMetadataStoreRESTServices
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -641,7 +640,6 @@ public class OpenMetadataStoreRESTServices
                                                                       String          userId,
                                                                       boolean         forLineage,
                                                                       boolean         forDuplicateProcessing,
-                                                                      long            effectiveTime,
                                                                       NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
@@ -666,7 +664,7 @@ public class OpenMetadataStoreRESTServices
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                           this.getEffectiveTimeFromLong(effectiveTime),
+                                                                           requestBody.getEffectiveTime(),
                                                                            methodName));
             }
             else
@@ -692,7 +690,6 @@ public class OpenMetadataStoreRESTServices
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -705,7 +702,6 @@ public class OpenMetadataStoreRESTServices
                                                            String          userId,
                                                            boolean         forLineage,
                                                            boolean         forDuplicateProcessing,
-                                                           long            effectiveTime,
                                                            NameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
@@ -730,7 +726,7 @@ public class OpenMetadataStoreRESTServices
                                                                             forLineage,
                                                                             forDuplicateProcessing,
                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                            this.getEffectiveTimeFromLong(effectiveTime),
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
             }
             else
@@ -757,7 +753,6 @@ public class OpenMetadataStoreRESTServices
      * @param userId caller's userId
      * @param forLineage the retrieved elements are for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -772,7 +767,6 @@ public class OpenMetadataStoreRESTServices
                                                                        String                  userId,
                                                                        boolean                 forLineage,
                                                                        boolean                 forDuplicateProcessing,
-                                                                       long                    effectiveTime,
                                                                        int                     startFrom,
                                                                        int                     pageSize,
                                                                        SearchStringRequestBody requestBody)
@@ -798,7 +792,7 @@ public class OpenMetadataStoreRESTServices
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                               this.getEffectiveTimeFromLong(effectiveTime),
+                                                                               requestBody.getEffectiveTime(),
                                                                                startFrom,
                                                                                pageSize,
                                                                                methodName));
@@ -1141,11 +1135,11 @@ public class OpenMetadataStoreRESTServices
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
             Relationship relationship = handler.getAttachmentLink(userId,
-                                                                 relationshipGUID,
-                                                                 guidParameterName,
-                                                                 null,
-                                                                 this.getEffectiveTimeFromLong(effectiveTime),
-                                                                 methodName);
+                                                                  relationshipGUID,
+                                                                  guidParameterName,
+                                                                  null,
+                                                                  this.getEffectiveTimeFromLong(effectiveTime),
+                                                                  methodName);
 
             if (relationship != null)
             {
@@ -2693,7 +2687,7 @@ public class OpenMetadataStoreRESTServices
                 }
                 else
                 {
-                    invalidParameterHandler.throwUnknownElement(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
+                    invalidParameterHandler.throwUnknownElementQualifiedName(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
                 }
             }
             else
@@ -2771,7 +2765,7 @@ public class OpenMetadataStoreRESTServices
                 }
                 else
                 {
-                    invalidParameterHandler.throwUnknownElement(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
+                    invalidParameterHandler.throwUnknownElementQualifiedName(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
                 }
             }
             else
@@ -2851,7 +2845,7 @@ public class OpenMetadataStoreRESTServices
                 }
                 else
                 {
-                    invalidParameterHandler.throwUnknownElement(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
+                    invalidParameterHandler.throwUnknownElementQualifiedName(userId, qualifiedName, typeName, instanceHandler.getServiceName(serviceURLMarker), serverName, methodName);
                 }
             }
             else
@@ -2920,7 +2914,7 @@ public class OpenMetadataStoreRESTServices
             }
             else if (typeName != null)
             {
-                qualifiedName = constructValidValueQualifiedName(null, propertyName,null,  actualValue);
+                qualifiedName = constructValidValueQualifiedName(null, propertyName, null,  actualValue);
 
                 element = this.getValidMetadataElement(userId, qualifiedName, handler, methodName);
 
@@ -3008,7 +3002,7 @@ public class OpenMetadataStoreRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-   }
+    }
 
 
     /**
@@ -3132,12 +3126,12 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
         }
         catch (Exception error)
@@ -3198,12 +3192,12 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
         }
         catch (Exception error)
@@ -3266,12 +3260,12 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
         }
         catch (Exception error)
@@ -3338,7 +3332,7 @@ public class OpenMetadataStoreRESTServices
                                                                                                 pageSize,
                                                                                                 false,
                                                                                                 false,
-                                                                                                null,
+                                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                                 null,
                                                                                                 methodName);
 
@@ -3348,9 +3342,9 @@ public class OpenMetadataStoreRESTServices
                     {
                         EntityDetail detailElement = this.getValidMetadataElement(userId,
                                                                                   constructValidValueQualifiedName(typeName,
-                                                                                                                        propertyName,
-                                                                                                                        null,
-                                                                                                                        detail.getPreferredValue()),
+                                                                                                                   propertyName,
+                                                                                                                   null,
+                                                                                                                   detail.getPreferredValue()),
                                                                                   handler,
                                                                                   methodName);
 
@@ -3358,9 +3352,9 @@ public class OpenMetadataStoreRESTServices
                         {
                             detailElement = this.getValidMetadataElement(userId,
                                                                          constructValidValueQualifiedName(typeName,
-                                                                                                               propertyName,
-                                                                                                               detail.getPreferredValue(),
-                                                                                                               null),
+                                                                                                          propertyName,
+                                                                                                          detail.getPreferredValue(),
+                                                                                                          null),
                                                                          handler,
                                                                          methodName);
                         }
@@ -3384,15 +3378,6 @@ public class OpenMetadataStoreRESTServices
                 }
 
                 response.setElementList(details);
-            }
-            else
-            {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
             }
         }
         catch (Exception error)
@@ -3469,12 +3454,12 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
         }
         catch (Exception error)
@@ -3543,12 +3528,12 @@ public class OpenMetadataStoreRESTServices
 
             if (element1 == null)
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
 
             qualifiedName = constructValidValueQualifiedName(typeName2, propertyName2, mapName2, preferredValue2);
@@ -3557,12 +3542,12 @@ public class OpenMetadataStoreRESTServices
 
             if (element2 == null)
             {
-                invalidParameterHandler.throwUnknownElement(userId,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            instanceHandler.getServiceName(serviceURLMarker),
-                                                            serverName,
-                                                            methodName);
+                invalidParameterHandler.throwUnknownElementQualifiedName(userId,
+                                                                         qualifiedName,
+                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         instanceHandler.getServiceName(serviceURLMarker),
+                                                                         serverName,
+                                                                         methodName);
             }
 
             handler.attachConsistentValidValues(userId,

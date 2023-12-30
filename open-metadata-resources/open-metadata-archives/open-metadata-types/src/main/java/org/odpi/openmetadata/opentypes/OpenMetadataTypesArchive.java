@@ -168,6 +168,7 @@ public class OpenMetadataTypesArchive
         update0021Collections();
         update0137Actions();
         update0130Projects();
+        update0201Connections();
         update0210DataStores();
         update0220DataFiles();
         update0221MediaFiles();
@@ -526,6 +527,49 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
 
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0201Connections()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateConnectorType());
+    }
+
+
+    private TypeDefPatch updateConnectorType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ConnectorType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "deployedImplementationType";
+        final String attribute1Description     = "The type of technology that this connector works with.  It is used to match connectors to assets.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
     /*
@@ -1910,7 +1954,9 @@ public class OpenMetadataTypesArchive
     private void update0545ReferenceData()
     {
         this.archiveBuilder.addTypeDefPatch(updateValidValueDefinition());
+        this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
         this.archiveBuilder.addRelationshipDef(getConsistentValidValuesRelationship());
+        this.archiveBuilder.addRelationshipDef(getValidValueAssociationRelationship());
     }
 
     private TypeDefPatch updateValidValueDefinition()
@@ -1953,11 +1999,42 @@ public class OpenMetadataTypesArchive
     }
 
 
+    private TypeDefPatch updateValidValuesImplementation()
+    {
+        final String typeName = "ValidValuesImplementation";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Update end 2.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "validValueImplementations";
+        final String                     end1AttributeDescription     = "The location where mapped value is stored.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
     private RelationshipDef getConsistentValidValuesRelationship()
     {
         final String guid            = "16f08074-1f66-4394-98f0-f81a2fb65f18";
         final String name            = "ConsistentValidValues";
-        final String description     = "Represents an association between two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.";
+        final String description     = "Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -2004,6 +2081,92 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getValidValueAssociationRelationship()
+    {
+        final String guid            = "364cabe6-a983-4a2b-81ba-190b8e7b8390";
+        final String name            = "ValidValueAssociation";
+        final String description     = "Represents an association between two valid values.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ValidValueDefinition";
+        final String                     end1AttributeName            = "associatedValues1";
+        final String                     end1AttributeDescription     = "Valid value at end one of this association.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "ValidValueDefinition";
+        final String                     end2AttributeName            = "associatedValues2";
+        final String                     end2AttributeDescription     = "Valid value at end two of this association.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "associationName";
+        final String attribute1Description     = "Descriptive name of the association.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "associationType";
+        final String attribute2Description     = "Type of the association, such as 'containment', 'aggregation' or 'inheritance.'";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "additionalProperties";
+        final String attribute3Description     = "Other properties for this association.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
+                                                                    attribute3Description,
+                                                                    attribute3DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }

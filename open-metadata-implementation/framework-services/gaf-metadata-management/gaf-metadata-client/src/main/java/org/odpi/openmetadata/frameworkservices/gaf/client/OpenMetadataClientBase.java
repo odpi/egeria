@@ -531,13 +531,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String methodName          = "getMetadataElementByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
 
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
+        requestBody.setEffectiveTime(effectiveTime);
         requestBody.setNameParameterName(nameParameterName);
 
         if (uniquePropertyName != null)
@@ -556,8 +557,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                 serviceURLMarker,
                                                                                                 userId,
                                                                                                 forLineage,
-                                                                                                forDuplicateProcessing,
-                                                                                                this.getEffectiveTimeAsLong(effectiveTime));
+                                                                                                forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -592,7 +592,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String methodName          = "getMetadataElementGUIDByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -600,6 +600,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         if (uniquePropertyName != null)
         {
@@ -617,8 +618,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                   serviceURLMarker,
                                                                   userId,
                                                                   forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  this.getEffectiveTimeAsLong(effectiveTime));
+                                                                  forDuplicateProcessing);
 
         return restResult.getGUID();
     }
@@ -688,7 +688,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -697,6 +697,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
         requestBody.setTypeName(typeName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
@@ -707,7 +708,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   userId,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
-                                                                                                  this.getEffectiveTimeAsLong(effectiveTime),
                                                                                                   startFrom,
                                                                                                   pageSize);
 

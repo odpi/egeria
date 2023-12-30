@@ -337,6 +337,7 @@ public class AssetCatalogRESTServices extends TokenController
     /**
      * Gets available entities types from lineage repository.
      *
+     * @param serverName name of the server to route the request to
      * @return the available entities types or
      *  InvalidParameterException from the underlying service,
      *  PropertyServerException from the underlying service or

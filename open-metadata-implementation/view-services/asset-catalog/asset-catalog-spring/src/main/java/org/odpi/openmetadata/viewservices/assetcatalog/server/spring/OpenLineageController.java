@@ -190,6 +190,7 @@ public class OpenLineageController
     /**
      * Retrieves available entity types from lineage repository.
      *
+     * @param serverName name of the server to route the request to
      * @return the available entities types
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service

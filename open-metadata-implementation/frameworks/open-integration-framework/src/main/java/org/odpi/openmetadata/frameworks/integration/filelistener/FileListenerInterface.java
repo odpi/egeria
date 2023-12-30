@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.integrationservices.files.connector;
+package org.odpi.openmetadata.frameworks.integration.filelistener;
 
 
 import java.io.File;

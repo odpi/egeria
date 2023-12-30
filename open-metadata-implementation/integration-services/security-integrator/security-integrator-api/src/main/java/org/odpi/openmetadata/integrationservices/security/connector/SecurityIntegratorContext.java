@@ -88,6 +88,7 @@ public class SecurityIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.securityManagerClient = securityManagerClient;

@@ -16,13 +16,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * ValidMetadataValue provides the properties for a valid metadata value.  The preferredValue is the
- * value that is used in the open metadata type.
+ * value that is used in the open metadata property.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValue
 {
+    private String  category       = null;
     private String  displayName    = null;
     private String  description    = null;
     private String  preferredValue = null;
@@ -51,15 +52,38 @@ public class ValidMetadataValue
     {
         if (template != null)
         {
+            category = template.getCategory();
             displayName = template.getDisplayName();
             description = template.getDescription();
             preferredValue = template.getPreferredValue();
             isDeprecated = template.getIsDeprecated();
             isCaseSensitive = template.getIsCaseSensitive();
             additionalProperties = template.getAdditionalProperties();
-            effectiveFrom        = template.getEffectiveFrom();
-            effectiveTo          = template.getEffectiveTo();
+            effectiveFrom = template.getEffectiveFrom();
+            effectiveTo = template.getEffectiveTo();
         }
+    }
+
+
+    /**
+     * Return the category of reference data.
+     *
+     * @return string name
+     */
+    public String getCategory()
+    {
+        return category;
+    }
+
+
+    /**
+     * Set up the category of reference data.
+     *
+     * @param category string name
+     */
+    public void setCategory(String category)
+    {
+        this.category = category;
     }
 
 
@@ -261,7 +285,8 @@ public class ValidMetadataValue
     public String toString()
     {
         return "ValidMetadataValue{" +
-                       "displayName='" + displayName + '\'' +
+                       "category='" + category + '\'' +
+                       ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", isDeprecated=" + isDeprecated +
@@ -292,6 +317,7 @@ public class ValidMetadataValue
         }
         return isDeprecated == that.isDeprecated &&
                        isCaseSensitive == isCaseSensitive &&
+                       Objects.equals(category, that.category) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(preferredValue, that.preferredValue) &&
@@ -309,6 +335,6 @@ public class ValidMetadataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(displayName, description, preferredValue, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(category, displayName, description, preferredValue, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

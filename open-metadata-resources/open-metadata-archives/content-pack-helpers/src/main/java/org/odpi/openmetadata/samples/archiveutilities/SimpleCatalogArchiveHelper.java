@@ -6,6 +6,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUIDMap;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
@@ -607,6 +610,78 @@ public class SimpleCatalogArchiveHelper
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataTypesMapper.DEPLOYED_ON_TYPE_NAME, this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
     }
 
+
+
+    /**
+     * Add the ResourceList relationship to the archive.
+     *
+     * @param parentQName qualified name of resource consumer
+     * @param resourceQName qualified name of resource
+     * @param resourceUse description of use
+     */
+    public void addResourceListRelationship(String parentQName,
+                                            String resourceQName,
+                                            String resourceUse)
+    {
+        this.addResourceListRelationshipByGUID(this.idToGUIDMap.getGUID(parentQName),
+                                               this.idToGUIDMap.getGUID(resourceQName),
+                                               resourceUse);
+    }
+
+
+    /**
+     * Add the ResourceList relationship to the archive.
+     *
+     * @param parentGUID unique identifier of resource consumer
+     * @param resourceGUID unique identifier of resource
+     * @param resourceUse description of use
+     */
+    public void addResourceListRelationshipByGUID(String parentGUID,
+                                                  String resourceGUID,
+                                                  String resourceUse)
+    {
+        final String methodName = "addResourceListRelationshipByGUID";
+
+        EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(parentGUID));
+        EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(resourceGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.RESOURCE_USE_PROPERTY_NAME, resourceUse, methodName);
+
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME, this.idToGUIDMap.getGUID(parentGUID + "_to_" + resourceGUID + "_resource_list_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
+    }
+
+
+    /**
+     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param resourceQName qualified name of the second referenceable
+     * @param resourceUse string description
+     * @param watchResource should the resource be watched (boolean)
+     */
+    public void addResourceListRelationship(String  referenceableQName,
+                                            String  resourceQName,
+                                            String  resourceUse,
+                                            boolean watchResource)
+    {
+        final String methodName = "addResourceListRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(resourceQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.RESOURCE_USE_PROPERTY_NAME, resourceUse, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.WATCH_RESOURCE_PROPERTY_NAME, watchResource, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
 
     /**
      * Add a location entity to the archive.
@@ -2011,38 +2086,6 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.GOVERNED_BY_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governed_by_relationship"),
                                                                      null,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-    /**
-     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
-     *
-     * @param referenceableQName qualified name of the referenceable
-     * @param resourceQName qualified name of the second referenceable
-     * @param resourceUse string description
-     * @param watchResource should the resource be watched (boolean)
-     */
-    public void addResourceListRelationship(String  referenceableQName,
-                                            String  resourceQName,
-                                            String  resourceUse,
-                                            boolean watchResource)
-    {
-        final String methodName = "addResourceListRelationship";
-
-        String guid1 = idToGUIDMap.getGUID(referenceableQName);
-        String guid2 = idToGUIDMap.getGUID(resourceQName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.RESOURCE_USE_PROPERTY_NAME, resourceUse, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.WATCH_RESOURCE_PROPERTY_NAME, watchResource, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
-                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -3545,6 +3588,46 @@ public class SimpleCatalogArchiveHelper
      * Create a connector type entity.  It is lined to a connector category if supplied.
      *
      * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
+     * @param connectorProvider OCF Connector Provider
+     *
+     * @return id for the connector type
+     */
+    public String addConnectorType(String                       connectorCategoryGUID,
+                                   IntegrationConnectorProvider connectorProvider)
+    {
+        String connectorTypeGUID = this.addConnectorType(connectorCategoryGUID, connectorProvider.getConnectorType());
+
+        if (connectorProvider.getCatalogTargetTypes() != null)
+        {
+            for (String catalogTarget : connectorProvider.getCatalogTargetTypes().keySet())
+            {
+                CatalogTargetType catalogTargetType = connectorProvider.getCatalogTargetTypes().get(catalogTarget);
+
+                if (catalogTargetType != null)
+                {
+                    DeployedImplementationType deployedImplementationType =
+                           DeployedImplementationType.getDefinitionFromDeployedImplementationType(catalogTargetType.getDeployedImplementationType());
+                    ConnectorType connectorType = connectorProvider.getConnectorType();
+
+                    if ((deployedImplementationType != null) && (connectorType != null))
+                    {
+                        this.addResourceListRelationship(deployedImplementationType.getQualifiedName(),
+                                                         connectorType.getQualifiedName(),
+                                                         connectorType.getDescription());
+                    }
+                }
+            }
+        }
+
+        return connectorTypeGUID;
+
+    }
+
+
+    /**
+     * Create a connector type entity.  It is lined to a connector category if supplied.
+     *
+     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param connectorType OCF connector type - comes from the Connector Provider
      *
      * @return id for the connector type
@@ -3561,6 +3644,7 @@ public class SimpleCatalogArchiveHelper
                                          connectorType.getQualifiedName(),
                                          connectorType.getDisplayName(),
                                          connectorType.getDescription(),
+                                         connectorType.getDeployedImplementationType(),
                                          connectorType.getSupportedAssetTypeName(),
                                          connectorType.getExpectedDataFormat(),
                                          connectorType.getConnectorProviderClassName(),
@@ -3592,6 +3676,7 @@ public class SimpleCatalogArchiveHelper
      * @param displayName display name for the connector type
      * @param description description about the connector type
      * @param supportedAssetTypeName type of asset supported by this connector
+     * @param deployedImplementationType specific deployed implementation type for assets supported by this connector
      * @param expectedDataFormat format of the data stored in the resource
      * @param connectorProviderClassName code for this type of connector
      * @param connectorFrameworkName name of the framework that the connector implements - default "Open Connector Framework (OCF)"
@@ -3613,6 +3698,7 @@ public class SimpleCatalogArchiveHelper
                                    String              qualifiedName,
                                    String              displayName,
                                    String              description,
+                                   String              deployedImplementationType,
                                    String              supportedAssetTypeName,
                                    String              expectedDataFormat,
                                    String              connectorProviderClassName,
@@ -3636,6 +3722,7 @@ public class SimpleCatalogArchiveHelper
                                          qualifiedName,
                                          displayName,
                                          description,
+                                         deployedImplementationType,
                                          supportedAssetTypeName,
                                          expectedDataFormat,
                                          connectorProviderClassName,
@@ -3665,6 +3752,7 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the connector type
      * @param displayName display name for the connector type
      * @param description description about the connector type
+     * @param deployedImplementationType specific deployed implementation type for assets supported by this connector
      * @param supportedAssetTypeName type of asset supported by this connector
      * @param expectedDataFormat format of the data stored in the resource
      * @param connectorProviderClassName code for this type of connector
@@ -3686,6 +3774,7 @@ public class SimpleCatalogArchiveHelper
                                       String              qualifiedName,
                                       String              displayName,
                                       String              description,
+                                      String              deployedImplementationType,
                                       String              supportedAssetTypeName,
                                       String              expectedDataFormat,
                                       String              connectorProviderClassName,
@@ -3706,6 +3795,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.SUPPORTED_ASSET_TYPE_PROPERTY_NAME, supportedAssetTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.EXPECTED_DATA_FORMAT_PROPERTY_NAME, expectedDataFormat, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.CONNECTOR_PROVIDER_PROPERTY_NAME, connectorProviderClassName, methodName);
@@ -3756,6 +3846,15 @@ public class SimpleCatalogArchiveHelper
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
                                                                          end2));
+        }
+
+        DeployedImplementationType definition = DeployedImplementationType.getDefinitionFromDeployedImplementationType(deployedImplementationType);
+
+        if (definition != null)
+        {
+            this.addResourceListRelationship(definition.getQualifiedName(),
+                                             qualifiedName,
+                                             description);
         }
 
         return connectorTypeEntity.getGUID();
@@ -4596,6 +4695,13 @@ public class SimpleCatalogArchiveHelper
                                                                      end2));
     }
 
+
+    /**
+     * Add a HasA relationship
+     *
+     * @param conceptQName concept qualified name
+     * @param propertyQName  property qualified name
+     */
     public void addHasARelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
@@ -4612,6 +4718,12 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+    /**
+     * Add related term relationship.
+     *
+     * @param conceptQName concept qualified name
+     * @param propertyQName property qualified name
+     */
     public void addRelatedTermRelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
@@ -4654,7 +4766,7 @@ public class SimpleCatalogArchiveHelper
                                 boolean             isDeprecated,
                                 Map<String, String> additionalProperties)
     {
-        return this.addValidValue(typeName, qualifiedName, name, description, null, usage, scope, preferredValue, isDeprecated, false, additionalProperties);
+        return this.addValidValue(null, null, null, typeName, qualifiedName, name, description, null, usage, scope, preferredValue, isDeprecated, false, additionalProperties);
     }
 
 
@@ -4687,6 +4799,58 @@ public class SimpleCatalogArchiveHelper
                                 boolean             isCaseSensitive,
                                 Map<String, String> additionalProperties)
     {
+        return this.addValidValue(null,
+                                  null,
+                                  null,
+                                  typeName,
+                                  qualifiedName,
+                                  name,
+                                  description,
+                                  category,
+                                  usage,
+                                  scope,
+                                  preferredValue,
+                                  isDeprecated,
+                                  isCaseSensitive,
+                                  additionalProperties);
+    }
+
+
+    /**
+     * Add a valid value definition/set.
+     *
+     * @param setGUID unique identifier of parent set
+     * @param anchorGUID unique identifier of the anchor (or null)
+     * @param anchorTypeName unique name of type of anchor (or null)
+     * @param typeName unique name of the valid value - ie a definition or a set
+     * @param qualifiedName unique name of the valid value
+     * @param name display name of the valid value
+     * @param category category of the valid value
+     * @param scope short description of the valid value
+     * @param description description of the valid value
+     * @param preferredValue preferredValue of the valid value
+     * @param usage how is the valid value used
+     * @param isDeprecated is value active
+     * @param isCaseSensitive is value case sensitive
+     * @param additionalProperties any other properties.
+     *
+     * @return unique identifier of the valid value
+     */
+    public String addValidValue(String              setGUID,
+                                String              anchorGUID,
+                                String              anchorTypeName,
+                                String              typeName,
+                                String              qualifiedName,
+                                String              name,
+                                String              description,
+                                String              category,
+                                String              usage,
+                                String              scope,
+                                String              preferredValue,
+                                boolean             isDeprecated,
+                                boolean             isCaseSensitive,
+                                Map<String, String> additionalProperties)
+    {
         final String methodName = "addValidValue";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
@@ -4700,14 +4864,36 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.IS_CASE_SENSITIVE_PROPERTY_NAME, isCaseSensitive, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, additionalProperties, methodName);
 
+        List<Classification> entityClassifications = null;
+
+        if (anchorGUID != null)
+        {
+            entityClassifications = new ArrayList<>();
+
+            InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
+                                                                                                    OpenMetadataTypesMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                                                    anchorGUID, methodName);
+            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
+                                                                                 OpenMetadataTypesMapper.ANCHOR_TYPE_NAME_PROPERTY_NAME,
+                                                                                 anchorTypeName, methodName);
+            Classification classification = archiveHelper.getClassification(OpenMetadataTypesMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                            classificationProperties, InstanceStatus.ACTIVE);
+
+            entityClassifications.add(classification);
+        }
 
         EntityDetail  validValueEntity = archiveHelper.getEntityDetail(typeName,
                                                                        idToGUIDMap.getGUID(qualifiedName),
                                                                        properties,
                                                                        InstanceStatus.ACTIVE,
-                                                                       null);
+                                                                       entityClassifications);
 
         archiveBuilder.addEntity(validValueEntity);
+
+        if (setGUID != null)
+        {
+            this.addValidValueMembershipRelationshipByGUID(setGUID, validValueEntity.getGUID(), false);
+        }
 
         return validValueEntity.getGUID();
     }
@@ -4724,10 +4910,25 @@ public class SimpleCatalogArchiveHelper
                                                     String  memberQName,
                                                     boolean isDefaultValue)
     {
-        final String methodName = "addValidValuesAssignmentRelationship";
-
         String setId = idToGUIDMap.getGUID(setQName);
         String memberId = idToGUIDMap.getGUID(memberQName);
+
+        this.addValidValueMembershipRelationshipByGUID(setId, memberId, isDefaultValue);
+    }
+
+
+    /**
+     * Link a valid value as a member of a valid value set.
+     *
+     * @param setId unique identifier of the set to add to
+     * @param memberId unique identifier of the member to add
+     * @param isDefaultValue is this the default value (only set to true for one member).
+     */
+    public void addValidValueMembershipRelationshipByGUID(String  setId,
+                                                          String  memberId,
+                                                          boolean isDefaultValue)
+    {
+        final String methodName = "addValidValuesAssignmentRelationship";
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(setId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(memberId));

@@ -8,6 +8,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

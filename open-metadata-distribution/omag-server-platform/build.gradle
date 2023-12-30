@@ -201,6 +201,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
@@ -256,6 +257,7 @@ distributions {
             into('assembly/etc/reports') {
                 from { project(':open-metadata-resources:open-metadata-reports:component-id-report').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-reports:database-report').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-reports:valid-values-report').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-reports:egeria-platform-report').shadowJar }
                 rename { String fileName ->
                     fileName.replace("-$rootProject.version-jar-with-dependencies", "")

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc;
 
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
@@ -749,6 +749,40 @@ public class InvalidParameterHandler
         final String parameterName = "guid";
 
         throw new InvalidParameterException(OMAGCommonErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(guid,
+                                                                                                     type,
+                                                                                                     userId,
+                                                                                                     methodName,
+                                                                                                     serviceName,
+                                                                                                     serverName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that the requested element is not recognized.
+     * This is probably due to the types of metadata repositories that this server is connected to.
+     *
+     * @param userId      user name to validate
+     * @param qualifiedName  unique name of element
+     * @param type  type of element
+     * @param serviceName name of called service
+     * @param serverName name of this server
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the element is not known
+     */
+    public void throwUnknownElementQualifiedName(String userId,
+                                                 String qualifiedName,
+                                                 String type,
+                                                 String serviceName,
+                                                 String serverName,
+                                                 String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "qualifiedName";
+
+        throw new InvalidParameterException(OMAGCommonErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(qualifiedName,
                                                                                                      type,
                                                                                                      userId,
                                                                                                      methodName,

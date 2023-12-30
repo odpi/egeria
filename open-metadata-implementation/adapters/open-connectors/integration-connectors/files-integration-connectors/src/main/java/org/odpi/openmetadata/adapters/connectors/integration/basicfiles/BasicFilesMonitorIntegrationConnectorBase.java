@@ -73,7 +73,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 allowCatalogDelete = true;
             }
 
-            templateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+            templateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
         }
 
         /*

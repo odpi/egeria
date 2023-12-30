@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The DocStoreErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the unencrypted file based doc store.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -26,40 +25,46 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum DocStoreErrorCode implements ExceptionMessageSet
 {
-    CONFIG_RETRIEVE_ALL_ERROR(400, "FILE-DOC-STORE-400-001 ",
-                        "Unable to retrieve the configuration files; exception was {0} with message {1}, while attempting access file {2}.",
+    /**
+     * FILE-DOC-STORE-400-001 - Unable to retrieve the configuration files; exception was {0} with message {1}, while attempting access file {2}
+     */
+    CONFIG_RETRIEVE_ALL_ERROR(400, "FILE-DOC-STORE-400-001",
+                        "Unable to retrieve the configuration files; exception was {0} with message {1}, while attempting access file {2}",
                         "The system was unable to retrieve the configuration files.",
                         "Review the full stack trace in the logs to troubleshoot further. Then retry the request."),
 
-    CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE(400, "FILE-DOC-STORE-400-002 ",
-                                                       "Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments.",
+    /**
+     * FILE-DOC-STORE-400-002 - Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments
+     */
+    CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE(400, "FILE-DOC-STORE-400-002",
+                                                       "Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments",
                                                        "The system was unable to retrieve the configuration files as the template was invalid.",
                                                        "Either use the default store template or specify a valid template.")
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for DocStoreErrorCode expects to be passed one of the enumeration rows defined in
-     * DocStoreErrorCode above.   For example:
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
-     *     DocStoreErrorCode   errorCode = DocStoreErrorCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 5 parameters shown below.
-     *
-     * @param httpErrorCode    error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DocStoreErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DocStoreErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -71,7 +76,11 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -84,21 +93,32 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
     }
 
+
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "DocStoreErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

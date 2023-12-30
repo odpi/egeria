@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -11,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
@@ -118,14 +118,14 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultAuditLogConnection()
     {
-        List<OMRSAuditLogRecordSeverity> supportedSeverityDefinitions = Arrays.asList(OMRSAuditLogRecordSeverity.values());
-        List<String>                     supportedSeverities = new ArrayList<>();
+        List<AuditLogRecordSeverityLevel> supportedSeverityDefinitions = Arrays.asList(AuditLogRecordSeverityLevel.values());
+        List<String>                      supportedSeverities = new ArrayList<>();
 
-        for (OMRSAuditLogRecordSeverity severityDefinition : supportedSeverityDefinitions)
+        for (AuditLogRecordSeverityLevel severityDefinition : supportedSeverityDefinitions)
         {
-            if ((! OMRSAuditLogRecordSeverity.TRACE.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.ACTIVITY.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.PERFMON.equals(severityDefinition)))
+            if ((! AuditLogRecordSeverityLevel.TRACE.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.ACTIVITY.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.PERFMON.equals(severityDefinition)))
             {
                 supportedSeverities.add(severityDefinition.getName());
             }
@@ -437,14 +437,16 @@ public class ConnectorConfigurationFactory
      */
     public Connection getXTDBKVLocalRepositoryLocalConnection(String serverName)
     {
+        final String repositoryDirectory = "data/servers/" + serverName + "/repository/xtdb-kv";
+
         Map<String, Object> luceneProperties = new HashMap<>();
 
-        luceneProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/lucene");
+        luceneProperties.put("db-dir", repositoryDirectory + "/lucene");
 
         Map<String, Object> indexStoreKVProperties = new HashMap<>();
 
         indexStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        indexStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-index");
+        indexStoreKVProperties.put("db-dir", repositoryDirectory + "/rdb-index");
 
         Map<String, Object> indexStoreProperties = new HashMap<>();
 
@@ -453,7 +455,7 @@ public class ConnectorConfigurationFactory
         Map<String, Object> documentStoreKVProperties = new HashMap<>();
 
         documentStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        documentStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-docs");
+        documentStoreKVProperties.put("db-dir", repositoryDirectory + "/rdb-docs");
 
         Map<String, Object> documentStoreProperties = new HashMap<>();
 
@@ -462,7 +464,7 @@ public class ConnectorConfigurationFactory
         Map<String, Object> txLogKVProperties = new HashMap<>();
 
         txLogKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        txLogKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-tx");
+        txLogKVProperties.put("db-dir", repositoryDirectory + "/rdb-tx");
 
         Map<String, Object> txLogProperties = new HashMap<>();
 

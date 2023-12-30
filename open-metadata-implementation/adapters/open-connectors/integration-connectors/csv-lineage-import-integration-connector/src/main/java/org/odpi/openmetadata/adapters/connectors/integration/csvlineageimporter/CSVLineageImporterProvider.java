@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
+package org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 public class CSVLineageImporterProvider extends IntegrationConnectorProvider
@@ -17,6 +20,10 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/csv-lineage-importer-integration-connector/";
     private static final String connectorClassName     = CSVLineageImporterConnector.class.getName();
 
+    /**
+     * The name of the catalog target that contains the directory to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME    = "fileToLoad";
 
     public CSVLineageImporterProvider()
     {
@@ -40,7 +47,16 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 
 
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
+        super.connectorTypeBean = connectorType;
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(OpenMetadataTypesMapper.CSV_FILE_TYPE_NAME);
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
         super.connectorTypeBean = connectorType;
 
         /*

@@ -126,7 +126,7 @@ public class ConfigPropertiesResource
 
     public VoidResponse setServerDescription(@PathVariable String userId,
                                              @PathVariable String serverName,
-                                             @RequestBody String description)
+                                             @RequestBody  String description)
     {
         return adminAPI.setServerDescription(userId, serverName, description);
     }

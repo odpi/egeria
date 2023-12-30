@@ -40,7 +40,7 @@ public enum ServerTypeClassification
     METADATA_SERVER("Metadata Access Store",
                 "Server that is a metadata access point with its own native open metadata repository.",
                  ServerTypeClassification.METADATA_ACCESS_POINT,
-                "https://egeria-project.org/concepts/metadata-server/"),
+                "https://egeria-project.org/concepts/metadata-access-store/"),
 
     /**
      * Hosting environment for a repository connector acting as an adapter to a third party metadata server.

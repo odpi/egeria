@@ -448,6 +448,7 @@ public class PropertyHelper
      * @param mapValues contents of the map
      * @return instance properties object.
      */
+    @SuppressWarnings(value = "unchecked")
     public ElementProperties addPropertyMap(ElementProperties   properties,
                                             Map<String, Object> mapValues)
     {
