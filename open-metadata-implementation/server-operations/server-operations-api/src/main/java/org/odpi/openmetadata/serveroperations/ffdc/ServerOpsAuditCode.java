@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serveroperations.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,13 +25,13 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0001 - The {0} server is configured with a max page size of {1}
      */
     MAX_PAGE_SIZE("SERVER-OPS-0001",
-                      OMRSAuditLogRecordSeverity.STARTUP,
-                      "The {0} server is configured with a max page size of {1}",
-                      "The server has been configured with a maximum page size.  This is a recommended approach.  The maximum " +
+                  AuditLogRecordSeverityLevel.STARTUP,
+                  "The {0} server is configured with a max page size of {1}",
+                  "The server has been configured with a maximum page size.  This is a recommended approach.  The maximum " +
                           "page size value sets an upper limit on the number of results that a caller can request on any paging " +
                           "REST API to this server.  Setting maximum page size helps to prevent a denial of service attack that uses very " +
                           "large requests to overwhelm the server.",
-                      "Validate that the setting of this value is adequate for the users of this server.  If the number is too small, " +
+                  "Validate that the setting of this value is adequate for the users of this server.  If the number is too small, " +
                           "callers will receive invalid parameter exceptions if they specify a maximum page size that is larger than this " +
                           "configured value."),
 
@@ -39,7 +39,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0002 - The {0} server is configured with an unlimited maximum page size
      */
     UNLIMITED_MAX_PAGE_SIZE("SERVER-OPS-0002",
-                            OMRSAuditLogRecordSeverity.STARTUP,
+                            AuditLogRecordSeverityLevel.STARTUP,
                             "The {0} server is configured with an unlimited maximum page size",
                             "The server has been configured with a maximum page size of zero.  This means a requester can use any paging " +
                                     "size that they need on a REST API call.  The down-side of this approach is that a server does not have" +
@@ -52,7 +52,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0003 - The {0} server is configured with an invalid max page size of {1}
      */
     INVALID_MAX_PAGE_SIZE("SERVER-OPS-0003",
-                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          AuditLogRecordSeverityLevel.EXCEPTION,
                           "The {0} server is configured with an invalid max page size of {1}",
                           "The server has been configured with a negative maximum page size.  " +
                                   "The maximum page size value sets an upper limit on the number of results that a caller can request on a" +
@@ -64,7 +64,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0004 - The {0} server has successfully completed start up.  The following services are running: {1}
      */
     SERVER_STARTUP_SUCCESS("SERVER-OPS-0004",
-                          OMRSAuditLogRecordSeverity.STARTUP,
+                          AuditLogRecordSeverityLevel.STARTUP,
                           "The {0} server has successfully completed start up.  The following services are running: {1}",
                           "The request to start the server returns with a list of the services that were started.",
                           "Review the start up messages to ensure that all the correct services have been started and the " +
@@ -74,7 +74,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0005 - The {0} server has begun the shutdown process
      */
     SERVER_SHUTDOWN_STARTED("SERVER-OPS-0005",
-                           OMRSAuditLogRecordSeverity.SHUTDOWN,
+                           AuditLogRecordSeverityLevel.SHUTDOWN,
                            "The {0} server has begun the shutdown process",
                            "The request to stop the server has been issued, either through an explicit command, or because the" +
                                     "OMAG Server Platform is shutting down.  The operational admin services will sequentially shutdown " +
@@ -85,7 +85,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0006 - The {0} server has completed shutdown
      */
     SERVER_SHUTDOWN_SUCCESS("SERVER-OPS-0006",
-                           OMRSAuditLogRecordSeverity.SHUTDOWN,
+                           AuditLogRecordSeverityLevel.SHUTDOWN,
                            "The {0} server has completed shutdown",
                            "The request to shutdown the server has completed.  No REST API calls nor events will be " +
                                     "processed by this server until it is restarted.",
@@ -96,7 +96,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0007 - The {0} server has detected an {1} exception during server shutdown.  The error message was {2}
      */
     SERVER_SHUTDOWN_ERROR("SERVER-OPS-0007",
-                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            AuditLogRecordSeverityLevel.EXCEPTION,
                             "The {0} server has detected an {1} exception during server shutdown.  The error message was {2}",
                             "The request to shutdown the server has failed with an exception.  The server is in an " +
                                   "undetermined state.",
@@ -107,7 +107,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0010 - The Open Metadata Access Services (OMASs) are starting
      */
     STARTING_ACCESS_SERVICES("SERVER-OPS-0010",
-        OMRSAuditLogRecordSeverity.STARTUP,
+        AuditLogRecordSeverityLevel.STARTUP,
         "The Open Metadata Access Services (OMASs) are starting",
         "The operational admin services are initializing the access service subsystems in a metadata server instance.  " +
                 "These provide specialist APIs for accessing open metadata.  Many of the access services support " +
@@ -122,7 +122,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0011 - The {0} is marked as DISABLED and so will not be started in the {1} server
      */
     SKIPPING_ACCESS_SERVICE("SERVER-OPS-0011",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "The {0} is marked as DISABLED and so will not be started in the {1} server",
             "The operational admin services will skip the initialization of the access service subsystem " +
                     "in this metadata server because it is marked as disabled in the configuration document.",
@@ -134,7 +134,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0012 - {0} out of {1} configured Open Metadata Access Services (OMASs) have started
      */
     ALL_ACCESS_SERVICES_STARTED("SERVER-OPS-0012",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "{0} out of {1} configured Open Metadata Access Services (OMASs) have started",
             "The operational admin services have completed the initialization of all the access service subsystems " +
                     "enabled in the metadata server.  They are ready for use.  An access services is configured by adding " +
@@ -149,7 +149,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0013 - The Open Metadata Access Services (OMASs) in server {0} are shutting down
      */
     STOPPING_ACCESS_SERVICES("SERVER-OPS-0013",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            AuditLogRecordSeverityLevel.SHUTDOWN,
             "The Open Metadata Access Services (OMASs) in server {0} are shutting down",
             "The server is in the process of terminating. The access services will be shut down one at a time.  When an access service completes" +
                     " its shutdown, " +
@@ -161,7 +161,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0014 - The Open Metadata Access Services (OMASs) in server {0} have shutdown
      */
     ALL_ACCESS_SERVICES_STOPPED("SERVER-OPS-0014",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            AuditLogRecordSeverityLevel.SHUTDOWN,
             "The Open Metadata Access Services (OMASs) in server {0} have shutdown",
             "The access services are no longer available for the server.",
             "Validate that all resources used by the access services have been released."),
@@ -170,7 +170,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0015 - The {0} access service is unable to initialize a new instance; error message is {1}
      */
     ACCESS_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0015",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The {0} access service is unable to initialize a new instance; error message is {1}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
@@ -179,7 +179,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0016 - The admin services are not able to start the {0} access service because the admin service class {1} is invalid; error message is {2}
      */
     BAD_ACCESS_SERVICE_ADMIN_CLASS("SERVER-OPS-0016",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The admin services are not able to start the {0} access service because the admin service class {1} is invalid; error message is {2}",
             "The admin services was unable to create an instance of the admin service class for the access service during the start up of a " +
                                            "specific server instance.  The server fails to start.",
@@ -191,7 +191,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * The error message is {2}
      */
     ACCESS_SERVICE_FAILURE("SERVER-OPS-0017",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The admin services caught an unexpected {0} exception whilst initializing the {1} service. " +
                     " The error message is {2}",
             "The admin services detected an error during the start up of a specific access service subsystem.  " +
@@ -208,7 +208,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0018 - The OMAG server {0} has been passed a null admin services class name for access service {1}
      */
     NULL_ACCESS_SERVICE_ADMIN_CLASS("SERVER-OPS-0018",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for access service {1}",
             "The system is unable to initialize this access service. The server failed to start.",
             "If the access service should be initialized then set up the appropriate admin services class name " +
@@ -219,7 +219,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0020 - The Open Metadata View Services (OMVSs) are starting
      */
     STARTING_VIEW_SERVICES("SERVER-OPS-0020",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "The Open Metadata View Services (OMVSs) are starting",
             "The operational admin services are initializing the view service subsystems in a metadata server instance.  " +
                     "These provide specialist task orientated APIs for viewing open metadata.  The view services support " +
@@ -232,7 +232,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0021 - The {0} is marked as DISABLED and so will not be started in the {1} view server
      */
     SKIPPING_VIEW_SERVICE("SERVER-OPS-0021",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "The {0} is marked as DISABLED and so will not be started in the {1} view server",
             "The operational admin services will skip the initialization of the view service subsystem " +
                     "in this view server because it is marked as disabled in the configuration document.",
@@ -244,7 +244,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0022 - {0} out of {1} configured Open Metadata View Services (OMVSs) have started
      */
     ALL_VIEW_SERVICES_STARTED("SERVER-OPS-0022",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "{0} out of {1} configured Open Metadata View Services (OMVSs) have started",
             "The operational admin services have completed the initialization of all the view service subsystems " +
                     "enabled in the view server.  They are ready for use.  An view service is configured by adding " +
@@ -259,7 +259,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0023 - The Open Metadata View Services (OMVSs) in server {0} are shutting down
      */
     STOPPING_VIEW_SERVICES("SERVER-OPS-0023",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            AuditLogRecordSeverityLevel.SHUTDOWN,
             "The Open Metadata View Services (OMVSs) in server {0} are shutting down",
             "The server is in the process of terminating. The view services will be shut down one at a time.  When an view service completes" +
                     " its shutdown, " +
@@ -271,7 +271,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0024 - The Open Metadata View Services (OMVSs) in server {0} have shutdown
      */
     ALL_VIEW_SERVICES_STOPPED("SERVER-OPS-0024",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            AuditLogRecordSeverityLevel.SHUTDOWN,
             "The Open Metadata View Services (OMVSs) in server {0} have shutdown",
             "The view services are no longer available for the server.",
             "Validate that all resources used by the view services have been released."),
@@ -280,7 +280,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0025 - The {0} view service is unable to initialize a new instance; error message is {1}
      */
     VIEW_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0025",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The {0} view service is unable to initialize a new instance; error message is {1}",
             "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem with the view service.  Once this is " +
@@ -290,7 +290,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0026 - The admin services are not able to start the {0} view service because the admin service class {1} is invalid; error message is {2}
      */
     BAD_VIEW_SERVICE_ADMIN_CLASS("SERVER-OPS-0026",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The admin services are not able to start the {0} view service because the admin service class {1} is invalid; error message is {2}",
             "The admin services are unable to create an instance of the view service's admin class during the start up of a specific server " +
                                          "instance.  The server fails to start.",
@@ -302,7 +302,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * The error message is {2}
      */
     VIEW_SERVICE_FAILURE("SERVER-OPS-0027",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The admin services caught an unexpected {0} exception whilst initializing the {1} service for a view server. " +
                     " The error message is {2}",
             "The admin services detected an error during the start up of a specific view service subsystem.  " +
@@ -319,7 +319,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0028 - The OMAG server {0} has been passed a null admin services class name for view service {1}
      */
     NULL_VIEW_SERVICE_ADMIN_CLASS("SERVER-OPS-0028",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+            AuditLogRecordSeverityLevel.EXCEPTION,
             "The OMAG server {0} has been passed a null admin services class name for view service {1}",
             "The system is unable to initialize this view service. The server failed to start.",
             "If the view service should be initialized then set up the appropriate admin services class name " +
@@ -330,7 +330,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0040 - The Open Metadata Engine Services (OMESs) are starting
      */
     STARTING_ENGINE_SERVICES("SERVER-OPS-0040",
-                           OMRSAuditLogRecordSeverity.STARTUP,
+                           AuditLogRecordSeverityLevel.STARTUP,
                            "The Open Metadata Engine Services (OMESs) are starting",
                            "The operational admin services are initializing the engine service subsystems in a metadata server instance.  " +
                                    "These provide support for specialist governance engines.  The engine services support " +
@@ -343,7 +343,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0041- The {0} engine service is marked as DISABLED and so will not be started in the {1} engine host server
      */
     SKIPPING_ENGINE_SERVICE("SERVER-OPS-0041",
-                          OMRSAuditLogRecordSeverity.STARTUP,
+                          AuditLogRecordSeverityLevel.STARTUP,
                           "The {0} engine service is marked as DISABLED and so will not be started in the {1} engine host server",
                           "The operational admin services will skip the initialization of the engine service subsystem " +
                                   "in this OMAG server because it is marked as disabled in the configuration document.",
@@ -355,7 +355,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0042 - {0} out of {1} configured Open Metadata Engine Services (OMESs) have started
      */
     ALL_ENGINE_SERVICES_STARTED("SERVER-OPS-0042",
-                              OMRSAuditLogRecordSeverity.STARTUP,
+                              AuditLogRecordSeverityLevel.STARTUP,
                               "{0} out of {1} configured Open Metadata Engine Services (OMESs) have started",
                               "The operational admin services have completed the initialization of all the engine service subsystems " +
                                       "enabled in the engine host server.  They are ready for use.  An engine service is configured by adding " +
@@ -370,7 +370,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0043 - The Open Metadata Engine Services (OMESs) in server {0} are shutting down
      */
     STOPPING_ENGINE_SERVICES("SERVER-OPS-0043",
-                           OMRSAuditLogRecordSeverity.SHUTDOWN,
+                           AuditLogRecordSeverityLevel.SHUTDOWN,
                            "The Open Metadata Engine Services (OMESs) in server {0} are shutting down",
                            "The server is in the process of terminating. The engine services will be shut down one at a time.  " +
                                    "When an engine service completes its shutdown, " +
@@ -382,7 +382,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0044 - The Open Metadata Engine Services (OMESs) in server {0} have shutdown
      */
     ALL_ENGINE_SERVICES_STOPPED("SERVER-OPS-0044",
-                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              AuditLogRecordSeverityLevel.SHUTDOWN,
                               "The Open Metadata Engine Services (OMESs) in server {0} have shutdown",
                               "The engine services are no longer available for the server.",
                               "Validate that all resources used by the engine services have been released."),
@@ -391,7 +391,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0045 - The {0} engine service is unable to initialize a new instance; error message is {1}
      */
     ENGINE_SERVICE_INSTANCE_FAILURE("SERVER-OPS-0045",
-                                  OMRSAuditLogRecordSeverity.EXCEPTION,
+                                  AuditLogRecordSeverityLevel.EXCEPTION,
                                   "The {0} engine service is unable to initialize a new instance; error message is {1}",
                                   "The engine service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                                   "Review the error message and any other reported failures to determine the cause of the problem with the engine service.  Once this is " +
@@ -401,7 +401,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0046 - The admin services are not able to start the {0} engine service because the admin service class {1} is invalid; error message is {2}
      */
     BAD_ENGINE_SERVICE_ADMIN_CLASS("SERVER-OPS-0046",
-                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                  "The admin services are not able to start the {0} engine service because the admin service class {1} is invalid; error message is {2}",
                                  "The admin services are unable to create an instance of the engine service's admin class during the start up of a specific server " +
                                          "instance.  The server fails to start.",
@@ -413,7 +413,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * The error message is {2}
      */
     ENGINE_SERVICE_FAILURE("SERVER-OPS-0047",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The admin services caught an unexpected {0} exception whilst initializing the {1} service for an engine host server. " +
                                  " The error message is {2}",
                          "The admin services detected an error during the start up of a specific engine service subsystem.  " +
@@ -430,7 +430,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0048 - The OMAG server {0} has been passed a null admin services class name for engine service {1}
      */
     NULL_ENGINE_SERVICE_ADMIN_CLASS("SERVER-OPS-0048",
-                                  OMRSAuditLogRecordSeverity.EXCEPTION,
+                                  AuditLogRecordSeverityLevel.EXCEPTION,
                                   "The OMAG server {0} has been passed a null admin services class name for engine service {1}",
                                   "The system is unable to initialize this engine service. The server failed to start.",
                                   "If the engine service should be initialized then set up the appropriate admin services class name " +
@@ -441,7 +441,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0100 - The governance services subsystem for the {0} called {1} is about to start
      */
     STARTING_GOVERNANCE_SERVICES("SERVER-OPS-0100",
-                                 OMRSAuditLogRecordSeverity.STARTUP,
+                                 AuditLogRecordSeverityLevel.STARTUP,
                                  "The governance services subsystem for the {0} called {1} is about to start",
                                  "The admin services are about to start the governance services subsystem.  It will begin to initialize, " +
                                          "logging start up messages to confirm that its internal components have successfully initialized.",
@@ -452,7 +452,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * SERVER-OPS-0101 - The governance services subsystem for the {0} called {1} has completed start up
      */
     GOVERNANCE_SERVICES_STARTED("SERVER-OPS-0101",
-                                OMRSAuditLogRecordSeverity.STARTUP,
+                                AuditLogRecordSeverityLevel.STARTUP,
                                 "The governance services subsystem for the {0} called {1} has completed start up",
                                 "The governance services subsystem has completed its start up and reported no fatal errors.  " +
                                         "Its capability is operational.",
@@ -467,7 +467,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * {1} called {2}; error message is {3}
      */
     GOVERNANCE_SERVICE_FAILURE("SERVER-OPS-0102",
-                           OMRSAuditLogRecordSeverity.EXCEPTION,
+                           AuditLogRecordSeverityLevel.EXCEPTION,
                            "The admin services caught an {0} exception whilst initializing the governance services subsystem for the " +
                                        "{1} called {2}; error message is {3}",
                            "The governance services subsystem detected an error during the start up of a specific server instance. " +
@@ -482,7 +482,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -494,7 +494,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * <br><br>
      *     ServerOpsAuditCode   auditCode = ServerOpsAuditCode.SERVER_NOT_AVAILABLE;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -503,7 +503,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     ServerOpsAuditCode(String                     messageId,
-                       OMRSAuditLogRecordSeverity severity,
+                       AuditLogRecordSeverityLevel severity,
                        String                     message,
                        String                     systemAction,
                        String                     userAction)

@@ -5,11 +5,16 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The IntegrationConnectorProvider provides a base class for the connector provider supporting
  * Integration Connectors.
- *
  * It extends ConnectorProviderBase which does the creation of connector instances.  The subclasses of
  * IntegrationConnectorProvider must initialize ConnectorProviderBase with the Java class
  * name of their Connector implementation (by calling super.setConnectorClassName(className)).
@@ -17,18 +22,30 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
  */
 public class IntegrationConnectorProvider extends ConnectorProviderBase
 {
+    /**
+     * How often should the integration connector be called to refresh the metadata?
+     */
     private long    refreshTimeInterval = 60L; // default to once an hour
+
+    /**
+     * Does this connector issue blocking calls?
+     */
     private boolean usesBlockingCalls   = false;
 
-    /*
-     * The type name of the asset that this connector supports.
+    /**
+     * Map of the supported catalog target names to the types of entity to map it to.
      */
-    protected static final String supportedAssetTypeName = "IntegrationConnector";
+    protected final Map<String, CatalogTargetType> catalogTargetTypes = new HashMap<>();
+
+    /**
+     * The type name of the asset that the connection object for this connector should be linked to.
+     */
+    protected static final String supportedAssetTypeName = OpenMetadataTypesMapper.INTEGRATION_CONNECTOR_TYPE_NAME;
 
     /*
-     * Descriptive information about the connector for the connector type and audit log.
+     * Default descriptive information about the connector for the connector type and audit log.
      */
-    private static final int    connectorComponentId   = 31;
+    private static final int    connectorComponentId = 31;
     private static final String connectorName        = "OIF:IntegrationConnector";
     private static final String connectorDescription = "Connector that manages metadata exchange with a third party technology.";
     private static final String connectorWikiPage    = "https://egeria-project.org/concepts/integration-connector/";
@@ -82,7 +99,7 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Return if the connector should be started in its own thread to allow it is block on a listening call.
+     * Return if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @return boolean flag
      */
@@ -93,7 +110,7 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     * Set up if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @param usesBlockingCalls boolean flag
      */
@@ -101,4 +118,12 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
     {
         this.usesBlockingCalls = usesBlockingCalls;
     }
+
+
+    /**
+     * Return the map of supported catalog target types for this connector.
+     *
+     * @return map of catalog target name to open metadata type name.  Map is empty if no catalog target types are defined.
+     */
+    public Map<String, CatalogTargetType> getCatalogTargetTypes() { return catalogTargetTypes; }
 }

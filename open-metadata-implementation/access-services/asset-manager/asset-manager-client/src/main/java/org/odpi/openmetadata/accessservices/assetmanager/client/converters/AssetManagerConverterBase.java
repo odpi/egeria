@@ -13,6 +13,10 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworkservices.gaf.client.converters.OpenMetadataConverterBase;
 
+/**
+ * Common routines for concerters from Asset Manager OMAS
+ * @param <B> bean class
+ */
 public abstract class AssetManagerConverterBase<B> extends OpenMetadataConverterBase<B>
 {
     /**

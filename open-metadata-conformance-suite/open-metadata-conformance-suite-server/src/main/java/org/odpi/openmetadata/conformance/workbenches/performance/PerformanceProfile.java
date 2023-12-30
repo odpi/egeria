@@ -21,154 +21,285 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum PerformanceProfile implements Serializable
 {
+    /**
+     * Performance tests for the technology under test's ability to create entities.
+     */
     ENTITY_CREATION      (1, "Entity creation",
             "Performance tests for the technology under test's ability to create entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-creation",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-creation",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to search entities.
+     */
     ENTITY_SEARCH        (2, "Entity search",
             "Performance tests for the technology under test's ability to search entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-search",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-search",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to create relationships.
+     */
     RELATIONSHIP_CREATION(3, "Relationship creation",
             "Performance tests for the technology under test's ability to create relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-creation",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-creation",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to search relationships.
+     */
     RELATIONSHIP_SEARCH  (4, "Relationship search",
             "Performance tests for the technology under test's ability to search relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-search",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-search",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to classify entities.
+     */
     ENTITY_CLASSIFICATION(5, "Entity classification",
             "Performance tests for the technology under test's ability to classify entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-classification",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-classification",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to search entities based on classification.
+     */
     CLASSIFICATION_SEARCH(6, "Classification search",
             "Performance tests for the technology under test's ability to search entities based on classification.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/classification-search",
+            "https://egeria-project.org/guides/cts/performance-profiles/classification-search",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to update entities.
+     */
     ENTITY_UPDATE        (7, "Entity update",
             "Performance tests for the technology under test's ability to update entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-update",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-update",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to update relationships.
+     */
     RELATIONSHIP_UPDATE  (8, "Relationship update",
             "Performance tests for the technology under test's ability to update relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-update",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-update",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to update classifications.
+     */
     CLASSIFICATION_UPDATE(9, "Classification update",
             "Performance tests for the technology under test's ability to update classifications.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/classification-update",
+            "https://egeria-project.org/guides/cts/performance-profiles/classification-update",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to undo entity updates.
+     */
     ENTITY_UNDO          (10, "Entity undo",
             "Performance tests for the technology under test's ability to undo entity updates.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-undo",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-undo",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to undo relationship updates.
+     */
     RELATIONSHIP_UNDO    (11, "Relationship undo",
             "Performance tests for the technology under test's ability to undo relationship updates.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-undo",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-undo",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retrieve entities by ID.
+     */
     ENTITY_RETRIEVAL     (12, "Entity retrieval",
             "Performance tests for the technology under test's ability to retrieve entities by ID.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-retrieval",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-retrieval",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retrieve entities' history by ID.
+     */
     ENTITY_HISTORY_RETRIEVAL(13, "Entity history retrieval",
             "Performance tests for the technology under test's ability to retrieve entities' history by ID.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-history-retrieval",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-history-retrieval",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retrieve relationships by ID.
+     */
     RELATIONSHIP_RETRIEVAL(14, "Relationship retrieval",
             "Performance tests for the technology under test's ability to retrieve relationships by ID.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-retrieval",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-retrieval",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retrieve relationships' history by ID.
+     */
     RELATIONSHIP_HISTORY_RETRIEVAL(15, "Relationship history retrieval",
             "Performance tests for the technology under test's ability to retrieve relationships' history by ID.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-history-retrieval",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-history-retrieval",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to search entities' history.
+     */
     ENTITY_HISTORY_SEARCH(16, "Entity history search",
             "Performance tests for the technology under test's ability to search entities' history.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-historical-search",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-historical-search",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to search relationships' history.
+     */
     RELATIONSHIP_HISTORY_SEARCH(17, "Relationship history search",
             "Performance tests for the technology under test's ability to search relationships' history.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-history-search",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-history-search",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to run graph queries.
+     */
     GRAPH_QUERIES        (18, "Graph queries",
             "Performance tests for the technology under test's ability to run graph queries.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/graph-perf-queries",
+            "https://egeria-project.org/guides/cts/performance-profiles/graph-perf-queries",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to run graph history queries.
+     */
     GRAPH_HISTORY_QUERIES(19, "Graph history queries",
             "Performance tests for the technology under test's ability to run graph history queries.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/graph-history-queries",
+            "https://egeria-project.org/guides/cts/performance-profiles/graph-history-queries",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to re-home entities.
+     */
     ENTITY_RE_HOME       (20, "Entity re-home",
             "Performance tests for the technology under test's ability to re-home entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-re-home",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-re-home",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to re-home relationships.
+     */
     RELATIONSHIP_RE_HOME (21, "Relationship re-home",
             "Performance tests for the technology under test's ability to re-home relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-re-home",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-re-home",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to declassify entities.
+     */
     ENTITY_DECLASSIFY    (22, "Entity declassify",
             "Performance tests for the technology under test's ability to declassify entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-declassify",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-declassify",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retype entities.
+     */
     ENTITY_RETYPE        (23, "Entity retype",
             "Performance tests for the technology under test's ability to retype entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-retype",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-retype",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to retype relationships.
+     */
     RELATIONSHIP_RETYPE  (24, "Relationship retype",
             "Performance tests for the technology under test's ability to retype relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-retype",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-retype",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to re-identify entities.
+     */
     ENTITY_RE_IDENTIFY   (25, "Entity re-identify",
             "Performance tests for the technology under test's ability to re-identify entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-re-identify",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-re-identify",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to re-identify relationships.
+     */
     RELATIONSHIP_RE_IDENTIFY(26, "Relationship re-identify",
             "Performance tests for the technology under test's ability to re-identify relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-re-identify",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-re-identify",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to delete relationships.
+     */
     RELATIONSHIP_DELETE  (27, "Relationship delete",
             "Performance tests for the technology under test's ability to delete relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-delete",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-delete",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to delete entities.
+     */
     ENTITY_DELETE        (28, "Entity delete",
             "Performance tests for the technology under test's ability to delete entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-delete",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-delete",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to restore entities.
+     */
     ENTITY_RESTORE       (29, "Entity restore",
             "Performance tests for the technology under test's ability to restore entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-restore",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-restore",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to restore relationships.
+     */
     RELATIONSHIP_RESTORE (30, "Relationship restore",
             "Performance tests for the technology under test's ability to restore relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-restore",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-restore",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to purge relationships.
+     */
     RELATIONSHIP_PURGE   (31, "Relationship purge",
             "Performance tests for the technology under test's ability to purge relationships.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/relationship-purge",
+            "https://egeria-project.org/guides/cts/performance-profiles/relationship-purge",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Performance tests for the technology under test's ability to purge entities.
+     */
     ENTITY_PURGE         (32, "Entity purge",
             "Performance tests for the technology under test's ability to purge entities.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/entity-purge",
+            "https://egeria-project.org/guides/cts/performance-profiles/entity-purge",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+
+    /**
+     * Information about the environment in which the performance tests were executed.
+     */
     ENVIRONMENT          (999, "Environment",
             "Information about the environment in which the performance tests were executed.",
-            "https://odpi.github.io/egeria-docs/guides/cts/performance-profiles/environment",
+            "https://egeria-project.org/guides/cts/performance-profiles/environment",
             OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
     private static final long serialVersionUID = 1L;
 
-    private int                                    profileId;
-    private String                                 profileName;
-    private String                                 profileDescription;
-    private String                                 profileDocumentationURL;
-    private OpenMetadataConformanceProfilePriority profilePriority;
+    private final int                                    profileId;
+    private final String                                 profileName;
+    private final String                                 profileDescription;
+    private final String                                 profileDocumentationURL;
+    private final OpenMetadataConformanceProfilePriority profilePriority;
 
 
     /**
      * Default constructor sets up the values for this enum instance.
      *
-     * @param profileId int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param profileId int identifier for the enum, used for indexing arrays etcetera with the enum.
      * @param profileName String name for the enum, used for message content.
-     * @param profileDescription String default description for the enum, used when there is not natural
+     * @param profileDescription String default description for the enum, used when there is not a natural
      *                             language resource bundle available.
      * @param profileDocumentationURL link to more documentation
      * @param profilePriority is the profile mandatory or not?
@@ -188,7 +319,7 @@ public enum PerformanceProfile implements Serializable
 
 
     /**
-     * Return the identifier for the enum, used for indexing arrays etc with the enum.
+     * Return the identifier for the enum, used for indexing arrays etcetera with the enum.
      *
      * @return int identifier
      */
@@ -210,7 +341,7 @@ public enum PerformanceProfile implements Serializable
 
 
     /**
-     * Return the default description for the enum, used when there is not natural
+     * Return the default description for the enum, used when there is not a natural
      * language resource bundle available.
      *
      * @return String default description

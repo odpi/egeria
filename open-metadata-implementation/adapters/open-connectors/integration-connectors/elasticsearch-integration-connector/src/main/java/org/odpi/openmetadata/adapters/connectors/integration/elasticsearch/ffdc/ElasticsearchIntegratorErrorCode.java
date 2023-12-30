@@ -28,34 +28,34 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum ElasticsearchIntegratorErrorCode implements ExceptionMessageSet {
 
     BAD_CONFIG(400, "ELASTICSEARCH-CONNECTOR-400-001",
-            "The config for the ELasticearch connector (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+            "The config for the Elasticsearch connector (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
             "The config is not valid.",
             "Correct the configuration and restart the service.");
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for SearchIntegratorErrorCode expects to be passed one of the enumeration rows defined in
-     * SearchIntegratorErrorCode above.   For example:
-     * <p>
-     * SearchIntegratorErrorCode   errorCode = SearchIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     * <p>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
-     * @param httpErrorCode  error code to use over REST calls
-     * @param errorMessageId unique identifier for the message
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
-     * @param userAction     instructions for resolving the error
+     * @param userAction   instructions for resolving the error
      */
-    ElasticsearchIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                errorMessageId,
-                errorMessage,
-                systemAction,
-                userAction);
+    ElasticsearchIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -65,8 +65,13 @@ public enum ElasticsearchIntegratorErrorCode implements ExceptionMessageSet {
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition() {
-        return messageDefinition;
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -77,7 +82,14 @@ public enum ElasticsearchIntegratorErrorCode implements ExceptionMessageSet {
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
+    {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -90,9 +102,14 @@ public enum ElasticsearchIntegratorErrorCode implements ExceptionMessageSet {
      * @return string of property names and values for this enum
      */
     @Override
-    public String toString() {
-        return "ElasticsearchIntegratorErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+    public String toString()
+    {
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

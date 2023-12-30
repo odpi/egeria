@@ -106,6 +106,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.openLineageListenerManager = openLineageListenerManager;

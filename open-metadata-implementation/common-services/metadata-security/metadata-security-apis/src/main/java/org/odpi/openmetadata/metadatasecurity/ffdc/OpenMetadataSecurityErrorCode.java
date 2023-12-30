@@ -234,17 +234,15 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
 
     ;
 
-    private final ExceptionMessageDefinition messageDefinition;
-
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for OpenMetadataSecurityErrorCode expects to be passed one of the enumeration rows defined in
-     * OpenMetadataSecurityErrorCode above.   For example:
-     * <br>
-     *     OpenMetadataSecurityErrorCode   errorCode = OpenMetadataSecurityErrorCode.BAD_PLATFORM_SECURITY_CONNECTION;
-     * <br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -252,14 +250,15 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OpenMetadataSecurityErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OpenMetadataSecurityErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
+
 
     /**
      * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
@@ -269,7 +268,11 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -282,6 +285,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -296,8 +305,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "OpenMetadataSecurityErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

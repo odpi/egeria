@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The DataFolderConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Data Folder Connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -52,15 +51,15 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
              "The connector is unable to process the data in the folder.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for DataFolderConnectorErrorCode expects to be passed one of the enumeration rows defined in
-     * DataFolderConnectorErrorCode above.   For example:
-     *
-     *     DataFolderConnectorErrorCode   errorCode = DataFolderConnectorErrorCode.UNKNOWN_ENDPOINT;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -68,13 +67,13 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DataFolderConnectorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DataFolderConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -86,7 +85,11 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -99,6 +102,12 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -113,8 +122,12 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "DataFolderConnectorErrorCode{" +
-                "messageDefinition=" + getMessageDefinition() +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

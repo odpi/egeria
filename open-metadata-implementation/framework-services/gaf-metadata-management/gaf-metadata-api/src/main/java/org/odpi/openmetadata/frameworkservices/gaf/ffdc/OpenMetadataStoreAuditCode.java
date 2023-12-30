@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
  * The OpenMetadataStoreAuditCode is used to define the message content for the OMRS Audit Log.
@@ -21,29 +21,42 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OPEN-METADATA-STORE-0001 - The Open Metadata Store Services are initializing a new server instance
+     */
     SERVICE_INITIALIZING("OPEN-METADATA-STORE-0001",
-                         OMRSAuditLogRecordSeverity.STARTUP,
+                         AuditLogRecordSeverityLevel.STARTUP,
                          "The Open Metadata Store Services are initializing a new server instance",
                          "The local server has started up a new instance of the Open Metadata Store Services.  " +
                                  "It will support open metadata store REST requests.",
                          "This is part of the normal start up of the service.  No action is required if this service " +
                                  "startup was intentional."),
 
+    /**
+     * OPEN-METADATA-STORE-0005 - The Open Metadata Store Services has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OPEN-METADATA-STORE-0005",
-                        OMRSAuditLogRecordSeverity.STARTUP,
+                        AuditLogRecordSeverityLevel.STARTUP,
                         "The Open Metadata Store Services has initialized a new instance for server {0}",
                         "The Open Metadata Store Services has completed initialization of a new server instance.",
                         "Verify that there are no error messages logged by the service.  If there are none it means that " +
                                 "all parts of the service initialized successfully."),
 
+    /**
+     * OPEN-METADATA-STORE-0006 - The Open Metadata Store Services are unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OPEN-METADATA-STORE-0006",
-                             OMRSAuditLogRecordSeverity.ERROR,
+                             AuditLogRecordSeverityLevel.ERROR,
                              "The Open Metadata Store Services are unable to initialize a new instance; error message is {0}",
                              "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-METADATA-STORE-0008 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
+     * error message is {1}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION("OPEN-METADATA-STORE-0008",
-                                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                                        AuditLogRecordSeverityLevel.EXCEPTION,
                                         "The Open Metadata Store Services detected an unexpected {0} exception during the " +
                                                 "initialization of its services; error message is {1}",
                                         "The service detected an error during the start up of a specific server instance.  Its services are not available " +
@@ -51,28 +64,41 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
                                         "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-METADATA-STORE-0009 - The Open Metadata Store Services are shutting down server instance {0}
+     */
     SERVICE_TERMINATING("OPEN-METADATA-STORE-0009",
-                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Open Metadata Store Services are shutting down server instance {0}",
                         "The local handlers has requested shut down of the Open Metadata Store Services.",
                         "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * OPEN-METADATA-STORE-0012 - The Open Metadata Store Services are shutting down its instance for server {0}
+     */
     SERVICE_SHUTDOWN("OPEN-METADATA-STORE-0012",
-                     OMRSAuditLogRecordSeverity.SHUTDOWN,
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
                      "The Open Metadata Store Services are shutting down its instance for server {0}",
                      "The local administrator has requested shut down of an Open Metadata Store Services instance.  " +
                              "The open metadata store interfaces are no longer available and no configuration events will " +
                              "be published to the out topic",
                      "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
+    /**
+     * OPEN-METADATA-STORE-0020 - Log message for asset {0} from governance service {1}: {2}
+     */
     ASSET_AUDIT_LOG("OPEN-METADATA-STORE-0020",
-                    OMRSAuditLogRecordSeverity.INFO,
+                    AuditLogRecordSeverityLevel.INFO,
                     "Log message for asset {0} from governance service {1}: {2}",
                     "A governance service has logged a message about an asset.",
                     "Review the message to ensure no action is required."),
 
+    /**
+     * OPEN-METADATA-STORE-0021 - Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.
+     * The exception was {1} with error message {2}
+     */
     WATCHDOG_LISTENER_EXCEPTION("OPEN-METADATA-STORE-0021",
-                                OMRSAuditLogRecordSeverity.ERROR,
+                                AuditLogRecordSeverityLevel.ERROR,
                                 "Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.  The exception was {1} with error message {2}",
                                 "An open watchdog governance action service has raised an exception while processing an incoming " +
                                         "watchdog event.  The exception explains the reason.",
@@ -82,7 +108,12 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+
 
     /**
      * The constructor for OpenMetadataStoreAuditCode expects to be passed one of the enumeration rows defined in
@@ -98,17 +129,17 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    OpenMetadataStoreAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+    OpenMetadataStoreAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -120,7 +151,11 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -133,6 +168,11 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -146,8 +186,12 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OpenMetadataStoreAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

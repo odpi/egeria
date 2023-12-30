@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The OpenAPIIntegrationConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Basic File Connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -44,31 +43,29 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for OpenAPIIntegrationConnectorErrorCode expects to be passed one of the enumeration rows defined in
-     * OpenAPIIntegrationConnectorErrorCode above.   For example:
-     *
-     *     OpenAPIIntegrationConnectorErrorCode   errorCode = OpenAPIIntegrationConnectorErrorCode.ERROR_SENDING_EVENT;
-     *
-     * This will expand out to the 5 parameters shown below.
-     *
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique identifier for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OpenAPIIntegrationConnectorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OpenAPIIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -80,7 +77,11 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -93,6 +94,12 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -107,8 +114,12 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "OpenAPIIntegrationConnectorErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
      * OMAG-MULTI-TENANT-0001 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.  The error message was {3}
      */
     BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-MULTI-TENANT-0001",
-                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
@@ -35,7 +35,7 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
      * OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
      */
     NO_TOPIC_INFORMATION("OMAG-MULTI-TENANT-0002",
-                                 OMRSAuditLogRecordSeverity.ERROR,
+                                 AuditLogRecordSeverityLevel.ERROR,
                          "Method {0} called on behalf of the {1} service is unable to create a client-side open " +
                                          "metadata topic connection because the topic name is not configured in the configuration for this service",
                          "This is a configuration error and an exception is sent to the requester.",
@@ -45,7 +45,7 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
      * OMAG-MULTI-TENANT-0003 - User {0} issued REST API call to operation {1} of service {2} on server {3}
      */
     USER_REQUEST_ACTIVITY("OMAG-MULTI-TENANT-0003",
-                         OMRSAuditLogRecordSeverity.ACTIVITY,
+                         AuditLogRecordSeverityLevel.ACTIVITY,
                          "User {0} issued REST API call to operation {1} of service {2} on server {3}",
                          "This message is used to capture user activity.",
                          "No action is required, but this message can be used to capture user activity information."),
@@ -53,7 +53,7 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -62,10 +62,8 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
     /**
      * The constructor for OMAGServerInstanceAuditCode expects to be passed one of the enumeration rows defined in
      * OMAGServerInstanceAuditCode above.   For example:
-     *
      *     OMAGServerInstanceAuditCode   auditCode = OMAGServerInstanceAuditCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -73,11 +71,11 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    OMAGServerInstanceAuditCode(String                     messageId,
-                                OMRSAuditLogRecordSeverity severity,
-                                String                     message,
-                                String                     systemAction,
-                                String                     userAction)
+    OMAGServerInstanceAuditCode(String                      messageId,
+                                AuditLogRecordSeverityLevel severity,
+                                String                      message,
+                                String                      systemAction,
+                                String                      userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;

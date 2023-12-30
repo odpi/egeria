@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0201 - The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones
      */
     ALL_ZONES("OMAG-ADMIN-0201",
-              OMRSAuditLogRecordSeverity.STARTUP,
+              AuditLogRecordSeverityLevel.STARTUP,
               "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",
               "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                       "This means it is providing access to all Assets irrespective of the zone(s) they are assigned to.",
@@ -36,7 +36,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0202 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}
      */
     SUPPORTED_ZONES("OMAG-ADMIN-0202",
-                    OMRSAuditLogRecordSeverity.STARTUP,
+                    AuditLogRecordSeverityLevel.STARTUP,
                     "The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}",
                     "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
                             "This means it is only providing access to the Assets from these zone(s).",
@@ -46,7 +46,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0203 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}
      */
     DEFAULT_ZONES("OMAG-ADMIN-0203",
-                  OMRSAuditLogRecordSeverity.STARTUP,
+                  AuditLogRecordSeverityLevel.STARTUP,
                   "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a default value for new Assets: {1}",
                   "The access service was passed a list of governance zones in the DefaultZones property of the access services options.",
                   "Verify that this is the intended value for this service."),
@@ -55,7 +55,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0204 - The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata
      */
     KARMA_POINT_COLLECTION_INCREMENT("OMAG-ADMIN-0204",
-                                     OMRSAuditLogRecordSeverity.STARTUP,
+                                     AuditLogRecordSeverityLevel.STARTUP,
                                      "The {0} Open Metadata Access Service (OMAS) is awarding {1} karma point(s) to each person who contributes to open metadata",
                                      "The access service was passed this value in the KarmaPointInterval property of the access service's options.",
                                      "Verify that this interval is correct for your organization."),
@@ -64,7 +64,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0205 - The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server
      */
     NO_KARMA_POINT_COLLECTION("OMAG-ADMIN-0205",
-                              OMRSAuditLogRecordSeverity.STARTUP,
+                              AuditLogRecordSeverityLevel.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is not collecting karma points in this server",
                               "The access service can be configured to collect karma points by setting the KarmaPointIncrement property of the access service's options.",
                               "Verify that karma points are not required for your organization.  They are intended to reward individuals " +
@@ -74,7 +74,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0206 - The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}
      */
     PLATEAU_THRESHOLD("OMAG-ADMIN-0206",
-                      OMRSAuditLogRecordSeverity.STARTUP,
+                      AuditLogRecordSeverityLevel.STARTUP,
                       "The {0} Open Metadata Access Service (OMAS) is using the following threshold for reporting Karma Point Plateaus: {1}",
                       "The access service was passed this value in the KarmaPointThreshold property of the access service's options.",
                       "Verify that this threshold is correct for your organization."),
@@ -83,7 +83,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0207 - The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}
      */
     DEFAULT_PLATEAU_THRESHOLD("OMAG-ADMIN-0207",
-                              OMRSAuditLogRecordSeverity.STARTUP,
+                              AuditLogRecordSeverityLevel.STARTUP,
                               "The {0} Open Metadata Access Service (OMAS) is using the default threshold for reporting Karma Point Plateaus: {1}",
                               "This default value can be overridden with the KarmaPointThreshold property of the access service's options.",
                               "Verify that this default threshold is correct for your organization."),
@@ -92,7 +92,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0208 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property
      */
     BAD_CONFIG_PROPERTY("OMAG-ADMIN-0208",
-                        OMRSAuditLogRecordSeverity.ERROR,
+                        AuditLogRecordSeverityLevel.ERROR,
                         "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property",
                         "The access service has not been passed valid configuration in its option's map.",
                         "Correct the configuration property and restart the server."),
@@ -101,7 +101,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0209 - The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}
      */
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAG-ADMIN-0209",
-                                             OMRSAuditLogRecordSeverity.STARTUP,
+                                             AuditLogRecordSeverityLevel.STARTUP,
                                              "The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}",
                                              "The OMAS is registering to receive events from the open metadata repositories registered with the cohort.",
                                              "This is part of the normal start up of an access service in a server."),
@@ -110,7 +110,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null
      */
     NO_ENTERPRISE_TOPIC("OMAG-ADMIN-0210",
-                        OMRSAuditLogRecordSeverity.ERROR,
+                        AuditLogRecordSeverityLevel.ERROR,
                         "The {0} Open Metadata Access Service (OMAS) is unable to register a listener with the enterprise OMRS Topic for server {1} because it is null",
                         "The OMAS is registering to receive events from the open metadata repositories registered with the cohort but is unable to because the enterprise OMRS topic is null.",
                         "Review other error messages to determine why the connector to the enterprise topic is missing."),
@@ -120,7 +120,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * The error message was {3}
      */
     BAD_TOPIC_CONNECTOR("OMAG-ADMIN-0211",
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        AuditLogRecordSeverityLevel.EXCEPTION,
                         "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  " +
                                 "The error message was {3}",
                         "The access service has not been passed valid configuration. The server where it is configured failed to start.",
@@ -132,7 +132,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * metadata topic connection because the connector provider is incorrect.  The error message was {3}
      */
     BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-ADMIN-0212",
-                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
@@ -142,7 +142,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0213 - The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}
      */
     PUBLISH_ZONES("OMAG-ADMIN-0213",
-                  OMRSAuditLogRecordSeverity.STARTUP,
+                  AuditLogRecordSeverityLevel.STARTUP,
                   "The {0} Open Metadata Access Service (OMAS) is using the following governance zones to determine when to publish completed Assets: {1}",
                   "The access service was passed a list of governance zones in the PublishZones property of the access services options " +
                           "and will use it to set the zones for an asset that is published from this access service.",
@@ -153,7 +153,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0214 - The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}
      */
     RESOURCE_ENDPOINTS("OMAG-ADMIN-0214",
-                  OMRSAuditLogRecordSeverity.STARTUP,
+                  AuditLogRecordSeverityLevel.STARTUP,
                   "The {0} Open Metadata View Service (OMVS) is using the following resource endpoints as permitted endpoints: {1}",
                   "The view service was passed a list of resource endpoints in the resourceEndpoints property of the view services options " +
                           "and will use it to set the endpoints that the view service may query.",
@@ -164,7 +164,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * OMAG-ADMIN-0215 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}
      */
     VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW("OMAG-ADMIN-0215",
-                                       OMRSAuditLogRecordSeverity.STARTUP,
+                                       AuditLogRecordSeverityLevel.STARTUP,
                                        "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
                                        "The view service fails to start as it does not have a sufficiently large maxPageSize .",
                                        "Reconfigure the View service to have a maxPageSize that is sufficient."),
@@ -172,7 +172,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -184,7 +184,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * <br><br>
      *     OMAGAdminAuditCode   auditCode = OMAGAdminAuditCode.SERVER_NOT_AVAILABLE;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -193,7 +193,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     OMAGAdminAuditCode(String                     messageId,
-                       OMRSAuditLogRecordSeverity severity,
+                       AuditLogRecordSeverityLevel severity,
                        String                     message,
                        String                     systemAction,
                        String                     userAction)

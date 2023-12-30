@@ -2,17 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
  * The DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode is used to define the message content for the Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the situation</li>
@@ -21,50 +20,58 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001 - Opening directory "{0}" for Open Metadata Archive Store
+     */
     OPENING_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
-              OMRSAuditLogRecordSeverity.STARTUP,
-              "Opening directory \"{0}\" for Open Metadata Archive Store",
-              "The caller is requesting the contents of the open metadata archive store which is located in the named directory.",
-              "Validate that the directory name is correct.  "),
+                 AuditLogRecordSeverityLevel.STARTUP,
+                 "Opening directory \"{0}\" for Open Metadata Archive Store",
+                 "The caller is requesting the contents of the open metadata archive store which is located in the named directory.",
+                 "Validate that the directory name is correct.  "),
 
+    /**
+     * OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002 - Unable to open directory "{0}".  Message from {1} exception was {2}
+     */
     BAD_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
-              OMRSAuditLogRecordSeverity.EXCEPTION,
+             AuditLogRecordSeverityLevel.EXCEPTION,
               "Unable to open directory \"{0}\".  Message from {1} exception was {2}",
               "The caller is is unable to open an open metadata archive.",
               "Use the information from the exception to determine the cause of the error.  For example, is the directory (folder) name correct?  " +
                       "Look particularly for extraneous quotes, " +
-                      "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the direcxtory?  Once the cause of the error is corrected, restart the caller."),
+                      "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the directory?  Once the cause of the error is corrected, restart the caller."),
 
     ;
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
 
     /**
      * The constructor for DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
      * DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
-     *
      *     DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
+     * This will expand out to the 5 parameters shown below.
      *
-     * This will expand out to the 4 parameters shown below.
-     *
-     * @param messageId unique Id for the message
+     * @param messageId unique id for the message
      * @param severity severity of the message
      * @param message text for the message
      * @param systemAction description of the action taken by the system when the condition happened
      * @param userAction instructions for resolving the situation, if any
      */
-    DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode(String                     messageId,
-                                                        OMRSAuditLogRecordSeverity severity,
-                                                        String                     message,
-                                                        String                     systemAction,
-                                                        String                     userAction)
+    DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode(String                      messageId,
+                                                             AuditLogRecordSeverityLevel severity,
+                                                             String                      message,
+                                                             String                      systemAction,
+                                                             String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -76,7 +83,11 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -87,9 +98,32 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

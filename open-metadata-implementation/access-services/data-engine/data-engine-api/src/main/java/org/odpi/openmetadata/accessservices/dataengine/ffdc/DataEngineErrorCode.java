@@ -26,8 +26,8 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * </ul>
  */
 
-public enum DataEngineErrorCode implements ExceptionMessageSet {
-
+public enum DataEngineErrorCode implements ExceptionMessageSet
+{
     /**
      * OMAS-DATA-ENGINE-404-001 The open metadata repository services are not initialized for server {0}
      */
@@ -105,48 +105,84 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
                             "The system is unable to find the searched Engine",
                             "Correct the code in the caller to provide the correct Engine qualified name.");
 
-    private static final long serialVersionUID = 1L;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
-    private final ExceptionMessageDefinition messageDefinition;
 
     /**
-     * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
-     * DataEngineErrorCode above.   For example:
-     * <p>
-     * DataEngineErrorCode   errorCode = DataEngineErrorCode.NULL_USER_ID;
-     * <p>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
-     * @param httpErrorCode  error code to use over REST calls
-     * @param errorMessageId unique identifier for the message
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
-     * @param userAction     instructions for resolving the error
+     * @param userAction   instructions for resolving the error
      */
-    DataEngineErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction);
+    DataEngineErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
+
 
     /**
      * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
      * @return message definition object.
      */
-    public ExceptionMessageDefinition getMessageDefinition() {
-        return messageDefinition;
+    @Override
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
+
 
     /**
      * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
-     *
      * @return message definition object.
      */
-    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+    @Override
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
+    {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }
 

@@ -14,7 +14,6 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:frameworks:open-discovery-framework')
     runtimeOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
     compileOnly project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

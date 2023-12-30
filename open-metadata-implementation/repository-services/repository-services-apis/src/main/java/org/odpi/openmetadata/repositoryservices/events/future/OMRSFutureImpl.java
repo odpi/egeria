@@ -10,7 +10,13 @@ import java.util.concurrent.Future;
 public class OMRSFutureImpl implements OMRSFuture
 {
     private final Future<?> wrappedFuture;
-     
+
+
+    /**
+     * Constructor
+     *
+     * @param future future to nest
+     */
     public OMRSFutureImpl(Future<?> future)
     {
         wrappedFuture = future;

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.devprojects.reports.platform;
+package org.odpi.openmetadata.reports.platform;
 
 
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
@@ -73,7 +73,7 @@ public class EgeriaPlatformReport
 
 
     /**
-     * This runs the sample.
+     * This runs the report.
      */
     private void run()
     {

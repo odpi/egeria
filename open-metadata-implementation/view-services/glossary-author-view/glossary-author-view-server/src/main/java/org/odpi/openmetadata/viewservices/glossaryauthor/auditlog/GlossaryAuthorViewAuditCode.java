@@ -6,15 +6,9 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.auditlog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The GlossaryAuthorAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -27,39 +21,58 @@ import java.util.Arrays;
  */
 
 
-//TODO the adding of terms for audit will need to pass the guid as a parameter and maybe the fqname. I do not see how I can add parameters in the below structure.
+//TODO the adding of terms for audit will need to pass the guid as a parameter and maybe the fully qualified name. I do not see how I can add parameters in the below structure.
 
 public enum GlossaryAuthorViewAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0001 - The Glossary Author View Service (OMVS) is initializing
+     */
     SERVICE_INITIALIZING("OMVS-GLOSSARY-AUTHOR-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary Author View Service (OMVS) is initializing",
             "The local server is initializing the Glossary Author OMVS. If the initialization is successful then audit message OMVS-GLOSSARY-AUTHOR-0003 will be issued, if there were errors then they should be shown in the audit log. ",
             "No action is required. This is part of the normal operation of the Glossary Author OMVS."),
 
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0002 - The Glossary Author View Service (OMVS) is initialized
+     */
     SERVICE_INITIALIZED("OMVS-GLOSSARY-AUTHOR-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Glossary Author View Service (OMVS) is initialized",
             "The Glossary Author OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
             "No action is required.  This is part of the normal operation of the Glossary Author OMVS. Once the OMRS is configured and the server is started, Glossary Author view service requests can be accepted."),
 
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0003 - The Glossary Author View Service (OMVS) is shutting down
+     */
     SERVICE_SHUTDOWN("OMVS-GLOSSARY-AUTHOR-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Glossary Author View Service (OMVS) is shutting down",
             "The local server has requested shutdown of the Glossary Author OMVS.",
             "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Glossary Author OMVS."),
 
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0004 - The Glossary Author View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OMVS-GLOSSARY-AUTHOR-0004",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Glossary Author View Service (OMVS) is unable to initialize a new instance; error message is {0}",
             "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0005 - The Glossary Author View Service (OMVS) is shutting down server instance {0}
+     */
     SERVICE_TERMINATING("OMVS-GLOSSARY-AUTHOR-0005",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Glossary Author View Service (OMVS) is shutting down server instance {0}",
             "The local handlers has requested shut down of the Glossary Author OMVS.",
             "No action is required. This is part of the normal operation of the service."),
 
+    /**
+     * OMVS-GLOSSARY-AUTHOR-0006 - The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}
+     */
     UNEXPECTED_EXCEPTION("OMVS-GLOSSARY-AUTHOR-0006",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
@@ -68,22 +81,18 @@ public enum GlossaryAuthorViewAuditCode implements AuditLogMessageSet
                                  "occurred and work to resolve the cause.")
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewAuditCode.class);
-
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
+    
 
     /**
-     * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
-     * OMRSAuditCode above.   For example:
-     *
-     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 4 parameters shown below.
+     * The constructor for GlossaryAuthorAuditCode expects to be passed one of the enumeration rows defined in
+     * GlossaryAuthorAuditCode above.   For example:
+     *     GlossaryAuthorAuditCode   auditCode = GlossaryAuthorAuditCode.SERVER_NOT_AVAILABLE;
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -146,7 +155,7 @@ public enum GlossaryAuthorViewAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OMAGCommonAuditCode{" +
+        return "GlossaryAuthorAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

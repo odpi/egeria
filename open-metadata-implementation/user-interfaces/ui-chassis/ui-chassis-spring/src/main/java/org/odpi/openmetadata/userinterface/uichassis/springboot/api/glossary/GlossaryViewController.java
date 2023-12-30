@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLi
 import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.CategoryNotFoundException;

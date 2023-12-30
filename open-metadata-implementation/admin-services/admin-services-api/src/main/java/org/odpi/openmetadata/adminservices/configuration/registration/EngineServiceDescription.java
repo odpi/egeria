@@ -3,56 +3,74 @@
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-
-import java.io.Serializable;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 /**
- * EngineServiceDescription provides a list of registered engine services.
+ * EngineServiceDescription provides a list of registered engine services.  These engine services run on an Engine Host OMAG Server.
  */
-public enum EngineServiceDescription implements Serializable
+public enum EngineServiceDescription
 {
     /**
-     * Analyses the content of an asset's real world counterpart, generates annotations
-     * in an open discovery report that is attached to the asset in the open metadata repositories.
+     * Analyses the content of an asset's real world counterpart (resource), generates annotations
+     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
      */
     ASSET_ANALYSIS_OMES(400,
-                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                         "Asset Analysis",
                         "Asset Analysis OMES",
                         "asset-analysis",
-                        "Analyses the content of an asset's real world counterpart, generates annotations " +
-                                "in an open discovery report that is attached to the asset in the open metadata repositories.",
+                        "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
+                                "in a discovery analysis report that is attached to the asset in the open metadata repositories.",
                         "https://egeria-project.org/services/omes/asset-analysis/overview/",
-                        "Discovery Engine OMAS"),
+                        AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                        DeployedImplementationType.OPEN_DISCOVERY_ENGINE.getDeployedImplementationType(),
+                        DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
     /**
-     * Executes requested governance action services to monitor, assess and maintain metadata and its
-     * real-world counterparts.
+     * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.
      */
     GOVERNANCE_ACTION_OMES(401,
-                           ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                            "Governance Action",
                            "Governance Action OMES",
                            "governance-action",
                            "Executes requested governance action services to monitor, assess and maintain metadata and its " +
                                    "real-world counterparts.",
                            "https://egeria-project.org/services/omes/governance-action/overview/",
-                           "Governance Engine OMAS"),
+                           AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                           DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getDeployedImplementationType(),
+                           DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
     /**
-     * Dynamically governance open metadata repositories in the connected cohorts.
+     * Dynamically govern open metadata repositories in the connected cohorts.
      */
     REPOSITORY_GOVERNANCE_OMES(402,
                                ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                "Repository Governance",
                                "Repository Governance OMES",
                                "repository-governance",
-                               "Dynamically governance open metadata repositories in the connected cohorts.",
+                               "Dynamically govern open metadata repositories in the connected cohorts.",
                                "https://egeria-project.org/services/omes/repository-governance/overview/",
-                               "Open Metadata Repository Services (OMRS)"),
+                               CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(),
+                               DeployedImplementationType.REPOSITORY_GOVERNANCE_ENGINE.getDeployedImplementationType(),
+                               DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getDeployedImplementationType()),
+
+
+    /**
+     * Executes requested event action services to monitor, assess and maintain context events.
+     */
+    EVENT_ACTION_OMES(403,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Event Action",
+                      "Event Action OMES",
+                      "event-action",
+                      "Executes requested event action services to monitor, assess and maintain context events.",
+                      "https://egeria-project.org/services/omes/event-action/overview/",
+                      AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                      DeployedImplementationType.EVENT_ACTION_ENGINE.getDeployedImplementationType(),
+                      DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
     ;
 
-    private static final long     serialVersionUID    = 1L;
 
     private final int                        engineServiceCode;
     private final ComponentDevelopmentStatus engineServiceDevelopmentStatus;
@@ -62,6 +80,8 @@ public enum EngineServiceDescription implements Serializable
     private final String                     engineServiceDescription;
     private final String                     engineServiceWiki;
     private final String                     engineServicePartnerService;
+    private final String                     hostedGovernanceEngineType;
+    private final String                     hostedGovernanceServiceType;
 
 
     /**
@@ -75,6 +95,8 @@ public enum EngineServiceDescription implements Serializable
      * @param engineServiceDescription short description for this engine service
      * @param engineServiceWiki wiki page for the engine service for this engine service
      * @param engineServicePartnerService name of the OMAS that is partnered with this engine service
+     * @param hostedGovernanceEngineType type of governance engine hosted by this service
+     * @param hostedGovernanceServiceType type of governance service hosted by this service
      */
     EngineServiceDescription(int                        engineServiceCode,
                              ComponentDevelopmentStatus engineServiceDevelopmentStatus,
@@ -83,7 +105,9 @@ public enum EngineServiceDescription implements Serializable
                              String                     engineServiceURLMarker,
                              String                     engineServiceDescription,
                              String                     engineServiceWiki,
-                             String                     engineServicePartnerService)
+                             String                     engineServicePartnerService,
+                             String                     hostedGovernanceEngineType,
+                             String                     hostedGovernanceServiceType)
     {
         /*
          * Save the values supplied
@@ -96,6 +120,8 @@ public enum EngineServiceDescription implements Serializable
         this.engineServiceDescription       = engineServiceDescription;
         this.engineServiceWiki              = engineServiceWiki;
         this.engineServicePartnerService    = engineServicePartnerService;
+        this.hostedGovernanceEngineType     = hostedGovernanceEngineType;
+        this.hostedGovernanceServiceType    = hostedGovernanceServiceType;
     }
 
 
@@ -114,6 +140,7 @@ public enum EngineServiceDescription implements Serializable
                 return description;
             }
         }
+
         return null;
     }
 
@@ -196,12 +223,34 @@ public enum EngineServiceDescription implements Serializable
 
 
     /**
-     * Return the full name of the Open Metadata Access Service (OMAS) that this engine service is partnered with.
+     * Return the description of the service that this engine service is partnered with.
      *
-     * @return  Full name of OMAS
+     * @return  Full name of related service
      */
     public String getEngineServicePartnerService()
     {
         return engineServicePartnerService;
+    }
+
+
+    /**
+     * Return the type of governance engine that this engine service supports.
+     *
+     * @return engine deployed implementation type name
+     */
+    public String getHostedGovernanceEngineType()
+    {
+        return hostedGovernanceEngineType;
+    }
+
+
+    /**
+     * Return the type of governance service that this engine service supports.
+     *
+     * @return governance service connector deployed implementation type name
+     */
+    public String getHostedGovernanceServiceType()
+    {
+        return hostedGovernanceServiceType;
     }
 }

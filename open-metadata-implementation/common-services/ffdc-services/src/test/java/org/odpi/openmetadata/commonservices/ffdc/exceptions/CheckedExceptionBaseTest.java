@@ -22,21 +22,4 @@ public class CheckedExceptionBaseTest extends OCFCheckedExceptionBasedTest
         super.testException(MockCheckedExceptionBase.class);
     }
 
-
-    @Test public void testInvalidParameterException()
-    {
-        super.testEnhancedException(InvalidParameterException.class, "TestParameterName");
-    }
-
-    @Test public void testPropertyServerException()
-    {
-        super.testException(PropertyServerException.class);
-    }
-
-    @Test public void testUserNotAuthorizedException()
-    {
-        super.testEnhancedException(UserNotAuthorizedException.class, "TestUserId");
-    }
-
-
 }

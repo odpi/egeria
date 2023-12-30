@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
+package org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
+import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc.CSVLineageImporterAuditCode;
+import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc.CSVLineageImporterErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,13 +21,13 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
-import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
+import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class CSVLineageImporterConnector extends FilesIntegratorConnector
+public class CSVLineageImporterConnector extends LineageIntegratorConnector
 {
     private String fileName = null;
 
@@ -145,25 +144,24 @@ public class CSVLineageImporterConnector extends FilesIntegratorConnector
             if (auditLog != null)
             {
                 auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                   connectorName,
-                                                                                                                                   methodName,
-                                                                                                                                   fileName,
-                                                                                                                                   fileName,
-                                                                                                                                   error.getMessage()));
+                                    CSVLineageImporterAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
+                                                                                                                      connectorName,
+                                                                                                                      methodName,
+                                                                                                                      fileName,
+                                                                                                                      fileName,
+                                                                                                                      error.getMessage()));
             }
 
-            throw new FileException(
-                    BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   connectorName,
-                                                                                                                   methodName,
-                                                                                                                   fileName,
-                                                                                                                   fileName,
-                                                                                                                   error.getMessage()),
+            throw new ConnectorCheckedException(
+                    CSVLineageImporterErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
+                                                                                                      connectorName,
+                                                                                                      methodName,
+                                                                                                      fileName,
+                                                                                                      fileName,
+                                                                                                      error.getMessage()),
                     error.getClass().getName(),
                     methodName,
-                    error,
-                    fileName);
+                    error);
         }
     }
 

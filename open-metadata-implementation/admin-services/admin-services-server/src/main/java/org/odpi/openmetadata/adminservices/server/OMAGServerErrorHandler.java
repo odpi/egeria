@@ -120,11 +120,14 @@ public class OMAGServerErrorHandler
 
         this.validateOMAGServerClientConfig(serverName, integrationServiceConfig, methodName);
 
-        for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
+        if (integrationServiceConfig.getIntegrationConnectorConfigs() != null)
         {
-            this.validatePropertyNotNull(connectorConfig, connectorConfigPropertyName, serverName, methodName);
-            this.validatePropertyNotNull(connectorConfig.getConnectorName(), connectorNamePropertyName, serverName, methodName);
-            this.validateServerConnection(connectorConfig.getConnection(), serverName, methodName);
+            for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
+            {
+                this.validatePropertyNotNull(connectorConfig, connectorConfigPropertyName, serverName, methodName);
+                this.validatePropertyNotNull(connectorConfig.getConnectorName(), connectorNamePropertyName, serverName, methodName);
+                this.validateServerConnection(connectorConfig.getConnection(), serverName, methodName);
+            }
         }
     }
 

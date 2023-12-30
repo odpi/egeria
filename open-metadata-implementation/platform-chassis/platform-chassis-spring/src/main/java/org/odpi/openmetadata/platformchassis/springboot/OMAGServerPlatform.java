@@ -171,19 +171,25 @@ public class OMAGServerPlatform
         if (!startupServers.trim().isEmpty())
         {
             String[] splits = startupServers.split(",");
-            //remove eventual duplicates
-            TreeSet<String> serverSet = new TreeSet<String>();
+            List<String> serverList = new ArrayList<>();
 
-            Collections.addAll(serverSet, splits);
-
-            if (! serverSet.isEmpty())
+            for (String serverName : splits)
             {
-                return new ArrayList<>(serverSet);
+                if ((serverName != null) && (! serverName.trim().isEmpty()))
+                {
+                    serverList.add(serverName.trim());
+                }
+            }
+
+            if (! serverList.isEmpty())
+            {
+                return serverList;
             }
         }
 
         return null;
     }
+
 
     /**
      * Starts the servers specified in the startup.server.list property
@@ -253,10 +259,14 @@ public class OMAGServerPlatform
                     ConnectorType connectorType         = new ConnectorType();
                     connectorType.setConnectorProviderClassName(configStoreProvider);
 
+                    configStoreConnection.setConnectorType(connectorType);
+
                     if (configStoreEndpoint != null)
                     {
                         Endpoint endpoint = new Endpoint();
                         endpoint.setAddress(configStoreEndpoint);
+
+                        configStoreConnection.setEndpoint(endpoint);
                     }
 
                     configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
@@ -267,6 +277,8 @@ public class OMAGServerPlatform
                     Connection    securityConnection = new Connection();
                     ConnectorType connectorType      = new ConnectorType();
                     connectorType.setConnectorProviderClassName(platformSecurityProvider);
+
+                    securityConnection.setConnectorType(connectorType);
 
                     String platformName = platformSecurityName;
                     if ((platformName == null) || (platformName.isEmpty()))

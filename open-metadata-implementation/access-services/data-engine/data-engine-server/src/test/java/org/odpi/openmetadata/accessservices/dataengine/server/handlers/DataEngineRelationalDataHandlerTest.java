@@ -105,7 +105,7 @@ class DataEngineRelationalDataHandlerTest {
     private static final String NETWORK_ADDRESS = "networkAddress";
 
     private void verifyInvalidParameterHandlerInvocations(String methodName) throws
-                                                                             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                             InvalidParameterException {
         //verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         //verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         //verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);

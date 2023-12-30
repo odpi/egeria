@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serveroperations.server;
 
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
 
 /**

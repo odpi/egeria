@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,12 +25,12 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * APACHE-ATLAS-REST-CONNECTOR-0005 - The {0} Apache Atlas REST Connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}
      */
     BAD_CONFIGURATION("APACHE-ATLAS-REST-CONNECTOR-0005",
-                          OMRSAuditLogRecordSeverity.EXCEPTION,
-                          "The {0} Apache Atlas REST Connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
-                          "The exception is passed back to the Catalog Integrator OMIS in the integration daemon that is hosting " +
+                      AuditLogRecordSeverityLevel.EXCEPTION,
+                      "The {0} Apache Atlas REST Connector encountered an {1} exception when connecting to {2} during the {3} method.  The exception message included was {4}",
+                      "The exception is passed back to the Catalog Integrator OMIS in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                                   "error handling that was performed.  These can help to determine how to recover from this error",
-                          "This message contains the exception that was the original cause of the problem. Use the information from the " +
+                      "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
@@ -39,7 +39,7 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * APACHE-ATLAS-REST-CONNECTOR-0008 - The {0} Apache Atlas REST Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("APACHE-ATLAS-REST-CONNECTOR-0008",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} Apache Atlas REST Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to catalog one or more metadata elements.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
@@ -48,7 +48,7 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * APACHE-ATLAS-REST-CONNECTOR-0009 - The {0} Apache Atlas REST Connector has stopped its monitoring of Apache Atlas at {1} and is shutting down
      */
     CONNECTOR_STOPPING("APACHE-ATLAS-REST-CONNECTOR-0009",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       AuditLogRecordSeverityLevel.INFO,
                        "The {0} Apache Atlas REST Connector has stopped its monitoring of Apache Atlas at {1} and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
@@ -58,17 +58,17 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * APACHE-ATLAS-REST-CONNECTOR-0031 - A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}
      */
     CLIENT_SIDE_REST_API_ERROR( "APACHE-ATLAS-REST-CONNECTOR-0031",
-                                OMRSAuditLogRecordSeverity.EXCEPTION,
+                                AuditLogRecordSeverityLevel.EXCEPTION,
                                 "A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}",
                                 "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
                                 "Look for errors in the local server's console to understand and correct the source of the error."),
     ;
 
-    private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
-    private final String                     logMessage;
-    private final String                     systemAction;
-    private final String                     userAction;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -77,7 +77,7 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * <br>
      *     ApacheAtlasAuditCode   auditCode = ApacheAtlasAuditCode.SERVER_NOT_AVAILABLE;
      * <br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -85,11 +85,11 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    ApacheAtlasAuditCode(String                     messageId,
-                         OMRSAuditLogRecordSeverity severity,
-                         String                     message,
-                         String                     systemAction,
-                         String                     userAction)
+    ApacheAtlasAuditCode(String                      messageId,
+                         AuditLogRecordSeverityLevel severity,
+                         String                      message,
+                         String                      systemAction,
+                         String                      userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;

@@ -3,12 +3,11 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -22,7 +21,7 @@ import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.RelationshipHa
  */
 public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandler {
 
-    private static GlossaryAuthorViewServicesInstanceMap instanceMap = new GlossaryAuthorViewServicesInstanceMap();
+    private static final GlossaryAuthorViewServicesInstanceMap instanceMap = new GlossaryAuthorViewServicesInstanceMap();
 
     /**
      * Default constructor registers the view service
