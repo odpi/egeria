@@ -164,6 +164,7 @@ org.odpi.openmetadata.accessservices.datamanager.rest
 org.odpi.openmetadata.accessservices.datamanager.server
 org.odpi.openmetadata.accessservices.datamanager.server.spring
 org.odpi.openmetadata.accessservices.dataprivacy.admin
+org.odpi.openmetadata.accessservices.dataprivacy.client
 org.odpi.openmetadata.accessservices.dataprivacy.events
 org.odpi.openmetadata.accessservices.dataprivacy.ffdc
 org.odpi.openmetadata.accessservices.dataprivacy.listener
@@ -179,6 +180,7 @@ org.odpi.openmetadata.accessservices.datascience.rest
 org.odpi.openmetadata.accessservices.datascience.server
 org.odpi.openmetadata.accessservices.datascience.server.spring
 org.odpi.openmetadata.accessservices.designmodel.admin
+org.odpi.openmetadata.accessservices.designmodel.client
 org.odpi.openmetadata.accessservices.designmodel.ffdc
 org.odpi.openmetadata.accessservices.designmodel.listener
 org.odpi.openmetadata.accessservices.designmodel.rest
