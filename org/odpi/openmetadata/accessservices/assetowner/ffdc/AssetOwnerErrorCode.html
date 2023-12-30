@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The AssetOwnerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Asset Owner OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -122,86 +121,28 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ASSET_NOT_FOUND" class="member-name-link">ASSET_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_CONFIG" class="member-name-link">BAD_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#BAD_OUT_TOPIC_CONNECTION" class="member-name-link">BAD_OUT_TOPIC_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#CONNECTION_NOT_FOUND" class="member-name-link">CONNECTION_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#EMPTY_PAGE_SIZE" class="member-name-link">EMPTY_PAGE_SIZE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_PROPERTY" class="member-name-link">INVALID_PROPERTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#MULTIPLE_ENTITIES_FOUND" class="member-name-link">MULTIPLE_ENTITIES_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#MULTIPLE_RELATIONSHIPS_FOUND" class="member-name-link">MULTIPLE_RELATIONSHIPS_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NEGATIVE_START_FROM" class="member-name-link">NEGATIVE_START_FROM</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_CONNECTED_ASSET" class="member-name-link">NO_CONNECTED_ASSET</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_METADATA_COLLECTION" class="member-name-link">NO_METADATA_COLLECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_RELATIONSHIPS_FOUND" class="member-name-link">NO_RELATIONSHIPS_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ARRAY_PARAMETER" class="member-name-link">NULL_ARRAY_PARAMETER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_CONNECTION_PARAMETER" class="member-name-link">NULL_CONNECTION_PARAMETER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_CONNECTION_RETURNED" class="member-name-link">NULL_CONNECTION_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR_RETURNED" class="member-name-link">NULL_CONNECTOR_RETURNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_END2_RETURNED" class="member-name-link">NULL_END2_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_ENTITY_RETURNED" class="member-name-link">NULL_ENTITY_RETURNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ENUM" class="member-name-link">NULL_ENUM</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-OWNER-500-002 - The requested connector for connection named {0} is not returned by the OMAG Server {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_RESPONSE_FROM_API" class="member-name-link">NULL_RESPONSE_FROM_API</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_AVAILABLE" class="member-name-link">OMRS_NOT_AVAILABLE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-OWNER-400-019 - A null topic listener has been passed by user {0} on method {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROPERTY_SERVER_ERROR" class="member-name-link">PROPERTY_SERVER_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PROXY_CONNECTION_FOUND" class="member-name-link">PROXY_CONNECTION_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROXY_ENTITY_FOUND" class="member-name-link">PROXY_ENTITY_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_NOT_AVAILABLE" class="member-name-link">SERVER_NOT_AVAILABLE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_URL_MALFORMED" class="member-name-link">SERVER_URL_MALFORMED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_NOT_INITIALIZED" class="member-name-link">SERVICE_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#TOO_MANY_CONNECTIONS" class="member-name-link">TOO_MANY_CONNECTIONS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-OWNER-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_ASSET" class="member-name-link">UNKNOWN_ASSET</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ENTITY" class="member-name-link">UNKNOWN_ENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#USER_NOT_AUTHORIZED" class="member-name-link">USER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-OWNER-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Asset Owner
+ OMAS out topic.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-OWNER-500-007 - The connector generated from the connection named {0} return by the {1} service running in OMAG
+ Server {2} at {3} is not of the required type.</div>
+</div>
 </div>
 </section>
 </li>
@@ -263,243 +204,40 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="SERVER_URL_NOT_SPECIFIED">
-<h3>SERVER_URL_NOT_SPECIFIED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_NOT_SPECIFIED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_URL_MALFORMED">
-<h3>SERVER_URL_MALFORMED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_MALFORMED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_USER_ID">
-<h3>NULL_USER_ID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER_ID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_GUID">
-<h3>NULL_GUID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_GUID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_NAME">
-<h3>NULL_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_NAME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_CONNECTED_ASSET">
-<h3>NO_CONNECTED_ASSET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NO_CONNECTED_ASSET</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="TOO_MANY_CONNECTIONS">
-<h3>TOO_MANY_CONNECTIONS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">TOO_MANY_CONNECTIONS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="USER_NOT_AUTHORIZED">
-<h3>USER_NOT_AUTHORIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">USER_NOT_AUTHORIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROPERTY_SERVER_ERROR">
-<h3>PROPERTY_SERVER_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">PROPERTY_SERVER_ERROR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENUM">
-<h3>NULL_ENUM</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENUM</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_CONNECTION_PARAMETER">
-<h3>NULL_CONNECTION_PARAMETER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION_PARAMETER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NEGATIVE_START_FROM">
-<h3>NEGATIVE_START_FROM</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NEGATIVE_START_FROM</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="EMPTY_PAGE_SIZE">
-<h3>EMPTY_PAGE_SIZE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">EMPTY_PAGE_SIZE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_CONFIG">
-<h3>BAD_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">BAD_CONFIG</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ARRAY_PARAMETER">
-<h3>NULL_ARRAY_PARAMETER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_ARRAY_PARAMETER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_PROPERTY">
-<h3>INVALID_PROPERTY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROPERTY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_OUT_TOPIC_CONNECTION">
-<h3>BAD_OUT_TOPIC_CONNECTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">BAD_OUT_TOPIC_CONNECTION</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_NOT_AVAILABLE">
-<h3>SERVER_NOT_AVAILABLE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">SERVER_NOT_AVAILABLE</span></div>
+<div class="block">OMAS-ASSET-OWNER-400-019 - A null topic listener has been passed by user {0} on method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OMRS_NOT_AVAILABLE">
-<h3>OMRS_NOT_AVAILABLE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_AVAILABLE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_METADATA_COLLECTION">
-<h3>NO_METADATA_COLLECTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NO_METADATA_COLLECTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CONNECTION_NOT_FOUND">
-<h3>CONNECTION_NOT_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">CONNECTION_NOT_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_NOT_FOUND">
-<h3>ASSET_NOT_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">ASSET_NOT_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROXY_CONNECTION_FOUND">
-<h3>PROXY_CONNECTION_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">PROXY_CONNECTION_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_ASSET">
-<h3>UNKNOWN_ASSET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ASSET</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROXY_ENTITY_FOUND">
-<h3>PROXY_ENTITY_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">PROXY_ENTITY_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="MULTIPLE_RELATIONSHIPS_FOUND">
-<h3>MULTIPLE_RELATIONSHIPS_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_RELATIONSHIPS_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_ENTITY">
-<h3>UNKNOWN_ENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ENTITY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_RELATIONSHIPS_FOUND">
-<h3>NO_RELATIONSHIPS_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NO_RELATIONSHIPS_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENTITY_RETURNED">
-<h3>NULL_ENTITY_RETURNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENTITY_RETURNED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="MULTIPLE_ENTITIES_FOUND">
-<h3>MULTIPLE_ENTITIES_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_ENTITIES_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_CONNECTION_RETURNED">
-<h3>NULL_CONNECTION_RETURNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION_RETURNED</span></div>
+<div class="block">OMAS-ASSET-OWNER-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_RETURNED">
 <h3>NULL_CONNECTOR_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_RETURNED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_END2_RETURNED">
-<h3>NULL_END2_RETURNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_END2_RETURNED</span></div>
+<div class="block">OMAS-ASSET-OWNER-500-002 - The requested connector for connection named {0} is not returned by the OMAG Server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
+<div class="block">OMAS-ASSET-OWNER-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Asset Owner
+ OMAS out topic.  The failing event was {1}, the exception was {2} with message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
 <h3>WRONG_TYPE_OF_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_RESPONSE_FROM_API">
-<h3>NULL_RESPONSE_FROM_API</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">NULL_RESPONSE_FROM_API</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
-<h3>CLIENT_SIDE_REST_API_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVICE_NOT_INITIALIZED">
-<h3>SERVICE_NOT_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.ffdc">AssetOwnerErrorCode</a></span>&nbsp;<span class="element-name">SERVICE_NOT_INITIALIZED</span></div>
+<div class="block">OMAS-ASSET-OWNER-500-007 - The connector generated from the connection named {0} return by the {1} service running in OMAG
+ Server {2} at {3} is not of the required type. It should be an instance of {4}</div>
 </section>
 </li>
 </ul>

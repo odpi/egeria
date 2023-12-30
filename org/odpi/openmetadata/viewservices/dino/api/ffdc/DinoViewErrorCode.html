@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The DinoViewErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMVS
  It is used in conjunction with all OMVS Exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA. Typically the numbers used are:</li>
@@ -203,7 +202,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DinoViewErrorCode.html" title="enum class in org.odpi.openmetadata.viewservices.dino.api.ffdc">DinoViewErrorCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -457,12 +456,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DinoViewErrorCode.html" title="enum class in org.odpi.openmetadata.viewservices.dino.api.ffdc">DinoViewErrorCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

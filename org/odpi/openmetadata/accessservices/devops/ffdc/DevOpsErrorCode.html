@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The DevOpsErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the DevOps OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -123,7 +122,9 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DEV-OPS-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 </div>
 </section>
 </li>
@@ -151,7 +152,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DevOpsErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.devops.ffdc">DevOpsErrorCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -188,6 +189,7 @@ the order they are declared.</div>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DevOpsErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.devops.ffdc">DevOpsErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
+<div class="block">OMAS-DEV-OPS-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 </ul>
@@ -261,12 +263,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DevOpsErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.devops.ffdc">DevOpsErrorCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

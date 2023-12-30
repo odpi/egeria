@@ -77,12 +77,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../contextmanager/FilesIntegratorContextImpl.html" title="class in org.odpi.openmetadata.integrationservices.files.contextmanager">FilesIntegratorContextImpl</a></code></dd>
-</dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">FilesIntegratorContext</span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FilesIntegratorContext</span>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></span></div>
 <div class="block">FilesIntegratorContext provides a wrapper around the Data Manager OMAS clients.
  It provides the simplified interface to open metadata needed by the FilesIntegratorConnector.
@@ -107,7 +103,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">FilesIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">FilesIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -122,6 +118,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
@@ -134,7 +131,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -442,27 +439,37 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about the consumers linked to a validValue.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointByGUID(java.lang.String)" class="member-name-link">getEndpointByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDirectoryNames(java.lang.String)" class="member-name-link">getDirectoryNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of directory (folder) names extracted from a path name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointByGUID(java.lang.String)" class="member-name-link">getEndpointByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the endpoint metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointsByName(java.lang.String,int,int)" class="member-name-link">getEndpointsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointsByName(java.lang.String,int,int)" class="member-name-link">getEndpointsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of endpoint metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileByGUID(java.lang.String)" class="member-name-link">getFileByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileByGUID(java.lang.String)" class="member-name-link">getFileByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a FolderProperties asset by its unique identifier (GUID).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileByPathName(java.lang.String)" class="member-name-link">getFileByPathName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileByPathName(java.lang.String)" class="member-name-link">getFileByPathName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a folder by its fully qualified path name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileSystemName(java.lang.String)" class="member-name-link">getFileSystemName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the name of the file system from the path name of a file or directory (folder).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">FileFolderElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderByGUID(java.lang.String)" class="member-name-link">getFolderByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderGUID)</code></div>
@@ -591,171 +598,150 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about the valid value set linked to an element as its set of valid values.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.integrationservices.files.connector.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerDirectoryTreeListener(org.odpi.openmetadata.integrationservices.files.connector.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryTreeListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
- and any of its subdirectories.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerFileListener(org.odpi.openmetadata.integrationservices.files.connector.FileListenerInterface,java.io.File)" class="member-name-link">registerFileListener</a><wbr>(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/datamanager/api/DataManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DataManagerEventListener</a>&nbsp;listener)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/datamanager/api/DataManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DataManagerEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register a listener object that will be passed each of the events published by
  the Data Manager OMAS.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeConnection(java.lang.String)" class="member-name-link">removeConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeConnection(java.lang.String)" class="member-name-link">removeConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeEndpoint(java.lang.String)" class="member-name-link">removeEndpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeEndpoint(java.lang.String)" class="member-name-link">removeEndpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a endpoint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaAttribute(java.lang.String)" class="member-name-link">removeSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaAttribute(java.lang.String)" class="member-name-link">removeSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaType(java.lang.String)" class="member-name-link">removeSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaType(java.lang.String)" class="member-name-link">removeSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a schema type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeValidValue(java.lang.String)" class="member-name-link">removeValidValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeValidValue(java.lang.String)" class="member-name-link">removeValidValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the metadata element representing a valid value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupAssetConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupAssetConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetSummary,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between an asset and its connection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupConnectorType(java.lang.String,java.lang.String)" class="member-name-link">setupConnectorType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupConnectorType(java.lang.String,java.lang.String)" class="member-name-link">setupConnectorType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between a connection and a connector type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupEmbeddedConnection(java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">setupEmbeddedConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupEmbeddedConnection(java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">setupEmbeddedConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  int&nbsp;position,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;arguments,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;embeddedConnectionGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between a virtual connection and an embedded connection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupEndpoint(java.lang.String,java.lang.String)" class="member-name-link">setupEndpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupEndpoint(java.lang.String,java.lang.String)" class="member-name-link">setupEndpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between a connection and an endpoint.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupReferenceValueTag(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties,java.lang.String)" class="member-name-link">setupReferenceValueTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupReferenceValueTag(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties,java.lang.String)" class="member-name-link">setupReferenceValueTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../../accessservices/datamanager/properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a reference value assignment relationship between an element and a valid value to show that
  the valid value is a semiformal tag/classification.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endTwoGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../accessservices/datamanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">RelationshipProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two schema elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect a schema type to a schema attribute.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupValidValueMember(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties,java.lang.String)" class="member-name-link">setupValidValueMember</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueSetGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupValidValueMember(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties,java.lang.String)" class="member-name-link">setupValidValueMember</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueSetGUID,
  <a href="../../../accessservices/datamanager/properties/ValidValueMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueMembershipProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueMemberGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a membership relationship between a validValue and a validValueSet that it belongs to.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupValidValues(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties,java.lang.String)" class="member-name-link">setupValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupValidValues(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties,java.lang.String)" class="member-name-link">setupValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../../accessservices/datamanager/properties/ValidValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueAssignmentProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
  the valid value defines the values that can be stored in the data item that the element represents.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnection(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties)" class="member-name-link">updateConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnection(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties)" class="member-name-link">updateConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFileInCatalog(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties)" class="member-name-link">updateDataFileInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFileGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFileInCatalog(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties)" class="member-name-link">updateDataFileInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFileGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/DataFileProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DataFileProperties</a>&nbsp;dataFileProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the file asset description in the catalog.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFolderInCatalog(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties)" class="member-name-link">updateDataFolderInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFolderInCatalog(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties)" class="member-name-link">updateDataFolderInCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFolderGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/FileFolderProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">FileFolderProperties</a>&nbsp;fileFolderProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the data folder asset description in the catalog.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEndpoint(boolean,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)" class="member-name-link">updateEndpoint</a><wbr>(boolean&nbsp;isMergeUpdate,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateEndpoint(boolean,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)" class="member-name-link">updateEndpoint</a><wbr>(boolean&nbsp;isMergeUpdate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID,
  <a href="../../../accessservices/datamanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing an endpoint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a schema type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateValidValue(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)" class="member-name-link">updateValidValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateValidValue(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)" class="member-name-link">updateValidValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a valid value.</div>
 </div>
 </div>
@@ -763,7 +749,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
-<code><a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMaxPageSize()">getMaxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isRefreshInProgress()">isRefreshInProgress</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a></code></div>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#disconnect()">disconnect</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMaxPageSize()">getMaxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isRefreshInProgress()">isRefreshInProgress</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryTreeListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">registerFileListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -779,7 +765,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
 <h3>FilesIntegratorContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FilesIntegratorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
@@ -796,6 +782,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
@@ -816,6 +803,7 @@ loadScripts(document, 'script');</script>
                                  null).</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the asset manager</dd>
 <dd><code>externalSourceName</code> - unique name of the software server capability for the asset manager</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dd><code>maxPageSize</code> - max number of elements that can be returned on a query</dd>
 </dl>
 </section>
@@ -853,83 +841,30 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="registerFileListener(org.odpi.openmetadata.integrationservices.files.connector.FileListenerInterface,java.io.File)">
-<h3>registerFileListener</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerFileListener</span><wbr><span class="parameters">(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</span>
-                                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
+<section class="detail" id="getFileSystemName(java.lang.String)">
+<h3>getFileSystemName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileSystemName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</span></div>
+<div class="block">Extract the name of the file system from the path name of a file or directory (folder).  This is everything in front of this string pattern "://".
+ If the string pattern is not found then null is returned.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>fileToMonitor</code> - name of the file to monitor</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
-                                      the creation of a connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code>pathName</code> - path name of file or directory</dd>
+<dt>Returns:</dt>
+<dd>file system name or null</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="registerDirectoryListener(org.odpi.openmetadata.integrationservices.files.connector.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">
-<h3>registerDirectoryListener</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryListener</span><wbr><span class="parameters">(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</span>
-                                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
- The file filter lets you request that only certain types of files are returned.</div>
+<section class="detail" id="getDirectoryNames(java.lang.String)">
+<h3>getDirectoryNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDirectoryNames</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</span></div>
+<div class="block">Return a list of directory (folder) names extracted from a path name.  For example, if the pathname is "one/two/three.txt", the method
+ returns ["one", "two" ].</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the file directory to monitor</dd>
-<dd><code>fileFilter</code> - a file filter implementation that restricts the files/directories that will be returned to the listener</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
-                                      the creation of a connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="registerDirectoryTreeListener(org.odpi.openmetadata.integrationservices.files.connector.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">
-<h3>registerDirectoryTreeListener</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryTreeListener</span><wbr><span class="parameters">(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</span>
-                                            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
- and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>directoryToMonitor</code> - details of the root file directory to monitor from</dd>
-<dd><code>fileFilter</code> - a file filter implementation that restricts the files/directories that will be returned to the listener</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
-                                      the creation of a connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code>pathName</code> - path name of file or directory</dd>
+<dt>Returns:</dt>
+<dd>list of names</dd>
 </dl>
 </section>
 </li>

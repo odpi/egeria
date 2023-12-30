@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The AssetAnalysisAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -116,54 +115,49 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CLEARING_ALL_DISCOVERY_SERVICE_CONFIG" class="member-name-link">CLEARING_ALL_DISCOVERY_SERVICE_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#CONFIGURATION_LISTENER_REGISTERED" class="member-name-link">CONFIGURATION_LISTENER_REGISTERED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DISCOVERY_ENGINE_NO_CONFIG" class="member-name-link">DISCOVERY_ENGINE_NO_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DISCOVERY_SERVICE_COMPLETE" class="member-name-link">DISCOVERY_SERVICE_COMPLETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DISCOVERY_SERVICE_FAILED" class="member-name-link">DISCOVERY_SERVICE_FAILED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DISCOVERY_SERVICE_NO_CONFIG" class="member-name-link">DISCOVERY_SERVICE_NO_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#DISCOVERY_SERVICE_COMPLETE" class="member-name-link">DISCOVERY_SERVICE_COMPLETE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0019 - The discovery service {0} has completed the analysis of asset {1} with discovery request type {2} in {3}
+ milliseconds; the results are stored in discovery analysis report {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DISCOVERY_SERVICE_FAILED" class="member-name-link">DISCOVERY_SERVICE_FAILED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0018 - The discovery service {0} threw a {1} exception during the generation of discovery analysis report
+ {2} for asset {3} during discovery request type {4} in discovery engine {5} (guid={6}).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DISCOVERY_SERVICE_STARTING" class="member-name-link">DISCOVERY_SERVICE_STARTING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_INITIALIZED" class="member-name-link">ENGINE_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_INITIALIZING" class="member-name-link">ENGINE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0017 - The discovery service {0} is starting to analyze asset {1} with discovery request type {2}
+ in discovery engine {3} (guid={4}); the results will be stored in discovery analysis report {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENGINE_SERVICE_INITIALIZING" class="member-name-link">ENGINE_SERVICE_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0001 - The Asset Analysis engine services are initializing in server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#EXC_ON_ERROR_STATUS_UPDATE" class="member-name-link">EXC_ON_ERROR_STATUS_UPDATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#FINISHED_ALL_DISCOVERY_SERVICE_CONFIG" class="member-name-link">FINISHED_ALL_DISCOVERY_SERVICE_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_DISCOVERY_SERVICE" class="member-name-link">INVALID_DISCOVERY_SERVICE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_CONFIGURATION_LISTENER" class="member-name-link">NO_CONFIGURATION_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0021 - Discovery engine {0} is unable to update the status for discovery service {1}.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_DISCOVERY_SERVICE" class="member-name-link">INVALID_DISCOVERY_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0029 - The discovery service {0} linked to discovery request type {1} can not be started.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_DISCOVERY_ENGINES_STARTED" class="member-name-link">NO_DISCOVERY_ENGINES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_SUPPORTED_REQUEST_TYPES" class="member-name-link">NO_SUPPORTED_REQUEST_TYPES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#REQUEST_TYPE_CONFIG_ERROR" class="member-name-link">REQUEST_TYPE_CONFIG_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_NOT_AUTHORIZED" class="member-name-link">SERVER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0020 - Asset Analysis OMES in server {0} is unable to start any discovery engines</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0016 - The Asset Analysis OMES in server {0} has completed shutdown</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0014 - The Asset Analysis OMES in server {0} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SUPPORTED_DISCOVERY_TYPE" class="member-name-link">SUPPORTED_DISCOVERY_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_DISCOVERY_ENGINE_NAME" class="member-name-link">UNKNOWN_DISCOVERY_ENGINE_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-ASSET-ANALYSIS-0012 - The Asset Analysis OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
+</div>
 </div>
 </section>
 </li>
@@ -191,7 +185,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -228,144 +222,75 @@ the order they are declared.</div>
 <section class="detail" id="ENGINE_SERVICE_INITIALIZING">
 <h3>ENGINE_SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_INITIALIZING</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_INITIALIZING">
-<h3>ENGINE_INITIALIZING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_INITIALIZING</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_NOT_AUTHORIZED">
-<h3>SERVER_NOT_AUTHORIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SERVER_NOT_AUTHORIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SUPPORTED_DISCOVERY_TYPE">
-<h3>SUPPORTED_DISCOVERY_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SUPPORTED_DISCOVERY_TYPE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SUPPORTED_REQUEST_TYPES">
-<h3>NO_SUPPORTED_REQUEST_TYPES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">NO_SUPPORTED_REQUEST_TYPES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="REQUEST_TYPE_CONFIG_ERROR">
-<h3>REQUEST_TYPE_CONFIG_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">REQUEST_TYPE_CONFIG_ERROR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_INITIALIZED">
-<h3>ENGINE_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_INITIALIZED</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0001 - The Asset Analysis engine services are initializing in server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_INITIALIZED">
-<h3>SERVER_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SERVER_INITIALIZED</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0012 - The Asset Analysis OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTTING_DOWN">
 <h3>SERVER_SHUTTING_DOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTTING_DOWN</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0014 - The Asset Analysis OMES in server {0} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTDOWN">
 <h3>SERVER_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0016 - The Asset Analysis OMES in server {0} has completed shutdown</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISCOVERY_SERVICE_STARTING">
 <h3>DISCOVERY_SERVICE_STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">DISCOVERY_SERVICE_STARTING</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0017 - The discovery service {0} is starting to analyze asset {1} with discovery request type {2}
+ in discovery engine {3} (guid={4}); the results will be stored in discovery analysis report {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISCOVERY_SERVICE_FAILED">
 <h3>DISCOVERY_SERVICE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">DISCOVERY_SERVICE_FAILED</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0018 - The discovery service {0} threw a {1} exception during the generation of discovery analysis report
+ {2} for asset {3} during discovery request type {4} in discovery engine {5} (guid={6}). The error message was {7}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISCOVERY_SERVICE_COMPLETE">
 <h3>DISCOVERY_SERVICE_COMPLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">DISCOVERY_SERVICE_COMPLETE</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0019 - The discovery service {0} has completed the analysis of asset {1} with discovery request type {2} in {3}
+ milliseconds; the results are stored in discovery analysis report {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_DISCOVERY_ENGINES_STARTED">
 <h3>NO_DISCOVERY_ENGINES_STARTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">NO_DISCOVERY_ENGINES_STARTED</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0020 - Asset Analysis OMES in server {0} is unable to start any discovery engines</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXC_ON_ERROR_STATUS_UPDATE">
 <h3>EXC_ON_ERROR_STATUS_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">EXC_ON_ERROR_STATUS_UPDATE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_DISCOVERY_ENGINE_NAME">
-<h3>UNKNOWN_DISCOVERY_ENGINE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_DISCOVERY_ENGINE_NAME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_CONFIGURATION_LISTENER">
-<h3>NO_CONFIGURATION_LISTENER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">NO_CONFIGURATION_LISTENER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CONFIGURATION_LISTENER_REGISTERED">
-<h3>CONFIGURATION_LISTENER_REGISTERED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_LISTENER_REGISTERED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CLEARING_ALL_DISCOVERY_SERVICE_CONFIG">
-<h3>CLEARING_ALL_DISCOVERY_SERVICE_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">CLEARING_ALL_DISCOVERY_SERVICE_CONFIG</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="FINISHED_ALL_DISCOVERY_SERVICE_CONFIG">
-<h3>FINISHED_ALL_DISCOVERY_SERVICE_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">FINISHED_ALL_DISCOVERY_SERVICE_CONFIG</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="DISCOVERY_SERVICE_NO_CONFIG">
-<h3>DISCOVERY_SERVICE_NO_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">DISCOVERY_SERVICE_NO_CONFIG</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="DISCOVERY_ENGINE_NO_CONFIG">
-<h3>DISCOVERY_ENGINE_NO_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">DISCOVERY_ENGINE_NO_CONFIG</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0021 - Discovery engine {0} is unable to update the status for discovery service {1}.
+ The exception was {2} with error message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_DISCOVERY_SERVICE">
 <h3>INVALID_DISCOVERY_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a></span>&nbsp;<span class="element-name">INVALID_DISCOVERY_SERVICE</span></div>
+<div class="block">OMES-ASSET-ANALYSIS-0029 - The discovery service {0} linked to discovery request type {1} can not be started.
+ The {2} exception was returned with message {3}</div>
 </section>
 </li>
 </ul>
@@ -439,12 +364,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetAnalysisAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.assetanalysis.ffdc">AssetAnalysisAuditCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

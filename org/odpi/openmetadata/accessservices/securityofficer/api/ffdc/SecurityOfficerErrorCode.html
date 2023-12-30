@@ -106,23 +106,34 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#NO_METADATA_COLLECTION" class="member-name-link">NO_METADATA_COLLECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-404-003 - The repository connector {0} is not returning a metadata collection object"</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-400-017 - A null topic listener has been passed by user {0} on method {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_TOPIC_CONNECTOR" class="member-name-link">NULL_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_AVAILABLE" class="member-name-link">OMRS_NOT_AVAILABLE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_NOT_INITIALIZED" class="member-name-link">SERVICE_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-400-001 - Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-404-001 - The open metadata repository services are not initialized for server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-500-004 - An unexpected exception occurred when sending an event through connector {0}
+ to the Security Officer OMAS out topic.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-503-005 - A {0} exception was caught during start up of service {1} for server {2}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_REPOSITORY_EXCEPTION" class="member-name-link">UNEXPECTED_REPOSITORY_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-503-006 - A {0} exception was caught by method {1} during a call to the repository services by service {2} for server {3}.</div>
+</div>
 </div>
 </section>
 </li>
@@ -150,7 +161,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -187,54 +198,50 @@ the order they are declared.</div>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OMRS_NOT_AVAILABLE">
-<h3>OMRS_NOT_AVAILABLE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_AVAILABLE</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-404-001 - The open metadata repository services are not initialized for server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_METADATA_COLLECTION">
 <h3>NO_METADATA_COLLECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">NO_METADATA_COLLECTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVICE_NOT_INITIALIZED">
-<h3>SERVICE_NOT_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">SERVICE_NOT_INITIALIZED</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-404-003 - The repository connector {0} is not returning a metadata collection object"</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_TOPIC_CONNECTOR">
 <h3>NULL_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">NULL_TOPIC_CONNECTOR</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-400-001 - Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-400-017 - A null topic listener has been passed by user {0} on method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-500-004 - An unexpected exception occurred when sending an event through connector {0}
+ to the Security Officer OMAS out topic.  The failing event was {1}, the exception was {2} with message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
 <h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-503-005 - A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_REPOSITORY_EXCEPTION">
 <h3>UNEXPECTED_REPOSITORY_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_REPOSITORY_EXCEPTION</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-503-006 - A {0} exception was caught by method {1} during a call to the repository services by service {2} for server {3}. The error message was: {4}</div>
 </section>
 </li>
 </ul>
@@ -308,12 +315,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SecurityOfficerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerErrorCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

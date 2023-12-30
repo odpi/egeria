@@ -189,6 +189,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up a new security verifier (the handler runs with a default verifier until this
  method is called).</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startOutboundEvents()" class="member-name-link">startOutboundEvents</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The local repository (if configured) has been started while the archives were loaded and the
+ cohorts initialized.</div>
+</div>
 </div>
 </div>
 </div>
@@ -326,6 +332,15 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem accessing an open metadata archive</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="startOutboundEvents()">
+<h3>startOutboundEvents</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startOutboundEvents</span>()</div>
+<div class="block">The local repository (if configured) has been started while the archives were loaded and the
+ cohorts initialized.  During this time, outbound repository events have been buffered.
+ Calling start() releases these buffered events into the cohort(s).</div>
 </section>
 </li>
 <li>

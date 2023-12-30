@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AssetLineageAuditCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetLineageAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.auditlog">AssetLineageAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
-<div class="block">The AssetManagerAuditCode is used to define the message content for the OMRS Audit Log.
+<div class="block">The AssetLineageAuditCode is used to define the message content for the OMRS Audit Log.
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Id - to uniquely identify the message</li>
@@ -156,7 +156,7 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMAS-ASSET-LINEAGE-0004 The access service detected an error during the start up of a specific server instance.</div>
+<div class="block">OMAS-ASSET-LINEAGE-0004 The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0} from server {1}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
 <div class="col-last odd-row-color">
@@ -247,7 +247,7 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetLineageAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.auditlog">AssetLineageAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
-<div class="block">OMAS-ASSET-LINEAGE-0004 The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.</div>
+<div class="block">OMAS-ASSET-LINEAGE-0004 The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0} from server {1}</div>
 </section>
 </li>
 <li>

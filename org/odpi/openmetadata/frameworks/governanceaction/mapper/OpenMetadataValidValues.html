@@ -92,14 +92,34 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#CONNECTOR_FRAMEWORK_DEFAULT" class="member-name-link">CONNECTOR_FRAMEWORK_DEFAULT</a></code></div>
+<div class="col-second even-row-color"><code><a href="#CALLED_SERVICE_RESOURCE_USE" class="member-name-link">CALLED_SERVICE_RESOURCE_USE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">This is the official name of the Open Connector Framework (OCF) used in Connector Types.</div>
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service and another type of service it calls.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#CONNECTOR_INTERFACE_LANGUAGE_DEFAULT" class="member-name-link">CONNECTOR_INTERFACE_LANGUAGE_DEFAULT</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#CONNECTOR_FRAMEWORK_DEFAULT" class="member-name-link">CONNECTOR_FRAMEWORK_DEFAULT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">This is the official name of the Open Connector Framework (OCF) used in Connector Types.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#CONNECTOR_INTERFACE_LANGUAGE_DEFAULT" class="member-name-link">CONNECTOR_INTERFACE_LANGUAGE_DEFAULT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">This is the official name of the programming language used for OCF connectors.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#HOSTED_CONNECTOR_RESOURCE_USE" class="member-name-link">HOSTED_CONNECTOR_RESOURCE_USE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service/engine and a type of connector.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE" class="member-name-link">HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service and a type of governance engine.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#HOSTED_SERVICE_RESOURCE_USE" class="member-name-link">HOSTED_SERVICE_RESOURCE_USE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of server and a type of service.</div>
 </div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#OPEN_METADATA_ECOSYSTEM_SCOPE" class="member-name-link">OPEN_METADATA_ECOSYSTEM_SCOPE</a></code></div>
@@ -267,6 +287,66 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="see-list">
 <li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HOSTED_SERVICE_RESOURCE_USE">
+<h3>HOSTED_SERVICE_RESOURCE_USE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">HOSTED_SERVICE_RESOURCE_USE</span></div>
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of server and a type of service.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HOSTED_CONNECTOR_RESOURCE_USE">
+<h3>HOSTED_CONNECTOR_RESOURCE_USE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">HOSTED_CONNECTOR_RESOURCE_USE</span></div>
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service/engine and a type of connector.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.HOSTED_CONNECTOR_RESOURCE_USE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE">
+<h3>HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE</span></div>
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service and a type of governance engine.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CALLED_SERVICE_RESOURCE_USE">
+<h3>CALLED_SERVICE_RESOURCE_USE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">CALLED_SERVICE_RESOURCE_USE</span></div>
+<div class="block">The "resourceUse" property value for a ResourceList relationship between a type of service and another type of service it calls.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

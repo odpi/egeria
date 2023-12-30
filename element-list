@@ -446,6 +446,8 @@ org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.modules
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
+org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
+org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.egeria
 org.odpi.openmetadata.adapters.connectors.integration.egeria.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.elasticsearch
@@ -576,7 +578,6 @@ org.odpi.openmetadata.conformance.workbenches.platform
 org.odpi.openmetadata.conformance.workbenches.repository
 org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer
 org.odpi.openmetadata.conformance.workbenches.repository.listener
-org.odpi.openmetadata.devprojects.reports.platform
 org.odpi.openmetadata.engineservices.assetanalysis.admin
 org.odpi.openmetadata.engineservices.assetanalysis.api
 org.odpi.openmetadata.engineservices.assetanalysis.client
@@ -617,12 +618,15 @@ org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
 org.odpi.openmetadata.frameworks.governanceaction.mapper
 org.odpi.openmetadata.frameworks.governanceaction.properties
+org.odpi.openmetadata.frameworks.governanceaction.refdata
 org.odpi.openmetadata.frameworks.governanceaction.search
+org.odpi.openmetadata.frameworks.integration.catalogtarget
 org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
 org.odpi.openmetadata.frameworks.integration.contextmanager
 org.odpi.openmetadata.frameworks.integration.ffdc
+org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
 org.odpi.openmetadata.frameworkservices.gaf.admin
@@ -812,6 +816,8 @@ org.odpi.openmetadata.platformservices.server.spring
 org.odpi.openmetadata.reports
 org.odpi.openmetadata.reports.componentid
 org.odpi.openmetadata.reports.databasereport
+org.odpi.openmetadata.reports.platform
+org.odpi.openmetadata.reports.validvalues
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager
 org.odpi.openmetadata.repositoryservices.archiveutilities

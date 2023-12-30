@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a>&gt;
 implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The RepositoryHandlerAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -117,29 +116,61 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_ENTITY" class="member-name-link">BAD_ENTITY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0006 - A {0} entity has been retrieved by method {1} from service {2} that has an invalid header: {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAD_ENTITY_PROXY" class="member-name-link">BAD_ENTITY_PROXY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0007 - A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#BAD_RELATIONSHIP" class="member-name-link">BAD_RELATIONSHIP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0008 - A {0} relationship has been retrieved by method {1} from service {2} that has an invalid header: {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENTITY_DELETED" class="member-name-link">ENTITY_DELETED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0011 - The Open Metadata Service has soft-deleted entity {0} of type {1} ({2}) during method {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ENTITY_PURGED" class="member-name-link">ENTITY_PURGED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0001 - The Open Metadata Service has purged entity {0} of type {1} ({2}) during method {3} because its 
+ home repository {4} does not support soft-delete</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FUNCTION_NOT_SUPPORTED" class="member-name-link">FUNCTION_NOT_SUPPORTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0010 - Method {0} called from {1} for service {2} is using function that not supported by any of the 
+ metadata repositories connected to {3} - error message is: {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_INSTANCE" class="member-name-link">NULL_INSTANCE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0005 - A null instance of type {0} has been retrieved by method {1} from service {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PROPERTY_SERVER_ERROR" class="member-name-link">PROPERTY_SERVER_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0003 - An unexpected error {4} was returned to {5} by the metadata server during {1} request for 
+ open metadata access service {2} on server {3}; message was {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#RELATIONSHIP_DELETED" class="member-name-link">RELATIONSHIP_DELETED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0012 - The Open Metadata Service has soft-deleted relationship {0} of type {1} ({2}) between entity {3} of type
+ {4} ({5}) and entity {6} of type {7} ({8}) during method {9}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#RELATIONSHIP_PURGED" class="member-name-link">RELATIONSHIP_PURGED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0002 - The Open Metadata Service has purged relationship {0} of type {1} ({2}) during method {3} because its home 
+ repository {4} does not support soft-delete</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0004 - The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type 
+ {1} during method {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNAVAILABLE_ENTITY" class="member-name-link">UNAVAILABLE_ENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-0009 - A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not 
+ visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of 
+ forLineage={9} and forDuplicateProcessing={10}</div>
+</div>
 </div>
 </section>
 </li>
@@ -204,72 +235,92 @@ the order they are declared.</div>
 <section class="detail" id="ENTITY_PURGED">
 <h3>ENTITY_PURGED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">ENTITY_PURGED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0001 - The Open Metadata Service has purged entity {0} of type {1} ({2}) during method {3} because its 
+ home repository {4} does not support soft-delete</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RELATIONSHIP_PURGED">
 <h3>RELATIONSHIP_PURGED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">RELATIONSHIP_PURGED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0002 - The Open Metadata Service has purged relationship {0} of type {1} ({2}) during method {3} because its home 
+ repository {4} does not support soft-delete</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPERTY_SERVER_ERROR">
 <h3>PROPERTY_SERVER_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">PROPERTY_SERVER_ERROR</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0003 - An unexpected error {4} was returned to {5} by the metadata server during {1} request for 
+ open metadata access service {2} on server {3}; message was {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SET_ANCHORS">
 <h3>UNABLE_TO_SET_ANCHORS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_ANCHORS</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0004 - The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type 
+ {1} during method {2}. The resulting exception was {3} with error message {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_INSTANCE">
 <h3>NULL_INSTANCE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">NULL_INSTANCE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0005 - A null instance of type {0} has been retrieved by method {1} from service {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_ENTITY">
 <h3>BAD_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0006 - A {0} entity has been retrieved by method {1} from service {2} that has an invalid header: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_ENTITY_PROXY">
 <h3>BAD_ENTITY_PROXY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY_PROXY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0007 - A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_RELATIONSHIP">
 <h3>BAD_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">BAD_RELATIONSHIP</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0008 - A {0} relationship has been retrieved by method {1} from service {2} that has an invalid header: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNAVAILABLE_ENTITY">
 <h3>UNAVAILABLE_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">UNAVAILABLE_ENTITY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0009 - A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not 
+ visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of 
+ forLineage={9} and forDuplicateProcessing={10}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FUNCTION_NOT_SUPPORTED">
 <h3>FUNCTION_NOT_SUPPORTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">FUNCTION_NOT_SUPPORTED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0010 - Method {0} called from {1} for service {2} is using function that not supported by any of the 
+ metadata repositories connected to {3} - error message is: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTITY_DELETED">
 <h3>ENTITY_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">ENTITY_DELETED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0011 - The Open Metadata Service has soft-deleted entity {0} of type {1} ({2}) during method {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RELATIONSHIP_DELETED">
 <h3>RELATIONSHIP_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">RELATIONSHIP_DELETED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-0012 - The Open Metadata Service has soft-deleted relationship {0} of type {1} ({2}) between entity {3} of type
+ {4} ({5}) and entity {6} of type {7} ({8}) during method {9}</div>
 </section>
 </li>
 </ul>

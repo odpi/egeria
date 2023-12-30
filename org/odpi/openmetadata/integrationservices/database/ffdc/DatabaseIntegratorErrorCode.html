@@ -124,9 +124,13 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_CONNECTOR" class="member-name-link">INVALID_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-DATABASE-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONTEXT" class="member-name-link">NULL_CONTEXT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMIS-DATABASE-INTEGRATOR-500-001 - Integration connector {0} has a null context</div>
+</div>
 </div>
 </section>
 </li>
@@ -191,12 +195,14 @@ the order they are declared.</div>
 <section class="detail" id="INVALID_CONNECTOR">
 <h3>INVALID_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DatabaseIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.database.ffdc">DatabaseIntegratorErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONNECTOR</span></div>
+<div class="block">OMIS-DATABASE-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONTEXT">
 <h3>NULL_CONTEXT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DatabaseIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.database.ffdc">DatabaseIntegratorErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT</span></div>
+<div class="block">OMIS-DATABASE-INTEGRATOR-500-001 - Integration connector {0} has a null context</div>
 </section>
 </li>
 </ul>

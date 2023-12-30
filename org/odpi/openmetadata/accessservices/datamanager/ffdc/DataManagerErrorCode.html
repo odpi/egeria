@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The DataManagerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Data Manager OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -122,26 +121,23 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ADD_CLASSIFICATION_EXCEPTION" class="member-name-link">ADD_CLASSIFICATION_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ADD_ENTITY_EXCEPTION" class="member-name-link">ADD_ENTITY_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ADD_RELATIONSHIP_EXCEPTION" class="member-name-link">ADD_RELATIONSHIP_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_PARAMETER" class="member-name-link">BAD_PARAMETER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#GET_ENTITY_EXCEPTION" class="member-name-link">GET_ENTITY_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#GET_RELATIONSHIP_EXCEPTION" class="member-name-link">GET_RELATIONSHIP_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#BAD_PARAMETER" class="member-name-link">BAD_PARAMETER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-MANAGER-400-006 - At least one of the properties supplied for a new relationship of type {0} are invalid.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-MANAGER-500-001 - A null topic listener has been passed by user {0} on method {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-MANAGER-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-MANAGER-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Data Manager
+ OMAS out topic.</div>
+</div>
 </div>
 </section>
 </li>
@@ -203,63 +199,33 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="ADD_ENTITY_EXCEPTION">
-<h3>ADD_ENTITY_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">ADD_ENTITY_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ADD_RELATIONSHIP_EXCEPTION">
-<h3>ADD_RELATIONSHIP_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">ADD_RELATIONSHIP_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="GET_ENTITY_EXCEPTION">
-<h3>GET_ENTITY_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">GET_ENTITY_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="GET_RELATIONSHIP_EXCEPTION">
-<h3>GET_RELATIONSHIP_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">GET_RELATIONSHIP_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ADD_CLASSIFICATION_EXCEPTION">
-<h3>ADD_CLASSIFICATION_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">ADD_CLASSIFICATION_EXCEPTION</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="BAD_PARAMETER">
 <h3>BAD_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">BAD_PARAMETER</span></div>
+<div class="block">OMAS-DATA-MANAGER-400-006 - At least one of the properties supplied for a new relationship of type {0} are invalid.
+ The {1} exception was returned with error message: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
+<div class="block">OMAS-DATA-MANAGER-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
+<div class="block">OMAS-DATA-MANAGER-500-001 - A null topic listener has been passed by user {0} on method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
-<h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.ffdc">DataManagerErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
+<div class="block">OMAS-DATA-MANAGER-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Data Manager
+ OMAS out topic.  The failing event was {1}, the exception was {2} with message {2}</div>
 </section>
 </li>
 </ul>

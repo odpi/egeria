@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a>&gt;
 implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The KafkaIntegrationConnectorAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -117,29 +116,58 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_CONFIGURATION" class="member-name-link">BAD_CONFIGURATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening event broker {2} during 
+ the {3} method.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_CONFIGURATION" class="member-name-link">CONNECTOR_CONFIGURATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0001 - The {0} integration connector has been initialized to monitor event broker at URL {1} with templateQualifiedName={2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its topic monitoring and is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0015 - The {0} integration connector is unable to retrieve the Topic template with qualified name: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#RETRIEVED_TOPICS" class="member-name-link">RETRIEVED_TOPICS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0005 - The {0} integration connector has retrieved {2} topics from {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TOPIC_ARCHIVED" class="member-name-link">TOPIC_ARCHIVED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has archived the Topic {1} ({2}) because the real-world topic
+ is no longer stored in the event broker</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TOPIC_CREATED" class="member-name-link">TOPIC_CREATED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0016 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TOPIC_CREATED_FROM_TEMPLATE" class="member-name-link">TOPIC_CREATED_FROM_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0017 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic using template {3} ({4})</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TOPIC_DELETED" class="member-name-link">TOPIC_DELETED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0019 - The {0} integration connector has deleted the Topic {1} ({2}) because the real-world topic is 
+ no longer defined in the event broker</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TOPIC_UPDATED" class="member-name-link">TOPIC_UPDATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0018 - The {0} integration connector has updated the Topic {1} ({2}) because the real-world topic changed</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNABLE_TO_RETRIEVE_TOPICS" class="member-name-link">UNABLE_TO_RETRIEVE_TOPICS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0004 - The {0} integration connector received an unexpected {2} exception when retrieving topics from 
+ event broker at {1}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_TOPIC_UPDATE" class="member-name-link">UNEXPECTED_EXC_TOPIC_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0014 - An unexpected {0} exception was returned to the {1} integration connector when it tried to update the
+ Topic in the metadata repositories for topic {2}.</div>
+</div>
 </div>
 </section>
 </li>
@@ -204,72 +232,89 @@ the order they are declared.</div>
 <section class="detail" id="CONNECTOR_CONFIGURATION">
 <h3>CONNECTOR_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CONFIGURATION</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0001 - The {0} integration connector has been initialized to monitor event broker at URL {1} with templateQualifiedName={2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIGURATION">
 <h3>BAD_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">BAD_CONFIGURATION</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening event broker {2} during 
+ the {3} method.  The exception message included was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_RETRIEVE_TOPICS">
 <h3>UNABLE_TO_RETRIEVE_TOPICS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_RETRIEVE_TOPICS</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0004 - The {0} integration connector received an unexpected {2} exception when retrieving topics from 
+ event broker at {1}.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RETRIEVED_TOPICS">
 <h3>RETRIEVED_TOPICS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">RETRIEVED_TOPICS</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0005 - The {0} integration connector has retrieved {2} topics from {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_STOPPING">
 <h3>CONNECTOR_STOPPING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its topic monitoring and is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_TOPIC_UPDATE">
 <h3>UNEXPECTED_EXC_TOPIC_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_TOPIC_UPDATE</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0014 - An unexpected {0} exception was returned to the {1} integration connector when it tried to update the
+ Topic in the metadata repositories for topic {2}.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MISSING_TEMPLATE">
 <h3>MISSING_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">MISSING_TEMPLATE</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0015 - The {0} integration connector is unable to retrieve the Topic template with qualified name: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_CREATED">
 <h3>TOPIC_CREATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">TOPIC_CREATED</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0016 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_CREATED_FROM_TEMPLATE">
 <h3>TOPIC_CREATED_FROM_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">TOPIC_CREATED_FROM_TEMPLATE</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0017 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic using template {3} ({4})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_UPDATED">
 <h3>TOPIC_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">TOPIC_UPDATED</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0018 - The {0} integration connector has updated the Topic {1} ({2}) because the real-world topic changed</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_DELETED">
 <h3>TOPIC_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">TOPIC_DELETED</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0019 - The {0} integration connector has deleted the Topic {1} ({2}) because the real-world topic is 
+ no longer defined in the event broker</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_ARCHIVED">
 <h3>TOPIC_ARCHIVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc">KafkaIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">TOPIC_ARCHIVED</span></div>
+<div class="block">KAFKA-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has archived the Topic {1} ({2}) because the real-world topic
+ is no longer stored in the event broker</div>
 </section>
 </li>
 </ul>

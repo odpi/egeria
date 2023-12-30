@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The CommunityProfileErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Community Profile OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -122,26 +121,19 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#NO_IDENTITY_FOR_PROFILE" class="member-name-link">NO_IDENTITY_FOR_PROFILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_OTHER_IDENTITY" class="member-name-link">NO_OTHER_IDENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-COMMUNITY-PROFILE-500-006 - A null topic listener has been passed by user {0} on method {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PARSE_EVENT_ERROR" class="member-name-link">PARSE_EVENT_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#QUALIFIED_NAME_NOT_UNIQUE" class="member-name-link">QUALIFIED_NAME_NOT_UNIQUE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_CREATE_CONTRIBUTION_RECORD" class="member-name-link">UNABLE_TO_CREATE_CONTRIBUTION_RECORD</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_CREATE_USER_IDENTITY" class="member-name-link">UNABLE_TO_CREATE_USER_IDENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-COMMUNITY-PROFILE-500-001 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_IDENTITY" class="member-name-link">UNKNOWN_IDENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-COMMUNITY-PROFILE-500-007 - An unexpected exception occurred when sending an event through connector {0} to the Community Profile
+ OMAS out topic.</div>
+</div>
 </div>
 </section>
 </li>
@@ -203,63 +195,25 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NO_OTHER_IDENTITY">
-<h3>NO_OTHER_IDENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">NO_OTHER_IDENTITY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="QUALIFIED_NAME_NOT_UNIQUE">
-<h3>QUALIFIED_NAME_NOT_UNIQUE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">QUALIFIED_NAME_NOT_UNIQUE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_IDENTITY">
-<h3>UNKNOWN_IDENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_IDENTITY</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_CREATE_USER_IDENTITY">
-<h3>UNABLE_TO_CREATE_USER_IDENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_CREATE_USER_IDENTITY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_CREATE_CONTRIBUTION_RECORD">
-<h3>UNABLE_TO_CREATE_CONTRIBUTION_RECORD</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_CREATE_CONTRIBUTION_RECORD</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_IDENTITY_FOR_PROFILE">
-<h3>NO_IDENTITY_FOR_PROFILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">NO_IDENTITY_FOR_PROFILE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PARSE_EVENT_ERROR">
-<h3>PARSE_EVENT_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">PARSE_EVENT_ERROR</span></div>
+<div class="block">OMAS-COMMUNITY-PROFILE-500-001 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
+<div class="block">OMAS-COMMUNITY-PROFILE-500-006 - A null topic listener has been passed by user {0} on method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommunityProfileErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.ffdc">CommunityProfileErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
+<div class="block">OMAS-COMMUNITY-PROFILE-500-007 - An unexpected exception occurred when sending an event through connector {0} to the Community Profile
+ OMAS out topic.  The failing event was {1}, the exception was {2} with message {2}</div>
 </section>
 </li>
 </ul>

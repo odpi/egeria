@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The GovernanceActionAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -116,48 +115,64 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_INITIALIZED" class="member-name-link">ENGINE_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_INITIALIZING" class="member-name-link">ENGINE_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_INITIALIZING" class="member-name-link">ENGINE_SERVICE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0001 - The Governance Action engine services are initializing in server {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#EXC_ON_ERROR_STATUS_UPDATE" class="member-name-link">EXC_ON_ERROR_STATUS_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0028 - Governance Action engine {0} is unable to update the completion status for governance action service {1}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_INITIALIZED" class="member-name-link">GOVERNANCE_ACTION_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0032 - {0} governance service ({1}) with request type {2} has initialized in governance engine {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_COMPLETE" class="member-name-link">GOVERNANCE_ACTION_SERVICE_COMPLETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0019 - The {0} governance action service {1} for request type {2} has completed with status {3} in {4} milliseconds</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_FAILED" class="member-name-link">GOVERNANCE_ACTION_SERVICE_FAILED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0018 - The {0} governance action service {1} threw a {2} exception in governance action engine {3} (guid={4}).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_RETURNED" class="member-name-link">GOVERNANCE_ACTION_SERVICE_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_STARTING" class="member-name-link">GOVERNANCE_ACTION_SERVICE_STARTING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0017 - The {0} governance action service {1} is starting with request type {2} in governance action engine {3} (guid={4})</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_GOVERNANCE_ACTION_SERVICE" class="member-name-link">INVALID_GOVERNANCE_ACTION_SERVICE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The governance action service {0} linked to request type {1} can not be started.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_GOVERNANCE_ACTION_ENGINES_STARTED" class="member-name-link">NO_GOVERNANCE_ACTION_ENGINES_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_SUPPORTED_REQUEST_TYPES" class="member-name-link">NO_SUPPORTED_REQUEST_TYPES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NOT_GOVERNANCE_ACTION_SERVICE" class="member-name-link">NOT_GOVERNANCE_ACTION_SERVICE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#REQUEST_TYPE_CONFIG_ERROR" class="member-name-link">REQUEST_TYPE_CONFIG_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_NOT_AUTHORIZED" class="member-name-link">SERVER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0027 - Governance Action OMES in server {0} is unable to start any governance action engines</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NOT_GOVERNANCE_ACTION_SERVICE" class="member-name-link">NOT_GOVERNANCE_ACTION_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0031 - The governance action service {0} linked to request type {1} can not be started because it is not a
+ governance action service.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0016 - The Governance Action OMES in server {0} has completed shutdown</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0014 - The Governance Action OMES in server {0} is shutting down</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SUPPORTED_GOVERNANCE_ACTION_TYPE" class="member-name-link">SUPPORTED_GOVERNANCE_ACTION_TYPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ACTION_SERVICE" class="member-name-link">UNKNOWN_GOVERNANCE_ACTION_SERVICE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0012 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ACTION_SERVICE" class="member-name-link">UNKNOWN_GOVERNANCE_ACTION_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0030 - The governance action service {0} linked to request type {1} can not be started because the Governance 
+ Action OMES does not support the {2} type of governance action service.</div>
+</div>
 </div>
 </section>
 </li>
@@ -222,126 +237,101 @@ the order they are declared.</div>
 <section class="detail" id="ENGINE_SERVICE_INITIALIZING">
 <h3>ENGINE_SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_INITIALIZING</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_INITIALIZING">
-<h3>ENGINE_INITIALIZING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_INITIALIZING</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_NOT_AUTHORIZED">
-<h3>SERVER_NOT_AUTHORIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVER_NOT_AUTHORIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SUPPORTED_GOVERNANCE_ACTION_TYPE">
-<h3>SUPPORTED_GOVERNANCE_ACTION_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SUPPORTED_GOVERNANCE_ACTION_TYPE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SUPPORTED_REQUEST_TYPES">
-<h3>NO_SUPPORTED_REQUEST_TYPES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">NO_SUPPORTED_REQUEST_TYPES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="REQUEST_TYPE_CONFIG_ERROR">
-<h3>REQUEST_TYPE_CONFIG_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">REQUEST_TYPE_CONFIG_ERROR</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_INITIALIZED">
-<h3>ENGINE_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_INITIALIZED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0001 - The Governance Action engine services are initializing in server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_INITIALIZED">
-<h3>SERVER_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVER_INITIALIZED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0012 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTTING_DOWN">
 <h3>SERVER_SHUTTING_DOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTTING_DOWN</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0014 - The Governance Action OMES in server {0} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTDOWN">
 <h3>SERVER_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0016 - The Governance Action OMES in server {0} has completed shutdown</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_SERVICE_STARTING">
 <h3>GOVERNANCE_ACTION_SERVICE_STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_SERVICE_STARTING</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0017 - The {0} governance action service {1} is starting with request type {2} in governance action engine {3} (guid={4})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_SERVICE_FAILED">
 <h3>GOVERNANCE_ACTION_SERVICE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_SERVICE_FAILED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0018 - The {0} governance action service {1} threw a {2} exception in governance action engine {3} (guid={4}). The error message was {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_SERVICE_COMPLETE">
 <h3>GOVERNANCE_ACTION_SERVICE_COMPLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_SERVICE_COMPLETE</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0019 - The {0} governance action service {1} for request type {2} has completed with status {3} in {4} milliseconds</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_SERVICE_RETURNED">
 <h3>GOVERNANCE_ACTION_SERVICE_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_SERVICE_RETURNED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_GOVERNANCE_ACTION_ENGINES_STARTED">
 <h3>NO_GOVERNANCE_ACTION_ENGINES_STARTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">NO_GOVERNANCE_ACTION_ENGINES_STARTED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0027 - Governance Action OMES in server {0} is unable to start any governance action engines</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXC_ON_ERROR_STATUS_UPDATE">
 <h3>EXC_ON_ERROR_STATUS_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">EXC_ON_ERROR_STATUS_UPDATE</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0028 - Governance Action engine {0} is unable to update the completion status for governance action service {1}.  
+ The exception was {2} with error message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_GOVERNANCE_ACTION_SERVICE">
 <h3>INVALID_GOVERNANCE_ACTION_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">INVALID_GOVERNANCE_ACTION_SERVICE</span></div>
+<div class="block">The governance action service {0} linked to request type {1} can not be started.  The {2} exception was returned with message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_GOVERNANCE_ACTION_SERVICE">
 <h3>UNKNOWN_GOVERNANCE_ACTION_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GOVERNANCE_ACTION_SERVICE</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0030 - The governance action service {0} linked to request type {1} can not be started because the Governance 
+ Action OMES does not support the {2} type of governance action service.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_GOVERNANCE_ACTION_SERVICE">
 <h3>NOT_GOVERNANCE_ACTION_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">NOT_GOVERNANCE_ACTION_SERVICE</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0031 - The governance action service {0} linked to request type {1} can not be started because it is not a
+ governance action service.  Its class is {2} rather than a subclass of {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_INITIALIZED">
 <h3>GOVERNANCE_ACTION_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_INITIALIZED</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0032 - {0} governance service ({1}) with request type {2} has initialized in governance engine {3}</div>
 </section>
 </li>
 </ul>

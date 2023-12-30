@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The DocStoreErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the encrypted file based doc store.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -123,39 +122,73 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#AEAD_UNAVAILABLE" class="member-name-link">AEAD_UNAVAILABLE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-500-002 - Unable to retrieve or generate the AEAD primitive</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFIG_DELETE_ERROR" class="member-name-link">CONFIG_DELETE_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-013 - Unable to delete the encrypted configuration file {0}; exception was {1} with message {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONFIG_RETRIEVE_ALL_ERROR" class="member-name-link">CONFIG_RETRIEVE_ALL_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-014 - Unable to retrieve the encrypted configuration files; exception was {0} with message {1}, while attempting access file {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE" class="member-name-link">CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-015 - Unable to retrieve the encrypted configuration files because the store template name {0} is not valid</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INIT_ERROR" class="member-name-link">INIT_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-001 - Unable to initialize encryption library configuration; exception was {0} with message {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_DIRECTORY" class="member-name-link">INVALID_DIRECTORY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-008 - Unable to create secure location for storing encryption key</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_FILE" class="member-name-link">INVALID_FILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-009 - Unable to create secure file for storing encryption key</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_KEYSTORE" class="member-name-link">INVALID_KEYSTORE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-004 - Unable to parse the key store; exception was {0} with message {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#KEYSTORE_DELETE_ERROR" class="member-name-link">KEYSTORE_DELETE_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-012 - Unable to delete the secure key storage location; exception was {0} with message {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#KEYSTORE_EMPTY" class="member-name-link">KEYSTORE_EMPTY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-010 - Unable to find any file containing keys in the secure directory, and unable to remove the directory; exception was {0} with message {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#KEYSTORE_NOT_DIRECTORY" class="member-name-link">KEYSTORE_NOT_DIRECTORY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-005 - Found a file with the expected prefix 'keystore_', when this must be a directory: {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MULTIPLE_DIRECTORIES" class="member-name-link">MULTIPLE_DIRECTORIES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-007 - Found multiple key store directories, unable to determine which to use for decryption</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MULTIPLE_FILES" class="member-name-link">MULTIPLE_FILES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-006 - Found multiple key files under secure directory, unable to determine which to use for decryption</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_KEYSTORE" class="member-name-link">NO_KEYSTORE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-011 - Unable to find any keys defined for decrypting the configuration</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#READ_ERROR" class="member-name-link">READ_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-003 - Unable to read encrypted configuration file; exception was {0} with message {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNHANDLED_ERROR" class="member-name-link">UNHANDLED_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-500-001 - Unable to handle the error {0} with message {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#WRITE_ERROR" class="member-name-link">WRITE_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ENCRYPTED-DOC-STORE-400-002 - Unable to write encrypted configuration file; exception was {0} with message {1}</div>
+</div>
 </div>
 </section>
 </li>
@@ -183,7 +216,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -220,102 +253,119 @@ the order they are declared.</div>
 <section class="detail" id="INIT_ERROR">
 <h3>INIT_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">INIT_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-001 - Unable to initialize encryption library configuration; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRITE_ERROR">
 <h3>WRITE_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">WRITE_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-002 - Unable to write encrypted configuration file; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="READ_ERROR">
 <h3>READ_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">READ_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-003 - Unable to read encrypted configuration file; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_KEYSTORE">
 <h3>INVALID_KEYSTORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">INVALID_KEYSTORE</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-004 - Unable to parse the key store; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="KEYSTORE_NOT_DIRECTORY">
 <h3>KEYSTORE_NOT_DIRECTORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">KEYSTORE_NOT_DIRECTORY</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-005 - Found a file with the expected prefix 'keystore_', when this must be a directory: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MULTIPLE_FILES">
 <h3>MULTIPLE_FILES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_FILES</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-006 - Found multiple key files under secure directory, unable to determine which to use for decryption</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MULTIPLE_DIRECTORIES">
 <h3>MULTIPLE_DIRECTORIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_DIRECTORIES</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-007 - Found multiple key store directories, unable to determine which to use for decryption</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_DIRECTORY">
 <h3>INVALID_DIRECTORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">INVALID_DIRECTORY</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-008 - Unable to create secure location for storing encryption key</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_FILE">
 <h3>INVALID_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">INVALID_FILE</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-009 - Unable to create secure file for storing encryption key</div>
 </section>
 </li>
 <li>
 <section class="detail" id="KEYSTORE_EMPTY">
 <h3>KEYSTORE_EMPTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">KEYSTORE_EMPTY</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-010 - Unable to find any file containing keys in the secure directory, and unable to remove the directory; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_KEYSTORE">
 <h3>NO_KEYSTORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">NO_KEYSTORE</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-011 - Unable to find any keys defined for decrypting the configuration</div>
 </section>
 </li>
 <li>
 <section class="detail" id="KEYSTORE_DELETE_ERROR">
 <h3>KEYSTORE_DELETE_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">KEYSTORE_DELETE_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-012 - Unable to delete the secure key storage location; exception was {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIG_DELETE_ERROR">
 <h3>CONFIG_DELETE_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">CONFIG_DELETE_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-013 - Unable to delete the encrypted configuration file {0}; exception was {1} with message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIG_RETRIEVE_ALL_ERROR">
 <h3>CONFIG_RETRIEVE_ALL_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">CONFIG_RETRIEVE_ALL_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-014 - Unable to retrieve the encrypted configuration files; exception was {0} with message {1}, while attempting access file {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE">
 <h3>CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-400-015 - Unable to retrieve the encrypted configuration files because the store template name {0} is not valid</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNHANDLED_ERROR">
 <h3>UNHANDLED_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">UNHANDLED_ERROR</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-500-001 - Unable to handle the error {0} with message {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AEAD_UNAVAILABLE">
 <h3>AEAD_UNAVAILABLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a></span>&nbsp;<span class="element-name">AEAD_UNAVAILABLE</span></div>
+<div class="block">ENCRYPTED-DOC-STORE-500-002 - Unable to retrieve or generate the AEAD primitive</div>
 </section>
 </li>
 </ul>
@@ -389,12 +439,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">toString() JSON-style</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DocStoreErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile">DocStoreErrorCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

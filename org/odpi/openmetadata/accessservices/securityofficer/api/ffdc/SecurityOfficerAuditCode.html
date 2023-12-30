@@ -106,29 +106,55 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ERROR_INITIALIZING_TOPIC_CONNECTION" class="member-name-link">ERROR_INITIALIZING_TOPIC_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0007 - Unable to initialize the Security Officer Open Metadata Access Service (OMAS) topic connection {0}
+ for server instance {1}; error message was: {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#EVENT_PROCESSING_ERROR" class="member-name-link">EVENT_PROCESSING_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0010 - The Security Officer Open Metadata Access Service (OMAS) encounter an exception while processing event of type {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OUT_TOPIC_EVENT" class="member-name-link">OUT_TOPIC_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0015 - The Security Officer Open Metadata Access Service (OMAS) has sent event of type: {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OUT_TOPIC_FAILURE" class="member-name-link">OUT_TOPIC_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0014 - The Security Officer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0};
+ exception {1} returned message: {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PUBLISH_EVENT_EXCEPTION" class="member-name-link">PUBLISH_EVENT_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0008 - Event {0} could not be published: {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0003 - The Security Officer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0001 - The Security Officer Open Metadata Access Service (OMAS) is initializing</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0006 - The Security Officer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_REGISTERED_WITH_TOPIC" class="member-name-link">SERVICE_REGISTERED_WITH_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0002 - The Security Officer Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server instance {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0005 - The Security Officer Open Metadata Access Service (OMAS) has completed shutdown of server instance {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_TERMINATING" class="member-name-link">SERVICE_TERMINATING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0004 - The Security Officer Open Metadata Access Service (OMAS) is shutting down server instance {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-SECURITY-OFFICER-0009 - A {0} exception was caught during start up of service {1} for server {2}.</div>
+</div>
 </div>
 </section>
 </li>
@@ -193,72 +219,86 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_INITIALIZING">
 <h3>SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZING</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0001 - The Security Officer Open Metadata Access Service (OMAS) is initializing</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_REGISTERED_WITH_TOPIC">
 <h3>SERVICE_REGISTERED_WITH_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_REGISTERED_WITH_TOPIC</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0002 - The Security Officer Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server instance {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INITIALIZED">
 <h3>SERVICE_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZED</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0003 - The Security Officer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_TERMINATING">
 <h3>SERVICE_TERMINATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_TERMINATING</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0004 - The Security Officer Open Metadata Access Service (OMAS) is shutting down server instance {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_SHUTDOWN">
 <h3>SERVICE_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTDOWN</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0005 - The Security Officer Open Metadata Access Service (OMAS) has completed shutdown of server instance {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0006 - The Security Officer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ERROR_INITIALIZING_TOPIC_CONNECTION">
 <h3>ERROR_INITIALIZING_TOPIC_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">ERROR_INITIALIZING_TOPIC_CONNECTION</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0007 - Unable to initialize the Security Officer Open Metadata Access Service (OMAS) topic connection {0}
+ for server instance {1}; error message was: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PUBLISH_EVENT_EXCEPTION">
 <h3>PUBLISH_EVENT_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">PUBLISH_EVENT_EXCEPTION</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0008 - Event {0} could not be published: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
 <h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0009 - A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EVENT_PROCESSING_ERROR">
 <h3>EVENT_PROCESSING_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">EVENT_PROCESSING_ERROR</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0010 - The Security Officer Open Metadata Access Service (OMAS) encounter an exception while processing event of type {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OUT_TOPIC_FAILURE">
 <h3>OUT_TOPIC_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">OUT_TOPIC_FAILURE</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0014 - The Security Officer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0};
+ exception {1} returned message: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OUT_TOPIC_EVENT">
 <h3>OUT_TOPIC_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SecurityOfficerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.securityofficer.api.ffdc">SecurityOfficerAuditCode</a></span>&nbsp;<span class="element-name">OUT_TOPIC_EVENT</span></div>
+<div class="block">OMAS-SECURITY-OFFICER-0015 - The Security Officer Open Metadata Access Service (OMAS) has sent event of type: {0}</div>
 </section>
 </li>
 </ul>

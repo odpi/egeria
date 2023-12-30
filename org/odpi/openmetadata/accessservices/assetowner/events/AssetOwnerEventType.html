@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AssetOwnerEventType</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a>&gt;</span></div>
 <div class="block">AssetOwnerEventType describes the different types of events produced by the Asset Owner OMAS.</div>
 </section>
 <section class="summary">
@@ -107,29 +106,53 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ELEMENT_CLASSIFIED" class="member-name-link">ELEMENT_CLASSIFIED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A classification has been added to an element.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ELEMENT_DECLASSIFIED" class="member-name-link">ELEMENT_DECLASSIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A classification has been removed from an element.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ELEMENT_DELETED" class="member-name-link">ELEMENT_DELETED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An element and all its anchored elements have been deleted.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ELEMENT_GUID_CHANGED" class="member-name-link">ELEMENT_GUID_CHANGED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">An element's GUID has changed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ELEMENT_HOME_CHANGED" class="member-name-link">ELEMENT_HOME_CHANGED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An element's home has changed.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ELEMENT_RECLASSIFIED" class="member-name-link">ELEMENT_RECLASSIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The properties for a classification attached to an element have been updated.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ELEMENT_RESTORED" class="member-name-link">ELEMENT_RESTORED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An element that was once deleted has been restored.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ELEMENT_TYPE_CHANGED" class="member-name-link">ELEMENT_TYPE_CHANGED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">An element's type has changed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ELEMENT_UPDATED" class="member-name-link">ELEMENT_UPDATED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An element's properties has been updated.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NEW_ELEMENT_CREATED" class="member-name-link">NEW_ELEMENT_CREATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A new element has been created.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REFRESH_ELEMENT_EVENT" class="member-name-link">REFRESH_ELEMENT_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An element has been distributed around the cohort - could be for the first time.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_EVENT" class="member-name-link">UNKNOWN_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">An event that is not recognized by the local server.</div>
+</div>
 </div>
 </section>
 </li>
@@ -200,72 +223,84 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN_EVENT">
 <h3>UNKNOWN_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">UNKNOWN_EVENT</span></div>
+<div class="block">An event that is not recognized by the local server.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REFRESH_ELEMENT_EVENT">
 <h3>REFRESH_ELEMENT_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">REFRESH_ELEMENT_EVENT</span></div>
+<div class="block">An element has been distributed around the cohort - could be for the first time.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEW_ELEMENT_CREATED">
 <h3>NEW_ELEMENT_CREATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">NEW_ELEMENT_CREATED</span></div>
+<div class="block">A new element has been created.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_UPDATED">
 <h3>ELEMENT_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_UPDATED</span></div>
+<div class="block">An element's properties has been updated.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_DELETED">
 <h3>ELEMENT_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_DELETED</span></div>
+<div class="block">An element and all its anchored elements have been deleted.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_CLASSIFIED">
 <h3>ELEMENT_CLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_CLASSIFIED</span></div>
+<div class="block">A classification has been added to an element.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_RECLASSIFIED">
 <h3>ELEMENT_RECLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_RECLASSIFIED</span></div>
+<div class="block">The properties for a classification attached to an element have been updated.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_DECLASSIFIED">
 <h3>ELEMENT_DECLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_DECLASSIFIED</span></div>
+<div class="block">A classification has been removed from an element.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_RESTORED">
 <h3>ELEMENT_RESTORED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_RESTORED</span></div>
+<div class="block">An element that was once deleted has been restored.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_GUID_CHANGED">
 <h3>ELEMENT_GUID_CHANGED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_GUID_CHANGED</span></div>
+<div class="block">An element's GUID has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_TYPE_CHANGED">
 <h3>ELEMENT_TYPE_CHANGED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_TYPE_CHANGED</span></div>
+<div class="block">An element's type has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ELEMENT_HOME_CHANGED">
 <h3>ELEMENT_HOME_CHANGED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetOwnerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.events">AssetOwnerEventType</a></span>&nbsp;<span class="element-name">ELEMENT_HOME_CHANGED</span></div>
+<div class="block">An element's home has changed.</div>
 </section>
 </li>
 </ul>

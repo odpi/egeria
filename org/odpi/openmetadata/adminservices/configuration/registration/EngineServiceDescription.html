@@ -83,9 +83,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">EngineServiceDescription</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<div class="block">EngineServiceDescription provides a list of registered engine services.</div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a>&gt;</span></div>
+<div class="block">EngineServiceDescription provides a list of registered engine services.  These engine services run on an Engine Host OMAG Server.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,17 +107,20 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ASSET_ANALYSIS_OMES" class="member-name-link">ASSET_ANALYSIS_OMES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Analyses the content of an asset's real world counterpart, generates annotations
- in an open discovery report that is attached to the asset in the open metadata repositories.</div>
+<div class="block">Analyses the content of an asset's real world counterpart (resource), generates annotations
+ in a discovery analysis report that is attached to the asset in the open metadata repositories.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_OMES" class="member-name-link">GOVERNANCE_ACTION_OMES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EVENT_ACTION_OMES" class="member-name-link">EVENT_ACTION_OMES</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Executes requested governance action services to monitor, assess and maintain metadata and its
- real-world counterparts.</div>
+<div class="block">Executes requested event action services to monitor, assess and maintain context events.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_OMES" class="member-name-link">REPOSITORY_GOVERNANCE_OMES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_OMES" class="member-name-link">GOVERNANCE_ACTION_OMES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Dynamically governance open metadata repositories in the connected cohorts.</div>
+<div class="block">Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REPOSITORY_GOVERNANCE_OMES" class="member-name-link">REPOSITORY_GOVERNANCE_OMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Dynamically govern open metadata repositories in the connected cohorts.</div>
 </div>
 </div>
 </section>
@@ -167,7 +169,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServicePartnerService()" class="member-name-link">getEngineServicePartnerService</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the full name of the Open Metadata Access Service (OMAS) that this engine service is partnered with.</div>
+<div class="block">Return the description of the service that this engine service is partnered with.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceURLMarker()" class="member-name-link">getEngineServiceURLMarker</a>()</code></div>
@@ -178,6 +180,16 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceWiki()" class="member-name-link">getEngineServiceWiki</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the URL for the wiki page describing this engine service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHostedGovernanceEngineType()" class="member-name-link">getHostedGovernanceEngineType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of governance engine that this engine service supports.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHostedGovernanceServiceType()" class="member-name-link">getHostedGovernanceServiceType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of governance service that this engine service supports.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -214,23 +226,29 @@ the order they are declared.</div>
 <section class="detail" id="ASSET_ANALYSIS_OMES">
 <h3>ASSET_ANALYSIS_OMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a></span>&nbsp;<span class="element-name">ASSET_ANALYSIS_OMES</span></div>
-<div class="block">Analyses the content of an asset's real world counterpart, generates annotations
- in an open discovery report that is attached to the asset in the open metadata repositories.</div>
+<div class="block">Analyses the content of an asset's real world counterpart (resource), generates annotations
+ in a discovery analysis report that is attached to the asset in the open metadata repositories.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_OMES">
 <h3>GOVERNANCE_ACTION_OMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_OMES</span></div>
-<div class="block">Executes requested governance action services to monitor, assess and maintain metadata and its
- real-world counterparts.</div>
+<div class="block">Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_GOVERNANCE_OMES">
 <h3>REPOSITORY_GOVERNANCE_OMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a></span>&nbsp;<span class="element-name">REPOSITORY_GOVERNANCE_OMES</span></div>
-<div class="block">Dynamically governance open metadata repositories in the connected cohorts.</div>
+<div class="block">Dynamically govern open metadata repositories in the connected cohorts.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_ACTION_OMES">
+<h3>EVENT_ACTION_OMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineServiceDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceDescription</a></span>&nbsp;<span class="element-name">EVENT_ACTION_OMES</span></div>
+<div class="block">Executes requested event action services to monitor, assess and maintain context events.</div>
 </section>
 </li>
 </ul>
@@ -366,10 +384,32 @@ not permitted.)</div>
 <section class="detail" id="getEngineServicePartnerService()">
 <h3>getEngineServicePartnerService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getEngineServicePartnerService</span>()</div>
-<div class="block">Return the full name of the Open Metadata Access Service (OMAS) that this engine service is partnered with.</div>
+<div class="block">Return the description of the service that this engine service is partnered with.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Full name of OMAS</dd>
+<dd>Full name of related service</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHostedGovernanceEngineType()">
+<h3>getHostedGovernanceEngineType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getHostedGovernanceEngineType</span>()</div>
+<div class="block">Return the type of governance engine that this engine service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>engine deployed implementation type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHostedGovernanceServiceType()">
+<h3>getHostedGovernanceServiceType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getHostedGovernanceServiceType</span>()</div>
+<div class="block">Return the type of governance service that this engine service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>governance service connector deployed implementation type name</dd>
 </dl>
 </section>
 </li>

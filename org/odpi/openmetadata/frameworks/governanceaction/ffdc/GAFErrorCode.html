@@ -79,14 +79,14 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">GAFErrorCode</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>&gt;
+implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The GAF error code is used to define first failure data capture (FFDC) for errors that occur when working with
  GAF Components.  It is used in conjunction with the GAFCheckedException and GAFRuntimeException.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -122,37 +122,71 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ARRAY_OUT_OF_BOUNDS" class="member-name-link">ARRAY_OUT_OF_BOUNDS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DUPLICATE_ELEMENT" class="member-name-link">DUPLICATE_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#HELPER_LOGIC_ERROR" class="member-name-link">HELPER_LOGIC_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-HELPER-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#HELPER_LOGIC_EXCEPTION" class="member-name-link">HELPER_LOGIC_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
+ request resulting in an unexpected exception {3} with message {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_GOVERNANCE_SERVICE_CONNECTION" class="member-name-link">INVALID_GOVERNANCE_SERVICE_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-GOVERNANCE-SERVICE-400-002 - The governance engine {0} is not able to create the governance action service for request type {1}
+ and request parameters {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">INVALID_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-GOVERNANCE-SERVICE-400-003 - Invalid governance action service for request type {0}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_CATEGORY" class="member-name-link">INVALID_PRIMITIVE_CATEGORY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-500-003 - There is a problem in the definition of primitive type {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_CLASS_NAME" class="member-name-link">INVALID_PRIMITIVE_CLASS_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-500-001 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_PRIMITIVE_TYPE" class="member-name-link">INVALID_PRIMITIVE_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-500-004 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PRIMITIVE_VALUE" class="member-name-link">INVALID_PRIMITIVE_VALUE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-500-002 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_GOVERNANCE_CONTEXT" class="member-name-link">NULL_GOVERNANCE_CONTEXT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-GOVERNANCE-SERVICE-400-001 - No governance context supplied to the governance action service {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-PROPERTIES-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
+</div>
 </div>
 </section>
 </li>
@@ -177,14 +211,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a message definition object for an exception.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">JSON-style toString</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -193,7 +232,7 @@ the order they are declared.</div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Enum">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#compareTo(E)" title="class or interface in java.lang" class="external-link">compareTo</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#describeConstable()" title="class or interface in java.lang" class="external-link">describeConstable</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#getDeclaringClass()" title="class or interface in java.lang" class="external-link">getDeclaringClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#name()" title="class or interface in java.lang" class="external-link">name</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link">ordinal</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#valueOf(java.lang.Class,java.lang.String)" title="class or interface in java.lang" class="external-link">valueOf</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#compareTo(E)" title="class or interface in java.lang" class="external-link">compareTo</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#describeConstable()" title="class or interface in java.lang" class="external-link">describeConstable</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#getDeclaringClass()" title="class or interface in java.lang" class="external-link">getDeclaringClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#name()" title="class or interface in java.lang" class="external-link">name</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link">ordinal</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#valueOf(java.lang.Class,java.lang.String)" title="class or interface in java.lang" class="external-link">valueOf</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -212,96 +251,114 @@ the order they are declared.</div>
 <section class="detail" id="NULL_GOVERNANCE_CONTEXT">
 <h3>NULL_GOVERNANCE_CONTEXT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">NULL_GOVERNANCE_CONTEXT</span></div>
+<div class="block">GAF-GOVERNANCE-SERVICE-400-001 - No governance context supplied to the governance action service {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_GOVERNANCE_SERVICE_CONNECTION">
 <h3>INVALID_GOVERNANCE_SERVICE_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_GOVERNANCE_SERVICE_CONNECTION</span></div>
+<div class="block">GAF-GOVERNANCE-SERVICE-400-002 - The governance engine {0} is not able to create the governance action service for request type {1}
+ and request parameters {2}.  Error message was {3}.  The connection was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_GOVERNANCE_SERVICE_CONNECTOR">
 <h3>INVALID_GOVERNANCE_SERVICE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_GOVERNANCE_SERVICE_CONNECTOR</span></div>
+<div class="block">GAF-GOVERNANCE-SERVICE-400-003 - Invalid governance action service for request type {0}.  Governance engine {1} is not able to execute the request</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_NAME">
 <h3>NULL_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">NULL_NAME</span></div>
+<div class="block">GAF-PROPERTIES-400-004 - The name passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_GUID">
 <h3>NULL_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">NULL_GUID</span></div>
+<div class="block">GAF-PROPERTIES-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ELEMENT">
 <h3>UNKNOWN_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ELEMENT</span></div>
+<div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DUPLICATE_ELEMENT">
 <h3>DUPLICATE_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">DUPLICATE_ELEMENT</span></div>
+<div class="block">GAF-PROPERTIES-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_PROPERTY_NAME">
 <h3>NULL_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">NULL_PROPERTY_NAME</span></div>
+<div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ARRAY_OUT_OF_BOUNDS">
 <h3>ARRAY_OUT_OF_BOUNDS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">ARRAY_OUT_OF_BOUNDS</span></div>
+<div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.  The error message was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_CLASS_NAME">
 <h3>INVALID_PRIMITIVE_CLASS_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_CLASS_NAME</span></div>
+<div class="block">GAF-PROPERTIES-500-001 - The Java class {0} for PrimitiveTypeCategory {1} is not known</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_VALUE">
 <h3>INVALID_PRIMITIVE_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_VALUE</span></div>
+<div class="block">GAF-PROPERTIES-500-002 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_CATEGORY">
 <h3>INVALID_PRIMITIVE_CATEGORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_CATEGORY</span></div>
+<div class="block">GAF-PROPERTIES-500-003 - There is a problem in the definition of primitive type {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PRIMITIVE_TYPE">
 <h3>INVALID_PRIMITIVE_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PRIMITIVE_TYPE</span></div>
+<div class="block">GAF-PROPERTIES-500-004 - The value supplied for an attribute of PrimitiveTypeCategory {0} is expected as Java class {1} but was supplied as Java class {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="HELPER_LOGIC_ERROR">
 <h3>HELPER_LOGIC_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_ERROR</span></div>
+<div class="block">GAF-PROPERTIES-HELPER-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
 </section>
 </li>
 <li>
 <section class="detail" id="HELPER_LOGIC_EXCEPTION">
 <h3>HELPER_LOGIC_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_EXCEPTION</span></div>
+<div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
+ request resulting in an unexpected exception {3} with message {4}</div>
 </section>
 </li>
 </ul>
@@ -349,6 +406,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a></span>&nbsp;<span class="element-name">getMessageDefinition</span>()</div>
 <div class="block">Retrieve a message definition object for an exception.  This method is used when there are no message inserts.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../auditlog/messagesets/ExceptionMessageSet.html#getMessageDefinition()">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 <dt>Returns:</dt>
 <dd>message definition object.</dd>
 </dl>
@@ -360,10 +419,25 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a></span>&nbsp;<span class="element-name">getMessageDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;params)</span></div>
 <div class="block">Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../auditlog/messagesets/ExceptionMessageSet.html#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>params</code> - array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.</dd>
 <dt>Returns:</dt>
 <dd>message definition object.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">JSON-style toString</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a>&gt;</code></dd>
+<dt>Returns:</dt>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

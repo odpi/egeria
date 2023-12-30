@@ -85,8 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">DynamicArchiverConnectorsAuditCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a>&gt;
 implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
-<div class="block">The DynamicArchiveConnectorsAuditCode is used to define the message content for the OMRS Audit Log.
-
+<div class="block">The DynamicArchiveConnectorsAuditCode is used to define the message content for the Audit Log.
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Id - to uniquely identify the message</li>
@@ -118,48 +117,6 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#COPY_FILE" class="member-name-link">COPY_FILE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#CREATED_LINEAGE" class="member-name-link">CREATED_LINEAGE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DELETE_FILE" class="member-name-link">DELETE_FILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENDPOINT_EXCEPTION" class="member-name-link">ENDPOINT_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INITIATE_PROCESS" class="member-name-link">INITIATE_PROCESS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#INITIATE_PROCESS_EXCEPTION" class="member-name-link">INITIATE_PROCESS_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#MOVE_FILE" class="member-name-link">MOVE_FILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_LINKED_CONNECTION" class="member-name-link">NO_LINKED_CONNECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_LINKED_ENDPOINT" class="member-name-link">NO_LINKED_ENDPOINT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_NETWORK_ADDRESS" class="member-name-link">NO_NETWORK_ADDRESS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_RELATED_ASSET" class="member-name-link">NO_RELATED_ASSET</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_SOURCE_FILE_NAME" class="member-name-link">NO_SOURCE_FILE_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PROVISIONING_EXCEPTION" class="member-name-link">PROVISIONING_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROVISIONING_FAILURE" class="member-name-link">PROVISIONING_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#QUALIFIED_NAME_PATH_NAME" class="member-name-link">QUALIFIED_NAME_PATH_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SETTING_ZONES" class="member-name-link">SETTING_ZONES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#TOO_MANY_CONNECTIONS" class="member-name-link">TOO_MANY_CONNECTIONS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TOO_MANY_ENDPOINTS" class="member-name-link">TOO_MANY_ENDPOINTS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_COMPLETION_STATUS" class="member-name-link">UNABLE_TO_SET_COMPLETION_STATUS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -224,132 +181,6 @@ the order they are declared.</div>
 <section class="detail" id="COPY_FILE">
 <h3>COPY_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">COPY_FILE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="MOVE_FILE">
-<h3>MOVE_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">MOVE_FILE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="DELETE_FILE">
-<h3>DELETE_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DELETE_FILE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CREATED_LINEAGE">
-<h3>CREATED_LINEAGE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">CREATED_LINEAGE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SOURCE_FILE_NAME">
-<h3>NO_SOURCE_FILE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_SOURCE_FILE_NAME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROVISIONING_FAILURE">
-<h3>PROVISIONING_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_FAILURE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROVISIONING_EXCEPTION">
-<h3>PROVISIONING_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENDPOINT_EXCEPTION">
-<h3>ENDPOINT_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">ENDPOINT_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="QUALIFIED_NAME_PATH_NAME">
-<h3>QUALIFIED_NAME_PATH_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">QUALIFIED_NAME_PATH_NAME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_LINKED_CONNECTION">
-<h3>NO_LINKED_CONNECTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_LINKED_CONNECTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="TOO_MANY_CONNECTIONS">
-<h3>TOO_MANY_CONNECTIONS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">TOO_MANY_CONNECTIONS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_RELATED_ASSET">
-<h3>NO_RELATED_ASSET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_RELATED_ASSET</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_LINKED_ENDPOINT">
-<h3>NO_LINKED_ENDPOINT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_LINKED_ENDPOINT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="TOO_MANY_ENDPOINTS">
-<h3>TOO_MANY_ENDPOINTS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">TOO_MANY_ENDPOINTS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_NETWORK_ADDRESS">
-<h3>NO_NETWORK_ADDRESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_NETWORK_ADDRESS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_SET_COMPLETION_STATUS">
-<h3>UNABLE_TO_SET_COMPLETION_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_COMPLETION_STATUS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_REGISTER_LISTENER">
-<h3>UNABLE_TO_REGISTER_LISTENER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REGISTER_LISTENER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_TARGETS">
-<h3>NO_TARGETS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_TARGETS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_ZONES">
-<h3>NO_ZONES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_ZONES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SETTING_ZONES">
-<h3>SETTING_ZONES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">SETTING_ZONES</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="INITIATE_PROCESS">
-<h3>INITIATE_PROCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">INITIATE_PROCESS</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="INITIATE_PROCESS_EXCEPTION">
-<h3>INITIATE_PROCESS_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DynamicArchiverConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc">DynamicArchiverConnectorsAuditCode</a></span>&nbsp;<span class="element-name">INITIATE_PROCESS_EXCEPTION</span></div>
 </section>
 </li>
 </ul>

@@ -233,7 +233,7 @@ loadScripts(document, 'script');</script>
 <h3>isServerActive</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isServerActive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span>
-                       throws <span class="exceptions"><a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></span></div>
+                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return whether a particular server is registered with the platform.
  This is used by the admin services when finding no instance is not an error.</div>
 <dl class="notes">
@@ -243,7 +243,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>boolean</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>
 </dl>
 </section>
 </li>
@@ -252,7 +252,7 @@ loadScripts(document, 'script');</script>
 <h3>getServerSecurityVerifier</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a></span>&nbsp;<span class="element-name">getServerSecurityVerifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span>
-                                                             throws <span class="exceptions"><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></span></div>
+                                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the security verifier for the server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -261,7 +261,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>OpenMetadataServerSecurityVerifier object - never null</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the server name is not known</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the server name is not known</dd>
 </dl>
 </section>
 </li>
@@ -271,9 +271,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="OMAGServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">OMAGServerServiceInstance</a></span>&nbsp;<span class="element-name">getServerServiceInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceOperationName)</span>
-                                                      throws <span class="exceptions"><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a>,
-<a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a>,
-<a href="../ffdc/exceptions/PropertyServerException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">PropertyServerException</a></span></div>
+                                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Get the object containing the properties for this server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -283,9 +283,9 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>specific service instance</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the server name is not known</dd>
-<dd><code><a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>
-<dd><code><a href="../ffdc/exceptions/PropertyServerException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">PropertyServerException</a></code> - the service name is not known - indicating a logic error</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the server name is not known</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the service name is not known - indicating a logic error</dd>
 </dl>
 </section>
 </li>

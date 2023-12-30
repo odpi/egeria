@@ -237,12 +237,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of metadata elements that match the supplied criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- long&nbsp;effectiveTime,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
@@ -356,23 +355,21 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- long&nbsp;effectiveTime,
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- long&nbsp;effectiveTime,
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
@@ -946,9 +943,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestParam
  long&nbsp;effectiveTime)</span></div>
@@ -971,7 +968,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <h3>getMetadataElementByUniqueName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-unique-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByUniqueName</span><wbr><span class="parameters">(@PathVariable
@@ -980,12 +977,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
- long&nbsp;effectiveTime,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
@@ -996,7 +991,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dd><code>requestBody</code> - unique name for the metadata element</dd>
 <dt>Returns:</dt>
 <dd>metadata element properties or
@@ -1007,7 +1001,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <h3>getMetadataElementGUIDByUniqueName</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/guid-by-unique-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">getMetadataElementGUIDByUniqueName</span><wbr><span class="parameters">(@PathVariable
@@ -1016,12 +1010,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
- long&nbsp;effectiveTime,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
@@ -1032,7 +1024,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dd><code>requestBody</code> - unique name for the metadata element</dd>
 <dt>Returns:</dt>
 <dd>metadata element unique identifier (guid) or
@@ -1043,7 +1034,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,long,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findMetadataElementsWithString</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(@PathVariable
@@ -1052,15 +1043,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
- long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
@@ -1072,7 +1061,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>requestBody</code> - searchString  to retrieve</dd>
@@ -1096,17 +1084,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startingAtEnd,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 <dl class="notes">
@@ -1143,17 +1131,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startingAtEnd,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 <dl class="notes">
@@ -1191,15 +1179,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the relationships linking to the supplied elements.</div>
 <dl class="notes">
@@ -1238,15 +1226,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 <dl class="notes">
@@ -1322,15 +1310,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
  @RequestBody
  <a href="../../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRequestBody</a>&nbsp;requestBody)</span></div>
@@ -1366,11 +1354,11 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime)</span></div>
 <div class="block">Retrieve the relationship using its unique identifier.</div>
 <dl class="notes">

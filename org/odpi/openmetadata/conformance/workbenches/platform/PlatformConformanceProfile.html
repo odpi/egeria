@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">PlatformConformanceProfile</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="PlatformConformanceProfile.html" title="enum class in org.odpi.openmetadata.conformance.workbenches.platform">PlatformConformanceProfile</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="PlatformConformanceProfile.html" title="enum class in org.odpi.openmetadata.conformance.workbenches.platform">PlatformConformanceProfile</a>&gt;</span></div>
 <div class="block">PlatformConformanceProfile defines the list of functional profiles for an open metadata and governance
  (OMAG) server platform.</div>
 </section>
@@ -108,7 +107,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#PLATFORM_ORIGIN" class="member-name-link">PLATFORM_ORIGIN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The technology under test is able to report on its origin.</div>
+</div>
 </div>
 </section>
 </li>
@@ -126,7 +127,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfileDescription()" class="member-name-link">getProfileDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is not a natural
  language resource bundle available.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -137,7 +138,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfileId()" class="member-name-link">getProfileId</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etcetera with the enum.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfileName()" class="member-name-link">getProfileName</a>()</code></div>
@@ -189,6 +190,7 @@ the order they are declared.</div>
 <section class="detail" id="PLATFORM_ORIGIN">
 <h3>PLATFORM_ORIGIN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PlatformConformanceProfile.html" title="enum class in org.odpi.openmetadata.conformance.workbenches.platform">PlatformConformanceProfile</a></span>&nbsp;<span class="element-name">PLATFORM_ORIGIN</span></div>
+<div class="block">The technology under test is able to report on its origin.</div>
 </section>
 </li>
 </ul>
@@ -234,7 +236,7 @@ not permitted.)</div>
 <section class="detail" id="getProfileId()">
 <h3>getProfileId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a></span>&nbsp;<span class="element-name">getProfileId</span>()</div>
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etcetera with the enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>int identifier</dd>
@@ -256,7 +258,7 @@ not permitted.)</div>
 <section class="detail" id="getProfileDescription()">
 <h3>getProfileDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProfileDescription</span>()</div>
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is not a natural
  language resource bundle available.</div>
 <dl class="notes">
 <dt>Returns:</dt>

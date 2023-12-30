@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The RepositoryHandlerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Repository Handler Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -124,69 +123,150 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_CLASSIFICATION_PROPERTIES" class="member-name-link">BAD_CLASSIFICATION_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-003 - Service {0} is unable to process the properties supplied with classification {1}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BROADER_EFFECTIVE_RELATIONSHIP" class="member-name-link">BROADER_EFFECTIVE_RELATIONSHIP</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-015 - The {0} relationship with unique identifier {1} claims all effective dates which makes it broader than the requested effective dates of {2} to {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DUPLICATE_CREATE_REQUEST" class="member-name-link">DUPLICATE_CREATE_REQUEST</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-006 - Unable to create a new {0} with {1} of {2} as there is already an entity of that name with guid {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FUNCTION_NOT_SUPPORTED" class="member-name-link">FUNCTION_NOT_SUPPORTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-018 - Method {0} for service {1} is not supported by any of the metadata repositories connected to {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INSTANCE_WRONG_TYPE_FOR_GUID" class="member-name-link">INSTANCE_WRONG_TYPE_FOR_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-001 - The {0} method has retrieved an object for unique identifier (guid) {1} which is of type {2}
+ rather than type {3} on behalf of method {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PARAMETER" class="member-name-link">INVALID_PARAMETER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-002 - The {0} parameter passed by the {1} request for open metadata access service {2} on server {3} is invalid;
+ value passed was: {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_PROPERTY" class="member-name-link">INVALID_PROPERTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-001 - An unsupported property named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; error message was: {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PROPERTY_VALUE" class="member-name-link">INVALID_PROPERTY_VALUE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-005 - The property named {0} with value of {1} supplied on method {2} does not match the stored value of {3} for entity {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_TYPE" class="member-name-link">INVALID_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-004 - An unsupported type named {0} was passed to the repository services by the {1} request for open metadata
+ access service {2} on server {3}; error message was: {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LOCAL_CANNOT_CHANGE_EXTERNAL" class="member-name-link">LOCAL_CANNOT_CHANGE_EXTERNAL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-008 - Method {0} is unable to modify {1} instance {2} because it has a metadata provenance of {3} with
+ an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MULTIPLE_ENTITIES_FOUND" class="member-name-link">MULTIPLE_ENTITIES_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-010 - Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2};
+ the calling method is {3}, the name parameter is {4} and the server is {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MULTIPLE_RELATIONSHIPS_FOUND" class="member-name-link">MULTIPLE_RELATIONSHIPS_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-006 - Multiple {0} relationships are connected to the {1} entity with unique identifier {2}:
+ the relationship identifiers are {3}; the calling method is {4} and the server is {5}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NARROWER_EFFECTIVE_RELATIONSHIP" class="member-name-link">NARROWER_EFFECTIVE_RELATIONSHIP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-016 - The {0} relationship with unique identifier {1} has narrower effective dates of {2} to {3} than the requested effective dates of {4} to {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_ENTITY" class="member-name-link">NO_ENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-011 - A {0} entity with unique identifier {1} can not be retrieved by method {2} from service {3} for caller {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_METADATA_COLLECTION" class="member-name-link">NO_METADATA_COLLECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-004 - The repository connector {0} is not returning a metadata collection object</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_RELATIONSHIPS_FOUND" class="member-name-link">NO_RELATIONSHIPS_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-008 - No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_EFFECTIVE_ELEMENT" class="member-name-link">NOT_EFFECTIVE_ELEMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-013 - The {0} element with unique identifier {1} is found for method {2} of access service {3} in open metadata
+ server {4} however its effectivity dates are from: {5} to {6} and the requested effective date was {7}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_ENTITY_RETURNED" class="member-name-link">NULL_ENTITY_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-009 - A null entity was returned to method {0} of server {1} during a request for entity of type {2} (guid {3}) and properties of: {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ENTITY_RETURNED_FOR_CLASSIFICATION" class="member-name-link">NULL_ENTITY_RETURNED_FOR_CLASSIFICATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-011 - A null entity was returned to method {0} of server {1} during a request to add a classification of
+ type {4} (guid {3}) to entity {2} with properties of: {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OMRS_NOT_AVAILABLE" class="member-name-link">OMRS_NOT_AVAILABLE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-003 - The open metadata repository services are not available for the {0} operation</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ONLY_CREATOR_CAN_DELETE" class="member-name-link">ONLY_CREATOR_CAN_DELETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-403-002 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
+ was not created by the requesting user {5}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OVERLAPPING_EFFECTIVE_RELATIONSHIPS" class="member-name-link">OVERLAPPING_EFFECTIVE_RELATIONSHIPS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-017 - The {0} relationship with unique identifier {1} has overlapping effective dates of {2} to {3} than the requested effective dates of {4} to {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PROPERTY_SERVER_ERROR" class="member-name-link">PROPERTY_SERVER_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-500-001 - An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata
+ access service {2} on server {3}; message was {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROXY_ENTITY_FOUND" class="member-name-link">PROXY_ENTITY_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-005 - Only an entity proxy for requested {0} object with unique identifier (guid) {1} is found
+ in the open metadata server {2}, error message was: {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-500-002 - The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of
+ type {1} during method {2}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNAVAILABLE_ENTITY" class="member-name-link">UNAVAILABLE_ENTITY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-010 - A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3}
+ but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8}
+ and call parameters of forLineage={9} and forDuplicateProcessing={10}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_ENTITY" class="member-name-link">UNKNOWN_ENTITY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-007 - The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_RELATIONSHIP" class="member-name-link">UNKNOWN_RELATIONSHIP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-404-012 - The {0} relationship with unique identifier {1} is not found for method {2} of access service {3}
+ in open metadata server {4}, error message was: {5}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNRECOGNIZED_PROPERTY" class="member-name-link">UNRECOGNIZED_PROPERTY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-009 - The property named {0} with value of {1} supplied on method {2} is not found in entity {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#USER_NOT_AUTHORIZED" class="member-name-link">USER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-403-001 - User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#WRONG_EXTERNAL_SOURCE" class="member-name-link">WRONG_EXTERNAL_SOURCE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-REPOSITORY-HANDLER-400-007 - Method {0} running on behalf of external source {1} ({2}) is unable to modify {3} instance {4} because
+ it has a metadata provenance of {5} with an externalSourceGUID of {6} and an externalSourceName of {7}</div>
+</div>
 </div>
 </section>
 </li>
@@ -251,192 +331,241 @@ the order they are declared.</div>
 <section class="detail" id="INVALID_PROPERTY">
 <h3>INVALID_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROPERTY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-001 - An unsupported property named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; error message was: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PARAMETER">
 <h3>INVALID_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PARAMETER</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-002 - The {0} parameter passed by the {1} request for open metadata access service {2} on server {3} is invalid;
+ value passed was: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CLASSIFICATION_PROPERTIES">
 <h3>BAD_CLASSIFICATION_PROPERTIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">BAD_CLASSIFICATION_PROPERTIES</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-003 - Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_TYPE">
 <h3>INVALID_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">INVALID_TYPE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-004 - An unsupported type named {0} was passed to the repository services by the {1} request for open metadata
+ access service {2} on server {3}; error message was: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PROPERTY_VALUE">
 <h3>INVALID_PROPERTY_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROPERTY_VALUE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-005 - The property named {0} with value of {1} supplied on method {2} does not match the stored value of {3} for entity {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DUPLICATE_CREATE_REQUEST">
 <h3>DUPLICATE_CREATE_REQUEST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">DUPLICATE_CREATE_REQUEST</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-006 - Unable to create a new {0} with {1} of {2} as there is already an entity of that name with guid {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_EXTERNAL_SOURCE">
 <h3>WRONG_EXTERNAL_SOURCE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">WRONG_EXTERNAL_SOURCE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-007 - Method {0} running on behalf of external source {1} ({2}) is unable to modify {3} instance {4} because
+ it has a metadata provenance of {5} with an externalSourceGUID of {6} and an externalSourceName of {7}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_CANNOT_CHANGE_EXTERNAL">
 <h3>LOCAL_CANNOT_CHANGE_EXTERNAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">LOCAL_CANNOT_CHANGE_EXTERNAL</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-008 - Method {0} is unable to modify {1} instance {2} because it has a metadata provenance of {3} with
+ an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNRECOGNIZED_PROPERTY">
 <h3>UNRECOGNIZED_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">UNRECOGNIZED_PROPERTY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-009 - The property named {0} with value of {1} supplied on method {2} is not found in entity {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNAVAILABLE_ENTITY">
 <h3>UNAVAILABLE_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">UNAVAILABLE_ENTITY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-010 - A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3}
+ but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8}
+ and call parameters of forLineage={9} and forDuplicateProcessing={10}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_ENTITY">
 <h3>NO_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NO_ENTITY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-400-011 - A {0} entity with unique identifier {1} can not be retrieved by method {2} from service {3} for caller {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="USER_NOT_AUTHORIZED">
 <h3>USER_NOT_AUTHORIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">USER_NOT_AUTHORIZED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-403-001 - User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ONLY_CREATOR_CAN_DELETE">
 <h3>ONLY_CREATOR_CAN_DELETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">ONLY_CREATOR_CAN_DELETE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-403-002 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
+ was not created by the requesting user {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INSTANCE_WRONG_TYPE_FOR_GUID">
 <h3>INSTANCE_WRONG_TYPE_FOR_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">INSTANCE_WRONG_TYPE_FOR_GUID</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-001 - The {0} method has retrieved an object for unique identifier (guid) {1} which is of type {2}
+ rather than type {3} on behalf of method {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_AVAILABLE">
 <h3>OMRS_NOT_AVAILABLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_AVAILABLE</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-003 - The open metadata repository services are not available for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_METADATA_COLLECTION">
 <h3>NO_METADATA_COLLECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NO_METADATA_COLLECTION</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-004 - The repository connector {0} is not returning a metadata collection object</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROXY_ENTITY_FOUND">
 <h3>PROXY_ENTITY_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">PROXY_ENTITY_FOUND</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-005 - Only an entity proxy for requested {0} object with unique identifier (guid) {1} is found
+ in the open metadata server {2}, error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MULTIPLE_RELATIONSHIPS_FOUND">
 <h3>MULTIPLE_RELATIONSHIPS_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_RELATIONSHIPS_FOUND</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-006 - Multiple {0} relationships are connected to the {1} entity with unique identifier {2}:
+ the relationship identifiers are {3}; the calling method is {4} and the server is {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ENTITY">
 <h3>UNKNOWN_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ENTITY</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-007 - The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_RELATIONSHIPS_FOUND">
 <h3>NO_RELATIONSHIPS_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NO_RELATIONSHIPS_FOUND</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-008 - No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ENTITY_RETURNED">
 <h3>NULL_ENTITY_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENTITY_RETURNED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-009 - A null entity was returned to method {0} of server {1} during a request for entity of type {2} (guid {3}) and properties of: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MULTIPLE_ENTITIES_FOUND">
 <h3>MULTIPLE_ENTITIES_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_ENTITIES_FOUND</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-010 - Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2};
+ the calling method is {3}, the name parameter is {4} and the server is {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ENTITY_RETURNED_FOR_CLASSIFICATION">
 <h3>NULL_ENTITY_RETURNED_FOR_CLASSIFICATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENTITY_RETURNED_FOR_CLASSIFICATION</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-011 - A null entity was returned to method {0} of server {1} during a request to add a classification of
+ type {4} (guid {3}) to entity {2} with properties of: {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_RELATIONSHIP">
 <h3>UNKNOWN_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_RELATIONSHIP</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-012 - The {0} relationship with unique identifier {1} is not found for method {2} of access service {3}
+ in open metadata server {4}, error message was: {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_EFFECTIVE_ELEMENT">
 <h3>NOT_EFFECTIVE_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NOT_EFFECTIVE_ELEMENT</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-013 - The {0} element with unique identifier {1} is found for method {2} of access service {3} in open metadata
+ server {4} however its effectivity dates are from: {5} to {6} and the requested effective date was {7}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BROADER_EFFECTIVE_RELATIONSHIP">
 <h3>BROADER_EFFECTIVE_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">BROADER_EFFECTIVE_RELATIONSHIP</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-015 - The {0} relationship with unique identifier {1} claims all effective dates which makes it broader than the requested effective dates of {2} to {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NARROWER_EFFECTIVE_RELATIONSHIP">
 <h3>NARROWER_EFFECTIVE_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">NARROWER_EFFECTIVE_RELATIONSHIP</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-016 - The {0} relationship with unique identifier {1} has narrower effective dates of {2} to {3} than the requested effective dates of {4} to {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OVERLAPPING_EFFECTIVE_RELATIONSHIPS">
 <h3>OVERLAPPING_EFFECTIVE_RELATIONSHIPS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">OVERLAPPING_EFFECTIVE_RELATIONSHIPS</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-017 - The {0} relationship with unique identifier {1} has overlapping effective dates of {2} to {3} than the requested effective dates of {4} to {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FUNCTION_NOT_SUPPORTED">
 <h3>FUNCTION_NOT_SUPPORTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">FUNCTION_NOT_SUPPORTED</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-404-018 - Method {0} for service {1} is not supported by any of the metadata repositories connected to {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPERTY_SERVER_ERROR">
 <h3>PROPERTY_SERVER_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">PROPERTY_SERVER_ERROR</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-500-001 - An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata
+ access service {2} on server {3}; message was {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SET_ANCHORS">
 <h3>UNABLE_TO_SET_ANCHORS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_ANCHORS</span></div>
+<div class="block">OMAG-REPOSITORY-HANDLER-500-002 - The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of
+ type {1} during method {2}. The resulting exception was {3} with error message {4}</div>
 </section>
 </li>
 </ul>
