@@ -31,17 +31,17 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"instance"
 					]
 				}
@@ -70,18 +70,18 @@
 					"raw": "{\n    \"dataEngine\":\n    {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n        \"displayName\": \"ExternalDataEngine\",\n        \"description\": \"Requesting to register external data engine capability\",\n        \"engineType\": \"DataEngine\",\n        \"engineVersion\": \"1\",\n        \"enginePatchLevel\": \"1\",\n        \"vendor\": \"Company\",\n        \"version\": \"1\",\n        \"source\": \"source\"\n    }\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"registration"
 					]
 				}
@@ -103,18 +103,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -136,18 +136,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -169,18 +169,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -202,18 +202,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -242,18 +242,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -282,18 +282,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-flows"
 					]
 				}
@@ -337,18 +337,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process\",\n        \"displayName\": \"low-level-process\",\n        \"name\": \"low-level-process\",\n        \"description\": \"low-level-process is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n        \"owner\": \"Platform User\",\n        \"portImplementations\": [\n            {\n                \"displayName\": \"InputPort\",\n                \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"INPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"InputPortSchema\",\n                    \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute\",\n                            \"displayName\": \"Last\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0,\n                            \"dataType\": \"VARCHAR\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"displayName\": \"OutputPort\",\n                \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"OUTPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"OutputPortSchema\",\n                    \"qualifiedName\": \"(process)=CopySchemaAttributesFlow::(process)=CopySchemaAttributes::(port)=OutputPortSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute\",\n                            \"displayName\": \"LNAME\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        }\n                    ]\n                }\n            }\n        ],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -377,18 +377,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-flows"
 					]
 				}
@@ -432,18 +432,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=low-level-parent-process\",\n        \"displayName\": \"low-level-parent-process\",\n        \"name\": \"low-level-parent-process\",\n        \"description\": \"low-level-process describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"portAliases\": [\n            {\n                \"displayName\": \"ReadInputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-parent-process::(port)=ReadInputPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort\",\n                \"type\": \"INPUT_PORT\"\n            },\n            {\n                \"displayName\": \"WriteOutputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-process::(port)=WriteOutpuPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort\",\n                \"type\": \"OUTPUT_PORT\"\n            }\n        ],\n        \"dataFlows\": [],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=ING::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}

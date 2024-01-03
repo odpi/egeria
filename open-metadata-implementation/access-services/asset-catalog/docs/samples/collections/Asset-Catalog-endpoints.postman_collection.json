@@ -18,24 +18,24 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/supportedTypes?type={{asset-type}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/supportedTypes?type={{assetType}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"supportedTypes"
 					],
 					"query": [
 						{
 							"key": "type",
-							"value": "{{asset-type}}"
+							"value": "{{assetType}}"
 						}
 					]
 				}
@@ -64,24 +64,24 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/search?searchCriteria={{search-criteria}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/search?searchCriteria={{searchCriteria}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"search"
 					],
 					"query": [
 						{
 							"key": "searchCriteria",
-							"value": "{{search-criteria}}"
+							"value": "{{searchCriteria}}"
 						}
 					]
 				}
@@ -101,26 +101,26 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/asset-details/{{asset-guid}}/?assetType={{asset-type}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-details/{{assetGUID}}/?assetType={{assetType}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"asset-details",
-						"{{asset-guid}}",
+						"{{assetGUID}}",
 						""
 					],
 					"query": [
 						{
 							"key": "assetType",
-							"value": "{{asset-type}}"
+							"value": "{{assetType}}"
 						}
 					]
 				}
@@ -140,20 +140,20 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/asset-classifications/{{asset-guid}}?classificationName={{classification-name}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-classifications/{{assetGUID}}?classificationName={{classificationName}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"asset-classifications",
-						"{{asset-guid}}"
+						"{{assetGUID}}"
 					],
 					"query": [
 						{
@@ -168,12 +168,12 @@
 						},
 						{
 							"key": "assetType",
-							"value": "{{asset-type-1}}",
+							"value": "{{assetType-1}}",
 							"disabled": true
 						},
 						{
 							"key": "classificationName",
-							"value": "{{classification-name}}"
+							"value": "{{classificationName}}"
 						}
 					]
 				}
@@ -193,29 +193,29 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/asset-relationships/{{asset-guid}}?assetType={{asset-type}}&relationshipType={{relationship-type}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-relationships/{{assetGUID}}?assetType={{assetType}}&relationshipType={{relationshipType}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"asset-relationships",
-						"{{asset-guid}}"
+						"{{assetGUID}}"
 					],
 					"query": [
 						{
 							"key": "assetType",
-							"value": "{{asset-type}}"
+							"value": "{{assetType}}"
 						},
 						{
 							"key": "relationshipType",
-							"value": "{{relationship-type}}"
+							"value": "{{relationshipType}}"
 						}
 					]
 				}
@@ -235,20 +235,20 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/asset-context/{{asset-guid}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-context/{{assetGUID}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"asset-context",
-						"{{asset-guid}}"
+						"{{assetGUID}}"
 					]
 				}
 			},
@@ -267,20 +267,20 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/asset-catalog/users/{{user-id}}/asset-universe/{{asset-guid}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-universe/{{assetGUID}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"asset-catalog",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"asset-universe",
-						"{{asset-guid}}"
+						"{{assetGUID}}"
 					]
 				}
 			},

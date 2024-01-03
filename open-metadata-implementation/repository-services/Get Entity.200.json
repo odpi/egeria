@@ -1,0 +1,66 @@
+{
+  "class": "EntityDetailResponse",
+  "relatedHTTPCode": 200,
+  "entity": {
+    "class": "EntityDetail",
+    "type": {
+      "class": "InstanceType",
+      "typeDefCategory": "ENTITY_DEF",
+      "typeDefGUID": "578a3510-9ad3-45fe-8ada-e4e9572c37c8",
+      "typeDefName": "GovernanceOfficer",
+      "typeDefVersion": 1,
+      "typeDefDescription": "Person responsible for a governance domain.",
+      "typeDefSuperTypes": [
+        {
+          "guid": "a32316b8-dc8c-48c5-b12b-71c1b2a080bf",
+          "name": "Referenceable"
+        }
+      ],
+      "validInstanceProperties": [
+        "qualifiedName",
+        "additionalProperties",
+        "title",
+        "scope",
+        "domain"
+      ]
+    },
+    "createdBy": "julesk",
+    "createTime": "2018-09-11T13:01:20.139+0000",
+    "version": 1,
+    "instanceProvenanceType": "LOCAL_COHORT",
+    "metadataCollectionId": "87b06ffe-9db2-4ef5-ba6e-8127480cf30d",
+    "guid": "fd7d41e7-70f5-42ec-86d3-88683e599494",
+    "instanceURL": "http://localhost:8080/instances/entity/fd7d41e7-70f5-42ec-86d3-88683e599494",
+    "properties": {
+      "class": "InstanceProperties",
+      "instanceProperties": {
+        "title": {
+          "class": "PrimitivePropertyValue",
+          "instancePropertyCategory": "PRIMITIVE",
+          "primitiveDefCategory": "OM_PRIMITIVE_TYPE_STRING",
+          "primitiveValue": "Chief Data Officer (CDO)"
+        },
+        "qualifiedName": {
+          "class": "PrimitivePropertyValue",
+          "instancePropertyCategory": "PRIMITIVE",
+          "primitiveDefCategory": "OM_PRIMITIVE_TYPE_STRING",
+          "primitiveValue": "EXEC-CDO"
+        },
+        "domain": {
+          "class": "EnumPropertyValue",
+          "instancePropertyCategory": "ENUM",
+          "ordinal": 1,
+          "symbolicName": "Data",
+          "description": "The data (information) governance domain."
+        }
+      },
+      "propertyNames": [
+        "qualifiedName",
+        "domain",
+        "title"
+      ],
+      "propertyCount": 3
+    },
+    "status": "ACTIVE"
+  }
+}

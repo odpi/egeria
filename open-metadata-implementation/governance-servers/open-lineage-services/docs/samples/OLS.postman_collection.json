@@ -41,17 +41,17 @@
 					"raw": "{\"consumer\": {\n\t\"bootstrap.servers\" : \"{{kafka-url}}\",\n\t\"key.deserializer\": \"org.apache.kafka.common.serialization.StringDeserializer\",\n\t\"value.deserializer\": \"org.apache.kafka.common.serialization.StringDeserializer\",\n\t\"kafka.omrs.topic.id\": \"OMRSTopic\"\n},\n\"producer\": {\n\t\"bootstrap.servers\" : \"{{kafka-url}}\",\n\t\"key.serializer\": \"org.apache.kafka.common.serialization.StringSerializer\",\n\t\"value.serializer\": \"org.apache.kafka.common.serialization.StringSerializer\",\n\t\"kafka.omrs.topic.id\" : \"OMRSTopic\"\n}\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"event-bus"
 					],
 					"query": [
@@ -104,23 +104,23 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/server-url-root?url={{base-url}}",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root?url={{baseURL}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"server-url-root"
 					],
 					"query": [
 						{
 							"key": "url",
-							"value": "{{base-url}}"
+							"value": "{{baseURL}}"
 						}
 					]
 				}
@@ -163,17 +163,17 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/cohorts/cohort1",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/cohort1",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"cohorts",
 						"cohort1"
 					]
@@ -217,17 +217,17 @@
 					"raw": "{\n\t\"class\": \"OpenLineageConfig\",\n\t\"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n\t\"openLineageWiki\": \"wiki URL\",\n\t\"jobIntervalInSeconds\" : \"120\",\n\t\"lineageGraphConnection\":{\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\":{\n        \t\"class\": \"ConnectorType\",\n        \t\"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider\"\n    \t},\n    \"configurationProperties\": {\n            \"gremlin.graph\": \"org.janusgraph.core.JanusGraphFactory\",\n            \"storage.backend\": \"berkeleyje\",\n            \"storage.directory\": \"./egeria-lineage-repositories/lineageGraph/berkeley\",\n            \"index.search.backend\": \"lucene\",\n            \"index.search.directory\": \"./egeria-lineage-repositories/lineageGraph/searchindex\"\n        }\n    }\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-lineage/configuration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-lineage",
 						"configuration"
 					]
@@ -271,17 +271,17 @@
 					"raw": "{\n    \"class\": \"OpenLineageConfig\",\n    \"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n    \"openLineageWiki\": \"wiki URL\",\n    \"lineageGraphConnection\": {\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\": {\n            \"class\": \"ConnectorType\",\n            \"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider\"\n        },\n        \"configurationProperties\": {\n            \"port\": \"8182\",\n            \"hosts\": [\n                \"localhost\"\n            ],\n            \"serializer.className\": \"org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0\",\n            \"serializer.config.ioRegistries\": [\n                \"org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0\",\n                \"org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry\"\n            ],\n            \"gremlin.remote.driver.sourceName\": \"g\",\n            \"remote.schemaManagement.enable\": true\n        }\n    },\n    \"jobIntervalInSeconds\": 120\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-lineage/configuration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-lineage",
 						"configuration"
 					]
@@ -328,17 +328,17 @@
 					"raw": "{\n\t\"class\": \"OpenLineageConfig\",\n\t\"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n\t\"openLineageWiki\": \"wiki URL\",\n\t\"jobIntervalInSeconds\" : \"120\",\n\t\"lineageGraphConnection\":{\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\":{\n        \t\"class\": \"ConnectorType\",\n        \t\"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider\"\n    \t},\n    \"configurationProperties\": {\n            \"gremlin.graph\": \"org.janusgraph.core.JanusGraphFactory\",\n            \"storage.backend\": \"berkeleyje\",\n            \"storage.directory\": \"./egeria-lineage-repositories/lineageGraph/berkeley\",\n            \"index.search.backend\": \"lucene\",\n            \"index.search.directory\": \"./egeria-lineage-repositories/lineageGraph/searchindex\"\n        }\n    }\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/configuration",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"configuration"
 					]
 				}
@@ -379,17 +379,17 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"instance"
 					]
 				}
@@ -413,17 +413,17 @@
 					"raw": "{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"END_TO_END\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"entities",
 						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
@@ -449,17 +449,17 @@
 					"raw": "{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"VERTICAL\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"entities",
 						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
@@ -485,17 +485,17 @@
 					"raw": "\n{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"SOURCE_AND_DESTINATION\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"entities",
 						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
@@ -517,17 +517,17 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"types"
 					]
@@ -548,17 +548,17 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/nodes?type={{type}}&name={{name}}&limit={{limit}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/nodes?type={{type}}&name={{name}}&limit={{limit}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"nodes"
 					],
@@ -595,17 +595,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/search",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/lineage/search",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"lineage",
 						"search"
 					]
@@ -628,17 +628,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/elements/hierarchy",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"elements",
 						"hierarchy"
 					]
@@ -661,17 +661,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/elements/hierarchy",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"elements",
 						"hierarchy"
 					]
@@ -694,17 +694,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/elements/hierarchy",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/open-lineage/users/{{user}}/elements/hierarchy",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"open-lineage",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"elements",
 						"hierarchy"
 					]

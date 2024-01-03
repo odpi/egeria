@@ -1,0 +1,93 @@
+# Egeria-CTS-RepositoryWorkbench
+
+###
+# @name Configure server type
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/server-type?
+    typeName=Conformance
+Content-Type: application/json
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name Configure event bus
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/event-bus?
+    connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&
+    topicURLRoot=OMRSTopic
+Content-Type: application/json
+
+{
+	"producer": {
+		"bootstrap.servers":"{{kafkaep}}"
+	},
+	"consumer": {
+   		"bootstrap.servers":"{{kafkaep}}"
+	}
+}
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name Cohort configuration
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/cohorts/{{cohort}}
+Content-Type: application/json
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name Enable repository workbench
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+Content-Type: application/json
+
+{
+	"class": "RepositoryConformanceWorkbenchConfig",
+	"tutRepositoryServerName": "{{server}}",
+	"maxSearchResults": 2
+}
+
+###
+# @name Query configuration
+# Query Current Configuration
+GET {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/configuration/
+Authorization: Basic admin admin
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+    // pm.test("CTS endpoint configured", function () {
+    //     var jsonData = pm.response.json();
+    //     pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal("Local connection to In-memory repository@cts");
+    // });
+%}
+
+###
+# @name Start conformance test
+# Query Current Configuration
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cts/instance
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name Get full report
+GET {{baseURL}}/servers/cts/open-metadata/conformance-suite/users/{{user}}/report

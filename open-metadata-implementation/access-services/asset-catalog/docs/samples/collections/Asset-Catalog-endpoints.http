@@ -1,0 +1,53 @@
+# Asset Catalog endpoints
+
+###
+# @name 1. Get supported types
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/supportedTypes?
+    type={{assetType}}
+Content-Type: application/json
+
+###
+# @name 2. Search
+POST {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/search?
+    searchCriteria={{searchCriteria}}
+Content-Type: application/json
+
+{
+	"class": "SearchParameters",
+	"status": "ACTIVE",
+	"from": 0,
+	"pageSize":100,
+	"isCaseInsensitive": false
+}
+
+###
+# @name 3. Get asset details
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-details/{{assetGUID}}/?
+    assetType={{assetType}}
+Content-Type: application/json
+
+###
+# @name 4. Get asset classifications
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-classifications/{{assetGUID}}?
+    from=0&
+    pageSize=10&
+    assetType={{assetType-1}}&
+    classificationName={{classificationName}}
+Content-Type: application/json
+
+###
+# @name 5. Get asset relationships
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-relationships/{{assetGUID}}?
+    assetType={{assetType}}&
+    relationshipType={{relationshipType}}
+Content-Type: application/json
+
+###
+# @name 6. Get asset context
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-context/{{assetGUID}}
+Content-Type: application/json
+
+###
+# @name 7. Get asset universe
+GET {{baseURL}}/servers/{{serverId}}/open-metadata/access-services/asset-catalog/users/{{user}}/asset-universe/{{assetGUID}}
+Content-Type: application/json

@@ -1,0 +1,239 @@
+# Apache Atlas API
+
+###
+# group: Glossaries
+# @name Retrieve All Atlas Glossaries
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary?
+    limit=-1&
+    offset=0&
+    sort=ASC
+Authorization: Basic admin admin
+
+###
+# group: Glossaries
+# @name Create Atlas Glossary
+POST {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "name": "Atlas Metadata Glossary",
+  "shortDescription": "This glossary has come from Apache Atlas.",
+  "longDescription": "This glossary is to replicated into the open metadata ecosystem by Egeria.",
+  "language": "English",
+  "usage": "Just for test"
+}
+
+###
+# group: Glossaries
+# @name Retrieve Specific Atlas Glossary By GUID
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}
+Authorization: Basic admin admin
+
+###
+# group: Glossaries
+# @name Update Specific Atlas Glossary
+# Notice that the payload must be complete - like isMergeUpdate=FALSE
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "name": "Atlas Metadata Glossary",
+  "shortDescription": "This glossary has come from Apache Atlas.",
+  "longDescription": "This glossary is to replicated into the open metadata ecosystem by Egeria. This is an update.",
+  "language": "English",
+  "usage": "Just for test"
+}
+
+###
+# group: Glossaries
+# @name Update Specific Atlas Glossary Addtional Attributes
+# Notice that the payload must be complete - like isMergeUpdate=FALSE
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "name": "Atlas Metadata Glossary",
+  "additionalAttributes": {
+    "egeriaGUID": "6ee074b0-8fca-450c-981b-bb178b14640d",
+    "egeriaOwned": "true"
+  }
+}
+
+###
+# group: Glossaries
+# @name Delete Specific Atlas Glossary
+DELETE {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}
+Authorization: Basic admin admin
+
+###
+# group: Glossaries
+# @name Create Atlas Glossary Category
+POST {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "Customer",
+    "shortDescription" : "This glossary category describes customer terms.",
+    "longDescription" : "This glossary category originates in Apache Atlas."
+}
+
+###
+# group: Glossaries
+# @name Create Atlas Glossary SubCategory
+POST {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "Customer Activity",
+    "shortDescription" : "This glossary category describes the customer tasks.",
+    "longDescription" : "This glossary category originates in Apache Atlas",
+    "parentCategory" : {
+        "categoryGuid" : "{{atlas_top_category}}"
+    }
+}
+
+###
+# group: Glossaries
+# @name Update Atlas Glossary Category
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_top_category}}/partial
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "guid": "50d104bd-af42-40a1-929d-4c4eeaae10d5",
+  "name": "Customer",
+  "shortDescription": "This glossary category describes customer terms. This is an update 3."
+}
+
+###
+# group: Glossaries
+# @name Update Atlas SubGlossary Category
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "Open Metadata Glossary Category A-1",
+    "shortDescription" : "This glossary category has come from open metadata.",
+    "longDescription" : "This glossary category is to replicated in Apache Atlas.  This is an update",
+    "additionalAttributes" : {
+        "egeriaGUID" : "GUID goes here"
+    },
+    "parentCategory" : {
+        "categoryGuid" : "{{atlas_top_category}}"
+    }
+}
+
+###
+# group: Glossaries
+# @name Get Atlas Glossary Category
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_top_category}}
+Authorization: Basic admin admin
+
+###
+# group: Glossaries
+# @name Get Atlas Glossary SubCategory
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}
+Authorization: Basic admin admin
+
+###
+# group: Glossaries
+# @name Add Atlas Glossary Category Parent
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "Name: Open Metadata Glossary Category A-1",
+    "shortDescription" : "ShortDescription: This glossary category has come from open metadata.",
+    "longDescription" : "This glossary category is to replicated in Apache Atlas",
+    "qualifiedName" : "Glossary:Open Metadata Glossary Category A-1",
+    "additionalAttributes" : {
+        "egeriaGUID" : "GUID goes here"
+    },
+    "parentCategory" : {
+        "categoryGuid" : "{{atlas_top_category}}"
+    }
+}
+
+###
+# group: Glossaries
+# @name Create Atlas Glossary Term
+POST {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "custPassport",
+    "shortDescription" : "Passport number for a customer.",
+    "longDescription" : "This glossary term is owned by Apache Atlas"
+}
+
+###
+# group: Glossaries
+# @name Update Atlas Glossary Term
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+    "anchor" : {
+        "glossaryGuid" : "{{atlas-glossary}}"
+    },
+    "name" : "custId",
+    "shortDescription" : "This glossary term has come from open metadata.",
+    "longDescription" : "This glossary term is to replicated in Apache Atlas",
+    "abbreviation" : "cid",
+    "usage" : "Just a test"
+}
+
+###
+# group: Glossaries
+# @name Update Specific Atlas Glossary Term Addtional Attributes
+# Notice that the payload must be complete - like isMergeUpdate=FALSE
+PUT {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}/partial
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "name": "custPassport",
+  "additionalAttributes": {
+    "egeriaGUID": "dfc8bcc9-8b99-4771-82d4-4780924d0b4f",
+    "egeriaOwned": "false"
+  }
+}
+
+###
+# group: Glossaries
+# @name Get Atlas Glossary Term
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}
+Authorization: Basic admin admin
+
+###
+# group: Types
+# @name Get Atlas Types
+GET {{atlas_host}}:{{atlas_port}}/api/atlas/v2/types/typedefs
+Authorization: Basic admin admin
+
+<> ./Get Atlas Types.200.json
+// {{atlas_host}}:{{atlas_port}}/api/atlas/v2/types/typedefs

@@ -1,0 +1,1353 @@
+# DataEngine - asset endpoints
+
+###
+# @name 1.INSTANCE
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance
+Authorization: Basic demo demo
+
+###
+# @name 1.1 Register external tool
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration
+Content-Type: application/json
+
+{
+    "dataEngine":
+    {
+        "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform",
+        "displayName": "ExternalDataEngine",
+        "description": "Requesting to register external data engine capability",
+        "engineType": "DataEngine",
+        "engineVersion": "1",
+        "enginePatchLevel": "1",
+        "vendor": "Company",
+        "version": "1",
+        "source": "source"
+    }
+}
+
+###
+# @name 1.2.0 Create Database, Database Schema, Relational Table - all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props",
+        "displayName": "MINIMAL-all-props",
+        "description": "DB2 MINIMAL",
+        "databaseType": "DB2",
+        "databaseVersion": "10.05.0002",
+        "databaseInstance": "db2inst1",
+        "databaseImportedFrom": "DB2Connector 9.1",
+        "createTime": "1588160311000",
+        "modifiedTime": "1588160311000",
+        "pathName": "pathName",
+        "encodingType": "type",
+        "encodingLanguage": "lang",
+        "encodingDescription": "props",
+        "owner": "Administrator IIS",
+        "ownerType": "USER_ID",
+        "protocol": "ftp",
+        "networkAddress": "localhost",
+        "zoneMembership": [
+            "default"
+        ],
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "schema": {
+            "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props",
+            "displayName": "DB2INST1-all-props",
+            "description": "DB2INST1 database schema",
+            "owner": "Administrator IIS",
+            "ownerType": "USER_ID",
+            "zoneMembership": [
+                "default"
+            ],
+            "otherOriginValues": {
+                "prop": "otherOrigin"
+            }
+        },
+        "tables": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME",
+                "displayName": "EMPLNAME",
+                "description": "EMPLNAME desc",
+                "isDeprecated": false,
+                "aliases": [
+                    "EMPLNAME2"
+                ],
+                "columns": [
+                    {
+                        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                        "displayName": "EMPID",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 1,
+                        "dataType": "INTEGER",
+                        "orderedValues": true,
+                        "defaultValueOverride": "defaultOverride",
+                        "defaltValue": "defaultValue",
+                        "nativeClass": "nativeClass",
+                        "aliases": [
+                            "ID"
+                        ],
+                        "sortOrder": "ASCENDING",
+                        "description": "id column",
+                        "significantDigits": 0,
+                        "precision": 0,
+                        "fixedValue": "1",
+                        "formula": "formula"
+                    },
+                    {
+                        "qualifiedName": "(host)=HOST::(database)=MINIMA-all-propsL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                        "displayName": "FNAME",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "minimuumLength": 0,
+                        "length": 50,
+                        "allowsDuplicateValues": true,
+                        "position": 2,
+                        "dataType": "STRING",
+                        "orderedValues": true,
+                        "defaultValueOverride": "defaultOverride",
+                        "defaltValue": "defaultValue",
+                        "nativeClass": "nativeClass",
+                        "aliases": [
+                            "First"
+                        ],
+                        "sortOrder": "UNSORTED",
+                        "description": "first column",
+                        "significantDigits": 0,
+                        "precision": 0,
+                        "fixedValue": "name",
+                        "formula": "formula"
+                    },
+                    {
+                        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                        "displayName": "SURNAME",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "minimuumLength": 0,
+                        "length": 50,
+                        "allowsDuplicateValues": true,
+                        "position": 3,
+                        "dataType": "STRING",
+                        "orderedValues": true,
+                        "defaultValueOverride": "defaultOverride",
+                        "defaltValue": "defaultValue",
+                        "nativeClass": "nativeClass",
+                        "aliases": [
+                            "Last"
+                        ],
+                        "sortOrder": "UNSORTED",
+                        "description": "surname column",
+                        "significantDigits": 0,
+                        "precision": 0,
+                        "fixedValue": "name",
+                        "formula": "formula"
+                    },
+                    {
+                        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                        "displayName": "LOCID",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 4,
+                        "dataType": "INTEGER",
+                        "orderedValues": true,
+                        "defaultValueOverride": "defaultOverride",
+                        "defaltValue": "defaultValue",
+                        "nativeClass": "nativeClass",
+                        "aliases": [
+                            "Location"
+                        ],
+                        "sortOrder": "ASCENDING",
+                        "description": "locid column",
+                        "significantDigits": 0,
+                        "precision": 0,
+                        "fixedValue": "1",
+                        "formula": "formula"
+                    }
+                ]
+            }
+        ]
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 1.2 Create Database - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+        "displayName": "MINIMAL-basic",
+        "networkAddress" : "localhost"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 7.2 Create Incomplete Database - all props, only database
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props",
+        "displayName": "MINIMAL-all-props",
+        "description": "DB2 MINIMAL",
+        "databaseType": "DB2",
+        "databaseVersion": "10.05.0002",
+        "databaseInstance": "db2inst1",
+        "databaseImportedFrom": "DB2Connector 9.1",
+        "createTime": "1588160311000",
+        "modifiedTime": "1588160311000",
+        "pathName": "pathName",
+        "encodingType": "type",
+        "encodingLanguage": "lang",
+        "encodingDescription": "props",
+        "owner": "Administrator IIS",
+        "ownerType": "USER_ID",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "zoneMembership": [
+            "default"
+        ],
+        "otherOriginValues":{
+        	"prop":"oherOrigin"
+        }
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 1.4 Create Database Schema - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas
+Content-Type: application/json
+
+{
+    "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+    "databaseSchema": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1-basic",
+        "displayName": "DB2INST1-basic"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 1.5 Create Database Schema - all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas
+Content-Type: application/json
+
+{
+    "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-all-props",
+    "databaseSchema": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props",
+        "displayName": "DB2INST1-all-props",
+        "description": "DB2INST1 database schema",
+        "owner": "Administrator IIS",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "default"
+        ],
+        "otherOriginValues":{
+        	"prop":"otherOrigin"
+        }
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "incomplete": false
+}
+
+###
+# @name 1.6 Create Relational Table - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1-basic",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic",
+        "displayName": "EMPLNAME-basic",
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                  "dataType": "STRING"
+            }
+        ]
+    },
+   "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 1.7 Create Relational Table - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME",
+        "displayName": "EMPLNAME",
+        "description": "EMPLNAME desc",
+        "isDeprecated": false,
+        "aliases": [
+            "EMPLNAME2"
+        ],
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INTEGER",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "ID"
+                ],
+                "sortOrder": "ASCENDING",
+                "description": "id column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "1",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMA-all-propsL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 2,
+                "dataType": "STRING",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "First"
+                ],
+                "sortOrder": "UNSORTED",
+                "description": "first column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "name",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 3,
+                "dataType": "STRING",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "Last"
+                ],
+                "sortOrder": "UNSORTED",
+                "description": "surname column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "name",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 4,
+                "dataType": "INTEGER",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "Location"
+                ],
+                "sortOrder": "ASCENDING",
+                "description": "locid column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "1",
+                "formula": "formula"
+            }
+        ]
+    },
+   "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+   "incomplete": false
+}
+
+###
+# @name 1.8 Create DataFile - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+   "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "DataFile",
+        "qualifiedName": "(host)=HOST::(data_file)=DATAFILE.DAT",
+        "displayName": "dataFile.dat",
+        "columns": [
+            {
+                "qualifiedName": "(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A",
+                "displayName": "column-a"
+            },
+            {
+                "qualifiedName": "(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B",
+                "displayName": "column-b"
+            }
+        ]
+    }
+}
+
+###
+# @name 1.9 Create DataFile - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "DataFile",
+        "qualifiedName": "(file)=DATAFILE.DAT",
+        "displayName": "dataFile.dat",
+        "pathName": "/home/files/dataFile.dat",
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "createTime": "1617095893010",
+        "modifiedTime": "1617095893010",
+        "description": "Data file description.",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(file)=DATAFILE.DAT::(column)=COLUMN-A",
+                "displayName": "column-a",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-A DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-A-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-A-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-1"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            },
+            {
+                "qualifiedName": "(file)=DATAFILE.DAT::(column)=COLUMN-B",
+                "displayName": "column-b",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-B DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-B-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-B-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-2"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            }
+        ]
+    }
+}
+
+###
+# @name 1.10 Create CSVFile - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "CSVFile",
+        "qualifiedName": "(file)=CSVFILE.CSV",
+        "displayName": "csvFile.csv",
+        "columns": [
+            {
+                "qualifiedName": "(file)=CSVFILE.CSV::(column)=COLUMN-A",
+                "displayName": "column-a"
+            },
+            {
+                "qualifiedName": "(file)=CSVFILE.CSV::(column)=COLUMN-B",
+                "displayName": "column-b"
+            }
+        ]
+    }
+}
+
+###
+# @name 1.11 Create CSVFile - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "CSVFile",
+        "qualifiedName": "(file)=CSVFILE.CSV",
+        "displayName": "csvFile.csv",
+        "pathName": "/home/files/csvFile.csv",
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "createTime": "1617095893010",
+        "modifiedTime": "1617095893010",
+        "description": "Data file description.",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(file)=CSVFILE.CSV::(column)=COLUMN-A",
+                "displayName": "column-a",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-A DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-A-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-A-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-1"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            },
+            {
+                "qualifiedName": "(file)=CSVFILE.CSV::(column)=COLUMN-B",
+                "displayName": "column-b",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-B DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-B-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-B-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-2"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            }
+        ]
+    }
+}
+
+###
+# @name 2.1 Delete Relational Table - EMPLNAME basic
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "deleteSemantic":"SOFT"
+}
+
+###
+# @name 2.2 Delete Database Schema - DB2INST1
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas
+Content-Type: application/json
+
+{
+    "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1-basic",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.3 Delete Database - MINIMAL
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.4 Delete CSVFile
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.5 Delete DataFile
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.7 Delete folder - files
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders
+Content-Type: application/json
+
+{
+    "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform::/data/files",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.8 Delete folder - data
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders
+Content-Type: application/json
+
+{
+    "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform::/data",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.10 Delete folder - /
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders
+Content-Type: application/json
+
+{
+    "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform::/",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.10 Delete connection for csv file
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/connections
+Content-Type: application/json
+
+{
+    "qualifiedName": "CSVFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv Connection",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.11 Delete endpoint for csv file
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/endpoints
+Content-Type: application/json
+
+{
+    "qualifiedName": "CSVFile:(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv Endpoint",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.1 Create incomplete Database - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+        "displayName": "MINIMAL-basic",
+        "networkAddress": "localhost",
+        "incomplete": true
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.2 Create Incomplete Database - all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props",
+        "displayName": "MINIMAL-all-props",
+        "description": "DB2 MINIMAL",
+        "databaseType": "DB2",
+        "databaseVersion": "10.05.0002",
+        "databaseInstance": "db2inst1",
+        "databaseImportedFrom": "DB2Connector 9.1",
+        "createTime": "1588160311000",
+        "modifiedTime": "1588160311000",
+        "pathName": "pathName",
+        "encodingType": "type",
+        "encodingLanguage": "lang",
+        "encodingDescription": "props",
+        "owner": "Administrator IIS",
+        "ownerType": "USER_ID",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "zoneMembership": [
+            "default"
+        ],
+        "otherOriginValues":{
+        	"prop":"oherOrigin"
+        },
+         "incomplete": true
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.3 Create incomplete Database Schema - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas
+Content-Type: application/json
+
+{
+    "databaseSchema": {
+        "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete",
+        "displayName": "DB2INST1-basic-incomplete",
+        "incomplete": true
+    },
+    "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-basic",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.4 Create incomplete Database Schema - all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas
+Content-Type: application/json
+
+{
+    "databaseSchema": {
+        "qualifiedName": "(database_schema)=DB2INST1-all-props--basic-incomplete",
+        "displayName": "DB2INST1-all-props-incomplete",
+        "description": "DB2INST1 database schema incomplete description",
+        "owner": "Administrator IIS",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "default"
+        ],
+        "otherOriginValues": {
+            "prop": "otherOrigin"
+        },
+        "incomplete": true
+    },
+    "databaseQualifiedName": "(host)=HOST::(database)=MINIMAL-all-props",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.5 Create incomplete Relational Table - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(database_schema)=DB2INST1-basic-incomplete",
+    "table": {
+        "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete",
+        "displayName": "EMPLNAME-basic",
+        "columns": [
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                "dataType": "STRING"
+            }
+        ],
+        "incomplete": true
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.6 Create incomplete Relational Table - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(database_schema)=DB2INST1-all-props-incomplete",
+    "table": {
+        "qualifiedName": "(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete",
+        "displayName": "EMPLNAME-all-props-incomplete",
+        "description": "EMPLNAME-all-props-incomplete description",
+        "isDeprecated": false,
+        "aliases": [
+            "EMPLNAME2"
+        ],
+        "columns": [
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INTEGER",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "ID"
+                ],
+                "sortOrder": "ASCENDING",
+                "description": "id column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "1",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 2,
+                "dataType": "STRING",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "First"
+                ],
+                "sortOrder": "UNSORTED",
+                "description": "first column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "name",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL-all-props-incomplete::(database_schema)=DB2INST1::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 3,
+                "dataType": "STRING",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "Last"
+                ],
+                "sortOrder": "UNSORTED",
+                "description": "surname column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "name",
+                "formula": "formula"
+            },
+            {
+                "qualifiedName": "(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 4,
+                "dataType": "INTEGER",
+                "orderedValues": true,
+                "defaultValueOverride": "defaultOverride",
+                "defaltValue": "defaultValue",
+                "nativeClass": "nativeClass",
+                "aliases": [
+                    "Location"
+                ],
+                "sortOrder": "ASCENDING",
+                "description": "locid column",
+                "significantDigits": 0,
+                "precision": 0,
+                "fixedValue": "1",
+                "formula": "formula"
+            }
+        ],
+        "incomplete": true
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.7 Create incomplete DataFile - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "DataFile",
+        "qualifiedName": "(host)=HOST::(data_file)=DATAFILE-incomplete.DAT",
+        "displayName": "dataFile-incomplete.dat",
+        "pathName": "/home/files/dataFile-incomplete.dat",
+        "networkAddress": "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A",
+                "displayName": "column-a"
+            },
+            {
+                "qualifiedName": "(data_file)=DATAFILE-incomplete.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B",
+                "displayName": "column-b"
+            }
+        ],
+        "incomplete": true
+    }
+}
+
+###
+# @name 3.8 Create incomplete DataFile - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "DataFile",
+        "qualifiedName": "(file)=DATAFILE2-incomplete.DAT",
+        "displayName": "dataFile2-incomplete.dat",
+        "pathName": "/home/files/dataFile2-incomplete.dat",
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "createTime": "1617095893010",
+        "modifiedTime": "1617095893010",
+        "description": "Data file description.",
+        "protocol": "ftp",
+        "networkAddress": "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-A",
+                "displayName": "column-a",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-A DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-A-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-A-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-1"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            },
+            {
+                "qualifiedName": "(file)=DATAFILE2-incomplete.DAT::(column)=COLUMN-B",
+                "displayName": "column-b",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-B DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-B-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-B-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-2"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            }
+        ],
+        "incomplete": true
+    }
+}
+
+###
+# @name 3.9 Create incomplete CSVFile - required props only
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "CSVFile",
+        "qualifiedName": "(file)=CSVFILE-incomplete.CSV",
+        "displayName": "csvFile-incomplete.csv",
+        "pathName": "/home/files/csvFile-incomplete.csv",
+        "networkAddress" : "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-A",
+                "displayName": "column-a"
+            },
+            {
+                "qualifiedName": "(file)=CSVFILE-incomplete.CSV::(column)=COLUMN-B",
+                "displayName": "column-b"
+            }
+        ],
+         "incomplete": true
+    }
+}
+
+###
+# @name 3.10  Create incomplete CSVFile - all properties
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "CSVFile",
+        "qualifiedName": "(file)=CSVFILE2-incomplete.CSV",
+        "displayName": "csvFile2-incomplete.csv",
+        "pathName": "/home/files/csvFile2-incomplete.csv",
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "createTime": "1617095893010",
+        "modifiedTime": "1617095893010",
+        "description": "Data file description.",
+        "protocol": "ftp",
+        "networkAddress": "localhost",
+        "columns": [
+            {
+                "qualifiedName": "(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-A",
+                "displayName": "column-a",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-A DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-A-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-A-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-1"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            },
+            {
+                "qualifiedName": "(file)=CSVFILE2-incomplete.CSV::(column)=COLUMN-B",
+                "displayName": "column-b",
+                "additionalProperties": {
+                    "key-1": "value-1",
+                    "key-2": "value-2"
+                },
+                "description": "COLUMN-B DESCRIPTION",
+                "position": 0,
+                "minCardinality": 0,
+                "maxCardinality": 1,
+                "allowsDuplicateValues": false,
+                "orderedValues": false,
+                "defaultValueOverride": "COLUMN-B-DEFAULT-VALUE",
+                "nativeClass": "COLUMN-B-NATIVE-CLSAS",
+                "aliases": [
+                    "COLUMN-2"
+                ],
+                "dataItemSortOrder": "UNKNOWN"
+            }
+        ],
+        "incomplete": true
+    }
+}
+
+###
+# @name 4.1 Find entity - all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/find
+Content-Type: application/json
+
+{
+    "identifiers" : {
+        "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform::/data"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "type": "Referenceable"
+}
+
+
+###
+# @name 4.2 Find entity - required props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/find
+Content-Type: application/json
+
+{
+    "identifiers" : {
+        "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform::/data"
+    }
+}
+
+
+###
+# @name 5.1  Create topic required props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=test-topic-basic",
+        "displayName": "test-topic-basic"
+    }
+}
+
+###
+# @name 5.2  Create topic all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=test-topic",
+        "displayName": "test-topic",
+        "topicType": "topic-type",
+        "description": "topic description",
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "eventTypes": [
+            {
+                "qualifiedName": "(topic)=test-topic::(eventType)=test-event",
+                "displayName": "test-event",
+                "author": "author",
+                "usage": "usage",
+                "encodingStandard": "encoding",
+                "versionNumber": "versionNumber",
+                "isDeprecated": false,
+                "description": "event type description",
+                "eventSchemaAttributes": [
+                    {
+                        "qualifiedName": "(topic)=test-topic::(eventType)=test-event::(eventAttribute)=test-event-attribute",
+                        "displayName": "test-event-attribute",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 1,
+                        "dataType": "INTEGER"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+###
+# @name 5.3  Create event type required props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topicQualifiedName": "(topic)=test-topic-basic",
+    "eventType": {
+        "qualifiedName": "(topic)=test-topic-basic::(eventType)=test-event-basic",
+        "displayName": "test-event-basic",
+        "eventSchemaAttributes": [
+            {
+                "qualifiedName": "(topic)=test-topic-basic::(eventType)=test-event-basic::(eventAttribute)=test-event-attribute-basic",
+                "displayName": "test-event-attribute-basic"
+            }
+        ]
+    }
+}
+
+###
+# @name 5.4  Create event type all props
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topicQualifiedName": "(topic)=test-topic",
+    "eventType": {
+        "qualifiedName": "(topic)=test-topic::(eventType)=test-event-2",
+        "displayName": "test-event-2",
+        "author": "author",
+        "usage": "usage",
+        "encodingStandard": "encoding",
+        "versionNumber": "versionNumber",
+        "isDeprecated": false,
+        "description": "event type description",
+        "eventSchemaAttributes": [
+            {
+                "qualifiedName": "(topic)=test-topic::(eventType)=test-event-2::(eventAttribute)=test-event-attribute-2",
+                "displayName": "test-event-attribute-2",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INTEGER"
+            }
+        ]
+    }
+}
+
+###
+# @name 5.5. Delete topic
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "qualifiedName": "(topic)=test-topic",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.6 Delete event type
+DELETE {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types
+Content-Type: application/json
+
+{
+    "qualifiedName": "(topic)=test-topic::(eventType)=test-event",
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.1 Upsert Processing State Classification
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processing-state
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "processingState": {
+        "syncDatesByKey" : {
+            "{{criticalElement}}" : "{{criticalElementLastSyncTimestampLong}}"
+        }
+    }
+}
+
+###
+# @name 6.2 Get Processing State Classification
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processing-state?
+    dataEngine=(organization)=Company::(project)=ExternalDataPlatform
+Authorization: Basic demo demo
+Content-Type: application/json

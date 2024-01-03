@@ -16,13 +16,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-services",
 								"files-integrator",
@@ -42,13 +42,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-services",
 								"files-integrator",
@@ -68,13 +68,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/refresh",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/refresh",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -92,13 +92,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/refresh",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/refresh",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -118,13 +118,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/restart",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/restart",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -153,13 +153,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -187,13 +187,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -212,13 +212,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -246,13 +246,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
+							"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"servers",
-								"{{server}}",
+								"{{intDaemon}}",
 								"open-metadata",
 								"integration-daemon",
 								"users",
@@ -273,13 +273,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/status",
+					"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/status",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server}}",
+						"{{intDaemon}}",
 						"open-metadata",
 						"integration-daemon",
 						"users",
@@ -297,13 +297,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/{{serviceURLName}}/users/{{user}}/validate-connector/{{connectorProfileClassName}}",
+					"raw": "{{baseURL}}/servers/{{intDaemon}}/open-metadata/{{serviceURLName}}/users/{{user}}/validate-connector/{{connectorProfileClassName}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server}}",
+						"{{intDaemon}}",
 						"open-metadata",
 						"{{serviceURLName}}",
 						"users",

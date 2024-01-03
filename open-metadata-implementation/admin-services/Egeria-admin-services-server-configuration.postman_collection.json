@@ -1271,7 +1271,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1283,7 +1283,7 @@
 												"servers",
 												"{{server}}",
 												"access-services",
-												"{{access_service}}"
+												"{{accessService}}"
 											]
 										},
 										"description": "Retrieve the configuration information for a specific Open Metadata Access Services (OMAS) configured for this server."
@@ -1391,7 +1391,7 @@
 											"raw": "cp.stewardshipaction.intopic"
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names/in-topic",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names/in-topic",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1403,7 +1403,7 @@
 												"servers",
 												"{{server}}",
 												"access-services",
-												"{{access_service}}",
+												"{{accessService}}",
 												"topic-names",
 												"in-topic"
 											]
@@ -1422,7 +1422,7 @@
 											"raw": "cp.stewardshipaction.outtopic"
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names/out-topic",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names/out-topic",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1434,7 +1434,7 @@
 												"servers",
 												"{{server}}",
 												"access-services",
-												"{{access_service}}",
+												"{{accessService}}",
 												"topic-names",
 												"out-topic"
 											]
@@ -1474,7 +1474,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}/topic-names",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1486,7 +1486,7 @@
 												"servers",
 												"{{server}}",
 												"access-services",
-												"{{access_service}}",
+												"{{accessService}}",
 												"topic-names"
 											]
 										},
@@ -1532,7 +1532,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1544,7 +1544,7 @@
 												"servers",
 												"{{server}}",
 												"access-services",
-												"{{access_service}}"
+												"{{accessService}}"
 											]
 										},
 										"description": "Remove the requested Open Metadata Access Service from this server's configuration."

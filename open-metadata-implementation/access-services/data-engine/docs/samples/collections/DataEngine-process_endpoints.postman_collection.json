@@ -22,18 +22,18 @@
 					"raw": "{\n    \"dataEngine\":\n    {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n        \"displayName\": \"ExternalDataEngine\",\n        \"description\": \"Requesting to register external data engine capability\",\n        \"engineType\": \"DataEngine\",\n        \"engineVersion\": \"1\",\n        \"enginePatchLevel\": \"1\",\n        \"vendor\": \"Companny\",\n        \"version\": \"1\",\n        \"source\": \"source\"\n    }\n}\n"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"registration"
 					]
 				}
@@ -57,18 +57,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"registration"
 					]
 				}
@@ -93,18 +93,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -129,18 +129,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -179,18 +179,18 @@
 					"raw": "{\n    \"schema\": {\n        \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n        \"displayName\": \"EMPLOYEE\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"source-schema-attribute-qualified-name\",\n                \"displayName\": \"DEPT\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS\",\n                \"displayName\": \"EMPSTATUS\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LNAME\",\n                \"displayName\": \"LNAME\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LOCCODE\",\n                \"displayName\": \"LOCCODE\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=LVL\",\n                \"displayName\": \"LVL\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=PNUM\",\n                \"displayName\": \"PNUM\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=ROLE\",\n                \"displayName\": \"ROLE\",\n                \"elementPosition\": 0\n            }\n        ]\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/schema-types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"schema-types"
 					]
 				}
@@ -229,18 +229,18 @@
 					"raw": "{\n    \"qualifiedName\": \"extern:fr:6c18e03b7e4f44089462e858538bd5d2\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/schema-types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"schema-types"
 					]
 				}
@@ -279,18 +279,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"displayName\": \"CopyColumns\",\n        \"name\": \"CopyColumns\",\n        \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n        \"owner\": \"Platform User\",\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -329,18 +329,18 @@
 					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"portImplementation\": {\n        \"displayName\": \"NamesFileInputPort\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n        \"updateSemantic\": \"REPLACE\",\n        \"type\": \"INPUT_PORT\",\n        \"schema\": {\n            \"displayName\": \"NamesFileInputSchema\",\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n            \"author\": \"Platform User\",\n            \"columns\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                    \"displayName\": \"Last\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0,\n                    \"dataType\": \"VARCHAR\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                    \"displayName\": \"First\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 1,\n                    \"dataType\": \"VARCHAR\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                    \"displayName\": \"Id\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 2,\n                    \"dataType\": \"INTEGER\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                    \"displayName\": \"Location\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 3,\n                    \"dataType\": \"INTEGER\"\n                }\n            ]\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/port-implementations",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"port-implementations"
 					]
 				}
@@ -379,18 +379,18 @@
 					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"portImplementation\": {\n        \"displayName\": \"EmplnameFileOutputPort\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n        \"updateSemantic\": \"REPLACE\",\n        \"type\": \"OUTPUT_PORT\",\n        \"schema\": {\n            \"displayName\": \"EmplnameFileOutputSchema\",\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n            \"author\": \"Platform User\",\n            \"columns\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                    \"displayName\": \"EMPID\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                    \"displayName\": \"FNAME\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                    \"displayName\": \"LOCID\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                    \"displayName\": \"LNAME\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                }\n            ]\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/port-implementations",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"port-implementations"
 					]
 				}
@@ -429,18 +429,18 @@
 					"raw": "{\n    \"dataFlows\": [\n        {\n            \"dataSupplier\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n        },\n        {\n            \"dataSupplier\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n        },\n        {\n            \"dataSupplier\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n        },\n        {\n            \"dataSupplier\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-flows"
 					]
 				}
@@ -479,18 +479,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n        \"displayName\": \"CopyColumnsFlow\",\n        \"name\": \"CopyColumnsFlow\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -529,18 +529,18 @@
 					"raw": "{\n    \"processHierarchy\": {\n        \"parentProcess\": \"(process)=CopyColumnsFlow\",\n        \"childProcess\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"containmentType\": \"OWNED\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/process-hierarchies",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"process-hierarchies"
 					]
 				}
@@ -579,18 +579,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -629,18 +629,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/port-implementations",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"port-implementations"
 					]
 				}
@@ -679,18 +679,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -729,18 +729,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"displayName\": \"CopyColumns\",\n        \"name\": \"CopyColumns\",\n        \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n        \"owner\": \"Platform User\",\n        \"portImplementations\": [\n            {\n                \"displayName\": \"NamesFileInputPort\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"INPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"NamesFileInputSchema\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                            \"displayName\": \"Last\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0,\n                            \"dataType\": \"VARCHAR\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                            \"displayName\": \"First\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 1,\n                            \"dataType\": \"VARCHAR\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                            \"displayName\": \"Id\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 2,\n                            \"dataType\": \"INTEGER\"\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                            \"displayName\": \"Location\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 3,\n                            \"dataType\": \"INTEGER\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"displayName\": \"EmplnameFileOutputPort\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                \"updateSemantic\": \"REPLACE\",\n                \"type\": \"OUTPUT_PORT\",\n                \"schema\": {\n                    \"displayName\": \"EmplnameFileOutputSchema\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n                    \"author\": \"Platform User\",\n                    \"columns\": [\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                            \"displayName\": \"EMPID\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                            \"displayName\": \"FNAME\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                            \"displayName\": \"LOCID\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        },\n                        {\n                            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                            \"displayName\": \"LNAME\",\n                            \"minCardinality\": 0,\n                            \"maxCardinality\": 0,\n                            \"allowsDuplicateValues\": false,\n                            \"orderedValues\": false,\n                            \"position\": 0\n                        }\n                    ]\n                }\n            }\n        ],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -779,18 +779,18 @@
 					"raw": "{\n    \"dataFlows\": [\n        {\n            \"dataSupplier\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n        },\n        {\n            \"dataSupplier\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n        },\n        {\n            \"dataSupplier\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n        },\n        {\n            \"dataSupplier\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-flows"
 					]
 				}
@@ -829,18 +829,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n        \"displayName\": \"CopyColumnsFlow\",\n        \"name\": \"CopyColumnsFlow\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"portAliases\": [\n            {\n                \"displayName\": \"ReadInputFilePortAlias\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                \"type\": \"INPUT_PORT\"\n            },\n            {\n                \"displayName\": \"WriteOutputFilePortAlias\",\n                \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                \"type\": \"OUTPUT_PORT\"\n            }\n        ],\n        \"dataFlows\": [],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -879,18 +879,18 @@
 					"raw": "{\n    \"processHierarchy\": {\n        \"parentProcess\": \"(process)=CopyColumnsFlow\",\n        \"childProcess\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"containmentType\": \"OWNED\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/process-hierarchies",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"process-hierarchies"
 					]
 				}
@@ -929,18 +929,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -979,18 +979,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -1029,18 +1029,18 @@
 					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n        \"displayName\": \"CopyColumnsFlow-high-level\",\n        \"name\": \"CopyColumnsFlow-high level\",\n        \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"collection\": {\n            \"qualifiedName\": \"(transformation-project)=Transformation_Project\",\n            \"name\": \"CopyColumnsFlow-transformation-project\"\n        },\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
@@ -1079,18 +1079,18 @@
 					"raw": "{\n    \"dataFlows\": [\n        {\n            \"dataSupplier\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::schema\",\n            \"dataConsumer\": \"(process)=CopyColumnsFlow-high-level\"\n        },\n        {\n            \"dataSupplier\": \"(process)=CopyColumnsFlow-high-level\",\n            \"dataConsumer\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=emplname.csv::schema\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-flows"
 					]
 				}
@@ -1129,18 +1129,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow-high-level\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processes"
 					]
 				}
