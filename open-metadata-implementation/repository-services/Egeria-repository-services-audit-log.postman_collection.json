@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/audit-log/severity-definitions",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/audit-log/severity-definitions",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -22,7 +22,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"audit-log",
 						"severity-definitions"
 					]
@@ -37,7 +37,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/audit-log/report",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/audit-log/report",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -47,7 +47,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"audit-log",
 						"report"
 					]
