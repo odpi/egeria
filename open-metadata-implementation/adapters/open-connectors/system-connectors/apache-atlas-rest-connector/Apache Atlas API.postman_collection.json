@@ -30,11 +30,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary?limit=-1&offset=0&sort=ASC",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary?limit=-1&offset=0&sort=ASC",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -89,11 +89,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -125,17 +125,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/{{atlasGlossary}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
 								"v2",
 								"glossary",
-								"{{atlas-glossary}}"
+								"{{atlasGlossary}}"
 							]
 						}
 					},
@@ -171,17 +171,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/{{atlasGlossary}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
 								"v2",
 								"glossary",
-								"{{atlas-glossary}}"
+								"{{atlasGlossary}}"
 							]
 						},
 						"description": "Notice that the payload must be complete - like isMergeUpdate=FALSE"
@@ -218,17 +218,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/{{atlasGlossary}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
 								"v2",
 								"glossary",
-								"{{atlas-glossary}}"
+								"{{atlasGlossary}}"
 							]
 						},
 						"description": "Notice that the payload must be complete - like isMergeUpdate=FALSE"
@@ -256,17 +256,17 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/{{atlas-glossary}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/{{atlasGlossary}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
 								"v2",
 								"glossary",
-								"{{atlas-glossary}}"
+								"{{atlasGlossary}}"
 							]
 						}
 					},
@@ -294,7 +294,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"Customer\",\n    \"shortDescription\" : \"This glossary category describes customer terms.\",\n    \"longDescription\" : \"This glossary category originates in Apache Atlas.\"\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"Customer\",\n    \"shortDescription\" : \"This glossary category describes customer terms.\",\n    \"longDescription\" : \"This glossary category originates in Apache Atlas.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -302,11 +302,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -340,7 +340,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"Customer Activity\",\n    \"shortDescription\" : \"This glossary category describes the customer tasks.\",\n    \"longDescription\" : \"This glossary category originates in Apache Atlas\",\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"Customer Activity\",\n    \"shortDescription\" : \"This glossary category describes the customer tasks.\",\n    \"longDescription\" : \"This glossary category originates in Apache Atlas\",\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,11 +348,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -394,11 +394,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_top_category}}/partial",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category/{{atlas_top_category}}/partial",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -434,7 +434,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"Open Metadata Glossary Category A-1\",\n    \"shortDescription\" : \"This glossary category has come from open metadata.\",\n    \"longDescription\" : \"This glossary category is to replicated in Apache Atlas.  This is an update\",\n    \"additionalAttributes\" : {\n        \"egeriaGUID\" : \"GUID goes here\"\n    },\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"Open Metadata Glossary Category A-1\",\n    \"shortDescription\" : \"This glossary category has come from open metadata.\",\n    \"longDescription\" : \"This glossary category is to replicated in Apache Atlas.  This is an update\",\n    \"additionalAttributes\" : {\n        \"egeriaGUID\" : \"GUID goes here\"\n    },\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -442,11 +442,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -480,11 +480,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_top_category}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category/{{atlas_top_category}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -518,11 +518,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -557,7 +557,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"Name: Open Metadata Glossary Category A-1\",\n    \"shortDescription\" : \"ShortDescription: This glossary category has come from open metadata.\",\n    \"longDescription\" : \"This glossary category is to replicated in Apache Atlas\",\n    \"qualifiedName\" : \"Glossary:Open Metadata Glossary Category A-1\",\n    \"additionalAttributes\" : {\n        \"egeriaGUID\" : \"GUID goes here\"\n    },\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"Name: Open Metadata Glossary Category A-1\",\n    \"shortDescription\" : \"ShortDescription: This glossary category has come from open metadata.\",\n    \"longDescription\" : \"This glossary category is to replicated in Apache Atlas\",\n    \"qualifiedName\" : \"Glossary:Open Metadata Glossary Category A-1\",\n    \"additionalAttributes\" : {\n        \"egeriaGUID\" : \"GUID goes here\"\n    },\n    \"parentCategory\" : {\n        \"categoryGuid\" : \"{{atlas_top_category}}\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -565,11 +565,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/category/{{atlas_sub_category}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -604,7 +604,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"custPassport\",\n    \"shortDescription\" : \"Passport number for a customer.\",\n    \"longDescription\" : \"This glossary term is owned by Apache Atlas\"\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"custPassport\",\n    \"shortDescription\" : \"Passport number for a customer.\",\n    \"longDescription\" : \"This glossary term is owned by Apache Atlas\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -612,11 +612,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/term",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -650,7 +650,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlas-glossary}}\"\n    },\n    \"name\" : \"custId\",\n    \"shortDescription\" : \"This glossary term has come from open metadata.\",\n    \"longDescription\" : \"This glossary term is to replicated in Apache Atlas\",\n    \"abbreviation\" : \"cid\",\n    \"usage\" : \"Just a test\"\n}",
+							"raw": "{\n    \"anchor\" : {\n        \"glossaryGuid\" : \"{{atlasGlossary}}\"\n    },\n    \"name\" : \"custId\",\n    \"shortDescription\" : \"This glossary term has come from open metadata.\",\n    \"longDescription\" : \"This glossary term is to replicated in Apache Atlas\",\n    \"abbreviation\" : \"cid\",\n    \"usage\" : \"Just a test\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -658,11 +658,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/term/{{atlas_term}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -705,11 +705,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}/partial",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/term/{{atlas_term}}/partial",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -745,11 +745,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/glossary/term/{{atlas_term}}",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/glossary/term/{{atlas_term}}",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -788,11 +788,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/types/typedefs",
+							"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/types/typedefs",
 							"host": [
-								"{{atlas_host}}"
+								"{{atlasHost}}"
 							],
-							"port": "{{atlas_port}}",
+							"port": "{{atlasPort}}",
 							"path": [
 								"api",
 								"atlas",
@@ -809,11 +809,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{atlas_host}}:{{atlas_port}}/api/atlas/v2/types/typedefs",
+									"raw": "{{atlasHost}}:{{atlasPort}}/api/atlas/v2/types/typedefs",
 									"host": [
-										"{{atlas_host}}"
+										"{{atlasHost}}"
 									],
-									"port": "{{atlas_port}}",
+									"port": "{{atlasPort}}",
 									"path": [
 										"api",
 										"atlas",
