@@ -157,7 +157,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -170,8 +170,8 @@
 						"users",
 						"{{user}}",
 						"database-managers",
-						"{{external_source_guid}}",
-						"{{external_source_name}}",
+						"{{externalSourceGUID}}",
+						"{{externalSourceName}}",
 						"databases"
 					]
 				},
@@ -297,7 +297,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/{{databaseGUID}}/schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/{{databaseGUID}}/schemas",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -310,8 +310,8 @@
 						"users",
 						"{{user}}",
 						"database-managers",
-						"{{external_source_guid}}",
-						"{{external_source_name}}",
+						"{{externalSourceGUID}}",
+						"{{externalSourceName}}",
 						"databases",
 						"{{databaseGUID}}",
 						"schemas"
@@ -343,7 +343,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/schemas/{{databaseSchemaGUID}}/tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/schemas/{{databaseSchemaGUID}}/tables",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -356,8 +356,8 @@
 						"users",
 						"{{user}}",
 						"database-managers",
-						"{{external_source_guid}}",
-						"{{external_source_name}}",
+						"{{externalSourceGUID}}",
+						"{{externalSourceName}}",
 						"databases",
 						"schemas",
 						"{{databaseSchemaGUID}}",
@@ -390,7 +390,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{external_source_guid}}/{{external_source_name}}/databases/schemas/tables/{{databaseTableGUID}}/columns",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/schemas/tables/{{databaseTableGUID}}/columns",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -403,8 +403,8 @@
 						"users",
 						"{{user}}",
 						"database-managers",
-						"{{external_source_guid}}",
-						"{{external_source_name}}",
+						"{{externalSourceGUID}}",
+						"{{externalSourceName}}",
 						"databases",
 						"schemas",
 						"tables",

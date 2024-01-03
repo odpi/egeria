@@ -11,13 +11,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -35,13 +35,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -67,13 +67,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/home-glossary",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/home-glossary",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -93,13 +93,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/home-glossary",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/home-glossary",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -119,13 +119,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/external-glossary-links?from=0&size=5",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/external-glossary-links?from=0&size=5",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -155,13 +155,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/?from=0&size=5",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/?from=0&size=5",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -190,13 +190,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -215,13 +215,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/categories?from=0&size=5",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/categories?from=0&size=5",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -251,13 +251,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/subcategories",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/subcategories",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -277,13 +277,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/external-glossary-links",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/external-glossary-links",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -303,13 +303,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms?from=0&size=5",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms?from=0&size=5",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -337,13 +337,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -362,13 +362,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/terms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/glossaries/{{glossary-guid}}/terms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -395,13 +395,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/terms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/categories/{{category-guid}}/terms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -428,13 +428,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -454,13 +454,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/see-also",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -480,13 +480,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/synonyms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/synonyms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -506,13 +506,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/antonyms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/antonyms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -532,13 +532,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/preferred-terms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/preferred-terms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -558,13 +558,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/replacement-terms",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/replacement-terms",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -584,13 +584,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/translations",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/translations",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -610,13 +610,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/is-a",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/is-a",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -636,13 +636,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/valid-values",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/valid-values",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -662,13 +662,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/used-in-contexts",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/used-in-contexts",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -688,13 +688,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/assigned-elements",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/assigned-elements",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -714,13 +714,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/attributes",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/attributes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -740,13 +740,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/subtypes",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/subtypes",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",
@@ -766,13 +766,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/types",
+					"raw": "{{baseURL}}/servers/{{serverId}}/open-metadata/access-services/glossary-view/users/{{userId}}/terms/{{term-guid}}/types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{serverId}}",
 						"open-metadata",
 						"access-services",
 						"glossary-view",

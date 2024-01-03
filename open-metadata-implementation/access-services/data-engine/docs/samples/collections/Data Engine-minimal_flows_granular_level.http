@@ -1,0 +1,2404 @@
+# Data Engine - minimal flows example - granular level
+
+###
+# @name 1. INSTANCE
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance
+Authorization: Basic demo demo
+
+###
+# @name 1.1 Register external tool
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration
+Content-Type: application/json
+
+{
+    "dataEngine":
+    {
+        "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform",
+        "displayName": "ExternalDataEngine",
+        "description": "Requesting to register external data engine capability",
+        "engineType": "DataEngine",
+        "engineVersion": "1",
+        "enginePatchLevel": "1",
+        "vendor": "Company",
+        "version": "1",
+        "source": "source"
+    }
+}
+
+###
+# @name 2.1 Create Database - MINIMAL
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases
+Content-Type: application/json
+
+{
+    "database": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL",
+        "displayName": "MINIMAL",
+        "databaseType": "DB2",
+        "databaseVersion": "10.05.0002",
+        "databaseInstance": "db2inst1",
+        "databaseImportedFrom": "DB2Connector 9.1",
+        "createTime": "1588160311000",
+        "modifiedTime": "1588160311000",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "schema": {
+            "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1",
+            "displayName": "DB2INST1",
+            "description": "DB2INST1"
+        },
+        "zoneMembership": [
+            "default"
+        ]
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.2 Create Relational Table - EMPLNAME
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME",
+        "displayName": "EMPLNAME",
+        "isDeprecated": false,
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 2,
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                "displayName": "SURNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 3,
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 4,
+                "dataType": "INTEGER"
+            }
+        ]
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.3 Create Relational Table - WORKPLACE
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE",
+        "displayName": "WORKPLACE",
+        "isDeprecated": false,
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INT32"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+                "displayName": "LOCNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 2,
+                "dataType": "STRING"
+            }
+        ]
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.4 Create Relational Table - EMPLDIRECTORY
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables
+Content-Type: application/json
+
+{
+    "databaseSchemaQualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1",
+    "table": {
+        "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY",
+        "displayName": "EMPLDIRECTORY",
+        "isDeprecated": false,
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID",
+                "displayName": "EMPID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 1,
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME",
+                "displayName": "EMPNAME",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 100,
+                "allowsDuplicateValues": true,
+                "position": 2,
+                "dataType": "STRING"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID",
+                "displayName": "LOCID",
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "allowsDuplicateValues": true,
+                "position": 3,
+                "dataType": "INTEGER"
+            },
+            {
+                "qualifiedName": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME",
+                "displayName": "LOCNAME",
+               "minCardinality": 1,
+                "maxCardinality": 1,
+                "isDeprecated": false,
+                "isNullable": false,
+                "minimuumLength": 0,
+                "length": 50,
+                "allowsDuplicateValues": true,
+                "position": 4,
+                "dataType": "STRING"
+            }
+        ]
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.5 Create CSVFile - names.csv
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+   "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "CSVFile",
+        "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv",
+        "displayName": "names.csv",
+        "pathName": "/data/files/minimal/names.csv",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "additionalProperties": {
+            "include_for_business_lineage": true,
+            "path": "/data/files/minimal",
+            "store_type": "Local"
+        },
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id",
+                "displayName": "Id",
+                "additionalProperties": {
+                    "odbc_type": "BIGINT"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": false,
+                "position": 1,
+                "minCardinality": 1,
+                "maxCardinality": 1
+            },
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First",
+                "displayName": "First",
+                "additionalProperties": {
+                    "odbc_type": "VARCHAR"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": true,
+                "position": 2,
+                "minCardinality": 0,
+                "maxCardinality": 1
+            },
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last",
+                "displayName": "Last",
+                "additionalProperties": {
+                    "odbc_type": "VARCHAR"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": true,
+                "position": 3,
+                "minCardinality": 0,
+                "maxCardinality": 1
+            },
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location",
+                "displayName": "Location",
+                "additionalProperties": {
+                    "odbc_type": "VARCHAR"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": false,
+                "position": 4,
+                "minCardinality": 1,
+                "maxCardinality": 1
+            }
+        ]
+    }
+}
+
+###
+# @name 2.6 Create DataFile - locations.csv
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "file": {
+        "fileType": "DataFile",
+        "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv",
+        "displayName": "locations.csv",
+        "pathName": "/data/files/minimal/locations.csv",
+        "protocol" : "ftp",
+        "networkAddress" : "localhost",
+        "additionalProperties": {
+            "include_for_business_lineage": true,
+            "path": "/data/files/minimal",
+            "store_type": "Local"
+        },
+        "columns": [
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Id",
+                "displayName": "Id",
+                "additionalProperties": {
+                    "odbc_type": "BIGINT"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": false,
+                "position": 1,
+                "minCardinality": 1,
+                "maxCardinality": 1
+            },
+            {
+                "qualifiedName": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Name",
+                "displayName": "Name",
+                "additionalProperties": {
+                    "odbc_type": "VARCHAR"
+                },
+                "allowDuplicates": true,
+                "deprecated": false,
+                "nullable": true,
+                "position": 2,
+                "minCardinality": 0,
+                "maxCardinality": 1
+            }
+        ]
+    }
+}
+
+###
+# @name 3.1 Create Process - flow1 - File_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input",
+        "displayName": "File_Input",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "File_Input",
+        "portImplementations": [
+            {
+                "displayName": "names",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(schema)=names",
+                    "displayName": "names",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First",
+                            "displayName": "First",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT64",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last",
+                            "displayName": "Last",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location",
+                            "displayName": "Location",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "INT64",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "read_file",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(schema)=read_file",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vdn.1e6d1as.4aghtb.0vb6asntm028oa7jihf64",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last",
+                            "displayName": "Last",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location",
+                            "displayName": "Location",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First",
+                            "displayName": "First",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.2 Add Data Flows for FileInput process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last"
+        },
+        {
+            "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id"
+        },
+        {
+            "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location"
+        },
+        {
+            "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First"
+        },
+        {
+            "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.3 Create Process flow1 - Rename
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename",
+        "displayName": "Rename",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Rename",
+        "portImplementations": [
+            {
+                "displayName": "read_file",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(schema)=read_file",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vdn.1e6d1as.4aghtb.0vb6asntm028oa7jihf64",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last",
+                            "displayName": "Last",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location",
+                            "displayName": "Location",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First",
+                            "displayName": "First",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(schema)=write_table",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vdn.1e6ihfp.h8pvuk.ncql977llcqmms4u7dfq2",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.4 Add Data Flows for Rename process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.5 Create Process - flow1 - Database_Output
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output",
+        "displayName": "Database_Output",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Database_Output",
+        "portImplementations": [
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(schema)=write_table",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vdn.1e6ihfp.h8pvuk.ncql977llcqmms4u7dfq2",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "EMPLNAME",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(schema)=EMPLNAME",
+                    "displayName": "EMPLNAME",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.6 Add Data Flows for Database_Output process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+       "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.7 Create Process  flow1
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1",
+        "displayName": "flow1",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "flow1",
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 3.8 Add Data Flows for flow1 process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=FNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=SURNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=write_table::(ds_stage_column)=EMPID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Last"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=First"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Location"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(link)=read_file::(ds_stage_column)=Id"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.1 Create Process - flow2 - File_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input",
+        "displayName": "File_Input",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "File_Input",
+        "portImplementations": [
+            {
+                "displayName": "locations",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(schema)=locations",
+                    "displayName": "locations",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT64",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Name",
+                            "displayName": "Name",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "read_file",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(schema)=read_file",
+                    "displayName": "read_file",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name",
+                            "displayName": "Name",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.2 Add Data Flows for File_Input process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Id",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Name",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name"
+            },
+            {
+                "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Id",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Id"
+            },
+            {
+                "dataSupplier": "(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Name",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=minimal::(data_file)=locations.csv::(data_file_record)=locations::(data_file_field)=Name"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.3 Create Process - flow2 - Rename
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename",
+        "displayName": "Rename",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Rename",
+        "portImplementations": [
+            {
+                "displayName": "read_file",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(schema)=read_file",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vgc.0908b7h.j3alhs.djmvq3iv4udlnbepisf2s",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id",
+                            "displayName": "Id",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name",
+                            "displayName": "Name",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(schema)=write_table",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vgc.09fqc55.rf112m.dcfg8ao8f4qvk07ang11r",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.4 Add Data Flows for Rename process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.5 Create Process - flow2 - Database_Output
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output",
+        "displayName": "Database_Output",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Database_Output",
+        "portImplementations": [
+            {
+                "displayName": "WORKPLACE",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(schema)=WORKPLACE",
+                    "displayName": "WORKPLACE",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(schema)=write_table",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vgc.09fqc55.rf112m.dcfg8ao8f4qvk07ang11r",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.6 Add Data Flows for Database_Output process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+     "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.7 Create Process flow2
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2",
+        "displayName": "flow2",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "flow2",
+        "updateSemantic": "REPLACE",
+        "referenceData": false
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 4.8 Add Data Flows for flow2 process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Name"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=write_table::(ds_stage_column)=LOCNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(link)=read_file::(ds_stage_column)=Id"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.1 Create Process - flow3 - WORKPLACE_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input",
+        "displayName": "WORKPLACE_Input",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "WORKPLACE_Input",
+        "portImplementations": [
+            {
+                "displayName": "WORKPLACE",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(schema)=WORKPLACE",
+                    "displayName": "WORKPLACE",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "read_WORKPLACE",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(schema)=read_WORKPLACE",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vj6.2lng9c6.i79u9i.eqcloqdmdecg37vlqplas",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.2 Add Data Flows for WORKPLACE_Input process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID"
+        },
+        {
+            "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.3 Create Process - flow3 - EMPLNAME_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input",
+        "displayName": "EMPLNAME_Input",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "EMPLNAME_Input",
+        "portImplementations": [
+            {
+                "displayName": "EMPLNAME",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(schema)=EMPLNAME",
+                    "displayName": "EMPLNAME",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "read_EMPLNAME",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(schema)=read_EMPLNAME",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vj6.2m7u5no.5h7v0v.jdtvk6fmspp6lg8sqflb9",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.4 Add Data Flows for EMPLNAME_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+   "dataFlows": [
+            {
+                "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID"
+            },
+            {
+                "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME"
+            },
+            {
+                "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.5 Create Process - flow3 - Join
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join",
+        "displayName": "Join",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Join",
+        "portImplementations": [
+            {
+                "displayName": "read_WORKPLACE",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(schema)=read_WORKPLACE",
+                    "displayName": "read_WORKPLACE",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "read_EMPLNAME",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(schema)=read_EMPLNAME",
+                    "displayName": "read_EMPLNAME",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "join_output",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(schema)=join_output",
+                    "displayName": "join_output",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID",
+                            "displayName": "leftRec_LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.6 Add Data Flows for Join process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+   "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.7 Create Process - flow3 - Concatenate
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate",
+        "displayName": "Concatenate",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "Concatenate",
+        "portImplementations": [
+            {
+                "displayName": "join_output",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(schema)=join_output",
+                    "displayName": "join_output",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID",
+                            "displayName": "leftRec_LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME",
+                            "displayName": "FNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME",
+                            "displayName": "SURNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "INTEGER"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(schema)=write_table",
+                    "displayName": "c2e76d84.78bf4d29.0v9nb5vls.4li948p.8eps20.gd5jtq3ed9ada64vhj9a5",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME",
+                            "displayName": "EMPNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.8 Add Data Flows for Concatenate process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+   "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.9 Create Process - flow3 - EMPLDIRECTORY
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY",
+        "displayName": "EMPLDIRECTORY",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "EMPLDIRECTORY",
+        "portImplementations": [
+            {
+                "displayName": "write_table",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(schema)=write_table",
+                    "displayName": "wirte_table",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INTEGER"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME",
+                            "displayName": "EMPNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "VARCHAR"
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "EMPLDIRECTORY",
+                "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(schema)=EMPLDIRECTORY",
+                    "displayName": "EMPLDIRECTORY",
+                    "author": "Egeria Open Metadata",
+                    "columns": [
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID",
+                            "displayName": "EMPID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 1,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME",
+                            "displayName": "EMPNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 2,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID",
+                            "displayName": "LOCID",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 3,
+                            "dataType": "INT32",
+                            "defaultValue": ""
+                        },
+                        {
+                            "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME",
+                            "displayName": "LOCNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 4,
+                            "dataType": "STRING",
+                            "defaultValue": ""
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.10 Add Data Flows for EMPLDIRECTORY process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+   "dataFlows": [
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID",
+                "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID"
+            },
+            {
+                "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME",
+                "dataConsumer": "(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME"
+            }
+        ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.11 Create Process flow3
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "displayName": "flow3",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "flow3",
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 5.12 Add Data Flows for flow3
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=EMPID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=EMPID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=leftRec_LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=SURNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_EMPLNAME::(ds_stage_column)=FNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=FNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=EMPNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=SURNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=read_WORKPLACE::(ds_stage_column)=LOCNAME"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=write_table::(ds_stage_column)=LOCID"
+        },
+        {
+            "dataSupplier": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME",
+            "dataConsumer": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(link)=join_output::(ds_stage_column)=LOCNAME"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.1 Add Process Hirerachy flow1 - FileInput
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=File_Input",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.2 Add Process Hirerachy flow1 - Rename
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Rename",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.3 Add Process Hirerachy flow1 - Database_Output
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow1::(stage)=Database_Output",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.4 Add Process Hirerachy flow2 - File_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=File_Input",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.5 Add Process Hirerachy flow2 - Rename
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Rename",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.6 Add Process Hirerachy flow2 - Database_Output
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow2::(stage)=Database_Output",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.7 Add Process Hirerachy flow3 - WORKPLACE_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=WORKPLACE_Input",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.8 Add Process Hirerachy flow3 - EMPLNAME_Input
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLNAME_Input",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.09 Add Process Hirerachy flow3 - Join
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Join",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.10 Add Process Hirerachy flow3 - Concatenate
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=Concatenate",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 6.11 Add Process Hirerachy flow3 - EMPLDIRECTORY
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/process-hierarchies
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "processHierarchy": {
+        "parentProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3",
+        "childProcess": "_(host)=HOST::(transformation_project)=minimal::(dsjob)=flow3::(stage)=EMPLDIRECTORY",
+        "containmentType": "OWNED"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}

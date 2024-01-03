@@ -1,0 +1,163 @@
+# Sample Configurations
+
+###
+# group: Set up the plain text configuration store
+# @name Set Configuration Document Store Connection
+# Overrides the default connector that stores the configuration documents in a plain text file.
+# The request body is a Connection object that is used to create and configure the connector.
+# This call is preconfigured to switch the store to using the encrypted configuration document store.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+Content-Type: application/json
+
+{
+  "class": "Connection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider"
+  },
+  "endpoint": {
+    "class": "Endpoint",
+    "address": "data/servers/{0}/config/{0}.config"
+  }
+}
+
+###
+# group: Configure simple-metadata-store
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-user-id?
+    id=simplemdsnpa
+
+###
+# group: Configure simple-metadata-store
+# @name Enable the in-memory repository
+# Set up the local reposiotry to use the in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/local-repository/mode/in-memory-repository
+
+###
+# group: Configure simple-metadata-store
+# @name Enable the Open Metadata Access Services (OMASs)
+# Turn on a specific registered Open Metadata Access Services (OMAS).
+# Change the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping "OMAS", change to lower-case and link two words with a dash "-".  For example, Asset Owner OMAS, would have a url name of asset-owner.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/access-services/no-topics
+
+###
+# group: Configure simple-metadata-store
+# @name Get simple-metadata-store's configuration document
+# Retrieve the configuration document for the named server.
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/configuration
+
+###
+# group: Configure active-metadata-store - with kafka
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-user-id?
+    id=activemdsnpa
+
+###
+# group: Configure active-metadata-store - with kafka
+# @name Set up event bus
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure active-metadata-store - with kafka
+# @name Enable the in-memory repository
+# Set up the local reposiotry to use the in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/in-memory-repository
+
+###
+# group: Configure active-metadata-store - with kafka
+# @name Enable the Open Metadata Access Services (OMASs) with topics
+# Turn on a specific registered Open Metadata Access Services (OMAS).
+# Change the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping "OMAS", change to lower-case and link two words with a dash "-".  For example, Asset Owner OMAS, would have a url name of asset-owner.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/access-services
+
+###
+# group: Configure active-metadata-store - with kafka
+# @name Get active-metadata-store's configuration document
+# Retrieve the configuration document for the named server.
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/configuration
+
+###
+# group: Configure integration-daemon server
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-user-id?
+    id=intgdaemonnpa
+
+###
+# group: Configure integration-daemon server
+# @name Configure the Files Integrator OMIS
+# Add details of the metadata server to call and the connectors to run.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-services/files-integrator
+Content-Type: application/json
+
+{
+    "class": "IntegrationServiceRequestBody",
+    "omagserverPlatformRootURL": "{{baseURL}}",
+    "omagserverName": "active-metadata-store",
+    "integrationConnectorConfigs": [
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "FilesCataloguer",
+            "connectorUserId": "filecatgnpa",
+            "connection": {
+                "class": "Connection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider"
+                },
+                "endpoint": {
+                    "class": "Endpoint",
+                    "address": "../opt/sample-data/data-files"
+                }
+            },
+            "metadataSourceQualifiedName": "FileSystem:sample-files",
+            "refreshTimeInterval": "15",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "FROM_THIRD_PARTY"
+        }
+    ]
+}
+
+###
+# group: Configure integration-daemon server
+# @name Get integration-daemon's configuration document
+# Retrieve the configuration document for the named server.
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/configuration
+
+###
+# group: Start Servers
+# @name Start simple-metadata-store server - using stored configuration
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/simple-metadata-store/instance
+
+###
+# group: Start Servers
+# @name Start active-metadata-store server - using stored configuration
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/active-metadata-store/instance
+
+###
+# group: Start Servers
+# @name Start integration-daemon server - using stored configuration
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/integration-daemon/instance
+
+###
+# group: Start Servers
+# @name Get integration-daemon status
+# Retrieves the status of the connectors running in the Integration Daemon
+GET {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/{{user}}/status

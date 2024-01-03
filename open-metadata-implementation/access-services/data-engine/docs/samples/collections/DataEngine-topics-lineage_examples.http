@@ -1,0 +1,370 @@
+# Data Engine - Topics lineage examples
+
+###
+# @name 1.INSTANCE
+POST {{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance
+Authorization: Basic demo demo
+
+###
+# @name 1.1 Register external tool
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration
+Content-Type: application/json
+
+{
+    "dataEngine":
+    {
+        "qualifiedName": "(organization)=Company::(project)=ExternalDataPlatform",
+        "displayName": "ExternalDataEngine",
+        "description": "Requesting to register external data engine capability",
+        "engineType": "DataEngine",
+        "engineVersion": "1",
+        "enginePatchLevel": "1",
+        "vendor": "Company",
+        "version": "1",
+        "source": "source"
+    }
+}
+
+###
+# @name 1.2  Create first topic high level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=first-topic-high-level",
+        "displayName": "first-topic-high-level",
+        "topicType": "topic-type",
+        "description": "topic description",
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "eventTypes": [
+            {
+                "qualifiedName": "(topic)=first-topic-high-level::(eventType)=first-event-high-level",
+                "displayName": "first-event-high-level",
+                "author": "author",
+                "usage": "usage",
+                "encodingStandard": "encoding",
+                "versionNumber": "versionNumber",
+                "isDeprecated": false,
+                "description": "event type description",
+                "eventSchemaAttributes": [
+                    {
+                        "qualifiedName": "(topic)=first-topic-high-level::(eventType)=first-event-high-level::(eventAttribute)=first-event-attribute",
+                        "displayName": "first-event-attribute",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 1,
+                        "dataType": "INTEGER"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+###
+# @name 1.3  Create second topic high level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=second-topic-high-level",
+        "displayName": "second-topic-high-level",
+        "topicType": "topic-type",
+        "description": "topic description",
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+}
+
+###
+# @name 1.4  Create first topic low level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=first-topic-low-level",
+        "displayName": "first-topic-low-level",
+        "topicType": "topic-type",
+        "description": "topic description",
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "eventTypes": [
+            {
+                "qualifiedName": "(topic)=first-topic-low-level::(eventType)=first-event-low-level",
+                "displayName": "first-event-low-level",
+                "author": "author",
+                "usage": "usage",
+                "encodingStandard": "encoding",
+                "versionNumber": "versionNumber",
+                "isDeprecated": false,
+                "description": "event type description",
+                "eventSchemaAttributes": [
+                    {
+                        "qualifiedName": "(topic)=first-topic-low-level::(eventType)=first-event-low-level::(eventAttribute)=first-event-attribute",
+                        "displayName": "first-event-attribute",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 1,
+                        "dataType": "INTEGER"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+###
+# @name 1.5  Create second topic low level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics
+Content-Type: application/json
+
+{
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform",
+    "topic": {
+        "qualifiedName": "(topic)=second-topic-low-level",
+        "displayName": "second-topic-low-level",
+        "topicType": "topic-type",
+        "description": "topic description",
+        "otherOriginValues": {
+            "prop": "oherOrigin"
+        },
+        "owner": "owner",
+        "ownerType": "USER_ID",
+        "zoneMembership": [
+            "ZONE_1"
+        ],
+        "additionalProperties": {
+            "key1": "value1",
+            "key2": "value2"
+        },
+        "eventTypes": [
+            {
+                "qualifiedName": "(topic)=second-topic-low-level::(eventType)=second-event-low-level",
+                "displayName": "second-event-low-level",
+                "author": "author",
+                "usage": "usage",
+                "encodingStandard": "encoding",
+                "versionNumber": "versionNumber",
+                "isDeprecated": false,
+                "description": "event type description",
+                "eventSchemaAttributes": [
+                    {
+                        "qualifiedName": "(topic)=second-topic-low-level::(eventType)=second-event-low-level::(eventAttribute)=second-event-attribute",
+                        "displayName": "second-event-attribute",
+                        "minCardinality": 1,
+                        "maxCardinality": 1,
+                        "isDeprecated": false,
+                        "isNullable": false,
+                        "allowsDuplicateValues": true,
+                        "position": 1,
+                        "dataType": "INTEGER"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+###
+# @name 2.1 Create high level process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Content-Type: application/json
+
+{
+    "process": {
+        "headerVersion": 0,
+        "qualifiedName": "(process)=high-level-process",
+        "displayName": "high-level-process",
+        "description": "",
+        "owner": "Egeria Open Metadata",
+        "name": "flow1"
+        },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+
+###
+# @name 2.2 Add data flows high level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "(topic)=first-topic-high-level",
+            "dataConsumer": "(process)=high-level-process"
+        },
+        {
+            "dataSupplier": "(process)=high-level-process",
+            "dataConsumer": "(topic)=second-topic-high-level"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+
+###
+# @name 2.3 Create low level process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process",
+        "displayName": "low-level-process",
+        "name": "low-level-process",
+        "description": "low-level-process is (sub)process that describes the low level implementation activities performed by a platform or tool.",
+        "owner": "Platform User",
+        "portImplementations": [
+            {
+                "displayName": "InputPort",
+                "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort",
+                "updateSemantic": "REPLACE",
+                "type": "INPUT_PORT",
+                "schema": {
+                    "displayName": "InputPortSchema",
+                    "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema",
+                    "author": "Platform User",
+                    "columns": [
+                        {
+                            "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute",
+                            "displayName": "Last",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0,
+                            "dataType": "VARCHAR"
+                        }
+                    ]
+                }
+            },
+            {
+                "displayName": "OutputPort",
+                "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort",
+                "updateSemantic": "REPLACE",
+                "type": "OUTPUT_PORT",
+                "schema": {
+                    "displayName": "OutputPortSchema",
+                    "qualifiedName": "(process)=CopySchemaAttributesFlow::(process)=CopySchemaAttributes::(port)=OutputPortSchema",
+                    "author": "Platform User",
+                    "columns": [
+                        {
+                            "qualifiedName": "(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute",
+                            "displayName": "LNAME",
+                            "minCardinality": 0,
+                            "maxCardinality": 0,
+                            "allowsDuplicateValues": false,
+                            "orderedValues": false,
+                            "position": 0
+                        }
+                    ]
+                }
+            }
+        ],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.4 Add data flows low level
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-flows
+Content-Type: application/json
+
+{
+    "dataFlows": [
+        {
+            "dataSupplier": "(topic)=first-topic-low-level::(eventType)=first-event-low-level::(eventAttribute)=first-event-attribute",
+            "dataConsumer": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute"
+        },
+        {
+            "dataSupplier": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute",
+            "dataConsumer": "(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute"
+        },
+        {
+            "dataSupplier": "(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute",
+            "dataConsumer": "(topic)=second-topic-low-level::(eventType)=second-event-low-level::(eventAttribute)=second-event-attribute"
+        }
+    ],
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
+}
+
+###
+# @name 2.5 Create low level parent process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processes
+Authorization: Basic demo demo
+Content-Type: application/json
+
+{
+    "process": {
+        "qualifiedName": "(process)=low-level-parent-process",
+        "displayName": "low-level-parent-process",
+        "name": "low-level-parent-process",
+        "description": "low-level-process describes high level process input and output and mappings between (sub)processes (if any).",
+        "owner": "Platform User",
+        "portAliases": [
+            {
+                "displayName": "ReadInputPortAlias",
+                "qualifiedName": "(process)=low-level-parent-process::(port)=ReadInputPortAlias",
+                "updateSemantic": "REPLACE",
+                "delegatesTo": "(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort",
+                "type": "INPUT_PORT"
+            },
+            {
+                "displayName": "WriteOutputPortAlias",
+                "qualifiedName": "(process)=low-level-process::(port)=WriteOutpuPortAlias",
+                "updateSemantic": "REPLACE",
+                "delegatesTo": "(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort",
+                "type": "OUTPUT_PORT"
+            }
+        ],
+        "dataFlows": [],
+        "updateSemantic": "REPLACE"
+    },
+    "externalSourceName": "(organization)=ING::(project)=ExternalDataPlatform"
+}

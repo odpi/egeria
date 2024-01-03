@@ -22,7 +22,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohort-descriptions"
 					]
@@ -37,7 +37,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/local-registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/local-registration",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -47,7 +47,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"local-registration"
 					]
@@ -62,7 +62,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/local-registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/local-registration",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -72,7 +72,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohorts",
 						"{{cohort}}",
@@ -89,7 +89,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/remote-members",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/remote-members",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -99,7 +99,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohorts",
 						"{{cohort}}",
@@ -116,7 +116,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/connect",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/connect",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -126,7 +126,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohorts",
 						"{{cohort}}",
@@ -142,7 +142,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/disconnect",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/disconnect",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -152,7 +152,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohorts",
 						"{{cohort}}",
@@ -168,7 +168,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-highway/cohorts/{{cohort}}/unregister",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/unregister",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -178,7 +178,7 @@
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-highway",
 						"cohorts",
 						"{{cohort}}",

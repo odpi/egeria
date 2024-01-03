@@ -1824,7 +1824,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/note-logs/{{glossaryTerm_RevisionLogGUID}}/notes/retrieve?startFrom=0&pageSize=0",
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/note-logs/{{glossaryTermRevisionLogGUID}}/notes/retrieve?startFrom=0&pageSize=0",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -1837,7 +1837,7 @@
 								"users",
 								"{{user}}",
 								"note-logs",
-								"{{glossaryTerm_RevisionLogGUID}}",
+								"{{glossaryTermRevisionLogGUID}}",
 								"notes",
 								"retrieve"
 							],

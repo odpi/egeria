@@ -1,0 +1,34 @@
+# Egeria-digital-architecture-omas
+
+###
+# @name Create a valid value set
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/digital-architecture/users/{{user}}/valid-values/sets
+Content-Type: application/json
+
+{
+	"class" : "ValidValueProperties",
+	"qualifiedName" : "Coco.WorkLocationCodes",
+    "displayName" : "Work Location Codes"
+}
+
+###
+# @name Create a valid value definition
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/digital-architecture/users/{{user}}/valid-values/sets/{{validValueSetGUID}}
+Content-Type: application/json
+
+{
+	"class" : "ValidValueProperties",
+	"qualifiedName" : "Coco.WorkLocationCodes.LondonLocation",
+    "displayName" : "London Location Code"
+}
+
+###
+# @name Update a valid value definition or set
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/digital-architecture/users/{{user}}/valid-values/{{validValueGUID}}/update
+Content-Type: application/json
+
+{
+	"class" : "ValidValueProperties",
+	"qualifiedName" : "Coco.WorkLocationCodes.AmsterdamLocation",
+    "displayName" : "London Location Code"
+}

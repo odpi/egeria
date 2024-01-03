@@ -31,17 +31,17 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"instance"
 					]
 				}
@@ -70,18 +70,18 @@
 					"raw": "{\n    \"dataEngine\":\n    {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n        \"displayName\": \"ExternalDataEngine\",\n        \"description\": \"Requesting to register external data engine capability\",\n        \"engineType\": \"DataEngine\",\n        \"engineVersion\": \"1\",\n        \"enginePatchLevel\": \"1\",\n        \"vendor\": \"Company\",\n        \"version\": \"1\",\n        \"source\": \"source\"\n    }\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/registration",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"registration"
 					]
 				}
@@ -105,18 +105,18 @@
 					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"protocol\": \"ftp\",\n        \"networkAddress\": \"localhost\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\": {\n            \"prop\": \"oherOrigin\"\n        },\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props\",\n            \"displayName\": \"DB2INST1-all-props\",\n            \"description\": \"DB2INST1 database schema\",\n            \"owner\": \"Administrator IIS\",\n            \"ownerType\": \"USER_ID\",\n            \"zoneMembership\": [\n                \"default\"\n            ],\n            \"otherOriginValues\": {\n                \"prop\": \"otherOrigin\"\n            }\n        },\n        \"tables\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME\",\n                \"displayName\": \"EMPLNAME\",\n                \"description\": \"EMPLNAME desc\",\n                \"isDeprecated\": false,\n                \"aliases\": [\n                    \"EMPLNAME2\"\n                ],\n                \"columns\": [\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID\",\n                        \"displayName\": \"EMPID\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 1,\n                        \"dataType\": \"INTEGER\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"ID\"\n                        ],\n                        \"sortOrder\": \"ASCENDING\",\n                        \"description\": \"id column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"1\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMA-all-propsL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME\",\n                        \"displayName\": \"FNAME\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"minimuumLength\": 0,\n                        \"length\": 50,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 2,\n                        \"dataType\": \"STRING\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"First\"\n                        ],\n                        \"sortOrder\": \"UNSORTED\",\n                        \"description\": \"first column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"name\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME\",\n                        \"displayName\": \"SURNAME\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"minimuumLength\": 0,\n                        \"length\": 50,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 3,\n                        \"dataType\": \"STRING\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"Last\"\n                        ],\n                        \"sortOrder\": \"UNSORTED\",\n                        \"description\": \"surname column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"name\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID\",\n                        \"displayName\": \"LOCID\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 4,\n                        \"dataType\": \"INTEGER\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"Location\"\n                        ],\n                        \"sortOrder\": \"ASCENDING\",\n                        \"description\": \"locid column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"1\",\n                        \"formula\": \"formula\"\n                    }\n                ]\n            }\n        ]\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -140,18 +140,18 @@
 					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\",\n        \"networkAddress\" : \"localhost\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -175,18 +175,18 @@
 					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\":{\n        \t\"prop\":\"oherOrigin\"\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -210,18 +210,18 @@
 					"raw": "{\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1-basic\",\n        \"displayName\": \"DB2INST1-basic\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"database-schemas"
 					]
 				}
@@ -245,18 +245,18 @@
 					"raw": "{\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props\",\n        \"displayName\": \"DB2INST1-all-props\",\n        \"description\": \"DB2INST1 database schema\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\":{\n        \t\"prop\":\"otherOrigin\"\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"incomplete\": false\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"database-schemas"
 					]
 				}
@@ -283,18 +283,18 @@
 					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1-basic\",\n    \"table\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic\",\n        \"displayName\": \"EMPLNAME-basic\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"dataType\": \"STRING\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                  \"dataType\": \"STRING\"\n            }\n        ]\n    },\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"relational-tables"
 					]
 				}
@@ -318,18 +318,18 @@
 					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props\",\n    \"table\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME\",\n        \"displayName\": \"EMPLNAME\",\n        \"description\": \"EMPLNAME desc\",\n        \"isDeprecated\": false,\n        \"aliases\": [\n            \"EMPLNAME2\"\n        ],\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"ID\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"id column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMA-all-propsL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 2,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"First\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"first column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 3,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Last\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"surname column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 4,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Location\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"locid column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            }\n        ]\n    },\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n   \"incomplete\": false\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"relational-tables"
 					]
 				}
@@ -351,18 +351,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -384,18 +384,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -417,18 +417,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -450,18 +450,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -485,18 +485,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic::(database_schema)=DB2INST1::(database_table)=EMPLNAME-basic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"deleteSemantic\":\"SOFT\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"relational-tables"
 					]
 				}
@@ -520,18 +520,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL::(database_schema)=DB2INST1-basic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"database-schemas"
 					]
 				}
@@ -555,18 +555,18 @@
 					"raw": "{\n    \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -588,18 +588,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -621,18 +621,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -654,18 +654,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/folders",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"folders"
 					]
 				}
@@ -687,18 +687,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/folders",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"folders"
 					]
 				}
@@ -720,18 +720,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/folders",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/folders",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"folders"
 					]
 				}
@@ -753,18 +753,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/connections",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/connections",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"connections"
 					]
 				}
@@ -786,18 +786,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/endpoints",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/endpoints",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"endpoints"
 					]
 				}
@@ -821,18 +821,18 @@
 					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n        \"displayName\": \"MINIMAL-basic\",\n        \"networkAddress\": \"localhost\",\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -856,18 +856,18 @@
 					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\":{\n        \t\"prop\":\"oherOrigin\"\n        },\n         \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/databases",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"databases"
 					]
 				}
@@ -891,18 +891,18 @@
 					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n        \"displayName\": \"DB2INST1-basic-incomplete\",\n        \"incomplete\": true\n    },\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"database-schemas"
 					]
 				}
@@ -926,18 +926,18 @@
 					"raw": "{\n    \"databaseSchema\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props--basic-incomplete\",\n        \"displayName\": \"DB2INST1-all-props-incomplete\",\n        \"description\": \"DB2INST1 database schema incomplete description\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\": {\n            \"prop\": \"otherOrigin\"\n        },\n        \"incomplete\": true\n    },\n    \"databaseQualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/database-schemas",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/database-schemas",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"database-schemas"
 					]
 				}
@@ -964,18 +964,18 @@
 					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete\",\n        \"displayName\": \"EMPLNAME-basic\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"dataType\": \"STRING\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"dataType\": \"INTEGER\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-basic-incomplete::(database_table)=EMPLNAME-basic-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"dataType\": \"STRING\"\n            }\n        ],\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"relational-tables"
 					]
 				}
@@ -999,18 +999,18 @@
 					"raw": "{\n    \"databaseSchemaQualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete\",\n    \"table\": {\n        \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete\",\n        \"displayName\": \"EMPLNAME-all-props-incomplete\",\n        \"description\": \"EMPLNAME-all-props-incomplete description\",\n        \"isDeprecated\": false,\n        \"aliases\": [\n            \"EMPLNAME2\"\n        ],\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"ID\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"id column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 2,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"First\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"first column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props-incomplete::(database_schema)=DB2INST1::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=SURNAME\",\n                \"displayName\": \"SURNAME\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"minimuumLength\": 0,\n                \"length\": 50,\n                \"allowsDuplicateValues\": true,\n                \"position\": 3,\n                \"dataType\": \"STRING\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Last\"\n                ],\n                \"sortOrder\": \"UNSORTED\",\n                \"description\": \"surname column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"name\",\n                \"formula\": \"formula\"\n            },\n            {\n                \"qualifiedName\": \"(database_schema)=DB2INST1-all-props-incomplete::(database_table)=EMPLNAME-all-props-incomplete::(database_column)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 4,\n                \"dataType\": \"INTEGER\",\n                \"orderedValues\": true,\n                \"defaultValueOverride\": \"defaultOverride\",\n                \"defaltValue\": \"defaultValue\",\n                \"nativeClass\": \"nativeClass\",\n                \"aliases\": [\n                    \"Location\"\n                ],\n                \"sortOrder\": \"ASCENDING\",\n                \"description\": \"locid column\",\n                \"significantDigits\": 0,\n                \"precision\": 0,\n                \"fixedValue\": \"1\",\n                \"formula\": \"formula\"\n            }\n        ],\n        \"incomplete\": true\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/relational-tables",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/relational-tables",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"relational-tables"
 					]
 				}
@@ -1032,18 +1032,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -1065,18 +1065,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -1098,18 +1098,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -1131,18 +1131,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/data-files",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"data-files"
 					]
 				}
@@ -1164,18 +1164,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/find",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/find",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"find"
 					]
 				}
@@ -1197,18 +1197,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/find",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/find",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"find"
 					]
 				}
@@ -1230,18 +1230,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -1263,18 +1263,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -1296,18 +1296,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"event-types"
 					]
 				}
@@ -1329,18 +1329,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"event-types"
 					]
 				}
@@ -1362,18 +1362,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/topics",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"topics"
 					]
 				}
@@ -1395,18 +1395,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/event-types",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"event-types"
 					]
 				}
@@ -1455,18 +1455,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processing-state",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processing-state",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processing-state"
 					]
 				}
@@ -1506,18 +1506,18 @@
 					}
 				],
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processing-state?dataEngine=(organization)=Company::(project)=ExternalDataPlatform",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/processing-state?dataEngine=(organization)=Company::(project)=ExternalDataPlatform",
 					"host": [
-						"{{base-url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"servers",
-						"{{server-id}}",
+						"{{server}}",
 						"open-metadata",
 						"access-services",
 						"data-engine",
 						"users",
-						"{{user-id}}",
+						"{{user}}",
 						"processing-state"
 					],
 					"query": [

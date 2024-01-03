@@ -1,0 +1,77 @@
+# Egeria-integration-daemon-services
+
+###
+# group: Integration Services
+# @name Validate Connector with Files Integrator OMIS
+# Checks that the supplied connector provider class name produces a connector that will run in the integration service.
+# To check another connector replace `org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider` with the qualified class name of the connector's provider.
+GET {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider
+
+###
+# group: Integration Services
+# @name Retrieve the connector type for a connector
+# Restarts the requested Integration Service
+GET {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-services/files-integrator/users/{{user}}/validate-connector/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider
+
+###
+# group: Integration Services
+# @name Refresh All integration Connectors
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/refresh
+
+###
+# group: Integration Services
+# @name Refresh specific integration service
+# Restarts the requested Integration Service
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/refresh
+
+###
+# group: Integration Services
+# @name Restart specific integration service
+# Restarts the requested Integration Service
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-services/files-integrator/restart
+
+###
+# group: Integration Connectors
+# @name Refresh All integration Connectors
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
+
+###
+# group: Integration Connectors
+# @name Refresh Integration Connector
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "connectorName goes here"
+}
+
+###
+# group: Integration Connectors
+# @name Restart All integration Connectors
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+
+###
+# group: Integration Connectors
+# @name Restart Integration Connector
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "connectorName goes here"
+}
+
+###
+# @name Get Integration Daemon Status
+# Retrieves the status of the connectors running in the Integration Daemon
+GET {{baseURL}}/servers/{{intDaemon}}/open-metadata/integration-daemon/users/{{user}}/status
+
+###
+# @name Validate Connector
+GET {{baseURL}}/servers/{{intDaemon}}/open-metadata/{{serviceURLName}}/users/{{user}}/validate-connector/{{connectorProfileClassName}}
