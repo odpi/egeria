@@ -36,7 +36,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.Governance
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileExtension;
@@ -208,7 +209,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (ServerTypeClassification serverTypeClassification : ServerTypeClassification.values())
         {
             String guid = this.addDeployedImplementationType(serverTypeClassification.getServerTypeName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVER_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
                                                              serverTypeClassification.getServerTypeDescription(),
                                                              serverTypeClassification.getServerTypeWiki());
 
@@ -221,7 +222,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (CommonServicesDescription commonServicesDescription : CommonServicesDescription.values())
         {
             String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              commonServicesDescription.getServiceDescription(),
                                                              commonServicesDescription.getServiceWiki());
 
@@ -231,7 +232,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (GovernanceServicesDescription governanceServicesDescription : GovernanceServicesDescription.values())
         {
             String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              governanceServicesDescription.getServiceDescription(),
                                                              governanceServicesDescription.getServiceWiki());
 
@@ -241,7 +242,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
             String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              accessServiceDescription.getAccessServiceDescription(),
                                                              accessServiceDescription.getAccessServiceWiki());
 
@@ -261,7 +262,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
         {
             String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              viewServiceDescription.getViewServiceDescription(),
                                                              viewServiceDescription.getViewServiceWiki());
 
@@ -279,7 +280,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
         {
             String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              engineServiceDescription.getEngineServiceDescription(),
                                                              engineServiceDescription.getEngineServiceWiki());
 
@@ -312,7 +313,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
         {
             String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
-                                                             OpenMetadataTypesMapper.SOFTWARE_SERVICE_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
                                                              integrationServiceDescription.getIntegrationServiceDescription(),
                                                              integrationServiceDescription.getIntegrationServiceWiki());
 
@@ -432,12 +433,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  String wikiLink)
     {
         String qualifiedName = constructValidValueQualifiedName(associatedTypeName,
-                                                                OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                 null,
                                                                 deployedImplementationType);
 
         String category = constructValidValueCategory(associatedTypeName,
-                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                       null);
 
         return this.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, category, description, wikiLink);
@@ -463,13 +464,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  String wikiLink)
     {
         String parentSetGUID = this.getParentSet(associatedTypeName,
-                                                 OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                  null);
 
         String validValueGUID = this.archiveHelper.addValidValue(parentSetGUID,
                                                                  parentSetGUID,
-                                                                 OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
-                                                                 OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                  qualifiedName,
                                                                  deployedImplementationType,
                                                                  description,
@@ -533,26 +534,26 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                              DeployedImplementationType deployedImplementationType,
                              String                     description)
     {
-        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                                OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
                                                                 null,
                                                                 fileTypeName);
 
-        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                      OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
                                                       null);
 
         Map<String, String> additionalProperties = new HashMap<>();
 
         if (encoding != null)
         {
-            additionalProperties.put(OpenMetadataTypesMapper.ENCODING_PROPERTY_NAME, encoding);
+            additionalProperties.put(OpenMetadataType.ENCODING_PROPERTY_NAME, encoding);
         }
 
 
         if (assetSubTypeName != null)
         {
-            additionalProperties.put("assetSubTypeName", assetSubTypeName);
+            additionalProperties.put(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME, assetSubTypeName);
         }
 
         if (additionalProperties.isEmpty())
@@ -560,14 +561,14 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             additionalProperties = null;
         }
 
-        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                 OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+        String parentSetGUID = this.getParentSet(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
                                                  null);
 
         this.archiveHelper.addValidValue(parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                          qualifiedName,
                                          fileTypeName,
                                          description,
@@ -582,7 +583,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (deployedImplementationType != null)
         {
             String deployedImplementationTypeQName = constructValidValueQualifiedName(deployedImplementationType.getAssociatedTypeName(),
-                                                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                       null,
                                                                                       deployedImplementationType.getDeployedImplementationType());
             this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, deployedImplementationTypeQName);
@@ -602,23 +603,23 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                              FileType                   fileType,
                              DeployedImplementationType deployedImplementationType)
     {
-        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                                OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataType.FILE_NAME_PROPERTY_NAME,
                                                                 null,
                                                                 fileName);
 
-        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                      OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataType.FILE_NAME_PROPERTY_NAME,
                                                       null);
 
-        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                 OpenMetadataTypesMapper.FILE_NAME_PROPERTY_NAME,
+        String parentSetGUID = this.getParentSet(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataType.FILE_NAME_PROPERTY_NAME,
                                                  null);
 
         this.archiveHelper.addValidValue(parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                          qualifiedName,
                                          fileName,
                                          null,
@@ -633,7 +634,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (deployedImplementationType != null)
         {
             String deployedImplementationTypeQName = constructValidValueQualifiedName(deployedImplementationType.getAssociatedTypeName(),
-                                                                                      OpenMetadataTypesMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                       null,
                                                                                       deployedImplementationType.getDeployedImplementationType());
             this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, deployedImplementationTypeQName);
@@ -641,8 +642,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         if (fileType != null)
         {
-            String fileTypeQName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                                    OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+            String fileTypeQName = constructValidValueQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                    OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
                                                                     null,
                                                                     fileType.getFileTypeName());
             this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, fileTypeQName);
@@ -659,23 +660,23 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addFileExtension(String                     fileExtension,
                                   List<FileType>             fileTypes)
     {
-        String qualifiedName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                                OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataType.FILE_EXTENSION_PROPERTY_NAME,
                                                                 null,
                                                                 fileExtension);
 
-        String category = constructValidValueCategory(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                      OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                      OpenMetadataType.FILE_EXTENSION_PROPERTY_NAME,
                                                       null);
 
-        String parentSetGUID = this.getParentSet(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                 OpenMetadataTypesMapper.FILE_EXTENSION_PROPERTY_NAME,
+        String parentSetGUID = this.getParentSet(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataType.FILE_EXTENSION_PROPERTY_NAME,
                                                  null);
 
         this.archiveHelper.addValidValue(parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                          qualifiedName,
                                          fileExtension,
                                          null,
@@ -691,8 +692,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         {
             for (FileType fileType : fileTypes)
             {
-                String fileTypeQName = constructValidValueQualifiedName(OpenMetadataTypesMapper.DATA_FILE_TYPE_NAME,
-                                                                        OpenMetadataTypesMapper.FILE_TYPE_PROPERTY_NAME,
+                String fileTypeQName = constructValidValueQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                        OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
                                                                         null,
                                                                         fileType.getFileTypeName());
                 this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, fileTypeQName);
@@ -738,8 +739,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             parentSetGUID =  archiveHelper.addValidValue(grandParentSetGUID,
                                                          grandParentSetGUID,
-                                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
-                                                         OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                          parentQualifiedName,
                                                          parentDisplayName,
                                                          parentDescription,
@@ -773,7 +774,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceEngineDisplayName = "File Provisioning Governance Action Engine";
         final String governanceEngineDescription = "Copies, moves or deletes a file on request.";
 
-        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
                                                  governanceEngineName,
                                                  governanceEngineDisplayName,
                                                  governanceEngineDescription,
@@ -797,7 +798,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String assetGovernanceEngineDisplayName = "AssetGovernance Governance Action Engine";
         final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
 
-        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
                                                  assetGovernanceEngineName,
                                                  assetGovernanceEngineDisplayName,
                                                  assetGovernanceEngineDescription,
@@ -821,7 +822,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String assetDiscoveryEngineDisplayName = "AssetDiscovery Open Discovery Engine";
         final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
 
-        return archiveHelper.addGovernanceEngine(OpenMetadataTypesMapper.OPEN_DISCOVERY_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.OPEN_DISCOVERY_ENGINE_TYPE_NAME,
                                                  assetDiscoveryEngineName,
                                                  assetDiscoveryEngineDisplayName,
                                                  assetDiscoveryEngineDescription,
@@ -848,7 +849,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             "The request parameters define the source file and destination, along with lineage options";
         final String ftpGovernanceServiceProviderClassName = MoveCopyFileGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
                                                   ftpGovernanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -871,7 +872,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceServiceDescription = "Initiates a governance action process when a new weekly measurements file arrives.";
         final String governanceServiceProviderClassName = GenericFolderWatchdogGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -895,7 +896,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceServiceDescription = "Set up the zone membership for one or more assets supplied as action targets.";
         final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -918,7 +919,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceServiceDescription = "Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.";
         final String governanceServiceProviderClassName = OriginSeekerGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -1056,7 +1057,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String discoveryServiceDescription = "Discovers columns for CSV Files.";
         final String discoveryServiceProviderClassName = CSVDiscoveryServiceProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
                                                   discoveryServiceProviderClassName,
                                                   null,
                                                   discoveryServiceName,
@@ -1079,7 +1080,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String discoveryServiceDescription = "Discovers the types and instances found in an Apache Atlas server.";
         final String discoveryServiceProviderClassName = DiscoverApacheAtlasProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(OpenMetadataTypesMapper.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(OpenMetadataType.OPEN_DISCOVERY_SERVICE_TYPE_NAME,
                                                   discoveryServiceProviderClassName,
                                                   null,
                                                   discoveryServiceName,

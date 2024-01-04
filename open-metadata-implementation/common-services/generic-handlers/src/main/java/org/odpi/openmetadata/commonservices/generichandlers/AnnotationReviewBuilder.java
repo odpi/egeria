@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -84,15 +85,15 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.ANNOTATION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.ANNOTATION_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,
                                                                     annotationStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_NAME);
         }
 
         return properties;
@@ -114,7 +115,7 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.REVIEW_DATE_PROPERTY_NAME,
+                                                                    OpenMetadataType.REVIEW_DATE_PROPERTY_NAME,
                                                                     reviewDate,
                                                                     methodName);
         }
@@ -123,7 +124,7 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                      OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                       steward,
                                                                       methodName);
         }
@@ -132,7 +133,7 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.COMMENT_PROPERTY_NAME,
+                                                                      OpenMetadataType.COMMENT_PROPERTY_NAME,
                                                                       reviewComment,
                                                                       methodName);
         }

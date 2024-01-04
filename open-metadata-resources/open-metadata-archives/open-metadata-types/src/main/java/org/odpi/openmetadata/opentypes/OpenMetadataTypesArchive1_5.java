@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -250,7 +251,7 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Process";
+        final String                     end1EntityType               = OpenMetadataType.PROCESS.typeName;
         final String                     end1AttributeName            = "parentProcess";
         final String                     end1AttributeDescription     = "The more abstract or higher-level process.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -267,7 +268,7 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Process";
+        final String                     end2EntityType               = OpenMetadataType.PROCESS.typeName;
         final String                     end2AttributeName            = "childProcess";
         final String                     end2AttributeDescription     = "The more detailed or lower-level process.";
         final String                     end2AttributeDescriptionGUID = null;

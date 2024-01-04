@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -147,7 +147,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 processGUIDParameterName,
-                                                                                OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                                                OpenMetadataType.PROCESS.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -157,7 +157,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
                     this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                                     processGUIDParameterName,
-                                                    OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                    OpenMetadataType.PROCESS.typeName,
                                                     element.getProcessProperties(),
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -205,7 +205,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 portGUIDParameterName,
-                                                                                OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                                OpenMetadataType.PORT_TYPE_NAME,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -287,7 +287,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
+        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
 
         if (processProperties.getTypeName() != null)
         {
@@ -318,7 +318,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             this.maintainSupplementaryProperties(userId,
                                                  processGUID,
                                                  processGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 OpenMetadataType.PROCESS.typeName,
                                                  processProperties.getQualifiedName(),
                                                  processProperties,
                                                  true,
@@ -330,7 +330,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           processGUID,
                                           processGUIDParameterName,
-                                          OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                          OpenMetadataType.PROCESS.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -397,7 +397,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           processGUID,
                                           processGUIDParameterName,
-                                          OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                          OpenMetadataType.PROCESS.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -454,14 +454,14 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         processGUID,
                                         processGUIDParameterName,
-                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                        OpenMetadataType.PROCESS.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
 
-        String typeName = OpenMetadataAPIMapper.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
+        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
 
         if (processProperties.getTypeName() != null)
         {
@@ -493,7 +493,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.maintainSupplementaryProperties(userId,
                                              processGUID,
                                              processGUIDParameterName,
-                                             OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                             OpenMetadataType.PROCESS.typeName,
                                              processProperties.getQualifiedName(),
                                              processProperties,
                                              isMergeUpdate,
@@ -540,7 +540,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         processGUID,
                                         ProcessExchangeHandler.processGUIDParameterName,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -785,7 +785,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         processGUID,
                                         processGUIDParameterName,
-                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                        OpenMetadataType.PROCESS.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -907,8 +907,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> processEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                   assetManagerGUID,
                                                                                                   assetManagerGUIDParameterName,
-                                                                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                                                                  OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                                  OpenMetadataType.PROCESS.typeName,
                                                                                                   startFrom,
                                                                                                   validatedPageSize,
                                                                                                   effectiveTime,
@@ -932,7 +932,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                         processElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                            processEntity.getGUID(),
                                                                                            processEntityGUIDParameterName,
-                                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                           OpenMetadataType.ASSET.typeName,
                                                                                            assetManagerGUID,
                                                                                            assetManagerName,
                                                                                            forLineage,
@@ -942,7 +942,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
                         this.getSupplementaryProperties(processElement.getElementHeader().getGUID(),
                                                         processGUIDParameterName,
-                                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                        OpenMetadataType.PROCESS.typeName,
                                                         processElement.getProcessProperties(),
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -1074,7 +1074,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         processGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.PROCESS.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -1084,7 +1084,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
             this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                             processGUIDParameterName,
-                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            OpenMetadataType.PROCESS.typeName,
                                             element.getProcessProperties(),
                                             forLineage,
                                             forDuplicateProcessing,
@@ -1141,7 +1141,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         processGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.PROCESS.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -1151,7 +1151,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
             this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                             processGUIDParameterName,
-                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            OpenMetadataType.PROCESS.typeName,
                                             element.getProcessProperties(),
                                             forLineage,
                                             forDuplicateProcessing,
@@ -1261,7 +1261,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT_TYPE_NAME;
 
         if (portProperties.getTypeName() != null)
         {
@@ -1296,7 +1296,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           portGUID,
                                           portGUIDParameterName,
-                                          OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                          OpenMetadataType.PORT_TYPE_NAME,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -1345,7 +1345,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT_TYPE_NAME;
 
         if (portProperties.getTypeName() != null)
         {
@@ -1739,7 +1739,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         portGUID,
                                         portGUIDParameterName,
-                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                        OpenMetadataType.PORT_TYPE_NAME,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -1969,7 +1969,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         portGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                        OpenMetadataType.PORT_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -2083,7 +2083,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         portGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                                        OpenMetadataType.PORT_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -2134,7 +2134,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         elementGUID,
                                         elementGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -2144,7 +2144,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         processHandler.setBusinessSignificant(userId,
                                               elementGUID,
                                               elementGUIDParameterName,
-                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                              OpenMetadataType.REFERENCEABLE.typeName,
                                               null,
                                               null,
                                               null,
@@ -2188,7 +2188,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         elementGUID,
                                         elementGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -2198,7 +2198,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         processHandler.clearBusinessSignificant(userId,
                                                 elementGUID,
                                                 elementGUIDParameterName,
-                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -3177,11 +3177,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                          OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                                           sourceElementGUID,
-                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                           destinationElementGUID,
-                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                           methodName);
 
         return guid;

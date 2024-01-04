@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommentElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -137,8 +137,8 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME_DEP);
+                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME_DEP);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -164,7 +164,7 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
 
                 if (instancePropertyValue instanceof EnumPropertyValue)
                 {

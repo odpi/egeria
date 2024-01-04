@@ -16,30 +16,31 @@ import static org.testng.Assert.*;
  */
 public class RelationshipDefTest
 {
-    private String                        guid                     = "TestGUID";
-    private String                        name                     = "TestName";
-    private TypeDefStatus                 status                   = TypeDefStatus.RENAMED_TYPEDEF;
-    private String                        replacedByTypeGUID       = "TestReplacedByGUID";
-    private String                        replacedByTypeName       = "TestReplacedByName";
-    private long                          version                  = 6;
-    private String                        versionName              = "TestVersionName";
-    private TypeDefCategory               category                 = TypeDefCategory.CLASSIFICATION_DEF;
-    private TypeDefLink                   superType                = new TypeDefLink();
-    private String                        description              = "TestDescription";
-    private String                        descriptionGUID          = "TestDescriptionGUID";
-    private String                        origin                   = "TestOrigin";
-    private String                        createdBy                = "TestCreatedBy";
-    private String                        updatedBy                = "TestUpdatedBy";
-    private Date                          createTime               = new Date(6555);
-    private Date                          updateTime               = new Date(9999);
-    private Map<String, String>           options                  = new HashMap<>();
-    private List<ExternalStandardMapping> externalStandardMappings = new ArrayList<>();
-    private List<InstanceStatus>          validInstanceStatusList  = new ArrayList<>();
-    private InstanceStatus                initialStatus            = InstanceStatus.APPROVED;
-    private List<TypeDefAttribute>        propertiesDefinition     = new ArrayList<>();
-    private ClassificationPropagationRule propagationRule          = ClassificationPropagationRule.TWO_TO_ONE;
-    private RelationshipEndDef            endDef1                  = new RelationshipEndDef();
-    private RelationshipEndDef            endDef2                  = new RelationshipEndDef();
+    private final String guid = "TestGUID";
+    private final String name = "TestName";
+    private final TypeDefStatus                 status                   = TypeDefStatus.RENAMED_TYPEDEF;
+    private final String                        replacedByTypeGUID       = "TestReplacedByGUID";
+    private final String                        replacedByTypeName       = "TestReplacedByName";
+    private final long                          version                  = 6;
+    private final String                        versionName              = "TestVersionName";
+    private final TypeDefCategory               category                 = TypeDefCategory.CLASSIFICATION_DEF;
+    private final TypeDefLink                   superType                = new TypeDefLink();
+    private final String                        description              = "TestDescription";
+    private final String                        descriptionGUID          = "TestDescriptionGUID";
+    private final String                        descriptionWiki          = "TestDescriptionWiki";
+    private final String                        origin                   = "TestOrigin";
+    private final String                        createdBy                = "TestCreatedBy";
+    private final String                        updatedBy                = "TestUpdatedBy";
+    private final Date                          createTime               = new Date(6555);
+    private final Date                          updateTime               = new Date(9999);
+    private final Map<String, String>           options                  = new HashMap<>();
+    private final List<ExternalStandardMapping> externalStandardMappings = new ArrayList<>();
+    private final List<InstanceStatus>          validInstanceStatusList  = new ArrayList<>();
+    private final InstanceStatus                initialStatus            = InstanceStatus.APPROVED;
+    private final List<TypeDefAttribute>        propertiesDefinition     = new ArrayList<>();
+    private final ClassificationPropagationRule propagationRule          = ClassificationPropagationRule.TWO_TO_ONE;
+    private final RelationshipEndDef            endDef1                  = new RelationshipEndDef();
+    private final RelationshipEndDef            endDef2                  = new RelationshipEndDef();
 
 
     public RelationshipDefTest()
@@ -102,6 +103,7 @@ public class RelationshipDefTest
         testObject.setSuperType(superType);
         testObject.setDescription(description);
         testObject.setDescriptionGUID(descriptionGUID);
+        testObject.setDescriptionWiki(descriptionWiki);
         testObject.setOrigin(origin);
         testObject.setCreatedBy(createdBy);
         testObject.setUpdatedBy(updatedBy);
@@ -138,6 +140,7 @@ public class RelationshipDefTest
         assertTrue(testObject.getSuperType().equals(superType));
         assertTrue(testObject.getDescription().equals(description));
         assertTrue(testObject.getDescriptionGUID().equals(descriptionGUID));
+        assertTrue(testObject.getDescriptionWiki().equals(descriptionWiki));
         assertTrue(testObject.getOrigin().equals(origin));
         assertTrue(testObject.getCreatedBy().equals(createdBy));
         assertTrue(testObject.getUpdatedBy().equals(updatedBy));

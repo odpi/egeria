@@ -117,7 +117,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      *
      * @param guid unique identifier for the CollectionDef
      * @param description short default description of the enum type
-     * @param descriptionGUID guid of the glossary term describing this collection type
+     * @param descriptionGUID guid of the valid value describing this collection type
      * @param arrayType type of the array.
      * @return Filled out CollectionDef
      */
@@ -151,7 +151,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      *
      * @param guid unique identifier for the CollectionDef
      * @param description short default description of the enum type
-     * @param descriptionGUID guid of the glossary term describing this collection type
+     * @param descriptionGUID guid of the valid value describing this collection type
      * @param propertyKeyType type of the key for the map.
      * @param propertyValueType  type of map value.
      * @return Filled out CollectionDef
@@ -187,7 +187,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param guid unique identifier for the CollectionDef
      * @param name unique name for the CollectionDef
      * @param description short default description of the enum type
-     * @param descriptionGUID guid of the glossary term describing this enum type
+     * @param descriptionGUID guid of the valid value describing this enum type
      * @return basic EnumDef without valid values
      */
     public EnumDef getEmptyEnumDef(String                guid,
@@ -216,7 +216,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param ordinal code number
      * @param value name
      * @param description short description
-     * @param descriptionGUID guid of the glossary term describing this enum element
+     * @param descriptionGUID guid of the valid value describing this enum element
      * @return Fully filled out EnumElementDef
      */
     public EnumElementDef  getEnumElementDef(int     ordinal,
@@ -244,7 +244,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param name name of the entity
      * @param superType Super type for this entity (null for top-level)
      * @param description short description of the entity
-     * @param descriptionGUID guid of the glossary term describing this entity type
+     * @param descriptionGUID guid of the valid value describing this entity type
      * @return Initialized EntityDef
      */
     public EntityDef  getDefaultEntityDef(String                  guid,
@@ -252,6 +252,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                           TypeDefLink             superType,
                                           String                  description,
                                           String                  descriptionGUID)
+    {
+        return this.getDefaultEntityDef(guid, name, superType, description, descriptionGUID, null);
+    }
+
+
+    /**
+     * Sets up a default EntityDef.  Calling methods can override the default values.  This EntityDef
+     * has no attribute defined.
+     *
+     * @param guid unique identifier for the entity
+     * @param name name of the entity
+     * @param superType Super type for this entity (null for top-level)
+     * @param description short description of the entity
+     * @param descriptionGUID guid of the valid value definition describing this entity type
+     * @param descriptionWiki url to wiki page describing this type
+     * @return Initialized EntityDef
+     */
+    public EntityDef  getDefaultEntityDef(String                  guid,
+                                          String                  name,
+                                          TypeDefLink             superType,
+                                          String                  description,
+                                          String                  descriptionGUID,
+                                          String                  descriptionWiki)
     {
         EntityDef entityDef = new EntityDef();
 
@@ -265,6 +288,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         entityDef.setSuperType(superType);
         entityDef.setDescription(description);
         entityDef.setDescriptionGUID(descriptionGUID);
+        entityDef.setDescriptionWiki(descriptionWiki);
 
         /*
          * Set up the defaults
@@ -867,7 +891,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param name name of the relationship
      * @param superType Super type for this relationship (null for top-level)
      * @param description short default description of the relationship
-     * @param descriptionGUID guid of the glossary term that describes this relationship
+     * @param descriptionGUID guid of the valid value that describes this relationship
      * @param propagationRule should classifications propagate over this relationship?
      * @return RelationshipDef with no ends defined.
      */
@@ -890,6 +914,88 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         relationshipDef.setSuperType(superType);
         relationshipDef.setDescription(description);
         relationshipDef.setDescriptionGUID(descriptionGUID);
+
+        /*
+         * Set up the defaults
+         */
+        relationshipDef.setOrigin(archiveGUID);
+        relationshipDef.setCreatedBy(originatorName);
+        relationshipDef.setCreateTime(creationDate);
+        relationshipDef.setVersion(versionNumber);
+        relationshipDef.setVersionName(versionName);
+
+        /*
+         * Set default valid instance statuses
+         */
+        TypeDef superTypeDef = null;
+        if (superType != null)
+        {
+            superTypeDef = this.archiveBuilder.getTypeDefByName(superType.getName());
+        }
+
+        if (superTypeDef != null)
+        {
+            relationshipDef.setValidInstanceStatusList(superTypeDef.getValidInstanceStatusList());
+            relationshipDef.setInitialStatus(superTypeDef.getInitialStatus());
+        }
+        else
+        {
+            /*
+             * These are the standard valid instance statuses used by entities
+             */
+            ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+            validInstanceStatusList.add(InstanceStatus.ACTIVE);
+            validInstanceStatusList.add(InstanceStatus.DELETED);
+
+            relationshipDef.setValidInstanceStatusList(validInstanceStatusList);
+            relationshipDef.setInitialStatus(InstanceStatus.ACTIVE);
+        }
+
+        /*
+         * Use the supplied propagation rule.
+         */
+        relationshipDef.setPropagationRule(propagationRule);
+
+        relationshipDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * Returns a basic RelationshipDef without any attributes or ends set up.
+     * The caller is responsible for adding the attributes and ends definition.
+     *
+     * @param guid unique identifier for the relationship
+     * @param name name of the relationship
+     * @param superType Super type for this relationship (null for top-level)
+     * @param description short default description of the relationship
+     * @param descriptionGUID guid of the valid value that describes this relationship
+     * @param propagationRule should classifications propagate over this relationship?
+     * @param descriptionWiki url to docs
+     * @return RelationshipDef with no ends defined.
+     */
+    public RelationshipDef getBasicRelationshipDef(String                        guid,
+                                                   String                        name,
+                                                   TypeDefLink                   superType,
+                                                   String                        description,
+                                                   String                        descriptionGUID,
+                                                   String                        descriptionWiki,
+                                                   ClassificationPropagationRule propagationRule)
+    {
+        RelationshipDef relationshipDef = new RelationshipDef();
+
+        relationshipDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+
+        /*
+         * Set up the parameters supplied by the caller.
+         */
+        relationshipDef.setGUID(guid);
+        relationshipDef.setName(name);
+        relationshipDef.setSuperType(superType);
+        relationshipDef.setDescription(description);
+        relationshipDef.setDescriptionGUID(descriptionGUID);
+        relationshipDef.setDescriptionWiki(descriptionWiki);
 
         /*
          * Set up the defaults
@@ -975,7 +1081,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param name name of the classification
      * @param superType Super type for this classification (null for top-level)
      * @param description short description of the classification
-     * @param descriptionGUID unique identifier of the glossary term that describes this classification.
+     * @param descriptionGUID unique identifier of the valid value that describes this classification.
      * @param validEntityDef which entities can this classification be linked to.
      * @param propagatable can the classification propagate over relationships?
      * @return ClassificationDef with no attributes defined.
@@ -1006,7 +1112,40 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param name name of the classification
      * @param superType Super type for this classification (null for top-level)
      * @param description short description of the classification
-     * @param descriptionGUID unique identifier of the glossary term that describes this classification.
+     * @param descriptionGUID unique identifier of the valid value that describes this classification
+     * @param descriptionWiki url to wiki
+     * @param validEntityDef which entities can this classification be linked to.
+     * @param propagatable can the classification propagate over relationships?
+     * @return ClassificationDef with no attributes defined.
+     */
+    public ClassificationDef getClassificationDef(String                        guid,
+                                                  String                        name,
+                                                  TypeDefLink                   superType,
+                                                  String                        description,
+                                                  String                        descriptionGUID,
+                                                  String                        descriptionWiki,
+                                                  TypeDefLink                   validEntityDef,
+                                                  boolean                       propagatable)
+    {
+        /*
+         * Set up the supplied validEntityType as an array and call the method to create the ClassificationDef.
+         */
+        ArrayList<TypeDefLink>   validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(validEntityDef);
+
+        return this.getClassificationDef(guid, name, superType, description, descriptionGUID, descriptionWiki, validEntityDefs, propagatable);
+    }
+
+
+    /**
+     * Returns a basic ClassificationDef without any attributes.   The caller is responsible for adding the
+     * attribute definitions.
+     *
+     * @param guid unique identifier for the classification
+     * @param name name of the classification
+     * @param superType Super type for this classification (null for top-level)
+     * @param description short description of the classification
+     * @param descriptionGUID unique identifier of the valid value that describes this classification.
      * @param validEntityDefs which entities can this classification be linked to.
      * @param propagatable can the classification propagate over relationships?
      * @return ClassificationDef with no attributes defined.
@@ -1016,6 +1155,33 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                                   TypeDefLink                   superType,
                                                   String                        description,
                                                   String                        descriptionGUID,
+                                                  List<TypeDefLink>             validEntityDefs,
+                                                  boolean                       propagatable)
+    {
+        return getClassificationDef(guid, name, superType, description, descriptionGUID, null, validEntityDefs, propagatable);
+    }
+
+
+    /**
+     * Returns a basic ClassificationDef without any attributes.   The caller is responsible for adding the
+     * attribute definitions.
+     *
+     * @param guid unique identifier for the classification
+     * @param name name of the classification
+     * @param superType Super type for this classification (null for top-level)
+     * @param description short description of the classification
+     * @param descriptionGUID unique identifier of the valid value that describes this classification
+     * @param descriptionWiki url to wiki
+     * @param validEntityDefs which entities can this classification be linked to.
+     * @param propagatable can the classification propagate over relationships?
+     * @return ClassificationDef with no attributes defined.
+     */
+    public ClassificationDef getClassificationDef(String                        guid,
+                                                  String                        name,
+                                                  TypeDefLink                   superType,
+                                                  String                        description,
+                                                  String                        descriptionGUID,
+                                                  String                        descriptionWiki,
                                                   List<TypeDefLink>             validEntityDefs,
                                                   boolean                       propagatable)
     {
@@ -1031,6 +1197,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         classificationDef.setSuperType(superType);
         classificationDef.setDescription(description);
         classificationDef.setDescriptionGUID(descriptionGUID);
+        classificationDef.setDescriptionWiki(descriptionWiki);
 
         /*
          * Set up the defaults

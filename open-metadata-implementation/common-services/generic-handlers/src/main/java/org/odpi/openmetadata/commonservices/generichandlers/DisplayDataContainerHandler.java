@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -175,9 +177,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -191,14 +193,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
              * A data container is represented as a schemaAttribute of type DisplayDataContainer (or a subtype).
              * Check that the type name requested is valid.
              */
-            String attributeTypeName = OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME;
-            String attributeTypeId   = OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID;
+            String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
+            String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID;
 
             if (typeName != null)
             {
                 attributeTypeName = typeName;
                 attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                             OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                             OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                                              serviceName,
                                                                              methodName,
                                                                              repositoryHelper);
@@ -244,8 +246,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                         methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":containerType",
-                                                                        OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                        OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                         repositoryHelper,
                                                                         serviceName,
                                                                         serverName);
@@ -257,9 +259,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                         externalSourceName,
                                                                                         databaseSchemaTypeGUID,
                                                                                         schemaTypeGUIDParameterName,
-                                                                                        OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         qualifiedName,
                                                                                         qualifiedNameParameterName,
                                                                                         schemaAttributeBuilder,
@@ -350,9 +352,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -384,8 +386,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                    externalSourceName,
                                                                                    templateGUID,
                                                                                    templateParameterName,
-                                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
+                                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                                                    qualifiedName,
                                                                                    qualifiedNameParameterName,
                                                                                    builder,
@@ -402,15 +404,15 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                    externalSourceName,
                                                                    databaseSchemaTypeGUID,
                                                                    displaySchemaTypeGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                    dataContainerGUID,
                                                                    dataContainerGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
                                                                    supportedZones,
-                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                    null,
                                                                    effectiveTime,
                                                                    methodName);
@@ -482,14 +484,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
          * A data container is represented as a schemaAttribute of type DisplayDataContainer (or a subtype).
          * Check that the type name requested is valid.
          */
-        String attributeTypeName = OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME;
-        String attributeTypeId   = OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID;
+        String attributeTypeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID;
 
         if (typeName != null)
         {
             attributeTypeName = typeName;
             attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                         OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                                          serviceName,
                                                                          methodName,
                                                                          repositoryHelper);
@@ -497,32 +499,32 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  displayName,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                         additionalProperties,
-                                                                         methodName);
+                                                                     properties,
+                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                     additionalProperties,
+                                                                     methodName);
 
         if (extendedProperties != null)
         {
@@ -616,9 +618,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     externalSourceName,
                                                     dataContainerGUID,
                                                     dataContainerGUIDParameterName,
-                                                    OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
+                                                    OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                     qualifiedName,
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -665,8 +667,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         return dataContainerHandler.findSchemaAttributes(userId,
                                                          searchString,
                                                          searchStringParameterName,
-                                                         OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
+                                                         OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                          null,
                                                          null,
                                                          startFrom,
@@ -726,9 +728,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.ASSET.typeName,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveFrom,
                                                                                     effectiveTo,
                                                                                     forLineage,
@@ -744,7 +746,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                 databaseSchemaTypeGUID,
                                                                                 displaySchemaTypeGUIDParameterName,
                                                                                 null,
-                                                                                OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,
                                                                                 pageSize,
                                                                                 forLineage,
@@ -788,8 +790,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                      PropertyServerException
     {
         return dataContainerHandler.getSchemaAttributesByName(userId,
-                                                              OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_GUID,
+                                                              OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                               name,
                                                               null,
                                                               null,
@@ -832,7 +834,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         return dataContainerHandler.getSchemaAttribute(userId,
                                                        guid,
                                                        guidParameterName,
-                                                       OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                       OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                        null,
                                                        null,
                                                        forLineage,

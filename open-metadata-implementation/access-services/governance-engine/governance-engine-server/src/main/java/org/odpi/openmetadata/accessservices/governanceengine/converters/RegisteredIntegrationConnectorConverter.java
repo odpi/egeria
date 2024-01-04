@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.IntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredIntegrationConnectorProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -62,31 +62,31 @@ public class RegisteredIntegrationConnectorConverter
 
                 bean.setConnectorId(registrationRelationship.getGUID());
                 registrationProperties.setConnectorName(repositoryHelper.getStringProperty(serviceName,
-                                                                                           OpenMetadataAPIMapper.CONNECTOR_NAME_PROPERTY_NAME,
+                                                                                           OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
                                                                                            instanceProperties,
                                                                                            methodName));
                 registrationProperties.setConnectorUserId(repositoryHelper.getStringProperty(serviceName,
-                                                                                             OpenMetadataAPIMapper.CONNECTOR_USER_ID_PROPERTY_NAME,
+                                                                                             OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME,
                                                                                              instanceProperties,
                                                                                              methodName));
                 registrationProperties.setMetadataSourceQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                                                         OpenMetadataAPIMapper.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                         OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
                                                                                                          instanceProperties,
                                                                                                          methodName));
                 registrationProperties.setStartDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                     OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
+                                                                                     OpenMetadataType.START_DATE_PROPERTY_NAME,
                                                                                      instanceProperties,
                                                                                      methodName));
                 registrationProperties.setRefreshTimeInterval(repositoryHelper.getLongProperty(serviceName,
-                                                                                               OpenMetadataAPIMapper.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
+                                                                                               OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
                                                                                                instanceProperties,
                                                                                                methodName));
                 registrationProperties.setStopDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                    OpenMetadataAPIMapper.STOP_DATE_PROPERTY_NAME,
+                                                                                    OpenMetadataType.STOP_DATE_PROPERTY_NAME,
                                                                                     instanceProperties,
                                                                                     methodName));
                 registrationProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                         OpenMetadataAPIMapper.GENERATE_INTEGRATION_REPORT_PROPERTY_NAME,
+                                                                                                         OpenMetadataType.GENERATE_INTEGRATION_REPORT_PROPERTY_NAME,
                                                                                                          instanceProperties,
                                                                                                          methodName));
 
@@ -113,7 +113,7 @@ public class RegisteredIntegrationConnectorConverter
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                     OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 

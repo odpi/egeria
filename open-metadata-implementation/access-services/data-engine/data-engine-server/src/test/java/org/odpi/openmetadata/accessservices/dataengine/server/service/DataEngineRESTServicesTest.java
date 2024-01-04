@@ -66,6 +66,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
@@ -95,25 +97,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -503,7 +487,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedSchemaType = mockEntityDetailWithQualifiedName(OLD_SCHEMA_GUID, OLD_SCHEMA_QUALIFIED_NAME);
         when(dataEngineSchemaTypeHandler.findSchemaTypeEntity(USER, OLD_SCHEMA_QUALIFIED_NAME)).thenReturn(Optional.of(mockedSchemaType));
-        when(dataEngineCommonHandler.findEntity(USER, OLD_SCHEMA_QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedSchemaType));
+        when(dataEngineCommonHandler.findEntity(USER, OLD_SCHEMA_QUALIFIED_NAME, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedSchemaType));
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(Optional.of(mockedSchemaType));
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
@@ -617,7 +601,7 @@ class DataEngineRESTServicesTest {
         when(processHandler.findProcessEntity(USER, PROCESS_QUALIFIED_NAME)).thenReturn(processEntity);
 
         EntityDetail mockedPort = mockEntityDetailWithQualifiedName(PORT_GUID, QUALIFIED_NAME);
-        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME))
+        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME))
                 .thenReturn(new HashSet<>(Collections.singletonList(mockedPort)));
         ProcessRequestBody requestBody = mockProcessRequestBody();
 
@@ -649,7 +633,7 @@ class DataEngineRESTServicesTest {
         InstanceProperties mockedProperties = mock(InstanceProperties.class);
         InstancePropertyValue mockedPropertyValue = mock(InstancePropertyValue.class);
         when(mockedPropertyValue.valueAsString()).thenReturn(OLD_SCHEMA_QUALIFIED_NAME);
-        when(mockedProperties.getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME)).thenReturn(mockedPropertyValue);
+        when(mockedProperties.getPropertyValue(OpenMetadataProperty.QUALIFIED_NAME.name)).thenReturn(mockedPropertyValue);
         when(entityDetail.getProperties()).thenReturn(mockedProperties);
 
         return entityDetail;
@@ -742,7 +726,7 @@ class DataEngineRESTServicesTest {
         when(mockedEntity.getGUID()).thenReturn(GUID);
 
         mockCommonHandler("getEntityDetails");
-        when(dataEngineCommonHandler.findEntity(USER, DATABASE_QUALIFIED_NAME, DATABASE_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, DATABASE_QUALIFIED_NAME, OpenMetadataType.DATABASE_TYPE_NAME))
                 .thenReturn(Optional.of(mockedEntity));
 
         when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, GUID, getDatabaseSchema(),
@@ -802,8 +786,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME,
-                DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                               OpenMetadataType.DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
@@ -816,8 +800,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME,
-                CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                                                               OpenMetadataType.CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
@@ -829,7 +813,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteSchemaType(USER, SERVER_NAME, getDeleteRequestBody());
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -858,10 +842,10 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PORT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.PORT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedEntity));
 
-        dataEngineRESTServices.deletePort(USER, SERVER_NAME, getDeleteRequestBody(), PORT_IMPLEMENTATION_TYPE_NAME);
+        dataEngineRESTServices.deletePort(USER, SERVER_NAME, getDeleteRequestBody(), OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME);
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -881,7 +865,7 @@ class DataEngineRESTServicesTest {
         when(mockedEntity.getGUID()).thenReturn(GUID);
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedEntity));
 
-        dataEngineRESTServices.deletePort(USER, SERVER_NAME, deleteRequestBody, PORT_IMPLEMENTATION_TYPE_NAME);
+        dataEngineRESTServices.deletePort(USER, SERVER_NAME, deleteRequestBody, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME);
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -897,11 +881,11 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.PROCESS.typeName)).thenReturn(Optional.of(mockedProcess));
 
         EntityDetail mockedPort = mock(EntityDetail.class);
         when(mockedPort.getGUID()).thenReturn(GUID);
-        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME))
+        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME))
                 .thenReturn(new HashSet<>(Collections.singletonList(mockedPort)));
 
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedPort));
@@ -925,7 +909,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedPort = mock(EntityDetail.class);
         when(mockedPort.getGUID()).thenReturn(GUID);
-        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME))
+        when(processHandler.getPortsForProcess(USER, PROCESS_GUID, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME))
                 .thenReturn(new HashSet<>(Collections.singletonList(mockedPort)));
 
         when(dataEnginePortHandler.findSchemaTypeForPort(USER, GUID)).thenReturn(Optional.of(mockedPort));
@@ -947,7 +931,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, DATABASE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.DATABASE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteDatabase(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -976,7 +960,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, RELATIONAL_TABLE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.RELATIONAL_TABLE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteRelationalTable(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1007,7 +991,7 @@ class DataEngineRESTServicesTest {
 
         mockCommonHandler("getEntityDetails");
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME))
                 .thenReturn(Optional.of(mockedEntity));
         dataEngineRESTServices.deleteDatabaseSchema(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1037,7 +1021,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         dataEngineRESTServices.deleteDataFile(USER, SERVER_NAME, getDeleteRequestBody());
@@ -1071,7 +1055,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, FILE_FOLDER_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.FILE_FOLDER_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteFolder(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1101,7 +1085,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CONNECTION_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.CONNECTION_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteConnection(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1134,7 +1118,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, ENDPOINT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.ENDPOINT_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         dataEngineRESTServices.deleteEndpoint(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1197,7 +1181,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, TOPIC_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteTopic(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1227,7 +1211,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteEventType(USER, SERVER_NAME, getDeleteRequestBody());
 
@@ -1595,8 +1579,8 @@ class DataEngineRESTServicesTest {
     private Map<String, Object> getCSVFileExtendedProperties() {
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE, FILE_TYPE);
-        extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, ",");
-        extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, "'");
+        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, ",");
+        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, "'");
 
         return extendedProperties;
     }
@@ -1613,7 +1597,7 @@ class DataEngineRESTServicesTest {
         mockCommonHandler("getEntityDetails");
         EntityDetail mockedProcess = mock(EntityDetail.class);
         when(mockedProcess.getGUID()).thenReturn(PROCESS_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, PROCESS_QUALIFIED_NAME, PROCESS_TYPE_NAME)).thenReturn(Optional.of(mockedProcess));
+        when(dataEngineCommonHandler.findEntity(USER, PROCESS_QUALIFIED_NAME, OpenMetadataType.PROCESS.typeName)).thenReturn(Optional.of(mockedProcess));
     }
 
     private Topic getTopic() {

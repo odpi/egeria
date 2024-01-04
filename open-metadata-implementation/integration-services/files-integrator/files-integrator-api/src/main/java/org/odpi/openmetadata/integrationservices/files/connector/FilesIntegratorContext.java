@@ -265,7 +265,7 @@ public class FilesIntegratorContext extends IntegrationContext
      * @param pathName path name of file or directory
      * @return file extension
      */
-    private String getFileExtension(String pathName)
+    public String getFileExtension(String pathName)
     {
         final String  fileTypeDivider = "\\.";
 

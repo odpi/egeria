@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -110,7 +112,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        String typeName = OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME;
+        String typeName = OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -118,7 +120,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                                                   OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -141,8 +143,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         this.createBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
-                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                    OpenMetadataType.OPERATING_PLATFORM_TYPE_GUID,
+                                    OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                     builder,
                                     effectiveTime,
                                     methodName);
@@ -206,7 +208,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         invalidParameterHandler.validateGUID(operatingPlatformGUID, operatingPlatformGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME;
+        String typeName = OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -214,7 +216,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                                                   OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -293,15 +295,15 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   externalSourceName,
                                   hostGUID,
                                   hostGUIDParameterName,
-                                  OpenMetadataAPIMapper.HOST_TYPE_NAME,
+                                  OpenMetadataType.HOST_TYPE_NAME,
                                   operatingPlatformGUID,
                                   operatingPlatformGUIDParameterName,
-                                  OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                  OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
-                                  OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
+                                  OpenMetadataType.HOST_OPERATING_PLATFORM_TYPE_GUID,
+                                  OpenMetadataType.HOST_OPERATING_PLATFORM_TYPE_NAME,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -349,15 +351,15 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       externalSourceName,
                                       hostGUID,
                                       hostGUIDParameterName,
-                                      OpenMetadataAPIMapper.HOST_TYPE_NAME,
+                                      OpenMetadataType.HOST_TYPE_NAME,
                                       operatingPlatformGUID,
                                       operatingPlatformGUIDParameterName,
-                                      OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                      OpenMetadataType.OPERATING_PLATFORM_TYPE_GUID,
+                                      OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.HOST_OPERATING_PLATFORM_TYPE_NAME,
+                                      OpenMetadataType.HOST_OPERATING_PLATFORM_TYPE_GUID,
+                                      OpenMetadataType.HOST_OPERATING_PLATFORM_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -397,8 +399,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     externalSourceName,
                                     operatingPlatformGUID,
                                     operatingPlatformGUIDParameterName,
-                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
-                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                    OpenMetadataType.OPERATING_PLATFORM_TYPE_GUID,
+                                    OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -438,9 +440,9 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
         return this.getBeanByUniqueName(userId,
                                         qualifiedName,
                                         qualifiedNameParameter,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
-                                        OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                        OpenMetadataType.OPERATING_PLATFORM_TYPE_GUID,
+                                        OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         effectiveTime,
@@ -472,8 +474,8 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                                                    PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
-                                   OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
+                                   OpenMetadataType.OPERATING_PLATFORM_TYPE_GUID,
+                                   OpenMetadataType.OPERATING_PLATFORM_TYPE_NAME,
                                    null,
                                    false,
                                    false,

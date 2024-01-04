@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -191,7 +193,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        final String typeName = "Asset";
+        final String typeName = OpenMetadataType.ASSET.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -204,9 +206,9 @@ public class OpenMetadataTypesArchive3_13
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "versionIdentifier";
-        final String attribute1Description     = "Version identifier to allow different versions of the same resource to appear in the catalog as separate assets.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.VERSION_IDENTIFIER.name;
+        final String attribute1Description     = OpenMetadataProperty.VERSION_IDENTIFIER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.VERSION_IDENTIFIER.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -287,7 +289,7 @@ public class OpenMetadataTypesArchive3_13
         final String description     = "The representation of a person or group of people that are identified to perform an action or take on a responsibility.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -507,7 +509,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        final String typeName = "DataFile";
+        final String typeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -520,7 +522,7 @@ public class OpenMetadataTypesArchive3_13
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "fileName";
+        final String attribute1Name            = OpenMetadataType.FILE_NAME_PROPERTY_NAME;
         final String attribute1Description     = "The name of the file with extension.";
         final String attribute1DescriptionGUID = null;
 
@@ -538,12 +540,12 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getParquetFileEntity()
     {
-        final String guid            = "97cba3a0-1dfd-4129-82b6-798de3eec0a4";
-        final String name            = "ParquetFile";
+        final String guid            = OpenMetadataType.PARQUET_FILE_TYPE_GUID;
+        final String name            = OpenMetadataType.PARQUET_FILE_TYPE_NAME;
         final String description     = "A data file which is formatted using the Apache Parquet format.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "DataFile";
+        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -571,7 +573,7 @@ public class OpenMetadataTypesArchive3_13
         final String description     = "A data source that provides a constant stream of data, such as a sensor monitoring the environment.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Asset";
+        final String superTypeName = OpenMetadataType.ASSET.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -682,7 +684,7 @@ public class OpenMetadataTypesArchive3_13
         final String description     = "The set of entitlements, restrictions and obligations associated with an agreement, license etc.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -759,7 +761,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "subjectOfTermsAndConditions";
         final String                     end1AttributeDescription     = "Entity that the terms and condition applied.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -829,7 +831,7 @@ public class OpenMetadataTypesArchive3_13
         final String description     = "An agreement between parties.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -981,7 +983,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "agreementItems";
         final String                     end2AttributeDescription     = "Specific items in the agreement.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1168,7 +1170,7 @@ public class OpenMetadataTypesArchive3_13
         final String description = "Identifies an element that represents a digital product.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -1274,7 +1276,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "digitalSubscribers";
         final String                     end1AttributeDescription     = "The digital subscribers registered under a subscription.";
         final String                     end1AttributeDescriptionGUID = null;

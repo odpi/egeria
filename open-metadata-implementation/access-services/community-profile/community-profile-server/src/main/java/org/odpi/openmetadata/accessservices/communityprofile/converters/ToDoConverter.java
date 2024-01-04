@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -164,7 +163,7 @@ public class ToDoConverter<B> extends CommunityProfileOMASConverter<B>
         if (properties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                                     OpenMetadataType.STATUS_PROPERTY_NAME,
                                                                      properties,
                                                                      methodName);
 
