@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -32,19 +34,19 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
     @Override
     protected void mapRelationshipToInstanceProperties(IsA iSARelationship, InstanceProperties instanceProperties) {
         if (iSARelationship.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (iSARelationship.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
         }
         if (iSARelationship.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (iSARelationship.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
         }
         if (iSARelationship.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, iSARelationship.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, iSARelationship.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
         }
     }
 
@@ -60,19 +62,19 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
     protected boolean mapPrimitiveToRelationship(IsA iSARelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.DESCRIPTION.name)) {
             iSARelationship.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
             iSARelationship.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
             iSARelationship.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
             iSARelationship.setSource(stringValue);
             foundProperty = true;
         }
@@ -82,7 +84,7 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
     @Override
     protected boolean mapEnumToRelationship(IsA iSARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             iSARelationship.setStatus(status);
             foundProperty = true;

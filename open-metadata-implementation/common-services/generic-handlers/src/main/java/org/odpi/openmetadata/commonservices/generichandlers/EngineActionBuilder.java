@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -85,8 +87,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME,
+              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -129,8 +131,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     {
         super(null,
               null,
-              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME,
+              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -152,8 +154,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
                         String               serviceName,
                         String               serverName)
     {
-        super(OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME,
+        super(OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -174,73 +176,73 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                                domainIdentifier,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  displayName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
                                                                   governanceEngineGUID,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
                                                                   governanceEngineName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.PROCESS_NAME_PROPERTY_NAME,
                                                                   processName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PROCESS_STEP_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataType.PROCESS_STEP_GUID_PROPERTY_NAME,
                                                                   governanceActionProcessStepGUID,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PROCESS_STEP_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.PROCESS_STEP_NAME_PROPERTY_NAME,
                                                                   governanceActionProcessStepName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
                                                                   requestType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                     OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
                                                                      requestParameters,
                                                                      methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,
-                                                                           mandatoryGuards,
-                                                                           methodName);
+                                                                       properties,
+                                                                       OpenMetadataType.MANDATORY_GUARDS_PROPERTY_NAME,
+                                                                       mandatoryGuards,
+                                                                       methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.RECEIVED_GUARDS_PROPERTY_NAME,
                                                                        receivedGuards,
                                                                        methodName);
 
@@ -248,15 +250,15 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
         }
 
         if (startDate == null)
@@ -266,28 +268,28 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
                                                                 startDate,
                                                                 methodName);
 
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
-                                                                      processingEngineUserId,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                                  processingEngineUserId,
+                                                                  methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataAPIMapper.COMPLETION_DATE_PROPERTY_NAME,
-                                                                    completionDate,
-                                                                    methodName);
+                                                                properties,
+                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                completionDate,
+                                                                methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
-                                                                           completionGuards,
-                                                                           methodName);
+                                                                       properties,
+                                                                       OpenMetadataType.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                                       completionGuards,
+                                                                       methodName);
 
         return properties;
     }
@@ -308,28 +310,28 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
-                                                                    startDate,
-                                                                    methodName);
+                                                                properties,
+                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                startDate,
+                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
-                                                                      processingEngineUserId,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                                  processingEngineUserId,
+                                                                  methodName);
 
         return properties;
     }
@@ -358,32 +360,32 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
                                                                 completionDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.COMPLETION_GUARDS_PROPERTY_NAME,
                                                                        completionGuards,
                                                                        methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                                  OpenMetadataType.COMPLETION_MESSAGE_PROPERTY_NAME,
                                                                   completionMessage,
                                                                   methodName);
 

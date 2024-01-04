@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -55,8 +57,8 @@ public class OpenMetadataTypesArchive3_7
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -222,7 +224,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "deployedTo";
         final String                     end2AttributeDescription     = "Deployment destination.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -466,12 +468,12 @@ public class OpenMetadataTypesArchive3_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
-        final String attribute1Description     = "Unique name of the lineage flow.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description and purpose of the lineage flow.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -594,7 +596,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "logSubjects";
         final String                     end1AttributeDescription     = "Elements that the log records describe.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -611,7 +613,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "associatedLogs";
         final String                     end2AttributeDescription     = "Destinations for log records.";
         final String                     end2AttributeDescriptionGUID = null;

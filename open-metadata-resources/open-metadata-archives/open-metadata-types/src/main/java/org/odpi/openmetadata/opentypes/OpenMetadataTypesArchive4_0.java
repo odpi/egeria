@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -582,7 +584,7 @@ public class OpenMetadataTypesArchive4_0
         final String description     = "A data set that consists of a collection files (do not need to be co-located).";
         final String descriptionGUID = null;
 
-        final String superTypeName = "DataSet";
+        final String superTypeName = OpenMetadataType.DATA_SET.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -608,7 +610,7 @@ public class OpenMetadataTypesArchive4_0
         final String description     = "A tabular data source (typically a database table) that is an asset in its own right.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "DataSet";
+        final String superTypeName = OpenMetadataType.DATA_SET.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -634,7 +636,7 @@ public class OpenMetadataTypesArchive4_0
         final String description     = "A template for generating report.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Asset";
+        final String superTypeName = OpenMetadataType.ASSET.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -835,7 +837,7 @@ public class OpenMetadataTypesArchive4_0
         final String description     = "Details of the metadata changes made by the execution of the refresh() method by an integration connector.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -873,9 +875,9 @@ public class OpenMetadataTypesArchive4_0
         final String attribute8Name            = "deletedElements";
         final String attribute8Description     = "List of elements that were deleted.";
         final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "additionalProperties";
-        final String attribute9Description     = "Additional properties of importance to the integration connector.";
-        final String attribute9DescriptionGUID = null;
+        final String attribute9Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
+        final String attribute9Description     = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute9DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -1082,7 +1084,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "OpenMetadataRoot";
+        final String                     end2EntityType               = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String                     end2AttributeName            = "catalogTargets";
         final String                     end2AttributeDescription     = "An open metadata element that the integration connector is working on.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1137,7 +1139,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1EntityType               = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String                     end1AttributeName            = "anchorSubject";
         final String                     end1AttributeDescription     = "The anchor entity that the integration report describes.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1232,7 +1234,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "DataSet";
+        final String typeName = OpenMetadataType.DATA_SET.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1245,9 +1247,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formulaType";
-        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1265,7 +1267,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "Process";
+        final String typeName = OpenMetadataType.PROCESS.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1278,9 +1280,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formulaType";
-        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1311,9 +1313,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formulaType";
-        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1343,9 +1345,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formulaType";
-        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1376,9 +1378,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formulaType";
-        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1489,7 +1491,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "supplyFrom";
         final String                     end1AttributeDescription     = "Logical source of the information supply chain.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1506,7 +1508,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "supplyTo";
         final String                     end2AttributeDescription     = "Logical destination of an information supply chain.";
         final String                     end2AttributeDescriptionGUID = null;

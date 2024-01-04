@@ -298,6 +298,7 @@ public interface MetadataElementInterface
     /**
      * Retrieve the relationship using its unique identifier.
      *
+     * @param userId caller's userId
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.

@@ -81,10 +81,8 @@ public class DataFileProperties extends DataStoreProperties
     public String toString()
     {
         return "DataFileProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", fileType='" + fileType + '\'' +
+                       "fileType='" + fileType + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -92,6 +90,9 @@ public class DataFileProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.AssetProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -146,7 +146,7 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
                             {
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_NAME))
+                                                              OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME))
                                 {
                                     EntityProxy termProxy = relationship.getEntityTwoProxy();
 

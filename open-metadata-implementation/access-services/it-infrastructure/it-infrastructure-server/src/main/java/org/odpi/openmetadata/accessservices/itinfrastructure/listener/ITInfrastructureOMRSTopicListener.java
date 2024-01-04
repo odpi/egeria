@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.events.ITInfrastruc
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.outtopic.ITInfrastructureOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -773,7 +773,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                      OpenMetadataType.REFERENCEABLE.typeName,
                                                       fullEntity,
                                                       guidParameterName,
                                                       false,
@@ -828,6 +828,6 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME);
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName);
     }
 }

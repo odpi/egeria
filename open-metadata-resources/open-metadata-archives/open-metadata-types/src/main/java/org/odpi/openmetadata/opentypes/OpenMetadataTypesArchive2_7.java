@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -228,7 +229,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "consumesAsset";
         final String                     end2AttributeDescription     = "Asset that this software server capability is dependent on.";
         final String                     end2AttributeDescriptionGUID = null;

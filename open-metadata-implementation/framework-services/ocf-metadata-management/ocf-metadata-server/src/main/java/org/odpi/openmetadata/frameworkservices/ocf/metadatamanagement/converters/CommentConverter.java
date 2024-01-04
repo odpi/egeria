@@ -4,10 +4,10 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -59,14 +59,12 @@ public class CommentConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof Comment)
+            if (returnBean instanceof Comment bean)
             {
-                Comment bean = (Comment) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.COMMENT_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.COMMENT_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity.
@@ -127,8 +125,8 @@ public class CommentConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME_DEP);
+                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME_DEP);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -154,12 +152,10 @@ public class CommentConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:

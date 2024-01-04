@@ -13,6 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAr
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -50,10 +52,10 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
                 boolean isTaxonomy = false;
                 boolean iscanonicalvocabulary = false;
 
-                if (repositoryHelper.isTypeOf(  genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
+                if (repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
                     isTaxonomy = true;
                 }
-                if (repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
+                if (repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, omrsClassification.getName())) {
                     iscanonicalvocabulary = true;
                 }
                 if (iscanonicalvocabulary && isTaxonomy) {
@@ -115,9 +117,9 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     protected boolean mapPrimitiveToNode(Glossary glossary, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = true;
-        if (propertyName.equals( OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.LANGUAGE_PROPERTY_NAME)) {
             glossary.setLanguage(stringValue);
-        } else if (propertyName.equals(OpenMetadataAPIMapper.USAGE_PROPERTY_NAME)) {
+        } else if (propertyName.equals(OpenMetadataType.USAGE_PROPERTY_NAME)) {
             glossary.setUsage(stringValue);
         } else {
             foundProperty = false;
@@ -135,13 +137,13 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
     protected void mapNodeToInstanceProperties(Glossary node, InstanceProperties instanceProperties) {
         Glossary glossary = (Glossary) node;
         if (glossary.getLanguage() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getLanguage(), OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getLanguage(), OpenMetadataType.LANGUAGE_PROPERTY_NAME);
         }
         if (glossary.getUsage() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataAPIMapper.USAGE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataType.USAGE_PROPERTY_NAME);
         }
         if (node.getName() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataProperty.DISPLAY_NAME.name);
         }
     }
 
@@ -156,16 +158,16 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
         if (existingNodeType == null) {
             existingNodeType = NodeType.Glossary;
         }
-        if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
+        if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.Taxonomy);
             handled = true;
-        } else if (existingNodeType == NodeType.CanonicalGlossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.CanonicalGlossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
             handled = true;
-        } else if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.Glossary && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.CanonicalGlossary);
             handled = true;
-        } else if (existingNodeType == NodeType.Taxonomy && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataAPIMapper.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
+        } else if (existingNodeType == NodeType.Taxonomy && repositoryHelper.isTypeOf(genericHandler.getServiceName(), OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME, classificationName)) {
             glossary.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
             handled = true;
         } else {
@@ -177,6 +179,6 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
 
     @Override
     public String getTypeName() {
-        return OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
+        return OpenMetadataType.GLOSSARY_TYPE_NAME;
     }
 }

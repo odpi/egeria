@@ -41,11 +41,11 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
             "The directory (folder) {0} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
-    UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
-            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
-            "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
-            "Use the message in the nested exception to determine the root cause of the error. Once this is " +
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                     "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
     UNEXPECTED_EXC_DATA_FILE_UPDATE(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-005",
             "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
@@ -66,6 +66,25 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-003",
+             "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                     "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
+             "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                     "perform error handling since this is likely to be a logic error.",
+             "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
+
+    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
+             "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                              "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
+             "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                     "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
+             "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
+
+    UNEXPECTED_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-005",
+                            "The connector {0} received an unexpected {1} exception when processing the file named {2} in method {3}; the error message was: {4}",
+                            "The connector is unable to process the file.  The associated catalog entry may be out of date",
+                            "Use the details from the error message to determine the cause of the error and fix it. Retry the connector once it is resolved."),
     ;
 
 

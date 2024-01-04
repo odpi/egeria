@@ -150,10 +150,11 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", name='" + getName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       "databaseType='" + databaseType + '\'' +
+                       ", databaseVersion='" + databaseVersion + '\'' +
+                       ", databaseInstance='" + databaseInstance + '\'' +
+                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -161,10 +162,9 @@ public class DatabaseProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
-                       ", databaseType='" + databaseType + '\'' +
-                       ", databaseVersion='" + databaseVersion + '\'' +
-                       ", databaseInstance='" + databaseInstance + '\'' +
-                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +

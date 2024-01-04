@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -74,7 +74,7 @@ public class GovernanceRolesRESTServices
                 {
                     GovernanceRoleProperties properties = requestBody.getProperties();
 
-                    String typeName = OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME;
+                    String typeName = OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME;
 
                     if (properties.getTypeName() != null)
                     {
@@ -90,7 +90,7 @@ public class GovernanceRolesRESTServices
                             extendedProperties = new HashMap<>();
                         }
 
-                        extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
+                        extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
                     }
 
                     PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
@@ -185,7 +185,7 @@ public class GovernanceRolesRESTServices
                             extendedProperties = new HashMap<>();
                         }
 
-                        extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
+                        extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, properties.getDomainIdentifier());
                     }
 
                     PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
@@ -283,14 +283,14 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                                  null,
                                                  requestBody.getProperties().getEffectiveFrom(),
                                                  requestBody.getProperties().getEffectiveTo(),
@@ -304,14 +304,14 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -377,15 +377,15 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  responsibilityGUID,
                                                  responsibilityGUIDParameterName,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                                  new Date(),
                                                  methodName);
             }
@@ -449,14 +449,14 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  resourceGUID,
                                                  resourceGUIDParameterName,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                                  null,
                                                  requestBody.getProperties().getEffectiveFrom(),
                                                  requestBody.getProperties().getEffectiveTo(),
@@ -470,14 +470,14 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  resourceGUID,
                                                  resourceGUIDParameterName,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -543,15 +543,15 @@ public class GovernanceRolesRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  resourceGUID,
                                                  resourceGUIDParameterName,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                  governanceRoleGUID,
                                                  governanceRoleGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataType.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
                                                  new Date(),
                                                  methodName);
             }
@@ -668,7 +668,7 @@ public class GovernanceRolesRESTServices
             response.setElement(handler.getBeanFromRepository(userId,
                                                               governanceRoleGUID,
                                                               governanceRoleGUIDParameterName,
-                                                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                               false,
                                                               false,
                                                               new Date(),

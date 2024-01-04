@@ -23,6 +23,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -179,7 +181,7 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+                String assetTypeName = OpenMetadataType.ASSET.typeName;
 
                 if (typeName != null)
                 {
@@ -187,7 +189,7 @@ public class AssetOwnerRESTServices
                 }
 
                 String assetTypeGUID = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                OpenMetadataType.ASSET.typeName,
                                                                                 instanceHandler.getServiceName(),
                                                                                 methodName,
                                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
@@ -229,7 +231,7 @@ public class AssetOwnerRESTServices
                     this.maintainSupplementaryProperties(userId,
                                                          assetGUID,
                                                          assetGUIDParameterName,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          requestBody.getQualifiedName(),
                                                          requestBody,
                                                          true,
@@ -290,23 +292,23 @@ public class AssetOwnerRESTServices
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.addAssetFromTemplate(userId,
-                                                                 null,
-                                                                 null,
-                                                                 templateGUID,
-                                                                 templateGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                 requestBody.getQualifiedName(),
-                                                                 qualifiedNameParameterName,
-                                                                 requestBody.getDisplayName(),
-                                                                 requestBody.getVersionIdentifier(),
-                                                                 requestBody.getDescription(),
-                                                                 requestBody.getPathName(),
-                                                                 requestBody.getNetworkAddress(),
-                                                                 false,
-                                                                 false,
-                                                                 new Date(),
-                                                                 methodName));
+                                                              null,
+                                                              null,
+                                                              templateGUID,
+                                                              templateGUIDParameterName,
+                                                              OpenMetadataType.ASSET.typeGUID,
+                                                              OpenMetadataType.ASSET.typeName,
+                                                              requestBody.getQualifiedName(),
+                                                              qualifiedNameParameterName,
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getVersionIdentifier(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getPathName(),
+                                                              requestBody.getNetworkAddress(),
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
             }
             else
             {
@@ -383,7 +385,7 @@ public class AssetOwnerRESTServices
                     this.maintainSupplementaryProperties(userId,
                                                          assetGUID,
                                                          assetGUIDParameterName,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          requestBody.getQualifiedName(),
                                                          requestBody,
                                                          isMergeUpdate,
@@ -464,13 +466,13 @@ public class AssetOwnerRESTServices
                 if (requestBody.getProperties() instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
                 {
                     InstanceProperties instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
-                                                                                                   null,
-                                                                                                   OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
-                                                                                                   dataContentForDataSetProperties.getQueryId(),
-                                                                                                   methodName);
+                                                                                                                      null,
+                                                                                                                      OpenMetadataType.QUERY_ID_PROPERTY_NAME,
+                                                                                                                      dataContentForDataSetProperties.getQueryId(),
+                                                                                                                      methodName);
                     instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(),
                                                                                                    instanceProperties,
-                                                                                                   OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                                                                   OpenMetadataType.QUERY_PROPERTY_NAME,
                                                                                                    dataContentForDataSetProperties.getQuery(),
                                                                                                    methodName);
 
@@ -479,10 +481,10 @@ public class AssetOwnerRESTServices
                                                                   null,
                                                                   fromAssetGUID,
                                                                   fromAssetGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   toAssetGUID,
                                                                   toAssetGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   false,
                                                                   false,
                                                                   handler.getSupportedZones(),
@@ -501,10 +503,10 @@ public class AssetOwnerRESTServices
                                                                   null,
                                                                   fromAssetGUID,
                                                                   fromAssetGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   toAssetGUID,
                                                                   toAssetGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   false,
                                                                   false,
                                                                   handler.getSupportedZones(),
@@ -524,10 +526,10 @@ public class AssetOwnerRESTServices
                                                               null,
                                                               fromAssetGUID,
                                                               fromAssetGUIDParameterName,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              OpenMetadataType.ASSET.typeName,
                                                               toAssetGUID,
                                                               toAssetGUIDParameterName,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              OpenMetadataType.ASSET.typeName,
                                                               false,
                                                               false,
                                                               handler.getSupportedZones(),
@@ -608,11 +610,11 @@ public class AssetOwnerRESTServices
                 relationship = handler.getUniqueAttachmentLink(userId,
                                                                fromAssetGUID,
                                                                fromAssetGUIDParameterName,
-                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               OpenMetadataType.ASSET.typeName,
                                                                relationshipTypeGUID,
                                                                relationshipTypeName,
                                                                toAssetGUID,
-                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               OpenMetadataType.ASSET.typeName,
                                                                2,
                                                                false,
                                                                false,
@@ -624,11 +626,11 @@ public class AssetOwnerRESTServices
                 relationship = handler.getUniqueAttachmentLink(userId,
                                                                fromAssetGUID,
                                                                fromAssetGUIDParameterName,
-                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               OpenMetadataType.ASSET.typeName,
                                                                relationshipTypeGUID,
                                                                relationshipTypeName,
                                                                toAssetGUID,
-                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               OpenMetadataType.ASSET.typeName,
                                                                2,
                                                                false,
                                                                false,
@@ -700,8 +702,8 @@ public class AssetOwnerRESTServices
                 {
                     if (requestBody.getProperties() instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
                     {
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
+                        instanceProperties = handler.getRepositoryHelper().addStringPropertyToInstance(handler.getServiceName(), instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
                     }
                 }
 
@@ -880,11 +882,11 @@ public class AssetOwnerRESTServices
                 relationships = handler.getAttachmentLinks(userId,
                                                            fromAssetGUID,
                                                            fromAssetGUIDParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            relationshipTypeGUID,
                                                            relationshipTypeName,
                                                            null,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            2,
                                                            false,
                                                            false,
@@ -898,11 +900,11 @@ public class AssetOwnerRESTServices
                 relationships = handler.getAttachmentLinks(userId,
                                                            fromAssetGUID,
                                                            fromAssetGUIDParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            relationshipTypeGUID,
                                                            relationshipTypeName,
                                                            null,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            2,
                                                            false,
                                                            false,
@@ -991,11 +993,11 @@ public class AssetOwnerRESTServices
                 relationships = handler.getAttachmentLinks(userId,
                                                            toAssetGUID,
                                                            toAssetGUIDParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            relationshipTypeGUID,
                                                            relationshipTypeName,
                                                            null,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            1,
                                                            false,
                                                            false,
@@ -1009,11 +1011,11 @@ public class AssetOwnerRESTServices
                 relationships = handler.getAttachmentLinks(userId,
                                                            toAssetGUID,
                                                            toAssetGUIDParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            relationshipTypeGUID,
                                                            relationshipTypeName,
                                                            null,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            1,
                                                            false,
                                                            false,
@@ -1074,12 +1076,12 @@ public class AssetOwnerRESTServices
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
-                    properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
-                    properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQueryId(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataType.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQuery(repositoryHelper.getStringProperty(instanceHandler.getServiceName(), OpenMetadataType.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());
@@ -1268,7 +1270,7 @@ public class AssetOwnerRESTServices
         EntityDetail  assetEntity = handler.getEntityFromRepository(userId,
                                                                     assetGUID,
                                                                     assetGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    OpenMetadataType.ASSET.typeName,
                                                                     null,
                                                                     null,
                                                                     false,
@@ -1298,15 +1300,15 @@ public class AssetOwnerRESTServices
                                                   null,
                                                   assetGUID,
                                                   assetGUIDParameterName,
-                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                  OpenMetadataType.ASSET.typeName,
                                                   schemaTypeGUID,
                                                   schemaTypeGUIDParameterName,
-                                                  OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                   false,
                                                   false,
                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                   null,
                                                   new Date(),
                                                   methodName);
@@ -1335,7 +1337,7 @@ public class AssetOwnerRESTServices
                                                    String               serverName,
                                                    String               methodName) throws InvalidParameterException
     {
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 
         if (schemaType.getTypeName() != null)
         {
@@ -1343,7 +1345,7 @@ public class AssetOwnerRESTServices
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1440,7 +1442,7 @@ public class AssetOwnerRESTServices
                 EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
                                                                             assetGUID,
                                                                             assetGUIDParameterName,
-                                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                            OpenMetadataType.ASSET.typeName,
                                                                             null,
                                                                             null,
                                                                             false,
@@ -1490,9 +1492,9 @@ public class AssetOwnerRESTServices
                                                                           null,
                                                                           schemaTypeGUID,
                                                                           schemaTypeGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                          OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                           schemaAttribute.getQualifiedName(),
                                                                           qualifiedNameParameterName,
                                                                           schemaAttributeBuilder,
@@ -1742,7 +1744,7 @@ public class AssetOwnerRESTServices
                     EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
                                                                                 anchorGUID,
                                                                                 anchorGUIDParameterName,
-                                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                                 null,
                                                                                 null,
                                                                                 false,
@@ -2284,8 +2286,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaTypeGUID,
                                                schemaTypeGUIDParameterName,
-                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -2300,8 +2302,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaTypeGUID,
                                                schemaTypeGUIDParameterName,
-                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -2611,7 +2613,7 @@ public class AssetOwnerRESTServices
                                                                                                invalidParameterHandler,
                                                                                                userId,
                                                                                                schemaTypeGUID,
-                                                                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                                                null,
                                                                                                null,
                                                                                                1,
@@ -2629,17 +2631,17 @@ public class AssetOwnerRESTServices
                     if ((relationship != null) && (relationship.getType() != null) &&
                                 ((repositoryHelper.isTypeOf(handler.getServiceName(),
                                                             relationship.getType().getTypeDefName(),
-                                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
+                                                            OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
                                          (repositoryHelper.isTypeOf(handler.getServiceName(),
                                                                     relationship.getType().getTypeDefName(),
-                                                                    OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))))
+                                                                    OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))))
                     {
                         final String parentGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
 
                         EntityDetail parentEntity = handler.getEntityFromRepository(userId,
                                                                                     relationship.getEntityOneProxy().getGUID(),
                                                                                     parentGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                                     null,
                                                                                     null,
                                                                                     false,
@@ -2725,7 +2727,7 @@ public class AssetOwnerRESTServices
                         EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
                                                                                     assetGUID,
                                                                                     anchorGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    OpenMetadataType.ASSET.typeName,
                                                                                     null,
                                                                                     null,
                                                                                     false,
@@ -2820,7 +2822,7 @@ public class AssetOwnerRESTServices
                     EntityDetail anchorEntity = handler.getEntityFromRepository(userId,
                                                                                 assetGUID,
                                                                                 anchorGUIDParameterName,
-                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                OpenMetadataType.ASSET.typeName,
                                                                                 null,
                                                                                 null,
                                                                                 false,
@@ -3040,7 +3042,7 @@ public class AssetOwnerRESTServices
                                                              String                    serverName,
                                                              String                    methodName) throws InvalidParameterException
     {
-        String typeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
 
         if (schemaAttributeProperties.getTypeName() != null)
         {
@@ -3048,7 +3050,7 @@ public class AssetOwnerRESTServices
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                    instanceHandler.getServiceName(),
                                                                    methodName,
                                                                    repositoryHelper);
@@ -3135,18 +3137,18 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 InstanceProperties properties = instanceHandler.getRepositoryHelper(userId, serverName, methodName).addStringPropertyToInstance(instanceHandler.getServiceName(),
-                                                                                             null,
-                                                                                             OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
-                                                                                             requestBody.getFormula(),
-                                                                                             methodName);
+                                                                                                                                                null,
+                                                                                                                                                OpenMetadataProperty.FORMULA.name,
+                                                                                                                                                requestBody.getFormula(),
+                                                                                                                                                methodName);
                 handler.setClassificationInRepository(userId,
                                                       null,
                                                       null,
                                                       schemaElementGUID,
                                                       schemaElementGUIDParameterName,
-                                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                       properties,
                                                       false,
                                                       false,
@@ -3161,9 +3163,9 @@ public class AssetOwnerRESTServices
                                                       null,
                                                       schemaElementGUID,
                                                       schemaElementGUIDParameterName,
-                                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                      OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                      OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                       null,
                                                       false,
                                                       false,
@@ -3221,9 +3223,9 @@ public class AssetOwnerRESTServices
                                                            null,
                                                            schemaElementGUID,
                                                            schemaElementGUIDParameterName,
-                                                           OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                            false,
                                                            false,
                                                            requestBody.getEffectiveTime(),
@@ -3236,9 +3238,9 @@ public class AssetOwnerRESTServices
                                                            null,
                                                            schemaElementGUID,
                                                            schemaElementGUIDParameterName,
-                                                           OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                           OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                            false,
                                                            false,
                                                            null,
@@ -3294,8 +3296,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaAttributeGUID,
                                                schemaAttributeGUIDParameterName,
-                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -3359,8 +3361,8 @@ public class AssetOwnerRESTServices
                 response.setElementList(handler.findSchemaAttributes(userId,
                                                                      requestBody.getSearchString(),
                                                                      searchStringParameterName,
-                                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                      null,
                                                                      null,
                                                                      startFrom,
@@ -3427,7 +3429,7 @@ public class AssetOwnerRESTServices
                 response.setElementList(handler.getAttachedSchemaAttributes(userId,
                                                                             schemaTypeGUID,
                                                                             elementGUIDParameterName,
-                                                                            OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                            OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                             startFrom,
                                                                             pageSize,
                                                                             false,
@@ -3488,8 +3490,8 @@ public class AssetOwnerRESTServices
                 SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getSchemaAttributesByName(userId,
-                                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                           requestBody.getName(),
                                                                           null,
                                                                           null,
@@ -3553,7 +3555,7 @@ public class AssetOwnerRESTServices
                 response.setElement(handler.getSchemaAttribute(userId,
                                                                schemaAttributeGUID,
                                                                guidParameterName,
-                                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                null,
                                                                null,
                                                                false,
@@ -3624,7 +3626,7 @@ public class AssetOwnerRESTServices
                                                      assetGUID,
                                                      assetGUID,
                                                      assetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      connection,
                                                      assetSummary,
                                                      false,
@@ -4265,18 +4267,18 @@ public class AssetOwnerRESTServices
                 {
                     if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.USER_ID)
                     {
-                        ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+                        ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
                     }
                     else if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.PROFILE_ID)
                     {
-                        ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+                        ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
                     }
                 }
 
                 handler.addOwner(userId,
                                  assetGUID,
                                  assetGUIDParameterName,
-                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                 OpenMetadataType.ASSET.typeName,
                                  requestBody.getOwnerId(),
                                  ownerTypeName,
                                  requestBody.getOwnerPropertyName(),
@@ -4699,8 +4701,8 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 List<AssetElement> assets = handler.getAssetsByName(userId,
-                                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    OpenMetadataType.ASSET.typeGUID,
+                                                                    OpenMetadataType.ASSET.typeName,
                                                                     requestBody.getName(),
                                                                     nameParameterName,
                                                                     startFrom,
@@ -4828,7 +4830,7 @@ public class AssetOwnerRESTServices
             AssetElement asset = handler.getBeanFromRepository(userId,
                                                                assetGUID,
                                                                assetGUIDParameter,
-                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               OpenMetadataType.ASSET.typeName,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -5076,8 +5078,8 @@ public class AssetOwnerRESTServices
                                            null,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           OpenMetadataType.ASSET.typeGUID,
+                                           OpenMetadataType.ASSET.typeName,
                                            null,
                                            null,
                                            false,
@@ -5355,7 +5357,7 @@ public class AssetOwnerRESTServices
     {
         EntityDetail glossaryEntity = assetHandler.getSupplementaryProperties(elementGUID,
                                                                               elementGUIDParameterName,
-                                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                              OpenMetadataType.ASSET.typeName,
                                                                               false,
                                                                               false,
                                                                               new Date(),
@@ -5364,24 +5366,24 @@ public class AssetOwnerRESTServices
         if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
         {
             supplementaryProperties.setDisplayName(repositoryHelper.getStringProperty(serviceName,
-                                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                       glossaryEntity.getProperties(),
                                                                                       methodName));
 
             supplementaryProperties.setDisplaySummary(repositoryHelper.getStringProperty(serviceName,
-                                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
-                                                                                  glossaryEntity.getProperties(),
-                                                                                  methodName));
+                                                                                         OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                                         glossaryEntity.getProperties(),
+                                                                                         methodName));
             supplementaryProperties.setDisplayDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                                      glossaryEntity.getProperties(),
-                                                                                      methodName));
+                                                                                             OpenMetadataProperty.DESCRIPTION.name,
+                                                                                             glossaryEntity.getProperties(),
+                                                                                             methodName));
             supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                                       OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
                                                                                        glossaryEntity.getProperties(),
                                                                                        methodName));
             supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                                OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                                 glossaryEntity.getProperties(),
                                                                                 methodName));
         }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.outtopic;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerEventType;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -736,7 +736,7 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      OpenMetadataType.ASSET.typeName,
                                                       fullEntity,
                                                       guidParameterName,
                                                       false,
@@ -792,6 +792,6 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName);
     }
 }

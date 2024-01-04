@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -129,7 +130,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME;
+        String typeName = OpenMetadataType.PERSON_ROLE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -137,7 +138,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                                   OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -147,7 +148,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
          * is a type of governance role then domain identifier is set.  If the role comes from an API that does not explicitly support
          * the domain identifier then it will be set to zero (all domains) unless overridden in the extended properties.
          */
-        boolean domainIdentifierSet = repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME);
+        boolean domainIdentifierSet = repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME);
 
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
                                                               identifier,
@@ -237,10 +238,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                           OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                           OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            roleBuilder,
                                            supportedZones,
                                            methodName);
@@ -295,15 +296,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          externalSourceName,
                                          profileGUID,
                                          profileGUIDParameterName,
-                                         OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                         OpenMetadataType.PERSON_TYPE_NAME,
                                          roleGUID,
                                          roleGUIDParameterName,
-                                         OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                         OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                          forLineage,
                                          forDuplicateProcessing,
                                          supportedZones,
-                                         OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                         OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                         OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
+                                         OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                          builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
                                          effectiveFrom,
                                          effectiveTo,
@@ -357,7 +358,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                           externalSourceName,
                                           appointmentGUID,
                                           appointmentGUIDParameterName,
-                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                          OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                           isMergeUpdate,
                                           builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
                                           forLineage,
@@ -407,7 +408,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
                                                                             appointmentGUID,
                                                                             appointmentGUIDParameterName,
-                                                                            OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                            OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                                                             effectiveTime,
                                                                             methodName);
 
@@ -544,15 +545,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   teamLeaderRoleGUID,
                                   teamLeaderRoleGUIDParameterName,
-                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                   teamGUID,
                                   teamGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -600,16 +601,16 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       teamLeaderRoleGUID,
                                       teamLeaderRoleGUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                      OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                       teamGUID,
                                       teamGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM_TYPE_GUID,
+                                      OpenMetadataType.TEAM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -663,15 +664,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   teamMemberRoleGUID,
                                   teamMemberRoleGUIDParameterName,
-                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                   teamGUID,
                                   teamGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -719,16 +720,16 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       teamMemberRoleGUID,
                                       teamMemberRoleGUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                      OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                       teamGUID,
                                       teamGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM_TYPE_GUID,
+                                      OpenMetadataType.TEAM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -777,15 +778,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   personRoleGUID,
                                   personRoleGUIDParameterName,
-                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                   governanceResponsibilityGUID,
                                   governanceResponsibilityGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -833,16 +834,16 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       personRoleGUID,
                                       personRoleGUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                      OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                       governanceResponsibilityGUID,
                                       governanceResponsibilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                      OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -884,10 +885,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         governanceResponsibilityGUID,
                                         governanceResponsibilityGUIDParameterName,
-                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                        OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -974,7 +975,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                                   OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -986,7 +987,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
          */
         boolean domainIdentifierSet = (typeName != null) &&
                                       (!(isMergeUpdate) && (domainIdentifier == 0)) &&
-                                      (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME));
+                                      (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME));
 
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
                                                               identifier,
@@ -1059,8 +1060,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     roleGUID,
                                     roleGUIDParameterName,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -1105,8 +1106,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                              OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -1150,15 +1151,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.IDENTIFIER_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1208,10 +1209,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1259,10 +1260,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         teamGUID,
                                         teamGUIDParameterName,
-                                        OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                        OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.TEAM_TYPE_NAME,
+                                        OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -1310,10 +1311,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         teamGUID,
                                         teamGUIDParameterName,
-                                        OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                        OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.TEAM_TYPE_NAME,
+                                        OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -1362,10 +1363,10 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         communityGUID,
                                         communityGUIDParameterName,
-                                        OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                        OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1410,7 +1411,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         return getBeanFromRepository(userId,
                                      personRoleGUID,
                                      personRoleGUIDParameterName,
-                                     OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                     OpenMetadataType.PERSON_TYPE_NAME,
                                      forLineage,
                                      forDuplicateProcessing,
                                      effectiveTime,
@@ -1451,13 +1452,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1506,13 +1507,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                    OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1563,8 +1564,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         if (domainIdentifier == 0)
         {
             return this.getBeansByType(userId,
-                                       OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                       OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                       OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                       OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                        null,
                                        forLineage,
                                        forDuplicateProcessing,
@@ -1577,9 +1578,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
         return this.getBeansByIntValue(userId,
                                        domainIdentifier,
-                                       OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                       OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                       OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                       OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+                                       OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                       OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                        null,
                                        null,
                                        forLineage,

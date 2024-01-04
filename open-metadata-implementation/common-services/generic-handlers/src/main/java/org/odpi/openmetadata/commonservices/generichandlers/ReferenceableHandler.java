@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -154,8 +156,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -169,7 +171,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanGUIDByUniqueName(userId,
                                             name,
                                             nameParameterName,
-                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                             resultTypeGUID,
                                             resultTypeName,
                                             forLineage,
@@ -259,8 +261,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -274,7 +276,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanByUniqueName(userId,
                                         name,
                                         nameParameterName,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                         resultTypeGUID,
                                         resultTypeName,
                                         forLineage,
@@ -374,8 +376,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -387,7 +389,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getEntityGUIDsByValue(userId,
                                           name,
@@ -498,8 +500,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -511,7 +513,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -565,8 +567,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -578,7 +580,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         List<EntityDetail> matchingEntities = this.getEntitiesByValue(userId,
                                                                       name,
@@ -657,8 +659,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -670,7 +672,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getEntityGUIDsByValue(userId,
                                           name,
@@ -781,8 +783,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
+        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (typeGUID != null)
         {
@@ -794,7 +796,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -849,8 +851,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     UserNotAuthorizedException,
                                                     PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -861,8 +863,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                            builder.getOwnershipProperties(owner, ownerTypeName, ownerPropertyName, methodName),
                                            true,
                                            forLineage,
@@ -905,8 +907,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -951,8 +953,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                                         OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                                         OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -972,7 +974,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   true,
@@ -985,12 +987,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
+                                                                             OpenMetadataType.OWNER_PROPERTY_NAME,
                                                                              classification.getProperties(),
                                                                              methodName);
 
@@ -1050,8 +1052,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -1062,8 +1064,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecurityTagProperties(securityLabels, securityProperties, accessGroups, methodName),
                                            true,
                                            forLineage,
@@ -1106,8 +1108,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1148,8 +1150,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                         OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1169,7 +1171,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   true,
@@ -1254,14 +1256,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME, steward, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.NOTES_PROPERTY_NAME, notes, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.LEVEL_IDENTIFIER_PROPERTY_NAME, levelIdentifier, methodName);
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME, levelIdentifier, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1369,7 +1371,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                                          classificationName,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
@@ -1390,7 +1392,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   false,
@@ -1410,7 +1412,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             if (returnSpecificLevel)
                             {
                                 int storedLevelIdentifier = repositoryHelper.getIntProperty(serviceName,
-                                                                                            OpenMetadataAPIMapper.LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                                            OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME,
                                                                                             classification.getProperties(),
                                                                                             methodName);
 
@@ -1499,17 +1501,17 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME, steward, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.NOTES_PROPERTY_NAME, notes, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.BASIS_IDENTIFIER_PROPERTY_NAME, basisIdentifier, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.RETENTION_ASSOCIATED_GUID_PROPERTY_NAME, associatedGUID, methodName);
-        properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.RETENTION_ARCHIVE_AFTER_PROPERTY_NAME, archiveAfter, methodName);
-        properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.RETENTION_DELETE_AFTER_PROPERTY_NAME, deleteAfter, methodName);
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.BASIS_IDENTIFIER_PROPERTY_NAME, basisIdentifier, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ASSOCIATED_GUID_PROPERTY_NAME, associatedGUID, methodName);
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ARCHIVE_AFTER_PROPERTY_NAME, archiveAfter, methodName);
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_DELETE_AFTER_PROPERTY_NAME, deleteAfter, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1517,8 +1519,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -1565,8 +1567,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1611,8 +1613,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                                         OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                                         OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1632,7 +1634,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   false,
@@ -1645,14 +1647,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             if (returnSpecificBasisLevel)
                             {
                                 int storedLevelIdentifier = repositoryHelper.getIntProperty(serviceName,
-                                                                                            OpenMetadataAPIMapper.BASIS_IDENTIFIER_PROPERTY_NAME,
+                                                                                            OpenMetadataType.BASIS_IDENTIFIER_PROPERTY_NAME,
                                                                                             classification.getProperties(),
                                                                                             methodName);
 
@@ -1725,9 +1727,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.COUNTS_PROPERTY_NAME, counts, methodName);
-        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.VALUES_PROPERTY_NAME, values, methodName);
-        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.FLAGS_PROPERTY_NAME, flags, methodName);
+        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataType.COUNTS_PROPERTY_NAME, counts, methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataType.VALUES_PROPERTY_NAME, values, methodName);
+        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataType.FLAGS_PROPERTY_NAME, flags, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1735,8 +1737,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -1783,8 +1785,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1833,9 +1835,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.MEASUREMENT_COUNTS_PROPERTY_NAME, counts, methodName);
-        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.MEASUREMENT_VALUES_PROPERTY_NAME, values, methodName);
-        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.MEASUREMENT_FLAGS_PROPERTY_NAME, flags, methodName);
+        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataType.MEASUREMENT_COUNTS_PROPERTY_NAME, counts, methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataType.MEASUREMENT_VALUES_PROPERTY_NAME, values, methodName);
+        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataType.MEASUREMENT_FLAGS_PROPERTY_NAME, flags, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1843,8 +1845,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -1892,8 +1894,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1938,7 +1940,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.NAME_PROPERTY_NAME, subjectAreaName, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.NAME.name, subjectAreaName, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -1946,8 +1948,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -1994,8 +1996,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -2082,8 +2084,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                                         OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -2103,7 +2105,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   false,
@@ -2116,12 +2118,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.NAME.name,
                                                                              classification.getProperties(),
                                                                              methodName);
 
@@ -2181,8 +2183,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -2193,8 +2195,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
                                            builder.getBusinessSignificanceProperties(description, scope, businessCapabilityGUID, methodName),
                                            true,
                                            forLineage,
@@ -2237,8 +2239,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -2279,8 +2281,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -2291,8 +2293,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.TEMPLATE_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
                                            builder.getTemplateProperties(name, description, additionalProperties, methodName),
                                            true,
                                            forLineage,
@@ -2335,8 +2337,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.TEMPLATE_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -2380,8 +2382,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -2392,8 +2394,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
+                                           OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
+                                           OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
                                            builder.getDataFieldValuesProperties(defaultValue, sampleValues, dataPattern, namePattern, methodName),
                                            true,
                                            forLineage,
@@ -2436,8 +2438,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
-                                                OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
+                                                OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
+                                                OpenMetadataType.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -2487,8 +2489,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                         OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -2508,7 +2510,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
                                                   false,
@@ -2521,12 +2523,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             String retrievedDefaultValue = repositoryHelper.getStringProperty(serviceName,
-                                                                                              OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                              OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
                                                                                               classification.getProperties(),
                                                                                               methodName);
 
@@ -2537,7 +2539,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 if (sampleValues != null)
                                 {
                                     List<String> retrievedSampleValues = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataAPIMapper.SAMPLE_VALUES_PROPERTY_NAME,
+                                                                                                                 OpenMetadataType.SAMPLE_VALUES_PROPERTY_NAME,
                                                                                                                  classification.getProperties(),
                                                                                                                  methodName);
 
@@ -2554,7 +2556,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 if (dataPattern != null)
                                 {
                                     List<String> retrievedDataPatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataAPIMapper.DATA_PATTERN_PROPERTY_NAME,
+                                                                                                                 OpenMetadataType.DATA_PATTERN_PROPERTY_NAME,
                                                                                                                  classification.getProperties(),
                                                                                                                  methodName);
 
@@ -2571,7 +2573,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 if (namePattern != null)
                                 {
                                     List<String> retrievedNamePatterns = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                                 OpenMetadataAPIMapper.NAME_PATTERN_PROPERTY_NAME,
+                                                                                                                 OpenMetadataType.NAME_PATTERN_PROPERTY_NAME,
                                                                                                                  classification.getProperties(),
                                                                                                                  methodName);
 
@@ -2641,10 +2643,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getAttachedElements(userId,
                                         validValueGUID,
                                         validValueGUIDParameter,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -2691,10 +2693,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getAttachedElements(userId,
                                         validValueGUID,
                                         validValueGUIDParameter,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -2749,15 +2751,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   elementGUID,
                                   elementGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   moreInformationGUID,
                                   moreInformationGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                  OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -2805,15 +2807,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       elementGUID,
                                       elementGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       moreInformationGUID,
                                       moreInformationGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -2904,8 +2906,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -2922,8 +2924,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -2972,8 +2974,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -2990,8 +2992,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3110,15 +3112,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   beanGUID,
                                   beanGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3180,13 +3182,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DESCRIPTION.name,
                                                                                      description,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
                                                                   expression,
                                                                   methodName);
 
@@ -3194,36 +3196,36 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME,
                                                                     statusOrdinal,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME);
         }
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
+                                                               OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
                                                                confidence,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CREATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataType.CREATED_BY_PROPERTY_NAME,
                                                                   createdBy,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                   steward,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                   source,
                                                                   methodName);
 
@@ -3232,15 +3234,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   beanGUID,
                                   beanGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3289,16 +3291,16 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       beanGUID,
                                       beanGUIDParameter,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       glossaryTermGUID,
                                       glossaryTermGUIDParameter,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -3336,8 +3338,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
 
         if (suppliedStartingTypeName != null)
         {
@@ -3350,8 +3352,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3398,8 +3400,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        String startingTypeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
-        String resultingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
+        String resultingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedResultingTypeName != null)
         {
@@ -3412,8 +3414,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3471,30 +3473,30 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.RESOURCE_USE_PROPERTY_NAME,
+                                                                                     OpenMetadataType.RESOURCE_USE_PROPERTY_NAME,
                                                                                      resourceUse,
                                                                                      methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.WATCH_RESOURCE_PROPERTY_NAME,
-                                                                  watchResource,
-                                                                  methodName);
+                                                                   properties,
+                                                                   OpenMetadataType.WATCH_RESOURCE_PROPERTY_NAME,
+                                                                   watchResource,
+                                                                   methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
                                   beanGUID,
                                   beanGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   memberGUID,
                                   memberGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3544,16 +3546,16 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           externalSourceName,
                                           beanGUID,
                                           beanGUIDParameter,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          OpenMetadataType.REFERENCEABLE.typeName,
                                           memberGUID,
                                           memberGUIDParameter,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          OpenMetadataType.REFERENCEABLE.typeGUID,
+                                          OpenMetadataType.REFERENCEABLE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                           effectiveTime,
                                           methodName);
         }
@@ -3594,8 +3596,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -3608,8 +3610,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3657,8 +3659,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -3671,8 +3673,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3730,13 +3732,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.ASSIGNMENT_TYPE_PROPERTY_NAME,
+                                                                                     OpenMetadataType.ASSIGNMENT_TYPE_PROPERTY_NAME,
                                                                                      assignmentType,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -3745,15 +3747,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   assignedActorGUID,
                                   assignedActorGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   assignedScopeGUID,
                                   assignedScopeGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3801,15 +3803,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       assignedActorGUID,
                                       assignedActorGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       assignedScopeGUID,
                                       assignedScopeGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -3849,8 +3851,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -3867,8 +3869,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3917,8 +3919,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -3935,8 +3937,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3992,7 +3994,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
+                                                                                     OpenMetadataType.STAKEHOLDER_ROLE_PROPERTY_NAME,
                                                                                      stakeholderRole,
                                                                                      methodName);
 
@@ -4001,15 +4003,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   commissionedGUID,
                                   commissionedGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   stakeholderGUID,
                                   stakeholderGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -4057,15 +4059,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       commissionedGUID,
                                       commissionedGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       stakeholderGUID,
                                       stakeholderGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -4105,8 +4107,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -4123,8 +4125,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4173,8 +4175,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -4191,8 +4193,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4242,8 +4244,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -4260,8 +4262,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4311,8 +4313,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
-        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -4329,8 +4331,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4387,15 +4389,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   governanceDefinitionGUID,
                                   governanceDefinitionGUIDParameterName,
-                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
                                   referenceableGUID,
                                   referenceableGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                  OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                  OpenMetadataType.GOVERNED_BY_TYPE_GUID,
+                                  OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -4443,15 +4445,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       governanceDefinitionGUID,
                                       governanceDefinitionGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
                                       referenceableGUID,
                                       referenceableGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                      OpenMetadataType.GOVERNED_BY_TYPE_GUID,
+                                      OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -4489,7 +4491,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedResultingTypeName != null)
         {
@@ -4501,9 +4503,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         governanceDefinitionGUID,
                                         governanceDefinitionGUIDParameterName,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.GOVERNED_BY_TYPE_GUID,
+                                        OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4560,15 +4562,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   referenceableGUID,
                                   referenceableGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   governanceDefinitionGUID,
                                   governanceDefinitionGUIDParameterName,
-                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
-                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                  OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -4616,15 +4618,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       referenceableGUID,
                                       referenceableGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
                                       governanceDefinitionGUID,
                                       governanceDefinitionGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                      OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -4662,7 +4664,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedResultingTypeName != null)
         {
@@ -4674,9 +4676,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         governanceDefinitionGUID,
                                         governanceDefinitionGUIDParameterName,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                        OpenMetadataType.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -4736,19 +4738,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.DESIGN_STEP_PROPERTY_NAME,
+                                                                                     OpenMetadataType.DESIGN_STEP_PROPERTY_NAME,
                                                                                      designStep,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ROLE_PROPERTY_NAME,
+                                                                  OpenMetadataType.ROLE_PROPERTY_NAME,
                                                                   role,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -4759,15 +4761,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   designArtifactGUID,
                                   designArtifactGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   implementationGUID,
                                   implementationGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -4815,15 +4817,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       designArtifactGUID,
                                       designArtifactGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       implementationGUID,
                                       implementationGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -4863,10 +4865,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getAttachedElements(userId,
                                         collectionGUID,
                                         collectionGUIDParameterName,
-                                        OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.COLLECTION_TYPE_NAME,
+                                        OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                        OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         null,
                                         null,
                                         0,
@@ -4905,7 +4907,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             if (repositoryHelper.getClassificationFromEntity(serviceName,
                                                              entity,
-                                                             OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                             OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                              methodName) != null)
             {
                 classificationNeeded = false;
@@ -4923,9 +4925,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                null,
                                                entity,
                                                guidParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
-                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                               OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                               OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                null,
                                                true,
                                                false,
@@ -4958,36 +4960,36 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                                      OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                                       steward,
                                                                                       methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                   stewardTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                   stewardPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                   source,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                   notes,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
                                                                statusIdentifier,
                                                                methodName);
 
@@ -5045,7 +5047,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity1 = this.getEntityFromRepository(userId,
                                                             element1GUID,
                                                             element1GUIDParameter,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             null,
                                                             null,
                                                             false,
@@ -5057,7 +5059,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity2 = this.getEntityFromRepository(userId,
                                                             element2GUID,
                                                             element2GUIDParameter,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             null,
                                                             null,
                                                             false,
@@ -5091,15 +5093,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   null,
                                   element1GUID,
                                   element1GUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   element2GUID,
                                   element2GUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   false,
                                   true,
                                   serviceSupportedZones,
-                                  OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
-                                  OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
+                                  OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_GUID,
+                                  OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_NAME,
                                   properties,
                                   null,
                                   null,
@@ -5143,10 +5145,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                             null,
                                                             null,
-                                                            OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
+                                                            OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_GUID,
+                                                            OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_NAME,
                                                             element1GUID,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             element2GUID,
                                                             true,
                                                             true,
@@ -5159,9 +5161,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         if (this.getAttachmentLinks(userId,
                                     element1GUID,
                                     element1GUIDParameter,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
+                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                    OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_GUID,
+                                    OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_NAME,
                                     null,
                                     null,
                                     0,
@@ -5178,9 +5180,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     null,
                                                     element1GUID,
                                                     element1GUIDParameter,
-                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                    OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     true,
                                                     true,
                                                     serviceSupportedZones,
@@ -5192,9 +5194,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         if (this.getAttachmentLinks(userId,
                                     element2GUID,
                                     element2GUIDParameter,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
-                                    OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
+                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                    OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_GUID,
+                                    OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_NAME,
                                     null,
                                     null,
                                     0,
@@ -5211,9 +5213,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     null,
                                                     element2GUID,
                                                     element2GUIDParameter,
-                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                    OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     false,
                                                     true,
                                                     serviceSupportedZones,
@@ -5268,9 +5270,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            null,
                                            entity,
                                            guidParameterName,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_NAME,
+                                           OpenMetadataType.REFERENCEABLE.typeName,
+                                           OpenMetadataType.CONSOLIDATED_DUPLICATE_TYPE_GUID,
+                                           OpenMetadataType.CONSOLIDATED_DUPLICATE_TYPE_NAME,
                                            properties,
                                            false,
                                            false,
@@ -5331,7 +5333,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail consolidatedEntity = this.getEntityFromRepository(userId,
                                                                        consolidatedElementGUID,
                                                                        consolidatedElementGUIDParameter,
-                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       OpenMetadataType.REFERENCEABLE.typeName,
                                                                        null,
                                                                        null,
                                                                        false,
@@ -5365,15 +5367,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   null,
                                                   sourceElementGUID,
                                                   sourceElementGUIDsParameterName,
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   consolidatedElementGUID,
                                                   consolidatedElementGUIDParameter,
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   false,
                                                   true,
                                                   serviceSupportedZones,
-                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                  OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                                  OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                                   null,
                                                   null,
                                                   null,
@@ -5420,10 +5422,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> propertyFacets = this.getAttachedEntities(userId,
                                                                      referenceableGUID,
                                                                      referenceableGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
+                                                                     OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                                                      null,
                                                                      null,
                                                                      2,
@@ -5437,9 +5439,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (vendorProperties != null)
         {
-            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     vendorProperties,
                                                                     repositoryHelper,
                                                                     serviceName,
@@ -5452,19 +5454,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     if (propertyFacet != null)
                     {
                         String description = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.DESCRIPTION.name,
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.updateBeanInRepository(userId,
                                                         null,
                                                         null,
                                                         propertyFacet.getGUID(),
                                                         propertyFacetGUIDParameter,
-                                                        OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                        OpenMetadataType.PROPERTY_FACET_TYPE_GUID,
+                                                        OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         supportedZones,
@@ -5491,15 +5493,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 String propertyFacetGUID = createBeanInRepository(userId,
                                                                   null,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                                  OpenMetadataType.PROPERTY_FACET_TYPE_GUID,
+                                                                  OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                                                   builder,
                                                                   effectiveTime,
                                                                   methodName);
 
                 InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                          null,
-                                                                                                         OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                                                         OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                                                          serviceName,
                                                                                                          methodName);
                 linkElementToElement(userId,
@@ -5507,15 +5509,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      null,
                                      referenceableGUID,
                                      referenceableGUIDParameter,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                     OpenMetadataType.REFERENCEABLE.typeName,
                                      propertyFacetGUID,
                                      propertyFacetGUIDParameter,
-                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                     OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                      forLineage,
                                      forDuplicateProcessing,
                                      supportedZones,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
+                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
+                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
                                      relationshipProperties,
                                      null,
                                      null,
@@ -5533,19 +5535,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     if (propertyFacet != null)
                     {
                         String description = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.DESCRIPTION.name,
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.deleteBeanInRepository(userId,
                                                         null,
                                                         null,
                                                         propertyFacet.getGUID(),
                                                         propertyFacetGUIDParameter,
-                                                        OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                        OpenMetadataType.PROPERTY_FACET_TYPE_GUID,
+                                                        OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                                         null,
                                                         null,
                                                         forLineage,
@@ -5590,10 +5592,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> propertyFacets = this.getAttachedEntities(userId,
                                                                      referenceableGUID,
                                                                      referenceableGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
+                                                                     OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
                                                                      null,
                                                                      null,
                                                                      0,
@@ -5612,14 +5614,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 if (propertyFacet != null)
                 {
                     String description = repositoryHelper.getStringProperty(serviceName,
-                                                                            OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                            OpenMetadataProperty.DESCRIPTION.name,
                                                                             propertyFacet.getProperties(),
                                                                             methodName);
 
-                    if (OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                    if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                     {
                         return repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                         OpenMetadataAPIMapper.PROPERTIES_PROPERTY_NAME,
+                                                                         OpenMetadataType.PROPERTIES_PROPERTY_NAME,
                                                                          propertyFacet.getProperties(),
                                                                          methodName);
                     }

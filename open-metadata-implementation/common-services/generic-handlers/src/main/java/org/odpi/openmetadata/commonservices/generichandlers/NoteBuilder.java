@@ -2,11 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 
 /**
@@ -35,8 +34,8 @@ public class NoteBuilder extends ReferenceableBuilder
                        String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-              OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+              OpenMetadataType.NOTE_TYPE_GUID,
+              OpenMetadataType.NOTE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -60,12 +59,12 @@ public class NoteBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TITLE_PROPERTY_NAME,
+                                                                  OpenMetadataType.TITLE_PROPERTY_NAME,
                                                                   title,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TEXT_PROPERTY_NAME,
+                                                                  OpenMetadataType.TEXT_PROPERTY_NAME,
                                                                   text,
                                                                   methodName);
         return properties;

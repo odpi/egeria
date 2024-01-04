@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-topic-connectors')

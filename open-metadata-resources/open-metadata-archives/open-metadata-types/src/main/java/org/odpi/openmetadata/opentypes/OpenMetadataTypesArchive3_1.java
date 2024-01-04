@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -58,8 +59,8 @@ public class OpenMetadataTypesArchive3_1
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -459,7 +460,7 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "A persistent storage volume.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -752,7 +753,7 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "A detailed description of the effect of some data processing.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1026,7 +1027,7 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "A detailed description of the effect of some data processing.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1090,7 +1091,7 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "Description of the processing on a single target item.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1206,7 +1207,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "approvedForPurposes";
         final String                     end1AttributeDescription     = "The people/processes that have permission to process data.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1318,7 +1319,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "dataProcessingElements";
         final String                     end1AttributeDescription     = "The people/processes performing the processing.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1391,7 +1392,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "dataProcessingTarget";
         final String                     end2AttributeDescription     = "The data that is being acted upon.";
         final String                     end2AttributeDescriptionGUID = null;

@@ -9,16 +9,12 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Optional;
-
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
 /**
  * DataEngineCollectionHandler manages collection objects. It runs server-side in the
@@ -75,19 +71,19 @@ public class DataEngineCollectionHandler {
 
         String methodName = "createCollection";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(collection.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(collection.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         CollectionBuilder builder = getCollectionBuilder(collection);
 
         return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, builder, dataEngineCommonHandler.getNow(), methodName);
+                OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, builder, dataEngineCommonHandler.getNow(), methodName);
     }
 
     CollectionBuilder getCollectionBuilder(Collection collection) {
         return new CollectionBuilder(collection.getQualifiedName(),
-                collection.getName(), COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+                collection.getName(), OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     /**
@@ -105,7 +101,7 @@ public class DataEngineCollectionHandler {
     public Optional<EntityDetail> findCollectionEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
             PropertyServerException,
             InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, COLLECTION_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.COLLECTION_TYPE_NAME);
     }
 
     /**
@@ -126,7 +122,7 @@ public class DataEngineCollectionHandler {
             UserNotAuthorizedException,
             PropertyServerException {
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
-                COLLECTION_TYPE_NAME, PROCESS_TYPE_NAME, externalSourceName, null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, OpenMetadataType.REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
+                                                           OpenMetadataType.COLLECTION_TYPE_NAME, OpenMetadataType.PROCESS.typeName, externalSourceName, null);
     }
 }
