@@ -3,12 +3,10 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Map;
 
@@ -33,8 +31,8 @@ public class ProcessBuilder extends AssetBuilder
                    String               serviceName,
                    String               serverName)
     {
-        super(OpenMetadataAPIMapper.DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID,
-              OpenMetadataAPIMapper.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+        super(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID,
+              OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -129,19 +127,19 @@ public class ProcessBuilder extends AssetBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA.name,
                                                                   formula,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA_TYPE.name,
                                                                   formulaType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME,
+                                                                  OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME,
                                                                   implementationLanguage,
                                                                   methodName);
 

@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -38,8 +39,8 @@ public class CommentBuilder extends ReferenceableBuilder
                           String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
-              OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+              OpenMetadataType.COMMENT_TYPE_GUID,
+              OpenMetadataType.COMMENT_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -60,7 +61,7 @@ public class CommentBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                                                       isPublic,
                                                                                       methodName);
 
@@ -84,7 +85,7 @@ public class CommentBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.COMMENT_TEXT_PROPERTY_NAME,
+                                                                  OpenMetadataType.COMMENT_TEXT_PROPERTY_NAME,
                                                                   commentText,
                                                                   methodName);
 
@@ -92,15 +93,15 @@ public class CommentBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.COMMENT_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.COMMENT_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataType.COMMENT_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.COMMENT_TYPE_ENUM_TYPE_NAME,
                                                                     commentType,
                                                                     methodName);
         }
         catch (TypeErrorException  error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
         }
 
         return properties;

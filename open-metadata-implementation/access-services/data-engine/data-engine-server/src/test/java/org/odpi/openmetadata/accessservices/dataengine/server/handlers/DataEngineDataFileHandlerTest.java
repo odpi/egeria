@@ -21,6 +21,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -40,17 +42,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -111,26 +103,27 @@ class DataEngineDataFileHandlerTest {
         mockDataEngineSchemaTypeHandler();
 
         when(fileHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null,
-                DESCRIPTION, null, OWNER, 0, null, null,
-                null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME, getExtendedProperties(),
-                null, null, InstanceStatus.ACTIVE, null, METHOD)).thenReturn(GUID_VALUE);
+                                                 DESCRIPTION, null, OWNER, 0, null, null,
+                                                 null, null, OpenMetadataType.CSV_FILE_TYPE_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME, getExtendedProperties(),
+                                                 null, null, InstanceStatus.ACTIVE, null, METHOD)).thenReturn(GUID_VALUE);
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_GUID, csvFile, schemaType,
                 getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
                 createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
                       null, OWNER, 0, null, null,
-                      null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                      null, null, OpenMetadataType.CSV_FILE_TYPE_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME,
                       getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                                                             OpenMetadataType.SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
                 PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                guid, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
+                guid, OpenMetadataType.CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
 
     @Test
@@ -145,30 +138,30 @@ class DataEngineDataFileHandlerTest {
 
         when(fileHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null,
                 DESCRIPTION, null, OWNER, 0, null, null,
-                null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME, getExtendedProperties(),
+                null, null, OpenMetadataType.CSV_FILE_TYPE_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME, getExtendedProperties(),
                 null, null, InstanceStatus.ACTIVE, null, METHOD)).thenReturn(GUID_VALUE);
 
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_GUID, csvFile, schemaType,
                 getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
                 createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
                         null, OWNER, 0, null, null,
-                        null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                        null, null, OpenMetadataType.CSV_FILE_TYPE_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME,
                         getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
                 PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                guid, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
+                guid, OpenMetadataType.CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
 
         verify(fileHandler, times(1)).setClassificationInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, guid,
-                "fileGUID", CSV_FILE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
-                INCOMPLETE_CLASSIFICATION_TYPE_NAME, (InstanceProperties) null, true, false,
+                "fileGUID", OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.INCOMPLETE_CLASSIFICATION_TYPE_GUID,
+                                                                    OpenMetadataType.INCOMPLETE_CLASSIFICATION_TYPE_NAME, (InstanceProperties) null, true, false,
                 false,null, METHOD);
     }
 
@@ -182,21 +175,21 @@ class DataEngineDataFileHandlerTest {
         mockRepositoryHelper();
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_GUID, csvFile, schemaType,
                 getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, csvFile.getQualifiedName(), csvFile.getFileType());
         verify(fileHandler, times(1)).
                 updateAsset(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE, CommonMapper.GUID_PROPERTY_NAME,
-                            QUALIFIED_NAME, NAME, null, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                            QUALIFIED_NAME, NAME, null, DESCRIPTION, null, OpenMetadataType.CSV_FILE_TYPE_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME,
                             getExtendedProperties(),null, null, true, false, false, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
+                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
                 PATH, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                GUID_VALUE, CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
+                GUID_VALUE, OpenMetadataType.CSV_FILE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
     }
 
     @Test
@@ -205,15 +198,16 @@ class DataEngineDataFileHandlerTest {
         final String methodName = "removeDataFile";
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(SCHEMA_TYPE_GUID);
-        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID_VALUE, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.getEntityForRelationship(USER, GUID_VALUE, OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                              OpenMetadataType.DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineDataFileHandler.removeDataFile(USER, GUID_VALUE, EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_GUID, DeleteSemantic.SOFT);
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, SCHEMA_TYPE_GUID, EXTERNAL_SOURCE_NAME, DeleteSemantic.SOFT);
         verify(fileHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE,
-                GUID_PROPERTY_NAME, DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false, false, null, methodName);
+                                                             OpenMetadataProperty.GUID.name, OpenMetadataType.DATA_FILE_TYPE_GUID,
+                                                             OpenMetadataType.DATA_FILE_TYPE_NAME, null, null, false, false, null, methodName);
     }
 
     @Test
@@ -234,15 +228,15 @@ class DataEngineDataFileHandlerTest {
             when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, FILE_TYPE)).thenReturn(Optional.of(entityDetail));
             return;
         }
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME)).thenReturn(Optional.empty());
     }
 
     private void mockRepositoryHelper() {
         TypeDef entityTypeDef = mock(TypeDef.class);
-        when(entityTypeDef.getGUID()).thenReturn(CSV_FILE_TYPE_GUID);
-        when(entityTypeDef.getName()).thenReturn(CSV_FILE_TYPE_NAME);
+        when(entityTypeDef.getGUID()).thenReturn(OpenMetadataType.CSV_FILE_TYPE_GUID);
+        when(entityTypeDef.getName()).thenReturn(OpenMetadataType.CSV_FILE_TYPE_NAME);
 
-        when(repositoryHelper.getTypeDefByName(USER, DATA_FILE_TYPE_NAME)).thenReturn(entityTypeDef);
+        when(repositoryHelper.getTypeDefByName(USER, OpenMetadataType.DATA_FILE_TYPE_NAME)).thenReturn(entityTypeDef);
     }
 
     private void mockDataEngineSchemaTypeHandler() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -299,8 +293,8 @@ class DataEngineDataFileHandlerTest {
     private Map<String, Object> getExtendedProperties() {
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE, FILE_TYPE);
-        extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, ",");
-        extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, "'");
+        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, ",");
+        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, "'");
 
         return extendedProperties;
     }

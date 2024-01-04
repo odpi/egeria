@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.outtopic;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionEventType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
@@ -775,7 +775,7 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
 
                     referenceableHandler.validateAnchorEntity(userId,
                                                               fullEntity.getGUID(),
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                               fullEntity,
                                                               guidParameterName,
                                                               false,
@@ -831,6 +831,6 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME);
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName);
     }
 }

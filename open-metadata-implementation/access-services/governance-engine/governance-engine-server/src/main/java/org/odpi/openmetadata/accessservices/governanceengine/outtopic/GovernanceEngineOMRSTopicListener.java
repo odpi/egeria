@@ -9,7 +9,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataEl
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
@@ -126,11 +127,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME))
+                                              OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME))
                 {
                     eventPublisher.publishRefreshGovernanceEngineEvent(entity.getGUID(),
                                                                       repositoryHelper.getStringProperty(sourceName,
-                                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                          entity.getProperties(),
                                                                                                          methodName));
                     return true;
@@ -160,7 +161,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME));
+                                                  OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME));
             }
         }
 
@@ -189,7 +190,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     EntityProxy governanceEngineEntityProxy = relationship.getEntityOneProxy();
                     EntityProxy governanceServiceEntityProxy = relationship.getEntityTwoProxy();
@@ -198,12 +199,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         eventPublisher.publishRefreshGovernanceServiceEvent(governanceEngineEntityProxy.getGUID(),
                                                                             repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                governanceEngineEntityProxy.getUniqueProperties(),
                                                                                                                methodName),
                                                                             governanceServiceEntityProxy.getGUID(),
                                                                             repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                               OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
                                                                                                                relationship.getProperties(),
                                                                                                                methodName));
                         return true;
@@ -235,7 +236,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                  return repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
+                                                  OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
             }
         }
 
@@ -263,20 +264,20 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME))
+                                              OpenMetadataType.ENGINE_ACTION_TYPE_NAME))
                 {
-                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
+                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
                                                                                     entity.getProperties());
 
                     if (status == EngineActionStatus.APPROVED)
                     {
 
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
                                                                                          entity.getProperties(),
                                                                                          methodName);
                         String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
                                                                                          entity.getProperties(),
                                                                                          methodName);
 
@@ -313,7 +314,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.ENGINE_ACTION_TYPE_NAME);
+                                                 OpenMetadataType.ENGINE_ACTION_TYPE_NAME);
             }
         }
 
@@ -342,7 +343,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
             }
         }
 
@@ -368,28 +369,28 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     return true;
                 }
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
+                                              OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
                 {
                     return true;
                 }
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                              OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
                 {
                     return true;
                 }
 
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
+                                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
             }
         }
 
@@ -701,7 +702,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                       instanceProperties,
                                                       methodName);
         }

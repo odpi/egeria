@@ -133,6 +133,7 @@ public class AssetLineageTypesValidator {
      * Determines if the given entity is a valid lineage entity
      *
      * @param entityDetail the entity object
+     * @param serverName name of server instance to route request to
      *
      * @return true if the it is a lineage entity of valid type
      */

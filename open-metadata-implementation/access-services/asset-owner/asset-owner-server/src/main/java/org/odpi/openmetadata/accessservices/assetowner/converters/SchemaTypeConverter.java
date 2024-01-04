@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -144,7 +144,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
                     }
 
                     InstanceProperties classificationProperties =
-                            super.getClassificationProperties(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                            super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                               schemaRootClassifications);
 
                     bean.setFormula(this.getFormula(classificationProperties));

@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -45,8 +46,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -76,8 +77,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -99,8 +100,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+        super(OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -124,7 +125,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -133,7 +134,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
         }
         catch (Exception error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -152,12 +153,12 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 

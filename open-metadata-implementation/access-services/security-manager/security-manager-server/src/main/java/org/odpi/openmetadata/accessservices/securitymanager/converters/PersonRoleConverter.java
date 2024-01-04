@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.PersonRoleProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -85,7 +85,7 @@ public class PersonRoleConverter<B> extends SecurityManagerOMASConverter<B>
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
                     roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
+                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataType.HEAD_COUNT_PROPERTY_NAME) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
                     roleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
@@ -114,7 +114,7 @@ public class PersonRoleConverter<B> extends SecurityManagerOMASConverter<B>
                                 {
                                     if (repositoryHelper.isTypeOf(serviceName,
                                                                   instanceType.getTypeDefName(),
-                                                                  OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
+                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
                                     {
                                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

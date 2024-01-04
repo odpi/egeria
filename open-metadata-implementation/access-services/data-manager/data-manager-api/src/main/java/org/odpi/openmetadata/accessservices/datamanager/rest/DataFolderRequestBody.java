@@ -142,23 +142,28 @@ public class DataFolderRequestBody extends FileFolderProperties
     public String toString()
     {
         return "DataFolderRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                ", connectorClassName='" + connectorProviderClassName + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", encodingProperties=" + getEncodingProperties() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", createTime=" + getCreateTime() +
+                       ", modifiedTime=" + getModifiedTime() +
+                       ", encodingType='" + getEncodingType() + '\'' +
+                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                       ", encodingDescription='" + getEncodingDescription() + '\'' +
+                       ", encodingProperties=" + getEncodingProperties() +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

@@ -475,7 +475,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The function requested failed.",
-            "This is likely to be either a configuration, operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
+            "This is likely to be either a configuration, operational or logic error. Validate the request. Look at the user action for the embedded exception since this will provide the most specific information."),
 
     /**
      * OMAG-ADMIN-500-002 - Method {0} returned an unexpected {1} exception with message {2}

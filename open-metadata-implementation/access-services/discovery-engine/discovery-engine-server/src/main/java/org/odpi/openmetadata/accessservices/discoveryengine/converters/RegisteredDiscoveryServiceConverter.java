@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -69,11 +69,11 @@ public class RegisteredDiscoveryServiceConverter
                     if (instanceProperties != null)
                     {
                         String requestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
                                                                                 instanceProperties,
                                                                                 methodName);
                         Map<String, String> analysisParameters = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                           OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                           OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
                                                                                                            instanceProperties,
                                                                                                            methodName);
 

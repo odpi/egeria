@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 
 import java.text.MessageFormat;
@@ -67,7 +67,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     private void writeContactTypesValidValueSet()
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ContactTypeDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                ContactTypeDefinition.validValueSetName,
                                                                ContactTypeDefinition.validValueSetDescription,
@@ -82,7 +82,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             for (ContactTypeDefinition contactTypeDefinition : ContactTypeDefinition.values())
             {
                 String validValueQName = openMetadataValidValueSetPrefix + ContactTypeDefinition.validValueSetName + "." + contactTypeDefinition.getPreferredValue();
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     contactTypeDefinition.getDisplayName(),
                                                                     contactTypeDefinition.getDescription(),
@@ -108,7 +108,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + JobLevelDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                JobLevelDefinition.validValueSetName,
                                                                JobLevelDefinition.validValueSetDescription,
@@ -124,7 +124,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + JobLevelDefinition.validValueSetName + "." + jobLevelDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     jobLevelDefinition.getDisplayName(),
                                                                     jobLevelDefinition.getDescription(),
@@ -150,7 +150,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + EmployeeTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                EmployeeTypeDefinition.validValueSetName,
                                                                EmployeeTypeDefinition.validValueSetDescription,
@@ -166,7 +166,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + EmployeeTypeDefinition.validValueSetName + "." + employeeTypeDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     employeeTypeDefinition.getDisplayName(),
                                                                     employeeTypeDefinition.getDescription(),
@@ -192,7 +192,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + OrganizationTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                OrganizationTypeDefinition.validValueSetName,
                                                                OrganizationTypeDefinition.validValueSetDescription,
@@ -208,7 +208,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + OrganizationTypeDefinition.validValueSetName + "." + organizationTypeDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     organizationTypeDefinition.getDisplayName(),
                                                                     organizationTypeDefinition.getDescription(),
@@ -234,7 +234,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + OrganizationTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                openMetadataValidValueSetPrefix + WorkLocationDefinition.validValueSetName,
                                                                WorkLocationDefinition.validValueSetName,
                                                                WorkLocationDefinition.validValueSetDescription,
@@ -250,7 +250,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + WorkLocationDefinition.validValueSetName + "." + workLocationDefinition.getWorkLocationId();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     workLocationDefinition.getDisplayName(),
                                                                     workLocationDefinition.getPostalAddress(),
@@ -276,7 +276,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + CountryCodeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                CountryCodeDefinition.validValueSetName,
                                                                CountryCodeDefinition.validValueSetDescription,
@@ -292,7 +292,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + CountryCodeDefinition.validValueSetName + "." + countryCodeDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     countryCodeDefinition.getDisplayName(),
                                                                     null,
@@ -318,7 +318,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ScopeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                ScopeDefinition.validValueSetName,
                                                                ScopeDefinition.validValueSetDescription,
@@ -334,7 +334,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + ScopeDefinition.validValueSetName + "." + scopeDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     scopeDefinition.getDisplayName(),
                                                                     null,
@@ -406,7 +406,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
                 archiveHelper.addContactDetails(profileGUID,
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDisplayName(),
                                                 ContactTypeDefinition.COMPANY_EMAIL.getPreferredValue(),
-                                                OpenMetadataTypesMapper.CONTACT_METHOD_TYPE_EMAIL,
+                                                OpenMetadataType.CONTACT_METHOD_TYPE_EMAIL,
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDescription(),
                                                 personDefinition.getEmail());
             }
@@ -437,7 +437,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     {
         for (OrganizationDefinition organizationDefinition : OrganizationDefinition.values())
         {
-            archiveHelper.addTeam(OpenMetadataTypesMapper.ORGANIZATION_TYPE_NAME,
+            archiveHelper.addTeam(OpenMetadataType.ORGANIZATION_TYPE_NAME,
                                   organizationDefinition.getQualifiedName(),
                                   organizationDefinition.getDisplayName(),
                                   organizationDefinition.getDescription(),
@@ -476,7 +476,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
             String leadershipRoleQName = "TeamLeader:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataTypesMapper.TEAM_LEADER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER_TYPE_NAME,
                                         leadershipRoleQName,
                                         leadershipRoleQName,
                                         null,
@@ -500,16 +500,16 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             }
 
             String membershipRoleQName = "TeamMembers:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataTypesMapper.TEAM_MEMBER_TYPE_NAME,
-                                                                    membershipRoleQName,
-                                                                    membershipRoleQName,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    false,
-                                                                    0,
-                                                                    null,
-                                                                    null);
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER_TYPE_NAME,
+                                        membershipRoleQName,
+                                        membershipRoleQName,
+                                        null,
+                                        null,
+                                        null,
+                                        false,
+                                        0,
+                                        null,
+                                        null);
 
             archiveHelper.addTeamMembershipRelationship(membershipRoleQName, deptDefinition.getQualifiedName(), null);
 

@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -24,7 +26,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +141,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           parentGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                                                                                           false,
                                                                                                           false,
                                                                                                           new Date(),
@@ -153,7 +154,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.COLLECTION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME))
                 {
                     CollectionElement collectionElement = collectionConverter.getNewBean(collectionBeanClass, relatedMetadataElement, methodName);
 
@@ -219,18 +220,18 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         }
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                    OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
-                                                                                                    null,
-                                                                                                    null,
-                                                                                                    null,
-                                                                                                    searchClassifications,
-                                                                                                    OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                                    SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                    false,
-                                                                                                    false,
-                                                                                                    new Date(),
-                                                                                                    startFrom,
-                                                                                                    pageSize);
+                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      searchClassifications,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                      new Date(),
+                                                                                                      startFrom,
+                                                                                                      pageSize);
 
         return convertCollections(openMetadataElements, methodName);
     }
@@ -297,7 +298,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
-                                                                                                                OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                                                OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -337,16 +338,16 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = Arrays.asList(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                   OpenMetadataTypesMapper.NAME_PROPERTY_NAME);
+        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames, name),
                                                                                                       null,
                                                                                                       null,
-                                                                                                      OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
                                                                                                       false,
                                                                                                       false,
@@ -385,16 +386,16 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = List.of(OpenMetadataTypesMapper.COLLECTION_TYPE_PROPERTY_NAME);
+        List<String> propertyNames = List.of(OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames,
                                                                                                                                                collectionType),
                                                                                                       null,
                                                                                                       null,
-                                                                                                      OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
                                                                                                       false,
                                                                                                       false,
@@ -436,7 +437,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                    false,
                                                                                                    new Date());
 
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataTypesMapper.COLLECTION_TYPE_NAME)))
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME)))
         {
             return collectionConverter.getNewBean(collectionBeanClass, openMetadataElement, methodName);
         }
@@ -473,7 +474,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateObject(properties, collectionPropertiesName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String collectionTypeName = OpenMetadataTypesMapper.COLLECTION_TYPE_NAME;
+        String collectionTypeName = OpenMetadataType.COLLECTION_TYPE_NAME;
 
         if (properties.getTypeName() != null)
         {
@@ -482,23 +483,23 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         Map<String, ElementProperties> initialClassifications = null;
 
-        if ((OpenMetadataTypesMapper.FOLDER_TYPE_NAME.equals(optionalClassification)) ||
+        if ((OpenMetadataType.FOLDER_TYPE_NAME.equals(optionalClassification)) ||
                     (properties.getOrderPropertyName() != null) || (properties.getCollectionOrdering() != null))
         {
             initialClassifications = new HashMap<>();
 
             ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
-                                                                                          OpenMetadataTypesMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                          OpenMetadataType.ORDER_PROPERTY_NAME_PROPERTY_NAME,
                                                                                           properties.getOrderPropertyName());
             if (properties.getCollectionOrdering() != null)
             {
                 classificationProperties = propertyHelper.addEnumProperty(classificationProperties,
-                                                                          OpenMetadataTypesMapper.ORDER_BY_PROPERTY_NAME,
-                                                                          OpenMetadataTypesMapper.ORDER_BY_TYPE_ENUM_TYPE_NAME,
+                                                                          OpenMetadataType.ORDER_BY_PROPERTY_NAME,
+                                                                          OpenMetadataType.ORDER_BY_TYPE_ENUM_TYPE_NAME,
                                                                           properties.getCollectionOrdering().getName());
             }
 
-            initialClassifications.put(OpenMetadataTypesMapper.FOLDER_TYPE_NAME, classificationProperties);
+            initialClassifications.put(OpenMetadataType.FOLDER_TYPE_NAME, classificationProperties);
         }
 
         return openMetadataStoreClient.createMetadataElementInStore(userId,
@@ -543,7 +544,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         final String methodName = "createCollectionFromTemplate";
 
         String collectionGUID = openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                                     OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                     OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                      ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,
@@ -586,7 +587,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         {
             openMetadataStoreClient.classifyMetadataElementInStore(userId,
                                                                    collectionGUID,
-                                                                   OpenMetadataTypesMapper.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
+                                                                   OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
                                                                    false,
                                                                    false,
                                                                    digitalProductProperties.getEffectiveFrom(),
@@ -671,7 +672,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         openMetadataStoreClient.reclassifyMetadataElementInStore(userId,
                                                                  collectionGUID,
-                                                                 OpenMetadataTypesMapper.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
                                                                  replaceAllProperties,
                                                                  false,
                                                                  false,
@@ -711,11 +712,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
         ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataTypesMapper.RESOURCE_USE_PROPERTY_NAME,
+                                                                        OpenMetadataType.RESOURCE_USE_PROPERTY_NAME,
                                                                         collectionUse);
 
         openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                             OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                                              parentGUID,
                                                              collectionGUID,
                                                              false,
@@ -755,7 +756,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataTypesMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
                                                              parentGUID,
                                                              collectionGUID,
                                                              false,
@@ -827,7 +828,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           collectionGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataTypesMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                                                                                           false,
                                                                                                           false,
                                                                                                           new Date(),
@@ -840,7 +841,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.COLLECTION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME))
                 {
                     collectionMembers.add(collectionMemberConverter.getNewBean(collectionMemberBeanClass, relatedMetadataElement, methodName));
                 }
@@ -877,7 +878,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElements> linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
                                                                                                                 collectionGUID,
                                                                                                                 elementGUID,
-                                                                                                                OpenMetadataTypesMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -932,7 +933,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (relationshipGUID == null)
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataTypesMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                                                  collectionGUID,
                                                                  elementGUID,
                                                                  false,
@@ -1076,23 +1077,23 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (collectionProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                    collectionProperties.getQualifiedName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.NAME.name,
                                                                  collectionProperties.getName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
                                                                  collectionProperties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.COLLECTION_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME,
                                                                  collectionProperties.getCollectionType());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                     collectionProperties.getAdditionalProperties());
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
@@ -1116,15 +1117,15 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (collectionProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                    collectionProperties.getQualifiedName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.NAME.name,
                                                                  collectionProperties.getDisplayName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
                                                                  collectionProperties.getDescription());
 
 
@@ -1146,43 +1147,43 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (digitalProductProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataTypesMapper.PRODUCT_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataType.PRODUCT_NAME_PROPERTY_NAME,
                                                                                    digitalProductProperties.getProductName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.PRODUCT_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataType.PRODUCT_TYPE_PROPERTY_NAME,
                                                                  digitalProductProperties.getProductType());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
                                                                  digitalProductProperties.getDescription());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataTypesMapper.INTRODUCTION_DATE_PROPERTY_NAME,
+                                                               OpenMetadataType.INTRODUCTION_DATE_PROPERTY_NAME,
                                                                digitalProductProperties.getIntroductionDate());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.MATURITY_PROPERTY_NAME,
+                                                                 OpenMetadataType.MATURITY_PROPERTY_NAME,
                                                                  digitalProductProperties.getMaturity());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.SERVICE_LIFE_PROPERTY_NAME,
+                                                                 OpenMetadataType.SERVICE_LIFE_PROPERTY_NAME,
                                                                  digitalProductProperties.getServiceLife());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.CURRENT_VERSION_PROPERTY_NAME,
+                                                                 OpenMetadataType.CURRENT_VERSION_PROPERTY_NAME,
                                                                  digitalProductProperties.getCurrentVersion());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataTypesMapper.NEXT_VERSION_PROPERTY_NAME,
+                                                               OpenMetadataType.NEXT_VERSION_PROPERTY_NAME,
                                                                digitalProductProperties.getNextVersion());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataTypesMapper.WITHDRAW_DATE_PROPERTY_NAME,
+                                                               OpenMetadataType.WITHDRAW_DATE_PROPERTY_NAME,
                                                                digitalProductProperties.getWithdrawDate());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                     digitalProductProperties.getAdditionalProperties());
 
             return elementProperties;
@@ -1204,51 +1205,51 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (collectionMembershipProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataTypesMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                                   OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
                                                                                    collectionMembershipProperties.getMembershipRationale());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.EXPRESSION_PROPERTY_NAME,
+                                                                 OpenMetadataType.EXPRESSION_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getExpression());
 
             if (collectionMembershipProperties.getStatus() != null)
             {
                 elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                   OpenMetadataTypesMapper.STATUS_PROPERTY_NAME,
-                                                                   OpenMetadataTypesMapper.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                   OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                   OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
                                                                    collectionMembershipProperties.getStatus().getName());
             }
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.USER_DEFINED_STATUS_PROPERTY_NAME,
+                                                                 OpenMetadataType.USER_DEFINED_STATUS_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getUserDefinedStatus());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataTypesMapper.CONFIDENCE_PROPERTY_NAME,
+                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
                                                               collectionMembershipProperties.getConfidence());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.CREATED_BY_PROPERTY_NAME,
+                                                                 OpenMetadataType.CREATED_BY_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getCreatedBy());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getSteward());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getStewardTypeName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getStewardPropertyName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                               OpenMetadataTypesMapper.SOURCE_PROPERTY_NAME,
-                                                               collectionMembershipProperties.getSource());
+                                                                 OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                 collectionMembershipProperties.getSource());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.NOTES_PROPERTY_NAME,
+                                                                 OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                  collectionMembershipProperties.getNotes());
 
             return elementProperties;

@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.frameworkservices.oif.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
@@ -126,11 +128,11 @@ public class OpenIntegrationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationConnectorGUID,
                                                                                       integrationConnectorGUIDParameter,
-                                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                       2,
                                                                                       false,
                                                                                       false,
@@ -192,8 +194,8 @@ public class OpenIntegrationHandler
                                                                         properties.getUpdatedElements(),
                                                                         properties.getDeletedElements(),
                                                                         properties.getAdditionalProperties(),
-                                                                        OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
+                                                                        OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
+                                                                        OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                                         integrationReportHandler.getRepositoryHelper(),
                                                                         integrationGroupHandler.getServiceName(),
                                                                         integrationGroupHandler.getServerName());
@@ -204,8 +206,8 @@ public class OpenIntegrationHandler
         String reportGUID = integrationReportHandler.createBeanInRepository(userId,
                                                                             null,
                                                                             null,
-                                                                            OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
+                                                                            OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
+                                                                            OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                                             builder,
                                                                             new Date(),
                                                                             methodName);
@@ -217,15 +219,15 @@ public class OpenIntegrationHandler
                                                           null,
                                                           anchorGUID,
                                                           guidParameterName,
-                                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                           reportGUID,
                                                           reportGUIDParameterName,
-                                                          OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
+                                                          OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                           true,
                                                           true,
                                                           integrationReportHandler.getSupportedZones(),
-                                                          OpenMetadataAPIMapper.RELATED_INTEGRATION_REPORT_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.RELATED_INTEGRATION_REPORT_TYPE_NAME,
+                                                          OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_GUID,
+                                                          OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_NAME,
                                                           null,
                                                           null,
                                                           null,
@@ -260,7 +262,7 @@ public class OpenIntegrationHandler
         return integrationReportHandler.getBeanFromRepository(userId,
                                                               reportGUID,
                                                               guidParameterName,
-                                                              OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
+                                                              OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                               true,
                                                               true,
                                                               integrationReportHandler.getSupportedZones(),
@@ -307,10 +309,10 @@ public class OpenIntegrationHandler
                                                                                                   null,
                                                                                                   elementGUID,
                                                                                                   guidParameterName,
-                                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                                                                  OpenMetadataAPIMapper.RELATED_INTEGRATION_REPORT_TYPE_GUID,
-                                                                                                  OpenMetadataAPIMapper.RELATED_INTEGRATION_REPORT_TYPE_NAME,
-                                                                                                  OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
+                                                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                                  OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_GUID,
+                                                                                                  OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_NAME,
+                                                                                                  OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                                                                   null,
                                                                                                   null,
                                                                                                   2,
@@ -359,9 +361,9 @@ public class OpenIntegrationHandler
         int pageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         List<IntegrationReport> integrationReports = integrationReportHandler.getBeansByType(userId,
-                                                                                             OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.INTEGRATION_REPORT_TYPE_NAME,
-                                                                                             OpenMetadataAPIMapper.CONNECTOR_ID_PROPERTY_NAME,
+                                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
+                                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
+                                                                                             OpenMetadataType.CONNECTOR_ID_PROPERTY_NAME,
                                                                                              false,
                                                                                              false,
                                                                                              integrationReportHandler.getSupportedZones(),

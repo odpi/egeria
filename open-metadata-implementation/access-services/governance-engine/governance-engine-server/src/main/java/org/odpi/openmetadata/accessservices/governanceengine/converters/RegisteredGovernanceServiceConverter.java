@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -70,14 +70,14 @@ public class RegisteredGovernanceServiceConverter
                     if (instanceProperties != null)
                     {
                         String requestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
                                                                                 instanceProperties,
                                                                                 methodName);
 
                         RegisteredGovernanceServiceProperties registeredGovernanceServiceProperties = new RegisteredGovernanceServiceProperties();
 
                         String serviceRequestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                       OpenMetadataType.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
                                                                                        instanceProperties,
                                                                                        methodName);
 
@@ -93,9 +93,9 @@ public class RegisteredGovernanceServiceConverter
                                 registeredGovernanceServiceProperties.setServiceRequestType(serviceRequestType);
                             }
                             registeredGovernanceServiceProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                      OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                                      instanceProperties,
-                                                                                                      methodName));
+                                                                                                                                 OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                                                 instanceProperties,
+                                                                                                                                 methodName));
 
                             requestTypeMappings.put(requestType, registeredGovernanceServiceProperties);
                         }

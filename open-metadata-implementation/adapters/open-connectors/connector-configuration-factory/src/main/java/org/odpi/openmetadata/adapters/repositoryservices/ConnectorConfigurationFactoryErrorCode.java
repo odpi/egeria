@@ -31,7 +31,7 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
      * CONNECTOR-CONFIGURATION-FACTORY-400-001 Invalid Connector Provider class {0}; class loader exception was {1} with message {2}
      */
     INVALID_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-001 ",
-            "Invalid Connector Provider class {0}; class loader exception was {1} with message {2}",
+            "Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the loader.path option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}",
             "The system is unable to create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +
                                        ".  This has resulted in an exception in the class loader.",
             "Update the configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of " +

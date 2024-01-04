@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -315,9 +316,9 @@ public class OpenMetadataTypesArchive1_6
         final String attribute1Name             = "schemaTypeName";
         final String attribute1Description      = "Type name for the schema type.";
         final String attribute1DescriptionGUID  = null;
-        final String attribute2Name             = "qualifiedName";
-        final String attribute2Description      = "Unique name for the schema type.";
-        final String attribute2DescriptionGUID  = null;
+        final String attribute2Name             = OpenMetadataProperty.QUALIFIED_NAME.name;
+        final String attribute2Description      = OpenMetadataProperty.QUALIFIED_NAME.description;
+        final String attribute2DescriptionGUID  = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
         final String attribute3Name             = "displayName";
         final String attribute3Description      = "Display name for the schema type.";
         final String attribute3DescriptionGUID  = null;
@@ -339,9 +340,9 @@ public class OpenMetadataTypesArchive1_6
         final String attribute9Name             = "fixedValue";
         final String attribute9Description      = "Fixed value for data stored in this schema type (literal schema type).";
         final String attribute9DescriptionGUID  = null;
-        final String attribute10Name            = "additionalProperties";
-        final String attribute10Description     = "Additional properties for the schema type.";
-        final String attribute10DescriptionGUID = null;
+        final String attribute10Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
+        final String attribute10Description     = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
         final String attribute11Name            = "isDeprecated";
         final String attribute11Description     = "This element may still be used but is flagged that it will be removed at some point in the " +
                 "future.";

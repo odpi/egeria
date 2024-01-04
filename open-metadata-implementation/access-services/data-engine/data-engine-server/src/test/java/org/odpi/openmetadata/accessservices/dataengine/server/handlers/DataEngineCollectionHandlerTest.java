@@ -18,6 +18,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
@@ -35,11 +37,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -79,8 +76,8 @@ class DataEngineCollectionHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, COLLECTION_TYPE_GUID,
-                COLLECTION_TYPE_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
+        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_GUID,
+                                                 OpenMetadataType.COLLECTION_TYPE_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -88,7 +85,7 @@ class DataEngineCollectionHandlerTest {
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
     }
 
     @Test
@@ -106,7 +103,7 @@ class DataEngineCollectionHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, mockedBuilder, null, methodName);
+                                                                           OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, mockedBuilder, null, methodName);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -121,7 +118,7 @@ class DataEngineCollectionHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, COLLECTION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
@@ -133,7 +130,7 @@ class DataEngineCollectionHandlerTest {
     void findProcessNotExistingTest() throws UserNotAuthorizedException, PropertyServerException,
                                              InvalidParameterException {
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
@@ -146,7 +143,9 @@ class DataEngineCollectionHandlerTest {
         dataEngineCollectionHandler.addCollectionMembershipRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
-                REFERENCEABLE_TO_COLLECTION_TYPE_NAME, COLLECTION_TYPE_NAME, PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                                                                             OpenMetadataType.REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
+                                                                             OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                             OpenMetadataType.PROCESS.typeName, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null);
     }
 

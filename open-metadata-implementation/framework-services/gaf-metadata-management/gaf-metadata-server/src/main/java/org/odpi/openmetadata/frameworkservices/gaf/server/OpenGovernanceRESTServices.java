@@ -11,8 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
@@ -101,8 +102,8 @@ public class OpenGovernanceRESTServices
                 GovernanceActionProcessProperties processProperties = requestBody.getProperties();
 
                 Map<String, Object> extendedProperties = new HashMap<>();
-                extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
+                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
 
                 Date effectiveTime = new Date();
 
@@ -114,7 +115,7 @@ public class OpenGovernanceRESTServices
                                                                  processProperties.getVersionIdentifier(),
                                                                  processProperties.getTechnicalDescription(),
                                                                  processProperties.getAdditionalProperties(),
-                                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                  extendedProperties,
                                                                  this.getProcessStatus(requestBody.getProcessStatus()),
                                                                  null,
@@ -129,7 +130,7 @@ public class OpenGovernanceRESTServices
                     handler.maintainSupplementaryProperties(userId,
                                                             response.getGUID(),
                                                             guidParameter,
-                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                             processProperties.getQualifiedName(),
                                                             processProperties.getDisplayName(),
                                                             processProperties.getSummary(),
@@ -221,8 +222,8 @@ public class OpenGovernanceRESTServices
                 GovernanceActionProcessProperties processProperties = requestBody.getProperties();
 
                 Map<String, Object> extendedProperties = new HashMap<>();
-                extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
+                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
 
                 Date effectiveTime = new Date();
 
@@ -236,8 +237,8 @@ public class OpenGovernanceRESTServices
                                     processProperties.getTechnicalName(),
                                     processProperties.getTechnicalDescription(),
                                     processProperties.getAdditionalProperties(),
-                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                     extendedProperties,
                                     null,
@@ -255,8 +256,8 @@ public class OpenGovernanceRESTServices
                                                          null,
                                                          processGUID,
                                                          processGUIDParameterName,
-                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                          false,
                                                          false,
                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -269,7 +270,7 @@ public class OpenGovernanceRESTServices
                 handler.maintainSupplementaryProperties(userId,
                                                         processGUID,
                                                         processGUIDParameterName,
-                                                        OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                         processProperties.getQualifiedName(),
                                                         processProperties.getDisplayName(),
                                                         processProperties.getSummary(),
@@ -398,7 +399,8 @@ public class OpenGovernanceRESTServices
                                      false,
                                      false,
                                      new Date(),
-                                     methodName);        }
+                                     methodName);
+        }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
@@ -448,8 +450,8 @@ public class OpenGovernanceRESTServices
                                            null,
                                            processGUID,
                                            processGUIDParameterName,
-                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                            null,
                                            null,
                                            false,
@@ -511,8 +513,8 @@ public class OpenGovernanceRESTServices
                 response.setElements(handler.findBeans(userId,
                                                        requestBody.getSearchString(),
                                                        searchStringParameterName,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                        false,
                                                        false,
                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -578,8 +580,8 @@ public class OpenGovernanceRESTServices
                                                                                                                          methodName);
 
                 response.setElements(handler.findAssetsByName(userId,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                               requestBody.getName(),
                                                               nameParameterName,
                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -639,7 +641,7 @@ public class OpenGovernanceRESTServices
             response.setElement(handler.getBeanFromRepository(userId,
                                                               processGUID,
                                                               processGUIDParameterName,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                               false,
                                                               false,
                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -1396,11 +1398,11 @@ public class OpenGovernanceRESTServices
 
                         element.setNextProcessStepLinkGUID(relationship.getGUID());
                         element.setGuard(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                            OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                            OpenMetadataType.GUARD_PROPERTY_NAME,
                                                                             relationship.getProperties(),
                                                                             methodName));
                         element.setMandatoryGuard(repositoryHelper.getBooleanProperty(instanceHandler.getServiceName(),
-                                                                                      OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                      OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
                                                                                       relationship.getProperties(),
                                                                                       methodName));
 

@@ -23,16 +23,19 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
 {
     CONNECTOR_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0001",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector has been initialized to monitor file directory {1} with allowCatalogDelete={2} and templateQualifiedName={3}",
-                            "The connector is designed to monitor changes to the content of the named file directory (folder).  " +
+                            "The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}",
+                            "The connector is designed to monitor changes to the content of directories (folders).  The directoryToMonitor is an initial directory to monitor that is supplied in the connector's endpoint.  It is optional, and can be supplemented with catalog targets associated " +
+                                    "with the connector.  By default, if any of the directories to monitor do not exist, the connector fails.  The waitForDirectory flag overrides this behaviour, so directories that do not exist are skipped.  " +
                                   "If allowCatalogDelete is set to true, it will delete catalog entries for files that are deleted from the file system, " +
                                   "otherwise the catalog entries are marked as archived so they remain available to act as tombstones in the lineage graphs.  " +
-                                  "If the templateQualifiedName is set, it identifies a template entity to use ",
+                                  "If the fileTemplateQualifiedName and/or directoryTemplateQualifiedName is set, it identifies a template entity to use when cataloguing either a file or a directory.  " +
+                                    "If the toDoTemplateQualifiedName is set, the connector will create ToDos using the named template if there are any problems in cataloguing a file.  " +
+                                    "Similarly, if the incidentReportTemplateQualifiedName is set, the connector will create IncidentReports using the named template if there are any problems in cataloguing a file.",
                             "No specific action is required.  This message is to confirm the configuration for the integration connector."),
 
     BAD_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0002",
                       AuditLogRecordSeverityLevel.ERROR,
-                          "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message included was {4}",
+                          "The {0} integration connector encountered an {1} exception when opening directory {2} sourced from {3} during the {4} method.  The exception message included was {5}",
                           "The exception is passed back to the Files Integrator OMIS in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                                   "error handling that was performed.  These can help to determine how to recover from this error.",
@@ -50,12 +53,13 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
                                "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
 
-    UNEXPECTED_EXC_RETRIEVING_FOLDER("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
-                                     AuditLogRecordSeverityLevel.ERROR,
-                            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
-                                    "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
-                                     "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
-                                     "Use the message in the nested exception to determine the root cause of the error. Once this is " +
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
+                                                  AuditLogRecordSeverityLevel.ERROR,
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                          "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for " +
+                                                          "directory {3} (absolute path {4}).  The error message was {5}",
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                                              "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector."),
 
     DIRECTORY_MONITORING_STARTING("BASIC-FILES-INTEGRATION-CONNECTORS-0005",
@@ -178,7 +182,21 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                               "Its presence is still needed in the metadata repository for lineage reporting.",
                       "No action is required.  This message is to record the reason why the DataFile was archived."),
 
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID("BASIC-FILES-INTEGRATION-CONNECTORS-0021",
+                                                  AuditLogRecordSeverityLevel.ERROR,
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                          "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                          "perform error handling since this is likely to be a logic error.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
 
+    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS("BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
+                                              AuditLogRecordSeverityLevel.ERROR,
+                                              "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                      "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
+                                              "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                      "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
+                                              "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
     ;
 
     private final String                      logMessageId;

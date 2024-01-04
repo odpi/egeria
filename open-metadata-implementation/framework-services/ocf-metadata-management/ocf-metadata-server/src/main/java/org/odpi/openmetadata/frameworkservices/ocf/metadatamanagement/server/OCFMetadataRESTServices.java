@@ -8,6 +8,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -75,7 +77,7 @@ public class OCFMetadataRESTServices
             response.setConnection(connectionHandler.getBeanFromRepository(userId,
                                                                            guid,
                                                                            guidParameterName,
-                                                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                           OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                            false,
                                                                            false,
                                                                            instanceHandler.getSupportedZones(userId,
@@ -132,9 +134,9 @@ public class OCFMetadataRESTServices
             response.setConnection(connectionHandler.getBeanByUniqueName(userId,
                                                                          name,
                                                                          nameParameterName,
-                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                         OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                         OpenMetadataType.CONNECTION_TYPE_GUID,
+                                                                         OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                          false,
                                                                          false,
                                                                          instanceHandler.getSupportedZones(userId,
@@ -302,29 +304,29 @@ public class OCFMetadataRESTServices
         {
             List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
 
-            AssetHandler<Asset>  assetHandler         = instanceHandler.getAssetHandler(userId, serverName, methodName);
-            RelatedAssetHandler<RelatedAsset>  relatedAssetHandler  = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset>                 assetHandler         = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            RelatedAssetHandler<RelatedAsset>   relatedAssetHandler  = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
             CertificationHandler<Certification> certificationHandler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
-            CommentHandler<Comment>       commentHandler       = instanceHandler.getCommentHandler(userId, serverName, methodName);
-            ConnectionHandler<Connection>    connectionHandler    = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            CommentHandler<Comment>             commentHandler       = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            ConnectionHandler<Connection>       connectionHandler    = instanceHandler.getConnectionHandler(userId, serverName, methodName);
             ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-            ExternalReferenceLinkHandler<ExternalReference>  externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId,
-                                                                                                                                     serverName,
-                                                                                                                                     methodName);
-            InformalTagHandler<InformalTag>             informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
-                                                                                                                       methodName);
-            LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
-                                                                                                                       methodName);
-            LikeHandler<Like>                           likeHandler         = instanceHandler.getLikeHandler(userId, serverName, methodName);
-            LocationHandler<Location>                   locationHandler     = instanceHandler.getLocationHandler(userId, serverName, methodName);
-            NoteLogHandler<NoteLogHeader>               noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-            RatingHandler<Rating>                       ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
-            RelatedMediaHandler<RelatedMediaReference>  relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
-            SearchKeywordHandler<SearchKeyword>         keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
-            SchemaTypeHandler<SchemaType>               schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
-            OMRSRepositoryHelper                        repositoryHelper    = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+            ExternalReferenceLinkHandler<ExternalReference> externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId,
+                                                                                                                                    serverName,
+                                                                                                                                    methodName);
+            InformalTagHandler<InformalTag> informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
+                                                                                                        methodName);
+            LicenseHandler<License> licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
+                                                                                            methodName);
+            LikeHandler<Like>             likeHandler     = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            LocationHandler<Location>     locationHandler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader>              noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            RatingHandler<Rating>                      ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            RelatedMediaHandler<RelatedMediaReference> relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
+            SearchKeywordHandler<SearchKeyword>        keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
+            SchemaTypeHandler<SchemaType>              schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            OMRSRepositoryHelper                repositoryHelper  = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -337,11 +339,11 @@ public class OCFMetadataRESTServices
                 Relationship relationship = assetHandler.getUniqueAttachmentLink(userId,
                                                                                  assetGUID,
                                                                                  assetGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                 OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                                 OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                 OpenMetadataType.ASSET.typeName,
+                                                                                 OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                                 OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                  connectionGUID,
-                                                                                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                 OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                                  0,
                                                                                  false,
                                                                                  false,
@@ -351,7 +353,7 @@ public class OCFMetadataRESTServices
                 if (relationship != null)
                 {
                     assetSummary = repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                      OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
                                                                       relationship.getProperties(),
                                                                       methodName);
                 }
@@ -359,7 +361,7 @@ public class OCFMetadataRESTServices
             Asset asset = assetHandler.getBeanFromRepository(userId,
                                                              assetGUID,
                                                              assetGUIDParameterName,
-                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                             OpenMetadataType.ASSET.typeName,
                                                              false,
                                                              false,
                                                              supportedZones,
@@ -370,7 +372,7 @@ public class OCFMetadataRESTServices
                 asset.setConnectionDescription(assetSummary);
                 EntityDetail glossaryEntity = assetHandler.getSupplementaryProperties(assetGUID,
                                                                                       assetGUIDParameterName,
-                                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                      OpenMetadataType.ASSET.typeName,
                                                                                       false,
                                                                                       false,
                                                                                       effectiveTime,
@@ -379,24 +381,24 @@ public class OCFMetadataRESTServices
                 if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
                 {
                     asset.setDisplayName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                            OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                            OpenMetadataProperty.DISPLAY_NAME.name,
                                                                             glossaryEntity.getProperties(),
                                                                             methodName));
 
                     asset.setDisplaySummary(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                        OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
-                                                                        glossaryEntity.getProperties(),
-                                                                        methodName));
+                                                                               OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                               glossaryEntity.getProperties(),
+                                                                               methodName));
                     asset.setDisplayDescription(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                            OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                            glossaryEntity.getProperties(),
-                                                                            methodName));
+                                                                                   OpenMetadataProperty.DESCRIPTION.name,
+                                                                                   glossaryEntity.getProperties(),
+                                                                                   methodName));
                     asset.setAbbreviation(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                             OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                             OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
                                                                              glossaryEntity.getProperties(),
                                                                              methodName));
                     asset.setUsage(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                      OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                       glossaryEntity.getProperties(),
                                                                       methodName));
                 }
@@ -416,7 +418,7 @@ public class OCFMetadataRESTServices
                 response.setRelatedAssetCount(relatedAssetHandler.getRelatedAssetCount(userId,
                                                                                        assetGUID,
                                                                                        assetGUIDParameterName,
-                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                       OpenMetadataType.ASSET.typeName,
                                                                                        null,
                                                                                        null,
                                                                                        supportedZones,
@@ -676,7 +678,7 @@ public class OCFMetadataRESTServices
                                    assetGUIDParameterName,
                                    assetGUID,
                                    assetGUIDParameterName,
-                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                   OpenMetadataType.ASSET.typeName,
                                    elementStart,
                                    maxElements,
                                    methodName);
@@ -718,7 +720,7 @@ public class OCFMetadataRESTServices
                                    assetGUIDParameterName,
                                    commentGUID,
                                    commentGUIDParameterName,
-                                   OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                   OpenMetadataType.COMMENT_TYPE_NAME,
                                    elementStart,
                                    maxElements,
                                    methodName);
@@ -820,7 +822,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getExternalIdentifiersForElement(userId,
                                                                       assetGUID,
                                                                       guidParameterName,
-                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      OpenMetadataType.ASSET.typeName,
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                       elementStart,
                                                                       maxElements,
@@ -878,7 +880,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getExternalReferences(userId,
                                                            assetGUID,
                                                            guidParameterName,
-                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           OpenMetadataType.ASSET.typeName,
                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                            elementStart,
                                                            maxElements,
@@ -936,7 +938,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getAttachedTags(userId,
                                                      assetGUID,
                                                      guidParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
@@ -994,7 +996,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getLicenses(userId,
                                                  assetGUID,
                                                  guidParameterName,
-                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                 OpenMetadataType.ASSET.typeName,
                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                  elementStart,
                                                  maxElements,
@@ -1052,7 +1054,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getLikes(userId,
                                               assetGUID,
                                               guidParameterName,
-                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                              OpenMetadataType.ASSET.typeName,
                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                               elementStart,
                                               maxElements,
@@ -1110,7 +1112,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getAssetLocations(userId,
                                                        assetGUID,
                                                        guidParameterName,
-                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                       OpenMetadataType.ASSET.typeName,
                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                        elementStart,
                                                        maxElements,
@@ -1168,7 +1170,7 @@ public class OCFMetadataRESTServices
             List<NoteLogHeader>          noteLogs = handler.getAttachedNoteLogs(userId,
                                                                                 assetGUID,
                                                                                 guidParameterName,
-                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                OpenMetadataType.ASSET.typeName,
                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                                 elementStart,
                                                                                 maxElements,
@@ -1180,7 +1182,7 @@ public class OCFMetadataRESTServices
 
             if (noteLogs != null)
             {
-                NoteHandler<Note>  noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
+                NoteHandler<Note> noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
                 for (NoteLogHeader noteLog : noteLogs)
                 {
                     if (noteLog != null)
@@ -1255,7 +1257,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getNotes(userId,
                                               noteLogGUID,
                                               guidParameterName,
-                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                              OpenMetadataType.ASSET.typeName,
                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                               elementStart,
                                               maxElements,
@@ -1313,7 +1315,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getRatings(userId,
                                                 assetGUID,
                                                 guidParameterName,
-                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                OpenMetadataType.ASSET.typeName,
                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                 elementStart,
                                                 maxElements,
@@ -1371,10 +1373,10 @@ public class OCFMetadataRESTServices
             response.setList(handler.getRelatedAssets(userId,
                                                       assetGUID,
                                                       guidParameterName,
-                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      OpenMetadataType.ASSET.typeName,
                                                       null,
                                                       null,
-                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      OpenMetadataType.ASSET.typeName,
                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                       0,
                                                       elementStart,
@@ -1435,8 +1437,8 @@ public class OCFMetadataRESTServices
             response.setList(handler.getMoreInformation(userId,
                                                         elementGUID,
                                                         guidParameterName,
-                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                                        OpenMetadataType.REFERENCEABLE.typeName,
                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                         elementStart,
                                                         maxElements,
@@ -1495,7 +1497,7 @@ public class OCFMetadataRESTServices
             response.setList(handler.getRelatedMedia(userId,
                                                      assetGUID,
                                                      guidParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                      elementStart,
                                                      maxElements,
@@ -1553,7 +1555,7 @@ public class OCFMetadataRESTServices
             List<SchemaAttribute> schemaAttributes = handler.getAttachedSchemaAttributes(userId,
                                                                                          parentSchemaGUID,
                                                                                          guidParameterName,
-                                                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                                          elementStart,
                                                                                          maxElements,
@@ -1563,15 +1565,15 @@ public class OCFMetadataRESTServices
                                                                                          methodName);
             if (schemaAttributes != null)
             {
-                final String schemaAttributeGUIDParameterName = "schemaAttribute.getGUID()";
-                GlossaryTermHandler<Meaning> meaningHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+                final String                 schemaAttributeGUIDParameterName = "schemaAttribute.getGUID()";
+                GlossaryTermHandler<Meaning> meaningHandler                   = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
                 for (SchemaAttribute schemaAttribute : schemaAttributes)
                 {
                     schemaAttribute.setMeanings(meaningHandler.getAttachedMeanings(userId,
                                                                                    schemaAttribute.getGUID(),
                                                                                    schemaAttributeGUIDParameterName,
-                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                                    0,
                                                                                    0,
@@ -1656,7 +1658,7 @@ public class OCFMetadataRESTServices
                     List<Relationship> relationships = handler.getAllAttachmentLinks(userId,
                                                                                      apiOperation.getGUID(),
                                                                                      apiOpGUIDParameterName,
-                                                                                     OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                                                                     OpenMetadataType.API_OPERATION_TYPE_NAME,
                                                                                      false,
                                                                                      false,
                                                                                      effectiveTime,
@@ -1669,7 +1671,7 @@ public class OCFMetadataRESTServices
 
                         for (Relationship relationship : relationships)
                         {
-                            if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1677,9 +1679,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,
                                                                                         false,
                                                                                         false,
@@ -1688,7 +1690,7 @@ public class OCFMetadataRESTServices
 
                                 apiOperationResponse.setHeaderAttributeCount(attributeCount);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1696,9 +1698,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,
                                                                                         false,
                                                                                         false,
@@ -1707,7 +1709,7 @@ public class OCFMetadataRESTServices
 
                                 apiOperationResponse.setRequestAttributeCount(attributeCount);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceURLName, relationship.getType().getTypeDefName(), OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
                             {
                                 SchemaType schemaType = schemaTypeHandler.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, false, false, effectiveTime, methodName);
 
@@ -1715,9 +1717,9 @@ public class OCFMetadataRESTServices
 
                                 int attributeCount = schemaTypeHandler.countAttachments(userId,
                                                                                         schemaType.getGUID(),
-                                                                                        OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                         2,
                                                                                         false,
                                                                                         false,
@@ -1783,8 +1785,8 @@ public class OCFMetadataRESTServices
 
             EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
                                                                     guid,
-                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataProperty.GUID.name,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     false,
                                                                     false,
                                                                     effectiveTime,
@@ -1794,8 +1796,8 @@ public class OCFMetadataRESTServices
             {
                 if (repositoryHandler.isEntityATypeOf(userId,
                                                       guid,
-                                                      OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      OpenMetadataProperty.GUID.name,
+                                                      OpenMetadataType.ASSET.typeName,
                                                       effectiveTime,
                                                       methodName))
                 {
@@ -1805,9 +1807,9 @@ public class OCFMetadataRESTServices
                 {
                     EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
                                                                                           guid,
-                                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                                                           entity,
-                                                                                          OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.GUID.name,
                                                                                           true,
                                                                                           false,
                                                                                           false,
@@ -1817,8 +1819,8 @@ public class OCFMetadataRESTServices
                                                                                           methodName);
                     if (anchorEntity != null && repositoryHandler.isEntityATypeOf(userId,
                                                                                   anchorEntity.getGUID(),
-                                                                                  OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                  OpenMetadataProperty.GUID.name,
+                                                                                  OpenMetadataType.ASSET.typeName,
                                                                                   effectiveTime,
                                                                                   methodName))
                     {

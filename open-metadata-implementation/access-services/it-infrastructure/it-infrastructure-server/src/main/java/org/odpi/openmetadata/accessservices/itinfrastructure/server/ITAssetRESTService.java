@@ -22,7 +22,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -102,7 +102,7 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+                String typeName = OpenMetadataType.ASSET.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -136,14 +136,14 @@ public class ITAssetRESTService
                                                      requestBody.getExternalSourceName(),
                                                      requestBody.getExternalSourceGUID(),
                                                      capabilityGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      assetGUID,
                                                      assetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      false,
                                                      false,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                      (InstanceProperties) null,
                                                      null,
                                                      null,
@@ -176,14 +176,14 @@ public class ITAssetRESTService
                                                      null,
                                                      requestBody.getExternalSourceGUID(),
                                                      capabilityGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      assetGUID,
                                                      assetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      false,
                                                      false,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                      (InstanceProperties) null,
                                                      null,
                                                      null,
@@ -336,8 +336,8 @@ public class ITAssetRESTService
                                                                 handler.getExternalSourceID(infrastructureManagerIsHome, requestBody.getExternalSourceName()),
                                                                 templateGUID,
                                                                 templateGUIDParameterName,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                OpenMetadataType.ASSET.typeGUID,
+                                                                OpenMetadataType.ASSET.typeName,
                                                                 requestBody.getQualifiedName(),
                                                                 qualifiedNameParameterName,
                                                                 requestBody.getDisplayName(),
@@ -357,14 +357,14 @@ public class ITAssetRESTService
                                                  handler.getExternalSourceID(infrastructureManagerIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  capabilityGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  assetGUID,
                                                  assetGUIDParameterName,
-                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                 OpenMetadataType.ASSET.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -428,7 +428,7 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+                String typeName = OpenMetadataType.ASSET.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -519,7 +519,7 @@ public class ITAssetRESTService
             {
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
 
                 handler.updateBeanStatusInRepository(userId,
                                                      requestBody.getExternalSourceGUID(),
@@ -751,7 +751,7 @@ public class ITAssetRESTService
             if (requestBody != null)
             {
                 TypeDef relationshipTypeDef = handler.getTypeDefByName(relationshipTypeName, null);
-                TypeDef relatedAssetTypeDef = handler.getTypeDefByName(relatedAssetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef relatedAssetTypeDef = handler.getTypeDefByName(relatedAssetTypeName, OpenMetadataType.ASSET.typeName);
 
                 handler.unlinkElementFromElement(userId,
                                                  false,
@@ -1150,8 +1150,8 @@ public class ITAssetRESTService
                                                requestBody.getExternalSourceName(),
                                                assetGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                               OpenMetadataType.ASSET.typeGUID,
+                                               OpenMetadataType.ASSET.typeName,
                                                null,
                                                null,
                                                false,
@@ -1215,11 +1215,11 @@ public class ITAssetRESTService
             {
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
 
                 if (typeDef == null)
                 {
-                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME, instanceHandler.getServiceName(), methodName);
+                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataType.ASSET.typeName, instanceHandler.getServiceName(), methodName);
                 }
                 else
                 {
@@ -1295,11 +1295,11 @@ public class ITAssetRESTService
             {
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
 
                 if (typeDef == null)
                 {
-                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME, instanceHandler.getServiceName(), methodName);
+                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataType.ASSET.typeName, instanceHandler.getServiceName(), methodName);
                 }
                 else
                 {
@@ -1379,11 +1379,11 @@ public class ITAssetRESTService
             {
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
 
                 if (typeDef == null)
                 {
-                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME, instanceHandler.getServiceName(),
+                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataType.ASSET.typeName, instanceHandler.getServiceName(),
                                                        methodName);
                 }
                 else
@@ -1391,9 +1391,9 @@ public class ITAssetRESTService
                     List<AssetElement> assets = handler.getAttachedElements(userId,
                                                                             infrastructureManagerGUID,
                                                                             infrastructureManagerGUIDParameterName,
-                                                                            OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                            OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                            OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                                             typeDef.getName(),
                                                                             null,
                                                                             null,
@@ -1462,11 +1462,11 @@ public class ITAssetRESTService
             {
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
 
                 if (typeDef == null)
                 {
-                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME, instanceHandler.getServiceName(),
+                    restExceptionHandler.handleBadType(assetTypeName, OpenMetadataType.ASSET.typeName, instanceHandler.getServiceName(),
                                                        methodName);
                 }
                 else

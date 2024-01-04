@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -184,18 +186,20 @@ public class OpenMetadataTypesArchive2_6
 
     private ClassificationDef addMementoClassification()
     {
-        final String guid            = "ecdcd472-6701-4303-8dec-267bcb54feb9";
-        final String name            = "Memento";
-        final String description     = "An element whose real-world counterpart has been deleted or moved to offline archived.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.MEMENTO_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.MEMENTO_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.MEMENTO_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.MEMENTO_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = "OpenMetadataRoot";
+        final String linkedToEntity = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
+                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  true);
 
@@ -205,24 +209,24 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "archiveDate";
-        final String attribute1Description     = "Timestamp when the archive occurred or was detected.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "archiveUser";
-        final String attribute2Description     = "Name of user that performed the archive - or detected the archive.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "archiveProcess";
-        final String attribute3Description     = "Name of process that performed the archive - or detected the archive.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "archiveService";
-        final String attribute4Description     = "Name of service that created this classification.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "archiveMethod";
-        final String attribute5Description     = "Name of method that created this classification.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "archiveProperties";
-        final String attribute6Description     = "Properties to locate the real-world counterpart in the archive.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.ARCHIVE_DATE.name;
+        final String attribute1Description     = OpenMetadataProperty.ARCHIVE_DATE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.ARCHIVE_DATE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.ARCHIVE_USER.name;
+        final String attribute2Description     = OpenMetadataProperty.ARCHIVE_USER.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.ARCHIVE_USER.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.ARCHIVE_PROCESS.name;
+        final String attribute3Description     = OpenMetadataProperty.ARCHIVE_PROCESS.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.ARCHIVE_PROCESS.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ARCHIVE_SERVICE.name;
+        final String attribute4Description     = OpenMetadataProperty.ARCHIVE_SERVICE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ARCHIVE_SERVICE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.ARCHIVE_METHOD.name;
+        final String attribute5Description     = OpenMetadataProperty.ARCHIVE_METHOD.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.ARCHIVE_METHOD.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.ARCHIVE_PROPERTIES.name;
+        final String attribute6Description     = OpenMetadataProperty.ARCHIVE_PROPERTIES.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.ARCHIVE_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -278,7 +282,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "EmbeddedProcess";
         final String description     = "A child process.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Process";
+        final String superTypeName   = OpenMetadataType.PROCESS.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -400,7 +404,7 @@ public class OpenMetadataTypesArchive2_6
         final String description     = "Defines the severity of a situation on the attach entity.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -567,7 +571,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "ExecutionPointDefinition";
         final String description     = "A description of an activity that supports the implementation of a governance requirement.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -725,7 +729,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
         final String attribute1Description     = "Qualified name of the enforcement point definition.";
         final String attribute1DescriptionGUID = null;
 
@@ -754,7 +758,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
         final String attribute1Description     = "Qualified name of the enforcement point definition.";
         final String attribute1DescriptionGUID = null;
 
@@ -783,7 +787,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
         final String attribute1Description     = "Qualified name of the enforcement point definition.";
         final String attribute1DescriptionGUID = null;
 
@@ -993,7 +997,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "GovernanceActionProcess";
         final String description     = "A process implemented by chained engine actions that call governance services.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Process";
+        final String superTypeName   = OpenMetadataType.PROCESS.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -1011,7 +1015,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "GovernanceActionProcessStep";
         final String description     = "A description of a call to a governance engine action that acts as a template when creating the appropriate engine action instance.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1446,7 +1450,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "EngineAction";
         final String description     = "An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1552,7 +1556,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1EntityType               = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String                     end1AttributeName            = "sourceActivity";
         final String                     end1AttributeDescription     = "Element(s) that caused this engine action to be created.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1732,7 +1736,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "actionTarget";
         final String                     end2AttributeDescription     = "Element(s) to work on.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2021,7 +2025,7 @@ public class OpenMetadataTypesArchive2_6
         final String description     = "Defines that duplicate resolution processing is required.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -2053,7 +2057,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "knownDuplicateOrigin";
         final String                     end1AttributeDescription     = "Oldest element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2070,7 +2074,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "knownDuplicatePartner";
         final String                     end2AttributeDescription     = "Newest element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2255,7 +2259,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "IncidentClassifier";
         final String description     = "A definition of a classifier used to label incident reports.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -2314,7 +2318,7 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "IncidentReport";
         final String description     = "A description of an adverse situation or activity.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -2422,7 +2426,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "originators";
         final String                     end1AttributeDescription     = "Source(s) of the incident report.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2476,7 +2480,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "impactedResources";
         final String                     end1AttributeDescription     = "Resources impacted by the incident.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2636,7 +2640,7 @@ public class OpenMetadataTypesArchive2_6
         final String attribute2Name            = "description";
         final String attribute2Description     = "Description of the metadata.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "additionalProperties";
+        final String attribute3Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
         final String attribute3Description     = "Additional properties describing properties, valid values or associated processing for this metadata.";
         final String attribute3DescriptionGUID = null;
 

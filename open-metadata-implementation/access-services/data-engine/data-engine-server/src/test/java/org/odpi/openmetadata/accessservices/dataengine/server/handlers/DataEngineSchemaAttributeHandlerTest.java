@@ -15,6 +15,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -27,9 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaAttributeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -59,7 +59,7 @@ class DataEngineSchemaAttributeHandlerTest {
 
     @Test
     void upsertSchemaAttributes_create() throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         Attribute attribute = getAttribute();
@@ -69,12 +69,12 @@ class DataEngineSchemaAttributeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
 
         verify(schemaAttributeHandler, times(1)).createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, ATTRIBUTE_QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME,
-                ATTRIBUTE_DISPLAY_NAME, null, null, null, null, null,
-                null, null, false, 0, 0, 0, false,
-                false, null, 99, 0, 0, 0, false, null,
-                null, null, TABULAR_COLUMN_TYPE_NAME, null, null, null, false,
-                false, null, "createSchemaAttribute");
+                                                                             EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                             ATTRIBUTE_DISPLAY_NAME, null, null, null, null, null,
+                                                                             null, null, false, 0, 0, 0, false,
+                                                                             false, null, 99, 0, 0, 0, false, null,
+                                                                             null, null, OpenMetadataType.TABULAR_COLUMN_TYPE_NAME, null, null, null, false,
+                                                                             false, null, "createSchemaAttribute");
     }
 
     @Test
@@ -82,7 +82,7 @@ class DataEngineSchemaAttributeHandlerTest {
         final String methodName = "updateSchemaAttribute";
         EntityDetail schemaAttributeEntity = mock(EntityDetail.class);
         when(schemaAttributeEntity.getGUID()).thenReturn(ATTRIBUTE_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.of(schemaAttributeEntity));
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.of(schemaAttributeEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         Attribute attribute = getAttribute();

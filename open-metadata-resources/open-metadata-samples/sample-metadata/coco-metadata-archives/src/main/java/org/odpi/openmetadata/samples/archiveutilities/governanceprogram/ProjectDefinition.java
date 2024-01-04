@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
-import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Arrays;
@@ -39,7 +38,7 @@ public enum ProjectDefinition
                     "Developing efficient ways to manage each of the clinical trials.",
                     true,
                     false,
-                    OpenMetadataTypesMapper.GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME,
+                    OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME,
                     ProjectStatusDefinition.ACTIVE,
                     null,
                     null,
@@ -55,7 +54,7 @@ public enum ProjectDefinition
                              "Clinical trial related to the new treatment for Teddy Bear Drop Foot.",
                              false,
                              false,
-                             OpenMetadataTypesMapper.GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME,
+                             OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME,
                              ProjectStatusDefinition.ACTIVE,
                              CLINICAL_TRIALS,
                              null,
