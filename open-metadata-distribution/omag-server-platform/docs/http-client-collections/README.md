@@ -5,11 +5,13 @@
 
 The Jetbrains HTTP Client is a useful utility for testing REST APIs that is both integrated into the Jetbrains tooling 
 and freely available to be run standalone. Further information can be found at 
-[Jebrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html).
+[Jebrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html). Information about the freely downloadable client can be found at 
+[Download HTTP Client CLI: CI-friendly way of executing .http files](https://www.jetbrains.com/ijhttp/download/#section=zip-archive).
 
 
 It captures, stores and executes specific REST API calls so you do not have to keep typing the URL and parameters
-each time you want to issue a request.
+each time you want to issue a request. You can also sequence and script REST calls into scenarios for testing or demonstation.
+
 
 ## Sample Collections
 
@@ -26,12 +28,14 @@ specific HTTP Client commands.  This makes it easier for them to be used by mult
 configurations.
 
 A superset of all the potential variables that we use in our samples (along with default values) are provided in:
-[Egeria.postman_environment.json](Egeria.postman_environment.json).
-
+open-metadata-resources/open-metadata-deployment/http-client.env.json. This file contains several JSON structures that 
+group environment variables for different purposes - the Egeria grouping has generally used variables while, for 
+instance the Atlas grouping has variables specialized for Atlas. This file can be copied, into your own to adapt to your
+own environment and requirements.
 
 You will most likely want to override some of these values (such as `baseURL` or `kafkaep`) depending on your
-own environment's configuration; or you may even want to make several copies of this with different settings in each
-one to be able to quickly change between different environments you have running at the same time.
+own environment's configuration; or you may even want to create your own JSON structure within the file or make several copies -
+with different settings in each to be able to quickly change between different environments you have running at the same time.
 
 Note that many of the variables are optional, depending on your particular configuration. The mandatory variables are
 the following:
@@ -42,7 +46,7 @@ the following:
 - `cohort`: the name of the cohort with which the server should interact
 - `kafkaep`: the Apache Kafka endpoint (hostname:port) to use for Egeria's event bus
 
-[Learn more about Postman Environments](https://learning.getpostman.com/docs/postman/environments-and-globals/intro-to-environments-and-globals/).
+[Learn more about the HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html#composing-http-requests).
 
 
 ----
