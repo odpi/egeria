@@ -654,6 +654,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>searchString</code> - name to retrieve</dd>
+<dd><code>typeName</code> - optional type name to restrict search to a specific type of element (and their subtypes)</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
 <dd><code>serviceSupportedZones</code> - list of supported zones for this service</dd>
@@ -736,9 +737,11 @@ loadScripts(document, 'script');</script>
 <dd><code>relationshipTypeName</code> - type name of relationships to follow (or null for all)</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved elements are for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>serviceSupportedZones</code> - list of zones</dd>
 <dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
 <dd>list of related elements</dd>
 <dt>Throws:</dt>
