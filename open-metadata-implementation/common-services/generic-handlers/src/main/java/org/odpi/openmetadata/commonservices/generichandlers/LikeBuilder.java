@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -26,8 +27,8 @@ public class LikeBuilder extends OpenMetadataAPIGenericBuilder
                          String               serviceName,
                          String               serverName)
     {
-        super(OpenMetadataAPIMapper.LIKE_TYPE_GUID,
-              OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+        super(OpenMetadataType.LIKE_TYPE_GUID,
+              OpenMetadataType.LIKE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -46,7 +47,7 @@ public class LikeBuilder extends OpenMetadataAPIGenericBuilder
     {
         return repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                              null,
-                                                             OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                             OpenMetadataProperty.IS_PUBLIC.name,
                                                              isPublic,
                                                              methodName);
     }

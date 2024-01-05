@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase
  */
 public class OpenMetadataStoreClient extends OpenMetadataClientBase
 {
-    private final static String serviceURLMarker = "it-infrastructure";
+    private final static String serviceURLMarker = "security-manager";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

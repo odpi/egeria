@@ -1096,6 +1096,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Investigate and correct the cause of the conversion failure."),
 
     /**
+     * OMRS-AUDIT-LOG-400-009 - The archive manager is not active in server {0}
+     */
+    ARCHIVE_MANAGER_NOT_ACTIVE(400, "OMRS-AUDIT-LOG-400-009",
+                                      "The archive manager is not active in server {0}",
+                                      "The system is unable to load an open metadata archive because the archive manager is not active in this server.",
+                                      "Redirect the load request to a metadata access server."),
+
+    /**
      * OMRS-REPOSITORY-404-001 - The open metadata repository connector for server {0} is not active and is unable to service the {1} request
      */
     REPOSITORY_NOT_AVAILABLE(404, "OMRS-REPOSITORY-404-001",
@@ -1844,16 +1852,15 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
     ;
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for OMRSErrorCode expects to be passed one of the enumeration rows defined in
-     * DiscoveryEngineServicesErrorCode above.   For example:
-     * <br><br>
-     *     OMRSErrorCode   errorCode = OMRSErrorCode.UNKNOWN_ENDPOINT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -1861,13 +1868,13 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OMRSErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OMRSErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -1879,7 +1886,11 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -1892,6 +1903,12 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -1899,15 +1916,19 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "OMRSErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

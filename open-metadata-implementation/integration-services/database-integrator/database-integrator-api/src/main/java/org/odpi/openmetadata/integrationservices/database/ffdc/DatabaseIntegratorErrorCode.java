@@ -27,7 +27,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
 {
-
+    /**
+     * OMIS-DATABASE-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}
+     */
     INVALID_CONNECTOR(400,"OMIS-DATABASE-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
@@ -35,6 +37,9 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
 
+    /**
+     * OMIS-DATABASE-INTEGRATOR-500-001 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT(400,"OMIS-DATABASE-INTEGRATOR-500-001",
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
@@ -42,17 +47,15 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
                          "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
-
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for DatabaseIntegratorErrorCode expects to be passed one of the enumeration rows defined in
-     * DatabaseIntegratorErrorCode above.   For example:
-     * <br><br>
-     *     DatabaseIntegratorErrorCode   errorCode = DatabaseIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -60,13 +63,13 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DatabaseIntegratorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DatabaseIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -78,7 +81,11 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -91,6 +98,12 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -105,8 +118,12 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "DatabaseIntegratorErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

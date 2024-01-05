@@ -20,8 +20,6 @@
       "accessServiceWiki": "https://egeria-project.org/services/omas/asset-catalog/overview/",
       "accessServiceOperationalStatus": "ENABLED",
       "accessServiceOptions": {
-        "SupportedZones": [],
-        "DefaultZones": [],
         "SupportedTypesForSearch": [
           "RelationalTable",
           "TabularColumn",
@@ -47,24 +45,7 @@
       "accessServiceURLMarker": "asset-manager",
       "accessServiceDescription": "Manage metadata from a third party asset manager",
       "accessServiceWiki": "https://egeria-project.org/services/omas/asset-manager/overview/",
-      "accessServiceOperationalStatus": "ENABLED",
-      "accessServiceOptions": {
-        "SupportedZones": [],
-        "DefaultZones": [],
-        "SupportedTypesForSearch": [
-          "RelationalTable",
-          "TabularColumn",
-          "TabularFileColumn",
-          "RelationalColumn",
-          "GlossaryTerm",
-          "GlossaryCategory",
-          "Process",
-          "DataFile",
-          "Asset",
-          "Application",
-          "SoftwareServerCapability"
-        ]
-      }
+      "accessServiceOperationalStatus": "ENABLED"
     },
     {
       "class": "AccessServiceConfig",

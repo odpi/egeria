@@ -97,6 +97,7 @@ public class SchemaAttributeConverter<B> extends AssetManagerOMASConverter<B>
                     schemaAttributeProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
                     schemaAttributeProperties.setLength(this.removeLength(instanceProperties));
                     schemaAttributeProperties.setPrecision(this.removePrecision(instanceProperties));
+                    schemaAttributeProperties.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
                     schemaAttributeProperties.setIsNullable(this.removeIsNullable(instanceProperties));
                     schemaAttributeProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     schemaAttributeProperties.setAliases(this.removeAliases(instanceProperties));

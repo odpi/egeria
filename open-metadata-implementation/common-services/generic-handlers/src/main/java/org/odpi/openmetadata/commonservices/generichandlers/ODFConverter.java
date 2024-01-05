@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -62,79 +64,79 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
         {
             String actualTypeName = primaryEntity.getType().getTypeDefName();
 
-            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.CLASSIFICATION_ANNOTATION_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CLASSIFICATION_ANNOTATION_TYPE_NAME))
             {
                 return getNewClassificationAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DATA_CLASS_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DATA_CLASS_ANNOTATION_TYPE_NAME))
             {
                 return getNewDataClassAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DATA_PROFILE_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DATA_PROFILE_ANNOTATION_TYPE_NAME))
             {
                 return getNewDataProfileAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DATA_PROFILE_LOG_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION_TYPE_NAME))
             {
                 return getNewDataProfileLogAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME))
             {
                 return getNewDataSourcePhysicalStatusAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DATA_SOURCE_MEASUREMENT_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION_TYPE_NAME))
             {
                 return getNewDataSourceMeasurementAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_VALUE_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_VALUE_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentValueAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentClassificationAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentRelationshipAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentAttachmentValueAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentAttachmentClassificationAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_NAME))
             {
                 return getNewDivergentAttachmentRelationshipAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.QUALITY_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.QUALITY_ANNOTATION_TYPE_NAME))
             {
                 return getNewQualityAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.RELATIONSHIP_ADVICE_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.RELATIONSHIP_ADVICE_ANNOTATION_TYPE_NAME))
             {
                 return getNewRelationshipAdviceAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.REQUEST_FOR_ACTION_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION_TYPE_NAME))
             {
                 return getNewRequestForActionAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME))
             {
                 return getNewSchemaAnalysisAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.SEMANTIC_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.SEMANTIC_ANNOTATION_TYPE_NAME))
             {
                 return getNewSemanticAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
             {
                 return getNewSuspectDuplicateAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION_TYPE_NAME))
             {
                 return getNewAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
@@ -143,7 +145,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 /*
                  * This will throw an exception
                  */
-                super.validateInstanceType(OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                super.validateInstanceType(OpenMetadataType.ANNOTATION_TYPE_NAME,
                                            beanClass.getName(),
                                            primaryEntity,
                                            methodName);
@@ -353,14 +355,14 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 {
                     if (relationship != null)
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.DATA_PROFILE_LOG_FILE_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_PROFILE_LOG_FILE_TYPE_NAME))
                         {
                             EntityProxy endTwo = relationship.getEntityTwoProxy();
 
                             if (endTwo != null)
                             {
                                 String name = repositoryHelper.getStringProperty(serviceName,
-                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                  endTwo.getUniqueProperties(),
                                                                                  methodName);
                                 if (name == null)
@@ -987,7 +989,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 {
                     if (relationship != null)
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME))
                         {
                             dataFieldCount++;
                         }
@@ -1212,7 +1214,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 {
                     String actualTypeName = entity.getType().getTypeDefName();
 
-                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME))
                     {
                         InstanceProperties properties = new InstanceProperties(entity.getProperties());
 
@@ -1230,7 +1232,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
             {
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME))
                     {
                         annotation.setAnnotationStatus(this.getAnnotationStatusFromProperties(instanceProperties));
                     }
@@ -1256,7 +1258,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.ANNOTATION_STATUS_PROPERTY_NAME);
+            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.ANNOTATION_STATUS_PROPERTY_NAME);
 
             if (instancePropertyValue instanceof EnumPropertyValue)
             {

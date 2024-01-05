@@ -7,11 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentElement implements MetadataElement, Serializable
-{ 
-    @Serial 
-    private static final long serialVersionUID = 1L;
-
+public class CommentElement implements MetadataElement
+{
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
     private CommentProperties               properties            = null;

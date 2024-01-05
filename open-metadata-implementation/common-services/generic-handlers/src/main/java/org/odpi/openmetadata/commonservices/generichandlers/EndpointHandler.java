@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,7 +24,6 @@ import java.util.Map;
  * EndpointHandler manages Endpoint objects.  These describe the network addresses where services are running.  They are used by connection
  * objects to describe the service that the connector should call.  They are linked to servers to show their network address where the services that
  * they are hosting are running.
- *
  * EndpointHandler runs server-side in the OMAG Server Platform and retrieves Endpoint entities through the OMRSRepositoryConnector via the
  * generic handler and repository handler.
  */
@@ -112,7 +113,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                     if (this.getEntityFromRepository(userId,
                                                      endpoint.getGUID(),
                                                      guidParameterName,
-                                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                      null,
                                                      null,
                                                      forLineage,
@@ -139,9 +140,9 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                 retrievedGUID = this.getBeanGUIDByUniqueName(userId,
                                                              endpoint.getQualifiedName(),
                                                              qualifiedNameParameter,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                             OpenMetadataType.CONNECTION_TYPE_GUID,
+                                                             OpenMetadataType.CONNECTION_TYPE_NAME,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              supportedZones,
@@ -154,9 +155,9 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                 retrievedGUID = this.getBeanGUIDByUniqueName(userId,
                                                              endpoint.getDisplayName(),
                                                              displayNameParameter,
-                                                             OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                             OpenMetadataProperty.NAME.name,
+                                                             OpenMetadataType.CONNECTION_TYPE_GUID,
+                                                             OpenMetadataType.CONNECTION_TYPE_NAME,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              supportedZones,
@@ -300,10 +301,11 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException
     {
         final String nameParameter = "qualifiedName";
+        final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+        String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -311,7 +313,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                   OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -331,10 +333,15 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                       serviceName,
                                                       serverName);
 
-        if (anchorGUID != null)
-        {
-            builder.setAnchors(userId, anchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
@@ -401,10 +408,10 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                           OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                           OpenMetadataType.ENDPOINT_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -460,13 +467,13 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
 
         List<EntityDetail> currentEndpoints = this.getEntitiesByValue(userId,
                                                                       networkAddress,
                                                                       networkAddressParameterName,
-                                                                      OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                                                      OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                      OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                                                      OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                       propertyNames,
                                                                       true,
                                                                       false,
@@ -570,7 +577,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+        String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -578,7 +585,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                   OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -650,8 +657,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     guid,
                                     guidParameterName,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -695,13 +702,13 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
     {
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     networkAddress,
                                     networkAddressParameterName,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
                                     propertyNames,
                                     true,
                                     null,
@@ -795,8 +802,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                              OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                              OpenMetadataType.ENDPOINT_TYPE_GUID,
+                              OpenMetadataType.ENDPOINT_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -840,15 +847,15 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                  PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -894,7 +901,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                          OpenMetadataType.ENDPOINT_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

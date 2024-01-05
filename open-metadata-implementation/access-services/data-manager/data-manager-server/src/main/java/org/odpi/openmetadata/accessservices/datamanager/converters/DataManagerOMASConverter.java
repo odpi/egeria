@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -54,7 +54,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -84,7 +84,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
+                                                                     OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -132,6 +132,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
         properties.setLength(this.removeLength(instanceProperties));
         properties.setPrecision(this.removePrecision(instanceProperties));
+        properties.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
         properties.setIsNullable(this.removeIsNullable(instanceProperties));
         properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
         properties.setAliases(this.removeAliases(instanceProperties));

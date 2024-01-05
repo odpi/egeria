@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCod
 import org.odpi.openmetadata.accessservices.datamanager.outtopic.DataManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -145,7 +145,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     elementStub = converter.getElementStub(ElementStub.class, entityProxy, methodName);
                 }
 
-                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     if (entity != null)
                     {
@@ -154,6 +154,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                             instanceTypeName,
                                                             entity,
                                                             entityGUIDParameterName,
+                                                            false,
                                                             false,
                                                             false,
                                                             false,
@@ -168,6 +169,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                                             entityProxy.getGUID(),
                                                             entityGUIDParameterName,
                                                             instanceTypeName,
+                                                            false,
                                                             false,
                                                             false,
                                                             false,
@@ -244,6 +246,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship                   details of the changed relationship
      * @param methodName                     calling method
      */
+    @SuppressWarnings(value="deprecation")
     private void processRelationshipEvent(DataManagerOutboundEventType eventType,
                                           String                       sourceName,
                                           String                       originatorMetadataCollectionId,
@@ -274,40 +277,41 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                 ElementStub endOneElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityOneProxy(), methodName);
                 ElementStub endTwoElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_FILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_MEDIA_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.GROUPED_MEDIA_TYPE_GUID)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TOPIC_SUBSCRIBERS_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSOCIATED_LOG_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME)))
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.NESTED_FILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_FILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_MEDIA_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.GROUPED_MEDIA_TYPE_GUID)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TOPIC_SUBSCRIBERS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSOCIATED_LOG_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME)))
                 {
                     genericHandler.validateAnchorEntity(serverUserId,
                                                         relationship.getEntityOneProxy().getGUID(),
                                                         entityProxyOneGUIDParameterName,
-                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        false,
                                                         false,
                                                         false,
                                                         false,
@@ -318,7 +322,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     genericHandler.validateAnchorEntity(serverUserId,
                                                         relationship.getEntityTwoProxy().getGUID(),
                                                         entityProxyTwoGUIDParameterName,
-                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        false,
                                                         false,
                                                         false,
                                                         false,
@@ -858,10 +863,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.

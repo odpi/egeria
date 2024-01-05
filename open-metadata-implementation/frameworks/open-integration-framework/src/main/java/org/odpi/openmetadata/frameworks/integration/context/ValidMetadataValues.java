@@ -40,7 +40,6 @@ public class ValidMetadataValues
      * Create or update the valid value for a particular open metadata property.  This property may be of type string or an array of strings.
      * The valid value is stored in the preferredValue property of validMetadataValue.  If the property is of type string, this property
      * can be stored as the property value.  If the property is an array of strings, an element in the array can be of this value.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -66,7 +65,6 @@ public class ValidMetadataValues
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -92,7 +90,6 @@ public class ValidMetadataValues
      * Create or update the valid value for a name that can be stored in a particular open metadata property name.
      * This property is of type map from name to string.
      * The valid value is stored in the preferredValue property of validMetadataValue.
-     *
      * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
@@ -345,5 +342,34 @@ public class ValidMetadataValues
                                                                                          PropertyServerException
     {
         return openMetadataStore.getValidMetadataValues(userId, typeName, propertyName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve all the consistent valid values for the requested property.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional name of map key that this valid value applies
+     * @param preferredValue the value to match against
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<ValidMetadataValue> getConsistentMetadataValues(String typeName,
+                                                                String propertyName,
+                                                                String mapName,
+                                                                String preferredValue,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return openMetadataStore.getConsistentMetadataValues(userId, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
     }
 }

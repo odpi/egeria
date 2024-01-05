@@ -7,6 +7,7 @@
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')

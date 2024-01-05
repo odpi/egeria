@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorContext;
 import org.odpi.openmetadata.integrationservices.analytics.ffdc.AnalyticsIntegratorAuditCode;
@@ -122,7 +122,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof AnalyticsIntegratorConnector)
+        if (integrationConnector instanceof AnalyticsIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 AnalyticsIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -130,8 +130,6 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
                                                                                                                  metadataSourceQualifiedName,
                                                                                                                  permittedSynchronizationName,
                                                                                                                  serviceOptionsString));
-
-            AnalyticsIntegratorConnector serviceSpecificConnector = (AnalyticsIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
             String externalSourceName = metadataSourceQualifiedName;
@@ -151,6 +149,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
                                                                                           integrationConnectorGUID,
                                                                                           externalSourceGUID,
                                                                                           externalSourceName,
+                                                                                          auditLog,
                                                                                           maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

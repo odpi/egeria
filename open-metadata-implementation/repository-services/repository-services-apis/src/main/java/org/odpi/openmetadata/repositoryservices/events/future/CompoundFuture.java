@@ -10,8 +10,8 @@ import java.util.List;
  * {@link OMRSFuture} which has a list of child futures.  It
  * is not complete until all of its child futures have completed.
  */
-public class CompoundFuture implements OMRSFuture {
-    
+public class CompoundFuture implements OMRSFuture
+{
     private final List<OMRSFuture> children = new ArrayList<>();
    
     /**
@@ -22,20 +22,35 @@ public class CompoundFuture implements OMRSFuture {
     public void addFuture(OMRSFuture future) {
         children.add(future);
     }
-    
-    public boolean hasChildren() {
+
+
+    /**
+     * Does this future have children?
+     *
+     * @return boolean flag
+     */
+    public boolean hasChildren()
+    {
         return ! children.isEmpty();
     }
 
+
+    /**
+     * Checks whether processing for the future has completed.
+     *
+     * @return boolean
+     */
     @Override
-    public boolean isDone() {
+    public boolean isDone()
+    {
         //the future is done when all the children are done
-        for(OMRSFuture future : children) {
-            if (! future.isDone()) {
+        for (OMRSFuture future : children)
+        {
+            if (! future.isDone())
+            {
                 return false;
             }
         }
         return true;
     }
-    
-  }
+}

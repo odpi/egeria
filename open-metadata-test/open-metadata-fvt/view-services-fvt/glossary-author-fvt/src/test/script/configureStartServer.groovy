@@ -206,7 +206,7 @@ if(postRC2g.equals(200)) {
 
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverView + " ===");
-post3g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/instance" ).openConnection()
+post3g = new URL(baseURL + "/open-metadata/platform-services/users/" + user + "/server-platform/servers/" + serverView + "/instance" ).openConnection()
 post3g.setRequestMethod("POST")
 post3g.setRequestProperty("Content-Type", "application/json")
 postRC3g = post3.getResponseCode();

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -106,7 +106,7 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                         }
                     }
 
-                    InstanceProperties classificationProperties = super.getClassificationProperties(OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
+                    InstanceProperties classificationProperties = super.getClassificationProperties(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME, schemaAttributeEntity);
 
                     if (classificationProperties != null)
                     {
@@ -124,7 +124,7 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                     {
                         for (Relationship relationship : schemaAttributeRelationships)
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME))
                             {
                                 /*
                                  * Foreign key properties are only set up in the column that contains the  foreign key which is at end 2 of the relationship.

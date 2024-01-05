@@ -30,6 +30,7 @@ public class SchemaAttributeProperties extends SchemaProperties
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               precision             = 0;
+    private int               significantDigits     = 0;
     private boolean           isNullable            = true;
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
@@ -65,6 +66,7 @@ public class SchemaAttributeProperties extends SchemaProperties
             minimumLength         = template.getMinimumLength();
             length                = template.getLength();
             precision             = template.getPrecision();
+            significantDigits     = template.getSignificantDigits();
             isNullable            = template.getIsNullable();
             defaultValueOverride  = template.getDefaultValueOverride();
             nativeJavaClass       = template.getNativeJavaClass();
@@ -270,6 +272,28 @@ public class SchemaAttributeProperties extends SchemaProperties
 
 
     /**
+     * Return the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @return int
+     */
+    public int getSignificantDigits()
+    {
+        return significantDigits;
+    }
+
+
+    /**
+     * Set up the number of significant digits before the decimal point (zero means it is an integer).
+     *
+     * @param significantDigits int
+     */
+    public void setSignificantDigits(int significantDigits)
+    {
+        this.significantDigits = significantDigits;
+    }
+
+
+    /**
      * Return whether the field is nullable or not.
      *
      * @return boolean
@@ -413,6 +437,7 @@ public class SchemaAttributeProperties extends SchemaProperties
                        ", minimumLength=" + minimumLength +
                        ", length=" + length +
                        ", precision=" + precision +
+                       ", significantDigits=" + significantDigits +
                        ", isNullable=" + isNullable +
                        ", nativeJavaClass='" + nativeJavaClass + '\'' +
                        ", aliases=" + aliases +
@@ -447,19 +472,20 @@ public class SchemaAttributeProperties extends SchemaProperties
         }
         SchemaAttributeProperties that = (SchemaAttributeProperties) objectToCompare;
         return elementPosition == that.elementPosition &&
-                minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
-                allowsDuplicateValues == that.allowsDuplicateValues &&
-                orderedValues == that.orderedValues &&
-                minimumLength == that.minimumLength &&
-                length == that.length &&
-                precision == that.precision &&
-                isNullable == that.isNullable &&
-                Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
-                sortOrder == that.sortOrder &&
-                Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                Objects.equals(aliases, that.aliases) &&
-                Objects.equals(schemaType, that.schemaType);
+                       minCardinality == that.minCardinality &&
+                       maxCardinality == that.maxCardinality &&
+                       allowsDuplicateValues == that.allowsDuplicateValues &&
+                       orderedValues == that.orderedValues &&
+                       minimumLength == that.minimumLength &&
+                       length == that.length &&
+                       precision == that.precision &&
+                       significantDigits == that.significantDigits &&
+                       isNullable == that.isNullable &&
+                       Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
+                       sortOrder == that.sortOrder &&
+                       Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
+                       Objects.equals(aliases, that.aliases) &&
+                       Objects.equals(schemaType, that.schemaType);
     }
 
 
@@ -472,6 +498,7 @@ public class SchemaAttributeProperties extends SchemaProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass, aliases, schemaType);
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, significantDigits, isNullable, nativeJavaClass,
+                            aliases, schemaType);
     }
 }

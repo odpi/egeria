@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -530,10 +530,8 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -738,9 +736,10 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      OpenMetadataType.ASSET.typeName,
                                                       fullEntity,
                                                       guidParameterName,
+                                                      false,
                                                       false,
                                                       true,
                                                       false,
@@ -793,6 +792,6 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName);
     }
 }

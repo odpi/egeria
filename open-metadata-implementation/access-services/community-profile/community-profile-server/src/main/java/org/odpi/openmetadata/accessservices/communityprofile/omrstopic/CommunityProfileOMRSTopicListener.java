@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Ac
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -26,7 +26,6 @@ import java.util.Date;
  * CommunityProfileOMRSTopicListener examines each OMRS Topic event to (1) determine if karma points should
  * be awarded to an individual who has contributed to open metadata (2) determine if the event relates to
  * metadata instances that should result in a Community Profile OMAS event on its Out Topic.
- *
  * If karma points need to be awarded, it calls the ContributionRecordHandler to update the person's
  * contribution record.  If an event needs to be sent, it calls the CommunityProfileOutTopicPublisher.
  */
@@ -106,7 +105,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                     ActorProfileElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
                                                                                                                    contributingUserId,
                                                                                                                    userParameterName,
-                                                                                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                                                                   OpenMetadataType.PERSON_TYPE_NAME,
                                                                                                                    false,
                                                                                                                    false,
                                                                                                                    new Date(),
@@ -229,11 +228,11 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
             {
                 ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME)))
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
                 {
 
                     publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
@@ -295,11 +294,11 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
             {
                 ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME)))
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
                 {
 
                     publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
@@ -359,12 +358,12 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                 ElementStub endOneElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityOneProxy(), methodName);
                 ElementStub endTwoElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TEAM_LEADER_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TEAM_MEMBER_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME)))
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_LEADER_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_MEMBER_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME)))
                 {
                     publisher.sendRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
                 }
@@ -795,10 +794,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     *
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.

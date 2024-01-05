@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.slf4j.LoggerFactory;
@@ -139,6 +139,7 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem detected by the metadata store.
      */
+    @SuppressWarnings(value="deprecation")
     public VoidResponse updateGovernanceActionStatus(String            serverName,
                                                      String            userId,
                                                      String            governanceActionGUID,
@@ -157,7 +158,7 @@ public class GovernanceEngineRESTServices
 
             if (requestBody != null)
             {
-                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+                EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
                 int statusOrdinal = GovernanceActionStatus.ACTIONED.getOpenTypeOrdinal();
 
@@ -166,7 +167,12 @@ public class GovernanceEngineRESTServices
                     statusOrdinal = requestBody.getStatus().getOpenTypeOrdinal();
                 }
 
-                handler.updateGovernanceActionStatus(userId, governanceActionGUID, statusOrdinal, new Date(), methodName);
+                handler.updateEngineActionStatus(userId,
+                                                 governanceActionGUID,
+                                                 statusOrdinal,
+                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                 new Date(),
+                                                 methodName);
             }
             else
             {
@@ -211,9 +217,13 @@ public class GovernanceEngineRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+            EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getGovernanceAction(userId, governanceActionGUID, new Date(), methodName));
+            response.setElement(handler.getEngineAction(userId,
+                                                        governanceActionGUID,
+                                                        instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                        new Date(),
+                                                        methodName));
         }
         catch (Exception error)
         {
@@ -256,9 +266,13 @@ public class GovernanceEngineRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+            EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-            handler.claimGovernanceAction(userId, governanceActionGUID, new Date(), methodName);
+            handler.claimEngineAction(userId,
+                                      governanceActionGUID,
+                                      instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                      new Date(),
+                                      methodName);
         }
         catch (Exception error)
         {
@@ -300,9 +314,14 @@ public class GovernanceEngineRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+            EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getGovernanceActions(userId, startFrom, pageSize, new Date(), methodName));
+            response.setElements(handler.getEngineActions(userId,
+                                                          startFrom,
+                                                          pageSize,
+                                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                          new Date(),
+                                                          methodName));
         }
         catch (Exception error)
         {
@@ -344,9 +363,14 @@ public class GovernanceEngineRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+            EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getActiveGovernanceActions(userId, startFrom, pageSize, new Date(), methodName));
+            response.setElements(handler.getActiveEngineActions(userId,
+                                                                startFrom,
+                                                                pageSize,
+                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -391,9 +415,15 @@ public class GovernanceEngineRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+            EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.getActiveClaimedGovernanceActions(userId, governanceEngineGUID, startFrom, pageSize, new Date(), methodName));
+            response.setElements(handler.getActiveClaimedEngineActions(userId,
+                                                                       governanceEngineGUID,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                       new Date(),
+                                                                       methodName));
         }
         catch (Exception error)
         {
@@ -441,24 +471,25 @@ public class GovernanceEngineRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId,
-                                                                                                                      serverName,
-                                                                                                                      methodName);
+                EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId,
+                                                                                                              serverName,
+                                                                                                              methodName);
 
                 if (requestBody.getSearchStringParameterName() != null)
                 {
                     searchStringParameterName = requestBody.getSearchStringParameterName();
                 }
 
-                response.setElements(handler.findGovernanceActions(userId,
-                                                                   requestBody.getSearchString(),
-                                                                   searchStringParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   false,
-                                                                   false,
-                                                                   new Date(),
-                                                                   methodName));
+                response.setElements(handler.findEngineActions(userId,
+                                                               requestBody.getSearchString(),
+                                                               searchStringParameterName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                               new Date(),
+                                                               methodName));
             }
             else
             {
@@ -510,22 +541,23 @@ public class GovernanceEngineRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId,
-                                                                                                                      serverName,
-                                                                                                                      methodName);
+                EngineActionHandler<GovernanceActionElement> handler = instanceHandler.getEngineActionHandler(userId,
+                                                                                                              serverName,
+                                                                                                              methodName);
 
                 if (requestBody.getNameParameterName() != null)
                 {
                     nameParameterName = requestBody.getNameParameterName();
                 }
 
-                response.setElements(handler.getGovernanceActionsByName(userId,
-                                                                            requestBody.getName(),
-                                                                            nameParameterName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            null,
-                                                                            methodName));
+                response.setElements(handler.getEngineActionsByName(userId,
+                                                                    requestBody.getName(),
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                    null,
+                                                                    methodName));
             }
             else
             {

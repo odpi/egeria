@@ -8,20 +8,11 @@ for data tools, engines and platforms to integrate with open metadata.
 
 The access services are as follows:
 
-* **[asset-catalog](asset-catalog)** - search for assets.
-
-  The Asset Catalog OMAS provides search and query capabilities for tools and applications
-to support an asset catalog function.
-It supports search requests for assets with specific characteristics
-and returns summaries of the matching assets, plus methods to allow drill-down
-into the details of a specific asset to related metadata.
-
 * **[asset-consumer](asset-consumer)** - create connectors to access assets.
 
   The Asset Consumer OMAS is designed for applications that are using OCF connectors to access data stores, APIs and
 functions such as analytics.  The Asset Consumer OMAS provides a factory function
-for the connectors, the ability to retrieve all of the metadata about the asset
-and the ability to add feedback on the asset.
+for the connectors, the ability to retrieve all the metadata about the asset and the ability to add feedback on the asset.
 
 * **[asset-lineage](asset-lineage)** - Track and publish lineage data.
 
@@ -40,6 +31,8 @@ data catalogs that are managing metadata for a collection of data assets for a
 data-serving solution.  The asset manager is also called by the
 [Lineage Integrator OMIS](../integration-services/lineage-integrator) to capture design lineage
 from data engines and other processing services.
+It also supports the [Glossary Browser OMVS](../view-services/glossary-browser) and
+[Glossary Workflow OMVS](../view-services/glossary-workflow).
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
@@ -48,7 +41,7 @@ asset(s) and understand how these assets are being used and governed.
 
 * **[community-profile](community-profile)** - manage personal profiles and communities.
   
-  The Community OMAS supports the administration for a community and related user profiles.  These communities are
+  The Community Profile OMAS supports the administration for a community and related user profiles.  These communities are
 involved in reviewing and crowd-sourcing knowledge about the data assets and their use.
 
 * **[data-engine](data-engine)** - exchange metadata with a data processing engine.
@@ -152,7 +145,6 @@ rules for managing the protection of metadata and assets, plus work with the aud
 logs captured by the open metadata and governance tools.
 It is typically used by the security, compliance and auditing teams.
 
-
 * **[software-developer](software-developer)** - deliver useful metadata to software developers.
 
   The Software Development OMAS provides access to metadata needed to build compliant APIs,
@@ -178,18 +170,17 @@ The OMASs run in either a [Metadata Access Point](https://egeria-project.org/con
 or a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store).
 They can be configured and activated individually or as a complete set.
 The [administration services](../admin-services) provide
-the ability to configure, start and stop the access services.
+the ability to configure the access services.  
 
-Each OMAS typically supports a REST API, a topic where it publishes notifications
+Each OMAS typically supports a REST API, and optionally, a topic where it publishes notifications
 of interest to its users, and a topic where new metadata requests can be posted to the
 OMAS.
 
 It also has a Java client that provides access to its API and topics.
 This java client is embedded in the
-[Governance Servers](https://egeria-project.org/concepts/governance-server) and
-[View Servers](https://egeria-project.org/concepts/view-server).
-They can also be downloaded and used independently with the 
-**[Egeria Client Package](../../open-metadata-distribution)**.  
+[Engine Services](https://egeria-project.org/services/omes),
+[Integration Services](https://egeria-project.org/services/omis) and
+[View Services](https://egeria-project.org/services/omvs).
 
 More information on the OMASs can be found in the [Egeria Documentation](https://egeria-project.org/services/omas).
 

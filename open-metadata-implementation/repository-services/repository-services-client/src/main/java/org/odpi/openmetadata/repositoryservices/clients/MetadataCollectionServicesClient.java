@@ -76,7 +76,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
@@ -124,7 +124,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, repositoryName, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
@@ -345,7 +345,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<TypeDef> findTypeDefsByCategory(String userId,
+    public List<TypeDef> findTypeDefsByCategory(String          userId,
                                                 TypeDefCategory category) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
                                                                                  UserNotAuthorizedException

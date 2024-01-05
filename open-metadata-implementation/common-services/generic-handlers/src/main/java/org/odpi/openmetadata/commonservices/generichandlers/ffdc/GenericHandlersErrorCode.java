@@ -78,27 +78,27 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_ENGINE_NAME(400, "OMAG-GENERIC-HANDLERS-400-005",
                         "Governance Engine with unique name of {0} is not found by calling service {1} running in server {2}",
-                        "The system is unable to initiate a governance action because the nominated governance engine is not found in the metadata repository.",
+                        "The system is unable to initiate an engine action because the nominated governance engine is not found in the metadata repository.",
                         "Investigate whether the requested name is incorrect or the definition is missing. " +
                                 "Then retry the request once the issue is resolved."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship
+     * OMAG-GENERIC-HANDLERS-400-006 - Unable to initiate an instance of an engine action because the governance action process step {0} does not have a Governance Engine linked via the {1} relationship
      */
     UNKNOWN_EXECUTOR(400, "OMAG-GENERIC-HANDLERS-400-006",
-                        "Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship",
+                        "Unable to initiate an instance of an engine action because the governance action process step {0} does not have a Governance Engine linked via the {1} relationship",
                         "The system is unable to initiate a governance action process because is its implementation definition is incomplete.",
-                        "Update the definition of the first governance action type so that it is linked to a governance engine to execute the requested action. " +
+                        "Update the definition of the first governance action process step so that it is linked to a governance engine to execute the requested action. " +
                                 "Then retry the request once the definition is corrected."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined
+     * OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action process step defined
      */
     NO_PROCESS_IMPLEMENTATION(400, "OMAG-GENERIC-HANDLERS-400-007",
-                     "Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined",
+                     "Unable to initiate an instance of the {0} governance action process because there is no first governance action process step defined",
                      "The system is unable to initiate a governance action process because its implementation definition is missing.",
-                     "Link a governance action type to the governance action process.  If the process is to have multiple steps to it, link " +
-                             "additional governance action types to this first one to describe the execution flow. " +
+                     "Link a governance action process step to the governance action process.  If the process is to have multiple steps to it, link " +
+                             "additional governance action process steps to this first one to describe the execution flow. " +
                              "Then retry the request once the definition is corrected."),
 
     /**
@@ -117,7 +117,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_REQUEST_TYPE(400, "OMAG-GENERIC-HANDLERS-400-009",
                         "Governance Engine {0} ({1}) does not support request type {2}; requested via service {3} running in server {4}",
-                        "The system is unable to initiate a governance action because the nominated request type is not found in the metadata repository.",
+                        "The system is unable to initiate a engine action because the nominated request type is not found in the metadata repository.",
                         "Investigate whether the request type is incorrect or the definition is missing. " +
                                 "Then retry the request once the issue is resolved."),
 
@@ -126,7 +126,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
      */
     NO_REQUEST_TYPE_FOR_ENGINE(400, "OMAG-GENERIC-HANDLERS-400-010",
                          "Governance Engine {0} ({1}) does not support any request types and so it cannot run request type {2}; requested via service {3} running in server {4}",
-                         "The system is unable to initiate a governance action because the nominated governance engine has no supported governance services.",
+                         "The system is unable to initiate an engine action because the nominated governance engine has no supported governance services.",
                          "Investigate why there are no supported governance services for the governance engine. " +
                                  "Then retry the request once the issue is resolved."),
 
@@ -161,23 +161,23 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                     "the relationship issues the delete request."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}
+     * OMAG-GENERIC-HANDLERS-403-002 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}
      */
     INVALID_PROCESSING_USER(403, "OMAG-GENERIC-HANDLERS-403-002",
-                            "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}",
-                            "The system is unable to update a governance action because the requester has not claimed the governance action.",
-                            "Investigate why the Engine Host OMAG Server is attempting to process this governance action.  If you have multiple Engine Host OMAG Servers " +
-                                    "running the same governance engines then it is possible that they both attempted to claim the governance action at the same time.  If this is the case, " +
-                                    "validate that the governance action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to " +
+                            "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}",
+                            "The system is unable to update an engine action because the requester has not claimed the engine action.",
+                            "Investigate why the Engine Host OMAG Server is attempting to process this engine action.  If you have multiple Engine Host OMAG Servers " +
+                                    "running the same governance engines then it is possible that they both attempted to claim the engine action at the same time.  If this is the case, " +
+                                    "validate that the engine action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to " +
                                     "separate the workload amongst distinct governance engines that support the same governance services."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}
+     * OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}
      */
-    INVALID_GOVERNANCE_ACTION_STATUS(403, "OMAG-GENERIC-HANDLERS-403-003",
-                            "Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}",
-                            "The system is unable to claim a governance action because another Engine Host OMAG Server has got there first.",
-                            "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
+    INVALID_ENGINE_ACTION_STATUS(403, "OMAG-GENERIC-HANDLERS-403-003",
+                                 "Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}",
+                                 "The system is unable to claim an engine action because another Engine Host OMAG Server has got there first.",
+                                 "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
 
     /**
      * OMAG-GENERIC-HANDLERS-404-002 - Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}
@@ -273,22 +273,22 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     /**
      * OMAG-GENERIC-HANDLERS-500-007 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null
      */
-    MISSING_GOVERNANCE_ACTION(500, "OMAG-GENERIC-HANDLERS-500-007",
-                            "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null",
-                            "The system is unable to process the request because the handler has failed to retrieve the entity for the " +
+    MISSING_ENGINE_ACTION(500, "OMAG-GENERIC-HANDLERS-500-007",
+                          "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null",
+                          "The system is unable to process the request because the handler has failed to retrieve the entity for the " +
                                     "identifier.  Normally this would result in an InvalidParameterException and it is curious that it did not.",
-                            "The error is likely to be in one of the repository connectors, but it may be either in the handler code " +
-                                    "or the governance engines managing the governance action entities."),
+                          "The error is likely to be in one of the repository connectors, but it may be either in the handler code " +
+                                    "or the governance engines managing the engine action entities."),
 
     /**
      * OMAG-GENERIC-HANDLERS-500-008 - The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties
      */
-    MISSING_GOVERNANCE_ACTION_PROPERTIES(500, "OMAG-GENERIC-HANDLERS-500-008",
-                              "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties",
-                              "The system is unable to process the request because the handler has retrieved a governance action entity " +
+    MISSING_ENGINE_ACTION_PROPERTIES(500, "OMAG-GENERIC-HANDLERS-500-008",
+                                     "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties",
+                                     "The system is unable to process the request because the handler has retrieved an engine action entity " +
                                       "that has no properties.  The handler does not know how to proceed.",
-                              "The error is likely to be in one of the repository connectors " +
-                                      "or the governance engines managing the governance action entities."),
+                                     "The error is likely to be in one of the repository connectors " +
+                                      "or the governance engines managing the engine action entities."),
 
     /**
      * OMAG-GENERIC-HANDLERS-500-009 - An anchor GUID of "unknown" has been passed to local method {0} by the {1} service through method {2}
@@ -337,30 +337,29 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
     ;
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for GenericHandlersErrorCode expects to be passed one of the enumeration rows defined in
-     * DiscoveryEngineErrorCode above.   For example:
-     * <br>
-     *     GenericHandlersErrorCode   errorCode = GenericHandlersErrorCode.ASSET_NOT_FOUND;
-     * <br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique identifier for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    GenericHandlersErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    GenericHandlersErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -372,7 +371,11 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -385,6 +388,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -399,8 +408,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "GenericHandlersErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

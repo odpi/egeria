@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -49,8 +50,8 @@ public class OpenMetadataTypesArchive2_10
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -189,7 +190,7 @@ public class OpenMetadataTypesArchive2_10
          * Create the Patch
          */
         final String typeName = "Campaign";
-        final String typeLinkName = "Referenceable";
+        final String typeLinkName = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -240,7 +241,7 @@ public class OpenMetadataTypesArchive2_10
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "usedInContexts";
         final String                     end2AttributeDescription     = "Elements describing the contexts where this term is used.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -282,7 +283,7 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionType());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStep());
         this.archiveBuilder.addTypeDefPatch(updateIncidentClassifier());
         this.archiveBuilder.addTypeDefPatch(updateIncidentReport());
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
@@ -305,7 +306,7 @@ public class OpenMetadataTypesArchive2_10
         final String description     = "Who is responsible for making decisions on the management and governance of this element.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -387,7 +388,7 @@ public class OpenMetadataTypesArchive2_10
          */
         final String typeName = "IncidentClassifier";
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1059,12 +1060,12 @@ public class OpenMetadataTypesArchive2_10
      *
      * @return patch
      */
-    private TypeDefPatch updateGovernanceActionType()
+    private TypeDefPatch updateGovernanceActionProcessStep()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceActionType";
+        final String typeName = "GovernanceActionProcessStep";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

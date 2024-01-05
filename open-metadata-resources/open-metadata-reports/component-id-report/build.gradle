@@ -11,8 +11,9 @@ plugins {
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    runtimeOnly project(':open-metadata-implementation:frameworks:open-discovery-framework')
+    runtimeOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
     compileOnly project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
@@ -22,6 +23,18 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
     runtimeOnly project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:egeria-infrastructure-integration-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     runtimeOnly 'ch.qos.logback:logback-classic'
 }
 

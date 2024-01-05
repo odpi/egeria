@@ -20,11 +20,11 @@ import java.util.Map;
 public interface GovernanceContext
 {
     /**
-     * Return the unique identifier of the governance action that this service request is associated with.
+     * Return the unique identifier of the engine action that this service request is associated with.
      *
      * @return string guid
      */
-    String getGovernanceActionGUID();
+    String getEngineActionGUID();
 
 
     /**
@@ -115,13 +115,13 @@ public interface GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    void updateActionTargetStatus(String                 actionTargetGUID,
-                                  GovernanceActionStatus status,
-                                  Date                   startDate,
-                                  Date                   completionDate,
-                                  String                 completionMessage) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
+    void updateActionTargetStatus(String             actionTargetGUID,
+                                  EngineActionStatus status,
+                                  Date               startDate,
+                                  Date               completionDate,
+                                  String             completionMessage) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**

@@ -34,14 +34,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/security-manager/users/{userId}")
 
-@Tag(name="Security Manager OMAS",
+@Tag(name="Metadata Access Server: Security Manager OMAS",
         description="The Security Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to security managers.",
-        externalDocs=@ExternalDocumentation(description="Security Manager Open Metadata Access Service (OMAS)",
+        externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omas/security-manager/overview/"))
 
 public class SecurityManagerOMASResource
 {
-    private SecurityManagerRESTServices restAPI = new SecurityManagerRESTServices();
+    private final SecurityManagerRESTServices restAPI = new SecurityManagerRESTServices();
 
 
     /**

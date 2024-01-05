@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.discovery.properties.RelatedDataField;
 
 /**
  * DiscoveryEngineServiceInstanceHandler retrieves information from the instance map for the
@@ -145,6 +146,36 @@ class DiscoveryEngineServiceInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getDataFieldHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    DataFieldHandler<RelatedDataField> getRelatedDataFieldHandler(String userId,
+                                                                  String serverName,
+                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        DiscoveryEngineServicesInstance instance = (DiscoveryEngineServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                   serverName,
+                                                                                                                   serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelatedDataFieldHandler();
         }
 
         return null;

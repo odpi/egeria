@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListResponse;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
@@ -15,20 +16,19 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * DiscoveryEngineResource provides the server-side catcher for REST calls using Spring that target a specific
- * discovery engine hosted in a engine host server.
- * The engine host server routes these requests to the named discovery engine.
+ * DiscoveryEngineResource provides the server-side catcher for REST calls using Spring that target a specific discovery engine hosted in an
+ * engine host server.  The engine host server routes these requests to the named discovery engine.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/engine-services/asset-analysis/users/{userId}/discovery-engines/{discoveryEngineName}")
 
-@Tag(name="Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.",
-     externalDocs=@ExternalDocumentation(description="Asset Analysis Open Metadata Engine Services (OMES)",
+@Tag(name="Engine Host: Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omes/asset-analysis/overview/"))
 
 public class DiscoveryEngineResource
 {
-    private AssetAnalysisRESTServices restAPI = new AssetAnalysisRESTServices();
+    private final AssetAnalysisRESTServices restAPI = new AssetAnalysisRESTServices();
 
 
     /**
@@ -42,12 +42,16 @@ public class DiscoveryEngineResource
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return unique id for the discovery request or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets/{assetGUID}")
+
+    @Operation(summary="discoverAsset",
+               description="Request the execution of a discovery service to explore a specific asset.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public  GUIDResponse discoverAsset(@PathVariable String                      serverName,
                                        @PathVariable String                      discoveryEngineName,
@@ -75,12 +79,16 @@ public class DiscoveryEngineResource
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @PostMapping(path = "/discovery-request-types/{discoveryRequestType}/assets")
+
+    @Operation(summary="scanAllAssets",
+               description="Request the execution of a discovery service for each asset that is stored in the asset catalog.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public VoidResponse scanAllAssets(@PathVariable                  String                       serverName,
                                       @PathVariable                  String                       discoveryEngineName,
@@ -105,10 +113,14 @@ public class DiscoveryEngineResource
      * @param discoveryRequestGUID identifier of the discovery request.
      *
      * @return discovery report or
-     *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @GetMapping(path = "/discovery-analysis-reports/{discoveryRequestGUID}")
+
+    @Operation(summary="getDiscoveryAnalysisReport",
+               description="Request the discovery report for a discovery request that has completed.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public DiscoveryAnalysisReportResponse getDiscoveryAnalysisReport(@PathVariable String   serverName,
                                                                       @PathVariable String   discoveryEngineName,
@@ -130,10 +142,14 @@ public class DiscoveryEngineResource
      * @param maximumResults maximum number of definitions to return on this call.
      *
      * @return list of annotations or
-     *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @GetMapping(path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations")
+
+    @Operation(summary="getDiscoveryReportAnnotations",
+               description="Return the annotations linked direction to the requested report.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String   serverName,
                                                                 @PathVariable String   discoveryEngineName,
@@ -162,10 +178,14 @@ public class DiscoveryEngineResource
      * @param maximumResults maximum number of annotations that can be returned.
      *
      * @return list of Annotation objects or
-     *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @GetMapping(path = "/annotations/{annotationGUID}/extended-annotations")
+
+    @Operation(summary="getExtendedAnnotations",
+               description="Return annotations attached to the requested annotation.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public AnnotationListResponse getExtendedAnnotations(@PathVariable String   serverName,
                                                          @PathVariable String   discoveryEngineName,
@@ -197,6 +217,11 @@ public class DiscoveryEngineResource
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     @GetMapping(path = "/annotations/{annotationGUID}")
+
+    @Operation(summary="getAnnotation",
+               description="Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values for an annotation.",
+               externalDocs=@ExternalDocumentation(description="Open Discovery Service",
+                                                   url="https://egeria-project.org/concepts/open-discovery-service"))
 
     public AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                             @PathVariable String   discoveryEngineName,

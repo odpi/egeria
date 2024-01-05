@@ -91,7 +91,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports/{{guid}}/new",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports/{{guid}}/{{typeName}}/new",
 					"host": [
 						"{{baseURL}}"
 					],

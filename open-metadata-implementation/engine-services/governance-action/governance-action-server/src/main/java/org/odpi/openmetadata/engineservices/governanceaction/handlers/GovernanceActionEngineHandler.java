@@ -24,8 +24,8 @@ import java.util.*;
  */
 public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 {
-    private final GovernanceEngineClient      governanceEngineClient;    /* Initialized in constructor */
-    private final GovernanceListenerManager   governanceListenerManager; /* Initialized in constructor */
+    private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
+    private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
     private final String partnerURLRoot;             /* Initialized in constructor */
     private final String partnerServerName;          /* Initialized in constructor */
@@ -35,7 +35,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 
     /**
      * Create a client-side object for calling a governance action engine.  Notice there are two instances of the
-     * GovernanceEngineClient.  It is possible that they are pointing at different metadata server instances so do not
+     * GovernanceContextClient.  It is possible that they are pointing at different metadata server instances so do not
      * consolidate them into one client (even if IntelliJ begs you to :)).
      *
      * @param engineConfig the unique identifier of the governance action engine.
@@ -45,7 +45,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client to control the execution of governance action requests
-     * @param governanceEngineClient REST client for calls made by the governance action services
+     * @param governanceContextClient REST client for calls made by the governance action services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -55,8 +55,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          String                              partnerURLRoot,
                                          String                              serverUserId,
                                          GovernanceEngineConfigurationClient configurationClient,
-                                         GovernanceEngineClient              serverClient,
-                                         GovernanceEngineClient              governanceEngineClient,
+                                         GovernanceContextClient             serverClient,
+                                         GovernanceContextClient             governanceContextClient,
                                          AuditLog                            auditLog,
                                          int                                 maxPageSize)
     {
@@ -69,13 +69,15 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
               auditLog,
               maxPageSize);
 
-        this.governanceEngineClient = governanceEngineClient;
+        /* Initialized in constructor */
         this.partnerServerName = partnerServerName;
         this.partnerURLRoot = partnerURLRoot;
 
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
 
-        this.governanceEngineClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
+        this.governanceContextClient = governanceContextClient;
+
+        this.governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
     }
 
 
@@ -95,7 +97,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     /**
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
-     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param engineActionGUID unique identifier of the engin action to run
      * @param governanceRequestType governance request type to use when calling the governance engine
      * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
@@ -108,7 +110,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+    public GovernanceServiceHandler runGovernanceService(String                     engineActionGUID,
                                                          String                     governanceRequestType,
                                                          Date                       startDate,
                                                          Map<String, String>        requestParameters,
@@ -132,7 +134,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
             GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(governanceEngineProperties,
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
-                                                                                                               governanceActionGUID,
+                                                                                                               engineActionGUID,
                                                                                                                serverClient,
                                                                                                                governanceServiceCache.getServiceRequestType(),
                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
@@ -143,10 +145,10 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceServiceCache.getNextGovernanceService(),
                                                                                                                partnerServerName,
                                                                                                                partnerURLRoot,
-                                                                                                               governanceEngineClient,
+                                                                                                               governanceContextClient,
                                                                                                                auditLog);
 
-            Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + governanceActionGUID + new Date());
+            Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + engineActionGUID + new Date());
             thread.start();
 
             return governanceActionServiceHandler;

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,16 +23,38 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ContactMethodType implements Serializable
+public enum ContactMethodType
 {
-    EMAIL     (0, 0,  "Email",    "Send email"),
-    PHONE     (1, 1,  "Phone",    "Call by phone."),
-    CHAT      (2, 2,  "Chat",     "Send chat message."),
-    PROFILE   (3, 3,  "Profile",  "Send comment to personal profile."),
-    ACCOUNT   (4, 4,  "Account",  "Send comment to a social media account."),
-    OTHER     (99,99, "Other",    "Another mechanism.");
+    /**
+     * Send email.
+     */
+    EMAIL     (0, 0,  "Email",    "Send email."),
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * Call by phone.
+     */
+    PHONE     (1, 1,  "Phone",    "Call by phone."),
+
+    /**
+     * Send chat message.
+     */
+    CHAT      (2, 2,  "Chat",     "Send chat message."),
+
+    /**
+     * Send comment to personal profile.
+     */
+    PROFILE   (3, 3,  "Profile",  "Send comment to personal profile."),
+
+    /**
+     * Send comment to a social media account.
+     */
+    ACCOUNT   (4, 4,  "Account",  "Send comment to a social media account."),
+
+    /**
+     * Another contact mechanism.
+     */
+    OTHER     (99,99, "Other",    "Another contact mechanism.");
+
 
     private static final String ENUM_TYPE_GUID  = "30e7d8cd-df01-46e8-9247-a24c5650910d";
     private static final String ENUM_TYPE_NAME  = "ContactMethodType";

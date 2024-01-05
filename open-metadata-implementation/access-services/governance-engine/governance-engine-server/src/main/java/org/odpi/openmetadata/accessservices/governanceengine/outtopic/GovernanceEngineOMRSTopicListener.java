@@ -8,16 +8,24 @@ import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngi
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -25,11 +33,20 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -44,10 +61,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
     private final GovernanceEngineOutTopicPublisher                eventPublisher;
     private final OMRSRepositoryHelper                             repositoryHelper;
-    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
-    private final GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
+    private final MetadataElementHandler<OpenMetadataElement>  metadataElementHandler;
+    private final EngineActionHandler<GovernanceActionElement> engineActionHandler;
 
     private final String                                           userId;
+    private final String                                           serverName;
 
     private final EntityDetail                                     nullEntity = null;
     private final Relationship                                     nullRelationship = null;
@@ -57,17 +75,19 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * Initialize the topic listener.
      *
      * @param serviceName this is the full name of the service - used for error logging in base class
+     * @param serverName name of this server
      * @param userId local server userId for issuing requests to the repository services
      * @param metadataElementHandler handler for working with GAF objects
-     * @param governanceActionHandler handler for working with governance actions
+     * @param engineActionHandler handler for working with governance actions
      * @param eventPublisher this is the out topic publisher.
      * @param repositoryHelper repository helper
      * @param auditLog logging destination
      */
     public GovernanceEngineOMRSTopicListener(String                                           serviceName,
+                                             String                                           serverName,
                                              String                                           userId,
                                              MetadataElementHandler<OpenMetadataElement>      metadataElementHandler,
-                                             GovernanceActionHandler<GovernanceActionElement> governanceActionHandler,
+                                             EngineActionHandler<GovernanceActionElement> engineActionHandler,
                                              GovernanceEngineOutTopicPublisher                eventPublisher,
                                              OMRSRepositoryHelper                             repositoryHelper,
                                              AuditLog                                         auditLog)
@@ -75,9 +95,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         super(serviceName, auditLog);
 
         this.metadataElementHandler = metadataElementHandler;
-        this.governanceActionHandler = governanceActionHandler;
+        this.engineActionHandler = engineActionHandler;
 
         this.userId = userId;
+        this.serverName = serverName;
 
         this.eventPublisher   = eventPublisher;
         this.repositoryHelper = repositoryHelper;
@@ -106,11 +127,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME))
+                                              OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME))
                 {
                     eventPublisher.publishRefreshGovernanceEngineEvent(entity.getGUID(),
                                                                       repositoryHelper.getStringProperty(sourceName,
-                                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                          entity.getProperties(),
                                                                                                          methodName));
                     return true;
@@ -140,7 +161,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME));
+                                                  OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME));
             }
         }
 
@@ -169,7 +190,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     EntityProxy governanceEngineEntityProxy = relationship.getEntityOneProxy();
                     EntityProxy governanceServiceEntityProxy = relationship.getEntityTwoProxy();
@@ -178,12 +199,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         eventPublisher.publishRefreshGovernanceServiceEvent(governanceEngineEntityProxy.getGUID(),
                                                                             repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                governanceEngineEntityProxy.getUniqueProperties(),
                                                                                                                methodName),
                                                                             governanceServiceEntityProxy.getGUID(),
                                                                             repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                               OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
                                                                                                                relationship.getProperties(),
                                                                                                                methodName));
                         return true;
@@ -215,7 +236,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                  return repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
+                                                  OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
             }
         }
 
@@ -243,20 +264,20 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME))
+                                              OpenMetadataType.ENGINE_ACTION_TYPE_NAME))
                 {
-                    GovernanceActionStatus status = governanceActionHandler.getActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
-                                                                                            entity.getProperties());
+                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                                    entity.getProperties());
 
-                    if (status == GovernanceActionStatus.APPROVED)
+                    if (status == EngineActionStatus.APPROVED)
                     {
 
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
                                                                                          entity.getProperties(),
                                                                                          methodName);
                         String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
                                                                                          entity.getProperties(),
                                                                                          methodName);
 
@@ -293,7 +314,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME);
+                                                 OpenMetadataType.ENGINE_ACTION_TYPE_NAME);
             }
         }
 
@@ -322,7 +343,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
             }
         }
 
@@ -348,28 +369,28 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
                     return true;
                 }
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
+                                              OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
                 {
                     return true;
                 }
 
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                              OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
                 {
                     return true;
                 }
 
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
+                                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
             }
         }
 
@@ -434,6 +455,11 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             if (relationship.getEntityOneProxy() != null)
             {
                 relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
+
+                ElementStub elementStub = new ElementStub();
+                fillElementControlHeader(elementStub, relationship.getEntityOneProxy());
+                elementStub.setUniqueName(getQualifiedName(relationship.getEntityOneProxy().getUniqueProperties()));
+                relatedMetadataElements.setElementAtEnd1(elementStub);
             }
 
             if (relationship.getEntityTwoProxy() != null)
@@ -448,6 +474,237 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             }
 
             return relatedMetadataElements;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Fill a GAF control header from the information in a repository services element header.
+     *
+     * @param elementControlHeader GAF object control header
+     * @param header OMRS element header
+     */
+    public void fillElementControlHeader(ElementControlHeader elementControlHeader,
+                                         InstanceAuditHeader header)
+    {
+        if (header != null)
+        {
+            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementControlHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementControlHeader.setOrigin(elementOrigin);
+
+            elementControlHeader.setVersions(this.getElementVersions(header));
+        }
+    }
+
+
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    protected ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+
+    /**
+     * Convert information from a repository instance into an Open Connector Framework ElementType.
+     *
+     * @param instanceHeader values from the server
+     * @return OCF ElementType object
+     */
+    public ElementType getElementType(InstanceAuditHeader instanceHeader)
+    {
+        ElementType elementType = new ElementType();
+
+        InstanceType instanceType = instanceHeader.getType();
+
+        if (instanceType != null)
+        {
+            String  typeDefName = instanceType.getTypeDefName();
+            TypeDef typeDef     = repositoryHelper.getTypeDefByName(serviceName, typeDefName);
+
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(typeDefName);
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(typeDef.getDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(serviceName, typeDefName);
+
+            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
+            {
+                List<String>   superTypes = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : typeDefSuperTypes)
+                {
+                    if (typeDefLink != null)
+                    {
+                        superTypes.add(typeDefLink.getName());
+                    }
+                }
+
+                if (! superTypes.isEmpty())
+                {
+                    elementType.setSuperTypeNames(superTypes);
+                }
+            }
+        }
+
+        return elementType;
+    }
+
+
+
+
+    /**
+     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
+     *
+     * @param instanceProvenanceType value from the repository services
+     * @return ElementOrigin enum
+     */
+    protected ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
+    {
+        if (instanceProvenanceType != null)
+        {
+            switch (instanceProvenanceType)
+            {
+                case DEREGISTERED_REPOSITORY:
+                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
+
+                case EXTERNAL_SOURCE:
+                    return ElementOriginCategory.EXTERNAL_SOURCE;
+
+                case EXPORT_ARCHIVE:
+                    return ElementOriginCategory.EXPORT_ARCHIVE;
+
+                case LOCAL_COHORT:
+                    return ElementOriginCategory.LOCAL_COHORT;
+
+                case CONTENT_PACK:
+                    return ElementOriginCategory.CONTENT_PACK;
+
+                case CONFIGURATION:
+                    return ElementOriginCategory.CONFIGURATION;
+
+                case UNKNOWN:
+                    return ElementOriginCategory.UNKNOWN;
+            }
+        }
+
+        return ElementOriginCategory.UNKNOWN;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    protected ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
+    }
+
+
+    /**
+     * Extract the qualifiedName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String getQualifiedName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getQualifiedName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                      instanceProperties,
+                                                      methodName);
         }
 
         return null;

@@ -10,15 +10,26 @@ import java.io.Serializable;
  */
 public enum ServiceOperationalStatus implements Serializable
 {
+    /**
+     * Code for this service is not available.
+     */
     NOT_IMPLEMENTED  (0, "Not Implemented", "Code for this service is not available."),
+
+    /**
+     * The service is available and running.
+     */
     ENABLED          (1, "Enabled",         "The service is available and running."),
+
+    /**
+     * The service has been disabled.
+     */
     DISABLED         (2, "Disabled",        "The service has been disabled.");
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int    typeCode;
+    private final String typeName;
+    private final String typeDescription;
 
 
     /**

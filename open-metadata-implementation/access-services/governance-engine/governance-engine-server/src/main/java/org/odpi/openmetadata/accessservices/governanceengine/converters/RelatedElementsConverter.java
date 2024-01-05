@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -77,12 +78,20 @@ public class RelatedElementsConverter<B> extends GovernanceEngineOMASConverter<B
                 }
 
                 EntityProxy entityProxy = relationship.getEntityOneProxy();
+                ElementStub elementStub = new ElementStub();
 
                 bean.setElementGUIDAtEnd1(entityProxy.getGUID());
+                fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
+                bean.setElementAtEnd1(elementStub);
 
                 entityProxy = relationship.getEntityTwoProxy();
+                elementStub = new ElementStub();
 
                 bean.setElementGUIDAtEnd2(entityProxy.getGUID());
+                fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
+                bean.setElementAtEnd2(elementStub);
 
                 if (repositoryHelper.getTypeDefByName(serviceName, relationship.getType().getTypeDefName()) instanceof RelationshipDef relationshipDef)
                 {

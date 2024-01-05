@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
+@Tag(name="View Server: Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
      externalDocs=@ExternalDocumentation(description="Further information",
                                          url="https://egeria-project.org/services/omvs/server-author/overview"))
 

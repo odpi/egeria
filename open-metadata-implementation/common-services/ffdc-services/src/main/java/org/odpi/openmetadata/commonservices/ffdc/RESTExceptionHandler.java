@@ -173,7 +173,7 @@ public class RESTExceptionHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public void detectAndThrowStandardExceptions(String           methodName,
+    public void detectAndThrowStandardExceptions(String       methodName,
                                                  FFDCResponse restResult) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -188,7 +188,7 @@ public class RESTExceptionHandler
 
             if (exceptionClassName != null)
             {
-                log.error("FFDC Response: {}", restResult.toString());
+                log.error("FFDC Response: {}", restResult);
                 if (exceptionClassName.equals(invalidParameterExceptionClassName))
                 {
                     this.throwInvalidParameterException(restResult);
@@ -210,7 +210,7 @@ public class RESTExceptionHandler
             {
                 if (log.isDebugEnabled())
                 {
-                    log.debug("FFDC good Response: {}", restResult.toString());
+                    log.debug("FFDC good Response: {}", restResult);
                 }
             }
         }

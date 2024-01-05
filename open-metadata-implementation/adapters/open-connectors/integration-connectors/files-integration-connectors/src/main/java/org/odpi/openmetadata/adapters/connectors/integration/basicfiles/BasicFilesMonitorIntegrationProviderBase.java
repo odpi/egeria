@@ -6,6 +6,9 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -17,8 +20,45 @@ import java.util.List;
  */
 class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvider
 {
-    static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
-    static final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
+    /**
+     * The optional qualified name of a data asset used for cataloguing files.  If this is null, no template is used.
+     */
+    static public final String FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "fileTemplateQualifiedName";
+
+    /**
+     * The optional qualified name of a data asset used for cataloguing directories (folders).  If it is null, no template is used.
+     */
+    static public final String DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "directoryTemplateQualifiedName";
+
+    /**
+     * An optional boolean flag to indicate whether the connector should delete the catalog entry for files that have
+     * been deleted (true) or just archive them (false - the default).
+     */
+    static public final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY     = "allowCatalogDelete";
+
+    /**
+     * An optional qualified name of a template To Do entity that is created if there is confusion identifying the correct
+     * reference data for a file being catalogued.
+     */
+    static public final String TO_DO_TEMPLATE_CONFIGURATION_PROPERTY           = "toDoTemplateQualifiedName";
+
+    /**
+     * An optional qualified name of a template Incident Report entity that is created if there is confusion identifying the correct
+     * reference data for a file being catalogued.
+     */
+    static public final String INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY = "incidentReportTemplateQualifiedName";
+
+    /**
+     * An optional flag that instructs the connector to wait for the monitoring directory to be created if it does not exist rather than
+     * throwing an exception to force the integration connector into failed state.  It can be set to any value - just defining the
+     * property causes the connector to wait.
+     */
+    static public final String WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY       = "waitForDirectory";
+
+    /**
+     * The name of the catalog target that contains the directory to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME                             = "directoryToMonitor";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -30,7 +70,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
      * @param connectorDisplayName the printable name for this connector
      * @param connectorDescription the description of this connector
      * @param connectorWikiPage the URL of the connector page in the connector catalog
-     * @param connectorClass the name of the connector class that the connector provider creates
+     * @param connectorClassName the name of the connector class that the connector provider creates
      */
     BasicFilesMonitorIntegrationProviderBase(String   connectorTypeGUID,
                                              int      connectorComponentId,
@@ -38,14 +78,14 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
                                              String   connectorDisplayName,
                                              String   connectorDescription,
                                              String   connectorWikiPage,
-                                             Class<?> connectorClass)
+                                             String   connectorClassName)
     {
         super();
 
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -59,13 +99,25 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(TO_DO_TEMPLATE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY);
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(DeployedImplementationType.FILES_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(OpenMetadataType.DATA_FOLDER_TYPE_NAME);
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
 
         /*
          * Set up the component description used in the connector's audit log messages.

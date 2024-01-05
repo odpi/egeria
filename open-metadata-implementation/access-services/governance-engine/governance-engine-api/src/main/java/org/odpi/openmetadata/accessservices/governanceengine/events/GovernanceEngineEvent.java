@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * GovernanceEngineEvent provides a common base for all events from the access service.
- * It implements Serializable and a version Id.
+ * It implements Serializable and a version identifier.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                       @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent"),
                       @JsonSubTypes.Type(value = GovernanceServiceConfigurationEvent.class, name = "GovernanceServiceConfigurationEvent"),
                       @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
-                      @JsonSubTypes.Type(value = GovernanceActionEvent.class, name = "GovernanceActionEvent")
+                      @JsonSubTypes.Type(value = EngineActionEvent.class, name = "EngineActionEvent")
 })
 public abstract class GovernanceEngineEvent implements Serializable
 {

@@ -301,7 +301,7 @@ public class AssetDeploy
 
         AssetDeploy utility = new AssetDeploy(platformURLRoot, clientUserId, serverName);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         String platformOrigin = utility.getPlatformOrigin();
 

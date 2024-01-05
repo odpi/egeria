@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -101,18 +103,18 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      */
     public List<String> getTypesOfAssetList()
     {
-        return repositoryHelper.getSubTypesOf(serviceName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+        return repositoryHelper.getSubTypesOf(serviceName, OpenMetadataType.ASSET.typeName);
     }
 
 
     /**
      * Return the list of asset subtype names mapped to their descriptions.
      *
-     * @return list of type names that are subtypes of asset
+     * @return map of type names that are subtypes of asset
      */
     public Map<String, String> getTypesOfAssetDescriptions()
     {
-        List<String>        assetTypeList = repositoryHelper.getSubTypesOf(serviceName, OpenMetadataAPIMapper.ASSET_TYPE_NAME);
+        List<String>        assetTypeList = repositoryHelper.getSubTypesOf(serviceName, OpenMetadataType.ASSET.typeName);
         Map<String, String> assetDescriptions = new HashMap<>();
 
         if (assetTypeList != null)
@@ -201,7 +203,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         this.setClassificationInRepository(userId,
                                            externalSourceGUID,
@@ -209,8 +211,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -258,8 +260,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -315,7 +317,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
                                                                       assetSummary,
                                                                       methodName);
         }
@@ -325,15 +327,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   assetGUID,
                                   assetGUIDParameterName,
-                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  OpenMetadataType.ASSET.typeName,
                                   connectionGUID,
                                   connectionGUIDParameterName,
-                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
+                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -397,15 +399,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   assetGUID,
                                   assetGUIDParameterName,
-                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  OpenMetadataType.ASSET.typeName,
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -449,12 +451,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                externalSourceName,
                                assetGUID,
                                assetGUIDParameterName,
-                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                               OpenMetadataType.ASSET.typeName,
                                forLineage,
                                forDuplicateProcessing,
                                supportedZones,
-                               OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                               OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                               OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                               OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                effectiveTime,
                                methodName);
     }
@@ -504,15 +506,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       softwareServerCapabilityGUID,
                                       softwareServerCapabilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                      OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                       assetGUID,
                                       assetGUIDParameterName,
-                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      OpenMetadataType.ASSET.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                       null,
                                       effectiveFrom,
                                       effectiveTo,
@@ -559,13 +561,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           OpenMetadataType.ASSET.typeName,
                                            forLineage,
                                            forDuplicateProcessing,
                                            supportedZones,
-                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                           OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                           OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                            effectiveTime,
                                            methodName);
     }
@@ -632,7 +634,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
+            extendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
         }
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
@@ -655,7 +657,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                        expectedTypeGUID,
                                                        expectedTypeName,
                                                        qualifiedName,
-                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                        builder,
                                                        supportedZones,
                                                        methodName);
@@ -664,9 +666,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                       assetGUID,
-                                                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                      OpenMetadataType.ASSET.typeName,
+                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                                                       1,
                                                                                                       forLineage,
                                                                                                       forDuplicateProcessing,
@@ -679,9 +681,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                 Relationship  connectionEndpointRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                              connectionGUID,
-                                                                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                                                                                             OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                                                                             OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                             OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
                                                                                                              1,
                                                                                                              forLineage,
                                                                                                              forDuplicateProcessing,
@@ -696,7 +698,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     EntityDetail endpointEntity = this.getEntityFromRepository(userId,
                                                                                endpointGUID,
                                                                                endpointGUIDParameterName,
-                                                                               OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                               OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                forLineage,
@@ -705,15 +707,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                effectiveTime,
                                                                                methodName);
 
-                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
 
-                    if (assetGUID.equals(anchorGUID))
+                    if (assetGUID.equals(anchorIdentifiers.anchorGUID))
                     {
                         InstanceProperties endpointProperties = endpointEntity.getProperties();
 
                         endpointProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           endpointProperties,
-                                                                                          OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                                          OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
                                                                                           networkAddress,
                                                                                           methodName);
                         repositoryHandler.updateEntityProperties(userId,
@@ -721,8 +723,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  externalSourceName,
                                                                  endpointGUID,
                                                                  endpointEntity,
-                                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                 OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                  endpointProperties,
                                                                  methodName);
                     }
@@ -792,7 +794,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeName != null)
         {
@@ -800,7 +802,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      OpenMetadataType.ASSET.typeName,
                                                                       serviceName,
                                                                       methodName,
                                                                       repositoryHelper);
@@ -830,9 +832,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         builder.setAssetOwnership(userId, owner, ownerType, methodName);
         builder.setAssetOrigin(userId,
                                originOrganizationCapabilityGUID,
-                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                               OpenMetadataProperty.GUID.name,
                                originBusinessCapabilityGUID,
-                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                               OpenMetadataProperty.GUID.name,
                                otherOriginValues,
                                methodName);
 
@@ -893,7 +895,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeName != null)
         {
@@ -901,7 +903,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      OpenMetadataType.ASSET.typeName,
                                                                       serviceName,
                                                                       methodName,
                                                                       repositoryHelper);
@@ -1094,7 +1096,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   OpenMetadataType.ASSET.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1361,9 +1363,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetGUID,
-                                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  OpenMetadataType.ASSET.typeName,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                                                   1,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
@@ -1381,9 +1383,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
-                                        OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                        OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                        OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                        OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                        OpenMetadataType.COLLECTION_TYPE_NAME,
                                         effectiveTime,
                                         methodName);
         }
@@ -1409,7 +1411,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
                 relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
                                                                                       assetSummary,
                                                                                       methodName);
             }
@@ -1418,7 +1420,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
 
                 repositoryHandler.createRelationship(userId,
-                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
                                                      null,
                                                      null,
                                                      connectionGUID,
@@ -1432,11 +1434,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  null,
                                                                  null,
                                                                  connectionGUID,
-                                                                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                 OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                  assetGUID,
-                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                 OpenMetadataType.ASSET.typeName,
+                                                                 OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                 OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                  relationshipProperties,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
@@ -1478,9 +1480,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.ASSET.typeName,
+                                           OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
                                            null,
                                            false,
                                            forLineage,
@@ -1521,9 +1523,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 null,
                                                 assetGUID,
                                                 assetGUIDParameterName,
-                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.ASSET.typeName,
+                                                OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1581,7 +1583,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             this.validateAnchorEntity(userId,
                                       organizationGUID,
                                       organizationGUIDParameterName,
-                                      OpenMetadataAPIMapper.ORGANIZATION_TYPE_NAME,
+                                      OpenMetadataType.ORGANIZATION_TYPE_NAME,
+                                      true,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1595,7 +1598,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             this.validateAnchorEntity(userId,
                                       businessCapabilityGUID,
                                       businessCapabilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_TYPE_NAME,
+                                      OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
+                                      true,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1607,9 +1611,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
 
         InstanceProperties properties = builder.getOriginProperties(organizationGUID,
-                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.GUID.name,
                                                                     businessCapabilityGUID,
-                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.GUID.name,
                                                                     otherOriginValues,
                                                                     methodName);
 
@@ -1620,9 +1624,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                           OpenMetadataType.ASSET.typeName,
+                                           OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                           OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                            properties,
                                            isMergeUpdate,
                                            forLineage,
@@ -1661,9 +1665,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 null,
                                                 assetGUID,
                                                 assetGUIDParameterName,
-                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
-                                                OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                OpenMetadataType.ASSET.typeName,
+                                                OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_GUID,
+                                                OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1710,8 +1714,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                         OpenMetadataType.ASSET.typeName,
+                                                                                         OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1731,9 +1735,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     {
                         this.validateAnchorEntity(userId,
                                                   entity.getGUID(),
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                   entity,
                                                   guidParameterName,
+                                                  true,
                                                   false,
                                                   forLineage,
                                                   forDuplicateProcessing,
@@ -1743,17 +1748,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                                     OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             String orgGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
+                                                                                OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
                                                                                 classification.getProperties(),
                                                                                 methodName);
 
                             String bcGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                               OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
+                                                                               OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME,
                                                                                classification.getProperties(),
                                                                                methodName);
 
@@ -1768,7 +1773,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     else
                                     {
                                         Map<String, String> retrievedOtherOriginValues = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                                                   OpenMetadataAPIMapper.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                                                                                   OpenMetadataType.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
                                                                                                                                    classification.getProperties(),
                                                                                                                                    methodName);
 
@@ -1920,9 +1925,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                           OpenMetadataType.ASSET.typeName,
+                                           OpenMetadataType.ASSET_ZONES_CLASSIFICATION_GUID,
+                                           OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -1966,17 +1971,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         if (ownerType == 0)
         {
-            ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
         }
         else if (ownerType == 1)
         {
-            ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
         }
 
         this.addOwner(userId,
                       assetGUID,
                       assetGUIDParameterName,
-                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                      OpenMetadataType.ASSET.typeName,
                       ownerId,
                       ownerTypeName,
                       null,
@@ -2019,10 +2024,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUID(userId,
                                            connectionGUID,
                                            connectionGUIDParameterName,
-                                           OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           OpenMetadataType.CONNECTION_TYPE_NAME,
+                                           OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
+                                           OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
+                                           OpenMetadataType.ASSET.typeName,
                                            0,
                                            forLineage,
                                            forDuplicateProcessing,
@@ -2066,8 +2071,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        userId,
                                                                                        assetGUID,
                                                                                        assetTypeName,
-                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                                                        2,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
@@ -2089,8 +2094,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             externalSourceName,
                                             relationship.getEntityTwoProxy().getGUID(),
                                             elementGUIDParameterName,
-                                            OpenMetadataAPIMapper.DATA_SET_TYPE_GUID,
-                                            OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                            OpenMetadataType.DATA_SET.typeGUID,
+                                            OpenMetadataType.DATA_SET.typeName,
                                             null,
                                             null,
                                             forLineage,
@@ -2130,14 +2135,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<String> connectionGUIDs = this.getEntityGUIDsByValue(userId,
                                                                   connectionName,
                                                                   connectionNameParameter,
-                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                  OpenMetadataType.CONNECTION_TYPE_GUID,
+                                                                  OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                   specificMatchPropertyNames,
                                                                   true,
                                                                   null,
@@ -2256,8 +2261,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              name,
@@ -2272,7 +2277,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              supportedZones,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              effectiveTime,
@@ -2401,8 +2406,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetEntity.getGUID(),
                                                                                                   assetEntity.getType().getTypeDefName(),
-                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                                                   1,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
@@ -2420,7 +2425,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     connectionEntity = this.getEntityFromRepository(userId,
                                                                     end1.getGUID(),
                                                                     connectionGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                     null,
                                                                     null,
                                                                     forLineage,
@@ -2464,16 +2469,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                             if ((repositoryHelper.isTypeOf(serviceName,
                                                            relationship.getType().getTypeDefName(),
-                                                           OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
                                     || (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
-                                                                  OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME)))
+                                                                  OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME)))
                             {
                                 entityProxy = relationship.getEntityTwoProxy();
                             }
                             else if (repositoryHelper.isTypeOf(serviceName,
                                                                relationship.getType().getTypeDefName(),
-                                                               OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                               OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
                             {
                                 entityProxy = relationship.getEntityOneProxy();
                             }
@@ -2569,19 +2574,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                   OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME)))
+                                                          OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME)))
                     {
                         supplementaryRelationships.add(relationship);
                     }
                     else if (repositoryHelper.isTypeOf(serviceName,
                                                        relationship.getType().getTypeDefName(),
-                                                       OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME))
+                                                       OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
                     {
                         supplementaryRelationships.add(relationship);
 
@@ -2847,7 +2852,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         else
         {
             String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           serviceName,
                                                                           methodName,
                                                                           repositoryHelper);
@@ -2905,8 +2910,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (subTypeGUID != null)
         {
@@ -2927,7 +2932,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
-                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startFrom,
@@ -2948,18 +2953,18 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     {
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                                                     OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
                                                                                                      methodName);
 
                         assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
                                                                              classification.getProperties(),
                                                                              methodName);
                     }
                     catch (ClassificationErrorException notPresent)
                     {
                         assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
                                                                              entity.getProperties(),
                                                                              methodName);
                     }
@@ -3020,8 +3025,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (subTypeGUID != null)
         {
@@ -3042,7 +3047,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
-                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startFrom,
@@ -3058,7 +3063,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 if (entity != null)
                 {
                     List<String>    assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                         OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                                         OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
                                                                                          entity.getProperties(),
                                                                                          methodName);
 
@@ -3168,8 +3173,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -3181,8 +3186,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -3196,7 +3201,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -3293,8 +3298,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -3306,8 +3311,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getEntityGUIDsByValue(userId,
                                           name,
@@ -3418,8 +3423,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -3431,8 +3436,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -3491,12 +3496,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
 
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DESCRIPTION.name);
 
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -3562,11 +3567,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         int startNextQueryFrom = 0;
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
 
         List<String> relationshipPath = new ArrayList<>();
-        relationshipPath.add(OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID);
-        relationshipPath.add(OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID);
+        relationshipPath.add(OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID);
+        relationshipPath.add(OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID);
 
         List<String>  assetGUIDs     = new ArrayList<>();
         List<String>  resultGUIDs    = new ArrayList<>();
@@ -3577,8 +3582,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             List<String> endpointGUIDs = this.getEntityGUIDsByValue(userId,
                                                                     networkAddress,
                                                                     networkAddressParameterName,
-                                                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                     specificMatchPropertyNames,
                                                                     true,
                                                                     null,
@@ -3611,9 +3616,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             List<String> endpointAssetGUIDs = this.getRelatedEntityGUIDs(userId,
                                                                                          endpointGUID,
                                                                                          networkAddressParameterName,
-                                                                                         OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                                         OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                                          relationshipPath,
-                                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                         OpenMetadataType.ASSET.typeName,
                                                                                          supportedZones,
                                                                                          endpointStartFrom,
                                                                                          maxPageSize,
@@ -3697,7 +3702,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.ASSET.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -3783,8 +3788,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     UserNotAuthorizedException
     {
         return this.findAssetGUIDs(userId,
-                                   OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                   OpenMetadataType.ASSET.typeGUID,
+                                   OpenMetadataType.ASSET.typeName,
                                    searchString,
                                    searchStringParameter,
                                    startFrom,
@@ -3832,8 +3837,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -3897,8 +3902,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                            UserNotAuthorizedException
     {
         return this.findAssets(userId,
-                               OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                               OpenMetadataType.ASSET.typeGUID,
+                               OpenMetadataType.ASSET.typeName,
                                searchString,
                                searchStringParameter,
                                startFrom,
@@ -3946,8 +3951,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
 
         if (typeGUID != null)
         {
@@ -4011,10 +4016,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUIDs(userId,
                                             tagGUID,
                                             tagGUIDParameterName,
-                                            OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                            OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                            OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
+                                            OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                            OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                            OpenMetadataType.ASSET.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
@@ -4061,10 +4066,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         tagGUID,
                                         tagGUIDParameterName,
-                                        OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
                                         null,
                                         null,
                                         0,
@@ -4112,10 +4117,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUIDs(userId,
                                             keywordGUID,
                                             keywordGUIDParameterName,
-                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
-                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
+                                            OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
+                                            OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                            OpenMetadataType.ASSET.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
@@ -4161,10 +4166,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         keywordGUID,
                                         keywordGUIDParameterName,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
+                                        OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
+                                        OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         null,
                                         null,
                                         0,
@@ -4213,10 +4218,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         termGUID,
                                         termGUIDParameterName,
-                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
                                         null,
                                         null,
                                         0,

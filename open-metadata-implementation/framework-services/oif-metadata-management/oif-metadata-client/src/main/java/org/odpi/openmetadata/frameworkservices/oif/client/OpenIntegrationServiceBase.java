@@ -254,6 +254,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      *
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
+     * @param anchorTypeName type of element element to attach the integration report to
      * @param properties properties of the report
      *
      * @throws InvalidParameterException one of the parameters is null or invalid,
@@ -263,26 +264,31 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
     @Override
     public void publishIntegrationReport(String                      userId,
                                          String                      anchorGUID,
+                                         String                      anchorTypeName,
                                          IntegrationReportProperties properties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
         final String methodName              = "publishIntegrationReport";
         final String guidParameterName       = "anchorGUID";
+        final String typeNameParameterName   = "anchorTypeName";
         final String propertiesParameterName = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateName(anchorTypeName, typeNameParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-integration/users/{2}" +
-                "/integration-reports/{3}/new";
+                "/integration-reports/{3}/{4}/new";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         properties,
                                         serverName,
-                                        userId);
+                                        userId,
+                                        anchorGUID,
+                                        anchorTypeName);
     }
 
 

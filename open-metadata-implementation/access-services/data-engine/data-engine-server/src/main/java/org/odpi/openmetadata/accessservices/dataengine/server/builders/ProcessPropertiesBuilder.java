@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.commonservices.generichandlers.AssetBuilder;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -59,17 +60,19 @@ public class ProcessPropertiesBuilder extends AssetBuilder {
 
         if (processDisplayName != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, processDisplayName, methodName);
+                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                      processDisplayName, methodName);
         }
 
         if (formula != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula, methodName);
+                                                                      OpenMetadataProperty.FORMULA.name,
+                                                                      formula, methodName);
         }
 
         if (implementationLanguage != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, formula, methodName);
+                                                                      OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, formula, methodName);
         }
         return properties;
     }

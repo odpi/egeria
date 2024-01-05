@@ -8,9 +8,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.DataFieldHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.DiscoveryAnalysisReportHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -45,7 +50,6 @@ public class DiscoveryEngineRESTServices
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
      * @return list of unique identifiers for located assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -69,8 +73,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getBeanGUIDsByType(userId,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         OpenMetadataType.ASSET.typeGUID,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          null,
                                                          false,
                                                          false,
@@ -99,7 +103,6 @@ public class DiscoveryEngineRESTServices
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -125,8 +128,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getBeanGUIDsByQualifiedName(userId,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeGUID,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   name,
                                                                   nameParameterName,
                                                                   false,
@@ -156,7 +159,6 @@ public class DiscoveryEngineRESTServices
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -182,8 +184,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByName(userId,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                          OpenMetadataType.ASSET.typeGUID,
+                                                          OpenMetadataType.ASSET.typeName,
                                                           name,
                                                           nameParameterName,
                                                           startFrom,
@@ -214,7 +216,6 @@ public class DiscoveryEngineRESTServices
      * @param pageSize maximum number of results to return
      *
      * @return list of assets that match the search string or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -242,8 +243,8 @@ public class DiscoveryEngineRESTServices
             response.setGUIDs(handler.findBeanGUIDs(userId,
                                                     searchString,
                                                     searchStringParameterName,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeGUID,
+                                                    OpenMetadataType.ASSET.typeName,
                                                     null,
                                                     startFrom,
                                                     pageSize,
@@ -271,7 +272,6 @@ public class DiscoveryEngineRESTServices
      * @param startFrom place to start in query
      * @param pageSize number of results to return
      * @return list of unique identifiers for matching assets or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -325,7 +325,6 @@ public class DiscoveryEngineRESTServices
      * @param discoveryService name of discovery service
      * @param message        message to log
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -368,7 +367,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody  all the other parameters
      *
      * @return The unique identifier of the new discovery report or
-     *
      *  InvalidParameterException one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to access the asset and/or report or
      *  PropertyServerException there was a problem in the store whether the asset/report properties are kept.
@@ -443,7 +441,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody updated report - this will replace what was previous stored
      *
      * @return  void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -516,7 +513,6 @@ public class DiscoveryEngineRESTServices
      * @param discoveryReportGUID identifier of the discovery request.
      *
      * @return discovery report or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -643,7 +639,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody status value to use on the query
      *
      * @return list of annotation (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving annotations from the annotation store.
@@ -712,7 +707,6 @@ public class DiscoveryEngineRESTServices
      * @param maximumResults maximum number of definitions to return on this call.
      *
      * @return list of annotations or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -762,7 +756,6 @@ public class DiscoveryEngineRESTServices
      * @param maximumResults maximum number of annotations that can be returned.
      *
      * @return list of Annotation objects or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -811,7 +804,6 @@ public class DiscoveryEngineRESTServices
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -854,7 +846,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
-     *
      *  InvalidParameterException the annotation is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
@@ -906,7 +897,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving annotations in the annotation store.
@@ -953,7 +943,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody new properties
      *
      * @return fully filled out annotation or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem updating the annotation in the annotation store.
@@ -997,7 +986,6 @@ public class DiscoveryEngineRESTServices
      * @param requestBody null request body to satisfy POST semantics
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem deleting the annotation from the annotation store.
@@ -1043,7 +1031,6 @@ public class DiscoveryEngineRESTServices
      * @param maximumResults maximum number of elements that can be returned
      *
      * @return list of data fields (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving data fields from the annotation store.
@@ -1067,14 +1054,14 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getPreviousDataFieldsForAsset(userId,
-                                                  discoveryReportGUID,
-                                                  startingFrom,
-                                                  maximumResults,
-                                                  false,
-                                                  false,
-                                                  new Date(),
-                                                  methodName);
+            response.setDataFields(handler.getPreviousDataFieldsForAsset(userId,
+                                                                         discoveryReportGUID,
+                                                                         startingFrom,
+                                                                         maximumResults,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName));
         }
         catch (Exception error)
         {
@@ -1097,7 +1084,6 @@ public class DiscoveryEngineRESTServices
      * @param maximumResults maximum number of elements that can be returned
      *
      * @return list of data fields (or null if none are registered) or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving data fields from the annotation store.
@@ -1121,14 +1107,14 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getNewDataFieldsForAsset(userId,
-                                             discoveryReportGUID,
-                                             startingFrom,
-                                             maximumResults,
-                                             false,
-                                             false,
-                                             new Date(),
-                                             methodName);
+            response.setDataFields(handler.getNewDataFieldsForAsset(userId,
+                                                                    discoveryReportGUID,
+                                                                    startingFrom,
+                                                                    maximumResults,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
+                                                                    methodName));
         }
         catch (Exception error)
         {
@@ -1142,13 +1128,13 @@ public class DiscoveryEngineRESTServices
 
 
     /**
-     * Return any annotations attached to this annotation.
+     * Return any child data fields attached to this data field.
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
-     * @param maximumResults maximum number of annotations that can be returned.
+     * @param maximumResults maximum number of data fields that can be returned.
      *
      * @return list of DataField objects or
      *  InvalidParameterException one of the parameters is null or invalid.
@@ -1174,14 +1160,67 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getNestedDataFields(userId,
-                                        parentDataFieldGUID,
-                                        startingFrom,
-                                        maximumResults,
-                                        false,
-                                        false,
-                                        new Date(),
-                                        methodName);
+            response.setDataFields(handler.getNestedDataFields(userId,
+                                                               parentDataFieldGUID,
+                                                               startingFrom,
+                                                               maximumResults,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return any peer data fields attached to this data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID parent data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of data fields that can be returned.
+     *
+     * @return list of DataField objects or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public RelatedDataFieldListResponse getLinkedDataFields(String serverName,
+                                                            String userId,
+                                                            String dataFieldGUID,
+                                                            int    startingFrom,
+                                                            int    maximumResults)
+    {
+        final String methodName = "getLinkedDataFields";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                     auditLog = null;
+        RelatedDataFieldListResponse response = new RelatedDataFieldListResponse();
+
+        try
+        {
+            DataFieldHandler<RelatedDataField> handler = instanceHandler.getRelatedDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setDataFields(handler.getLinkedDataFields(userId,
+                                                               dataFieldGUID,
+                                                               startingFrom,
+                                                               maximumResults,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
         }
         catch (Exception error)
         {
@@ -1202,7 +1241,6 @@ public class DiscoveryEngineRESTServices
      * @param dataFieldGUID unique identifier of the data field
      *
      * @return data field object or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem retrieving the data field from the annotation store.
@@ -1224,12 +1262,12 @@ public class DiscoveryEngineRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.getDataField(userId,
-                                 dataFieldGUID,
-                                 false,
-                                 false,
-                                 new Date(),
-                                 methodName);
+            response.setDataField(handler.getDataField(userId,
+                                                       dataFieldGUID,
+                                                       false,
+                                                       false,
+                                                       new Date(),
+                                                       methodName));
         }
         catch (Exception error)
         {
@@ -1251,7 +1289,6 @@ public class DiscoveryEngineRESTServices
      * @param dataField dataField object
      *
      * @return unique identifier of new data field or
-     *
      *  InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
      *                                   that can not be associated with a data field.
      *  UserNotAuthorizedException the user id not authorized to issue this request
@@ -1284,22 +1321,22 @@ public class DiscoveryEngineRESTServices
                     dataFieldSortOrder = dataField.getDataFieldSortOrder().getOpenTypeOrdinal();
                 }
 
-                handler.addDataFieldToDiscoveryReport(userId,
-                                                      null,
-                                                      null,
-                                                      annotationGUID,
-                                                      dataField.getDataFieldPosition(),
-                                                      dataField.getDataFieldName(),
-                                                      dataField.getDataFieldType(),
-                                                      dataField.getDataFieldDescription(),
-                                                      dataField.getDataFieldAliases(),
-                                                      dataFieldSortOrder,
-                                                      dataField.getDefaultValue(),
-                                                      dataField.getAdditionalProperties(),
-                                                      false,
-                                                      false,
-                                                      new Date(),
-                                                      methodName);
+                response.setGUID(handler.addDataFieldToDiscoveryReport(userId,
+                                                                       null,
+                                                                       null,
+                                                                       annotationGUID,
+                                                                       dataField.getDataFieldPosition(),
+                                                                       dataField.getDataFieldName(),
+                                                                       dataField.getDataFieldType(),
+                                                                       dataField.getDataFieldDescription(),
+                                                                       dataField.getDataFieldAliases(),
+                                                                       dataFieldSortOrder,
+                                                                       dataField.getDefaultValue(),
+                                                                       dataField.getAdditionalProperties(),
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
+                                                                       methodName));
             }
             else
             {
@@ -1326,7 +1363,6 @@ public class DiscoveryEngineRESTServices
      * @param dataField data field object
      *
      * @return unique identifier of new data field or
-     *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem saving data fields in the annotation store.
@@ -1358,26 +1394,100 @@ public class DiscoveryEngineRESTServices
                     dataFieldSortOrder = dataField.getDataFieldSortOrder().getOpenTypeOrdinal();
                 }
 
-                handler.addDataFieldToDataField(userId,
-                                                null,
-                                                null,
-                                                parentDataFieldGUID,
-                                                dataField.getDataFieldPosition(),
-                                                dataField.getDataFieldName(),
-                                                dataField.getDataFieldType(),
-                                                dataField.getDataFieldDescription(),
-                                                dataField.getDataFieldAliases(),
-                                                dataFieldSortOrder,
-                                                dataField.getDefaultValue(),
-                                                dataField.getAdditionalProperties(),
-                                                false,
-                                                false,
-                                                new Date(),
-                                                methodName);
+                response.setGUID(handler.addDataFieldToDataField(userId,
+                                                                 null,
+                                                                 null,
+                                                                 parentDataFieldGUID,
+                                                                 dataField.getDataFieldPosition(),
+                                                                 dataField.getDataFieldName(),
+                                                                 dataField.getDataFieldType(),
+                                                                 dataField.getDataFieldDescription(),
+                                                                 dataField.getDataFieldAliases(),
+                                                                 dataFieldSortOrder,
+                                                                 dataField.getDefaultValue(),
+                                                                 dataField.getAdditionalProperties(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
+                                                                 methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Link two exising data fields together in a peer relationship.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param relationshipProperties optional properties for the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @return void or
+     *  InvalidParameterException one of the parameters is invalid or
+     *  UserNotAuthorizedException the user id not authorized to issue this request or
+     *  PropertyServerException there was a problem deleting the data field from the annotation store.
+     */
+    public VoidResponse linkDataFields(String        serverName,
+                                       String        userId,
+                                       String        linkFromDataFieldGUID,
+                                       String        linkToDataFieldGUID,
+                                       DataFieldLink relationshipProperties)
+    {
+        final String   methodName = "linkDataFields";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (relationshipProperties != null)
+            {
+                handler.linkDataFields(userId,
+                                       null,
+                                       null,
+                                       linkFromDataFieldGUID,
+                                       linkToDataFieldGUID,
+                                       relationshipProperties.getRelationshipEnd(),
+                                       relationshipProperties.getRelationshipTypeName(),
+                                       relationshipProperties.getAdditionalProperties(),
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
+            }
+            else
+            {
+                handler.linkDataFields(userId,
+                                       null,
+                                       null,
+                                       linkFromDataFieldGUID,
+                                       linkToDataFieldGUID,
+                                       0,
+                                       null,
+                                       null,
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
             }
         }
         catch (Exception error)

@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerInstanceHistory;
@@ -160,17 +161,10 @@ class OMAGServerInstance
                                                                                AuditLog   auditLog,
                                                                                Connection connection) throws InvalidParameterException
     {
-        try
-        {
-            this.securityVerifier.registerSecurityValidator(localServerUserId,
-                                                            serverName,
-                                                            auditLog,
-                                                            connection);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
-        {
-            throw new InvalidParameterException(error.getReportedErrorMessage(), error);
-        }
+        this.securityVerifier.registerSecurityValidator(localServerUserId,
+                                                        serverName,
+                                                        auditLog,
+                                                        connection);
 
         return this.securityVerifier;
     }
@@ -220,15 +214,8 @@ class OMAGServerInstance
                                                                 String    serviceOperationName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        try
-        {
-            securityVerifier.validateUserForService(userId, serviceName);
-            securityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        securityVerifier.validateUserForService(userId, serviceName);
+        securityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
 
         OMAGServerServiceInstance serverServiceInstance = serviceInstanceMap.get(serviceName);
 

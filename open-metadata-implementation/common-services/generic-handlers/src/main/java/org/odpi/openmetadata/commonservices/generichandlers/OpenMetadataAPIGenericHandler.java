@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.*;
@@ -123,7 +125,7 @@ public class OpenMetadataAPIGenericHandler<B>
         this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
         this.qualifiedNamePropertyNamesList = new ArrayList<>();
-        this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        this.qualifiedNamePropertyNamesList.add(OpenMetadataProperty.QUALIFIED_NAME.name);
     }
 
 
@@ -469,6 +471,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              beanEntity,
                                                              beanGUIDParameterName,
                                                              true,
+                                                             true,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              serviceSupportedZones,
@@ -483,7 +486,7 @@ public class OpenMetadataAPIGenericHandler<B>
             int latestChangeActionOrdinal;
             if (existingClassification == null)
             {
-                latestChangeActionOrdinal = OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+                latestChangeActionOrdinal = OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
 
                 repositoryHandler.classifyEntity(userId,
                                                  externalSourceGUID,
@@ -504,7 +507,7 @@ public class OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                latestChangeActionOrdinal = OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+                latestChangeActionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
 
                 InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                       classificationProperties,
@@ -558,7 +561,7 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              beanEntity.getGUID(),
@@ -571,10 +574,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              null,
@@ -654,6 +657,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanEntity,
                                                           beanGUIDParameterName,
                                                           true,
+                                                          true,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           serviceSupportedZones,
@@ -666,7 +670,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
             invalidParameterHandler.validateObject(existingClassification, classificationTypeName, methodName);
 
-            int latestChangeActionOrdinal = OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+            int latestChangeActionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
 
             InstanceProperties newProperties = existingClassification.getProperties();
 
@@ -696,7 +700,7 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              beanGUID,
@@ -709,10 +713,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
                                              latestChangeActionOrdinal,
                                              classificationTypeName,
                                              null,
@@ -832,6 +836,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanEntity,
                                                           beanGUIDParameterName,
                                                           true,
+                                                          true,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           serviceSupportedZones,
@@ -858,8 +863,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              beanGUID,
                                              beanGUIDTypeName,
@@ -871,11 +876,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(beanEntity,
-                                             OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              null,
                                              null,
@@ -985,7 +990,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityOneProxy().getGUID(),
                                       entityOneParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -996,7 +1002,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1196,7 +1203,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityOneProxy().getGUID(),
                                       entityOneParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1207,7 +1215,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1303,7 +1312,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityOneProxy().getGUID(),
                                       entityOneParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1314,7 +1324,8 @@ public class OpenMetadataAPIGenericHandler<B>
             this.validateAnchorEntity(userId,
                                       relationship.getEntityTwoProxy().getGUID(),
                                       entityTwoParameterName,
-                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                      false,
                                       false,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1474,6 +1485,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           beanEntity,
                                                           beanGUIDParameterName,
                                                           true,
+                                                          true,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           serviceSupportedZones,
@@ -1510,8 +1522,8 @@ public class OpenMetadataAPIGenericHandler<B>
                 if (anchorEntity != null)
                 {
                     this.addLatestChangeToAnchor(anchorEntity,
-                                                 OpenMetadataAPIMapper.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  classificationTypeName,
                                                  beanGUID,
                                                  beanGUIDTypeName,
@@ -1523,11 +1535,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  effectiveTime,
                                                  methodName);
                 }
-                else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(methodName, beanEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(beanEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  classificationTypeName,
                                                  null,
                                                  null,
@@ -1581,10 +1593,10 @@ public class OpenMetadataAPIGenericHandler<B>
          * These are the feedback relationships.  They have a property called "isPrivate".  If it is set to true, only the user
          * that created it can see it (or update or delete it).
          */
-        if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME)))
+        if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME)))
         {
             if (userId.equals(relationship.getCreatedBy()))
             {
@@ -1592,7 +1604,7 @@ public class OpenMetadataAPIGenericHandler<B>
             }
 
             return repositoryHelper.getBooleanProperty(serviceName,
-                                                       OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                       OpenMetadataProperty.IS_PUBLIC.name,
                                                        relationship.getProperties(),
                                                        methodName);
         }
@@ -1610,20 +1622,20 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return anchorGUID or null
      */
-    public String getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
-                                                         String       methodName)
+    public AnchorIdentifiers getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
+                                                                    String       methodName)
     {
         /*
          * Metadata maintained by Egeria Access Service modules should have the Anchors classification.
          */
-        Classification anchorsClassification;
-        String         anchorGUID = null;
+        Classification     anchorsClassification;
+        AnchorIdentifiers  anchorIdentifiers = null;
 
         try
         {
             anchorsClassification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                  connectToEntity,
-                                                                                 OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                 OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                                                  methodName);
 
             if (anchorsClassification != null)
@@ -1633,15 +1645,22 @@ public class OpenMetadataAPIGenericHandler<B>
                  */
                 if (anchorsClassification.getProperties() != null)
                 {
-                    anchorGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                    OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
-                                                                    anchorsClassification.getProperties(),
-                                                                    methodName);
+                    anchorIdentifiers = new AnchorIdentifiers();
+
+                    anchorIdentifiers.anchorGUID = repositoryHelper.getStringProperty(serviceName,
+                                                                                      OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                      anchorsClassification.getProperties(),
+                                                                                      methodName);
+
+                    anchorIdentifiers.anchorTypeName = repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                                          anchorsClassification.getProperties(),
+                                                                                          methodName);
 
                     /*
                      * This is an attempt to trap an intermittent error recorded in issue #4680.
                      */
-                    if ("<unknown>".equals(anchorGUID))
+                    if ("<unknown>".equals(anchorIdentifiers.anchorGUID))
                     {
                         final String localMethodName = "getAnchorGUIDFromAnchorsClassification";
 
@@ -1665,7 +1684,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             try
             {
-                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
             }
             catch (PropertyServerException secondError)
             {
@@ -1673,7 +1692,7 @@ public class OpenMetadataAPIGenericHandler<B>
             }
         }
 
-        return anchorGUID;
+        return anchorIdentifiers;
     }
 
 
@@ -1686,6 +1705,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param targetTypeName type of entity
      * @param targetEntity contents of the entity from the repository
      * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName unique identifier of the anchor entity's type
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1700,6 +1720,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     String        targetTypeName,
                                                     EntitySummary targetEntity,
                                                     String        anchorGUID,
+                                                    String        anchorTypeName,
                                                     boolean       forLineage,
                                                     boolean       forDuplicateProcessing,
                                                     Date          effectiveTime,
@@ -1732,7 +1753,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorsClassification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                  targetEntity,
-                                                                                 OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                 OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                                                  methodName);
             if (anchorsClassification != null)
             {
@@ -1743,7 +1764,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 if (anchorsProperties != null)
                 {
                     currentAnchorGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                           OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                           OpenMetadataProperty.ANCHOR_GUID.name,
                                                                            anchorsClassification.getProperties(),
                                                                            methodName);
                 }
@@ -1782,8 +1803,14 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                  anchorsProperties,
-                                                                                 OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.ANCHOR_GUID.name,
                                                                                  anchorGUID,
+                                                                                 methodName);
+
+                anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                 anchorsProperties,
+                                                                                 OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                                 anchorTypeName,
                                                                                  methodName);
 
                 if (anchorsClassification == null)
@@ -1795,8 +1822,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      null,
                                                      targetGUIDParameterName,
                                                      targetEntity.getType().getTypeDefName(),
-                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                     OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                     OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                      ClassificationOrigin.ASSIGNED,
                                                      null,
                                                      anchorsProperties,
@@ -1815,8 +1842,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            targetGUID,
                                                            targetGUIDParameterName,
                                                            targetTypeName,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                            anchorsClassification,
                                                            anchorsProperties,
                                                            forLineage,
@@ -1835,8 +1862,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                (EntityDetail) targetEntity,
                                                                targetGUIDParameterName,
                                                                targetEntity.getType().getTypeDefName(),
-                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                                anchorsClassification,
                                                                forLineage,
                                                                forDuplicateProcessing,
@@ -1852,8 +1879,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                null,
                                                                targetGUIDParameterName,
                                                                targetEntity.getType().getTypeDefName(),
-                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                               OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                                anchorsClassification,
                                                                forLineage,
                                                                forDuplicateProcessing,
@@ -1899,30 +1926,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException  the GUID is not recognized or the paging values are invalid or
      * @throws PropertyServerException  there is a problem retrieving the instances from the property server or
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForSchemaType(String  userId,
-                                              String  schemaTypeGUID,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForSchemaType(String  userId,
+                                                         String  schemaTypeGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         /*
          * The most obvious test is that this schema type is attached directly to the asset.
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   schemaTypeGUID,
-                                                                                  OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -1931,7 +1958,12 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return proxy.getGUID();
+            AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+            anchorIdentifiers.anchorGUID = proxy.getGUID();
+            anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+            return anchorIdentifiers;
         }
 
         /*
@@ -1939,10 +1971,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1959,10 +1991,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1979,10 +2011,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1995,10 +2027,10 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2015,10 +2047,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2031,27 +2063,10 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveTime,
-                                                                     methodName);
-        if (relationship != null)
-        {
-            EntityProxy proxy = relationship.getEntityOneProxy();
-
-            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-
-        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                     schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                     false,
-                                                                     OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2065,10 +2080,27 @@ public class OpenMetadataAPIGenericHandler<B>
 
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime,
+                                                                     methodName);
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+
+            return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+
+        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                     schemaTypeGUID,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                     false,
+                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2085,10 +2117,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
-                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2097,7 +2129,12 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             EntityProxy proxy = relationship.getEntityOneProxy();
 
-            return proxy.getGUID();
+            AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+            anchorIdentifiers.anchorGUID = proxy.getGUID();
+            anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+            return anchorIdentifiers;
         }
 
 
@@ -2121,30 +2158,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForSchemaAttribute(String  userId,
-                                                   String  attributeGUID,
-                                                   boolean forLineage,
-                                                   boolean forDuplicateProcessing,
-                                                   Date    effectiveTime,
-                                                   String  methodName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForSchemaAttribute(String  userId,
+                                                              String  attributeGUID,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing,
+                                                              Date    effectiveTime,
+                                                              String  methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         /*
          * Is the schema attribute connected to a type.
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   attributeGUID,
-                                                                                  OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                  OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                  OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2163,9 +2200,9 @@ public class OpenMetadataAPIGenericHandler<B>
 
         relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                            attributeGUID,
-                                                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                           OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                           OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                           OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                           OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                           OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                            true,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
@@ -2194,30 +2231,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForConnection(String  userId,
-                                              String  connectionGUID,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForConnection(String  userId,
+                                                         String  connectionGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         /*
          * Is the connection connected to an asset?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   connectionGUID,
-                                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                  OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                                   true,
-                                                                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2229,7 +2266,12 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return proxy.getGUID();
+                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                anchorIdentifiers.anchorGUID = proxy.getGUID();
+                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                return anchorIdentifiers;
             }
         }
 
@@ -2247,30 +2289,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForLike(String  userId,
-                                        String  likeGUID,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForLike(String  userId,
+                                                   String  likeGUID,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         /*
          * Is the like connected to a Referenceable?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   likeGUID,
-                                                                                  OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                                                                  OpenMetadataType.LIKE_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                                                                  OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                                                                  OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2281,7 +2323,12 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityProxy proxy = relationship.getEntityOneProxy();
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return proxy.getGUID();
+                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                anchorIdentifiers.anchorGUID = proxy.getGUID();
+                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                return anchorIdentifiers;
             }
         }
 
@@ -2299,30 +2346,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForRating(String  userId,
-                                          String  ratingGUID,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime,
-                                          String  methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForRating(String  userId,
+                                                     String  ratingGUID,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         /*
          * Is the rating connected to a Referenceable?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   ratingGUID,
-                                                                                  OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                                                                  OpenMetadataType.RATING_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                                  OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                                                                  OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2333,7 +2380,12 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityProxy proxy = relationship.getEntityOneProxy();
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return proxy.getGUID();
+                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                anchorIdentifiers.anchorGUID = proxy.getGUID();
+                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                return anchorIdentifiers;
             }
         }
 
@@ -2351,30 +2403,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException one of the guids is no longer available
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForOpenDiscoveryAnalysisReport(String  userId,
-                                                               String  reportGUID,
-                                                               boolean forLineage,
-                                                               boolean forDuplicateProcessing,
-                                                               Date    effectiveTime,
-                                                               String  methodName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForOpenDiscoveryAnalysisReport(String  userId,
+                                                                          String  reportGUID,
+                                                                          boolean forLineage,
+                                                                          boolean forDuplicateProcessing,
+                                                                          Date    effectiveTime,
+                                                                          String  methodName) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
         /*
          * Is the report connected to an Asset?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   reportGUID,
-                                                                                  OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                                                  OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME,
+                                                                                  OpenMetadataType.REPORT_TO_ASSET_TYPE_GUID,
+                                                                                  OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2385,7 +2437,12 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityProxy proxy = relationship.getEntityOneProxy();
             if ((proxy != null) && (proxy.getGUID() != null))
             {
-                return proxy.getGUID();
+                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                anchorIdentifiers.anchorGUID = proxy.getGUID();
+                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                return anchorIdentifiers;
             }
         }
 
@@ -2404,27 +2461,27 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForAnnotation(String  userId,
-                                              String  annotationGUID,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForAnnotation(String  userId,
+                                                         String  annotationGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         /*
          * Is the annotation connected to anything?
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     annotationGUID,
-                                                                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                    OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                                                     null,
                                                                                     null,
                                                                                     1,
@@ -2443,20 +2500,20 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityProxy proxy = relationship.getEntityOneProxy();
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null) && (! annotationGUID.equals(proxy.getGUID())))
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
                         {
                             return this.getAnchorGUIDForOpenDiscoveryAnalysisReport(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
                         }
-                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME))
+                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD_TYPE_NAME))
                         {
-                            String parentAnchorGUID = this.getAnchorGUIDForDataField(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                            AnchorIdentifiers parentAnchorIdentifiers = this.getAnchorGUIDForDataField(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
-                            if (parentAnchorGUID != null)
+                            if (parentAnchorIdentifiers != null)
                             {
-                                return parentAnchorGUID;
+                                return parentAnchorIdentifiers;
                             }
                         }
-                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME))
+                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.ANNOTATION_TYPE_NAME))
                         {
                             return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
                         }
@@ -2480,30 +2537,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForAnnotationReview(String  userId,
-                                                    String  annotationReviewGUID,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing,
-                                                    Date    effectiveTime,
-                                                    String  methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForAnnotationReview(String  userId,
+                                                               String  annotationReviewGUID,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         /*
          * Is the annotation review connected to an annotation?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   annotationReviewGUID,
-                                                                                  OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_GUID,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2533,30 +2590,30 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached asset or null if there is no attached asset
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the repositories or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private String getAnchorGUIDForDataField(String  userId,
-                                             String  dataFieldGUID,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime,
-                                             String  methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForDataField(String  userId,
+                                                        String  dataFieldGUID,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        String  methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         /*
          * Is the data field connected to an annotation?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   dataFieldGUID,
-                                                                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                                  OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                                   false,
-                                                                                  OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_GUID,
-                                                                                  OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
+                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2587,29 +2644,29 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached anchor or null if there is no attached anchor
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
-    private String getAnchorGUIDForComment(String  userId,
-                                           String  commentGUID,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing,
-                                           Date    effectiveTime,
-                                           String  methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForComment(String  userId,
+                                                      String  commentGUID,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveTime,
+                                                      String  methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         /*
          * Is the comment connected to anything?
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     commentGUID,
-                                                                                    OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                                    OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2627,20 +2684,25 @@ public class OpenMetadataAPIGenericHandler<B>
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
                     {
                         if ((! commentGUID.equals(proxy.getGUID())) &&
-                            (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.COMMENT_TYPE_NAME)))
+                            (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.COMMENT_TYPE_NAME)))
                         {
-                            String parentAnchorGUID = this.getAnchorGUIDForComment(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                            AnchorIdentifiers parentAnchorIdentifiers = this.getAnchorGUIDForComment(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
                             /*
                              * If the parent has no anchor then it is a detached chain of comments and the parent is the anchor.
                              */
-                            if (parentAnchorGUID != null)
+                            if (parentAnchorIdentifiers != null)
                             {
-                                return parentAnchorGUID;
+                                return parentAnchorIdentifiers;
                             }
                         }
 
-                        return proxy.getGUID();
+                        AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                        anchorIdentifiers.anchorGUID = proxy.getGUID();
+                        anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                        return anchorIdentifiers;
                     }
                 }
             }
@@ -2661,29 +2723,29 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached anchor or null if there is no attached anchor
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
-    private String getAnchorGUIDForGlossaryTerm(String  userId,
-                                                String  glossaryTermGUID,
-                                                boolean forLineage,
-                                                boolean forDuplicateProcessing,
-                                                Date    effectiveTime,
-                                                String  methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForGlossaryTerm(String  userId,
+                                                           String  glossaryTermGUID,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         /*
          * Is the Glossary Term connected to anything?
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     glossaryTermGUID,
-                                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                                    OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2700,7 +2762,12 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityProxy proxy = relationship.getEntityOneProxy();
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
                     {
-                        return proxy.getGUID();
+                        AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                        anchorIdentifiers.anchorGUID = proxy.getGUID();
+                        anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                        return anchorIdentifiers;
                     }
                 }
             }
@@ -2721,29 +2788,29 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return unique identifier of attached anchor or null if there is no attached anchor
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
      *
      * @throws InvalidParameterException bad starting entity
      * @throws PropertyServerException  there is a problem retrieving the properties from the repositories
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request
      */
-    private String getAnchorGUIDForGlossaryCategory(String  userId,
-                                                    String  glossaryCategoryGUID,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing,
-                                                    Date    effectiveTime,
-                                                    String  methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    private AnchorIdentifiers getAnchorGUIDForGlossaryCategory(String  userId,
+                                                               String  glossaryCategoryGUID,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing,
+                                                               Date    effectiveTime,
+                                                               String  methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         /*
          * Is the Glossary Category connected to anything?
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     glossaryCategoryGUID,
-                                                                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                                    OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                    OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
+                                                                                    OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2760,13 +2827,28 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityProxy proxy = relationship.getEntityOneProxy();
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
                     {
-                        return proxy.getGUID();
+                        AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                        anchorIdentifiers.anchorGUID = proxy.getGUID();
+                        anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                        return anchorIdentifiers;
                     }
                 }
             }
         }
 
         return null;
+    }
+
+
+    /**
+     * The properties for an Anchors classification.
+     */
+    static class AnchorIdentifiers
+    {
+        String anchorGUID = null;
+        String anchorTypeName = null;
     }
 
 
@@ -2781,76 +2863,76 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     * @return anchorGUID or null
+     * @return anchorGUID/anchorTypeName or null
      * @throws InvalidParameterException on of the properties is invalid which is suspicious since they have been validated earlier
      * @throws UserNotAuthorizedException the local server userId does not have access to the repository instances
      * @throws PropertyServerException something is wrong with the repository
      */
-    private String deriveAnchorGUID(String  targetGUID,
-                                    String  targetTypeName,
-                                    boolean forLineage,
-                                    boolean forDuplicateProcessing,
-                                    Date    effectiveTime,
-                                    String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    private AnchorIdentifiers deriveAnchorGUID(String  targetGUID,
+                                               String  targetTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        String anchorGUID = null;
+        AnchorIdentifiers anchorIdentifiers = null;
 
         /*
-         * This group of calls walks the chain of entities to detect the anchorGUID for specific types of entities.  There is scope for more
+         * This group of calls walks the chain of entities to detect the anchorIdentifiers for specific types of entities.  There is scope for more
          * method calls added here, for example, for comments, note logs, connections etc.
          */
-        if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.CONNECTION_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.COMMENT_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.COMMENT_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForComment(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForComment(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.RATING_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.RATING_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForRating(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForRating(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.LIKE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.LIKE_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForLike(localServerUserId, targetGUID, forLineage,forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForLike(localServerUserId, targetGUID, forLineage,forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForAnnotation(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForAnnotation(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DATA_FIELD_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_TERM_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME))
         {
-            anchorGUID = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
 
-        return anchorGUID;
+        return anchorIdentifiers;
     }
 
 
@@ -2886,13 +2968,13 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Find out the anchorGUID by following the relationships
          */
-        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        AnchorIdentifiers newAnchorIdentifiers = this.deriveAnchorGUID(targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         /*
          * The anchorGUID has changed
          */
-        if (((newAnchorGUID == null) && (originalAnchorGUID != null)) ||
-            ((newAnchorGUID != null) && (! newAnchorGUID.equals(originalAnchorGUID))))
+        if (((newAnchorIdentifiers == null) && (originalAnchorGUID != null)) ||
+            ((newAnchorIdentifiers != null) && (! newAnchorIdentifiers.equals(originalAnchorGUID))))
         {
             EntityDetail targetElement = repositoryHandler.getEntityByGUID(localServerUserId,
                                                                            targetGUID,
@@ -2909,14 +2991,16 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         targetGUIDParameterName,
                                                         targetTypeName,
                                                         targetElement,
-                                                        newAnchorGUID,
+                                                        newAnchorIdentifiers.anchorGUID,
+                                                        newAnchorIdentifiers.anchorTypeName,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
                                                         methodName);
             }
         }
-        return newAnchorGUID;
+
+        return newAnchorIdentifiers.anchorGUID;
     }
 
 
@@ -2955,13 +3039,13 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Find out the anchorGUID by following the relationships
          */
-        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        AnchorIdentifiers newAnchorIdentifiers = this.deriveAnchorGUID(targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         /*
          * The anchorGUID has changed
          */
-        if (((newAnchorGUID == null) && (originalAnchorGUID != null)) ||
-            ((newAnchorGUID != null) && (! newAnchorGUID.equals(originalAnchorGUID))))
+        if (((newAnchorIdentifiers == null) && (originalAnchorGUID != null)) ||
+            ((newAnchorIdentifiers != null) && (! newAnchorIdentifiers.anchorGUID.equals(originalAnchorGUID))))
         {
             if (targetElement != null)
             {
@@ -2969,7 +3053,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         targetGUIDParameterName,
                                                         targetTypeName,
                                                         targetElement,
-                                                        newAnchorGUID,
+                                                        newAnchorIdentifiers.anchorGUID,
+                                                        newAnchorIdentifiers.anchorTypeName,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -2977,7 +3062,12 @@ public class OpenMetadataAPIGenericHandler<B>
             }
         }
 
-        return newAnchorGUID;
+        if (newAnchorIdentifiers != null)
+        {
+            return newAnchorIdentifiers.anchorGUID;
+        }
+
+        return null;
     }
 
 
@@ -2988,6 +3078,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param connectToGUID       unique id for the object to connect the attachment to.
      * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
      * @param connectToType       type of the connectToElement.
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isUpdate         is this an update request?
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -3003,6 +3094,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String       connectToGUID,
                                              String       connectToGUIDParameterName,
                                              String       connectToType,
+                                             boolean      isExplicitGetRequest,
                                              boolean      isUpdate,
                                              boolean      forLineage,
                                              boolean      forDuplicateProcessing,
@@ -3032,6 +3124,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          connectToType,
                                          connectToEntity,
                                          connectToGUIDParameterName,
+                                         isExplicitGetRequest,
                                          isUpdate,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -3060,6 +3153,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param connectToType    name of type of connectToEntity
      * @param connectToEntity  entity retrieved from the repository
      * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isUpdate         is this an update request?
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -3079,6 +3173,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              String        connectToType,
                                              EntityDetail  connectToEntity,
                                              String        connectToGUIDParameterName,
+                                             boolean       isExplicitGetRequest,
                                              boolean       isUpdate,
                                              boolean       forLineage,
                                              boolean       forDuplicateProcessing,
@@ -3093,13 +3188,13 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * This first processing looks at the retrieved entity itself to ensure it is visible.
          */
-        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG_TYPE_NAME))
         {
             /*
              * InformalTags have a property that says whether they are public or private
              */
             if (! repositoryHelper.getBooleanProperty(serviceName,
-                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                       connectToEntity.getProperties(),
                                                       methodName))
             {
@@ -3117,11 +3212,11 @@ public class OpenMetadataAPIGenericHandler<B>
                 }
             }
         }
-        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.CONNECTION_TYPE_NAME))
         {
             securityVerifier.validateUserForConnection(userId, connectToEntity, repositoryHelper, serviceName, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.ASSET.typeName))
         {
             /*
              * Even if the request is an update request, the security module is first called for read - the update
@@ -3131,12 +3226,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                                       connectToGUID,
                                                       connectToGUIDParameterName,
                                                       connectToEntity,
+                                                      isExplicitGetRequest,
                                                       suppliedSupportedZones,
                                                       repositoryHelper,
                                                       serviceName,
                                                       methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.GLOSSARY_TYPE_NAME))
         {
             /*
              * Even if the request is an update request, the security module is first called for read - the update
@@ -3159,16 +3255,16 @@ public class OpenMetadataAPIGenericHandler<B>
          * The exception occurs where the entity is not being managed by this handler, or something equivalent that maintains the Anchors
          * classification.
          */
-        String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(connectToEntity, methodName);
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(connectToEntity, methodName);
 
-        if (anchorGUID == null)
+        if (anchorIdentifiers == null)
         {
             /*
              * The classification is missing - so walk the relationships to find the anchor if it exists.
              */
-            anchorGUID = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
-            if (anchorGUID != null)
+            if (anchorIdentifiers != null)
             {
                 /*
                  * The anchor has been found so store it in the classification, so it is easy to find next time.
@@ -3177,7 +3273,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    connectToGUIDParameterName,
                                                    connectToType,
                                                    connectToEntity,
-                                                   anchorGUID,
+                                                   anchorIdentifiers.anchorGUID,
+                                                   anchorIdentifiers.anchorTypeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    effectiveTime,
@@ -3186,19 +3283,19 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorGUID may be null if the connectToEntity
+         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorIdentifiers may be null if the connectToEntity
          * is actually an anchor.
          */
-        if (anchorGUID != null)
+        if (anchorIdentifiers != null)
         {
-            final String anchorGUIDParameterName = "anchorGUID";
+            final String anchorGUIDParameterName = "anchorIdentifiers";
 
-            if (! anchorGUID.equals(connectToEntity.getGUID()))
+            if (! anchorIdentifiers.equals(connectToEntity.getGUID()))
             {
                 anchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                 anchorGUID,
+                                                                 anchorIdentifiers.anchorGUID,
                                                                  anchorGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
@@ -3215,16 +3312,16 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (anchorEntityType != null)
             {
-                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.COMMENT_TYPE_NAME)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.RATING_TYPE_NAME)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.LIKE_TYPE_NAME));
+                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE_TYPE_NAME));
 
                 /*
                  * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine
                  * if this asset is in a supported zone or if the user is allowed to change its attachments.
                  */
-                if (OpenMetadataAPIMapper.ASSET_TYPE_NAME.equals(anchorEntityType.getTypeDefName()))
+                if (OpenMetadataType.ASSET.typeName.equals(anchorEntityType.getTypeDefName()))
                 {
                     securityVerifier.validateUserForAssetAttachment(userId,
                                                                     connectToGUID,
@@ -3237,7 +3334,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     serviceName,
                                                                     methodName);
                 }
-                else if (OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME.equals(anchorEntityType.getTypeDefName()))
+                else if (OpenMetadataType.GLOSSARY_TYPE_NAME.equals(anchorEntityType.getTypeDefName()))
                 {
                     if (isFeedbackEntity)
                     {
@@ -3346,7 +3443,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       true,
                                                                       false,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                                                      OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                                                       false,
                                                                       false,
                                                                       supportedZones,
@@ -3469,7 +3566,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
         validateUniqueProperties(null, entityTypeName, newProperties, effectiveTime, methodName);
 
-        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
         {
             securityVerifier.validateUserForAssetCreate(userId,
                                                         entityTypeGUID,
@@ -3482,7 +3579,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.GLOSSARY_TYPE_NAME))
         {
             securityVerifier.validateUserForGlossaryCreate(userId,
                                                            entityTypeGUID,
@@ -3524,76 +3621,103 @@ public class OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties =  repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     null,
-                                                                                    OpenMetadataAPIMapper.CHANGE_TARGET_PROPERTY_NAME,
-                                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_TARGET_ENUM_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME,
+                                                                                    OpenMetadataProperty.CHANGE_TARGET.name,
+                                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_GUID,
+                                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME,
                                                                                     latestChangeTargetOrdinal,
                                                                                     methodName);
 
         properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.CHANGE_ACTION_PROPERTY_NAME,
-                                                                OpenMetadataAPIMapper.LATEST_CHANGE_ACTION_ENUM_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME,
+                                                                OpenMetadataProperty.CHANGE_ACTION.name,
+                                                                OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_GUID,
+                                                                OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME,
                                                                 latestChangeActionOrdinal,
                                                                 methodName);
 
-        if (classificationName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CLASSIFICATION_NAME_PROPERTY_NAME,
-                                                                      classificationName,
-                                                                      methodName);
-        }
-
-        if (attachmentGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ATTACHMENT_GUID_PROPERTY_NAME,
-                                                                      attachmentGUID,
-                                                                      methodName);
-        }
-
-        if (attachmentTypeName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ATTACHMENT_TYPE_PROPERTY_NAME,
-                                                                      attachmentTypeName,
-                                                                      methodName);
-        }
-
-        if (attachmentTypeName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.RELATIONSHIP_TYPE_PROPERTY_NAME,
-                                                                      relationshipTypeName,
-                                                                      methodName);
-        }
-
-        if (userId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USER_PROPERTY_NAME,
-                                                                      userId,
-                                                                      methodName);
-        }
-
-        if (actionDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ACTION_DESCRIPTION_PROPERTY_NAME,
-                                                                      actionDescription,
-                                                                      methodName);
-        }
-
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.CLASSIFICATION_NAME.name,
+                                                                  classificationName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ATTACHMENT_GUID.name,
+                                                                  attachmentGUID,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ATTACHMENT_TYPE.name,
+                                                                  attachmentTypeName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.RELATIONSHIP_TYPE.name,
+                                                                  relationshipTypeName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.USER.name,
+                                                                  userId,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ACTION_DESCRIPTION.name,
+                                                                  actionDescription,
+                                                                  methodName);
 
         return properties;
+    }
+
+
+    /**
+     * Validate the anchor guid and add its type and identifier to the builder.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorGUIDParameterName parameter used to pass anchorGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param serviceSuppliedSupportedZones suported zones for this call
+     * @param builder builder to receive the anchor (if appropriate).
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addAnchorGUIDToBuilder(String                        userId,
+                                       String                        anchorGUID,
+                                       String                        anchorGUIDParameterName,
+                                       boolean                       forLineage,
+                                       boolean                       forDuplicateProcessing,
+                                       Date                          effectiveTime,
+                                       List<String>                  serviceSuppliedSupportedZones,
+                                       OpenMetadataAPIGenericBuilder builder,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        if (anchorGUID != null)
+        {
+            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
+                                                                     anchorGUID,
+                                                                     anchorGUIDParameterName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                     null,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSuppliedSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+            if (anchorEntity != null)
+            {
+                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
+        }
     }
 
 
@@ -3605,6 +3729,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDParameterName anchorGUID of parameter supplying the beanGUID
      * @param beanGUIDTypeName type of bean
      * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName unique name of the type of the anchor
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3619,6 +3744,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String  beanGUIDParameterName,
                                          String  beanGUIDTypeName,
                                          String  anchorGUID,
+                                         String  anchorTypeName,
                                          boolean forLineage,
                                          boolean forDuplicateProcessing,
                                          Date    effectiveTime,
@@ -3626,8 +3752,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
                                                                 serviceName,
                                                                 serverName);
@@ -3638,9 +3764,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                           builder.getAnchorsProperties(anchorGUID, methodName),
+                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                           builder.getAnchorsProperties(anchorGUID, anchorTypeName, methodName),
                                            false,
                                            forLineage,
                                            forDuplicateProcessing,
@@ -3692,10 +3818,10 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Only adding LatestChange classification to anchors that are Assets or Glossaries.
          */
-        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GLOSSARY_TYPE_NAME)))
         {
-            if (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classificationName))
+            if (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName))
             {
                 /*
                  * Do not log LatestChange for anchor classification updates
@@ -3716,7 +3842,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
                     Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                  anchorEntity,
-                                                                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                                 OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName,
                                                                                                  methodName);
                     if (classification != null)
                     {
@@ -3726,8 +3852,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            anchorEntity.getGUID(),
                                                            guidParameterName,
                                                            anchorEntity.getType().getTypeDefName(),
-                                                           OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                           OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeGUID,
+                                                           OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName,
                                                            classification,
                                                            newProperties,
                                                            forLineage,
@@ -3750,8 +3876,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                          anchorEntity,
                                                          guidParameterName,
                                                          anchorEntity.getType().getTypeDefName(),
-                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                         OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeGUID,
+                                                         OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName,
                                                          ClassificationOrigin.ASSIGNED,
                                                          null,
                                                          newProperties,
@@ -3776,17 +3902,17 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Check whether this anchor is nested in another anchor.
          */
-        String parentAnchorGUID = getAnchorGUIDFromAnchorsClassification(anchorEntity, methodName);
+        AnchorIdentifiers parentAnchorIdentifiers = getAnchorGUIDFromAnchorsClassification(anchorEntity, methodName);
 
-        if (parentAnchorGUID != null)
+        if (parentAnchorIdentifiers != null)
         {
             try
             {
                 final String parentAnchorGUIDParameterName = "parentAnchorGUID";
                 EntityDetail parentAnchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                    parentAnchorGUID,
+                                                                                    parentAnchorIdentifiers.anchorGUID,
                                                                                     parentAnchorGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     effectiveTime,
@@ -3839,8 +3965,8 @@ public class OpenMetadataAPIGenericHandler<B>
         String glossaryGUID = this.getEntityGUIDByValue(localServerUserId,
                                                         supplementaryPropertiesGlossaryName,
                                                         supplementaryPropertiesGlossaryParameterName,
-                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                        OpenMetadataType.GLOSSARY_TYPE_GUID,
+                                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                         qualifiedNamePropertyNamesList,
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -3851,25 +3977,25 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                          null,
-                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                          supplementaryPropertiesGlossaryName,
                                                                                          methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                                       supplementaryPropertiesGlossaryName,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                       supplementaryPropertiesGlossaryDescription,
                                                                       methodName);
 
             glossaryGUID = repositoryHandler.createEntity(localServerUserId,
-                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                          OpenMetadataType.GLOSSARY_TYPE_GUID,
+                                                          OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                           null,
                                                           null,
                                                           properties,
@@ -3908,32 +4034,32 @@ public class OpenMetadataAPIGenericHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   qualifiedName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
                                                                   summary,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                  OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
                                                                   abbreviation,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                   usage,
                                                                   methodName);
         return properties;
@@ -3987,9 +4113,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            elementGUID,
                                                            elementGUIDParameterName,
                                                            elementTypeName,
-                                                           OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
-                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                                           OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
+                                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                            2,
                                                            forLineage,
                                                            forDuplicateProcessing,
@@ -4026,21 +4152,26 @@ public class OpenMetadataAPIGenericHandler<B>
                         List<Classification> initialClassifications = new ArrayList<>();
                         try
                         {
+                            InstanceProperties classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                                       null,
+                                                                                                                       OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                                                       elementGUID,
+                                                                                                                       methodName);
+                            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    classificationProperties,
+                                                                                                    OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                                                    elementTypeName,
+                                                                                                    methodName);
                             Classification classification = repositoryHelper.getNewClassification(serviceName,
                                                                                                   null,
                                                                                                   null,
                                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                                   userId,
-                                                                                                  OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                                  OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                                   null,
-                                                                                                  repositoryHelper.addStringPropertyToInstance(
-                                                                                                          serviceName,
-                                                                                                          null,
-                                                                                                          OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
-                                                                                                          elementGUID,
-                                                                                                          methodName));
+                                                                                                  classificationProperties);
                             initialClassifications.add(classification);
 
                             classification = repositoryHelper.getNewClassification(serviceName,
@@ -4048,8 +4179,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                    null,
                                                                                    InstanceProvenanceType.LOCAL_COHORT,
                                                                                    userId,
-                                                                                   OpenMetadataAPIMapper.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
-                                                                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                   OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
+                                                                                   OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                                    ClassificationOrigin.ASSIGNED,
                                                                                    null,
                                                                                    null);
@@ -4061,8 +4192,8 @@ public class OpenMetadataAPIGenericHandler<B>
                         }
 
                         String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
-                                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                                  null,
                                                                                  null,
                                                                                  glossaryTermProperties,
@@ -4071,7 +4202,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  methodName);
 
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                             OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
                                                              null,
                                                              null,
                                                              glossaryGUID,
@@ -4080,7 +4211,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              methodName);
 
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                                             OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
                                                              null,
                                                              null,
                                                              elementGUID,
@@ -4123,8 +4254,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      null,
                                                      glossaryTerm.getGUID(),
                                                      glossaryTerm,
-                                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                     OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                     OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                      glossaryTermProperties,
                                                      methodName);
         }
@@ -4164,9 +4295,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                       elementGUID,
                                       elementGUIDParameterName,
                                       elementTypeName,
-                                      OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
+                                      OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -4370,6 +4501,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  resultingElementTypeName,
                                  entity,
                                  startingElementGUIDParameterName,
+                                 true,
                                  false,
                                  forLineage,
                                  forDuplicateProcessing,
@@ -5198,6 +5330,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   startingTypeName,
                                   startingEntity,
                                   startingGUIDParameterName,
+                                  true,
                                   false,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -5354,7 +5487,8 @@ public class OpenMetadataAPIGenericHandler<B>
                     this.validateAnchorEntity(userId,
                                               relationship.getEntityOneProxy().getGUID(),
                                               entityOneParameterName,
-                                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                              false,
                                               false,
                                               forLineage,
                                               forDuplicateProcessing,
@@ -5365,7 +5499,8 @@ public class OpenMetadataAPIGenericHandler<B>
                     this.validateAnchorEntity(userId,
                                               relationship.getEntityTwoProxy().getGUID(),
                                               entityTwoParameterName,
-                                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                              false,
                                               false,
                                               forLineage,
                                               forDuplicateProcessing,
@@ -5440,7 +5575,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            methodName);
 
 
-        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
         {
             auditLog.logMessage(assetActionDescription,
                                 GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
@@ -5608,13 +5743,13 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                                     null,
-                                                                                    OpenMetadataAPIMapper.SOURCE_VERSION_NUMBER_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
                                                                                     templateProgress.sourceVersionNumber,
                                                                                     methodName);
             }
 
             repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
+                                                 OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
                                                  externalSourceGUID,
                                                  externalSourceName,
                                                  templateProgress.newBeanGUID,
@@ -5622,7 +5757,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  relationshipProperties,
                                                  methodName);
 
-            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
             {
                 auditLog.logMessage(assetActionDescription,
                                     GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
@@ -5652,6 +5787,7 @@ public class OpenMetadataAPIGenericHandler<B>
         Map<String, String> coveredGUIDMap       = new HashMap<>(); /* Map of template GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
         List<String>        templateAnchorGUIDs  = new ArrayList<>(); /* List of anchor GUIDs associated with the template - to allow nested anchors to be handled */
         String              beanAnchorGUID       = null; /* value of the anchor to set into the new beans */
+        String              beanAnchorTypeName   = null; /* value of the anchor to set into the new beans */
     }
 
 
@@ -5728,7 +5864,7 @@ public class OpenMetadataAPIGenericHandler<B>
         if (templateEntity != null)
         {
             Classification classification = this.getExistingClassification(templateEntity,
-                                                                           OpenMetadataAPIMapper.TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_NAME);
+                                                                           OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName);
 
             if (classification != null)
             {
@@ -5739,8 +5875,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    templateEntity.getGUID(),
                                                    templateGUIDParameterName,
                                                    entityTypeName,
-                                                   OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME,
+                                                   OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                                    entityTypeName,
                                                    1,
                                                    forLineage,
@@ -5766,6 +5902,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           entityTypeName,
                                                                           templateEntity,
                                                                           templateGUIDParameterName,
+                                                                          true,
                                                                           false,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
@@ -5781,18 +5918,19 @@ public class OpenMetadataAPIGenericHandler<B>
                      * This occurs the first time through the iteration if the initial template object has an anchor.
                      */
                     templateProgress.beanAnchorGUID = templateAnchorEntity.getGUID();
+                    templateProgress.beanAnchorTypeName = templateAnchorEntity.getType().getTypeDefName();
                 }
 
                 templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
             }
 
-            if ((templateProgress.beanAnchorGUID != null) && (! propertyBuilder.isClassificationSet(OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME)))
+            if ((templateProgress.beanAnchorGUID != null) && (! propertyBuilder.isClassificationSet(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName)))
             {
                 /*
                  * A bean anchor has been set up on a previous iteration.  This value is typically set when the top-level bean is created
                  * from the template.  The alternative is that the top-level template bean has an anchor.
                  */
-                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, methodName);
+                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, templateProgress.beanAnchorTypeName, methodName);
             }
 
             /*
@@ -5833,9 +5971,9 @@ public class OpenMetadataAPIGenericHandler<B>
                 {
                     if (templateClassification != null)
                     {
-                        if ((! OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())) &&
-                            (! OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())) &&
-                            (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())))
+                        if ((! OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                            (! OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                            (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
                         {
                             newClassificationMap.put(templateClassification.getName(), templateClassification);
                         }
@@ -5882,6 +6020,7 @@ public class OpenMetadataAPIGenericHandler<B>
             if (firstIteration)
             {
                 templateProgress.beanAnchorGUID = newEntityGUID;
+                templateProgress.beanAnchorTypeName = templateEntity.getType().getTypeDefName();
             }
 
             if (deepCopy)
@@ -6025,7 +6164,7 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Skip "SourcedFrom" relationships since they are not part of the template.
              */
-            if (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME))
+            if (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName))
             {
                 /*
                  * Is this a new relationship?
@@ -6035,7 +6174,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityDetail nextTemplateEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                         entityProxy.getGUID(),
                                                                                         nextTemplateEntityGUIDParameterName,
-                                                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                         forLineage,
                                                                                         forDuplicateProcessing,
                                                                                         effectiveTime,
@@ -6051,6 +6190,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           null,
                                                                                           nextTemplateEntity,
                                                                                           nextTemplateEntityGUIDParameterName,
+                                                                                          true,
                                                                                           false,
                                                                                           forLineage,
                                                                                           forDuplicateProcessing,
@@ -6088,7 +6228,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              */
                             OpenMetadataAPIGenericBuilder builder;
                             String                        nextQualifiedName = null;
-                            if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
                             {
                                 /*
                                  * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
@@ -6500,6 +6640,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
                                                                   true,
+                                                                  true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
@@ -6552,7 +6693,7 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * There is an extra security check if the update is for an asset.
              */
-            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
             {
                 securityVerifier.validateUserForAssetUpdate(userId,
                                                             originalEntity,
@@ -6562,7 +6703,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                             serviceName,
                                                             methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_TYPE_NAME))
             {
                 securityVerifier.validateUserForGlossaryDetailUpdate(userId,
                                                                      originalEntity,
@@ -6591,8 +6732,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              originalEntity.getGUID(),
                                              entityTypeName,
@@ -6604,11 +6745,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              null,
                                              null,
@@ -6756,6 +6897,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
                                                                   true,
+                                                                  true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
@@ -6765,7 +6907,7 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * There is an extra security check if the update is for an asset.
              */
-            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
             {
                 securityVerifier.validateUserForAssetUpdate(userId,
                                                             originalEntity,
@@ -6775,7 +6917,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                             serviceName,
                                                             methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_TERM_TYPE_NAME))
             {
                 securityVerifier.validateUserForGlossaryMemberStatusUpdate(userId,
                                                                            anchorEntity,
@@ -6806,8 +6948,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              entityGUID,
                                              entityTypeName,
@@ -6819,11 +6961,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataAPIMapper.ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              null,
                                              null,
@@ -6997,6 +7139,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   originalEntity,
                                                                   entityGUIDParameterName,
                                                                   true,
+                                                                  true,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
@@ -7014,7 +7157,7 @@ public class OpenMetadataAPIGenericHandler<B>
              */
             try
             {
-                if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
                 {
                     securityVerifier.validateUserForAssetUpdate(userId,
                                                                 originalEntity,
@@ -7024,7 +7167,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                 serviceName,
                                                                 methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_TYPE_NAME))
                 {
                     securityVerifier.validateUserForGlossaryDetailUpdate(userId,
                                                                          originalEntity,
@@ -7064,8 +7207,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              originalEntity.getGUID(),
                                              entityTypeName,
@@ -7077,11 +7220,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                              effectiveTime,
                                              methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(originalEntity,
-                                             OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              null,
                                              null,
@@ -7169,9 +7312,9 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-                String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                if ((anchorGUID != null) && (anchorGUID.equals(anchorEntity.getGUID())))
+                if ((anchorIdentifiers != null) && (anchorIdentifiers.equals(anchorEntity.getGUID())))
                 {
                     this.archiveBeanInRepository(userId,
                                                  externalSourceGUID,
@@ -7286,6 +7429,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               entityGUIDParameterName,
                                                               entityTypeName,
                                                               true,
+                                                              true,
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               serviceSupportedZones,
@@ -7322,7 +7466,7 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Update the LatestChange in the archived entity.
          */
-        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
         {
             final String actionDescriptionTemplate = "Classifying as Memento %s %s";
 
@@ -7331,9 +7475,9 @@ public class OpenMetadataAPIGenericHandler<B>
             if (anchorEntity != null)
             {
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                             OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                             OpenMetadataType.ATTACHMENT_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                              entityGUID,
                                              entityTypeName,
                                              null,
@@ -7347,9 +7491,9 @@ public class OpenMetadataAPIGenericHandler<B>
             else if (entity != null)
             {
                 this.addLatestChangeToAnchor(entity,
-                                             OpenMetadataAPIMapper.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                             OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                             OpenMetadataType.ENTITY_CLASSIFICATION_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                              entityGUID,
                                              entityTypeName,
                                              null,
@@ -7480,8 +7624,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                              targetEntity,
                                              entityGUIDParameterName,
                                              entityTypeName,
-                                             OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
-                                             OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID,
+                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                              classificationOrigin,
                                              classificationOriginGUID,
                                              classificationProperties,
@@ -7494,15 +7638,15 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Update the qualified name in the archived entity.
              */
-            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
             {
                 String qualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                           targetEntity.getProperties(),
                                                                           methodName) + "_archivedOn_" + new Date();
 
                 String entityTypeGUID = invalidParameterHandler.validateTypeName(entityTypeName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -7513,7 +7657,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     entityGUIDParameterName,
                                                     entityTypeGUID,
                                                     entityTypeName,
-                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                     qualifiedName,
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -7573,17 +7717,17 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-                String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                if ((anchorGUID != null) && ((anchoredEntityGUIDs.contains(anchorGUID))))
+                if ((anchorIdentifiers != null) && ((anchoredEntityGUIDs.contains(anchorIdentifiers.anchorGUID))))
                 {
                     /*
-                     * The element is part of the same set of elements for the anchorGUID.
+                     * The element is part of the same set of elements for the anchorIdentifiers.
                      * If the element is still connected to the anchor then it should remain
                      * because it is a parent object.   If it now has no anchor then it can be
                      * deleted because it is a child object.
                      */
-                    String derivedAnchorGUID = this.deriveAnchorGUID(entity.getGUID(), entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                    AnchorIdentifiers derivedAnchorGUID = this.deriveAnchorGUID(entity.getGUID(), entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
                     if (derivedAnchorGUID == null)
                     {
@@ -7716,6 +7860,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               entityTypeName,
                                                               entity,
                                                               entityGUIDParameterName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -7757,11 +7902,11 @@ public class OpenMetadataAPIGenericHandler<B>
                 final String actionDescriptionTemplate = "Deleting %s %s";
 
                 String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
-                int    latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL;
+                int    latestChangeTarget = OpenMetadataType.ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL;
 
                 this.addLatestChangeToAnchor(anchorEntity,
                                              latestChangeTarget,
-                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              entityGUID,
                                              entityTypeName,
@@ -7854,7 +7999,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
         {
             securityVerifier.validateUserForAssetDelete(userId,
                                                         startingEntity,
@@ -7862,7 +8007,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_TYPE_NAME))
         {
             securityVerifier.validateUserForGlossaryDelete(userId,
                                                            startingEntity,
@@ -7870,8 +8015,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            serviceName,
                                                            methodName);
         }
-        else if ((repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)) ||
-                 (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME)))
+        else if ((repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_TERM_TYPE_NAME)) ||
+                 (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME)))
         {
             securityVerifier.validateUserForGlossaryMemberUpdate(userId,
                                                                  startingEntity,
@@ -8237,6 +8382,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    guidParameterName,
                                                    attachmentEntityTypeName,
                                                    false,
+                                                   false,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    serviceSupportedZones,
@@ -8421,6 +8567,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   guidParameterName,
                                                   attachmentEntityTypeName,
                                                   false,
+                                                  false,
                                                   forLineage,
                                                   forDuplicateProcessing,
                                                   serviceSupportedZones,
@@ -8532,6 +8679,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  startingElementTypeName,
                                  entity,
                                  startingElementGUIDParameterName,
+                                 true,
                                  false,
                                  forLineage,
                                  forDuplicateProcessing,
@@ -8601,6 +8749,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingGUID,
                                                               startingGUIDParameterName,
                                                               startingTypeName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -8816,6 +8965,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingGUID,
                                                               startingGUIDParameterName,
                                                               startingTypeName,
+                                                              true,
                                                               false,
                                                               forLineage,
                                                               forDuplicateProcessing,
@@ -8981,6 +9131,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           attachmentEntityTypeName,
                                           entity,
                                           guidParameterName,
+                                          true,
                                           false,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -9041,7 +9192,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
-     *
      * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
      * <ul>
      * <li> with the relationship relationshipTypeName</li>
@@ -9311,17 +9461,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
                     if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null )
                     {
-                        if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME) != null)
+                        if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null)
                         {
-                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME).toString();
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.DISPLAY_NAME.name).toString();
                         }
-                        else if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.NAME_PROPERTY_NAME) != null)
+                        else if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.NAME.name) != null)
                         {
-                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.NAME_PROPERTY_NAME).toString();
+                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.NAME.name).toString();
                         }
-                        if ( relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME)!=null)
+                        if ( relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name)!=null)
                         {
-                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).toString();
+                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name).toString();
                         }
                     }
 
@@ -9576,6 +9726,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   requestedEntityTypeName,
                                   retrievedEntity,
                                   requestedEntityGUIDParameterName,
+                                  true,
                                   false,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -10151,6 +10302,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         true,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -10321,6 +10473,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         true,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -10414,6 +10567,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   guid,
                                   guidParameterName,
                                   entityTypeName,
+                                  true,
                                   true,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -10820,8 +10974,15 @@ public class OpenMetadataAPIGenericHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
-        String typeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
-                                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+        String typeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+        if (metadataElementTypeName != null)
+        {
+            typeName = metadataElementTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -10832,12 +10993,12 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             subTypeGUIDs = new ArrayList<>();
 
-            for (String typeName : metadataElementSubtypeNames)
+            for (String subTypeName : metadataElementSubtypeNames)
             {
-                if (typeName != null)
+                if (subTypeName != null)
                 {
-                    String subTypeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                    String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
+                                                                                  typeName,
                                                                                   serviceName,
                                                                                   methodName,
                                                                                   repositoryHelper);
@@ -10884,6 +11045,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           entity.getType().getTypeDefName(),
                                           entity,
                                           entityGUIDParameterName,
+                                          false,
                                           false,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -11254,6 +11416,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          entity,
                                          entityParameterName,
                                          false,
+                                         false,
                                          forLineage,
                                          forDuplicateProcessing,
                                          serviceSupportedZones,
@@ -11268,7 +11431,7 @@ public class OpenMetadataAPIGenericHandler<B>
                          * The Memento classification means the entity is archived and should only be returned for lineage requests.
                          * This method is not to be used for lineage requests.
                          */
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
                         {
                             beanArchived = true;
                         }
@@ -11690,7 +11853,7 @@ public class OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         /*
-         * Notice that the startFrom is 0 - is allows the filtering process to skip over the right number of
+         * Notice that the startFrom is 0 - it allows the filtering process to skip over the right number of
          * elements.
          */
         RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
@@ -11786,6 +11949,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         false,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -12221,6 +12385,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entity,
                                              entityParameterName,
                                              false,
+                                             false,
                                              forLineage,
                                              forDuplicateProcessing,
                                              serviceSupportedZones,
@@ -12235,7 +12400,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              * The Memento classification means the entity is archived and should only be returned for lineage requests.
                              * This method is not to be used for lineage requests.
                              */
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
                             {
                                 beanArchived = true;
                             }
@@ -12515,6 +12680,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          resultTypeName,
                                          entity,
                                          entityParameterName,
+                                         false,
                                          false,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -12921,6 +13087,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -12949,6 +13116,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -12987,7 +13155,7 @@ public class OpenMetadataAPIGenericHandler<B>
             if (existingRelationships.size() == 1)
             {
                 actionDescriptionTemplate = "Updating link from %s %s to %s %s";
-                actionOrdinal = OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
+                actionOrdinal = OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
 
                 newRelationship = repositoryHandler.updateRelationshipProperties(userId,
                                                                                  externalSourceGUID,
@@ -13042,7 +13210,7 @@ public class OpenMetadataAPIGenericHandler<B>
         else
         {
             actionDescriptionTemplate = "Linking %s %s to %s %s";
-            actionOrdinal = OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
+            actionOrdinal = OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
 
             newRelationship = repositoryHandler.createRelationship(userId,
                                                                    attachmentTypeGUID,
@@ -13085,7 +13253,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     startingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                     startingElementAnchorGUID,
                                                                                     anchorGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     effectiveTime,
@@ -13127,7 +13295,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     attachingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                      attachingElementAnchorGUID,
                                                                                      anchorGUIDParameterName,
-                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                                      forLineage,
                                                                                      forDuplicateProcessing,
                                                                                      effectiveTime,
@@ -13150,7 +13318,7 @@ public class OpenMetadataAPIGenericHandler<B>
         if (startingElementAnchorEntity != null)
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                          actionOrdinal,
                                          null,
                                          attachingGUID,
@@ -13165,10 +13333,10 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              actionOrdinal,
                                              null,
                                              attachingGUID,
@@ -13191,7 +13359,7 @@ public class OpenMetadataAPIGenericHandler<B>
             if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
                 this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              actionOrdinal,
                                              null,
                                              startingGUID,
@@ -13210,13 +13378,13 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * The attaching element does not have an anchor and is different from the starting element's anchor
              */
-            if (repositoryHelper.isTypeOf(serviceName, attachingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, attachingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 /*
                  * The attaching element is an anchor in its own right.
                  */
                 this.addLatestChangeToAnchor(attachingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              actionOrdinal,
                                              null,
                                              startingGUID,
@@ -13284,8 +13452,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 InstanceProperties relationshipProperties,
                                                 Date               effectiveTime,
                                                 String             methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingGUIDParameterName, methodName);
@@ -13316,6 +13484,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -13344,6 +13513,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -13535,6 +13705,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -13563,6 +13734,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               attachingElementTypeName,
                                                                               attachingElementEntity,
                                                                               attachingGUIDParameterName,
+                                                                              true,
                                                                               false,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -13615,8 +13787,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (startingElementAnchorEntity != null)
             {
                 this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              attachingGUID,
                                              attachingElementTypeName,
@@ -13630,11 +13802,11 @@ public class OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  attachingGUID,
                                                  attachingElementTypeName,
@@ -13669,8 +13841,8 @@ public class OpenMetadataAPIGenericHandler<B>
                 if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
                 {
                     this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -13685,11 +13857,11 @@ public class OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(attachingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -13863,6 +14035,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  startingElementTypeName,
                                                                                  startingElementEntity,
                                                                                  startingGUIDParameterName,
+                                                                                 true,
                                                                                  false,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
@@ -13891,6 +14064,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                   attachingElementTypeName,
                                                                                   attachingElementEntity,
                                                                                   attachingGUIDParameterName,
+                                                                                  true,
                                                                                   false,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
@@ -13931,8 +14105,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (startingElementAnchorEntity != null)
             {
                 this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              attachingGUID,
                                              attachingElementTypeName,
@@ -13946,11 +14120,11 @@ public class OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(startingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  attachingGUID,
                                                  attachingElementTypeName,
@@ -13985,8 +14159,8 @@ public class OpenMetadataAPIGenericHandler<B>
                 if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
                 {
                     this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -14001,11 +14175,11 @@ public class OpenMetadataAPIGenericHandler<B>
             }
             else
             {
-                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     this.addLatestChangeToAnchor(attachingElementEntity,
-                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataType.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  startingGUID,
                                                  startingElementTypeName,
@@ -14174,6 +14348,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -14202,6 +14377,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                  newAttachingElementTypeName,
                                                                                  newAttachingElementEntity,
                                                                                  newAttachingGUIDParameterName,
+                                                                                 true,
                                                                                  false,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
@@ -14308,8 +14484,8 @@ public class OpenMetadataAPIGenericHandler<B>
         if (startingElementAnchorEntity != null)
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                          null,
                                          newAttachingGUID,
                                          newAttachingElementTypeName,
@@ -14336,11 +14512,11 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              newAttachingGUID,
                                              newAttachingElementTypeName,
@@ -14375,8 +14551,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (! newAttachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
                 this.addLatestChangeToAnchor(newAttachingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -14404,11 +14580,11 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, newAttachingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, newAttachingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(newAttachingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -14728,6 +14904,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              startingElementTypeName,
                                                                              startingElementEntity,
                                                                              startingGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -14760,6 +14937,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              attachedElementTypeName,
                                                                              attachedElementEntity,
                                                                              attachedGUIDParameterName,
+                                                                             true,
                                                                              false,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
@@ -14806,8 +14984,8 @@ public class OpenMetadataAPIGenericHandler<B>
         if (startingElementAnchorEntity != null)
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                          null,
                                          attachedGUID,
                                          attachedElementTypeName,
@@ -14833,11 +15011,11 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              attachedGUID,
                                              attachedElementTypeName,
@@ -14859,8 +15037,8 @@ public class OpenMetadataAPIGenericHandler<B>
             if (! attachedElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
             {
                 this.addLatestChangeToAnchor(attachedElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -14887,11 +15065,11 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataType.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              startingGUID,
                                              startingElementTypeName,
@@ -15305,7 +15483,7 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityDetail integrator = this.getEntityFromRepository(userId,
                                                                    externalSourceGUID,
                                                                    guidParameterName,
-                                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                   OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                    null,
                                                                    null,
                                                                    forLineage,
@@ -15328,7 +15506,7 @@ public class OpenMetadataAPIGenericHandler<B>
             else
             {
                 String qualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                           integrator.getProperties(),
                                                                           methodName);
 

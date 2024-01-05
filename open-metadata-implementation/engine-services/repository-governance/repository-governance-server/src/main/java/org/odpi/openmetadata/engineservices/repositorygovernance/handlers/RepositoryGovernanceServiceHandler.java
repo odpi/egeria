@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext;
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceServiceConnector;
@@ -34,8 +34,8 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
      * @param repositoryGovernanceEngineProperties properties of the repository governance engine - used for message logging
      * @param repositoryGovernanceEngineGUID unique Identifier of the repository governance engine - used for message logging
      * @param engineHostUserId userId for making updates to the governance actions
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param governanceActionClient client for processing governance actions
+     * @param engineActionGUID unique identifier of the governance action that triggered this governance service
+     * @param engineActionClient client for processing governance actions
      * @param serviceRequestType requestType - used for message logging
      * @param repositoryGovernanceServiceGUID name of this repository governance service - used for message logging
      * @param repositoryGovernanceServiceName name of this repository governance service - used for message logging
@@ -46,8 +46,8 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
     RepositoryGovernanceServiceHandler(GovernanceEngineProperties  repositoryGovernanceEngineProperties,
                                        String                      repositoryGovernanceEngineGUID,
                                        String                      engineHostUserId,
-                                       String                      governanceActionGUID,
-                                       GovernanceEngineClient      governanceActionClient,
+                                       String                      engineActionGUID,
+                                       GovernanceContextClient     engineActionClient,
                                        String                      serviceRequestType,
                                        String                      repositoryGovernanceServiceGUID,
                                        String                      repositoryGovernanceServiceName,
@@ -58,8 +58,8 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
         super(repositoryGovernanceEngineProperties,
               repositoryGovernanceEngineGUID,
               engineHostUserId,
-              governanceActionGUID,
-              governanceActionClient,
+              engineActionGUID,
+              engineActionClient,
               serviceRequestType,
               repositoryGovernanceServiceGUID,
               repositoryGovernanceServiceName,

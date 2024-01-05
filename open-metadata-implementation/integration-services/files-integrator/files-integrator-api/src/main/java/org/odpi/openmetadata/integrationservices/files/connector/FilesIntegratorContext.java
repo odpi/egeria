@@ -8,15 +8,48 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManager
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EnumSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.LiteralSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.MapSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeChoiceProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.StructSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +62,8 @@ public class FilesIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final FilesAndFoldersClient   filesAndFoldersClient;
-    private final DataManagerEventClient eventClient;
-    private final ValidValueManagement   validValueManagement;
+    private final DataManagerEventClient  eventClient;
+    private final ValidValueManagement    validValueManagement;
 
 
     /**
@@ -52,6 +85,7 @@ public class FilesIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public FilesIntegratorContext(String                       connectorId,
@@ -69,6 +103,7 @@ public class FilesIntegratorContext extends IntegrationContext
                                   String                       integrationConnectorGUID,
                                   String                       externalSourceGUID,
                                   String                       externalSourceName,
+                                  AuditLog                     auditLog,
                                   int                          maxPageSize)
     {
         super(connectorId,
@@ -82,6 +117,7 @@ public class FilesIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.filesAndFoldersClient    = filesAndFoldersClient;
@@ -117,6 +153,137 @@ public class FilesIntegratorContext extends IntegrationContext
     {
         eventClient.registerListener(userId, listener);
     }
+
+    /*============================================================================================================
+     * Path name management functions
+     */
+
+
+    /**
+     * Extract the name of the file system from the path name of a file or directory (folder).  This is everything in front of this string pattern "://".
+     * If the string pattern is not found then null is returned.
+     *
+     * @param pathName path name of file or directory
+     * @return file system name or null
+     */
+    public String getFileSystemName(String  pathName)
+    {
+        final String fileSystemRegEx = "://";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileSystemRegEx);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[0] + fileSystemRegEx;
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Return a list of directory (folder) names extracted from a path name.  For example, if the pathname is "one/two/three.txt", the method
+     * returns ["one", "two" ].
+     *
+     * @param pathName path name of file or directory
+     * @return list of names
+     */
+    public List<String> getDirectoryNames(String pathName)
+    {
+        final String  folderDivider = "/";
+
+        List<String> result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(folderDivider);
+
+            if (tokens.length > 1)
+            {
+                int startingToken = 0;
+                if (this.getFileSystemName(pathName) != null)
+                {
+                    startingToken = 2;
+                }
+
+                int endingToken = tokens.length;
+                if (this.getFileName(pathName) != null)
+                {
+                    endingToken = endingToken - 1;
+                }
+
+                if (startingToken != endingToken)
+                {
+                    result = new ArrayList<>();
+
+                    for (int i=startingToken; i<endingToken; i++)
+                    {
+                        result.add(tokens[i]);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Retrieves the file name from a pathname.  For example, if the pathname is "one/two/three.txt", the method
+     * returns "three.txt".
+     *
+     * @param pathName path name of file or directory
+     * @return file name with its extension (if present)
+     */
+    private String getFileName(String pathName)
+    {
+        final String  folderDivider = "/";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(folderDivider);
+
+            result = tokens[tokens.length - 1];
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Retrieves the extension from a path name.  For example, if the pathname is "one/two/three.txt", the method
+     * returns "txt".  If the path name has multiple extensions, such as "my-jar.jar.gz", the final extension is returned (ie "gz").
+     * Null is returned if there is no file extension in the path name.
+     *
+     * @param pathName path name of file or directory
+     * @return file extension
+     */
+    public String getFileExtension(String pathName)
+    {
+        final String  fileTypeDivider = "\\.";
+
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileTypeDivider);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[tokens.length - 1];
+            }
+        }
+
+        return result;
+    }
+
 
 
     /*============================================================================================================

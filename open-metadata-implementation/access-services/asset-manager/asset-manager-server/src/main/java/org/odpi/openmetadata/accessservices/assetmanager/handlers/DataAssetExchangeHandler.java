@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -161,7 +161,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 assetGUIDParameterName,
-                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                OpenMetadataType.ASSET.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -171,7 +171,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
                     this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                                     assetGUIDParameterName,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeName,
                                                     element.getDataAssetProperties(),
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -223,7 +223,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String typeName = OpenMetadataType.ASSET.typeName;
 
         if (assetProperties.getTypeName() != null)
         {
@@ -238,9 +238,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (assetProperties instanceof DataStoreProperties dataStoreProperties)
         {
-            assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, dataStoreProperties.getPathName());
-            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, dataStoreProperties.getCreateTime());
-            assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, dataStoreProperties.getModifiedTime());
+            assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, dataStoreProperties.getPathName());
+            assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, dataStoreProperties.getCreateTime());
+            assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, dataStoreProperties.getModifiedTime());
         }
 
         if (assetExtendedProperties.isEmpty())
@@ -269,7 +269,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             this.maintainSupplementaryProperties(userId,
                                                  assetGUID,
                                                  assetGUIDParameterName,
-                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                 OpenMetadataType.ASSET.typeName,
                                                  assetProperties.getQualifiedName(),
                                                  assetProperties,
                                                  true,
@@ -289,22 +289,22 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             null,
-                                                                                            OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
+                                                                                            OpenMetadataType.ENCODING_PROPERTY_NAME,
                                                                                             dataStoreProperties.getEncodingType(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             classificationProperties,
-                                                                                            OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                            OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME,
                                                                                             dataStoreProperties.getEncodingLanguage(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             classificationProperties,
-                                                                                            OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                            OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
                                                                                             dataStoreProperties.getEncodingDescription(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                                classificationProperties,
-                                                                                               OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                               OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
                                                                                                dataStoreProperties.getEncodingProperties(),
                                                                                                methodName);
 
@@ -314,9 +314,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                assetGUID,
                                                                assetGUIDParameterName,
-                                                               OpenMetadataAPIMapper.DATA_STORE_TYPE_NAME,
-                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                               OpenMetadataType.DATA_STORE_TYPE_NAME,
+                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                                classificationProperties,
                                                                true,
                                                                forLineage,
@@ -329,10 +329,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             /*
              * For files and folders
              */
-            if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME)) ||
-                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME))) &&
+            if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FILE_TYPE_NAME)) ||
+                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FOLDER_TYPE_NAME))) &&
                 (assetExtendedProperties != null) &&
-                (assetExtendedProperties.get(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME) != null))
+                (assetExtendedProperties.get(OpenMetadataType.PATH_NAME_PROPERTY_NAME) != null))
             {
                 final String pathNameParameterName = "assetProperties.getExtendedProperties().get(parameterName)";
                 filesAndFoldersHandler.addFileAssetPath(userId,
@@ -341,7 +341,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                         assetGUID,
                                                         assetGUIDParameterName,
                                                         typeName,
-                                                        assetProperties.getExtendedProperties().get(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME).toString(),
+                                                        assetProperties.getExtendedProperties().get(OpenMetadataType.PATH_NAME_PROPERTY_NAME).toString(),
                                                         pathNameParameterName,
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -352,7 +352,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           assetGUID,
                                           assetGUIDParameterName,
-                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          OpenMetadataType.ASSET.typeName,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -404,8 +404,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                              this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                              templateGUID,
                                                              templateGUIDParameterName,
-                                                             OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                             OpenMetadataType.ASSET.typeGUID,
+                                                             OpenMetadataType.ASSET.typeName,
                                                              templateProperties.getQualifiedName(),
                                                              qualifiedNameParameterName,
                                                              templateProperties.getDisplayName(),
@@ -422,7 +422,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           assetGUID,
                                           assetGUIDParameterName,
-                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          OpenMetadataType.ASSET.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -475,7 +475,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         assetGUID,
                                         assetGUIDParameterName,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -492,8 +492,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  assetProperties.getVersionIdentifier(),
                                  assetProperties.getTechnicalDescription(),
                                  assetProperties.getAdditionalProperties(),
-                                 OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                 OpenMetadataType.ASSET.typeGUID,
+                                 OpenMetadataType.ASSET.typeName,
                                  supportedZones,
                                  assetProperties.getExtendedProperties(),
                                  assetProperties.getEffectiveFrom(),
@@ -507,7 +507,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         this.maintainSupplementaryProperties(userId,
                                              assetGUID,
                                              assetGUIDParameterName,
-                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                             OpenMetadataType.ASSET.typeName,
                                              assetProperties.getQualifiedName(),
                                              assetProperties,
                                              isMergeUpdate,
@@ -702,7 +702,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         assetGUID,
                                         assetGUIDParameterName,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -714,8 +714,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                             getExternalSourceName(correlationProperties),
                                             assetGUID,
                                             assetGUIDParameterName,
-                                            OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            OpenMetadataType.ASSET.typeGUID,
+                                            OpenMetadataType.ASSET.typeName,
                                             null,
                                             null,
                                             forLineage,
@@ -839,8 +839,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         {
             if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
             }
         }
 
@@ -851,10 +851,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                      assetManagerName,
                                                      fromAssetGUID,
                                                      fromAssetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      toAssetGUID,
                                                      toAssetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      supportedZones,
@@ -873,10 +873,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                      null,
                                                      fromAssetGUID,
                                                      fromAssetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      toAssetGUID,
                                                      toAssetGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                     OpenMetadataType.ASSET.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      supportedZones,
@@ -939,11 +939,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         Relationship  relationship = assetHandler.getUniqueAttachmentLink(userId,
                                                                           fromAssetGUID,
                                                                           fromAssetGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           relationshipTypeGUID,
                                                                           relationshipTypeName,
                                                                           toAssetGUID,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           2,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
@@ -978,12 +978,12 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
-                    properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
-                    properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQueryId(repositoryHelper.getStringProperty(serviceName, OpenMetadataType.QUERY_ID_PROPERTY_NAME, relationship.getProperties(), methodName));
+                    properties.setQuery(repositoryHelper.getStringProperty(serviceName, OpenMetadataType.QUERY_PROPERTY_NAME, relationship.getProperties(), methodName));
 
                     properties.setEffectiveFrom(relationship.getProperties().getEffectiveFromTime());
                     properties.setEffectiveTo(relationship.getProperties().getEffectiveFromTime());
@@ -1052,8 +1052,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         {
             if (relationshipProperties instanceof DataContentForDataSetProperties dataContentForDataSetProperties)
             {
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
-                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataAPIMapper.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.QUERY_ID_PROPERTY_NAME, dataContentForDataSetProperties.getQueryId(), methodName);
+                instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties, OpenMetadataType.QUERY_PROPERTY_NAME, dataContentForDataSetProperties.getQuery(), methodName);
             }
         }
 
@@ -1170,11 +1170,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         List<Relationship> relationships = assetHandler.getAttachmentLinks(userId,
                                                                            fromAssetGUID,
                                                                            fromAssetGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           OpenMetadataType.ASSET.typeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
                                                                            null,
-                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           OpenMetadataType.ASSET.typeName,
                                                                            2,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
@@ -1247,11 +1247,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         List<Relationship> relationships = assetHandler.getAttachmentLinks(userId,
                                                                            toAssetGUID,
                                                                            toAssetGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           OpenMetadataType.ASSET.typeName,
                                                                            relationshipTypeGUID,
                                                                            relationshipTypeName,
                                                                            null,
-                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                           OpenMetadataType.ASSET.typeName,
                                                                            1,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
@@ -1367,8 +1367,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                            PropertyServerException
     {
         List<DataAssetElement> results = assetHandler.assetScan(userId,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                OpenMetadataType.ASSET.typeGUID,
+                                                                OpenMetadataType.ASSET.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 forLineage,
@@ -1426,8 +1426,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         final String nameParameterName = "name";
 
         List<DataAssetElement> results = assetHandler.findAssetsByName(userId,
-                                                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                       OpenMetadataType.ASSET.typeGUID,
+                                                                       OpenMetadataType.ASSET.typeName,
                                                                        name,
                                                                        nameParameterName,
                                                                        startFrom,
@@ -1493,8 +1493,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> assetEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                 assetManagerGUID,
                                                                                                 assetManagerGUIDParameterName,
-                                                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                                OpenMetadataType.ASSET.typeName,
                                                                                                 startFrom,
                                                                                                 pageSize,
                                                                                                 effectiveTime,
@@ -1518,7 +1518,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                         dataAssetElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                              assetEntity.getGUID(),
                                                                                              assetGUIDParameterName,
-                                                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                             OpenMetadataType.ASSET.typeName,
                                                                                              assetManagerGUID,
                                                                                              assetManagerName,
                                                                                              forLineage,
@@ -1528,7 +1528,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
                         this.getSupplementaryProperties(dataAssetElement.getElementHeader().getGUID(),
                                                         assetGUIDParameterName,
-                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        OpenMetadataType.ASSET.typeName,
                                                         dataAssetElement.getDataAssetProperties(),
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -1586,7 +1586,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         DataAssetElement asset = assetHandler.getBeanFromRepository(userId,
                                                                     openMetadataGUID,
                                                                     guidParameterName,
-                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    OpenMetadataType.ASSET.typeName,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     effectiveTime,
@@ -1597,7 +1597,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             asset.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                       openMetadataGUID,
                                                                       guidParameterName,
-                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      OpenMetadataType.ASSET.typeName,
                                                                       assetManagerGUID,
                                                                       assetManagerName,
                                                                       forLineage,
@@ -1607,7 +1607,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
             this.getSupplementaryProperties(asset.getElementHeader().getGUID(),
                                             assetGUIDParameterName,
-                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                            OpenMetadataType.ASSET.typeName,
                                             asset.getDataAssetProperties(),
                                             forLineage,
                                             forDuplicateProcessing,

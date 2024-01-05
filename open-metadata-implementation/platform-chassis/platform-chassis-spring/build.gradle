@@ -25,13 +25,16 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
+    runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.slf4j:slf4j-api'
     runtimeOnly 'org.hibernate:hibernate-validator'
+    runtimeOnly project(':open-metadata-implementation:user-security:user-authn')
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
@@ -44,6 +47,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
@@ -54,7 +58,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:data-engine:data-engine-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:subject-area:subject-area-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:omas-asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-engine:governance-engine-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-spring')

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.integrationservices.lineage.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,16 +25,16 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-LINEAGE-INTEGRATOR-0001 - The lineage integrator context manager is being initialized for calls to server {0} on platform {1}
      */
     CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0001",
-                        OMRSAuditLogRecordSeverity.STARTUP,
-                        "The lineage integrator context manager is being initialized for calls to server {0} on platform {1}",
-                        "The Lineage Integrator OMIS is initializing its context manager.",
-                        "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The lineage integrator context manager is being initialized for calls to server {0} on platform {1}",
+                         "The Lineage Integrator OMIS is initializing its context manager.",
+                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
     /**
      * OMIS-LINEAGE-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
      */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-LINEAGE-INTEGRATOR-0002",
-                                   OMRSAuditLogRecordSeverity.STARTUP,
+                                   AuditLogRecordSeverityLevel.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
                                    "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
@@ -44,18 +44,18 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-LINEAGE-INTEGRATOR-0003 - The context for connector {0} has its permitted synchronization set to {1}
      */
     PERMITTED_SYNCHRONIZATION("OMIS-LINEAGE-INTEGRATOR-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
-             "The context for connector {0} has its permitted synchronization set to {1}",
-             "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
-                     "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
-             "Check that this permitted synchronized value is as expected.  If it is not," +
-                     "change the configuration for this connector and restart the integration daemon."),
+                              AuditLogRecordSeverityLevel.STARTUP,
+                              "The context for connector {0} has its permitted synchronization set to {1}",
+                              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
+                                      "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
+                              "Check that this permitted synchronized value is as expected.  If it is not," +
+                                      "change the configuration for this connector and restart the integration daemon."),
 
     /**
      * OMIS-LINEAGE-INTEGRATOR-0004 - Integration connector {0} has a null context
      */
     NULL_CONTEXT("OMIS-LINEAGE-INTEGRATOR-0004",
-                 OMRSAuditLogRecordSeverity.ERROR,
+                 AuditLogRecordSeverityLevel.ERROR,
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
                  "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
@@ -65,7 +65,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-LINEAGE-INTEGRATOR-0005 - A {0} exception with message {1} occurred when parsing open lineage event: {2}
      */
     OPEN_LINEAGE_FORMAT_ERROR("OMIS-LINEAGE-INTEGRATOR-0005",
-                              OMRSAuditLogRecordSeverity.ERROR,
+                              AuditLogRecordSeverityLevel.ERROR,
                               "A {0} exception with message {1} occurred when parsing open lineage event: {2}",
                               "The Lineage Integrator OMIS is unable to parse an incoming open lineage event into Egeria's OpenLineageRunEvent bean.  " +
                                       "This may be due to either (1) an invalid open lineage event, or (2) Egeria's OpenLineageRunEvent not supporting an advancement in the open lineage standard.  " +
@@ -76,15 +76,18 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-LINEAGE-INTEGRATOR-0006 - A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event
      */
     OPEN_LINEAGE_PUBLISH_ERROR("OMIS-LINEAGE-INTEGRATOR-0006",
-                              OMRSAuditLogRecordSeverity.EXCEPTION,
-                              "A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event",
-                              "The Lineage Integrator OMIS has caught the exception and will continue to pass the event to the remaining listening integration connectors.",
-                              "Look at the resulting stack trace to understand what went wrong in the called integration connector."),
+                               AuditLogRecordSeverityLevel.EXCEPTION,
+                               "A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event",
+                               "The Lineage Integrator OMIS has caught the exception and will continue to pass the event to the remaining listening integration connectors.",
+                               "Look at the resulting stack trace to understand what went wrong in the called integration connector."),
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -93,7 +96,7 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * <br><br>
      *     LineageIntegratorAuditCode   auditCode = LineageIntegratorAuditCode.SERVER_SHUTDOWN;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -101,17 +104,17 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    LineageIntegratorAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+    LineageIntegratorAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -123,7 +126,11 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -134,23 +141,32 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "LineageIntegratorAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

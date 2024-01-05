@@ -10,6 +10,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -19,10 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
 
 /**
  * DataEngineSchemaAttributeHandler manages schema attributes objects from the property server. It runs server-side in the
@@ -78,7 +76,7 @@ public class DataEngineSchemaAttributeHandler {
     private Optional<EntityDetail> findSchemaAttributeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                         PropertyServerException,
                                                                                                         InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SCHEMA_ATTRIBUTE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
     /**
@@ -131,8 +129,8 @@ public class DataEngineSchemaAttributeHandler {
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(), attribute.getLength(), attribute.getPrecision(),
                 attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(), additionalProperties,
-                attribute.getTypeGuid() != null ? attribute.getTypeGuid() : TABULAR_COLUMN_TYPE_GUID,
-                attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
+                attribute.getTypeGuid() != null ? attribute.getTypeGuid() : OpenMetadataType.TABULAR_COLUMN_TYPE_GUID,
+                attribute.getTypeName() != null ? attribute.getTypeName() : OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);
     }
 
@@ -145,15 +143,15 @@ public class DataEngineSchemaAttributeHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaTypeGUID,
-                 SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, attribute.getDisplayName(),
-                 attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
-                 attribute.getFixedValue(), attribute.getValidValuesSetGUID(), null, attribute.getIsDeprecated(), attribute.getPosition(),
-                 attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
-                 attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
-                 attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
-                 attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
-                 null, null, null, false, false,
-                dataEngineCommonHandler.getNow(), methodName);
+                                                           SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, attribute.getDisplayName(),
+                                                           attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
+                                                           attribute.getFixedValue(), attribute.getValidValuesSetGUID(), null, attribute.getIsDeprecated(), attribute.getPosition(),
+                                                           attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
+                                                           attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
+                                                           attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
+                                                           attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+                                                           null, null, null, false, false,
+                                                           dataEngineCommonHandler.getNow(), methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,

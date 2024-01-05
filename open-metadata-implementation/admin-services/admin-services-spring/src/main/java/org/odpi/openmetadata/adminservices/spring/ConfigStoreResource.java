@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
 
-@Tag(name="Administration Services - Configuration Document Store Configuration",
+@Tag(name="Administration Services - Set up Configuration Document Store",
      description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default Encrypted File Configuration Document Store).",
         externalDocs=@ExternalDocumentation(description="Further information",
         url="https://egeria-project.org/services/admin-services/overview/#dynamically-configuring-the-configuration-document-store-connector"))
@@ -38,6 +39,11 @@ public class ConfigStoreResource
      */
     @PostMapping(path = "/connection")
 
+    @Operation(summary="setConfigurationStoreConnection",
+               description="Override the default implementation or configuration of the configuration document store.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
+
     public VoidResponse setConfigurationStoreConnection(@PathVariable String     userId,
                                                         @RequestBody  Connection connection)
     {
@@ -46,13 +52,17 @@ public class ConfigStoreResource
 
 
     /**
-     * Return the connection object for the configuration store.  Null is returned if the server should
-     * use the default store.
+     * Return the connection object for the configuration store.  Null is returned if the server should use the default store.
      *
      * @param userId calling user
      * @return connection response
      */
     @GetMapping(path = "/connection")
+
+    @Operation(summary="getConfigurationStoreConnection",
+               description="Return the connection object for the configuration store.  Null is returned if the server should use the default store.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
     public ConnectionResponse getConfigurationStoreConnection(@PathVariable String       userId)
     {
@@ -67,6 +77,11 @@ public class ConfigStoreResource
      * @return void response
      */
     @DeleteMapping(path = "/connection")
+
+    @Operation(summary="clearConfigurationStoreConnection",
+               description="Clear the connection object for the configuration store which means the platform uses the default store.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document-store-connector/"))
 
     public  VoidResponse clearConfigurationStoreConnection(@PathVariable String   userId)
     {

@@ -16,16 +16,16 @@ pluginManagement {
     }
     plugins {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
-        id "io.freefair.lombok" version "8.1.0"
+        id "io.freefair.lombok" version "8.3"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.20.0"
+        id("com.autonomousapps.dependency-analysis") version "1.26.0"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-        id 'org.gradlex.java-ecosystem-capabilities' version "1.3"
+        id 'org.gradlex.java-ecosystem-capabilities' version "1.3.1"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
-        id 'org.springframework.boot' version '2.7.13'
+        id 'org.springframework.boot' version '2.7.16'
         id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
@@ -46,19 +46,21 @@ include(':open-metadata-implementation:adapters:open-connectors:repository-servi
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:xtdb-repository-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
-include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:egeria-infrastructure-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
+include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
@@ -115,8 +117,8 @@ include(':open-metadata-implementation:repository-services:repository-services-i
 include(':open-metadata-implementation:repository-services:repository-services-spring')
 include(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
 include(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
-include(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-server')
-include(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
+include(':open-metadata-implementation:access-services:asset-catalog:omas-asset-catalog-server')
+include(':open-metadata-implementation:access-services:asset-catalog:omas-asset-catalog-spring')
 include(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-topic-connector')
 include(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
 include(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-topic-connectors')
@@ -238,6 +240,10 @@ include(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
 include(':open-metadata-implementation:view-services:dino-view:dino-view-api')
 include(':open-metadata-implementation:view-services:dino-view:dino-view-server')
 include(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
+include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-server')
+include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
+include(':open-metadata-implementation:view-services:collection-manager:collection-manager-server')
+include(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')
 include(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-server')
 include(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
 include(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-server')
@@ -271,7 +277,9 @@ include(':open-metadata-implementation:admin-services:admin-services-client')
 include(':open-metadata-implementation:admin-services:admin-services-server')
 include(':open-metadata-implementation:admin-services:admin-services-spring')
 include(':open-metadata-implementation:server-operations:server-operations-api')
+include(':open-metadata-implementation:server-operations:server-operations-client')
 include(':open-metadata-implementation:server-operations:server-operations-server')
+include(':open-metadata-implementation:server-operations:server-operations-spring')
 include(':open-metadata-implementation:platform-services:platform-services-api')
 include(':open-metadata-implementation:platform-services:platform-services-client')
 include(':open-metadata-implementation:platform-services:platform-services-server')
@@ -327,6 +335,9 @@ include(':open-metadata-implementation:integration-services:topic-integrator:top
 include(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
 include(':open-metadata-implementation:server-chassis:server-chassis-spring')
 include(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
+include(':open-metadata-implementation:user-security:user-authn')
+include(':open-metadata-implementation:user-security:token-controller')
+include(':open-metadata-implementation:user-security:token-manager')
 include(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
 include(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
 include(':open-metadata-conformance-suite:open-metadata-conformance-suite-server')
@@ -355,12 +366,14 @@ include(':open-metadata-resources:open-metadata-samples:access-services-samples:
 include(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-catalogs')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
+include(':open-metadata-resources:open-metadata-samples:sample-metadata:coco-metadata-archives')
 include(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
 include(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 include(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility')
 include(':open-metadata-resources:open-metadata-dev-utilities:egeria-ops-utility')
 include(':open-metadata-resources:open-metadata-reports:component-id-report')
 include(':open-metadata-resources:open-metadata-reports:database-report')
+include(':open-metadata-resources:open-metadata-reports:valid-values-report')
 include(':open-metadata-resources:open-metadata-reports:egeria-platform-report')
 include(':open-metadata-resources:open-metadata-reports:report-utilities')
 include(':open-metadata-resources:open-metadata-deployment')

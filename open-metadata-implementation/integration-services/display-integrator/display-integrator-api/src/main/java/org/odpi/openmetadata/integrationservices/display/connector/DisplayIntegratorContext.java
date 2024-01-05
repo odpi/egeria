@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DisplayApplicatio
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
@@ -44,6 +45,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public DisplayIntegratorContext(String                       connectorId,
@@ -59,6 +61,7 @@ public class DisplayIntegratorContext extends IntegrationContext
                                     String                       integrationConnectorGUID,
                                     String                       externalSourceGUID,
                                     String                       externalSourceName,
+                                    AuditLog                     auditLog,
                                     int                          maxPageSize)
     {
         super(connectorId,
@@ -72,6 +75,7 @@ public class DisplayIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.client          = displayApplicationClient;

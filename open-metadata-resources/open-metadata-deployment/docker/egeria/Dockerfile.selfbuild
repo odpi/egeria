@@ -30,7 +30,8 @@ ARG srcref=main
 # Defaults to egeria repo - but could be a different fork if needed
 ARG srcurl=https://github.com/odpi/egeria
 # this should not be needed, and must match the source, but we'll use for now
-ARG version=4.3
+
+ARG version=4.4-SNAPSHOT
 # Replace build parms if needed
 ARG buildparms="build -x test -x javadoc --no-build-cache"
 # Can optionally specify build time so that we tag the image appropriately
@@ -61,7 +62,7 @@ ARG srcref=main
 # Defaults to egeria repo - but could be a different fork if needed
 ARG srcurl=https://github.com/odpi/egeria
 # this should not be needed, and must match the source, but we'll use for now
-ARG version=4.3
+ARG version=4.4-SNAPSHOT
 # Replace build parms if needed
 ARG buildparms="build -x test -x javadoc"
 # Can optionally specify build time so that we tag the image appropriately

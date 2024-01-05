@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PersonalRoleProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               roleId        = null; /* identifier */
     private String               scope         = null; /* scope */
     private String               title         = null; /* name */

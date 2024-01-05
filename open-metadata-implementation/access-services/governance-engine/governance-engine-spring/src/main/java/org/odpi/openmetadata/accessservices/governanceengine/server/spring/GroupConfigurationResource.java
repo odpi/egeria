@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.IntegrationConnectorProperties;
@@ -22,11 +23,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 
-@Tag(name="Governance Engine OMAS",
+@Tag(name="Metadata Access Server: Governance Engine OMAS",
         description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.",
-        externalDocs=@ExternalDocumentation(
-                description="Governance Engine Open Metadata Access Service (OMAS)",
-                url="https://egeria-project.org/services/omas/governance-engine/overview/"))
+        externalDocs=@ExternalDocumentation(description="Further Information",
+                                            url="https://egeria-project.org/services/omas/governance-engine/overview/"))
 
 public class GroupConfigurationResource
 {
@@ -46,6 +46,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @PostMapping(path = "/integration-groups/new")
+
+    @Operation(summary="createIntegrationGroup",
+               description="Create a new integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public GUIDResponse createIntegrationGroup(@PathVariable String                     serverName,
                                                @PathVariable String                     userId,
@@ -69,6 +74,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-groups/{guid}")
 
+    @Operation(summary="getIntegrationGroupByGUID",
+               description="Return the properties from an integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public IntegrationGroupElementResponse getIntegrationGroupByGUID(@PathVariable String serverName,
                                                                      @PathVariable String userId,
                                                                      @PathVariable String guid)
@@ -90,6 +100,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups/by-name/{name}")
+
+    @Operation(summary="getIntegrationGroupByName",
+               description="Return the properties from an integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public  IntegrationGroupElementResponse getIntegrationGroupByName(@PathVariable String serverName,
                                                                       @PathVariable String userId,
@@ -113,6 +128,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups")
+
+    @Operation(summary="getAllIntegrationGroups",
+               description="Return the list of integration group definitions that are stored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public IntegrationGroupElementsResponse getAllIntegrationGroups(@PathVariable String serverName,
                                                                     @PathVariable String userId,
@@ -142,6 +162,13 @@ public class GroupConfigurationResource
      */
     @PostMapping(path = "/integration-groups/{guid}/update")
 
+    @Operation(summary="updateIntegrationGroup",
+               description="Update the properties of an existing integration group definition.  Use the current value to" +
+                                   " keep a property value the same, or use the new value.  Null means remove the property from" +
+                                   " the definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public VoidResponse updateIntegrationGroup(@PathVariable String                     serverName,
                                                @PathVariable String                     userId,
                                                @PathVariable String                     guid,
@@ -167,6 +194,12 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @PostMapping(path = "/integration-groups/{guid}/delete")
+
+    @Operation(summary="deleteIntegrationGroup",
+               description="Remove the properties of the integration group.  Both the guid and the qualified name is supplied" +
+                                   " to validate that the correct integration group is being deleted.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public  VoidResponse   deleteIntegrationGroup(@PathVariable String            serverName,
                                                   @PathVariable String            userId,
@@ -196,6 +229,12 @@ public class GroupConfigurationResource
      */
     @PostMapping(path = "/integration-connectors/new")
 
+    @Operation(summary="createIntegrationConnector",
+               description="Create an integration connector definition.  The same integration connector can be associated with multiple" +
+                                   " integration groups.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
     public  GUIDResponse createIntegrationConnector(@PathVariable String                         serverName,
                                                     @PathVariable String                         userId,
                                                     @RequestBody  IntegrationConnectorProperties requestBody)
@@ -218,6 +257,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-connectors/{guid}")
 
+    @Operation(summary="getIntegrationConnectorByGUID",
+               description="Return the properties from an integration connector definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
     public IntegrationConnectorElementResponse getIntegrationConnectorByGUID(@PathVariable String serverName,
                                                                              @PathVariable String userId,
                                                                              @PathVariable String guid)
@@ -239,6 +283,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-connectors/by-name/{name}")
+
+    @Operation(summary="getIntegrationConnectorByName",
+               description="Return the properties from an integration connector definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  IntegrationConnectorElementResponse getIntegrationConnectorByName(@PathVariable String serverName,
                                                                               @PathVariable String userId,
@@ -263,6 +312,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-connectors")
 
+    @Operation(summary="getAllIntegrationConnectors",
+               description="Return the list of integration connectors definitions that are stored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
     public IntegrationConnectorElementsResponse getAllIntegrationConnectors(@PathVariable String serverName,
                                                                             @PathVariable String userId,
                                                                             @RequestParam int    startingFrom,
@@ -286,6 +340,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-connectors/{guid}/registrations")
 
+    @Operation(summary="getIntegrationConnectorRegistrations",
+               description="Return the list of integration groups that a specific integration connector is registered with.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public GUIDListResponse getIntegrationConnectorRegistrations(@PathVariable String serverName,
                                                                  @PathVariable String userId,
                                                                  @PathVariable String guid)
@@ -295,9 +354,7 @@ public class GroupConfigurationResource
 
 
     /**
-     * Update the properties of an existing integration connector definition.  Use the current value to
-     * keep a property value the same, or use the new value.  Null means remove the property from
-     * the definition.
+     * Update the properties of an existing integration connector definition.
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
@@ -312,6 +369,12 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @PostMapping(path = "/integration-connectors/{guid}/update")
+
+    @Operation(summary="updateIntegrationConnector",
+               description="Update the properties of an existing integration connector definition. The isMergeUpdate request parameter is " +
+                                   "used to indicate whether supplied null values mean keep existing value (true) or remove existing value (false).",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
 
     public VoidResponse updateIntegrationConnector(@PathVariable String                          serverName,
                                                    @PathVariable String                          userId,
@@ -340,6 +403,13 @@ public class GroupConfigurationResource
      */
     @PostMapping(path = "/integration-connectors/{guid}/delete")
 
+    @Operation(summary="deleteIntegrationConnector",
+               description="Remove the properties of the integration connector.  Both the guid and the qualified name is supplied" +
+                                   " to validate that the correct integration connector is being deleted.  The integration connector is also" +
+                                   " unregistered from its integration groups.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
     public VoidResponse deleteIntegrationConnector(@PathVariable String            serverName,
                                                    @PathVariable String            userId,
                                                    @PathVariable String            guid,
@@ -367,6 +437,11 @@ public class GroupConfigurationResource
      */
     @PostMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
 
+    @Operation(summary="registerIntegrationConnectorWithGroup",
+               description="Register an integration connector with a specific integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public VoidResponse registerIntegrationConnectorWithGroup(@PathVariable String                                   serverName,
                                                               @PathVariable String                                   userId,
                                                               @PathVariable String                                   integrationGroupGUID,
@@ -392,6 +467,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
 
+    @Operation(summary="getRegisteredIntegrationConnector",
+               description="Retrieve a specific integration connector registered with an integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public RegisteredIntegrationConnectorResponse getRegisteredIntegrationConnector(@PathVariable String serverName,
                                                                                     @PathVariable String userId,
                                                                                     @PathVariable String integrationGroupGUID,
@@ -402,7 +482,7 @@ public class GroupConfigurationResource
 
 
     /**
-     * Retrieve the identifiers of the integration connectors registered with an integration group.
+     * Retrieve the details of the integration connectors registered with an integration group.
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
@@ -416,6 +496,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration group definition.
      */
     @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors")
+
+    @Operation(summary="getRegisteredIntegrationConnectors",
+               description="Retrieve the details of the integration connectors registered with an integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public RegisteredIntegrationConnectorsResponse getRegisteredIntegrationConnectors(@PathVariable String serverName,
                                                                                       @PathVariable String userId,
@@ -443,13 +528,18 @@ public class GroupConfigurationResource
      */
     @PostMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}/delete")
 
-    public VoidResponse unregisterIntegrationConnectorFromEngine(@PathVariable                  String          serverName,
-                                                                 @PathVariable                  String          userId,
-                                                                 @PathVariable                  String          integrationGroupGUID,
-                                                                 @PathVariable                  String          integrationConnectorGUID,
-                                                                 @RequestBody(required = false) NullRequestBody requestBody)
+    @Operation(summary="unregisterIntegrationConnectorFromGroup",
+               description="Unregister an integration connector from the integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public VoidResponse unregisterIntegrationConnectorFromGroup(@PathVariable                  String          serverName,
+                                                                @PathVariable                  String          userId,
+                                                                @PathVariable                  String          integrationGroupGUID,
+                                                                @PathVariable                  String          integrationConnectorGUID,
+                                                                @RequestBody(required = false) NullRequestBody requestBody)
     {
-        return restAPI.unregisterIntegrationConnectorFromEngine(serverName, userId, integrationGroupGUID, integrationConnectorGUID, requestBody);
+        return restAPI.unregisterIntegrationConnectorFromGroup(serverName, userId, integrationGroupGUID, integrationConnectorGUID, requestBody);
     }
 
 
@@ -468,6 +558,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the catalog target definition.
      */
     @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
+
+    @Operation(summary="addCatalogTarget",
+               description="Add a catalog target to an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
 
     public VoidResponse addCatalogTarget(@PathVariable String                  serverName,
                                          @PathVariable String                  userId,
@@ -494,6 +589,11 @@ public class GroupConfigurationResource
      */
     @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
 
+    @Operation(summary="getCatalogTarget",
+               description="Retrieve a specific catalog target associated with an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
     public CatalogTargetResponse getCatalogTarget(@PathVariable String serverName,
                                                   @PathVariable String userId,
                                                   @PathVariable String integrationConnectorGUID,
@@ -504,7 +604,7 @@ public class GroupConfigurationResource
 
 
     /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
+     * Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
      *
      * @param serverName name of the service to route the request to.
      * @param userId identifier of calling user.
@@ -518,6 +618,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration connector definition.
      */
     @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
+
+    @Operation(summary="getCatalogTargets",
+               description="Retrieve the details of the metadata elements identified as catalog targets with an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
 
     public CatalogTargetsResponse  getCatalogTargets(@PathVariable String  serverName,
                                                      @PathVariable String  userId,
@@ -544,6 +649,11 @@ public class GroupConfigurationResource
      * PropertyServerException problem storing the integration connector definition.
      */
     @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}/delete")
+
+    @Operation(summary="removeCatalogTarget",
+               description="Unregister a catalog target from the integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
 
     public VoidResponse removeCatalogTarget(@PathVariable String          serverName,
                                             @PathVariable String          userId,

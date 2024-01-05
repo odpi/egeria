@@ -73,7 +73,7 @@ public class ServerServicesListResponse extends FFDCResponseBase
 
 
     /**
-     * Return the list of servers (or null if none running).
+     * Return the list of services (or null if none running).
      *
      * @return string list
      */
@@ -95,7 +95,7 @@ public class ServerServicesListResponse extends FFDCResponseBase
 
 
     /**
-     * Set up the list of servers.
+     * Set up the list of services that are RUNNING.
      *
      * @param serverServicesList string list
      */

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,10 +20,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProcessCallElement implements Serializable
+public class ProcessCallElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementHeader         processCallHeader     = null;
     private ProcessCallProperties processCallProperties = null;
     private ElementHeader         caller                = null;

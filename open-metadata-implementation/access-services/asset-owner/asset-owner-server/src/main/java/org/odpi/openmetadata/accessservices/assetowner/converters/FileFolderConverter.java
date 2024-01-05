@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FolderProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -102,22 +102,22 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                      * The values in the classifications override the values in the main properties of the Asset's entity.
                      * Having these properties in the main entity is deprecated.
                      */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
                     folderProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
                     folderProperties.setOwner(this.getOwner(instanceProperties));
                     folderProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
                     folderProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
                     folderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     folderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 
                     folderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     folderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

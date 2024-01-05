@@ -4,8 +4,15 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBeanConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.EngineActionConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessConverter;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessStepConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.MetadataElementConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.ValidMetadataValueConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
@@ -28,10 +35,13 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 {
     private final static CommonServicesDescription myDescription = CommonServicesDescription.GAF_METADATA_MANAGEMENT;
 
-    private final MetadataElementHandler<OpenMetadataElement>  metadataElementHandler;
-    private final ValidValuesHandler<ValidMetadataValue>       validMetadataValuesHandler;
-    private final ValidValuesHandler<ValidMetadataValueDetail> validMetadataValuesDetailHandler;
-    private final GovernanceActionHandler<Object>              governanceActionHandler;
+    private final MetadataElementHandler<OpenMetadataElement>                            metadataElementHandler;
+    private final ValidValuesHandler<ValidMetadataValue>                                 validMetadataValuesHandler;
+    private final ValidValuesHandler<ValidMetadataValueDetail>                           validMetadataValuesDetailHandler;
+    private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
+    private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
+    private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
+
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -108,19 +118,47 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                              publishZones,
                                                                              auditLog);
 
-            this.governanceActionHandler = new GovernanceActionHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                                         Object.class,
-                                                                         serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHandler,
-                                                                         repositoryHelper,
-                                                                         localServerUserId,
-                                                                         securityVerifier,
-                                                                         supportedZones,
-                                                                         defaultZones,
-                                                                         publishZones,
-                                                                         auditLog);
+            this.engineActionHandler = new EngineActionHandler<>(new EngineActionConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 EngineActionElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.governanceActionProcessHandler = new AssetHandler<>(new GovernanceActionProcessConverter<>(repositoryHelper, serviceName, serverName),
+                                                                     GovernanceActionProcessElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
+            this.governanceActionProcessStepHandler = new GovernanceActionProcessStepHandler<>(new GovernanceActionProcessStepConverter<>(repositoryHelper, serviceName, serverName),
+                                                                                               GovernanceActionProcessStepElement.class,
+                                                                                               serviceName,
+                                                                                               serverName,
+                                                                                               invalidParameterHandler,
+                                                                                               repositoryHandler,
+                                                                                               repositoryHelper,
+                                                                                               localServerUserId,
+                                                                                               securityVerifier,
+                                                                                               supportedZones,
+                                                                                               defaultZones,
+                                                                                               publishZones,
+                                                                                               auditLog);
         }
         else
         {
@@ -163,12 +201,34 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for governance action process requests.
+     *
+     * @return handler object
+     */
+    AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
+    {
+        return governanceActionProcessHandler;
+    }
+
+
+    /**
+     * Return the handler for governance action type requests.
+     *
+     * @return handler object
+     */
+    GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> getGovernanceActionProcessStepHandler()
+    {
+        return governanceActionProcessStepHandler;
+    }
+
+
+    /**
      * Return the handler for governance action requests.
      *
      * @return handler object
      */
-    public GovernanceActionHandler<Object> getGovernanceActionHandler()
+    public EngineActionHandler<EngineActionElement> getEngineActionHandler()
     {
-        return governanceActionHandler;
+        return engineActionHandler;
     }
 }

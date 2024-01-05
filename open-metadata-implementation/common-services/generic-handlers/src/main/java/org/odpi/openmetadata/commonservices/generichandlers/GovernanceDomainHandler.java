@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -110,7 +111,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -118,7 +119,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -185,7 +186,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(governanceDomainGUID, governanceDomainGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -193,7 +194,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -252,8 +253,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     governanceDomainGUID,
                                     governanceDomainGUIDParameterName,
-                                    OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                     null,
                                     null,
                                     false,
@@ -292,8 +293,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
-                              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
+                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -331,14 +332,14 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                                                           PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -391,10 +392,10 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         startingGUID,
                                         startingGUIDParameterName,
-                                        OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        OpenMetadataType.COLLECTION_TYPE_NAME,
+                                        OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                        OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -432,7 +433,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                          OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                           false,
                                           false,
                                           new Date(),
@@ -463,10 +464,10 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
     {
         return this.getBeanByUniqueName(userId,
                                         "GovernanceDomain:" + domainIdentifier,
-                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                        OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                         false,
                                         false,
                                         supportedZones,

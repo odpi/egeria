@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -118,13 +120,13 @@ public class ActorProfileBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   name,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -144,7 +146,7 @@ public class ActorProfileBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.DELEGATION_ESCALATION_PROPERTY_NAME,
+                                                                                      OpenMetadataType.DELEGATION_ESCALATION_PROPERTY_NAME,
                                                                                       delegationEscalationAuthority,
                                                                                       methodName);
 

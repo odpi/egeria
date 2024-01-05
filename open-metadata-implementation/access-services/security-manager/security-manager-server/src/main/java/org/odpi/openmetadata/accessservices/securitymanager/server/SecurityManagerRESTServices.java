@@ -37,7 +37,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
@@ -216,8 +217,8 @@ public class SecurityManagerRESTServices
             SoftwareCapabilityHandler<SecurityManagerElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,
@@ -488,11 +489,11 @@ public class SecurityManagerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElementList(handler.getGovernanceDefinitionsByStringParameter(userId,
-                                                                                      OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
+                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
+                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                                       distinguishedName,
                                                                                       distinguishedNameParameterName,
-                                                                                      OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                                      OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                                       startFrom,
                                                                                       pageSize,
                                                                                       false,
@@ -574,7 +575,7 @@ public class SecurityManagerRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
+                                                                          OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
                                                                           startFrom,
@@ -1010,8 +1011,8 @@ public class SecurityManagerRESTServices
                 List<UserIdentityElement> elements = handler.findBeans(userId,
                                                                        requestBody.getSearchString(),
                                                                        searchStringParameterName,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
@@ -1183,7 +1184,7 @@ public class SecurityManagerRESTServices
             response.setElement(handler.getActorProfileByGUID(userId,
                                                               actorProfileGUID,
                                                               guidParameterName,
-                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                              OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -1232,7 +1233,7 @@ public class SecurityManagerRESTServices
             response.setElement(handler.getActorProfileForUser(userId,
                                                                actorProfileUserId,
                                                                nameParameterName,
-                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -1285,8 +1286,8 @@ public class SecurityManagerRESTServices
             response.setElements(handler.getActorProfilesByName(userId,
                                                                 requestBody.getName(),
                                                                 nameParameterName,
-                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
+                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -1341,8 +1342,8 @@ public class SecurityManagerRESTServices
             response.setElements(handler.findActorProfiles(userId,
                                                            requestBody.getSearchString(),
                                                            searchStringParameterName,
-                                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
+                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
                                                            false,
@@ -1403,11 +1404,11 @@ public class SecurityManagerRESTServices
                 List<Relationship> appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                              personRoleGUID,
                                                                                              personRoleGUIDParameterName,
-                                                                                             OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                                                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                             OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                                                                              null,
-                                                                                             OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                                             OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                                              1,
                                                                                              false,
                                                                                              false,
@@ -1466,7 +1467,7 @@ public class SecurityManagerRESTServices
                         }
                         else
                         {
-                            errorHandler.logBadRelationship(OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                                             relationship,
                                                             methodName);
                         }
@@ -1536,7 +1537,7 @@ public class SecurityManagerRESTServices
             appointmentProperties.setEffectiveFrom(properties.getEffectiveFromTime());
             appointmentProperties.setEffectiveTo(properties.getEffectiveToTime());
             appointmentProperties.setIsPublic(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                  OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.IS_PUBLIC.name,
                                                                                   relationship.getProperties(),
                                                                                   methodName));
 
@@ -1545,7 +1546,7 @@ public class SecurityManagerRESTServices
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
-                                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                                false,
                                                                                false,
                                                                                new Date(),
@@ -1557,7 +1558,7 @@ public class SecurityManagerRESTServices
         }
         else
         {
-            errorHandler.logBadRelationship(OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                             relationship,
                                             methodName);
         }

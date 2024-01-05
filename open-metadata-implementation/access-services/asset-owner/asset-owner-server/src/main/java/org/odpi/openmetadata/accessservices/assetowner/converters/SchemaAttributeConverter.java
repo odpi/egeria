@@ -5,7 +5,7 @@ import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAt
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -98,6 +98,7 @@ public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
                     schemaAttributeProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
                     schemaAttributeProperties.setLength(this.removeLength(instanceProperties));
                     schemaAttributeProperties.setPrecision(this.removePrecision(instanceProperties));
+                    schemaAttributeProperties.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
                     schemaAttributeProperties.setIsNullable(this.removeIsNullable(instanceProperties));
                     schemaAttributeProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     schemaAttributeProperties.setAliases(this.removeAliases(instanceProperties));
@@ -141,7 +142,7 @@ public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 

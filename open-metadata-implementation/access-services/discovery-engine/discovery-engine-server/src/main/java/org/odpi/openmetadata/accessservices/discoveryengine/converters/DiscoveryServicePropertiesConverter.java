@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -99,7 +99,7 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
                         {
                             if ((entity != null) && (entity.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TYPE_NAME))
                                 {
                                     bean.setConnection(super.getEmbeddedConnection(beanClass,
                                                                                    entity,

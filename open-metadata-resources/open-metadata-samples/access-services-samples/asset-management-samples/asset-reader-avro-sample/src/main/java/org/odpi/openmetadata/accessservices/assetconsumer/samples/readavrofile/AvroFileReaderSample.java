@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.samples.readavrofile;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.datastore.avrofile.AvroFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class AvroFileReaderSample
 {
-    private String  fileName;
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String fileName;
+    private final String serverName;
+    private final String serverURLRoot;
+    private final String clientUserId;
 
 
     /**
@@ -53,7 +53,7 @@ public class AvroFileReaderSample
      */
     void run()
     {
-        AvroFileStoreConnector connector = getConnectorUsingMetadata();
+        BasicFileStoreConnector connector = getConnectorUsingMetadata();
         if (connector == null)
         {
             connector = getConnectorUsingHardCodedConnection();
@@ -69,7 +69,7 @@ public class AvroFileReaderSample
      *
      * @return connector to requested file
      */
-    private AvroFileStoreConnector getConnectorUsingMetadata()
+    private BasicFileStoreConnector getConnectorUsingMetadata()
     {
         try
         {
@@ -105,7 +105,7 @@ public class AvroFileReaderSample
                              * type is returned, on one where it is not possible to create a connector for, then an
                              * exception is thrown and the code moves on to process the next asset.
                              */
-                            return (AvroFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
+                            return (BasicFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
                         }
                         catch (Throwable error)
                         {
@@ -135,15 +135,15 @@ public class AvroFileReaderSample
      *
      * @return connector to requested file
      */
-    private AvroFileStoreConnector getConnectorUsingHardCodedConnection()
+    private BasicFileStoreConnector getConnectorUsingHardCodedConnection()
     {
-        AvroFileStoreConnector connector = null;
+        BasicFileStoreConnector connector = null;
 
         try
         {
             AssetConsumer client = new AssetConsumer(serverName, serverURLRoot);
 
-            connector = (AvroFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
+            connector = (BasicFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
         catch (Throwable error)
         {
@@ -160,15 +160,15 @@ public class AvroFileReaderSample
      *
      * @return connector to requested file
      */
-    private AvroFileStoreConnector getConnectorWithOCF()
+    private BasicFileStoreConnector getConnectorWithOCF()
     {
-        AvroFileStoreConnector connector = null;
+        BasicFileStoreConnector connector = null;
 
         try
         {
             ConnectorBroker broker = new ConnectorBroker();
 
-            connector = (AvroFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
+            connector = (BasicFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }
         catch (Throwable error)
         {
@@ -210,8 +210,8 @@ public class AvroFileReaderSample
         endpoint.setAddress(fileName);
 
 
-        final String connectorTypeDescription   = "AvroFileStore connector type.";
-        final String connectorTypeJavaClassName = AvroFileStoreProvider.class.getName();
+        final String connectorTypeDescription   = "BasicFileStore connector type.";
+        final String connectorTypeJavaClassName = BasicFileStoreProvider.class.getName();
 
         String connectorTypeName = "AvroFileStore.ConnectorType.Test";
 
@@ -248,7 +248,7 @@ public class AvroFileReaderSample
      *
      * @param connector connector to the asset
      */
-    private void displayFile(AvroFileStoreConnector connector)
+    private void displayFile(BasicFileStoreConnector connector)
     {
         try
         {
@@ -330,7 +330,7 @@ public class AvroFileReaderSample
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         try
         {

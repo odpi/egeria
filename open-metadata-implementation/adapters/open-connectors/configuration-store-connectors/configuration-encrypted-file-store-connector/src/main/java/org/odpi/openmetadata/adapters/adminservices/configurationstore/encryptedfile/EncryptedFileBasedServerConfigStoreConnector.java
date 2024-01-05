@@ -247,8 +247,12 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Set<OMAGServerConfig> retrieveAllServerConfigs() {
+    public Set<OMAGServerConfig> retrieveAllServerConfigs()
+    {
         final String methodName = "retrieveAllServerConfigs";
         Set<OMAGServerConfig> omagServerConfigSet = new HashSet<>();
         String templateString = getStoreTemplateName();

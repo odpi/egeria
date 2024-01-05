@@ -18,7 +18,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 700;
+    private static final int    connectorComponentId   = 663;
 
     /*
      * Unique identifier for the connector type.
@@ -28,7 +28,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:DevProjects:IntegrationConnector:Infrastructure:Egeria";
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Infrastructure:Egeria";
     private static final String connectorDisplayName   = "Egeria Infrastructure Cataloguing Connector";
     private static final String connectorDescription   = "Scavenges information from an Egeria deployment to catalog the platforms, servers, services and connectors.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/egeria-infrastructure-cataloguing-integration-connector/";
@@ -36,7 +36,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = EgeriaCataloguerIntegrationConnector.class;
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationConnector";
 
 
     /**
@@ -49,7 +49,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

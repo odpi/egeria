@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The DinoViewErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMVS
  * It is used in conjunction with all OMVS Exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA. Typically the numbers used are:</li>
@@ -188,29 +187,29 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for DinoViewErrorCode expects to be passed one of the enumeration rows defined in
-     * DinoViewErrorCode above.   For example:
-     *
-     *     DinoViewErrorCode   errorCode = DinoViewErrorCode.SERVICE_NOT_INITIALIZED;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DinoViewErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DinoViewErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -219,9 +218,14 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -231,23 +235,35 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
     }
 
+
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "DinoViewErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

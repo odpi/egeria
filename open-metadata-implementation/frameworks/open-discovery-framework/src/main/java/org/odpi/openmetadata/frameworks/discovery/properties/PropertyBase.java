@@ -25,12 +25,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = Annotation.class, name = "Annotation"),
                 @JsonSubTypes.Type(value = DataField.class, name = "DataField"),
+                @JsonSubTypes.Type(value = DataFieldLink.class, name = "DataFieldLink"),
                 @JsonSubTypes.Type(value = DiscoveryAnalysisReport.class, name = "DiscoveryAnalysisReport"),
                 @JsonSubTypes.Type(value = DiscoveryEngineProperties.class, name = "DiscoveryEngineProperties"),
                 @JsonSubTypes.Type(value = DiscoveryServiceProperties.class, name = "DiscoveryServiceProperties")
         })
 public abstract class PropertyBase implements Serializable
 {
+    /**
+     * Header version for this implementation
+     */
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     private static final long serialVersionUID = 1L;

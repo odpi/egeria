@@ -20,7 +20,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 667;
+    private static final int    connectorComponentId   = 664;
 
     /*
      * Unique identifier for the connector type.
@@ -30,7 +30,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:ResourceConnector:ApacheAtlas";
+    private static final String connectorQualifiedName = "Egeria:ResourceConnector:System:ApacheAtlas";
     private static final String connectorDisplayName   = "Apache Atlas REST Connector";
     private static final String connectorDescription   = "Connector that provides a Java API to Apache Atlas.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/apache-atlas-rest-connector/";
@@ -44,7 +44,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass       = ApacheAtlasRESTConnector.class;
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTConnector";
 
 
     /**
@@ -58,7 +58,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClassName);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.

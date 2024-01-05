@@ -28,7 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.LoggerFactory;
@@ -530,8 +530,8 @@ public class OMAGServerAdminStoreServices
                 }
             }
         }
-        return serverConfig;
 
+        return serverConfig;
     }
 
 

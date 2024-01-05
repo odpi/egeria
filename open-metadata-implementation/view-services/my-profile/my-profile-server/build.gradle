@@ -4,7 +4,7 @@
  */
 
 dependencies {
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
@@ -13,7 +13,6 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
 }

@@ -26,14 +26,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * The RexViewRESTResource provides the Spring API endpoints of the Repository Explorer Open Metadata View Service (OMVS).
- * This interface provides an interfaces for enterprise architects.
+ * This interface provides a service for enterprise architects.
  */
 
 @RestController
 @RequestMapping("/servers/{viewServerName}/open-metadata/view-services/rex/users/{userId}")
 
-@Tag(name="Rex OMVS", description="Explore instance data in a repository or cohort for visualization of graphs of related items.",
-     externalDocs=@ExternalDocumentation(description="Rex View Service (OMVS)",
+@Tag(name="View Server: Rex OMVS", description="Explore instance data in a repository or cohort for visualization of graphs of related items.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/rex/overview/"))
 
 public class RexViewRESTResource {

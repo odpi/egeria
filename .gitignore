@@ -111,6 +111,10 @@ egeria-lineage-repositories/**
 /SimpleGovernanceCatalog.json
 /*Archive.json
 /BigGlossary*.json
+/*.omarchive
+
+# Ignore report output
+component-id-report.md
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -162,8 +164,8 @@ public class OpenMetadataTypesArchive3_15
          * Calls for new and changed types go here
          */
         updateGovernanceEngines();
-        updateGovernanceActionTypes();
-        updateGovernanceActions();
+        updateGovernanceActionProcessSteps();
+        updateEngineActions();
         update0710DigitalServices();
         update0715DigitalServiceOwnership();
         update0735SolutionPortsAndWires();
@@ -203,7 +205,7 @@ public class OpenMetadataTypesArchive3_15
         TypeDefAttribute       property;
 
         final String attribute1Name            = "serviceRequestType";
-        final String attribute1Description     = "Request type supported by the governance action service (overrides requestType on call to governance service if specified).";
+        final String attribute1Description     = "Request type supported by the governance service (overrides requestType on call to governance service if specified).";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -223,21 +225,21 @@ public class OpenMetadataTypesArchive3_15
 
 
     /**
-     * Adjust properties used to control the execution of governance actions.
+     * Adjust properties used to control the execution of engine actions.
      */
-    private void updateGovernanceActionTypes()
+    private void updateGovernanceActionProcessSteps()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionTypeEntity());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStepEntity());
+        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionProcessStepRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNextEngineActionRelationship());
     }
 
-    private TypeDefPatch updateGovernanceActionTypeEntity()
+    private TypeDefPatch updateGovernanceActionProcessStepEntity()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceActionType";
+        final String typeName = "GovernanceActionProcessStep";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -254,7 +256,7 @@ public class OpenMetadataTypesArchive3_15
         final String attribute1Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
         final String attribute1DescriptionGUID = null;
         final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many governance action instances?";
+        final String attribute3Description     = "Trigger one or many engine action instances?";
         final String attribute3DescriptionGUID = null;
 
 
@@ -272,12 +274,12 @@ public class OpenMetadataTypesArchive3_15
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionTypeRelationship()
+    private TypeDefPatch updateNextGovernanceActionProcessStepRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceActionType";
+        final String typeName = "NextGovernanceActionProcessStep";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -305,12 +307,12 @@ public class OpenMetadataTypesArchive3_15
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionRelationship()
+    private TypeDefPatch updateNextEngineActionRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceAction";
+        final String typeName = "NextEngineAction";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -347,19 +349,19 @@ public class OpenMetadataTypesArchive3_15
     /**
      * Allow a governance service to record a message as part of its completion.  This is particularly useful if it fails.
      */
-    private void updateGovernanceActions()
+    private void updateEngineActions()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
+        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
         this.archiveBuilder.addTypeDefPatch(updateTargetForActionRelationship());
     }
 
 
-    private TypeDefPatch updateGovernanceActionEntity()
+    private TypeDefPatch updateEngineActionEntity()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceAction";
+        final String typeName = "EngineAction";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -467,7 +469,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalProducts";
         final String                     end2AttributeDescription     = "The associated digital products.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -529,9 +531,9 @@ public class OpenMetadataTypesArchive3_15
         final String attribute9Name = "withdrawDate";
         final String attribute9Description = "What date what the product withdrawn, preventing new consumers.";
         final String attribute9DescriptionGUID = null;
-        final String attribute10Name = "additionalProperties";
-        final String attribute10Description = "Any additional properties needed to describe the product.";
-        final String attribute10DescriptionGUID = null;
+        final String attribute10Name = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
+        final String attribute10Description = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
                                                                   attribute1Description,
@@ -606,7 +608,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -649,7 +651,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;

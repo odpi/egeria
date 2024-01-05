@@ -2,8 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentDefinitionElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -26,6 +31,9 @@ public interface ValidValuesExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier for the new set
      *
@@ -37,9 +45,12 @@ public interface ValidValuesExchangeInterface
                                 String                       assetManagerGUID,
                                 String                       assetManagerName,
                                 ExternalIdentifierProperties externalIdentifierProperties,
-                                ValidValueProperties         validValueProperties) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+                                ValidValueProperties         validValueProperties,
+                                Date                         effectiveTime,
+                                boolean                      forLineage,
+                                boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
 
     /**
      * Create a new valid value definition.
@@ -50,6 +61,9 @@ public interface ValidValuesExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier for the new definition
      *
@@ -58,13 +72,16 @@ public interface ValidValuesExchangeInterface
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     String  createValidValueDefinition(String                       userId,
-                                       String                       setGUID,
                                        String                       assetManagerGUID,
                                        String                       assetManagerName,
+                                       String                       setGUID,
                                        ExternalIdentifierProperties externalIdentifierProperties,
-                                       ValidValueProperties         validValueProperties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+                                       ValidValueProperties         validValueProperties,
+                                       Date                         effectiveTime,
+                                       boolean                      forLineage,
+                                       boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**
@@ -159,6 +176,37 @@ public interface ValidValuesExchangeInterface
 
 
     /**
+     * Create a link between a valid value set or definition and a set.  This means the valid
+     * value is a member of the set.
+     *
+     * @param userId calling user.
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param setGUID unique identifier of the set.
+     * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param properties is this the default value - used when creating a list of valid values
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    void    attachValidValueToSet(String                         userId,
+                                  String                         assetManagerGUID,
+                                  String                         assetManagerName,
+                                  String                         setGUID,
+                                  String                         validValueGUID,
+                                  ValidValueMembershipProperties properties,
+                                  Date                           effectiveTime,
+                                  boolean                        forLineage,
+                                  boolean                        forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
+
+
+    /**
      * Remove the link between a valid value and a set it is a member of.
      *
      * @param userId calling user
@@ -184,6 +232,65 @@ public interface ValidValuesExchangeInterface
                                     boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException;
+
+
+    /**
+     * Link a valid value as a reference value to a referencable to act as a tag/classification to help with locating and
+     * grouping the referenceable.
+     *
+     * @param userId calling user.
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID unique identifier of the valid value.
+     * @param referenceableGUID unique identifier of the element to link to.
+     * @param properties details of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    void    assignReferenceValueToItem(String                             userId,
+                                       String                             assetManagerGUID,
+                                       String                             assetManagerName,
+                                       String                             validValueGUID,
+                                       String                             referenceableGUID,
+                                       ReferenceValueAssignmentProperties properties,
+                                       Date                               effectiveTime,
+                                       boolean                            forLineage,
+                                       boolean                            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
+
+
+    /**
+     * Remove the reference value link between a valid value and a referenceable (item).
+     *
+     * @param userId calling user.
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID unique identifier of the valid value.
+     * @param referenceableGUID unique identifier of the element to remove the link from.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    void    unassignReferenceValueFromItem(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  validValueGUID,
+                                           String  referenceableGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -298,15 +405,15 @@ public interface ValidValuesExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<ValidValueElement> getValidValueSetMembers(String  userId,
-                                                    String  assetManagerGUID,
-                                                    String  assetManagerName,
-                                                    String  validValueSetGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+    List<ValidValueMember> getValidValueSetMembers(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  validValueSetGUID,
+                                                   int     startFrom,
+                                                   int     pageSize,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
 
@@ -341,4 +448,67 @@ public interface ValidValuesExchangeInterface
                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
+
+
+    /**
+     * Page through the list of referenceables that have this valid value as a reference value.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param validValueGUID unique identifier of valid value to query
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of referenceable beans
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    List<ReferenceValueAssignmentItemElement> getReferenceValueAssignedItems(String       userId,
+                                                                             String  assetManagerGUID,
+                                                                             String  assetManagerName,
+                                                                             String  validValueGUID,
+                                                                             int     startFrom,
+                                                                             int          pageSize,
+                                                                             Date    effectiveTime,
+                                                                             boolean forLineage,
+                                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException;
+
+    /**
+     * Page through the list of assigned reference values for a referenceable.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param referenceableGUID unique identifier of assigned item
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of valid value beans
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    List<ReferenceValueAssignmentDefinitionElement> getReferenceValueAssignments(String       userId,
+                                                                                 String  assetManagerGUID,
+                                                                                 String  assetManagerName,
+                                                                                 String       referenceableGUID,
+                                                                                 int          startFrom,
+                                                                                 int          pageSize,
+                                                                                 Date    effectiveTime,
+                                                                                 boolean forLineage,
+                                                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
 }

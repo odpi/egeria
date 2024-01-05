@@ -51,6 +51,7 @@ public class FFDCResponseBase implements FFDCResponse
     private String              exceptionUserAction             = null;
     private Map<String, Object> exceptionProperties             = null;
 
+
     /**
      * Default constructor
      */
@@ -81,114 +82,236 @@ public class FFDCResponseBase implements FFDCResponse
         }
     }
 
+
+    /**
+     * Return the name of the Java class name to use to recreate the exception.
+     *
+     * @return String name of the fully-qualified java class name
+     */
     @Override
     public String getExceptionClassName()
     {
         return exceptionClassName;
     }
 
+
+    /**
+     * Set up the name of the Java class name to use to recreate the exception.
+     *
+     * @param exceptionClassName - String name of the fully-qualified java class name
+     */
     @Override
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
     }
 
+
+    /**
+     * Return the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @return exception class name
+     */
     @Override
     public String getExceptionCausedBy()
     {
         return exceptionCausedBy;
     }
 
+
+    /**
+     * Set up the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @param exceptionCausedBy exception class name
+     */
     @Override
     public void setExceptionCausedBy(String exceptionCausedBy)
     {
         this.exceptionCausedBy = exceptionCausedBy;
     }
 
+
+    /**
+     * Return the description of the action in progress when the exception occurred.
+     *
+     * @return string description
+     */
     @Override
     public String getActionDescription()
     {
         return actionDescription;
     }
 
+
+    /**
+     * Set up the description of the activity in progress when the exception occurred.
+     *
+     * @param actionDescription string description
+     */
     @Override
     public void setActionDescription(String actionDescription)
     {
         this.actionDescription = actionDescription;
     }
 
+
+    /**
+     * Return the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @return integer HTTP status code
+     */
     @Override
     public int getRelatedHTTPCode()
     {
         return relatedHTTPCode;
     }
 
+
+    /**
+     * Set up the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @param relatedHTTPCode - integer HTTP status code
+     */
     @Override
     public void setRelatedHTTPCode(int relatedHTTPCode)
     {
         this.relatedHTTPCode = relatedHTTPCode;
     }
 
+
+    /**
+     * Return the error message associated with the exception.
+     *
+     * @return string error message
+     */
     @Override
     public String getExceptionErrorMessage()
     {
         return exceptionErrorMessage;
     }
 
+
+    /**
+     * Set up the error message associated with the exception.
+     *
+     * @param exceptionErrorMessage - string error message
+     */
     @Override
     public void setExceptionErrorMessage(String exceptionErrorMessage)
     {
         this.exceptionErrorMessage = exceptionErrorMessage;
     }
 
+
+    /**
+     * Return the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return string identifier
+     */
     @Override
     public String getExceptionErrorMessageId()
     {
         return exceptionErrorMessageId;
     }
 
+
+    /**
+     * Set up the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageId string identifier
+     */
     @Override
     public void setExceptionErrorMessageId(String exceptionErrorMessageId)
     {
         this.exceptionErrorMessageId = exceptionErrorMessageId;
     }
 
+
+    /**
+     * Return the parameters that were inserted in the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return array of strings
+     */
     @Override
     public String[] getExceptionErrorMessageParameters()
     {
         return exceptionErrorMessageParameters;
     }
 
+
+    /**
+     * Set up the list of parameters inserted in to the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageParameters list of strings
+     */
     @Override
     public void setExceptionErrorMessageParameters(String[] exceptionErrorMessageParameters)
     {
         this.exceptionErrorMessageParameters = exceptionErrorMessageParameters;
     }
 
+
+    /**
+     * Return the description of the action taken by the system as a result of the exception.
+     *
+     * @return - string description of the action taken
+     */
     @Override
     public String getExceptionSystemAction()
     {
         return exceptionSystemAction;
     }
 
+
+    /**
+     * Set up the description of the action taken by the system as a result of the exception.
+     *
+     * @param exceptionSystemAction - string description of the action taken
+     */
     @Override
     public void setExceptionSystemAction(String exceptionSystemAction)
     {
         this.exceptionSystemAction = exceptionSystemAction;
     }
 
+
+    /**
+     * Return the action that a user should take to resolve the problem.
+     *
+     * @return string instructions
+     */
     @Override
     public String getExceptionUserAction()
     {
         return exceptionUserAction;
     }
 
+
+    /**
+     * Set up the action that a user should take to resolve the problem.
+     *
+     * @param exceptionUserAction - string instructions
+     */
     @Override
     public void setExceptionUserAction(String exceptionUserAction)
     {
         this.exceptionUserAction = exceptionUserAction;
     }
 
+
+    /**
+     * Return the additional properties stored by the exceptions.
+     *
+     * @return property map
+     */
     @Override
     public Map<String, Object> getExceptionProperties()
     {
@@ -206,6 +329,12 @@ public class FFDCResponseBase implements FFDCResponse
         }
     }
 
+
+    /**
+     * Set up the additional properties stored by the exceptions.
+     *
+     * @param exceptionProperties property map
+     */
     @Override
     public void setExceptionProperties(Map<String, Object> exceptionProperties)
     {
@@ -263,6 +392,7 @@ public class FFDCResponseBase implements FFDCResponse
                 Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
                 Objects.equals(exceptionProperties, that.exceptionProperties);
     }
+
 
     /**
      * Return hash code for this object

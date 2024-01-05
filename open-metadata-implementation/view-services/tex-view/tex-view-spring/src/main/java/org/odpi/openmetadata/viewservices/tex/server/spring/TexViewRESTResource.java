@@ -17,14 +17,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * The TexViewRESTResource provides the Spring API endpoints of the Type Explorer Open Metadata View Service (OMVS).
- * This interface provides an interfaces for enterprise architects.
+ * This interface provides a service for enterprise architects.
  */
 
 @RestController
 @RequestMapping("/servers/{viewServerName}/open-metadata/view-services/tex/users/{userId}")
 
-@Tag(name="Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.",
-     externalDocs=@ExternalDocumentation(description="Tex View Service (OMVS)",
+@Tag(name="View Server: Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.",
+     externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/tex/overview/"))
 
 public class TexViewRESTResource {

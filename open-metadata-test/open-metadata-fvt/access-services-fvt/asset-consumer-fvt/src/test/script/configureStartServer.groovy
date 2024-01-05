@@ -88,9 +88,9 @@ if(postRC1.equals(200)) {
     println(post1.getInputStream().getText());
 }
 
-// --- Enable OMAS - any errors here and we exit
+// --- Enable all OMAS - any errors here and we exit
 System.out.println("=== Enabling Asset Consumer OMAS: " + serverMem + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/asset-consumer/no-topics" ).openConnection()
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/no-topics" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
@@ -98,20 +98,6 @@ println(postRC2);
 if(postRC2.equals(200)) {
     println(post2.getInputStream().getText());
 }
-
-
-
-// --- Enable OMAS - any errors here and we exit
-System.out.println("=== Enabling Asset Owner OMAS: " + serverMem + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/asset-owner/no-topics" ).openConnection()
-post2.setRequestMethod("POST")
-post2.setRequestProperty("Content-Type", "application/json")
-postRC2 = post2.getResponseCode();
-println(postRC2);
-if(postRC2.equals(200)) {
-    println(post2.getInputStream().getText());
-}
-
 
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverMem + " ===");

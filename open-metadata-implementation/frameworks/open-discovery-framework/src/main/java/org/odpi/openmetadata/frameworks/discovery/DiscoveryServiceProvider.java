@@ -19,8 +19,8 @@ public abstract class DiscoveryServiceProvider extends ConnectorProviderBase
     /*
      * Additional configuration to aid choreographing this service in a Governance Action Process.
      */
-    protected List<String> supportedRequestTypes      = null;
-    protected List<String> supportedRequestParameters = null;
+    protected List<String> supportedRequestTypes       = null;
+    protected List<String> supportedAnalysisParameters = null;
     protected List<String> supportedRequestSourceNames = null;
     protected List<String> supportedTargetActionNames  = null;
     protected List<String> supportedGuards             = null;
@@ -39,13 +39,13 @@ public abstract class DiscoveryServiceProvider extends ConnectorProviderBase
 
 
     /**
-     * The request parameters returned are used by the governance action service to control its behaviour.
+     * The analysis parameters returned are used by the open discovery service to control its behaviour.
      *
      * @return list of parameter names used if the connector is provisioning
      */
-    public List<String> supportedRequestParameters()
+    public List<String> supportedAnalysisParameters()
     {
-        return supportedRequestParameters;
+        return supportedAnalysisParameters;
     }
 
 

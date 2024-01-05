@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -50,7 +50,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceEngineClient              serverClient,
+                                                           GovernanceContextClient             serverClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -78,7 +78,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
             /*
              * Create the client for accessing the open metadata repositories.
              */
-            GovernanceEngineClient governanceEngineClient;
+            GovernanceContextClient governanceContextClient;
 
             try
             {
@@ -94,10 +94,10 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                     restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL);
                 }
 
-                governanceEngineClient = new GovernanceEngineClient(accessServiceServerName,
-                                                                    accessServiceRootURL,
-                                                                    restClient,
-                                                                    maxPageSize);
+                governanceContextClient = new GovernanceContextClient(accessServiceServerName,
+                                                                      accessServiceRootURL,
+                                                                      restClient,
+                                                                      maxPageSize);
             }
             catch (InvalidParameterException error)
             {
@@ -114,7 +114,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                                                                localServerUserId,
                                                                                                                                configurationClient,
                                                                                                                                serverClient,
-                                                                                                                               governanceEngineClient,
+                                                                                                                               governanceContextClient,
                                                                                                                                maxPageSize);
 
             if (governanceActionEngineHandlers == null)
@@ -178,7 +178,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
      * @param configurationClient client to retrieve configuration from
      * @param serverClient client to control the execution of governance action requests
-     * @param governanceEngineClient client for calling REST APIs
+     * @param governanceContextClient client for calling REST APIs
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @return map of governance action engine GUIDs to handlers
      */
@@ -187,8 +187,8 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                           String                              accessServiceServerName,
                                                                                           String                              localServerUserId,
                                                                                           GovernanceEngineConfigurationClient configurationClient,
-                                                                                          GovernanceEngineClient              serverClient,
-                                                                                          GovernanceEngineClient              governanceEngineClient,
+                                                                                          GovernanceContextClient             serverClient,
+                                                                                          GovernanceContextClient             governanceContextClient,
                                                                                           int                                 maxPageSize)
     {
         Map<String, GovernanceActionEngineHandler> governanceActionEngineHandlers = new HashMap<>();
@@ -207,7 +207,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                            localServerUserId,
                                                                                            configurationClient,
                                                                                            serverClient,
-                                                                                           governanceEngineClient,
+                                                                                           governanceContextClient,
                                                                                            auditLog,
                                                                                            maxPageSize);
 

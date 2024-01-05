@@ -19,8 +19,9 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
@@ -32,14 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -74,31 +68,32 @@ class DataEngineFolderHierarchyHandlerTest {
         mockDataEngineCommonHandler();
         mockFolderHandler();
 
-        when(genericHandler.getAttachmentLinks(USER, GUID_VALUE_3, CommonMapper.GUID_PROPERTY_NAME, DATA_FILE_TYPE_NAME,
-                null, null, null, null,
-                2, false, false, 0,
-                invalidParameterHandler.getMaxPagingSize(), null, METHOD)).thenReturn(Collections.emptyList());
+        when(genericHandler.getAttachmentLinks(USER, GUID_VALUE_3, CommonMapper.GUID_PROPERTY_NAME, OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                               null, null, null, null,
+                                               2, false, false, 0,
+                                               invalidParameterHandler.getMaxPagingSize(), null, METHOD)).thenReturn(Collections.emptyList());
 
-        dataEngineFolderHierarchyHandler.upsertFolderHierarchy(GUID_VALUE_3, DATA_FILE_TYPE_NAME, PATH, EXTERNAL_SOURCE_GUID,
+        dataEngineFolderHierarchyHandler.upsertFolderHierarchy(GUID_VALUE_3, OpenMetadataType.DATA_FILE_TYPE_NAME, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, EXTERNAL_SOURCE_NAME + "::/test",
-                FILE_FOLDER_TYPE_NAME);
+                                                             OpenMetadataType.FILE_FOLDER_TYPE_NAME);
         verify(folderHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_NAME + "::/test", "test", null, null,
                 null, null, 0, null, null,
-                null, null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
+                null, null, OpenMetadataType.FILE_FOLDER_TYPE_GUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD);
         verify(folderHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_NAME + "::/", "/", null,
                 null, null, null, 0, null, null,
-                null, null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null,
+                null, null, OpenMetadataType.FILE_FOLDER_TYPE_GUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME, null,
                 null, null, InstanceStatus.ACTIVE, null, METHOD);
         // verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, GUID_VALUE_1, GUID_VALUE_2,
         //        NESTED_FILE_TYPE_NAME, FILE_FOLDER_TYPE_NAME, FILE_FOLDER_TYPE_NAME, EXTERNAL_SOURCE_NAME,null);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, EXTERNAL_SOURCE_GUID,
-                GUID_VALUE_2, SERVER_ASSET_USE_TYPE_NAME, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, FILE_FOLDER_TYPE_NAME, EXTERNAL_SOURCE_NAME,
+                GUID_VALUE_2, OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                             OpenMetadataType.FILE_FOLDER_TYPE_NAME, EXTERNAL_SOURCE_NAME,
                 null);
     }
 
@@ -111,8 +106,8 @@ class DataEngineFolderHierarchyHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(GUID_VALUE_1, GUID_PROPERTY_NAME, methodName);
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID_VALUE_1, FILE_FOLDER_TYPE_NAME, EXTERNAL_SOURCE_NAME);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID_VALUE_1, OpenMetadataProperty.GUID.name, methodName);
+        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID_VALUE_1, OpenMetadataType.FILE_FOLDER_TYPE_NAME, EXTERNAL_SOURCE_NAME);
     }
 
     @Test
@@ -127,9 +122,9 @@ class DataEngineFolderHierarchyHandlerTest {
 
     private void mockDataEngineCommonHandler()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        when(dataEngineCommonHandler.findEntity(USER, EXTERNAL_SOURCE_NAME + "::/test", FILE_FOLDER_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, EXTERNAL_SOURCE_NAME + "::/test", OpenMetadataType.FILE_FOLDER_TYPE_NAME))
                 .thenReturn(Optional.empty());
-        when(dataEngineCommonHandler.findEntity(USER, EXTERNAL_SOURCE_NAME + "::/", FILE_FOLDER_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, EXTERNAL_SOURCE_NAME + "::/", OpenMetadataType.FILE_FOLDER_TYPE_NAME))
                 .thenReturn(Optional.empty());
     }
 
@@ -137,13 +132,13 @@ class DataEngineFolderHierarchyHandlerTest {
         when(folderHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
                 EXTERNAL_SOURCE_NAME + "::/test", "test", null, null, null,
                 null, 0, null, null, null,
-                null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
+                null, OpenMetadataType.FILE_FOLDER_TYPE_GUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD)).
                 thenReturn(GUID_VALUE_1);
         when(folderHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
                 EXTERNAL_SOURCE_NAME + "::/", "/", null, null, null,
                 null, 0, null, null, null,
-                null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
+                null, OpenMetadataType.FILE_FOLDER_TYPE_GUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD)).
                 thenReturn(GUID_VALUE_2);
     }

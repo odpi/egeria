@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -58,14 +59,11 @@ public class RelatedElementConverter<B> extends GovernanceEngineOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof RelatedMetadataElement)
+            if (returnBean instanceof RelatedMetadataElement bean)
             {
-                RelatedMetadataElement bean = (RelatedMetadataElement) returnBean;
-
                 fillElementControlHeader(bean, relationship);
 
                 bean.setRelationshipGUID(relationship.getGUID());
-                bean.setRelationshipType(super.getElementType(relationship));
 
                 InstanceProperties instanceProperties = relationship.getProperties();
 
@@ -75,6 +73,15 @@ public class RelatedElementConverter<B> extends GovernanceEngineOMASConverter<B>
                     bean.setEffectiveToTime(instanceProperties.getEffectiveToTime());
                     bean.setRelationshipProperties(mapElementProperties(instanceProperties));
                 }
+
+                EntityProxy startingProxy = relationship.getEntityOneProxy();
+
+                if (startingProxy.getGUID().equals(entity.getGUID()))
+                {
+                    startingProxy = relationship.getEntityTwoProxy();
+                }
+
+                bean.setStartingElement(super.getElementStub(beanClass, startingProxy, methodName));
 
                 OpenMetadataElement relatedBean = new OpenMetadataElement();
 

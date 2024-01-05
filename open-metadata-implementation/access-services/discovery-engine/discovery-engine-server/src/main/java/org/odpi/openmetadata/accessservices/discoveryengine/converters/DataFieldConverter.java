@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -108,28 +107,41 @@ public class DataFieldConverter<B> extends DiscoveryEngineOMASConverter<B>
                 bean.setDataFieldName(this.removeDataFieldName(instanceProperties));
                 bean.setDataFieldType(this.removeDataFieldType(instanceProperties));
                 bean.setDataFieldDescription(this.removeDataFieldDescription(instanceProperties));
+                bean.setDataFieldNamespace(this.removeDataFieldNamespace(instanceProperties));
                 bean.setDataFieldAliases(this.removeDataFieldAliases(instanceProperties));
                 bean.setDataFieldSortOrder(this.removeSortOrder(instanceProperties));
+                bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
+                bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+                bean.setIsNullable(this.removeIsNullable(instanceProperties));
+                bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
+                bean.setLength(this.removeLength(instanceProperties));
+                bean.setPrecision(this.removePrecision(instanceProperties));
+                bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
                 bean.setDefaultValue(this.removeDefaultValue(instanceProperties));
+                bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
+                bean.setVersion(this.removeVersion(instanceProperties));
+                bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                 if ((relationships != null) && (! relationships.isEmpty()))
                 {
                     int nestedDataFields = 0;
+                    int linkedDataFields = 0;
+                    int attachedAnnotations = 0;
 
                     for (Relationship relationship : relationships)
                     {
                         if ((relationship != null) && (relationship.getType() != null) && (relationship.getType().getTypeDefName() != null))
                         {
 
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME))
                             {
                                 bean.setDataFieldPosition(repositoryHelper.getIntProperty(serviceName,
-                                                                                          OpenMetadataAPIMapper.DATA_FIELD_POSITION_PROPERTY_NAME,
+                                                                                          OpenMetadataType.DATA_FIELD_POSITION_PROPERTY_NAME,
                                                                                           relationship.getProperties(),
                                                                                           methodName));
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -138,10 +150,30 @@ public class DataFieldConverter<B> extends DiscoveryEngineOMASConverter<B>
                                     nestedDataFields++;
                                 }
                             }
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD_ANALYSIS_TYPE_NAME))
+                            {
+                                EntityProxy endOne = relationship.getEntityOneProxy();
+
+                                if ((endOne != null) && (endOne.getGUID() != null) && (endOne.getGUID().equals(primaryEntity.getGUID())))
+                                {
+                                    attachedAnnotations++;
+                                }
+                            }
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME))
+                            {
+                                EntityProxy endOne = relationship.getEntityOneProxy();
+
+                                if ((endOne != null) && (endOne.getGUID() != null) && (endOne.getGUID().equals(primaryEntity.getGUID())))
+                                {
+                                    linkedDataFields++;
+                                }
+                            }
                         }
                     }
 
                     bean.setNestedDataFields(nestedDataFields);
+                    bean.setLinkedDataFields(linkedDataFields);
+                    bean.setDataFieldAnnotations(attachedAnnotations);
                 }
 
                 /*

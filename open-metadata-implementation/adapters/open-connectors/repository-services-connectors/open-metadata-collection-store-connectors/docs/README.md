@@ -43,7 +43,7 @@ following:
 
 ```
 <properties>
-    <open-metadata.version>4.3</open-metadata.version>
+    <open-metadata.version>4.4-SNAPSHOT</open-metadata.version>
 </properties>
 <dependencies>
     <dependency>

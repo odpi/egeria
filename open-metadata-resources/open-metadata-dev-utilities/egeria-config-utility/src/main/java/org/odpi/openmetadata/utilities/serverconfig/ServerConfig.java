@@ -11,13 +11,13 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationS
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 
 import java.io.BufferedReader;
@@ -333,7 +333,7 @@ public class ServerConfig
 
 
     /**
-     * Add the audit log connector that logs the event payload and turn of event logging in the
+     * Add the audit log connector that logs the event payload and turn off event logging in the
      * default console audit log.
      *
      * @param serverName server name to upgrade
@@ -349,14 +349,14 @@ public class ServerConfig
          * Create a list of severities for the existing console audit log destination that
          * removes the EVENT severity. (It already ignores the TRACE and PERFMON severities).
          */
-        List<OMRSAuditLogRecordSeverity> supportedSeverityDefinitions = Arrays.asList(OMRSAuditLogRecordSeverity.values());
-        List<String>                     consoleSupportedSeverities   = new ArrayList<>();
+        List<AuditLogRecordSeverityLevel> supportedSeverityDefinitions = Arrays.asList(AuditLogRecordSeverityLevel.values());
+        List<String>                      consoleSupportedSeverities   = new ArrayList<>();
 
-        for (OMRSAuditLogRecordSeverity severityDefinition : supportedSeverityDefinitions)
+        for (AuditLogRecordSeverityLevel severityDefinition : supportedSeverityDefinitions)
         {
-            if ((! OMRSAuditLogRecordSeverity.EVENT.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.TRACE.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.PERFMON.equals(severityDefinition)))
+            if ((! AuditLogRecordSeverityLevel.EVENT.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.TRACE.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.PERFMON.equals(severityDefinition)))
             {
                 consoleSupportedSeverities.add(severityDefinition.getName());
             }
@@ -415,7 +415,7 @@ public class ServerConfig
             eventDisplayConnection.setDisplayName("Display Event Payloads On Console Audit Log Destination");
 
             List<String> eventDisplaySupportedSeverities = new ArrayList<>();
-            eventDisplaySupportedSeverities.add(OMRSAuditLogRecordSeverity.EVENT.getName());
+            eventDisplaySupportedSeverities.add(AuditLogRecordSeverityLevel.EVENT.getName());
             this.setSupportedAuditLogSeverities(eventDisplaySupportedSeverities, eventDisplayConnection);
 
             client.addAuditLogDestination(eventDisplayConnection);
@@ -832,7 +832,7 @@ public class ServerConfig
 
         ServerConfig utility = new ServerConfig(platformURLRoot, clientUserId);
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
         String platformOrigin = utility.getPlatformOrigin();
 

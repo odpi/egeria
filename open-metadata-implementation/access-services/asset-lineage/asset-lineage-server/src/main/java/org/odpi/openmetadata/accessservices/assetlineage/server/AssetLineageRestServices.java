@@ -131,6 +131,8 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName);
         }
         return response;
     }
@@ -173,9 +175,9 @@ public class AssetLineageRestServices {
         GUIDListResponse response = new GUIDListResponse();
 
         String methodName = "publishEntity";
-
+        AuditLog auditLog = null;
         try {
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
             EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
             if (entity == null) {
@@ -195,6 +197,8 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
         return response;
     }
@@ -293,6 +297,8 @@ public class AssetLineageRestServices {
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
         } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
+        } catch (Exception e) {
             restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
         return response;

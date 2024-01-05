@@ -18,7 +18,7 @@ import java.util.List;
 public class BigGlossariesArchiveWriter extends OMRSArchiveWriter
 {
     private static final String openMetadataArchiveRootName  = "BigGlossary";
-    private static final String bigGlossaryArchiveFileNamePostFix   = ".json";
+    private static final String bigGlossaryArchiveFileNamePostFix   = ".omarchive";
 
 
 

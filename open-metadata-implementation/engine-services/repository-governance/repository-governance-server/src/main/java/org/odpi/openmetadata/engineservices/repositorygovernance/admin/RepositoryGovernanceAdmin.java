@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.admin;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
@@ -50,7 +50,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceEngineClient              governanceActionClient,
+                                                           GovernanceContextClient              governanceActionClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -171,7 +171,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
                                                                                                   String                              accessServiceServerName,
                                                                                                   String                              localServerUserId,
                                                                                                   GovernanceEngineConfigurationClient configurationClient,
-                                                                                                  GovernanceEngineClient              governanceActionClient,
+                                                                                                  GovernanceContextClient             governanceActionClient,
                                                                                                   EnterpriseRepositoryServicesClient  archiveEngineClient,
                                                                                                   int                                 maxPageSize) throws OMAGConfigurationErrorException
     {

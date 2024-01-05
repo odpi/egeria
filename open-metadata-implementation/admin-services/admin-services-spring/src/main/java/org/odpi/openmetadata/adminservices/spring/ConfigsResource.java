@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
@@ -26,7 +27,7 @@ public class ConfigsResource
     private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
     /**
-     * Return all the server configuration documents
+     * Return all the server configuration documents.
      *
      * @param userId  user that is issuing the request
      * @return OMAGServerConfigs properties or
@@ -34,6 +35,12 @@ public class ConfigsResource
      * OMAGInvalidParameterException invalid parameter occurred while processing.
      */
     @GetMapping()
+
+    @Operation(summary="getStoredConfigurations",
+               description="Return all the server configuration documents.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document/"))
+
     public OMAGServerConfigsResponse getStoredConfigurations(@PathVariable String userId)
     {
         return adminAPI.retrieveAllServerConfigs(userId);

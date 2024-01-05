@@ -4,79 +4,133 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
 
 /**
  * ViewServiceDescription provides a list of registered view services.
  */
-public enum ViewServiceDescription implements Serializable
+public enum ViewServiceDescription
 {
+    /**
+     * View Service for glossary authoring.
+     */
     GLOSSARY_AUTHOR(800,
                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
                     "Glossary Author",
                     "Glossary Author OMVS",
                     "glossary-author",
                     "View Service for glossary authoring.",
-                    "https://egeria-project.org/services/omvs/glossary-author/overview"),
+                    "https://egeria-project.org/services/omvs/glossary-author/overview",
+                    AccessServiceDescription.SUBJECT_AREA_OMAS.getAccessServiceFullName()),
 
+    /**
+     * Explore open metadata instances.
+     */
     REPOSITORY_EXPLORER(801,
-                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                  "Repository Explorer",
-                  "Repository Explorer OMVS",
-                  "rex",
-                  "Explore open metadata instances.",
-                  "https://egeria-project.org/services/omvs/rex/overview"),
+                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        "Repository Explorer",
+                        "Repository Explorer OMVS",
+                        "rex",
+                        "Explore open metadata instances.",
+                        "https://egeria-project.org/services/omvs/rex/overview",
+                        CommonServicesDescription.REPOSITORY_SERVICES.getServiceName()),
 
+    /**
+     * Explore the open metadata types in a repository or cohort.
+     */
     TYPE_EXPLORER(802,
                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "tex",
                   "Explore the open metadata types in a repository or cohort.",
-                  "https://egeria-project.org/services/omvs/tex/overview"),
+                  "https://egeria-project.org/services/omvs/tex/overview",
+                  CommonServicesDescription.REPOSITORY_SERVICES.getServiceName()),
 
+    /**
+     * Explore and operate an open metadata ecosystem.
+     */
     DINO(803,
-                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                  "Dynamic Infrastructure and Operations",
-                  "Dynamic Infrastructure and Operations OMVS",
-                  "dino",
-                  "Explore and operate an open metadata ecosystem.",
-                  "https://egeria-project.org/services/omvs/dino/overview"),
+         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+         "Dynamic Infrastructure and Operations",
+         "Dynamic Infrastructure and Operations OMVS",
+         "dino",
+         "Explore and operate an open metadata ecosystem.",
+         "https://egeria-project.org/services/omvs/dino/overview",
+         CommonServicesDescription.SERVER_OPERATIONS.getServiceName()),
 
+    /**
+     * Author server configuration.
+     */
     SERVER_AUTHOR(804,
-                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                 "Server Author",
-                 "Server Author OMVS",
-                 "server-author",
-                 "Author servers.",
-                 "https://egeria-project.org/services/omvs/server-author/overview/"),
-
-    GLOSSARY_BROWSER(805,
-                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                      "Glossary Browser",
-                      "Glossary Browser OMVS",
-                      "glossary-browser",
-                      "View glossary terms and categories within a glossary.",
-                      "https://egeria-project.org/services/omvs/glossary-browser/overview/"),
-
-    GLOSSARY_WORKFLOW(806,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                 "Glossary Workflow",
-                         "Glossary Workflow OMVS",
-                         "glossary-workflow",
-                         "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
-                         "https://egeria-project.org/services/omvs/glossary-workflow/overview/"),
+                  "Server Author",
+                  "Server Author OMVS",
+                  "server-author",
+                  "Author server configuration.",
+                  "https://egeria-project.org/services/omvs/server-author/overview/",
+                  CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName()),
 
-    MY_PROFILE(807,
+    /**
+     * View glossary terms and categories within a glossary.
+     */
+    GLOSSARY_BROWSER(805,
+                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     "Glossary Browser",
+                     "Glossary Browser OMVS",
+                     "glossary-browser",
+                     "View glossary terms and categories within a glossary.",
+                     "https://egeria-project.org/services/omvs/glossary-browser/overview/",
+                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
+     */
+    GLOSSARY_WORKFLOW(806,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                      "My Profile",
-                      "My Profile OMVS",
-                      "my-profile",
-                      "Manage information about the logged on user as well as their preferences.",
-                      "https://egeria-project.org/services/omvs/my-profile/overview/"),
+                      "Glossary Workflow",
+                      "Glossary Workflow OMVS",
+                      "glossary-workflow",
+                      "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
+                      "https://egeria-project.org/services/omvs/glossary-workflow/overview/",
+                      AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manage information about the logged on user as well as their preferences.
+     */
+    MY_PROFILE(807,
+               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+               "My Profile",
+               "My Profile OMVS",
+               "my-profile",
+               "Manage information about the logged on user as well as their preferences.",
+               "https://egeria-project.org/services/omvs/my-profile/overview/",
+               AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Search and understand your assets.
+     */
+    ASSET_CATALOG (808,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Asset Catalog",
+                   "Asset Catalog OMVS",
+                   "asset-catalog",
+                   "Search and understand your assets.",
+                   "https://egeria-project.org/services/omvs/asset-catalog/overview/",
+                   AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Build collections of asset and other metadata.
+     */
+    COLLECTION_MANAGER  (809,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         "Collection Manager",
+                         "Collection Manager OMVS",
+                         "collection-manager",
+                         "Build collections of asset and other metadata.",
+                         "https://egeria-project.org/services/omvs/collection-manager/overview/",
+                         AccessServiceDescription.DIGITAL_SERVICE_OMAS.getAccessServiceFullName()),
     ;
 
-    private static final long serialVersionUID = 1L;
 
     private final int                        viewServiceCode;
     private final ComponentDevelopmentStatus viewServiceDevelopmentStatus;
@@ -85,6 +139,7 @@ public enum ViewServiceDescription implements Serializable
     private final String                     viewServiceURLMarker;
     private final String                     viewServiceDescription;
     private final String                     viewServiceWiki;
+    private final String                     viewServicePartnerService;
 
 
     /**
@@ -103,7 +158,8 @@ public enum ViewServiceDescription implements Serializable
                            String                     viewServiceFullName,
                            String                     viewServiceURLMarker,
                            String                     viewServiceDescription,
-                           String                     viewServiceWiki)
+                           String                     viewServiceWiki,
+                           String                     viewServicePartnerService)
     {
         /*
          * Save the values supplied
@@ -115,6 +171,7 @@ public enum ViewServiceDescription implements Serializable
         this.viewServiceURLMarker = viewServiceURLMarker;
         this.viewServiceDescription = viewServiceDescription;
         this.viewServiceWiki = viewServiceWiki;
+        this.viewServicePartnerService = viewServicePartnerService;
     }
 
 
@@ -204,5 +261,16 @@ public enum ViewServiceDescription implements Serializable
      */
     public String getViewServiceWiki() {
         return viewServiceWiki;
+    }
+
+
+    /**
+     * Return the description of the service that this view service is partnered with.
+     *
+     * @return  Full name of related service
+     */
+    public String getViewServicePartnerService()
+    {
+        return viewServicePartnerService;
     }
 }

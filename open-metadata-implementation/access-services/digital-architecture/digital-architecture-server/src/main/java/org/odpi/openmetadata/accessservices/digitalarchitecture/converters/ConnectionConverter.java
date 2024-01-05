@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EmbeddedConnection;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -112,7 +112,7 @@ public class ConnectionConverter<B> extends DigitalArchitectureOMASConverter<B>
                     {
                         if ((relationship != null) && (relationship.getType() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
                             {
                                 EmbeddedConnection embeddedConnection = new EmbeddedConnection();
 
@@ -126,11 +126,11 @@ public class ConnectionConverter<B> extends DigitalArchitectureOMASConverter<B>
 
                                 embeddedConnections.add(embeddedConnection);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
                             {
                                 bean.setConnectorType(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
                             {
                                 bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
                             }

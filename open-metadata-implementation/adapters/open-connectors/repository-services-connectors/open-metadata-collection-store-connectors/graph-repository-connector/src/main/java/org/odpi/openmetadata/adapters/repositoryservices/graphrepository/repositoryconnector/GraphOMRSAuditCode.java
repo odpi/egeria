@@ -3,15 +3,14 @@
 
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 
 /**
  * The GraphOMRSAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -28,17 +27,17 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
 {
 
     GRAPH_REPOSITORY_CREATED("OMRS-GRAPH-REPOSITORY-0001",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The OMRS Graph Repository has been created.",
-            "The local server has created and initialized a new Local OMRS Graph Repository database.",
-            "This repository will be used as the local repository for this server. Verify that this is the first time that " +
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The OMRS Graph Repository has been created.",
+                             "The local server has created and initialized a new Local OMRS Graph Repository database.",
+                             "This repository will be used as the local repository for this server. Verify that this is the first time that " +
                                      "the server is being started with the graph repository.  If it has not then shut down the server " +
                                      "immediately and track down why the server is not finding its repository.  It may be a configuration " +
                                      "change or the contents of the repository have been removed.  Once the repository has been restored, " +
                                      "restart the server and you should see OMRS-GRAPH-REPOSITORY-0003 at start up rather than this message."),
 
     GRAPH_REPOSITORY_HAS_DIFFERENT_METADATA_COLLECTION_ID("OMRS-GRAPH-REPOSITORY-0002",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+                                                          AuditLogRecordSeverityLevel.EXCEPTION,
             "The OMRS Graph Database {0} contains a metadataCollectionId {1} that does not match the requested metadataCollectionId {2}.",
             "The graph database is for a different metadata repository. Cannot proceed with initialization of the graph repository.",
             "The likely cause of this error is either that the configuration document for the server has been deleted and recreated, " +
@@ -54,22 +53,23 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
                                                                   "Otherwise rename this server so that it has a unique name and restart it."),
 
     GRAPH_REPOSITORY_OPENED("OMRS-GRAPH-REPOSITORY-0003",
-            OMRSAuditLogRecordSeverity.INFO,
+                            AuditLogRecordSeverityLevel.INFO,
             "The OMRS Graph Repository has been opened.",
             "The local server has created and initialized the Local OMRS Graph Repository database.",
             "No action is required. The existing graph repository has been opened and validated successfully."),
     ;
 
-    AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
     /**
      * The constructor for GraphOMRSAuditCode expects to be passed one of the enumeration rows defined in
      * GraphOMRSAuditCode above.   For example:
-     *
      *     GraphOMRSAuditCode   auditCode = GraphOMRSAuditCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId unique Id for the message
      * @param severity severity of the message
@@ -77,17 +77,17 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
      * @param systemAction description of the action taken by the system when the condition happened
      * @param userAction instructions for resolving the situation, if any
      */
-    GraphOMRSAuditCode(String                     messageId,
-                       OMRSAuditLogRecordSeverity severity,
-                       String                     message,
-                       String                     systemAction,
-                       String                     userAction)
+    GraphOMRSAuditCode(String                      messageId,
+                       AuditLogRecordSeverityLevel severity,
+                       String                      message,
+                       String                      systemAction,
+                       String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -99,7 +99,11 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -112,6 +116,11 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }

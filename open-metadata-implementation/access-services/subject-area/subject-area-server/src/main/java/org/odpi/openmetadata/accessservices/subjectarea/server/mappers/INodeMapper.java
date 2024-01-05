@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 /**

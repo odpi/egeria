@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
@@ -102,7 +101,7 @@ public class IntegrationDaemonOperationalServices
              * Handover problem between the admin services and the integration services if the config is null.
              */
             if (((staticConfiguration == null) || (staticConfiguration.isEmpty())) &&
-                ((dynamicConfiguration == null) || (dynamicConfiguration.isEmpty())))
+                        ((dynamicConfiguration == null) || (dynamicConfiguration.isEmpty())))
             {
                 throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
@@ -210,7 +209,6 @@ public class IntegrationDaemonOperationalServices
                         String groupName             = this.getIntegrationGroupName(integrationGroupConfig);
 
                         GovernanceEngineRESTClient restClient = new GovernanceEngineRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
-                        GovernanceEngineClient serverClient = new GovernanceEngineClient(partnerOMASServerName, partnerOMASRootURL, restClient, maxPageSize);
                         GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(partnerOMASServerName,
                                                                                                   partnerOMASRootURL,
                                                                                                   restClient,
@@ -229,8 +227,8 @@ public class IntegrationDaemonOperationalServices
                         for (String registeredServiceURLMarker : registeredServiceURLs)
                         {
                             IntegrationServiceConfig integrationServiceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(registeredServiceURLMarker,
-                                                                                                                            localServerName,
-                                                                                                                            methodName);
+                                                                                                                                       localServerName,
+                                                                                                                                       methodName);
                             IntegrationContextManager serviceContextManager = this.getContextManager(integrationServiceConfig);
                             /*
                              * Each integration service has its own audit log instance.
@@ -242,12 +240,12 @@ public class IntegrationDaemonOperationalServices
                                                                  integrationServiceConfig.getIntegrationServiceDescription(),
                                                                  integrationServiceConfig.getIntegrationServiceWiki());
                             serviceContextManager.initializeContextManager(partnerOMASServerName,
-                                                                    partnerOMASRootURL,
-                                                                    localServerUserId,
-                                                                    localServerPassword,
-                                                                    integrationServiceConfig.getIntegrationServiceOptions(),
-                                                                    maxPageSize,
-                                                                    integrationServicesAuditLog);
+                                                                           partnerOMASRootURL,
+                                                                           localServerUserId,
+                                                                           localServerPassword,
+                                                                           integrationServiceConfig.getIntegrationServiceOptions(),
+                                                                           maxPageSize,
+                                                                           integrationServicesAuditLog);
 
                             serviceContextManager.createClients();
 
@@ -262,7 +260,6 @@ public class IntegrationDaemonOperationalServices
                                                                                            localServerName,
                                                                                            localServerUserId,
                                                                                            configurationClient,
-                                                                                           serverClient,
                                                                                            auditLog,
                                                                                            maxPageSize);
 
@@ -545,10 +542,10 @@ public class IntegrationDaemonOperationalServices
                                       error);
 
                 throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.INVALID_CONTEXT_MANAGER.
-                                                                    getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName(),
-                                                                                         contextManagerClassName,
-                                                                                         error.getClass().getName(),
-                                                                                         error.getMessage()),
+                                                                  getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName(),
+                                                                                       contextManagerClassName,
+                                                                                       error.getClass().getName(),
+                                                                                       error.getMessage()),
                                                           this.getClass().getName(),
                                                           methodName,
                                                           error);

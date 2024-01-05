@@ -20,49 +20,94 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-actuator-autoconfigure'
-    implementation 'org.springframework.boot:spring-boot-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'jakarta.servlet:jakarta.servlet-api'
-    implementation 'jakarta.validation:jakarta.validation-api'
     implementation 'org.projectlombok:lombok'
+    implementation 'org.yaml:snakeyaml'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    implementation 'com.google.guava:guava'
     annotationProcessor 'org.projectlombok:lombok'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'ch.qos.logback:logback-classic'
     runtimeOnly 'org.hibernate:hibernate-validator'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+    runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
+    runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
 
-    /* IN DEVELOPMENT */
-
-    /* Pulling dependencies for some fo the sub-systems enabling 'Metadata Access Store' services  */
-
-    runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
-    runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
-    runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
-    runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
-
-    /* Pulling dependencies for some fo the sub-systems enabling 'Integration Daemon' services to test Database Integrator via JDBC integration connector */
-
-//    runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
-//    runtimeOnly 'org.odpi.egeria:egeria-connector-resource-jdbc:1.1'
-//    runtimeOnly 'org.odpi.egeria:egeria-connector-integration-jdbc:1.1'
-//    runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.19.0.0'
+    if (!project.hasProperty("adminChassisOnly")) {
+        runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:security-officer:security-officer-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:security-manager:security-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:glossary-view:glossary-view-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:data-engine:data-engine-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:subject-area:subject-area-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:omas-asset-catalog-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:governance-engine:governance-engine-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:community-profile:community-profile-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:design-model:design-model-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:data-privacy:data-privacy-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:project-management:project-management-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:dev-ops:dev-ops-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:software-developer:software-developer-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:digital-service:digital-service-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:data-science:data-science-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:asset-owner:asset-owner-spring')
+        runtimeOnly project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-spring')
+        runtimeOnly project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-spring')
+        runtimeOnly project(':open-metadata-implementation:engine-services:governance-action:governance-action-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-spring')
+        runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
+        runtimeOnly project(':open-metadata-conformance-suite:open-metadata-conformance-suite-spring')
+        runtimeOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring')
+        runtimeOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-spring')
+        runtimeOnly project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring')
+    }
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.vaadin.external.google:android-json:0.0.20131108.vaadin1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params'
     testImplementation 'org.springframework:spring-test'
 
 }

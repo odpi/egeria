@@ -2140,6 +2140,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
@@ -2157,6 +2158,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     @Override
     public List<GlossaryTermElement>    getRelatedTerms(String                               userId,
                                                         String                               glossaryTermGUID,
+                                                        String                               relationshipTypeName,
                                                         List<GlossaryTermRelationshipStatus> limitResultsByStatus,
                                                         int                                  startFrom,
                                                         int                                  pageSize,
@@ -2170,6 +2172,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                       null,
                                       null,
                                       glossaryTermGUID,
+                                      relationshipTypeName,
                                       limitResultsByStatus,
                                       startFrom,
                                       pageSize,

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The ConnectorConfigurationFactoryErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the ConnectorConfigurationFactory.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
- * <br><br>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -32,23 +31,22 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
      * CONNECTOR-CONFIGURATION-FACTORY-400-001 Invalid Connector Provider class {0}; class loader exception was {1} with message {2}
      */
     INVALID_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-001 ",
-            "Invalid Connector Provider class {0}; class loader exception was {1} with message {2}",
+            "Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the loader.path option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}",
             "The system is unable to create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +
                                        ".  This has resulted in an exception in the class loader.",
             "Update the configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of " +
                                        "the connection's connectorType. Then retry the request.");
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for ConnectorConfigurationFactoryErrorCode expects to be passed one of the enumeration rows defined in
-     * ConnectorConfigurationFactoryErrorCode above.   For example:
-     * <br><br>
-     *     ConnectorConfigurationFactoryErrorCode   errorCode = ConnectorConfigurationFactoryErrorCode.ERROR_SENDING_EVENT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -56,13 +54,13 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    ConnectorConfigurationFactoryErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    ConnectorConfigurationFactoryErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -74,7 +72,11 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -87,6 +89,12 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -101,8 +109,12 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     @Override
     public String toString()
     {
-        return "ConnectorConfigurationFactoryErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -33,14 +31,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DigitalServiceResponsibility implements Serializable
+public enum DigitalServiceResponsibility
 {
     UNCLASSIFIED_RESPONSIBILITY (0,  "Unclassified",     "The digital service has no assigned responsibility."),
     DATA_CONTROLLER             (1,  "Data Controller",  "The digital service is a data controller."),
     DATA_PROCESSOR              (2,  "Data Processor",   "The digital service is a data processor."),
     OTHER                       (99, "Other",            "The digital service has a locally defined responsibility.");
 
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

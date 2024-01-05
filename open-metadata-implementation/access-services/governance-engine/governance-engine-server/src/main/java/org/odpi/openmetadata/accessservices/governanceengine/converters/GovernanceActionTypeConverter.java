@@ -120,8 +120,9 @@ public class GovernanceActionTypeConverter<B> extends GovernanceEngineOMASConver
                     {
                         actionTypeProperties.setGovernanceEngineGUID(entityProxy.getGUID());
                     }
-
                 }
+
+                bean.setActionTypeProperties(actionTypeProperties);
             }
 
             return returnBean;

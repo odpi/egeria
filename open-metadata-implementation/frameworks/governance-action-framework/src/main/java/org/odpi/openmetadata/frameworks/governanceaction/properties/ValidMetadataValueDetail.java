@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValueDetail extends ValidMetadataValue
 {
-    private static final long     serialVersionUID = 1L;
-
     private List<ValidMetadataValue> validMapNameValues = null;
 
 
@@ -49,12 +48,22 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
     }
 
 
+    /**
+     * Return the related map values.
+     *
+     * @return list of valid metadata values
+     */
     public List<ValidMetadataValue> getValidMapNameValues()
     {
         return validMapNameValues;
     }
 
 
+    /**
+     * Set up the related map values.
+     *
+     * @param validMapNameValues list of valid metadata values
+     */
     public void setValidMapNameValues(List<ValidMetadataValue> validMapNameValues)
     {
         this.validMapNameValues = validMapNameValues;
@@ -66,7 +75,21 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
      *
      * @return string value
      */
-
+    @Override
+    public String toString()
+    {
+        return "ValidMetadataValueDetail{" +
+                       "validMapNameValues=" + validMapNameValues +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", preferredValue='" + getPreferredValue() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", isCaseSensitive=" + getIsCaseSensitive() +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       '}';
+    }
 
 
     /**
@@ -75,7 +98,23 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
      * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (! (objectToCompare instanceof ValidMetadataValueDetail that))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        return Objects.equals(validMapNameValues, that.validMapNameValues);
+    }
 
 
     /**
@@ -83,5 +122,9 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
      *
      * @return int
      */
-
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), validMapNameValues);
+    }
 }

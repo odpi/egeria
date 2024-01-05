@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
+import org.odpi.openmetadata.adapters.connectors.discoveryservices.ffdc.DiscoveryServiceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AuditableDiscoveryService is a base class for discovery services that wish to use the audit log.
+ * AuditableDiscoveryService is a base class for discovery services that provides common error handling routines.
  */
 public abstract class AuditableDiscoveryService extends DiscoveryService
 {
@@ -30,8 +31,8 @@ public abstract class AuditableDiscoveryService extends DiscoveryService
     {
         throw new ConnectorCheckedException(DiscoveryServiceErrorCode.NO_ASSET.getMessageDefinition(assetGUID,
                                                                                                     discoveryServiceName),
-                                             this.getClass().getName(),
-                                             methodName);
+                                            this.getClass().getName(),
+                                            methodName);
     }
 
 

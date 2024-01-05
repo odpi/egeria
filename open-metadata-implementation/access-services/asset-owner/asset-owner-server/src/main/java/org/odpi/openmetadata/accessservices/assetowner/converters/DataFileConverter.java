@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -102,22 +102,22 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                      * The values in the classifications override the values in the main properties of the Asset's entity.
                      * Having these properties in the main entity is deprecated.
                      */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
                     fileProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
                     fileProperties.setOwner(this.getOwner(instanceProperties));
                     fileProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
                     fileProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
                     fileProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     fileProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 
                     fileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     fileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

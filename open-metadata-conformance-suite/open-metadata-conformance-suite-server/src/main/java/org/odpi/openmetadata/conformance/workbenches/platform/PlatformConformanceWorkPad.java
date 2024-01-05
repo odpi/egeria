@@ -4,11 +4,13 @@ package org.odpi.openmetadata.conformance.workbenches.platform;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.PlatformConformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
-import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfile;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
+/**
+ * PlatformConformanceWorkPad provides the work pad for the platform workbench
+ */
 public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
 {
     private static final String workbenchId            = "platform-workbench";
@@ -18,8 +20,8 @@ public class PlatformConformanceWorkPad extends OpenMetadataConformanceWorkbench
     private static final String tutType                = "Open Metadata and Governance Platform";
 
 
-    private OMRSAuditLog                       auditLog;
-    private String                             tutPlatformURLRoot = null;
+    private final OMRSAuditLog auditLog;
+    private       String       tutPlatformURLRoot = null;
 
 
     /**

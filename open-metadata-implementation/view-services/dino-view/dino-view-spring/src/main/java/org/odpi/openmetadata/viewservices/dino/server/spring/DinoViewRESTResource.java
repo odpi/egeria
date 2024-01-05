@@ -16,13 +16,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * The DinoViewRESTResource provides the Spring API endpoints of the Dino Open Metadata View Service (OMVS).
- * This interface provides an interfaces for Egeria operators.
+ * This interface provides a service for Egeria operators.
  */
 
 @RestController
 @RequestMapping("/servers/{viewServerName}/open-metadata/view-services/dino/users/{userId}")
 
-@Tag(name="Dino OMVS", description="Explore topology information in an Egeria deployment of platforms, servers, services and cohorts for graph visualization.", externalDocs=@ExternalDocumentation(description="Dino View Service (OMVS)",url="https://egeria-project.org/services/omvs/dino/overview/"))
+@Tag(name="View Server: Dino OMVS",
+     description="Explore topology information in an Egeria deployment of platforms, servers, services and cohorts for graph visualization.", externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/dino/overview/"))
 
 public class DinoViewRESTResource {
 

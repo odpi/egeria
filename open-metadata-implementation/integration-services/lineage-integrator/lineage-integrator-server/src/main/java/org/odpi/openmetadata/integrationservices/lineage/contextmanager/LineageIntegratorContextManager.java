@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
@@ -44,6 +44,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     private DataAssetExchangeClient    dataAssetExchangeClient;
     private LineageExchangeClient      lineageExchangeClient;
     private GovernanceExchangeClient   governanceExchangeClient;
+    private OpenGovernanceClient       openGovernanceClient;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
@@ -95,6 +96,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+        this.openGovernanceClient = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
 
         AssetManagerRESTClient restClient;
 
@@ -184,7 +186,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof LineageIntegratorConnector)
+        if (integrationConnector instanceof LineageIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 LineageIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -209,14 +211,13 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                               auditLog,
                                                                               connectorId);
 
-            LineageIntegratorConnector serviceSpecificConnector = (LineageIntegratorConnector)integrationConnector;
-
             LineageIntegratorContext integratorContext = new LineageIntegratorContext(connectorId,
                                                                                       connectorName,
                                                                                       connectorUserId,
                                                                                       partnerOMASServerName,
                                                                                       openIntegrationClient,
                                                                                       openMetadataStoreClient,
+                                                                                      openGovernanceClient,
                                                                                       this,
                                                                                       dataAssetExchangeClient,
                                                                                       lineageExchangeClient,

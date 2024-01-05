@@ -105,7 +105,7 @@ body:
           - If using containers, they will be published to quay.io & docker.io & built for arm64 + amd64 with same release versions as other artifacts
           - If using maven, versioning should follow 1.1 / 1.1-SNAPSHOT convention. For javascript etc use semver, ie 1.1.1 / 1.1.1-rc.0
           - Follows egeria branching-strategy ie branch just before release
-          - Security policy aligned with egeria - common mailing list for reporting vulnarabilities
+          - Security policy aligned with egeria - common mailing list for reporting vulnerabilities
       placeholder: |
         Yes - all true
     validations:

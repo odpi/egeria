@@ -58,12 +58,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
     public String toString()
     {
         return "TabularColumnProperties{" +
-                       "dataType='" + getDataType() + '\'' +
-                       ", defaultValue='" + getDefaultValue() + '\'' +
-                       ", fixedValue='" + getFixedValue() + '\'' +
-                       ", externalTypeGUID='" + getExternalTypeGUID() + '\'' +
-                       ", validValuesSetGUID='" + getValidValuesSetGUID() + '\'' +
-                       ", elementPosition=" + getElementPosition() +
+                       "elementPosition=" + getElementPosition() +
                        ", minCardinality=" + getMinCardinality() +
                        ", maxCardinality=" + getMaxCardinality() +
                        ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
@@ -72,15 +67,23 @@ public class TabularColumnProperties extends SchemaAttributeProperties
                        ", minimumLength=" + getMinimumLength() +
                        ", length=" + getLength() +
                        ", precision=" + getPrecision() +
+                       ", significantDigits=" + getSignificantDigits() +
                        ", isNullable=" + getIsNullable() +
                        ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                        ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                        ", aliases=" + getAliases() +
+                       ", dataType='" + getDataType() + '\'' +
+                       ", defaultValue='" + getDefaultValue() + '\'' +
+                       ", fixedValue='" + getFixedValue() + '\'' +
+                       ", externalTypeGUID='" + getExternalTypeGUID() + '\'' +
+                       ", validValuesSetGUID='" + getValidValuesSetGUID() + '\'' +
                        ", isDeprecated=" + getIsDeprecated() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

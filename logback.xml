@@ -11,7 +11,7 @@
     <!-- It should be installed for each platform where this server is running.                              -->
     <!-- If more servers are added to the platform then duplicate the appenders and loggers for each server. -->
     <property name="LOG_DIR_PLATFORM" value="./data/platform/logs" />
-    <property name="EGERIA_SERVER_1" value="cocoMDS1" />
+    <property name="EGERIA_SERVER_1" value="active-metadata-server" />
     <property name="LOG_DIR_SERVER_1" value="./data/servers/${EGERIA_SERVER_1}/logs" />
 
     <!-- This appender defines the destination of developer (debug) logging. -->

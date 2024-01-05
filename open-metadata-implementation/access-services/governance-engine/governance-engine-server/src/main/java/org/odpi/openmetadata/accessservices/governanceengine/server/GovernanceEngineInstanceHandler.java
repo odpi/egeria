@@ -3,19 +3,17 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.GovernanceConfigurationHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 
 /**
  * GovernanceEngineInstanceHandler retrieves information from the instance map for the
@@ -102,17 +100,17 @@ class GovernanceEngineInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler(String userId,
-                                                                                            String serverName,
-                                                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException
+    GovernanceActionProcessStepHandler<GovernanceActionTypeElement> getGovernanceActionProcessStepHandler(String userId,
+                                                                                                          String serverName,
+                                                                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                                     UserNotAuthorizedException,
+                                                                                                                                                     PropertyServerException
     {
         GovernanceEngineInstance instance = (GovernanceEngineInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getGovernanceActionTypeHandler();
+            return instance.getGovernanceActionProcessStepHandler();
         }
 
         return null;
@@ -131,17 +129,17 @@ class GovernanceEngineInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler(String userId,
-                                                                                String serverName,
-                                                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    EngineActionHandler<GovernanceActionElement> getEngineActionHandler(String userId,
+                                                                        String serverName,
+                                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         GovernanceEngineInstance instance = (GovernanceEngineInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getGovernanceActionHandler();
+            return instance.getEngineActionHandler();
         }
 
         return null;

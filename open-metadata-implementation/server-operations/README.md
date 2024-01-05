@@ -3,13 +3,13 @@
 
 ![Released](../../images/egeria-content-status-released.png#pagewidth)
 
-# Platform Services
+# Server Operations
 
-The platform services provides the APIs for querying the
-[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform/)
-and discovering information about the OMAG Servers that it is hosting, starting and stopping them.
+Server operations provides the APIs for querying the
+[Open Metadata and Governance (OMAG) Server](https://egeria-project.org/concepts/omag-server/)
+which includes discovering information about the OMAG Server's running services and loading open metadata archives.
 
-* [Documentation](https://egeria-project.org/services/platform-services/overview)
+* [Documentation](https://egeria-project.org/services/server-operations)
 
 ----
 Return to [open-metadata-implementation](..).

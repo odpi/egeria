@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceengine.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -29,12 +28,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = IntegrationConnectorProperties.class, name = "IntegrationConnectorProperties"),
                 @JsonSubTypes.Type(value = IntegrationGroupProperties.class, name = "IntegrationGroupProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionTypeProperties.class, name = "GovernanceActionTypeProperties"),
-                @JsonSubTypes.Type(value = GovernanceActionProcessProperties.class, name = "GovernanceActionProcessProperties"),
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
@@ -49,7 +45,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves the values from the supplied template
      *
      * @param template element to copy
      */

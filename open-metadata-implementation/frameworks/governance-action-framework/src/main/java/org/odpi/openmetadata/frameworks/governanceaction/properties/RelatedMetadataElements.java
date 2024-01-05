@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -32,8 +33,10 @@ public class RelatedMetadataElements extends ElementControlHeader
     private ElementProperties relationshipProperties = null;
     private String            labelAtEnd1            = null;
     private String            elementGUIDAtEnd1      = null;
+    private ElementStub       elementAtEnd1          = null;
     private String            labelAtEnd2            = null;
     private String            elementGUIDAtEnd2      = null;
+    private ElementStub       elementAtEnd2          = null;
 
 
     /**
@@ -259,6 +262,50 @@ public class RelatedMetadataElements extends ElementControlHeader
 
 
     /**
+     * Return details of the element at end 1 of this relationship.
+     *
+     * @return element stub
+     */
+    public ElementStub getElementAtEnd1()
+    {
+        return elementAtEnd1;
+    }
+
+
+    /**
+     * Set up details of the element at end 1 of this relationship.
+     *
+     * @param elementAtEnd1 element stub
+     */
+    public void setElementAtEnd1(ElementStub elementAtEnd1)
+    {
+        this.elementAtEnd1 = elementAtEnd1;
+    }
+
+
+    /**
+     * Return details of the element at end 2 of this relationship.
+     *
+     * @return element stub
+     */
+    public ElementStub getElementAtEnd2()
+    {
+        return elementAtEnd2;
+    }
+
+
+    /**
+     * Set up details of the element at end 2 of this relationship.
+     *
+     * @param elementAtEnd2 element stub
+     */
+    public void setElementAtEnd2(ElementStub elementAtEnd2)
+    {
+        this.elementAtEnd2 = elementAtEnd2;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -274,8 +321,10 @@ public class RelatedMetadataElements extends ElementControlHeader
                        ", relationshipProperties=" + relationshipProperties +
                        ", labelAtEnd1='" + labelAtEnd1 + '\'' +
                        ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
+                       ", elementAtEnd1='" + elementAtEnd1 + '\'' +
                        ", labelAtEnd2='" + labelAtEnd2 + '\'' +
                        ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
+                       ", elementAtEnd2='" + elementAtEnd2 + '\'' +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +
@@ -313,8 +362,10 @@ public class RelatedMetadataElements extends ElementControlHeader
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
                        Objects.equals(elementGUIDAtEnd1, that.elementGUIDAtEnd1) &&
+                       Objects.equals(elementAtEnd1, that.elementAtEnd1) &&
                        Objects.equals(labelAtEnd1, that.labelAtEnd1) &&
                        Objects.equals(elementGUIDAtEnd2, that.elementGUIDAtEnd2) &&
+                       Objects.equals(elementAtEnd2, that.elementAtEnd2) &&
                        Objects.equals(labelAtEnd2, that.labelAtEnd2);
     }
 
@@ -328,6 +379,6 @@ public class RelatedMetadataElements extends ElementControlHeader
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, effectiveFromTime, effectiveToTime,
-                            relationshipProperties, elementGUIDAtEnd1, elementGUIDAtEnd1);
+                            relationshipProperties, elementGUIDAtEnd1, elementGUIDAtEnd1, elementAtEnd1, elementAtEnd1);
     }
 }

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionFolderProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
@@ -16,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.CollectionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -718,11 +717,11 @@ public class CollectionRESTServices
             List<Relationship> membershipLinks = handler.getAttachmentLinks(userId,
                                                                             collectionGUID,
                                                                             guidParameterName,
-                                                                            OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                                                            OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                            OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                                                             null,
-                                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                                             2,
                                                                             false,
                                                                             false,
@@ -782,10 +781,10 @@ public class CollectionRESTServices
             List<CollectionElement> collections = handler.getAttachedElements(userId,
                                                                               parentGUID,
                                                                               parentGUIDParameterName,
-                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                                               null,
                                                                               null,
-                                                                              OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                              OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                               null,
                                                                               null,
                                                                               2,

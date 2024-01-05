@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/conformance-suite/users/{userId}")
 
-@Tag(name="Conformance Suite", description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.", externalDocs=@ExternalDocumentation(description="Open Metadata Conformance Suite",url="https://egeria-project.org/guides/cts/overview/"))
+@Tag(name="Conformance Suite",
+     description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.",
+     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/guides/cts/overview/"))
 
 
 public class ConformanceSuiteResource
 {
-    private ConformanceSuiteTestLabServices restAPI = new ConformanceSuiteTestLabServices();
+    private final ConformanceSuiteTestLabServices restAPI = new ConformanceSuiteTestLabServices();
 
 
     /**

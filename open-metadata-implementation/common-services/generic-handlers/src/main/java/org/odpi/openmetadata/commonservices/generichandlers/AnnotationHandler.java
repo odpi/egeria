@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
@@ -27,7 +27,6 @@ import java.util.*;
  * ODF annotation beans and generic support for retrieving annotations.  The reason for this hybrid approach is that there are a huge range
  * of annotation types in ODF and currently all OMASs that work with discovery metadata use the ODF beans on their API.
  * Therefore, it makes sense to have support for these beans in a common location so that the implementation can be shared.
- *
  * Note: this handler only supports current effective time with lineage and deduplication set to false since this is all the current
  * discovery use cases need.
  */
@@ -91,7 +90,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      */
     public List<String>  getTypesOfAnnotation()
     {
-        return repositoryHelper.getSubTypesOf(serviceName, OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME);
+        return repositoryHelper.getSubTypesOf(serviceName, OpenMetadataType.ANNOTATION_TYPE_NAME);
     }
 
 
@@ -102,7 +101,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      */
     public Map<String, String> getTypesOfAnnotationDescriptions()
     {
-        List<String>        annotationTypeList = repositoryHelper.getSubTypesOf(serviceName, OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME);
+        List<String>        annotationTypeList = repositoryHelper.getSubTypesOf(serviceName, OpenMetadataType.ANNOTATION_TYPE_NAME);
         Map<String, String> annotationDescriptions = new HashMap<>();
 
         if (annotationTypeList != null)
@@ -173,24 +172,18 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         // todo add all the other types
-        if (annotation instanceof ClassificationAnnotation)
+        if (annotation instanceof ClassificationAnnotation classificationAnnotation)
         {
-            ClassificationAnnotation classificationAnnotation = (ClassificationAnnotation) annotation;
-
             builder.setClassificationSubtypeProperties(classificationAnnotation.getCandidateClassifications());
         }
-        else if (annotation instanceof DataClassAnnotation)
+        else if (annotation instanceof DataClassAnnotation dataClassAnnotation)
         {
-            DataClassAnnotation dataClassAnnotation = (DataClassAnnotation) annotation;
-
             builder.setDataClassSubtypeProperties(dataClassAnnotation.getCandidateDataClassGUIDs(),
                                                   dataClassAnnotation.getMatchingValues(),
                                                   dataClassAnnotation.getNonMatchingValues());
         }
-        else if (annotation instanceof DataProfileAnnotation)
+        else if (annotation instanceof DataProfileAnnotation dataProfileAnnotation)
         {
-            DataProfileAnnotation dataProfileAnnotation = (DataProfileAnnotation) annotation;
-
             builder.setDataProfileSubtypeProperties(dataProfileAnnotation.getLength(),
                                                     dataProfileAnnotation.getInferredDataType(),
                                                     dataProfileAnnotation.getInferredFormat(),
@@ -206,73 +199,55 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                     dataProfileAnnotation.getValueRangeTo(),
                                                     dataProfileAnnotation.getAverageValue());
         }
-        else if (annotation instanceof DataSourcePhysicalStatusAnnotation)
+        else if (annotation instanceof DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation)
         {
-            DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation = (DataSourcePhysicalStatusAnnotation) annotation;
-
             builder.setDataSourcePhysicalStatusSubtypeProperties(dataSourcePhysicalStatusAnnotation.getDataSourceProperties(),
                                                                  dataSourcePhysicalStatusAnnotation.getCreateTime(),
                                                                  dataSourcePhysicalStatusAnnotation.getModifiedTime(),
                                                                  dataSourcePhysicalStatusAnnotation.getSize(),
                                                                  dataSourcePhysicalStatusAnnotation.getEncoding());
         }
-        else if (annotation instanceof DataSourceMeasurementAnnotation)
+        else if (annotation instanceof DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation)
         {
-            DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation = (DataSourceMeasurementAnnotation) annotation;
-
             builder.setDataSourceMeasurementSubtypeProperties(dataSourceMeasurementAnnotation.getDataSourceProperties());
         }
-        else if (annotation instanceof QualityAnnotation)
+        else if (annotation instanceof QualityAnnotation qualityAnnotation)
         {
-            QualityAnnotation qualityAnnotation = (QualityAnnotation) annotation;
-
             builder.setQualitySubtypeProperties(qualityAnnotation.getQualityDimension(),
                                                 qualityAnnotation.getQualityScore());
         }
-        else if (annotation instanceof RelationshipAdviceAnnotation)
+        else if (annotation instanceof RelationshipAdviceAnnotation relationshipAdviceAnnotation)
         {
-            RelationshipAdviceAnnotation relationshipAdviceAnnotation = (RelationshipAdviceAnnotation) annotation;
-
             builder.setRelationshipAdviceSubtypeProperties(relationshipAdviceAnnotation.getRelatedEntityGUID(),
                                                            relationshipAdviceAnnotation.getRelationshipTypeName(),
                                                            relationshipAdviceAnnotation.getRelationshipProperties());
         }
-        else if (annotation instanceof RequestForActionAnnotation)
+        else if (annotation instanceof RequestForActionAnnotation requestForActionAnnotation)
         {
-            RequestForActionAnnotation requestForActionAnnotation = (RequestForActionAnnotation) annotation;
-
             builder.setRequestForActionSubtypeProperties(requestForActionAnnotation.getDiscoveryActivity(),
                                                          requestForActionAnnotation.getActionRequested(),
                                                          requestForActionAnnotation.getActionProperties());
         }
-        else if (annotation instanceof SchemaAnalysisAnnotation)
+        else if (annotation instanceof SchemaAnalysisAnnotation schemaAnalysisAnnotation)
         {
-            SchemaAnalysisAnnotation schemaAnalysisAnnotation = (SchemaAnalysisAnnotation) annotation;
-
             builder.setSchemaAnalysisSubTypeProperties(schemaAnalysisAnnotation.getSchemaName(),
                                                        schemaAnalysisAnnotation.getSchemaName());
         }
-        else if (annotation instanceof SemanticAnnotation)
+        else if (annotation instanceof SemanticAnnotation semanticAnnotation)
         {
-            SemanticAnnotation semanticAnnotation = (SemanticAnnotation) annotation;
-
             builder.setSemanticSubTypeProperties(semanticAnnotation.getInformalTerm(),
                                                  semanticAnnotation.getInformalTopic(),
                                                  semanticAnnotation.getCandidateGlossaryTermGUIDs(),
                                                  semanticAnnotation.getCandidateGlossaryCategoryGUIDs());
         }
-        else if (annotation instanceof SuspectDuplicateAnnotation)
+        else if (annotation instanceof SuspectDuplicateAnnotation suspectDuplicateAnnotation)
         {
-            SuspectDuplicateAnnotation suspectDuplicateAnnotation = (SuspectDuplicateAnnotation) annotation;
-
             builder.setSuspectDuplicateSubTypeProperties(suspectDuplicateAnnotation.getDuplicateAnchorGUIDs(),
                                                          suspectDuplicateAnnotation.getMatchingPropertyNames(),
                                                          suspectDuplicateAnnotation.getMatchingClassificationNames(),
                                                          suspectDuplicateAnnotation.getMatchingAttachmentGUIDs(),
                                                          suspectDuplicateAnnotation.getMatchingRelationshipGUIDs());
         }
-
-
 
         return builder;
     }
@@ -288,7 +263,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          String  methodName) throws InvalidParameterException
     {
         return invalidParameterHandler.validateTypeName(typeName,
-                                                        OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                        OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                         serviceName,
                                                         methodName,
                                                         repositoryHelper);
@@ -314,11 +289,11 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
             if (annotation instanceof SuspectDuplicateAnnotation)
             {
-                return OpenMetadataAPIMapper.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME;
+                return OpenMetadataType.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME;
             }
         }
 
-        return OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME;
+        return OpenMetadataType.ANNOTATION_TYPE_NAME;
     }
 
 
@@ -342,6 +317,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
+        final String assetGUIDParameterName = "assetGUID";
+
         String typeName = this.getAnnotationTypeName(annotation);
         String typeGUID = this.getAnnotationTypeGUID(typeName, methodName);
 
@@ -350,10 +327,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                          annotation,
                                                          methodName);
 
-        if (assetGUID != null)
-        {
-            builder.setAnchors(userId, assetGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    assetGUID,
+                                    assetGUIDParameterName,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         return this.createBeanInRepository(userId,
                                            null,
@@ -396,7 +378,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               discoveryReportGUID,
                                                               discoveryReportGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                              OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -418,15 +401,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       null,
                                       annotationGUID,
                                       annotationParameterName,
-                                      OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_TYPE_NAME,
                                       discoveryReportGUID,
                                       discoveryReportGUIDParameterName,
-                                      OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                      OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                       false,
                                       false,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                      OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                      OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                       null,
                                       null,
                                       null,
@@ -470,7 +453,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               parentDataFieldGUID,
                                                               dataFieldGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                                              OpenMetadataType.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -492,15 +476,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       null,
                                       annotationGUID,
                                       annotationParameterName,
-                                      OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                      OpenMetadataType.DATA_FIELD_ANNOTATION_TYPE_NAME,
                                       annotationGUID,
                                       annotationParameterName,
-                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                      OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                       false,
                                       false,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_GUID,
-                                      OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_NAME,
+                                      OpenMetadataType.DATA_FIELD_ANALYSIS_TYPE_GUID,
+                                      OpenMetadataType.DATA_FIELD_ANALYSIS_TYPE_NAME,
                                       null,
                                       null,
                                       null,
@@ -542,7 +526,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               parentAnnotationGUID,
                                                               parentAnnotationGUIDParameterName,
-                                                              OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                              OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -564,15 +549,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       null,
                                       parentAnnotationGUID,
                                       parentAnnotationGUIDParameterName,
-                                      OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_TYPE_NAME,
                                       annotationGUID,
                                       annotationParameterName,
-                                      OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_TYPE_NAME,
                                       false,
                                       false,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_GUID,
+                                      OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                       null,
                                       null,
                                       null,
@@ -622,8 +607,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     annotationGUID,
                                     annotationGUIDParameterName,
-                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                    OpenMetadataType.ANNOTATION_TYPE_GUID,
+                                    OpenMetadataType.ANNOTATION_TYPE_NAME,
                                     false,
                                     false,
                                     supportedZones,
@@ -675,8 +660,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
     {
         final String annotationReviewGUIDParameterName = "annotationReviewGUID";
 
-        String typeGUID = OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_GUID;
-        String typeName = OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME;
+        String typeGUID = OpenMetadataType.ANNOTATION_REVIEW_TYPE_GUID;
+        String typeName = OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME;
 
         if (annotationReviewTypeGUID != null)
         {
@@ -703,7 +688,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               annotationGUID,
                                                               annotationGUIDParameterName,
-                                                              OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                              OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                                              true,
                                                               false,
                                                               false,
                                                               false,
@@ -713,7 +699,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {
-            builder.setAnchors(userId, anchorEntity.getGUID(), methodName);
+            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
         }
 
         String annotationReviewGUID = this.createBeanInRepository(userId,
@@ -732,15 +718,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       null,
                                       annotationGUID,
                                       annotationGUIDParameterName,
-                                      OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_TYPE_NAME,
                                       annotationReviewGUID,
                                       annotationReviewGUIDParameterName,
-                                      OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME,
                                       false,
                                       false,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
+                                      OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_GUID,
+                                      OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME,
                                       builder.getReviewLinkInstanceProperties(methodName),
                                       null,
                                       null,
@@ -774,8 +760,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     annotationGUID,
                                     annotationGUIDParameterName,
-                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                    OpenMetadataType.ANNOTATION_TYPE_GUID,
+                                    OpenMetadataType.ANNOTATION_TYPE_NAME,
                                     null,
                                     null,
                                     false,
@@ -814,7 +800,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
                                                                 annotationGUID,
                                                                 annotationGUIDParameterName,
-                                                                OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                                 false,
                                                                 false,
                                                                 new Date(),
@@ -853,10 +839,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
             EntityDetail annotationReviewEntity = this.getAttachedEntity(userId,
                                                                          annotationEntity.getGUID(),
                                                                          annotationGUIDParameterName,
-                                                                         OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.ANNOTATION_REVIEW_LINK_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                         OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                                                         OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_GUID,
+                                                                         OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME,
+                                                                         OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME,
                                                                          2,
                                                                          false,
                                                                          false,
@@ -873,7 +859,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
             List<Relationship> annotationRelationships = this.getAllAttachmentLinks(userId,
                                                                                     annotationEntity.getGUID(),
                                                                                     null,
-                                                                                    OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                    OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                                                     false,
                                                                                     false,
                                                                                     effectiveTime,
@@ -921,7 +907,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          rootGUIDTypeName,
                                                                          relationshipTypeGUID,
                                                                          relationshipTypeName,
-                                                                         OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                         OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                                          null,
                                                                          null,
                                                                          0,
@@ -1017,7 +1003,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
             if ((relationship != null) && (relationship.getProperties() != null))
             {
                 int annotationStatusOrdinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                                      OpenMetadataAPIMapper.ANNOTATION_STATUS_PROPERTY_NAME,
+                                                                                      OpenMetadataType.ANNOTATION_STATUS_PROPERTY_NAME,
                                                                                       relationship.getProperties(),
                                                                                       methodName);
 
@@ -1032,7 +1018,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                         EntityDetail annotationEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                           entityProxy.getGUID(),
                                                                                           entityProxyGUIDParameterName,
-                                                                                          OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
+                                                                                          OpenMetadataType.ANNOTATION_TYPE_NAME,
                                                                                           false,
                                                                                           false,
                                                                                           effectiveTime,
@@ -1089,9 +1075,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         return this.getLinkedAnnotations(userId,
                                          discoveryReportGUID,
                                          reportGUIDParameterName,
-                                         OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                         OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                         OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                         OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                          startingFrom,
                                          pageSize,
                                          methodName);
@@ -1128,9 +1114,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         return this.getLinkedAnnotations(userId,
                                          discoveryReportGUID,
                                          reportGUIDParameterName,
-                                         OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                         OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                         OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                         OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                          annotationStatus,
                                          startingFrom,
                                          pageSize,
@@ -1167,9 +1153,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         return this.getLinkedAnnotations(userId,
                                          annotationGUID,
                                          annotationGUIDParameter,
-                                         OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
-                                         OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
-                                         OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
+                                         OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                         OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_GUID,
+                                         OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                          startingFrom,
                                          pageSize,
                                          methodName);
@@ -1206,9 +1192,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         return this.getLinkedAnnotations(userId,
                                          annotationGUID,
                                          annotationGUIDParameter,
-                                         OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
-                                         OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_GUID,
-                                         OpenMetadataAPIMapper.ANNOTATION_TO_EXTENSION_TYPE_NAME,
+                                         OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                         OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_GUID,
+                                         OpenMetadataType.ANNOTATION_TO_EXTENSION_TYPE_NAME,
                                          annotationStatus,
                                          startingFrom,
                                          pageSize,

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatu
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,13 +24,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
 {
-    private String            typeName      = null;
-    private ElementStatus     initialStatus = null;
-    private Date              effectiveFrom = null;
-    private Date              effectiveTo   = null;
-    private ElementProperties properties    = null;
-    private String            templateGUID  = null;
-    private Date              effectiveTime = null;
+    private String                         typeName                     = null;
+    private ElementStatus                  initialStatus                = null;
+    private Map<String, ElementProperties> initialClassifications       = null;
+    private String                         anchorGUID                   = null;
+    private Date                           effectiveFrom                = null;
+    private Date                           effectiveTo                  = null;
+    private ElementProperties              properties                   = null;
+    private String                         templateGUID                 = null;
+    private String                         parentGUID                   = null;
+    private String                         parentRelationshipTypeName   = null;
+    private ElementProperties              parentRelationshipProperties = null;
+    private boolean                        parentAtEnd1                 = true;
+    private Date                           effectiveTime                = null;
 
 
     /**
@@ -54,10 +61,17 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
         {
             typeName = template.getTypeName();
             initialStatus = template.getInitialStatus();
+            initialClassifications = template.getInitialClassifications();
+            anchorGUID = template.getAnchorGUID();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
             properties = template.getProperties();
             templateGUID = template.getTemplateGUID();
+            parentGUID = template.getParentGUID();
+            parentRelationshipTypeName = template.getParentRelationshipTypeName();
+            parentRelationshipProperties = template.getParentRelationshipProperties();
+            parentAtEnd1 = template.getParentAtEnd1();
+            effectiveTime = template.getEffectiveTime();
         }
     }
 
@@ -92,6 +106,52 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     public ElementStatus getInitialStatus()
     {
         return initialStatus;
+    }
+
+
+    /**
+     * Return the map of classification name to properties describing the initial classification for the new metadata element.
+     *
+     * @return map of classification name to classification properties (or null for none)
+     */
+    public Map<String, ElementProperties> getInitialClassifications()
+    {
+        return initialClassifications;
+    }
+
+
+    /**
+     * Set up the map of classification name to properties describing the initial classification for the new metadata element.
+     *
+     * @param initialClassifications map of classification name to classification properties (or null for none)
+     */
+    public void setInitialClassifications(Map<String, ElementProperties> initialClassifications)
+    {
+        this.initialClassifications = initialClassifications;
+    }
+
+
+    /**
+     * Return the unique identifier of the element that should be the anchor for the new element. It is set to null if no anchor,
+     * or the Anchors classification is included in the initial classifications.
+     *
+     * @return string guid
+     */
+    public String getAnchorGUID()
+    {
+        return anchorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     * or the Anchors classification is included in the initial classifications.
+     *
+     * @param anchorGUID string guid
+     */
+    public void setAnchorGUID(String anchorGUID)
+    {
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -195,6 +255,96 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
 
 
     /**
+     * Return the optional unique identifier for an element that should be connected to the newly created element.
+     * If this property is specified, parentRelationshipTypeName must also be specified.
+     *
+     * @return string guid
+     */
+    public String getParentGUID()
+    {
+        return parentGUID;
+    }
+
+
+    /**
+     * Set up the optional unique identifier for an element that should be connected to the newly created element.
+     * If this property is specified, parentRelationshipTypeName must also be specified.
+     *
+     * @param parentGUID string guid
+     */
+    public void setParentGUID(String parentGUID)
+    {
+        this.parentGUID = parentGUID;
+    }
+
+
+    /**
+     * Return the name of the relationship, if any, that should be established between the new element and the parent element.
+     *
+     * @return string type name
+     */
+    public String getParentRelationshipTypeName()
+    {
+        return parentRelationshipTypeName;
+    }
+
+
+    /**
+     * Set up the name of the optional relationship from the newly created element to a parent element.
+     *
+     * @param parentRelationshipTypeName string type name
+     */
+    public void setParentRelationshipTypeName(String parentRelationshipTypeName)
+    {
+        this.parentRelationshipTypeName = parentRelationshipTypeName;
+    }
+
+
+    /**
+     * Return any properties that should be included in the parent relationship.
+     *
+     * @return element properties
+     */
+    public ElementProperties getParentRelationshipProperties()
+    {
+        return parentRelationshipProperties;
+    }
+
+
+    /**
+     * Set up any properties that should be included in the parent relationship.
+     *
+     * @param parentRelationshipProperties element properties
+     */
+    public void setParentRelationshipProperties(ElementProperties parentRelationshipProperties)
+    {
+        this.parentRelationshipProperties = parentRelationshipProperties;
+    }
+
+
+    /**
+     * Return which end any parent entity sits on the relationship.
+     *
+     * @return boolean
+     */
+    public boolean getParentAtEnd1()
+    {
+        return parentAtEnd1;
+    }
+
+
+    /**
+     * Set up  which end any parent entity sits on the relationship.
+     *
+     * @param parentAtEnd1 boolean
+     */
+    public void setParentAtEnd1(boolean parentAtEnd1)
+    {
+        this.parentAtEnd1 = parentAtEnd1;
+    }
+
+
+    /**
      * Return the effective time use on any queries for related elements.
      *
      * @return date object
@@ -225,15 +375,21 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     public String toString()
     {
         return "NewMetadataElementRequestBody{" +
-                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", typeName='" + typeName + '\'' +
+                       "typeName='" + typeName + '\'' +
                        ", initialStatus=" + initialStatus +
+                       ", initialClassifications=" + initialClassifications +
+                       ", anchorGUID='" + anchorGUID + '\'' +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", properties=" + properties +
                        ", templateGUID='" + templateGUID + '\'' +
+                       ", parentGUID='" + parentGUID + '\'' +
+                       ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
+                       ", parentRelationshipProperties=" + parentRelationshipProperties +
+                       ", parentAtEnd1=" + parentAtEnd1 +
                        ", effectiveTime=" + effectiveTime +
+                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
 
@@ -251,7 +407,7 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
         {
             return true;
         }
-        if (! (objectToCompare instanceof NewMetadataElementRequestBody))
+        if (! (objectToCompare instanceof NewMetadataElementRequestBody that))
         {
             return false;
         }
@@ -259,10 +415,18 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        NewMetadataElementRequestBody that = (NewMetadataElementRequestBody) objectToCompare;
-        return Objects.equals(typeName, that.typeName) && initialStatus == that.initialStatus &&
-                       Objects.equals(effectiveFrom, that.effectiveFrom) && Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(properties, that.properties) && Objects.equals(templateGUID, that.templateGUID) &&
+        return parentAtEnd1 == that.parentAtEnd1 &&
+                       Objects.equals(typeName, that.typeName) &&
+                       initialStatus == that.initialStatus &&
+                       Objects.equals(initialClassifications, that.initialClassifications) &&
+                       Objects.equals(anchorGUID, that.anchorGUID) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(templateGUID, that.templateGUID) &&
+                       Objects.equals(parentGUID, that.parentGUID) &&
+                       Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName) &&
+                       Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties) &&
                        Objects.equals(effectiveTime, that.effectiveTime);
     }
 
@@ -275,6 +439,7 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, initialStatus, effectiveFrom, effectiveTo, properties, templateGUID, effectiveTime);
+        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, effectiveFrom, effectiveTo, properties,
+                            templateGUID, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

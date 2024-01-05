@@ -47,6 +47,9 @@ import java.util.regex.Pattern;
  */
 public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationModuleBase
 {
+    /**
+     * Unique name of this module for messages.
+     */
     private final static String moduleName                            = "Glossary Integration Module";
     private final static String atlasGlossaryTypeName                 = "AtlasGlossary";
     private final static String atlasGlossaryCategoriesPropertyName   = "categories";

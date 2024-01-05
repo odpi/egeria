@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -157,8 +158,8 @@ public class OpenMetadataTypesArchive2_7
          */
         update0045ServersAndAssets();
         update0210DataStores();
-        update0462GovernanceActionFlow();
-        update0463GovernanceAction();
+        update0462GovernanceActionProcesses();
+        update0463EngineAction();
         update0512CalculatedValue();
     }
 
@@ -228,7 +229,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "consumesAsset";
         final String                     end2AttributeDescription     = "Asset that this software server capability is dependent on.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -315,16 +316,16 @@ public class OpenMetadataTypesArchive2_7
      */
 
     /**
-     * 0462 Update the GovernanceAction entity with the mandatoryGuards property
+     * 0462 Update the EngineAction entity with the mandatoryGuards property
      */
-    private void update0463GovernanceAction()
+    private void update0463EngineAction()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
+        this.archiveBuilder.addTypeDefPatch(updateEngineActionEntity());
     }
 
-    private TypeDefPatch updateGovernanceActionEntity()
+    private TypeDefPatch updateEngineActionEntity()
     {
-        final String typeName = "GovernanceAction";
+        final String typeName = "EngineAction";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -338,7 +339,7 @@ public class OpenMetadataTypesArchive2_7
         TypeDefAttribute       property;
 
         final String attribute1Name            = "mandatoryGuards";
-        final String attribute1Description     = "The list of guards that must be received before this governance action can progress.";
+        final String attribute1Description     = "The list of guards that must be received before this engine action can progress.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
@@ -358,16 +359,16 @@ public class OpenMetadataTypesArchive2_7
      */
 
     /**
-     * 0462 Update the GovernanceActionFlow relationship with guard property
+     * 0462 Update the GovernanceActionProcessFlow relationship with guard property
      */
-    private void update0462GovernanceActionFlow()
+    private void update0462GovernanceActionProcesses()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionFlowRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessFlowRelationship());
     }
 
-    private TypeDefPatch updateGovernanceActionFlowRelationship()
+    private TypeDefPatch updateGovernanceActionProcessFlowRelationship()
     {
-        final String typeName = "GovernanceActionFlow";
+        final String typeName = "GovernanceActionProcessFlow";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

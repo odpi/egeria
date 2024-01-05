@@ -5,6 +5,7 @@ package org.odpi.openmetadata.integrationservices.lineage.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.OpenGovernanceClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
@@ -18,11 +19,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepElement;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
-
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +41,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     private final DataAssetExchangeClient    dataAssetExchangeClient;
     private final LineageExchangeClient      lineageExchangeClient;
     private final GovernanceExchangeClient   governanceExchangeClient;
+    private final OpenGovernanceClient       openGovernanceClient;
     private final AssetManagerEventClient    eventClient;
     private final String                     integrationServiceName;
     private final AuditLog                   auditLog;
@@ -53,6 +58,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param openGovernanceClient client for calling the metadata server
      * @param openLineageListenerManager object responsible for managing open lineage listeners
      * @param dataAssetExchangeClient client for data asset requests
      * @param lineageExchangeClient client for lineage requests
@@ -60,8 +66,8 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @param eventClient client managing listeners for the OMAS OutTopic
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
-     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
-     *                                 null).
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an
+     *                                 integration group (otherwise it is null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      * @param integrationServiceName name of this service
@@ -74,6 +80,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                     String                       serverName,
                                     OpenIntegrationClient        openIntegrationClient,
                                     OpenMetadataClient           openMetadataStoreClient,
+                                    OpenGovernanceClient         openGovernanceClient,
                                     OpenLineageListenerManager   openLineageListenerManager,
                                     DataAssetExchangeClient      dataAssetExchangeClient,
                                     LineageExchangeClient        lineageExchangeClient,
@@ -99,12 +106,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.openLineageListenerManager = openLineageListenerManager;
         this.dataAssetExchangeClient    = dataAssetExchangeClient;
         this.lineageExchangeClient      = lineageExchangeClient;
         this.governanceExchangeClient   = governanceExchangeClient;
+        this.openGovernanceClient       = openGovernanceClient;
         this.eventClient                = eventClient;
         this.integrationServiceName     = integrationServiceName;
         this.auditLog                   = auditLog;
@@ -3315,7 +3324,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        return governanceExchangeClient.findGovernanceActionProcesses(userId, searchString, startFrom, pageSize);
+        return openGovernanceClient.findGovernanceActionProcesses(userId, searchString, startFrom, pageSize);
     }
 
 
@@ -3339,7 +3348,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceActionProcessesByName(userId, name, startFrom, pageSize);
+        return openGovernanceClient.getGovernanceActionProcessesByName(userId, name, startFrom, pageSize);
     }
 
 
@@ -3358,17 +3367,17 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceActionProcessByGUID(userId, processGUID);
+        return openGovernanceClient.getGovernanceActionProcessByGUID(userId, processGUID);
     }
 
 
     /* =====================================================================================================================
-     * A governance action type describes a step in a governance action process
+     * A governance action process step describes a step in a governance action process
      */
 
 
     /**
-     * Retrieve the list of governance action type metadata elements that contain the search string.
+     * Retrieve the list of governance action process step metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param searchString string to find in the properties
@@ -3381,18 +3390,18 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GovernanceActionTypeElement> findGovernanceActionTypes(String searchString,
-                                                                       int    startFrom,
-                                                                       int    pageSize) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String searchString,
+                                                                                     int    startFrom,
+                                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
     {
-        return governanceExchangeClient.findGovernanceActionTypes(userId, searchString, startFrom, pageSize);
+        return openGovernanceClient.findGovernanceActionProcessSteps(userId, searchString, startFrom, pageSize);
     }
 
 
     /**
-     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+     * Retrieve the list of governance action process steps metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
      * @param name name to search for
@@ -3405,20 +3414,20 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String name,
-                                                                            int    startFrom,
-                                                                            int    pageSize) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String name,
+                                                                                          int    startFrom,
+                                                                                          int    pageSize) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceActionTypesByName(userId, name, startFrom, pageSize);
+        return openGovernanceClient.getGovernanceActionProcessStepsByName(userId, name, startFrom, pageSize);
     }
 
 
     /**
-     * Retrieve the governance action type metadata element with the supplied unique identifier.
+     * Retrieve the governance action process step metadata element with the supplied unique identifier.
      *
-     * @param actionTypeGUID unique identifier of the governance action type
+     * @param processStepGUID unique identifier of the governance action process step
      *
      * @return requested metadata element
      *
@@ -3426,60 +3435,60 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionTypeElement getGovernanceActionTypeByGUID(String actionTypeGUID) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public GovernanceActionProcessStepElement getGovernanceActionProcessStepByGUID(String processStepGUID) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceActionTypeByGUID(userId, actionTypeGUID);
+        return openGovernanceClient.getGovernanceActionProcessStepByGUID(userId, processStepGUID);
     }
 
 
     /**
-     * Return the governance action type that is the first step in a governance action process.
+     * Return the governance action process step that is the first step in a governance action process.
      *
      * @param processGUID unique identifier of the governance action process
      *
-     * @return properties of the governance action type
+     * @return properties of the governance action process step
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionTypeElement getFirstActionType(String processGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public GovernanceActionProcessStepElement getFirstProcessStep(String processGUID) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        return governanceExchangeClient.getFirstActionType(userId, processGUID);
+        return openGovernanceClient.getFirstActionProcessStep(userId, processGUID);
     }
 
 
     /**
-     * Return the lust of next action type defined for the governance action process.
+     * Return the lust of next action process step defined for the governance action process.
      *
-     * @param actionTypeGUID unique identifier of the current governance action type
+     * @param processStepGUID unique identifier of the current governance action process step
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
-     * @return return the list of relationships and attached governance action types.
+     * @return return the list of relationships and attached governance action process steps.
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<NextGovernanceActionTypeElement> getNextGovernanceActionTypes(String actionTypeGUID,
-                                                                              int    startFrom,
-                                                                              int    pageSize) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<NextGovernanceActionProcessStepElement> getNextProcessSteps(String processStepGUID,
+                                                                            int    startFrom,
+                                                                            int    pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
-        return governanceExchangeClient.getNextGovernanceActionTypes(userId, actionTypeGUID, startFrom, pageSize);
+        return openGovernanceClient.getNextGovernanceActionProcessSteps(userId, processStepGUID, startFrom, pageSize);
     }
 
 
     /**
-     * Request the status of an executing governance action request.
+     * Request the status of an executing engine action request.
      *
-     * @param governanceActionGUID identifier of the governance action request.
+     * @param engineActionGUID identifier of the engine action request.
      *
      * @return status enum
      *
@@ -3487,11 +3496,11 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    public GovernanceActionElement getGovernanceAction(String governanceActionGUID) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public EngineActionElement getEngineAction(String engineActionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceAction(userId, governanceActionGUID);
+        return openGovernanceClient.getEngineAction(userId, engineActionGUID);
     }
 
 
@@ -3506,12 +3515,12 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    public List<GovernanceActionElement>  getGovernanceActions(int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<EngineActionElement>  getEngineActions(int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return governanceExchangeClient.getGovernanceActions(userId, startFrom, pageSize);
+        return openGovernanceClient.getEngineActions(userId, startFrom, pageSize);
     }
 
 
@@ -3526,11 +3535,11 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    public List<GovernanceActionElement>  getActiveGovernanceActions(int    startFrom,
-                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<EngineActionElement>  getActiveEngineActions(int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        return governanceExchangeClient.getActiveGovernanceActions(userId, startFrom, pageSize);
+        return openGovernanceClient.getActiveEngineActions(userId, startFrom, pageSize);
     }
 }

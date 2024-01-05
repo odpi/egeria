@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -194,7 +195,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "DataSet";
+        final String typeName = OpenMetadataType.DATA_SET.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -294,7 +295,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1EntityType               = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String                     end1AttributeName            = "translates";
         final String                     end1AttributeDescription     = "Entity that is translated.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -334,7 +335,7 @@ public class OpenMetadataTypesArchive3_11
         final String description     = "A collection of translated properties.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -774,7 +775,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "commissioned";
         final String                     end1AttributeDescription     = "Team, project, community, asset, service, ... that was commissioned by the stakeholders.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -790,7 +791,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "commissionedBy";
         final String                     end2AttributeDescription     = "Profiles of actors or roles that are stakeholders.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -892,7 +893,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "assignedActors";
         final String                     end1AttributeDescription     = "Person, team, project or other type of actor that has been assigned.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -908,7 +909,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "assignedScope";
         final String                     end2AttributeDescription     = "Elements describing the resources or action the the actors are responsible for.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1178,8 +1179,8 @@ public class OpenMetadataTypesArchive3_11
     private void update04xxMultiLinkGovernanceImplementationTypes()
     {
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcess());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionProcessStepRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNextEngineActionRelationship());
         this.archiveBuilder.addTypeDefPatch(updateLicenseRelationship());
         this.archiveBuilder.addTypeDefPatch(updateCertificationRelationship());
     }
@@ -1217,12 +1218,12 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionTypeRelationship()
+    private TypeDefPatch updateNextGovernanceActionProcessStepRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceActionType";
+        final String typeName = "NextGovernanceActionProcessStep";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1234,12 +1235,12 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateNextGovernanceActionRelationship()
+    private TypeDefPatch updateNextEngineActionRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "NextGovernanceAction";
+        final String typeName = "NextEngineAction";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1525,7 +1526,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "derivedFrom";
         final String                     end1AttributeDescription     = "Abstract representation.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1541,7 +1542,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "implementedBy";
         final String                     end2AttributeDescription     = "Resulting refined element.";
         final String                     end2AttributeDescriptionGUID = null;

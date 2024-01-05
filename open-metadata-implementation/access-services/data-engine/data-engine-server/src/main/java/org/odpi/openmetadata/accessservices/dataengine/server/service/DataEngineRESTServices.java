@@ -65,6 +65,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
@@ -83,29 +85,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -250,7 +229,7 @@ public class DataEngineRESTServices {
         }
 
         dataEngineRegistrationHandler.removeExternalDataEngine(userId, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
     }
 
     /**
@@ -372,9 +351,9 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        String schemaTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, SCHEMA_TYPE_TYPE_NAME, methodName);
+        String schemaTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME, methodName);
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, schemaTypeGUID, SCHEMA_TYPE_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, schemaTypeGUID, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME);
     }
 
     /**
@@ -392,7 +371,7 @@ public class DataEngineRESTServices {
         try {
             validateRequestBody(userId, serverName, portImplementationRequestBody, methodName);
 
-            String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
+            String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), OpenMetadataType.PROCESS.typeName)
                     .orElse(null);
             String externalSourceName = portImplementationRequestBody.getExternalSourceName();
             PortImplementation portImplementation = portImplementationRequestBody.getPortImplementation();
@@ -457,10 +436,10 @@ public class DataEngineRESTServices {
             FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deletePort";
 
-        String portGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PORT_TYPE_NAME, methodName);
+        String portGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.PORT_TYPE_NAME, methodName);
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        if (PORT_IMPLEMENTATION_TYPE_NAME.equalsIgnoreCase(portType)) {
+        if (OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME.equalsIgnoreCase(portType)) {
             Optional<EntityDetail> schemaType = dataEnginePortHandler.findSchemaTypeForPort(userId, portGUID);
             if (schemaType.isPresent()) {
                 deleteSchemaType(userId, serverName, externalSourceName, schemaType.get().getGUID(), null, deleteSemantic);
@@ -468,7 +447,7 @@ public class DataEngineRESTServices {
         }
 
         dataEnginePortHandler.removePort(userId, portGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, portGUID, PORT_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, portGUID, OpenMetadataType.PORT_TYPE_NAME);
     }
 
 
@@ -567,17 +546,17 @@ public class DataEngineRESTServices {
             FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deleteProcess";
 
-        String processGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PROCESS_TYPE_NAME, methodName);
+        String processGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.PROCESS.typeName, methodName);
 
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-        Set<EntityDetail> portImplementations = processHandler.getPortsForProcess(userId, processGUID, PORT_IMPLEMENTATION_TYPE_NAME);
+        Set<EntityDetail> portImplementations = processHandler.getPortsForProcess(userId, processGUID, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME);
         for (EntityDetail port : portImplementations) {
-            deletePort(userId, serverName, externalSourceName, port.getGUID(), null, PORT_IMPLEMENTATION_TYPE_NAME, deleteSemantic);
+            deletePort(userId, serverName, externalSourceName, port.getGUID(), null, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME, deleteSemantic);
         }
 
         processHandler.removeProcess(userId, processGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, processGUID, PROCESS_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, processGUID, OpenMetadataType.PROCESS.typeName);
     }
 
     /**
@@ -657,7 +636,7 @@ public class DataEngineRESTServices {
                 Optional<EntityDetail> schemaTypeForPort = dataEnginePortHandler.findSchemaTypeForPort(userId, portImplementationGUID);
                 if (schemaTypeForPort.isPresent()) {
                     String oldSchemaTypeQualifiedName =
-                            schemaTypeForPort.get().getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
+                            schemaTypeForPort.get().getProperties().getPropertyValue(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString();
                     deleteObsoleteSchemaType(userId, serverName, portImplementation.getSchemaType().getQualifiedName(), oldSchemaTypeQualifiedName,
                             externalSourceName);
                 }
@@ -923,7 +902,7 @@ public class DataEngineRESTServices {
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId,
                 serverName, methodName);
 
-        Optional<EntityDetail> databaseEntityOptional = getEntityDetails(serverName, userId, databaseQualifiedName, DATABASE_TYPE_NAME);
+        Optional<EntityDetail> databaseEntityOptional = getEntityDetails(serverName, userId, databaseQualifiedName, OpenMetadataType.DATABASE_TYPE_NAME);
         String databaseGUID = null;
         if (databaseEntityOptional.isPresent()) {
             databaseGUID = databaseEntityOptional.get().getGUID();
@@ -983,9 +962,9 @@ public class DataEngineRESTServices {
 
         DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-        String databaseGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATABASE_TYPE_NAME, methodName);
+        String databaseGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.DATABASE_TYPE_NAME, methodName);
         relationalDataHandler.removeDatabase(userId, databaseGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, databaseGUID, DATABASE_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, databaseGUID, OpenMetadataType.DATABASE_TYPE_NAME);
     }
 
     /**
@@ -1036,10 +1015,10 @@ public class DataEngineRESTServices {
         final String methodName = "deleteDatabaseSchema";
 
         DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseSchemaGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, methodName);
+        String databaseSchemaGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, methodName);
         relationalDataHandler.removeDatabaseSchema(userId, databaseSchemaGUID, externalSourceName, deleteSemantic);
 
-        log.debug(DEBUG_DELETE_MESSAGE, databaseSchemaGUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, databaseSchemaGUID, OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
     }
 
     /**
@@ -1145,9 +1124,9 @@ public class DataEngineRESTServices {
 
         DataEngineRelationalDataHandler relationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-        String relationalTableGUID = getEntityGUID(userId, serverName, guid, qualifiedName, RELATIONAL_TABLE_TYPE_NAME, methodName);
+        String relationalTableGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.RELATIONAL_TABLE_TYPE_NAME, methodName);
         relationalDataHandler.removeRelationalTable(userId, relationalTableGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, relationalTableGUID, RELATIONAL_TABLE_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, relationalTableGUID, OpenMetadataType.RELATIONAL_TABLE_TYPE_NAME);
     }
 
 
@@ -1203,14 +1182,14 @@ public class DataEngineRESTServices {
         SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
 
         Map<String, Object> extendedProperties = getExtendedProperties(file);
-        String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID;
-        String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
+        String fileTypeGuid = file instanceof CSVFile ? OpenMetadataType.CSV_FILE_TYPE_GUID : OpenMetadataType.DATA_FILE_TYPE_GUID;
+        String fileTypeName = file instanceof CSVFile ? OpenMetadataType.CSV_FILE_TYPE_NAME : OpenMetadataType.DATA_FILE_TYPE_NAME;
         file.setFileType(fileTypeName);
 
         if (CollectionUtils.isNotEmpty(columns)) {
             columns.forEach(column -> {
-                column.setTypeName(TABULAR_FILE_COLUMN_TYPE_NAME);
-                column.setTypeGuid(TABULAR_FILE_COLUMN_TYPE_GUID);
+                column.setTypeName(OpenMetadataType.TABULAR_FILE_COLUMN_TYPE_NAME);
+                column.setTypeGuid(OpenMetadataType.TABULAR_FILE_COLUMN_TYPE_GUID);
             });
         }
 
@@ -1268,11 +1247,11 @@ public class DataEngineRESTServices {
         DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
         DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, DATA_FILE_TYPE_NAME, methodName);
+        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.DATA_FILE_TYPE_NAME, methodName);
 
         String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         dataFileHandler.removeDataFile(userId, dataFileGUID, externalSourceName, externalSourceGuid, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, DATA_FILE_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, OpenMetadataType.DATA_FILE_TYPE_NAME);
     }
 
     /**
@@ -1320,12 +1299,12 @@ public class DataEngineRESTServices {
             EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteFolder";
-        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, FILE_FOLDER_TYPE_NAME, methodName);
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.FILE_FOLDER_TYPE_NAME, methodName);
 
         DataEngineFolderHierarchyHandler folderHierarchyHandler = instanceHandler.getFolderHierarchyHandler(userId, serverName, methodName);
         folderHierarchyHandler.removeFolder(userId, folderGUID, deleteSemantic, externalSourceName);
 
-        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, FILE_FOLDER_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME);
     }
 
     /**
@@ -1373,7 +1352,7 @@ public class DataEngineRESTServices {
             UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteConnection";
-        String connectionGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
+        String connectionGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.CONNECTION_TYPE_NAME, methodName);
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
@@ -1382,7 +1361,7 @@ public class DataEngineRESTServices {
         String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         connectionAndEndpointHandler.removeConnection(userId, connectionGUID, deleteSemantic, externalSourceName, externalSourceGuid);
 
-        log.debug(DEBUG_DELETE_MESSAGE, connectionGUID, CONNECTION_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, connectionGUID, OpenMetadataType.CONNECTION_TYPE_NAME);
     }
 
     /**
@@ -1430,7 +1409,7 @@ public class DataEngineRESTServices {
             UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteEndpoint";
-        String endpointGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
+        String endpointGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.ENDPOINT_TYPE_NAME, methodName);
 
         DataEngineConnectionAndEndpointHandler connectionAndEndpointHandler = instanceHandler.getConnectionAndEndpointHandler(userId, serverName,
                 methodName);
@@ -1438,7 +1417,7 @@ public class DataEngineRESTServices {
         String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         connectionAndEndpointHandler.removeEndpoint(userId, endpointGUID, deleteSemantic, externalSourceName, externalSourceGuid);
 
-        log.debug(DEBUG_DELETE_MESSAGE, endpointGUID, ENDPOINT_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, endpointGUID, OpenMetadataType.ENDPOINT_TYPE_NAME);
     }
 
     private String getEntityGUID(String userId, String serverName, String guid, String qualifiedName, String entityTypeName, String methodName) throws
@@ -1467,7 +1446,7 @@ public class DataEngineRESTServices {
             return;
         }
 
-        Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, oldSchemaTypeQualifiedName, SCHEMA_TYPE_TYPE_NAME);
+        Optional<String> schemaTypeGUID = getEntityGUID(serverName, userId, oldSchemaTypeQualifiedName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME);
         if (schemaTypeGUID.isEmpty()) {
             return;
         }
@@ -1628,9 +1607,9 @@ public class DataEngineRESTServices {
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Set<EntityDetail> existingPorts = processHandler.getPortsForProcess(userId, processGUID, PORT_IMPLEMENTATION_TYPE_NAME);
+        Set<EntityDetail> existingPorts = processHandler.getPortsForProcess(userId, processGUID, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME);
         Set<String> portQualifiedNames = existingPorts.stream()
-                .map(entityDetail -> entityDetail.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString())
+                .map(entityDetail -> entityDetail.getProperties().getPropertyValue(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString())
                 .collect(Collectors.toSet());
         Set<String> newPortQualifiedNames = ports.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet());
 
@@ -1639,7 +1618,7 @@ public class DataEngineRESTServices {
                 portQualifiedNames.stream().collect(partitioningBy(newPortQualifiedNames::contains)).get(Boolean.FALSE);
         obsoletePortQualifiedNames.forEach(portQualifiedName -> {
             try {
-                Optional<String> portGUID = getEntityGUID(serverName, userId, portQualifiedName, PORT_TYPE_NAME);
+                Optional<String> portGUID = getEntityGUID(serverName, userId, portQualifiedName, OpenMetadataType.PORT_TYPE_NAME);
                 if (portGUID.isPresent()) {
                     dataEnginePortHandler.removePort(userId, portGUID.get(), externalSourceName, DeleteSemantic.SOFT);
                 }
@@ -1735,11 +1714,11 @@ public class DataEngineRESTServices {
 
         if (file instanceof CSVFile) {
             CSVFile csvFile = (CSVFile) file;
-            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
-            extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, csvFile.getDelimiterCharacter());
-            extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, csvFile.getQuoteCharacter());
+            extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
+            extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, csvFile.getDelimiterCharacter());
+            extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, csvFile.getQuoteCharacter());
         } else {
-            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, file.getFileType());
+            extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, file.getFileType());
         }
         return extendedProperties;
     }
@@ -1898,9 +1877,9 @@ public class DataEngineRESTServices {
 
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
-        String topicGUID = getEntityGUID(userId, serverName, guid, qualifiedName, TOPIC_TYPE_NAME, methodName);
+        String topicGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.TOPIC_TYPE_NAME, methodName);
         dataEngineTopicHandler.removeTopic(userId, topicGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, topicGUID, TOPIC_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, topicGUID, OpenMetadataType.TOPIC_TYPE_NAME);
     }
 
     /**
@@ -2027,9 +2006,9 @@ public class DataEngineRESTServices {
 
         DataEngineEventTypeHandler dataEngineEventTypeHandler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-        String eventTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, EVENT_TYPE_TYPE_NAME, methodName);
+        String eventTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.EVENT_TYPE_TYPE_NAME, methodName);
         dataEngineEventTypeHandler.removeEventType(userId, eventTypeGUID, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, TOPIC_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, OpenMetadataType.TOPIC_TYPE_NAME);
     }
 
     /**

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -49,8 +51,8 @@ public class OpenMetadataTypesArchive2_5
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
 
     /**
@@ -181,7 +183,6 @@ public class OpenMetadataTypesArchive2_5
         this.archiveBuilder.addEntityDef(addOpenMetadataRootEntity());
 
         this.archiveBuilder.addTypeDefPatch(updateReferenceable());
-        this.archiveBuilder.addTypeDefPatch(updateLastAttachment());
         this.archiveBuilder.addTypeDefPatch(updateSearchKeyword());
         this.archiveBuilder.addTypeDefPatch(updateLike());
         this.archiveBuilder.addTypeDefPatch(updateRating());
@@ -197,16 +198,18 @@ public class OpenMetadataTypesArchive2_5
 
     private EntityDef addOpenMetadataRootEntity()
     {
-        final String guid            = "4e7761e8-3969-4627-8f40-bfe3cde85a1d";
-        final String name            = "OpenMetadataRoot";
+        final String guid            = OpenMetadataType.OPEN_METADATA_ROOT.typeGUID;
+        final String name            = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String description     = "Common root for all open metadata entity types.";
-        final String descriptionGUID = null;
+        final String descriptionGUID = OpenMetadataType.OPEN_METADATA_ROOT.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.OPEN_METADATA_ROOT.wikiURL;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  null,
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
@@ -215,28 +218,9 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "Referenceable";
+        final String typeName = OpenMetadataType.REFERENCEABLE.typeName;
 
-        final String superTypeName = "OpenMetadataRoot";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateLastAttachment()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "LastAttachment";
-
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -255,7 +239,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "SearchKeyword";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -274,7 +258,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "Like";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -293,7 +277,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "Rating";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -312,7 +296,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "InformalTag";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -331,7 +315,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "Annotation";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -350,7 +334,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "AnnotationReview";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -369,7 +353,7 @@ public class OpenMetadataTypesArchive2_5
          */
         final String typeName = "DataField";
 
-        final String superTypeName = "OpenMetadataRoot";
+        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -386,7 +370,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "Anchors";
+        final String typeName = OpenMetadataType.ANCHORS_CLASSIFICATION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -395,7 +379,7 @@ public class OpenMetadataTypesArchive2_5
 
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("OpenMetadataRoot"));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
 
         typeDefPatch.setValidEntityDefs(linkedToEntities);
 
@@ -544,7 +528,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1EntityType               = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
         final String                     end1AttributeName            = "resources";
         final String                     end1AttributeDescription     = "Resource being identified.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -608,7 +592,7 @@ public class OpenMetadataTypesArchive2_5
         final String description     = "Defines a capability that manages metadata about assets.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -679,7 +663,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "supplementsElement";
         final String                     end1AttributeDescription     = "Describes this technical element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -773,7 +757,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "caller";
         final String                     end1AttributeDescription     = "Call originator.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -790,7 +774,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "called";
         final String                     end2AttributeDescription     = "Called element that performs the processing.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -809,12 +793,12 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
-        final String attribute1Description     = "Unique name of the call relationship.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description and purpose of the call.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "formula";
         final String attribute3Description     = "Function that determines the subset of the data that flows.";
         final String attribute3DescriptionGUID = null;
@@ -859,7 +843,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "dataSupplier";
         final String                     end1AttributeDescription     = "Caller element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -876,7 +860,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "dataConsumer";
         final String                     end2AttributeDescription     = "Called element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -895,12 +879,12 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
-        final String attribute1Description     = "Unique name of the flow relationship.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description and purpose of the flow.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "formula";
         final String attribute3Description     = "Function that determines the subset of the data that flows.";
         final String attribute3DescriptionGUID = null;
@@ -946,7 +930,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "currentStep";
         final String                     end1AttributeDescription     = "Element that executes first.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -963,7 +947,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "nextStep";
         final String                     end2AttributeDescription     = "Element that executes next.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -982,12 +966,12 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "qualifiedName";
-        final String attribute1Description     = "Unique name of the control flow relationship.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description and purpose of the control flow.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "guard";
         final String attribute3Description     = "Function that must be true to travel down this control flow.";
         final String attribute3DescriptionGUID = null;
@@ -1036,7 +1020,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "sourceElement";
         final String                     end1AttributeDescription     = "Source Attribute.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1053,7 +1037,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "targetElement";
         final String                     end2AttributeDescription     = "Target Attribute.";
         final String                     end2AttributeDescriptionGUID = null;

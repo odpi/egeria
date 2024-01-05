@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -87,8 +89,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -118,8 +120,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -141,8 +143,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
                     String               serviceName,
                     String               serverName)
     {
-        super(OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+        super(OpenMetadataType.GLOSSARY_TYPE_GUID,
+              OpenMetadataType.GLOSSARY_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -162,28 +164,28 @@ public class GlossaryBuilder extends ReferenceableBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  displayName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME,
-                                                                      language,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.LANGUAGE_PROPERTY_NAME,
+                                                                  language,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
-                                                                      usage,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                  usage,
+                                                                  methodName);
 
         return properties;
     }
@@ -205,7 +207,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                       description,
                                                                       methodName);
 
@@ -233,7 +235,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                       description,
                                                                       methodName);
 
@@ -261,7 +263,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.ORGANIZING_PRINCIPLE_PROPERTY_NAME,
+                                                                      OpenMetadataType.ORGANIZING_PRINCIPLE_PROPERTY_NAME,
                                                                       organizingPrinciple,
                                                                       methodName);
 
@@ -289,7 +291,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
+                                                                      OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                       scope,
                                                                       methodName);
 

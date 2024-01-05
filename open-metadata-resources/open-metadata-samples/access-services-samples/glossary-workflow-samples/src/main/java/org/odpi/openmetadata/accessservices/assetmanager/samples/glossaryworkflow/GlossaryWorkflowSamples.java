@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.samples.glossaryworkflow;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.http.HttpHelper;
 
 

@@ -63,7 +63,7 @@ public enum ViewServiceAuditCode {
      * <p>
      * OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
      * <p>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId    - unique Id for the message
      * @param severity     - severity of the message
