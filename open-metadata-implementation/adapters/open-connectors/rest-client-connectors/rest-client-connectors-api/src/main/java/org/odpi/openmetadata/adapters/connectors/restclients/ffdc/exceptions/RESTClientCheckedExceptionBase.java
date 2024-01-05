@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -22,6 +23,8 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
     private final String    reportedUserAction;
     private Exception reportedCaughtException = null;
 
+    @Serial
+    private static final long     serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an exception.

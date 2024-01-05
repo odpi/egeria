@@ -22,8 +22,19 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
     private static final String  expectedDataFormat = "csv";
     private static final String  assetTypeName = "CSVFile";
 
+    /**
+     * columnNames configuration property
+     */
     public static final String  columnNamesProperty = "columnNames";
+
+    /**
+     * delimiterCharacter configuration property
+     */
     public static final String  delimiterCharacterProperty = "delimiterCharacter";
+
+    /**
+     * quote character configuration property
+     */
     public static final String  quoteCharacterProperty = "quoteCharacter";
 
 
