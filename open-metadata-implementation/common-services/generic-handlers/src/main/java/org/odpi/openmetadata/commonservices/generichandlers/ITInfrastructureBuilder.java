@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -25,8 +27,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_GUID,
-              OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+        super(OpenMetadataType.IT_INFRASTRUCTURE_TYPE_GUID,
+              OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -66,13 +68,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 null,
-                                                                OpenMetadataAPIMapper.DEPLOYMENT_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
                                                                 deploymentTime,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DEPLOYER_PROPERTY_NAME,
+                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
                                                                   deployer,
                                                                   methodName);
 
@@ -80,15 +82,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.PLATFORM_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.PLATFORM_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                                     platformStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.PLATFORM_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.PLATFORM_STATUS_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);
@@ -116,13 +118,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 null,
-                                                                OpenMetadataAPIMapper.DEPLOYMENT_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
                                                                 deploymentTime,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DEPLOYER_PROPERTY_NAME,
+                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
                                                                   deployer,
                                                                   methodName);
 
@@ -130,15 +132,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.SERVER_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.SERVER_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                                     serverStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.SERVER_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.SERVER_STATUS_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);
@@ -166,13 +168,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 null,
-                                                                OpenMetadataAPIMapper.DEPLOYMENT_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
                                                                 deploymentTime,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DEPLOYER_PROPERTY_NAME,
+                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
                                                                   deployer,
                                                                   methodName);
 
@@ -180,15 +182,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.SERVER_CAPABILITY_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.SERVER_CAPABILITY_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                                     serverCapabilityStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.SERVER_CAPABILITY_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.SERVER_CAPABILITY_STATUS_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);
@@ -212,7 +214,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DESCRIPTION.name,
                                                                                      description,
                                                                                      methodName);
 
@@ -220,15 +222,15 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                    OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                     useType,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);
@@ -249,7 +251,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.PROVIDER_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataType.PROVIDER_NAME_PROPERTY_NAME,
                                                                                      providerName,
                                                                                      methodName);
 
@@ -271,7 +273,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      implementationType,
                                                                                      methodName);
 
@@ -297,13 +299,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.TENANT_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.TENANT_NAME_PROPERTY_NAME,
                                                                   tenantName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TENANT_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.TENANT_TYPE_PROPERTY_NAME,
                                                                   tenantType,
                                                                   methodName);
 
@@ -329,13 +331,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.OFFERING_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.OFFERING_NAME_PROPERTY_NAME,
                                                                   offeringName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SERVICE_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SERVICE_TYPE_PROPERTY_NAME,
                                                                   serviceType,
                                                                   methodName);
 

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -90,6 +92,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param usage                how/when should this set be used.
      * @param scope                what is the scope of this set's values.
      * @param isDeprecated         is the valid value deprecated
+     * @param isCaseSensitive         is the valid value case-sensitive
      * @param preferredValue       value to use to represent this option.
      * @param additionalProperties additional properties for this set.
      * @param suppliedTypeName     optional type name (default is ValidValueSet since it is the most flexible)
@@ -114,6 +117,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    String              usage,
                                    String              scope,
                                    boolean             isDeprecated,
+                                   boolean             isCaseSensitive,
                                    String              preferredValue,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
@@ -146,6 +150,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 scope,
                                 preferredValue,
                                 isDeprecated,
+                                isCaseSensitive,
                                 additionalProperties,
                                 extendedProperties,
                                 suppliedSupportedZones,
@@ -172,6 +177,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param usage                how/when should this set be used.
      * @param scope                what is the scope of this set's values.
      * @param isDeprecated         is the valid value deprecated
+     * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this set.
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
@@ -194,6 +200,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       String              usage,
                                       String              scope,
                                       boolean             isDeprecated,
+                                      boolean             isCaseSensitive,
                                       Map<String, String> additionalProperties,
                                       Map<String, Object> extendedProperties,
                                       List<String>        suppliedSupportedZones,
@@ -209,7 +216,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 externalSourceName,
                                 null,
                                 null,
-                                OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                 false,
                                 qualifiedName,
                                 displayName,
@@ -219,6 +226,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 scope,
                                 null,
                                 isDeprecated,
+                                isCaseSensitive,
                                 additionalProperties,
                                 extendedProperties,
                                 suppliedSupportedZones,
@@ -247,6 +255,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param isDeprecated         is the valid value deprecated
+     * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
@@ -274,6 +283,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                              String              scope,
                                              String              preferredValue,
                                              boolean             isDeprecated,
+                                             boolean             isCaseSensitive,
                                              Map<String, String> additionalProperties,
                                              Map<String, Object> extendedProperties,
                                              List<String>        suppliedSupportedZones,
@@ -291,7 +301,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 externalSourceName,
                                 null,
                                 setGUID,
-                                OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                 isDefaultValue,
                                 qualifiedName,
                                 displayName,
@@ -301,6 +311,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 scope,
                                 preferredValue,
                                 isDeprecated,
+                                isCaseSensitive,
                                 additionalProperties,
                                 extendedProperties,
                                 suppliedSupportedZones,
@@ -331,6 +342,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param isDeprecated         is the valid value deprecated
+     * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
@@ -360,6 +372,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    String              scope,
                                    String              preferredValue,
                                    boolean             isDeprecated,
+                                   boolean             isCaseSensitive,
                                    Map<String, String> additionalProperties,
                                    Map<String, Object> extendedProperties,
                                    List<String>        suppliedSupportedZones,
@@ -380,14 +393,14 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME;
+        String typeName = OpenMetadataType.VALID_VALUE_SET_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
             typeName = suppliedTypeName;
         }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName, OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME, serviceName, methodName, repositoryHelper);
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME, serviceName, methodName, repositoryHelper);
 
         ValidValuesBuilder builder = new ValidValuesBuilder(qualifiedName,
                                                             displayName,
@@ -397,6 +410,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             scope,
                                                             preferredValue,
                                                             isDeprecated,
+                                                            isCaseSensitive,
                                                             additionalProperties,
                                                             extendedProperties,
                                                             repositoryHelper,
@@ -426,22 +440,22 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         if ((definitionGUID != null) && (setGUID != null))
         {
-            InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME, isDefaultValue, methodName);
+            InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME, isDefaultValue, methodName);
 
             this.uncheckedLinkElementToElement(userId,
                                                externalSourceGUID,
                                                externalSourceName,
                                                setGUID,
                                                setParameter,
-                                               OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                               OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                definitionGUID,
                                                definitionParameter,
                                                typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                suppliedSupportedZones,
-                                               OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                               OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                relationshipProperties,
                                                effectiveTime,
                                                methodName);
@@ -468,6 +482,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
      * @param isDeprecated         is the valid value deprecated
+     * @param isCaseSensitive      is the valid value case-sensitive
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
@@ -493,6 +508,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                  String              usage,
                                  String              scope,
                                  boolean             isDeprecated,
+                                 boolean             isCaseSensitive,
                                  String              preferredValue,
                                  Map<String, String> additionalProperties,
                                  Map<String, Object> extendedProperties,
@@ -526,6 +542,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             scope,
                                                             preferredValue,
                                                             isDeprecated,
+                                                            isCaseSensitive,
                                                             additionalProperties,
                                                             extendedProperties,
                                                             repositoryHelper,
@@ -539,8 +556,8 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     validValueGUID,
                                     guidParameter,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                     forLineage,
                                     forDuplicateProcessing,
                                     suppliedSupportedZones,
@@ -590,9 +607,9 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     validValueGUID,
                                     guidParameter,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                     qualifiedName,
                                     forLineage,
                                     forDuplicateProcessing,
@@ -643,7 +660,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                      OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME,
                                                                                       isDefaultValue,
                                                                                       methodName);
 
@@ -652,15 +669,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   setGUID,
                                   setGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                   validValueGUID,
                                   validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   suppliedSupportedZones,
-                                  OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -706,15 +723,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       setGUID,
                                       setGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                       validValueGUID,
                                       validValueGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -762,15 +779,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   validValue1GUID,
                                   validValue1GUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   validValue2GUID,
                                   validValue2GUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   suppliedSupportedZones,
-                                  OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -816,15 +833,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       validValue1GUID,
                                       setGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       validValue2GUID,
                                       validValueGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -872,7 +889,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                                   null,
-                                                                                                  OpenMetadataAPIMapper.IS_STRICT_REQUIREMENT_PROPERTY_NAME,
+                                                                                                  OpenMetadataType.IS_STRICT_REQUIREMENT_PROPERTY_NAME,
                                                                                                   strictRequirement,
                                                                                                   methodName);
 
@@ -881,15 +898,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   consumerGUID,
                                   consumerGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   validValueGUID,
                                   validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   suppliedSupportedZones,
-                                  OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -935,15 +952,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       consumerGUID,
                                       consumerGUIDParameter,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       validValueGUID,
                                       validValueGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
 
@@ -1006,37 +1023,37 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
+                                                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
                                                                                               confidence,
                                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                               attributeName,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                               steward,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                               stewardTypeName,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                               stewardPropertyName,
                                                                               methodName);
 
        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                              relationshipProperties,
-                                                                             OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                             OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                              notes,
                                                                              methodName);
 
@@ -1045,15 +1062,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   referenceableGUID,
                                   referenceableGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   validValueGUID,
                                   validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                  OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   suppliedSupportedZones,
-                                  OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -1099,15 +1116,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       referenceableGUID,
                                       referenceableGUIDParameter,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       validValueGUID,
                                       validValueGUIDParameter,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -1146,7 +1163,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           validValueGUID,
                                           validValueGUIDParameter,
-                                          OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                          OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           suppliedSupportedZones,
@@ -1188,15 +1205,15 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                        PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PREFERRED_VALUE_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                    OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1247,8 +1264,8 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                              OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                               forLineage,
                               forDuplicateProcessing,
                               suppliedSupportedZones,
@@ -1296,10 +1313,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         validValueSetGUID,
                                         validValueSetGUIDParameter,
-                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1349,10 +1366,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         validValueGUID,
                                         validValueGUIDParameter,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         null,
                                         null,
                                         0,
@@ -1402,10 +1419,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         validValueGUID,
                                         validValueGUIDParameter,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -1447,18 +1464,18 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         return this.getAttachedElement(userId,
-                                        referenceableGUID,
-                                        referenceableGUIDParameter,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                        2,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        suppliedSupportedZones,
-                                        effectiveTime,
-                                        methodName);
+                                       referenceableGUID,
+                                       referenceableGUIDParameter,
+                                       OpenMetadataType.REFERENCEABLE.typeName,
+                                       OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                       OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                       OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                       2,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       suppliedSupportedZones,
+                                       effectiveTime,
+                                       methodName);
     }
 
 
@@ -1498,10 +1515,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         referenceableGUID,
                                         referenceableGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1546,8 +1563,8 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                    PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                   OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                   OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,

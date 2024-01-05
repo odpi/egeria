@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -172,18 +174,28 @@ public class OpenMetadataTypesArchive4_1
      */
 
 
+    /**
+     * Add support for sample data and remove displayName form process because it is causing confusion.
+     */
     private void update0010BasicModel()
     {
         this.archiveBuilder.addRelationshipDef(getSampleDataRelationship());
         this.archiveBuilder.addTypeDefPatch(updateProcess());
     }
 
+
+    /**
+     * Add sample data relationship
+     *
+     * @return relationship def
+     */
     private RelationshipDef getSampleDataRelationship()
     {
-        final String guid            = "0ee9c0f1-a89b-4806-8276-7c74f07fe190";
-        final String name            = "SampleData";
-        final String description     = "Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -192,6 +204,7 @@ public class OpenMetadataTypesArchive4_1
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -199,7 +212,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "sourceOfSample";
         final String                     end1AttributeDescription     = "Represents the resource where the sample was taken from.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -216,9 +229,9 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "sampleData";
-        final String                     end2AttributeDescription     = "Describes the location of the resource that holds the sampe data.";
+        final String                     end2AttributeDescription     = "Describes the location of the resource that holds the sample data.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -235,9 +248,9 @@ public class OpenMetadataTypesArchive4_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "samplingMethod";
-        final String attribute1Description     = "Description of the technique used to create the sample.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SAMPLING_METHOD.name;
+        final String attribute1Description     = OpenMetadataProperty.SAMPLING_METHOD.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SAMPLING_METHOD.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -250,12 +263,17 @@ public class OpenMetadataTypesArchive4_1
     }
 
 
+    /**
+     * Remove displayName from process - it was added in error - use name property instead.
+     *
+     * @return type def patch
+     */
     private TypeDefPatch updateProcess()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "Process";
+        final String typeName = OpenMetadataType.PROCESS.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -268,9 +286,9 @@ public class OpenMetadataTypesArchive4_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attributeName            = "displayName";
-        final String attributeDescription     = "Display name of the process";
-        final String attributeDescriptionGUID = null;
+        final String attributeName            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attributeDescription     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attributeDescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attributeName,
                                                            attributeDescription,
@@ -301,7 +319,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Create the Patch
          */
-        final String typeName = "SourcedFrom";
+        final String typeName = OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -314,9 +332,9 @@ public class OpenMetadataTypesArchive4_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "sourceVersionNumber";
-        final String attribute1Description     = "The version number of the template element when the copy was created.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SOURCE_VERSION_NUMBER.name;
+        final String attribute1Description     = OpenMetadataProperty.SOURCE_VERSION_NUMBER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SOURCE_VERSION_NUMBER.descriptionGUID;
 
         property = archiveHelper.getLongTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -330,18 +348,20 @@ public class OpenMetadataTypesArchive4_1
 
     private ClassificationDef getTemplateSubstituteClassification()
     {
-        final String guid            = "93b293c3-1185-4921-aa1c-237d3f0a5d5c";
-        final String name            = "TemplateSubstitute";
-        final String description     = "An element that has been introduced in a template to provide an end to a relationship that is part of the template but should not be visible outside of the template use.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
@@ -362,7 +382,7 @@ public class OpenMetadataTypesArchive4_1
         final String description     = "Characterizations of a collection of data values.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -499,7 +519,7 @@ public class OpenMetadataTypesArchive4_1
         final String description     = "A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -758,7 +778,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "snippetRelevantForElements";
         final String                     end1AttributeDescription     = "Element describing logical structure for data element.";
         final String                     end1AttributeDescriptionGUID = null;

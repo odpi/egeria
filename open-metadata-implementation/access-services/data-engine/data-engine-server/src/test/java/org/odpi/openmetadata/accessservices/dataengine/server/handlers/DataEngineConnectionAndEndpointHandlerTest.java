@@ -21,7 +21,8 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -38,11 +39,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -96,37 +93,37 @@ class DataEngineConnectionAndEndpointHandlerTest {
 
         mockDataEngineCommonHandler(true, mockedEndpointBuilder);
 
-        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, ASSET_GUID, CSV_FILE_TYPE_NAME,
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, ASSET_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME,
                 PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
 
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME);
 
-        verify(connectorTypeHandler, times(1)).findConnectorTypes(USER, CSV_FILE_TYPE_NAME,
+        verify(connectorTypeHandler, times(1)).findConnectorTypes(USER, OpenMetadataType.CSV_FILE_TYPE_NAME,
                 SEARCH_STRING_PARAMETER_NAME, START_FROM, PAGE_SIZE, false, false, null, GET_PROPER_CONNECTOR_TYPE_METHOD_NAME);
 
-        String connectionQualifiedName = getConnectionQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, connectionQualifiedName, CONNECTION_TYPE_NAME);
+        String connectionQualifiedName = getConnectionQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, connectionQualifiedName, OpenMetadataType.CONNECTION_TYPE_NAME);
 
-        String connectorTypeQualifiedName = getConnectorTypeQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        String connectorTypeQualifiedName = getConnectorTypeQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
         verify(connectorTypeHandler, times(1)).getConnectorTypeForConnection(USER, EXTERNAL_SOURCE_GUID,
-                EXTERNAL_SOURCE_NAME, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
-                null, CSV_FILE_TYPE_NAME, null, CONNECTOR_PROVIDER_CLASS_NAME,
-                OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
-                null, null, null, null,
-                null, null, null, null,
-                null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
+                                                                             EXTERNAL_SOURCE_NAME, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
+                                                                             null, OpenMetadataType.CSV_FILE_TYPE_NAME, null, CONNECTOR_PROVIDER_CLASS_NAME,
+                                                                             OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                                                                             null, null, null, null,
+                                                                             null, null, null, null,
+                                                                             null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
 
-        String endpointQualifiedName = getEndpointQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        String endpointQualifiedName = getEndpointQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
         String description = ACCESS_INFORMATION + NETWORK_ADDRESS;
         verify(endpointHandler, times(1)).createEndpoint(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
                 null, endpointQualifiedName, endpointQualifiedName, description, NETWORK_ADDRESS, PROTOCOL,
                 null, null, null, null, null, null, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
 
         verify(connectionHandler, times(1)).createConnection(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                ASSET_GUID, ASSET_GUID, null, connectionQualifiedName, connectionQualifiedName, null, null,
-                null, null, null, null, null,
-                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME, null, CONNECTOR_TYPE_GUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME, ENDPOINT_GUID,
-                ENDPOINT_GUID, null, null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
+                                                             ASSET_GUID, ASSET_GUID, null, connectionQualifiedName, connectionQualifiedName, null, null,
+                                                             null, null, null, null, null,
+                                                             OpenMetadataType.CONNECTION_TYPE_NAME, null, CONNECTOR_TYPE_GUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME, ENDPOINT_GUID,
+                                                             ENDPOINT_GUID, null, null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
     }
 
     @Test
@@ -135,19 +132,19 @@ class DataEngineConnectionAndEndpointHandlerTest {
 
         mockDataEngineCommonHandler(false, mockedEndpointBuilder);
 
-        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, ASSET_GUID, CSV_FILE_TYPE_NAME,
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, ASSET_GUID, OpenMetadataType.CSV_FILE_TYPE_NAME,
                 PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER);
 
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME);
 
-        verify(connectorTypeHandler, times(1)).findConnectorTypes(USER, CSV_FILE_TYPE_NAME,
+        verify(connectorTypeHandler, times(1)).findConnectorTypes(USER, OpenMetadataType.CSV_FILE_TYPE_NAME,
                 SEARCH_STRING_PARAMETER_NAME, START_FROM, PAGE_SIZE, false, false, null, GET_PROPER_CONNECTOR_TYPE_METHOD_NAME);
 
-        String connectionQualifiedName = getConnectionQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, connectionQualifiedName, CONNECTION_TYPE_NAME);
+        String connectionQualifiedName = getConnectionQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, connectionQualifiedName, OpenMetadataType.CONNECTION_TYPE_NAME);
 
-        String endpointQualifiedName = getEndpointQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
-        verify(dataEngineCommonHandler, times(1)).findEntity(USER, endpointQualifiedName, ENDPOINT_TYPE_NAME);
+        String endpointQualifiedName = getEndpointQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        verify(dataEngineCommonHandler, times(1)).findEntity(USER, endpointQualifiedName, OpenMetadataType.ENDPOINT_TYPE_NAME);
 
         String description = ACCESS_INFORMATION + NETWORK_ADDRESS;
         verify(endpointHandler, times(1)).updateEndpoint(USER, EXTERNAL_SOURCE_GUID,
@@ -159,7 +156,6 @@ class DataEngineConnectionAndEndpointHandlerTest {
     /**
      *  Issue -> https://github.com/mockito/mockito/issues/1066
      *  Unable to properly inject generics; connectionHandler mock is also used for endpointHandler even though a separate mock is defined
-     *
      *  Fix: set mocked objects as field values via reflection
      */
     @BeforeEach
@@ -185,7 +181,7 @@ class DataEngineConnectionAndEndpointHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(CONNECTION_GUID, GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(CONNECTION_GUID, OpenMetadataProperty.GUID.name, methodName);
         verify(connectionHandler, times(1)).removeConnection(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
                 CONNECTION_GUID, CONNECTION_GUID, false, false, null, methodName);
     }
@@ -197,7 +193,7 @@ class DataEngineConnectionAndEndpointHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(ENDPOINT_GUID, GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(ENDPOINT_GUID, OpenMetadataProperty.GUID.name, methodName);
         verify(endpointHandler, times(1)).removeEndpoint(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
                 ENDPOINT_GUID, ENDPOINT_GUID, false, false, null, methodName);
     }
@@ -207,27 +203,27 @@ class DataEngineConnectionAndEndpointHandlerTest {
 
         EntityDetail asset = new EntityDetail();
         asset.setGUID(ASSET_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME)).thenReturn(Optional.of(asset));
+        when(dataEngineCommonHandler.findEntity(USER, ASSET_QUALIFIED_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME)).thenReturn(Optional.of(asset));
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setConnectorFrameworkName(OCF);
-        when(connectorTypeHandler.findConnectorTypes(USER, CSV_FILE_TYPE_NAME, SEARCH_STRING_PARAMETER_NAME, START_FROM,
+        when(connectorTypeHandler.findConnectorTypes(USER, OpenMetadataType.CSV_FILE_TYPE_NAME, SEARCH_STRING_PARAMETER_NAME, START_FROM,
                 PAGE_SIZE, false, false, null, GET_PROPER_CONNECTOR_TYPE_METHOD_NAME)).thenReturn(Collections.singletonList(connectorType));
 
-        String connectionQualifiedName = getConnectionQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        String connectionQualifiedName = getConnectionQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
         if(insert) {
-            when(dataEngineCommonHandler.findEntity(USER, connectionQualifiedName, CONNECTION_TYPE_NAME)).thenReturn(Optional.empty());
+            when(dataEngineCommonHandler.findEntity(USER, connectionQualifiedName, OpenMetadataType.CONNECTION_TYPE_NAME)).thenReturn(Optional.empty());
 
-            String connectorTypeQualifiedName = getConnectorTypeQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+            String connectorTypeQualifiedName = getConnectorTypeQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
             when(connectorTypeHandler.getConnectorTypeForConnection(USER, EXTERNAL_SOURCE_GUID,
-                    EXTERNAL_SOURCE_NAME, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
-                    null, CSV_FILE_TYPE_NAME, null, CONNECTOR_PROVIDER_CLASS_NAME,
-                    OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
-                    null, null, null, null,
-                    null, null, null, null,
-                    null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME)).thenReturn(CONNECTOR_TYPE_GUID);
+                                                                    EXTERNAL_SOURCE_NAME, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
+                                                                    null, OpenMetadataType.CSV_FILE_TYPE_NAME, null, CONNECTOR_PROVIDER_CLASS_NAME,
+                                                                    OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                                                                    null, null, null, null,
+                                                                    null, null, null, null,
+                                                                    null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME)).thenReturn(CONNECTOR_TYPE_GUID);
 
-            String endpointQualifiedName = getEndpointQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+            String endpointQualifiedName = getEndpointQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
             String description = ACCESS_INFORMATION + NETWORK_ADDRESS;
             when(endpointHandler.createEndpoint(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, null,
                     endpointQualifiedName, endpointQualifiedName, description, NETWORK_ADDRESS, PROTOCOL,
@@ -238,16 +234,16 @@ class DataEngineConnectionAndEndpointHandlerTest {
         }
 
         Optional<EntityDetail> connection = Optional.of(new EntityDetail());
-        when(dataEngineCommonHandler.findEntity(USER, connectionQualifiedName, CONNECTION_TYPE_NAME)).thenReturn(connection);
+        when(dataEngineCommonHandler.findEntity(USER, connectionQualifiedName, OpenMetadataType.CONNECTION_TYPE_NAME)).thenReturn(connection);
 
         EntityDetail endpointEntityDetail = new EntityDetail();
         endpointEntityDetail.setGUID(ENDPOINT_GUID);
         Optional<EntityDetail> endpoint = Optional.of(endpointEntityDetail);
-        String endpointQualifiedName = getEndpointQualifiedName(CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
-        when(dataEngineCommonHandler.findEntity(USER, endpointQualifiedName, ENDPOINT_TYPE_NAME)).thenReturn(endpoint);
+        String endpointQualifiedName = getEndpointQualifiedName(OpenMetadataType.CSV_FILE_TYPE_NAME, ASSET_QUALIFIED_NAME);
+        when(dataEngineCommonHandler.findEntity(USER, endpointQualifiedName, OpenMetadataType.ENDPOINT_TYPE_NAME)).thenReturn(endpoint);
 
         doNothing().when(endpointHandler).updateBeanInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                ENDPOINT_GUID, GUID_PROPERTY_NAME, ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
+                ENDPOINT_GUID, OpenMetadataProperty.GUID.name, OpenMetadataType.ENDPOINT_TYPE_GUID, OpenMetadataType.ENDPOINT_TYPE_NAME,
                 null, false, UPDATE_ENDPOINT_METHOD_NAME);
     }
 
@@ -255,7 +251,7 @@ class DataEngineConnectionAndEndpointHandlerTest {
     private EndpointBuilder mockEndpointBuilder() {
         EndpointBuilder mockedEndpointBuilder = Mockito.mock(EndpointBuilder.class);
         doReturn(mockedEndpointBuilder).when(dataEngineConnectionAndEndpointHandler)
-                .getEndpointBuilder(PROTOCOL, NETWORK_ADDRESS, getEndpointQualifiedName(ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME));
+                .getEndpointBuilder(PROTOCOL, NETWORK_ADDRESS, getEndpointQualifiedName(ASSET_QUALIFIED_NAME, OpenMetadataType.CSV_FILE_TYPE_NAME));
         return mockedEndpointBuilder;
     }
 

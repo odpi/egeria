@@ -4,7 +4,8 @@ package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -123,7 +124,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                        Map<String, String> additionalProperties,
                                        Map<String, Object> extendedProperties)
     {
-        String serviceTypeName = OpenMetadataTypesMapper.GOVERNANCE_SERVICE_TYPE_NAME;
+        String serviceTypeName = OpenMetadataType.GOVERNANCE_SERVICE_TYPE_NAME;
 
         if (typeName != null)
         {
@@ -216,7 +217,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                       Map<String, String> additionalProperties,
                                       Map<String, Object> extendedProperties)
     {
-        String engineTypeName = OpenMetadataTypesMapper.GOVERNANCE_ENGINE_TYPE_NAME;
+        String engineTypeName = OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME;
 
         if (typeName != null)
         {
@@ -250,11 +251,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(engineEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(serviceEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME, serviceRequestType, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SERVICE_REQUEST_TYPE_PROPERTY_NAME, serviceRequestType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_" + requestType + "_supported_governance_service_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -290,7 +291,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                              Map<String, Object>  extendedProperties,
                                              List<Classification> classifications)
     {
-        String processTypeName = OpenMetadataTypesMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME;
+        String processTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME;
 
         if (typeName != null)
         {
@@ -303,7 +304,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         {
             processExtendedProperties = new HashMap<>();
 
-            processExtendedProperties.put(OpenMetadataTypesMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier);
+            processExtendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier);
         }
 
         return super.addProcess(processTypeName,
@@ -345,19 +346,19 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         final String methodName = "addGovernanceActionProcessStep";
 
-        String actionTypeName = OpenMetadataTypesMapper.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME;
+        String actionTypeName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME;
 
         if (typeName != null)
         {
             actionTypeName = typeName;
         }
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.PRODUCED_GUARDS_PROPERTY_NAME, producedGuards, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, additionalProperties, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME, producedGuards, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
@@ -391,9 +392,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(processEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(actionTypeEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.GUARD_PROPERTY_NAME, guard, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + governanceActionTypeGUID + "_governance_action_flow_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -427,11 +428,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(nextActionTypeEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.GUARD_PROPERTY_NAME, guard, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.MANDATORY_GUARD_PROPERTY_NAME, mandatoryGuard, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME, ignoreMultipleTriggers, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME, mandatoryGuard, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME, ignoreMultipleTriggers, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessStepGUID + "_to_" + nextGovernanceActionTypeGUID + "_next_governance_action_type_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -461,10 +462,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(engineEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataTypesMapper.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataTypesMapper.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataTypesMapper.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessStepGUID + "_to_" + governanceEngineGUID + "_governance_action_process_step_executor_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

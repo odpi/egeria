@@ -60,6 +60,11 @@ public class OpenMetadataValidValues
     public static final String CALLED_SERVICE_RESOURCE_USE = "Called Service";
 
     /**
+     * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.
+     */
+    public static final String ASSET_SUB_TYPE_NAME = "assetSubTypeName";
+
+    /**
      * Creates the qualifiedName of the element based on the properties supplied.
      *
      * <ul>

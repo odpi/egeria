@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -21,6 +23,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     private final String  scope;
     private final String  preferredValue;
     private final boolean isDeprecated;
+    private final boolean isCaseSensitive;
 
 
     /**
@@ -33,7 +36,8 @@ public class ValidValuesBuilder extends ReferenceableBuilder
      * @param usage guidance on how the schema should be used.
      * @param scope arena where this valid value is applicable.
      * @param preferredValue preferredValue where the schema is defined.
-     * @param isDeprecated is the schema type deprecated
+     * @param isDeprecated is the valid value deprecated
+     * @param isCaseSensitive is the valid value case-sensitive
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
@@ -48,6 +52,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                        String               scope,
                        String               preferredValue,
                        boolean              isDeprecated,
+                       boolean              isCaseSensitive,
                        Map<String, String>  additionalProperties,
                        Map<String, Object>  extendedProperties,
                        OMRSRepositoryHelper repositoryHelper,
@@ -56,8 +61,8 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-              OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -70,6 +75,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
         this.scope = scope;
         this.preferredValue = preferredValue;
         this.isDeprecated = isDeprecated;
+        this.isCaseSensitive = isCaseSensitive;
     }
 
 
@@ -87,44 +93,50 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALID_VALUE_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALID_VALUE_CATEGORY_PROPERTY_NAME,
+                                                                  OpenMetadataType.CATEGORY_PROPERTY_NAME,
                                                                   category,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                   usage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALID_VALUE_SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                   scope,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                   preferredValue,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
+                                                                   methodName);
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                                   isCaseSensitive,
                                                                    methodName);
 
         return properties;

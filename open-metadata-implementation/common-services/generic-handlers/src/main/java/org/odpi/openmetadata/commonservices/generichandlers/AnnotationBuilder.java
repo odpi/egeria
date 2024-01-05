@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -410,92 +412,92 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.ANNOTATION_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.ANNOTATION_TYPE_PROPERTY_NAME,
                                                                   annotationType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
                                                                   summary,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.CONFIDENCE_LEVEL_PROPERTY_NAME,
+                                                               OpenMetadataType.CONFIDENCE_LEVEL_PROPERTY_NAME,
                                                                confidenceLevel,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
                                                                   expression,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXPLANATION_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXPLANATION_PROPERTY_NAME,
                                                                   explanation,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ANALYSIS_STEP_PROPERTY_NAME,
+                                                                  OpenMetadataType.ANALYSIS_STEP_PROPERTY_NAME,
                                                                   analysisStep,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.JSON_PROPERTIES_PROPERTY_NAME,
+                                                                  OpenMetadataType.JSON_PROPERTIES_PROPERTY_NAME,
                                                                   jsonProperties,
                                                                   methodName);
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                      additionalProperties,
                                                                      methodName);
 
         setEffectivityDates(properties);
 
-        if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.CLASSIFICATION_ANNOTATION_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CLASSIFICATION_ANNOTATION_TYPE_NAME))
         {
             return addClassificationAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_CLASS_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_CLASS_ANNOTATION_TYPE_NAME))
         {
             return addDataClassAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_PROFILE_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_PROFILE_ANNOTATION_TYPE_NAME))
         {
             return addDataProfileAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME))
         {
             return addDataSourcePhysicalStatusAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_SOURCE_MEASUREMENT_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION_TYPE_NAME))
         {
             return addDataSourceMeasurementAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.QUALITY_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.QUALITY_ANNOTATION_TYPE_NAME))
         {
             return addQualityAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.RELATIONSHIP_ADVICE_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.RELATIONSHIP_ADVICE_ANNOTATION_TYPE_NAME))
         {
             return addRelationshipAdviceAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.REQUEST_FOR_ACTION_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION_TYPE_NAME))
         {
             return addRequestForActionAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME))
         {
             return addSchemaAnalysisAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SEMANTIC_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SEMANTIC_ANNOTATION_TYPE_NAME))
         {
             return addSemanticAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
         {
             return this.addSuspectDuplicateAnnotationInstanceProperties(properties, methodName);
         }
@@ -516,7 +518,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.CANDIDATE_CLASSIFICATIONS_PROPERTY_NAME,
+                                                                     OpenMetadataType.CANDIDATE_CLASSIFICATIONS_PROPERTY_NAME,
                                                                      candidateClassifications,
                                                                      methodName);
 
@@ -536,19 +538,19 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.CANDIDATE_DATA_CLASS_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.CANDIDATE_DATA_CLASS_GUIDS_PROPERTY_NAME,
                                                                        candidateDataClassGUIDs,
                                                                        methodName);
 
         properties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.MATCHING_VALUES_PROPERTY_NAME,
+                                                                OpenMetadataType.MATCHING_VALUES_PROPERTY_NAME,
                                                                 matchingValues,
                                                                 methodName);
 
         properties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.NON_MATCHING_VALUES_PROPERTY_NAME,
+                                                                OpenMetadataType.NON_MATCHING_VALUES_PROPERTY_NAME,
                                                                 nonMatchingValues,
                                                                 methodName);
 
@@ -568,85 +570,85 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataType.LENGTH_PROPERTY_NAME,
                                                                length,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.INFERRED_DATA_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.INFERRED_DATA_TYPE_PROPERTY_NAME,
                                                                   inferredDataType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.INFERRED_FORMAT_PROPERTY_NAME,
+                                                                  OpenMetadataType.INFERRED_FORMAT_PROPERTY_NAME,
                                                                   inferredFormat,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.INFERRED_LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataType.INFERRED_LENGTH_PROPERTY_NAME,
                                                                inferredLength,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.INFERRED_PRECISION_PROPERTY_NAME,
+                                                               OpenMetadataType.INFERRED_PRECISION_PROPERTY_NAME,
                                                                inferredPrecision,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.INFERRED_SCALE_PROPERTY_NAME,
+                                                               OpenMetadataType.INFERRED_SCALE_PROPERTY_NAME,
                                                                inferredScale,
                                                                methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.PROFILE_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataType.PROFILE_PROPERTIES_PROPERTY_NAME,
                                                                      profileProperties,
                                                                      methodName);
 
         properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.PROFILE_FLAGS_PROPERTY_NAME,
+                                                                      OpenMetadataType.PROFILE_FLAGS_PROPERTY_NAME,
                                                                       profileFlags,
                                                                       methodName);
 
         properties = repositoryHelper.addLongMapPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.PROFILE_COUNTS_PROPERTY_NAME,
+                                                                   OpenMetadataType.PROFILE_COUNTS_PROPERTY_NAME,
                                                                    profileCounts,
                                                                    methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.VALUE_LIST_PROPERTY_NAME,
+                                                                       OpenMetadataType.VALUE_LIST_PROPERTY_NAME,
                                                                        valueList,
                                                                        methodName);
 
         properties = repositoryHelper.addIntMapPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALUE_COUNT_PROPERTY_NAME,
+                                                                  OpenMetadataType.VALUE_COUNT_PROPERTY_NAME,
                                                                   valueCount,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALUE_RANGE_FROM_PROPERTY_NAME,
+                                                                  OpenMetadataType.VALUE_RANGE_FROM_PROPERTY_NAME,
                                                                   valueRangeFrom,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.VALUE_RANGE_TO_PROPERTY_NAME,
+                                                                  OpenMetadataType.VALUE_RANGE_TO_PROPERTY_NAME,
                                                                   valueRangeTo,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.AVERAGE_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataType.AVERAGE_VALUE_PROPERTY_NAME,
                                                                   averageValue,
                                                                   methodName);
 
@@ -668,25 +670,25 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.SOURCE_CREATE_TIME_PROPERTY_NAME,
                                                                 createTime,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.SOURCE_UPDATE_TIME_PROPERTY_NAME,
                                                                 modifiedTime,
                                                                 methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.DS_PHYSICAL_SIZE_PROPERTY_NAME,
+                                                               OpenMetadataType.DS_PHYSICAL_SIZE_PROPERTY_NAME,
                                                                size,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DS_PHYSICAL_ENCODING_PROPERTY_NAME,
+                                                                  OpenMetadataType.DS_PHYSICAL_ENCODING_PROPERTY_NAME,
                                                                   encoding,
                                                                   methodName);
 
@@ -706,7 +708,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.DATA_SOURCE_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataType.DATA_SOURCE_PROPERTIES_PROPERTY_NAME,
                                                                      dataSourceProperties,
                                                                      methodName);
 
@@ -726,13 +728,13 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.QUALITY_DIMENSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.QUALITY_DIMENSION_PROPERTY_NAME,
                                                                   qualityDimension,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.QUALITY_SCORE_PROPERTY_NAME,
+                                                               OpenMetadataType.QUALITY_SCORE_PROPERTY_NAME,
                                                                qualityScore,
                                                                methodName);
 
@@ -752,19 +754,19 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.RELATED_ENTITY_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataType.RELATED_ENTITY_GUID_PROPERTY_NAME,
                                                                   relatedEntityGUID,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
                                                                   relationshipTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.RELATIONSHIP_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataType.RELATIONSHIP_PROPERTIES_PROPERTY_NAME,
                                                                      relationshipProperties,
                                                                      methodName);
 
@@ -784,19 +786,19 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISCOVERY_ACTIVITY_PROPERTY_NAME,
+                                                                  OpenMetadataType.DISCOVERY_ACTIVITY_PROPERTY_NAME,
                                                                   discoveryActivity,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ACTION_REQUESTED_PROPERTY_NAME,
+                                                                  OpenMetadataType.ACTION_REQUESTED_PROPERTY_NAME,
                                                                   actionRequested,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.ACTION_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataType.ACTION_PROPERTIES_PROPERTY_NAME,
                                                                      actionProperties,
                                                                      methodName);
 
@@ -816,13 +818,13 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SCHEMA_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.SCHEMA_NAME_PROPERTY_NAME,
                                                                   schemaName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SCHEMA_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SCHEMA_TYPE_PROPERTY_NAME,
                                                                   schemaTypeName,
                                                                   methodName);
 
@@ -842,25 +844,25 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.INFORMAL_TERM_PROPERTY_NAME,
+                                                                  OpenMetadataType.INFORMAL_TERM_PROPERTY_NAME,
                                                                   informalTerm,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.INFORMAL_TOPIC_PROPERTY_NAME,
+                                                                  OpenMetadataType.INFORMAL_TOPIC_PROPERTY_NAME,
                                                                   informalTopic,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.CANDIDATE_GLOSSARY_TERM_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.CANDIDATE_GLOSSARY_TERM_GUIDS_PROPERTY_NAME,
                                                                        candidateGlossaryTermGUIDs,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.CANDIDATE_GLOSSARY_CATEGORY_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.CANDIDATE_GLOSSARY_CATEGORY_GUIDS_PROPERTY_NAME,
                                                                        candidateGlossaryCategoryGUIDs,
                                                                        methodName);
 
@@ -880,31 +882,31 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.DUPLICATE_ANCHOR_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.DUPLICATE_ANCHOR_GUIDS_PROPERTY_NAME,
                                                                        duplicateAnchorGUIDs,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.MATCHING_PROPERTY_NAMES_PROPERTY_NAME,
+                                                                       OpenMetadataType.MATCHING_PROPERTY_NAMES_PROPERTY_NAME,
                                                                        matchingPropertyNames,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.MATCHING_CLASSIFICATION_NAMES_PROPERTY_NAME,
+                                                                       OpenMetadataType.MATCHING_CLASSIFICATION_NAMES_PROPERTY_NAME,
                                                                        matchingClassificationNames,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.MATCHING_ATTACHMENT_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.MATCHING_ATTACHMENT_GUIDS_PROPERTY_NAME,
                                                                        matchingAttachmentGUIDs,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.MATCHING_RELATIONSHIP_GUIDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.MATCHING_RELATIONSHIP_GUIDS_PROPERTY_NAME,
                                                                        matchingRelationshipGUIDs,
                                                                        methodName);
 

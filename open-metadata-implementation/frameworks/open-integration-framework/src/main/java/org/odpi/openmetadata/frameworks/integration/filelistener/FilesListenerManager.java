@@ -110,6 +110,21 @@ public class FilesListenerManager
 
 
     /**
+     * Unregister a listener object that will be called each time a specific file is created, changed or deleted.
+     *
+     * @param listener      listener object
+     * @param fileToMonitor name of the file to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterFileListener(FileListenerInterface listener,
+                                       File                  fileToMonitor) throws InvalidParameterException
+    {
+        // todo add unregister logic
+    }
+
+
+    /**
      * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
      * The file filter lets you request that only certain types of files are returned.
      *
@@ -149,6 +164,21 @@ public class FilesListenerManager
                                 OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
                                                                                                 directoryToMonitor.getAbsolutePath()));
         }
+    }
+
+
+    /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the file directory unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryListener(FileDirectoryListenerInterface listener,
+                                            File                           directoryToMonitor) throws InvalidParameterException
+    {
+        // todo add unregister logic
     }
 
 
@@ -194,6 +224,21 @@ public class FilesListenerManager
                                 OIFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
                                                                                                 directoryToMonitor.getAbsolutePath()));
         }
+    }
+
+
+    /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the root file directory to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                File                           directoryToMonitor) throws InvalidParameterException
+    {
+        // todo add unregister logic
     }
 
 

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -79,8 +81,8 @@ public class CommunityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.COMMUNITY_TYPE_GUID,
-              OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME,
+              OpenMetadataType.COMMUNITY_TYPE_GUID,
+              OpenMetadataType.COMMUNITY_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -102,8 +104,8 @@ public class CommunityBuilder extends ReferenceableBuilder
                      String               serviceName,
                      String               serverName)
     {
-        super(OpenMetadataAPIMapper.COMMUNITY_TYPE_GUID,
-              OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME,
+        super(OpenMetadataType.COMMUNITY_TYPE_GUID,
+              OpenMetadataType.COMMUNITY_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -124,19 +126,19 @@ public class CommunityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.MISSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.MISSION_PROPERTY_NAME,
                                                                   mission,
                                                                   methodName);
         return properties;

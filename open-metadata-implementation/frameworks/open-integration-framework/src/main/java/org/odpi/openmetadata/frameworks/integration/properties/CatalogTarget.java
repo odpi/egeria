@@ -15,18 +15,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CatalogTarget contains the properties for one of the integration connector's catalog target.
- * It is linked via the CatalogTarget relationship to one or more elements that the integration connector is working on.
+ * CatalogTarget contains the properties for one of the integration connector's catalog targets.
+ * Each integration connector is optionally linked via the CatalogTarget relationship to one or more elements that the integration connector
+ * is working on. The catalogTargetElement contains details of the entity that represents the catalog target.
+ * It is extracted from entity proxy two of the catalog target relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CatalogTarget extends ElementStub
+public class CatalogTarget
 {
-    @Serial
-    private static final long     serialVersionUID = 1L;
-
-    private String catalogTargetName = null;
+    private String      relationshipGUID     = null;
+    private String      catalogTargetName    = null;
+    private ElementStub catalogTargetElement = null;
 
 
     /**
@@ -45,12 +46,34 @@ public class CatalogTarget extends ElementStub
      */
     public CatalogTarget(CatalogTarget template)
     {
-        super (template);
-
         if (template != null)
         {
+            relationshipGUID = template.getRelationshipGUID();
             catalogTargetName = template.getCatalogTargetName();
+            catalogTargetElement = template.getCatalogTargetElement();
         }
+    }
+
+
+    /**
+     * Return the unique identifier of the CatalogTarget relationship.  This is useful if the values in this relationship need to be updated.
+     *
+     * @return string guid
+     */
+    public String getRelationshipGUID()
+    {
+        return relationshipGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the CatalogTarget relationship.  This is useful if the values in this relationship need to be updated.
+     *
+     * @param relationshipGUID string guid
+     */
+    public void setRelationshipGUID(String relationshipGUID)
+    {
+        this.relationshipGUID = relationshipGUID;
     }
 
 
@@ -77,6 +100,28 @@ public class CatalogTarget extends ElementStub
 
 
     /**
+     * Return details of the catalog target element.  This is extracted from the entity proxy so the classification list may not be complete.
+     *
+     * @return element stub
+     */
+    public ElementStub getCatalogTargetElement()
+    {
+        return catalogTargetElement;
+    }
+
+
+    /**
+     * Set up details of the catalog target element.  This is extracted from the entity proxy so the classification list may not be complete.
+     *
+     * @param catalogTargetElement element stub
+     */
+    public void setCatalogTargetElement(ElementStub catalogTargetElement)
+    {
+        this.catalogTargetElement = catalogTargetElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,16 +130,10 @@ public class CatalogTarget extends ElementStub
     public String toString()
     {
         return "CatalogTarget{" +
-                "catalogTargetName='" + catalogTargetName + '\'' +
-                ", uniqueName='" + getUniqueName() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", status=" + getStatus() +
-                ", type=" + getType() +
-                ", origin=" + getOrigin() +
-                ", versions=" + getVersions() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "relationshipGUID='" + relationshipGUID + '\'' +
+                       ", catalogTargetName='" + catalogTargetName + '\'' +
+                       ", catalogTargetElement=" + catalogTargetElement +
+                       '}';
     }
 
 
@@ -111,16 +150,13 @@ public class CatalogTarget extends ElementStub
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof CatalogTarget that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        CatalogTarget that = (CatalogTarget) objectToCompare;
-        return Objects.equals(catalogTargetName, that.catalogTargetName);
+        return Objects.equals(relationshipGUID, that.relationshipGUID) &&
+                       Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                       Objects.equals(catalogTargetElement, that.catalogTargetElement);
     }
 
 
@@ -132,6 +168,6 @@ public class CatalogTarget extends ElementStub
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), catalogTargetName);
+        return Objects.hash(relationshipGUID, catalogTargetName, catalogTargetElement);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
@@ -53,7 +53,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
-        catalogTargetType.setTypeName(OpenMetadataTypesMapper.CSV_FILE_TYPE_NAME);
+        catalogTargetType.setTypeName(OpenMetadataType.CSV_FILE_TYPE_NAME);
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
 
         super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);

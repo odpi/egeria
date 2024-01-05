@@ -31,11 +31,11 @@ import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -260,8 +260,8 @@ public class AssetConsumerRESTServices
             if (requestBody != null)
             {
                 response.setGUIDs(handler.getAssetGUIDsByName(userId,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              OpenMetadataType.ASSET.typeGUID,
+                                                              OpenMetadataType.ASSET.typeName,
                                                               requestBody.getName(),
                                                               nameParameterName,
                                                               startFrom,
@@ -1025,10 +1025,10 @@ public class AssetConsumerRESTServices
             List<EntityDetail> attachedEntities = handler.getAttachedEntities(userId,
                                                                               termGUID,
                                                                               guidParameterName,
-                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                              OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                                              OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                                               null,
                                                                               null,
                                                                               1,
@@ -1047,7 +1047,7 @@ public class AssetConsumerRESTServices
 
                 for (EntityDetail entity : attachedEntities)
                 {
-                    if (repositoryHelper.isTypeOf(serverName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serverName, entity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
                     {
                         if (! guids.contains(entity.getGUID()))
                         {
@@ -1058,7 +1058,7 @@ public class AssetConsumerRESTServices
                     {
                         EntityDetail anchorEntity = handler.validateAnchorEntity(userId,
                                                                                  entity.getGUID(),
-                                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                                                  entity,
                                                                                  entityGUIDParameterName,
                                                                                  false,
@@ -1676,7 +1676,7 @@ public class AssetConsumerRESTServices
                                     null,
                                     assetGUID,
                                     assetGUIDParameterName,
-                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                    OpenMetadataType.ASSET.typeName,
                                     tagGUID,
                                     tagGUIDParameterName,
                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -1745,7 +1745,7 @@ public class AssetConsumerRESTServices
                                     null,
                                     elementGUID,
                                     elementGUIDParameterName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                    OpenMetadataType.REFERENCEABLE.typeName,
                                     tagGUID,
                                     tagGUIDParameterName,
                                     isPublic,
@@ -1807,7 +1807,7 @@ public class AssetConsumerRESTServices
                                          null,
                                          assetGUID,
                                          assetGUIDParameterName,
-                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                         OpenMetadataType.ASSET.typeName,
                                          tagGUID,
                                          tagGUIDParameterName,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -1868,7 +1868,7 @@ public class AssetConsumerRESTServices
                                          null,
                                          elementGUID,
                                          elementGUIDParameterName,
-                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                         OpenMetadataType.REFERENCEABLE.typeName,
                                          tagGUID,
                                          tagGUIDParameterName,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),

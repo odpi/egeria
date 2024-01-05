@@ -23,7 +23,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -99,8 +99,8 @@ public class ITProfileRESTServices
                  * Validate that the userId is unique
                  */
                 EntityDetail userIdentity = userIdentityHandler.getEntityByUniqueQualifiedName(userId,
-                                                                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                                               OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                                                                               OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                                                requestBody.getItUserId(),
                                                                                                userParameterName,
                                                                                                false,
@@ -108,7 +108,7 @@ public class ITProfileRESTServices
                                                                                                new Date(),
                                                                                                methodName);
                 
-                String typeName = OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME;
+                String typeName = OpenMetadataType.IT_PROFILE_TYPE_NAME;
                 
                 if (requestBody.getProperties().getTypeName() != null)
                 {
@@ -157,11 +157,11 @@ public class ITProfileRESTServices
                                                              typeName,
                                                              userIdentity.getGUID(),
                                                              userParameterName,
-                                                             OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                             OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                              false,
                                                              false,
-                                                             OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                                             OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                              (InstanceProperties) null,
                                                              null,
                                                              null,
@@ -176,14 +176,14 @@ public class ITProfileRESTServices
                                                         requestBody.getExternalSourceName(),
                                                         requestBody.getItInfrastructureGUID(),
                                                         itInfrastructureGUIDParameterName,
-                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                        OpenMetadataType.ASSET.typeName,
                                                         profileGUID,
                                                         profileGUIDParameterName,
                                                         typeName,
                                                         false,
                                                         false,
-                                                        OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME,
+                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID,
+                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME,
                                                         (InstanceProperties) null,
                                                         null,
                                                         null,
@@ -452,8 +452,8 @@ public class ITProfileRESTServices
                                                requestBody.getExternalSourceName(),
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
+                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -468,8 +468,8 @@ public class ITProfileRESTServices
                                                null,
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
+                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -521,7 +521,7 @@ public class ITProfileRESTServices
             response.setElement(handler.getActorProfileByGUID(userId,
                                                               itProfileGUID,
                                                               guidParameterName,
-                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                              OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -570,7 +570,7 @@ public class ITProfileRESTServices
             response.setElement(handler.getActorProfileForUser(userId,
                                                                actorProfileUserId,
                                                                nameParameterName,
-                                                               OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
+                                                               OpenMetadataType.IT_PROFILE_TYPE_NAME,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -623,8 +623,8 @@ public class ITProfileRESTServices
             response.setElements(handler.getActorProfilesByName(userId,
                                                                 requestBody.getName(),
                                                                 nameParameterName,
-                                                                OpenMetadataAPIMapper.IT_PROFILE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.IT_PROFILE_TYPE_GUID,
+                                                                OpenMetadataType.IT_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -679,8 +679,8 @@ public class ITProfileRESTServices
             response.setElements(handler.findActorProfiles(userId,
                                                            requestBody.getSearchString(),
                                                            searchStringParameterName,
-                                                           OpenMetadataAPIMapper.IT_PROFILE_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.IT_PROFILE_TYPE_NAME,
+                                                           OpenMetadataType.IT_PROFILE_TYPE_GUID,
+                                                           OpenMetadataType.IT_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
                                                            false,
@@ -1059,8 +1059,8 @@ public class ITProfileRESTServices
                 List<UserIdentityElement> elements = handler.findBeans(userId,
                                                                        requestBody.getSearchString(),
                                                                        searchStringParameterName,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,

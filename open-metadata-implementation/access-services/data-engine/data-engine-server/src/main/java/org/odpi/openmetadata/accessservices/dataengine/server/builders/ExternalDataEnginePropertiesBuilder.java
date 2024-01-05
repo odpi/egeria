@@ -4,7 +4,8 @@ package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 
 import org.apache.commons.collections4.MapUtils;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -70,37 +71,37 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
         if (name != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.NAME_PROPERTY_NAME, name, methodName);
+                                                                      OpenMetadataProperty.NAME.name, name, methodName);
         }
 
         if (description != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+                                                                      OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         }
 
         if (deployedImplementationType != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME, deployedImplementationType, methodName);
+                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         }
 
         if (capabilityVersion != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME, capabilityVersion, methodName);
+                                                                      OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME, capabilityVersion, methodName);
         }
 
         if (patchLevel != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
+                                                                      OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
         }
 
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
+                                                                      OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
         }
 
         if(MapUtils.isNotEmpty(additionalProperties)) {
             properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, additionalProperties, methodName);
+                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         }
 
         return properties;
@@ -121,7 +122,7 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
             String literalName = repositoryHelper.getExactMatchRegex(name);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.NAME_PROPERTY_NAME, literalName, methodName);
+                                                                      OpenMetadataProperty.NAME.name, literalName, methodName);
         }
 
         return properties;

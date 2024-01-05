@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -59,8 +60,8 @@ public class OpenMetadataTypesArchive3_2
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -229,7 +230,7 @@ public class OpenMetadataTypesArchive3_2
         final String name            = "GovernanceStatusLevel";
         final String description     = "A value to represent a specific level of status in a governance element.";
         final String descriptionGUID = null;
-        final String superTypeName   = "Referenceable";
+        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -728,7 +729,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A set of expectation values on the performance and use of the connected resource.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -801,7 +802,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A set of results from the analysis of a log record - or collection of log records.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Asset";
+        final String linkedToEntity = OpenMetadataType.ASSET.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -874,7 +875,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A data file containing resource use events.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "DataFile";
+        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -892,7 +893,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A data file containing operational lineage events.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "DataFile";
+        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -910,7 +911,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A collection of related lineage log records.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Asset";
+        final String linkedToEntity = OpenMetadataType.ASSET.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -960,7 +961,7 @@ public class OpenMetadataTypesArchive3_2
          * Create the Patch
          */
         final String typeName       = "AuditLog";
-        final String linkedToEntity = "Asset"; // Current value is DataSet
+        final String linkedToEntity = OpenMetadataType.ASSET.typeName; // Current value is DataSet
         final String description    = "A collection of related audit log records.";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
@@ -1013,7 +1014,7 @@ public class OpenMetadataTypesArchive3_2
          * Create the Patch
          */
         final String typeName       = "MeteringLog";
-        final String linkedToEntity = "Asset"; // Current value is DataSet
+        final String linkedToEntity = OpenMetadataType.ASSET.typeName; // Current value is DataSet
         final String description    = "A collection of related metering log records.";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
@@ -1066,7 +1067,7 @@ public class OpenMetadataTypesArchive3_2
          * Create the Patch
          */
         final String typeName       = "ExceptionBacklog";
-        final String linkedToEntity = "Asset"; // Current value is DataSet
+        final String linkedToEntity = OpenMetadataType.ASSET.typeName; // Current value is DataSet
         final String description    = "A collection of exceptions that need to be resolved";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
@@ -1171,7 +1172,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "An element that has be formed by combining the properties, classifications and relationships from multiple duplicate entities.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -1258,7 +1259,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "peerDuplicateOrigin";
         final String                     end1AttributeDescription     = "Oldest element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1275,7 +1276,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "peerDuplicatePartner";
         final String                     end2AttributeDescription     = "Newest element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1365,7 +1366,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Referenceable";
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end1AttributeName            = "consolidatedDuplicateOrigin";
         final String                     end1AttributeDescription     = "Detected duplicate element - the source of the properties.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1382,7 +1383,7 @@ public class OpenMetadataTypesArchive3_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "consolidatedDuplicateResult";
         final String                     end2AttributeDescription     = "Element resulting from combining the duplicate entities.";
         final String                     end2AttributeDescriptionGUID = null;

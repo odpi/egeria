@@ -30,6 +30,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -38,9 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
+
 
 /**
  * The Data Engine event processor is processing events from external data engines about
@@ -127,7 +126,7 @@ public class DataEngineEventProcessor {
             PortImplementation portImplementation = portImplementationEvent.getPortImplementation();
 
             String processGUID = dataEngineRESTServices.getEntityGUID(serverName, userId, portImplementationEvent.getProcessQualifiedName(),
-                    PROCESS_TYPE_NAME).orElse(null);
+                                                                      OpenMetadataType.PROCESS.typeName).orElse(null);
 
             dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
 
@@ -202,7 +201,7 @@ public class DataEngineEventProcessor {
             String portGUID = null;
             if (StringUtils.isNotEmpty(schemaEvent.getPortQualifiedName())) {
                 portGUID = dataEngineRESTServices.getEntityGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName(),
-                        PORT_TYPE_NAME).orElse(null);
+                                                                OpenMetadataType.PORT_TYPE_NAME).orElse(null);
             }
             dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
@@ -277,7 +276,7 @@ public class DataEngineEventProcessor {
             DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deletePort(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
-                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), PORT_IMPLEMENTATION_TYPE_NAME, deleteEvent.getDeleteSemantic());
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME, deleteEvent.getDeleteSemantic());
         } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }

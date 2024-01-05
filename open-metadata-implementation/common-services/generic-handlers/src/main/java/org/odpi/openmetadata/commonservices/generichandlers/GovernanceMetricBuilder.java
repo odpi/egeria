@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -79,8 +81,8 @@ public class GovernanceMetricBuilder extends ReferenceableBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataAPIMapper.GOVERNANCE_METRIC_TYPE_GUID,
-              OpenMetadataAPIMapper.GOVERNANCE_METRIC_TYPE_NAME,
+        super(OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
+              OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -101,31 +103,31 @@ public class GovernanceMetricBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.MEASUREMENT_PROPERTY_NAME,
+                                                                  OpenMetadataType.MEASUREMENT_PROPERTY_NAME,
                                                                   measurement,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TARGET_PROPERTY_NAME,
+                                                                  OpenMetadataType.TARGET_PROPERTY_NAME,
                                                                   target,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                                domainIdentifier,
                                                                methodName);
 
