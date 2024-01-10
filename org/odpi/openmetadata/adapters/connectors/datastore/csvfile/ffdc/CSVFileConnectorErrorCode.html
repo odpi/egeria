@@ -123,17 +123,29 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#DIRECTORY_SPECIFIED" class="member-name-link">DIRECTORY_SPECIFIED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CSV-FILE-CONNECTOR-400-002 - The file {0} given in Connection object {1} is a directory</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FILE_NOT_FOUND" class="member-name-link">FILE_NOT_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CSV-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FILE_NOT_READABLE" class="member-name-link">FILE_NOT_READABLE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CSV-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FILE_NOT_SPECIFIED" class="member-name-link">FILE_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CSV-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FILE_TOO_SHORT" class="member-name-link">FILE_TOO_SHORT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CSV-FILE-CONNECTOR-400-004 - File {0} does not have {1} rows</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CSV-FILE-CONNECTOR-500-001 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
+</div>
 </div>
 </section>
 </li>
@@ -198,36 +210,42 @@ the order they are declared.</div>
 <section class="detail" id="FILE_NOT_SPECIFIED">
 <h3>FILE_NOT_SPECIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_NOT_SPECIFIED</span></div>
+<div class="block">CSV-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DIRECTORY_SPECIFIED">
 <h3>DIRECTORY_SPECIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">DIRECTORY_SPECIFIED</span></div>
+<div class="block">CSV-FILE-CONNECTOR-400-002 - The file {0} given in Connection object {1} is a directory</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FILE_NOT_READABLE">
 <h3>FILE_NOT_READABLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_NOT_READABLE</span></div>
+<div class="block">CSV-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FILE_TOO_SHORT">
 <h3>FILE_TOO_SHORT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_TOO_SHORT</span></div>
+<div class="block">CSV-FILE-CONNECTOR-400-004 - File {0} does not have {1} rows</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FILE_NOT_FOUND">
 <h3>FILE_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_NOT_FOUND</span></div>
+<div class="block">CSV-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_IO_EXCEPTION">
 <h3>UNEXPECTED_IO_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CSVFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc">CSVFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_IO_EXCEPTION</span></div>
+<div class="block">CSV-FILE-CONNECTOR-500-001 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
 </section>
 </li>
 </ul>

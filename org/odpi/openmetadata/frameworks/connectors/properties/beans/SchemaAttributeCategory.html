@@ -108,15 +108,25 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ARRAY" class="member-name-link">ARRAY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">There may be multiple instances of this attribute.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAG" class="member-name-link">BAG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">There may be multiple instances of this attribute.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SET" class="member-name-link">SET</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">There may be multiple instances of this attribute.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SINGLETON" class="member-name-link">SINGLETON</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">There is at maximum, only one instance of the attribute.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The schema type is unknown.</div>
+</div>
 </div>
 </section>
 </li>
@@ -186,30 +196,37 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SchemaAttributeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaAttributeCategory</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">The schema type is unknown.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ARRAY">
 <h3>ARRAY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SchemaAttributeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaAttributeCategory</a></span>&nbsp;<span class="element-name">ARRAY</span></div>
+<div class="block">There may be multiple instances of this attribute.  The instances are ordered and the same value may appear in different instances.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SET">
 <h3>SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SchemaAttributeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaAttributeCategory</a></span>&nbsp;<span class="element-name">SET</span></div>
+<div class="block">There may be multiple instances of this attribute.  The instances are unordered and the same value can not
+ appear in more than one instance.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAG">
 <h3>BAG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SchemaAttributeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaAttributeCategory</a></span>&nbsp;<span class="element-name">BAG</span></div>
+<div class="block">There may be multiple instances of this attribute.  The instances are unordered and the same value may
+ appear in different instances.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SINGLETON">
 <h3>SINGLETON</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SchemaAttributeCategory.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">SchemaAttributeCategory</a></span>&nbsp;<span class="element-name">SINGLETON</span></div>
+<div class="block">There is at maximum, only one instance of the attribute.</div>
 </section>
 </li>
 </ul>

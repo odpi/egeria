@@ -430,7 +430,6 @@ org.odpi.openmetadata.adapters.connectors.discoveryservices
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.ffdc
 org.odpi.openmetadata.adapters.connectors.discoveryservices.discovercsv
-org.odpi.openmetadata.adapters.connectors.discoveryservices.discoverduplicates
 org.odpi.openmetadata.adapters.connectors.discoveryservices.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc
@@ -479,6 +478,12 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.envar
+org.odpi.openmetadata.adapters.connectors.surveyaction
+org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
+org.odpi.openmetadata.adapters.connectors.surveyaction.fileclassifier
+org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
+org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
+org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
 org.odpi.openmetadata.adapters.eventbus.topic.inmemory
 org.odpi.openmetadata.adapters.eventbus.topic.kafka
 org.odpi.openmetadata.adapters.repositoryservices
@@ -629,6 +634,9 @@ org.odpi.openmetadata.frameworks.integration.ffdc
 org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
+org.odpi.openmetadata.frameworks.surveyaction
+org.odpi.openmetadata.frameworks.surveyaction.ffdc
+org.odpi.openmetadata.frameworks.surveyaction.properties
 org.odpi.openmetadata.frameworkservices.gaf.admin
 org.odpi.openmetadata.frameworkservices.gaf.client
 org.odpi.openmetadata.frameworkservices.gaf.client.converters

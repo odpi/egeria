@@ -103,10 +103,8 @@ loadScripts(document, 'script');</script>
 <div class="block">RelatedAssetProperties is associated a related asset for a connector's EgeriaConnectedAssetProperties.  Connectors provide access to
  assets.   EgeriaConnectedAssetProperties returns properties (metadata) about the connector's asset.  RelatedAssetProperties
  returns similar information for an asset related to the connected asset
-
  It is a generic interface for all types of open metadata assets.  However, it assumes the asset's metadata model
  inherits from <b>Asset</b> (see model 0010 in Area 0).
-
  The EgeriaConnectedAssetProperties returns metadata about the asset at three levels of detail:
  <ul>
      <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
@@ -114,7 +112,6 @@ loadScripts(document, 'script');</script>
      of the relationships to other metadata entities</li>
      <li><b>assetUniverse</b> - used to define the broader context for the asset</li>
  </ul>
-
  RelatedAssetProperties is a base class for the connector's metadata API that returns null,
  for the asset's properties.  Metadata repository implementations extend this class to add their
  implementation of the refresh() method that calls to the metadata repository to populate the metadata properties.</div>
@@ -165,7 +162,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omasServerURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient)</code></div>
 <div class="col-last even-row-color">
@@ -251,7 +248,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;omasServerURL,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient)</span></div>
 <div class="block">Typical constructor.</div>
@@ -261,7 +258,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>serverName</code> - name of the server.</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
-<dd><code>omasServerURL</code> - url of server</dd>
+<dd><code>platformURLRoot</code> - url of server</dd>
 <dd><code>assetGUID</code> - String   unique id for connected asset.</dd>
 <dd><code>restClient</code> - client to call REST API</dd>
 </dl>
