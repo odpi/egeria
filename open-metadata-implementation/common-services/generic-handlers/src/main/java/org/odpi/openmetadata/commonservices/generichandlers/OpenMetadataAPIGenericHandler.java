@@ -2481,7 +2481,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     annotationGUID,
-                                                                                    OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                                                                    OpenMetadataType.ANNOTATION.typeName,
                                                                                     null,
                                                                                     null,
                                                                                     1,
@@ -2513,7 +2513,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 return parentAnchorIdentifiers;
                             }
                         }
-                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.ANNOTATION_TYPE_NAME))
+                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.ANNOTATION.typeName))
                         {
                             return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
                         }
@@ -2557,10 +2557,10 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   annotationReviewGUID,
-                                                                                  OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_GUID,
-                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP.typeName,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2911,11 +2911,11 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorIdentifiers = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForAnnotation(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION_REVIEW.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }

@@ -7,14 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefGallery;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
@@ -827,7 +820,7 @@ public class OpenMetadataAccess
     /**
      * Delete a specific metadata element.
      *
-     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param metadataElementGUID unique identifier of the metadata element to delete
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -850,6 +843,43 @@ public class OpenMetadataAccess
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementDelete(metadataElementGUID);
+        }
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param metadataElementGUID unique identifier of the metadata element to archive
+     * @param archiveProperties details of the archive process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void archiveMetadataElementInStore(String            metadataElementGUID,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              ArchiveProperties archiveProperties,
+                                              Date              effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        openMetadataStore.archiveMetadataElementInStore(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        metadataElementGUID,
+                                                        archiveProperties,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime);
 
         if (reportWriter != null)
         {

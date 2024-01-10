@@ -171,7 +171,6 @@ public class OpenMetadataTypesArchive3_5
         extend0112Person();
         update0130Projects();
         update0140Communities();
-        update0461GovernanceEngines();
     }
 
 
@@ -1188,51 +1187,5 @@ public class OpenMetadataTypesArchive3_5
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * 0461 Add Archive Engines and Services
-     */
-    private void update0461GovernanceEngines()
-    {
-        this.archiveBuilder.addEntityDef(addArchiveEngineEntity());
-        this.archiveBuilder.addEntityDef(addArchiveServiceEntity());
-    }
-
-
-    private EntityDef addArchiveEngineEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "773298be-68ab-4b99-99ab-19eaa886261e";
-        final String name            = "ArchiveEngine";
-        final String description     = "A collection of related archive services.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceEngine";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
-
-    private EntityDef addArchiveServiceEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "e6c049e2-56aa-4512-a634-20cd7085e534";
-        final String name            = "ArchiveService";
-        final String description     = "A governance service that maintains open metadata archives.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
 }
 

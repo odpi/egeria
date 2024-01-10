@@ -24,7 +24,7 @@ public class ConnectedLocations extends Locations
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
-    private String                 omasServerURL;
+    private String                 platformURLRoot;
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
@@ -35,7 +35,7 @@ public class ConnectedLocations extends Locations
      * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
@@ -45,7 +45,7 @@ public class ConnectedLocations extends Locations
     ConnectedLocations(String                 serviceName,
                        String                 serverName,
                        String                 userId,
-                       String                 omasServerURL,
+                       String                 platformURLRoot,
                        String                 assetGUID,
                        int                    totalElementCount,
                        int                    maxCacheSize,
@@ -56,7 +56,7 @@ public class ConnectedLocations extends Locations
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
+        this.platformURLRoot   = platformURLRoot;
         this.assetGUID       = assetGUID;
         this.restClient      = restClient;
     }
@@ -76,7 +76,7 @@ public class ConnectedLocations extends Locations
             this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
-            this.omasServerURL  = template.omasServerURL;
+            this.platformURLRoot  = template.platformURLRoot;
             this.assetGUID      = template.assetGUID;
             this.restClient     = template.restClient;
         }
@@ -115,7 +115,7 @@ public class ConnectedLocations extends Locations
         try
         {
             LocationsResponse restResult = restClient.callOCFLocationsGetRESTCall(methodName,
-                                                                                  omasServerURL + urlTemplate,
+                                                                                  platformURLRoot + urlTemplate,
                                                                                   serverName,
                                                                                   serviceName,
                                                                                   userId,
@@ -149,7 +149,7 @@ public class ConnectedLocations extends Locations
         }
         catch (Exception  error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, platformURLRoot);
         }
 
         return null;

@@ -35,7 +35,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
     private static final String fileTypeCategory =
             OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.FILE_TYPE.name,
                                                                 null);
     private static final String deployedImplementationTypeCategory =
             OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
@@ -300,7 +300,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                          * Is the file name or file extension recognized?
                          */
                         ValidMetadataValue validMetadataValue = validMetadataValues.getValidMetadataValue(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                                                          OpenMetadataType.FILE_NAME_PROPERTY_NAME,
+                                                                                                          OpenMetadataProperty.FILE_NAME.name,
                                                                                                           file.getName());
 
                         List<ValidMetadataValue> consistentValues = null;
@@ -308,7 +308,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         if (validMetadataValue != null)
                         {
                             consistentValues = validMetadataValues.getConsistentMetadataValues(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                                               OpenMetadataType.FILE_NAME_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.FILE_NAME.name,
                                                                                                null,
                                                                                                validMetadataValue.getPreferredValue(),
                                                                                                0,
@@ -319,13 +319,13 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             if (fileExtension != null)
                             {
                                 validMetadataValue = validMetadataValues.getValidMetadataValue(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                                               OpenMetadataType.FILE_NAME_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.FILE_EXTENSION.name,
                                                                                                fileExtension);
 
                                 if (validMetadataValue != null)
                                 {
                                     consistentValues = validMetadataValues.getConsistentMetadataValues(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                                                       OpenMetadataType.FILE_NAME_PROPERTY_NAME,
+                                                                                                       OpenMetadataProperty.FILE_EXTENSION.name,
                                                                                                        null,
                                                                                                        validMetadataValue.getPreferredValue(),
                                                                                                        0,
@@ -355,7 +355,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                                         List<ValidMetadataValue> consistentFileTypeValues = validMetadataValues.getConsistentMetadataValues(
                                                 OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
+                                                OpenMetadataProperty.FILE_TYPE.name,
                                                 null,
                                                 validMetadataValue.getPreferredValue(),
                                                 0,

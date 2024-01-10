@@ -825,17 +825,20 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "3fa23d4a-aceb-422f-9301-04ed474c6f74";
-        final String name            = "GovernanceEngine";
-        final String description     = "A collection of related governance services of the same type.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "SoftwareServerCapability";
+        final String guid            = OpenMetadataType.GOVERNANCE_ENGINE.typeGUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
+        final String description     = OpenMetadataType.GOVERNANCE_ENGINE.description;
+        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ENGINE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ENGINE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private EntityDef addGovernanceServiceEntity()
@@ -843,17 +846,20 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "191d870c-26f4-4310-a021-b8ca8772719d";
-        final String name            = "GovernanceService";
-        final String description     = "A connector that performs some governance operation.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "DeployedConnector";
+        final String guid            = OpenMetadataType.GOVERNANCE_SERVICE.typeGUID;
+        final String name            = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
+        final String description     = OpenMetadataType.GOVERNANCE_SERVICE.description;
+        final String descriptionGUID = OpenMetadataType.GOVERNANCE_SERVICE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.GOVERNANCE_SERVICE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private EntityDef addGovernanceActionEngineEntity()
@@ -861,17 +867,20 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "5d74250a-57ca-4197-9475-8911f620a94e";
-        final String name            = "GovernanceActionEngine";
-        final String description     = "A collection of related governance services of the same type from the Governance Action Framework (GAF).";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceEngine";
+        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeGUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
+        final String description     = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.description;
+        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private EntityDef addGovernanceActionServiceEntity()
@@ -879,25 +888,29 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "ececb378-31ac-4cc3-99b4-1c44e5fbc4d9";
-        final String name            = "GovernanceActionService";
-        final String description     = "A governance service that conforms to the Governance Action Framework (GAF).";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceService";
+        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeGUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
+        final String description     = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.description;
+        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private RelationshipDef addSupportedGovernanceServiceRelationship()
     {
-        final String guid            = "2726df0e-4f3a-44e1-8433-4ca5301457fd";
-        final String name            = "SupportedGovernanceService";
-        final String description     = "Link between a governance engine and one of its services.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -906,6 +919,7 @@ public class OpenMetadataTypesArchive2_6
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -913,7 +927,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceEngine";
+        final String                     end1EntityType               = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
         final String                     end1AttributeName            = "calledFromGovernanceEngines";
         final String                     end1AttributeDescription     = "Governance Engine making use of the governance service.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -930,7 +944,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceService";
+        final String                     end2EntityType               = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
         final String                     end2AttributeName            = "supportedGovernanceServices";
         final String                     end2AttributeDescription     = "Governance service that is part of the governance engine.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -949,12 +963,12 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "requestType";
-        final String attribute1Description     = "The request type used to call the service.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "requestParameters";
-        final String attribute2Description     = "Properties that configure the governance service for this type of request.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.REQUEST_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.REQUEST_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.REQUEST_TYPE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.REQUEST_PARAMETERS.name;
+        final String attribute2Description     = OpenMetadataProperty.REQUEST_PARAMETERS.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.REQUEST_PARAMETERS.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -2674,15 +2688,14 @@ public class OpenMetadataTypesArchive2_6
     {
         this.archiveBuilder.addTypeDefPatch(updateOpenDiscoveryEngine());
         this.archiveBuilder.addTypeDefPatch(updateOpenDiscoveryService());
-        this.archiveBuilder.addTypeDefPatch(deprecateSupportedDiscoveryService());
 
     }
 
     private TypeDefPatch updateOpenDiscoveryEngine()
     {
-        final String typeName = "OpenDiscoveryEngine";
+        final String typeName = OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName;
 
-        final String superTypeName = "GovernanceEngine";
+        final String superTypeName = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2696,9 +2709,9 @@ public class OpenMetadataTypesArchive2_6
 
     private TypeDefPatch updateOpenDiscoveryService()
     {
-        final String typeName = "OpenDiscoveryService";
+        final String typeName = OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName;
 
-        final String superTypeName = "GovernanceService";
+        final String superTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2708,22 +2721,6 @@ public class OpenMetadataTypesArchive2_6
 
         return typeDefPatch;
     }
-
-
-    private TypeDefPatch deprecateSupportedDiscoveryService()
-    {
-        final String typeName = "SupportedDiscoveryService";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
 
 
     /*

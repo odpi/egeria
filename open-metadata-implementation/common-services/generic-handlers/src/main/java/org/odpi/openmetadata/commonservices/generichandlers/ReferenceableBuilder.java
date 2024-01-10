@@ -30,9 +30,9 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName      name of this OMAS
      * @param serverName       name of local server
      */
-    protected ReferenceableBuilder(OMRSRepositoryHelper repositoryHelper,
-                                   String               serviceName,
-                                   String               serverName)
+    public ReferenceableBuilder(OMRSRepositoryHelper repositoryHelper,
+                                String serviceName,
+                                String serverName)
     {
         super(OpenMetadataType.REFERENCEABLE.typeGUID,
               OpenMetadataType.REFERENCEABLE.typeName,
@@ -512,11 +512,11 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getMementoProperties(Date                archiveDate,
-                                            String              archiveUser,
-                                            String              archiveProcess,
-                                            Map<String, String> archiveProperties,
-                                            String              methodName)
+    public InstanceProperties getMementoProperties(Date                archiveDate,
+                                                   String              archiveUser,
+                                                   String              archiveProcess,
+                                                   Map<String, String> archiveProperties,
+                                                   String              methodName)
     {
         InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    null,

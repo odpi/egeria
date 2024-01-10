@@ -1227,7 +1227,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                     {
                         results.add(relationship);
                     }
-                    else if (OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME.equals(typeName))
+                    else if (OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName.equals(typeName))
                     {
                         results.add(relationship);
                     }

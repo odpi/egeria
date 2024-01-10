@@ -2942,7 +2942,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.PATH_NAME_PROPERTY_NAME,
+                                                    OpenMetadataProperty.PATH_NAME.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -3205,7 +3205,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.FILE_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.FILE_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -5005,7 +5005,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.REQUEST_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -5027,7 +5027,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.SERVICE_REQUEST_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -5050,7 +5050,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringMapFromProperty(serviceName,
-                                                              OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                               elementProperties,
                                                               methodName);
         }
@@ -6317,7 +6317,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringMapFromProperty(serviceName,
-                                                              OpenMetadataType.ANALYSIS_PARAMS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.ANALYSIS_PARAMETERS.name,
                                                               elementProperties,
                                                               methodName);
         }
@@ -6329,7 +6329,7 @@ public abstract class OpenMetadataConverterBase<B>
     /**
      * Extract the analysis step property from the supplied element properties.
      *
-     * @param elementProperties properties from discovery analysis report entities
+     * @param elementProperties properties from entities
      * @return string property or null
      */
     protected String removeAnalysisStep(ElementProperties elementProperties)
@@ -6339,7 +6339,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.ANALYSIS_STEP_PROPERTY_NAME,
+                                                       OpenMetadataProperty.ANALYSIS_STEP.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6361,7 +6361,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.ANNOTATION_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.ANNOTATION_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6383,7 +6383,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeIntProperty(serviceName,
-                                                    OpenMetadataType.CONFIDENCE_LEVEL_PROPERTY_NAME,
+                                                    OpenMetadataProperty.CONFIDENCE_LEVEL.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6427,7 +6427,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.ANNOTATION_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.EXPRESSION.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6471,7 +6471,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.EXPLANATION_PROPERTY_NAME,
+                                                       OpenMetadataProperty.EXPLANATION.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6493,7 +6493,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.JSON_PROPERTIES_PROPERTY_NAME,
+                                                       OpenMetadataProperty.JSON_PROPERTIES.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6515,7 +6515,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeDateProperty(serviceName,
-                                                     OpenMetadataType.REVIEW_DATE_PROPERTY_NAME,
+                                                     OpenMetadataProperty.REVIEW_DATE.name,
                                                      elementProperties,
                                                      methodName);
         }
@@ -6537,7 +6537,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                       OpenMetadataProperty.STEWARD.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6624,7 +6624,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.COMMENT_PROPERTY_NAME,
+                                                       OpenMetadataProperty.COMMENT.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -7141,140 +7141,6 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
 
-
-    /**
-     * Extract and delete the duplicateAnchorGUID standing property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeDuplicateAnchorGUID(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDuplicateAnchorGUID";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DUPLICATE_ANCHOR_GUID_PROPERTY_NAME,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the divergentPropertyNames property from the supplied element properties.
-     *
-     * @param elementProperties properties from annotation entities
-     * @return list of values
-     */
-    protected List<String> removeDivergentPropertyNames(ElementProperties elementProperties)
-    {
-        final String methodName = "removeDivergentPropertyNames";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.DIVERGENT_PROPERTY_NAMES_PROPERTY_NAME,
-                                                            elementProperties,
-                                                            methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the divergentClassificationName standing property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeDivergentClassificationName(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDivergentClassificationName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DIVERGENT_CLASSIFICATION_NAME_PROPERTY_NAME,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the divergentClassificationPropertyNames property from the supplied element properties.
-     *
-     * @param elementProperties properties from annotation entities
-     * @return list of values
-     */
-    protected List<String> removeDivergentClassificationPropertyNames(ElementProperties elementProperties)
-    {
-        final String methodName = "removeDivergentClassificationPropertyNames";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.DIVERGENT_CLASSIFICATION_PROPERTY_NAMES_PROPERTY_NAME,
-                                                            elementProperties,
-                                                            methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract and delete the divergentRelatedMetadataElementsGUID standing property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeDivergentRelatedMetadataElementsGUID(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDivergentRelatedMetadataElementsGUID";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DIVERGENT_RELATIONSHIP_GUID_PROPERTY_NAME,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the divergentRelatedMetadataElementsPropertyNames property from the supplied element properties.
-     *
-     * @param elementProperties properties from annotation entities
-     * @return list of values
-     */
-    protected List<String> removeDivergentRelatedMetadataElementsPropertyNames(ElementProperties elementProperties)
-    {
-        final String methodName = "removeDivergentRelatedMetadataElementsPropertyNames";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.DIVERGENT_RELATIONSHIP_PROPERTY_NAMES_PROPERTY_NAME,
-                                                            elementProperties,
-                                                            methodName);
-        }
-
-        return null;
-    }
-
-
     /**
      * Extract and delete the attachmentGUID standing property from the supplied element properties.
      *
@@ -7296,27 +7162,6 @@ public abstract class OpenMetadataConverterBase<B>
         return null;
     }
 
-
-    /**
-     * Extract and delete the duplicateAttachmentGUID standing property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeDuplicateAttachmentGUID(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDuplicateAttachmentGUID";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DUPLICATE_ATTACHMENT_GUID_PROPERTY_NAME,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
 
 
     /**
@@ -7398,7 +7243,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.DISCOVERY_ACTIVITY_PROPERTY_NAME,
+                                                       OpenMetadataType.ACTION_SOURCE_NAME,
                                                        elementProperties,
                                                        methodName);
         }

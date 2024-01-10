@@ -124,7 +124,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                        Map<String, String> additionalProperties,
                                        Map<String, Object> extendedProperties)
     {
-        String serviceTypeName = OpenMetadataType.GOVERNANCE_SERVICE_TYPE_NAME;
+        String serviceTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
         if (typeName != null)
         {
@@ -217,7 +217,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                       Map<String, String> additionalProperties,
                                       Map<String, Object> extendedProperties)
     {
-        String engineTypeName = OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME;
+        String engineTypeName = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
         if (typeName != null)
         {
@@ -251,11 +251,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(engineEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(serviceEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SERVICE_REQUEST_TYPE_PROPERTY_NAME, serviceRequestType, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.REQUEST_TYPE.name, requestType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SERVICE_REQUEST_TYPE.name, serviceRequestType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(engineGUID + "_to_" + serviceGUID + "_" + requestType + "_supported_governance_service_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -462,8 +462,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(engineEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME, requestType, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME, requestParameters, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.REQUEST_TYPE.name, requestType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessStepGUID + "_to_" + governanceEngineGUID + "_governance_action_process_step_executor_relationship"),

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -85,15 +86,15 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataType.ANNOTATION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ANNOTATION_STATUS.name,
+                                                                    OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_NAME,
                                                                     annotationStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ASSET_OWNER_TYPE_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.ANNOTATION_STATUS_ENUM_TYPE_NAME);
         }
 
         return properties;
@@ -111,32 +112,21 @@ public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = new InstanceProperties();
 
-        if (reviewDate != null)
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataType.REVIEW_DATE_PROPERTY_NAME,
-                                                                    reviewDate,
-                                                                    methodName);
-        }
-
-        if (steward != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataType.STEWARD_PROPERTY_NAME,
-                                                                      steward,
-                                                                      methodName);
-        }
-
-        if (reviewComment != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataType.COMMENT_PROPERTY_NAME,
-                                                                      reviewComment,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.REVIEW_DATE.name,
+                                                                reviewDate,
+                                                                methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.STEWARD.name,
+                                                                  steward,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.COMMENT.name,
+                                                                  reviewComment,
+                                                                  methodName);
 
         return properties;
     }

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -238,7 +239,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
         if (assetProperties instanceof DataStoreProperties dataStoreProperties)
         {
-            assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, dataStoreProperties.getPathName());
+            assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, dataStoreProperties.getPathName());
             assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, dataStoreProperties.getCreateTime());
             assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, dataStoreProperties.getModifiedTime());
         }
@@ -332,7 +333,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FILE_TYPE_NAME)) ||
                  (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FOLDER_TYPE_NAME))) &&
                 (assetExtendedProperties != null) &&
-                (assetExtendedProperties.get(OpenMetadataType.PATH_NAME_PROPERTY_NAME) != null))
+                (assetExtendedProperties.get(OpenMetadataProperty.PATH_NAME.name) != null))
             {
                 final String pathNameParameterName = "assetProperties.getExtendedProperties().get(parameterName)";
                 filesAndFoldersHandler.addFileAssetPath(userId,
@@ -341,7 +342,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                         assetGUID,
                                                         assetGUIDParameterName,
                                                         typeName,
-                                                        assetProperties.getExtendedProperties().get(OpenMetadataType.PATH_NAME_PROPERTY_NAME).toString(),
+                                                        assetProperties.getExtendedProperties().get(OpenMetadataProperty.PATH_NAME.name).toString(),
                                                         pathNameParameterName,
                                                         forLineage,
                                                         forDuplicateProcessing,

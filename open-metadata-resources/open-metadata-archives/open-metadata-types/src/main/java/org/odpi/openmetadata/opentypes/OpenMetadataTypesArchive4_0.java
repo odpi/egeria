@@ -523,21 +523,21 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "status";
-        final String attribute1Description     = "The status of the work on this element.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "startDate";
-        final String attribute2Description     = "Date/time that work started on this element.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "completionDate";
-        final String attribute3Description     = "Date/time that work stopped on this element.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "actionTargetName";
-        final String attribute4Description     = "The name to identify the action target to the actor that processes it.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "completionMessage";
-        final String attribute5Description     = "Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.STATUS.name;
+        final String attribute1Description     = OpenMetadataProperty.STATUS.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.STATUS.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.START_DATE.name;
+        final String attribute2Description     = OpenMetadataProperty.START_DATE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.START_DATE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.COMPLETION_DATE.name;
+        final String attribute3Description     = OpenMetadataProperty.COMPLETION_DATE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.COMPLETION_DATE.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ACTION_TARGET_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.ACTION_TARGET_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.COMPLETION_MESSAGE.name;
+        final String attribute5Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("ToDoStatus",
                                                          attribute1Name,
