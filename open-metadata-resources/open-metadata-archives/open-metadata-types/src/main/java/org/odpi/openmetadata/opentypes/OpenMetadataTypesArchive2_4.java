@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
+ * OpenMetadataTypesArchive builds an open metadata archive containing all the standard open metadata types.
  * These types have hardcoded dates and guids so that however many times this archive is rebuilt, it will
  * produce the same content.
  * <p>
@@ -108,7 +108,7 @@ public class OpenMetadataTypesArchive2_4
 
 
     /**
-     * Returns the open metadata type archive containing all of the standard open metadata types.
+     * Returns the open metadata type archive containing all the standard open metadata types.
      *
      * @return populated open metadata archive object
      */
@@ -407,40 +407,40 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "changeTarget";
-        final String attribute1Description     = "The relationship of element that has been changed to the anchor.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "changeAction";
-        final String attribute2Description     = "The type of change.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "classificationName";
-        final String attribute3Description     = "If a classification name changed, this is its name.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "attachmentGUID";
-        final String attribute4Description     = "If an attached entity or relationship to it changed, this is its unique identifier of the entity.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "attachmentType";
-        final String attribute5Description     = "If an attached entity or relationship to changed, this is its unique type name of the entity.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "relationshipType";
-        final String attribute6Description     = "If an attached entity or relationship to changed, this is its unique type name of the relationship.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "user";
-        final String attribute7Description     = "The user identifier for the person/system making the change.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "description";
-        final String attribute8Description     = "Description of the change.  Also known as the actionDescription.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.CHANGE_TARGET.name;
+        final String attribute1Description     = OpenMetadataProperty.CHANGE_TARGET.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.CHANGE_TARGET.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.CHANGE_ACTION.name;
+        final String attribute2Description     = OpenMetadataProperty.CHANGE_ACTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CHANGE_ACTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.CLASSIFICATION_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.CLASSIFICATION_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.CLASSIFICATION_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ATTACHMENT_GUID.name;
+        final String attribute4Description     = OpenMetadataProperty.ATTACHMENT_GUID.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ATTACHMENT_GUID.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.ATTACHMENT_TYPE.name;
+        final String attribute5Description     = OpenMetadataProperty.ATTACHMENT_TYPE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.ATTACHMENT_TYPE.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.RELATIONSHIP_TYPE.name;
+        final String attribute6Description     = OpenMetadataProperty.RELATIONSHIP_TYPE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.RELATIONSHIP_TYPE.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.USER.name;
+        final String attribute7Description     = OpenMetadataProperty.USER.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.USER.descriptionGUID;
+        final String attribute8Name            = OpenMetadataProperty.ACTION_DESCRIPTION.name;
+        final String attribute8Description     = OpenMetadataProperty.ACTION_DESCRIPTION.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.ACTION_DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("LatestChangeTarget",
                                                          attribute1Name,
                                                          attribute1Description,
-                                                         attribute1DescriptionGUID);;
+                                                         attribute1DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("LatestChangeAction",
                                                          attribute2Name,
                                                          attribute2Description,
-                                                         attribute2DescriptionGUID);;
+                                                         attribute2DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -483,8 +483,8 @@ public class OpenMetadataTypesArchive2_4
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_TYPE_NAME));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING_TYPE_NAME));
@@ -2370,7 +2370,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "Annotation";
+        final String typeName = OpenMetadataType.ANNOTATION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

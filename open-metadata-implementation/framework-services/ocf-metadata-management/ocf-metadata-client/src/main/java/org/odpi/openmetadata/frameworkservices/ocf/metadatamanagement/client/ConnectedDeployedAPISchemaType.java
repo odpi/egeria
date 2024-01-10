@@ -13,7 +13,7 @@ class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
      * @param bean super class properties
      * @param serviceName calling service
      * @param serverName  name of the server.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param userId user id to use on server calls.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
@@ -22,7 +22,7 @@ class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
     ConnectedDeployedAPISchemaType(APISchemaType bean,
                                    String        serviceName,
                                    String        serverName,
-                                   String        omasServerURL,
+                                   String        platformURLRoot,
                                    String        userId,
                                    int           maxCacheSize,
                                    OCFRESTClient restClient)
@@ -34,7 +34,7 @@ class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
             super.apiOperations = new ConnectedAPIOperations(serviceName,
                                                              serverName,
                                                              userId,
-                                                             omasServerURL,
+                                                             platformURLRoot,
                                                              this.getGUID(),
                                                              maxCacheSize,
                                                              this.getOperationCount(),

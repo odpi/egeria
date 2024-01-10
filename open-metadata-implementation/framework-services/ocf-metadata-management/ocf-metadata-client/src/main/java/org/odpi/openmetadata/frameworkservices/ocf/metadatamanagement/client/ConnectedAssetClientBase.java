@@ -39,7 +39,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -67,7 +67,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param maxPageSize maximum page size for this process
      * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
@@ -98,7 +98,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -116,7 +116,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
@@ -149,7 +149,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param serverPlatformURLRoot the network address of the server running the OCF REST services
      * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests

@@ -224,13 +224,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.REQUEST_TYPE.name,
                                                                   requestType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                      requestParameters,
                                                                      methodName);
 

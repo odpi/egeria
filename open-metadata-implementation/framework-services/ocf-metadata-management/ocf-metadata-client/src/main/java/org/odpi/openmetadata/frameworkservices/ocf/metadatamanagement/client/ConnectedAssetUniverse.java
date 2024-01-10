@@ -13,12 +13,11 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
 
 /**
- * ConnectedAssetUniverse is the OMAS client library implementation of the Open Connector Framework
+ * ConnectedAssetUniverse is the client library implementation of the Open Connector Framework
  * (OCF) AssetUniverse object.  AssetUniverse provides read-only access to the properties known
  * about an asset.  ConnectedAssetUniverse configures AssetUniverse (and its dependent objects)
  * with the information necessary to populate the AssetUniverse contents from the open metadata
  * repositories.
- * 
  * All of ConnectedAssetUniverse's work is done in the constructors.  They extract basic information
  * about the asset and push objects to the super class to retrieve the more detailed properties.
  * These properties are only retrieved on demand.
@@ -31,12 +30,11 @@ public class ConnectedAssetUniverse extends AssetUniverse
     private static final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
     /**
-     * Private constructor used by the create() static factory methods for instantiation
-     * of ConnectedAssetUniverse objects.
+     * Private constructor for the "create()" static factory methods used to instantiate ConnectedAssetUniverse objects.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      *
@@ -48,7 +46,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                    OCFRESTClient    restClient,
                                    String           serviceName,
                                    String           remoteServerName,
-                                   String           omasServerURL,
+                                   String           platformURLRoot,
                                    String           userId,
                                    String           assetGUID) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -58,7 +56,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
         this.processAssetResponse(serviceName,
                                   remoteServerName,
-                                  omasServerURL,
+                                  platformURLRoot,
                                   userId,
                                   assetGUID,
                                   restClient,
@@ -71,7 +69,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      *
@@ -81,23 +79,24 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     public static ConnectedAssetUniverse create(String      serviceName,
                                                 String      remoteServerName,
-                                                String      omasServerURL,
+                                                String      platformURLRoot,
                                                 String      userId,
                                                 String      assetGUID) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL);
-        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, platformURLRoot);
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, platformURLRoot, restClient, userId, assetGUID);
 
         return new ConnectedAssetUniverse(assetResponse,
                                           restClient,
                                           serviceName,
                                           remoteServerName,
-                                          omasServerURL,
+                                          platformURLRoot,
                                           userId,
                                           assetGUID);
     }
+
 
     /**
      * Static factory method used for creating a ConnectedAssetUniverse object where a userId and password
@@ -107,7 +106,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param remoteServerName  name of the server.
      * @param localServerUserId userId of the local server.
      * @param localServerPassword password of the local server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      *
@@ -119,20 +118,20 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                 String      remoteServerName,
                                                 String      localServerUserId,
                                                 String      localServerPassword,
-                                                String      omasServerURL,
+                                                String      platformURLRoot,
                                                 String      userId,
                                                 String      assetGUID) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
-        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, platformURLRoot, localServerUserId, localServerPassword);
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, platformURLRoot, restClient, userId, assetGUID);
 
         return new ConnectedAssetUniverse(assetResponse,
                                           restClient,
                                           serviceName,
                                           remoteServerName,
-                                          omasServerURL,
+                                          platformURLRoot,
                                           userId,
                                           assetGUID);
     }
@@ -142,7 +141,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      * @param restClient client for calling rest APIs
@@ -153,20 +152,20 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     public static ConnectedAssetUniverse create(String          serviceName,
                                                 String          remoteServerName,
-                                                String          omasServerURL,
+                                                String          platformURLRoot,
                                                 String          userId,
                                                 String          assetGUID,
                                                 OCFRESTClient   restClient) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, platformURLRoot, restClient, userId, assetGUID);
 
         return new ConnectedAssetUniverse(assetResponse,
                                           restClient,
                                           serviceName,
                                           remoteServerName,
-                                          omasServerURL,
+                                          platformURLRoot,
                                           userId,
                                           assetGUID);
     }
@@ -177,7 +176,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      * @param connectionGUID  unique id for connection used to access asset.
@@ -188,21 +187,21 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     public static ConnectedAssetUniverse create(String      serviceName,
                                                 String      remoteServerName,
-                                                String      omasServerURL,
+                                                String      platformURLRoot,
                                                 String      userId,
                                                 String      assetGUID,
                                                 String      connectionGUID) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL);
-        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, platformURLRoot);
+        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, platformURLRoot, restClient, userId, assetGUID, connectionGUID);
 
         return new ConnectedAssetUniverse(assetResponse,
                                           restClient,
                                           serviceName,
                                           remoteServerName,
-                                          omasServerURL,
+                                          platformURLRoot,
                                           userId,
                                           assetGUID);
     }
@@ -215,7 +214,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param remoteServerName  name of the server.
      * @param localServerUserId userId of the local server.
      * @param localServerPassword password of the local server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
      * @param connectionGUID  unique id for connection used to access asset.
@@ -228,21 +227,21 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                 String      remoteServerName,
                                                 String      localServerUserId,
                                                 String      localServerPassword,
-                                                String      omasServerURL,
+                                                String      platformURLRoot,
                                                 String      userId,
                                                 String      assetGUID,
                                                 String      connectionGUID) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
-        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, platformURLRoot, localServerUserId, localServerPassword);
+        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, platformURLRoot, restClient, userId, assetGUID, connectionGUID);
 
         return new ConnectedAssetUniverse(assetResponse,
                                           restClient,
                                           serviceName,
                                           remoteServerName,
-                                          omasServerURL,
+                                          platformURLRoot,
                                           userId,
                                           assetGUID);
     }
@@ -252,7 +251,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName server to call.
-     * @param omasServerURL url root of the remote server.
+     * @param platformURLRoot url root of the remote server.
      * @param userId userId of calling user.
      * @param assetGUID unique identifier of the asset.
      * @param restClient client to issue REST call.
@@ -261,7 +260,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private void  processAssetResponse(String           serviceName,
                                        String           remoteServerName,
-                                       String           omasServerURL,
+                                       String           platformURLRoot,
                                        String           userId,
                                        String           assetGUID,
                                        OCFRESTClient    restClient,
@@ -272,7 +271,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.externalIdentifiers = new ConnectedExternalIdentifiers(serviceName,
                                                                          remoteServerName,
                                                                          userId,
-                                                                         omasServerURL,
+                                                                         platformURLRoot,
                                                                          assetGUID,
                                                                          assetResponse.getExternalIdentifierCount(),
                                                                          MAX_CACHE_SIZE,
@@ -284,7 +283,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.relatedMediaReferences = new ConnectedRelatedMediaReferences(serviceName,
                                                                                remoteServerName,
                                                                                userId,
-                                                                               omasServerURL,
+                                                                               platformURLRoot,
                                                                                assetGUID,
                                                                                assetResponse.getRelatedMediaReferenceCount(),
                                                                                MAX_CACHE_SIZE,
@@ -296,7 +295,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.noteLogs = new ConnectedNoteLogs(serviceName,
                                                    remoteServerName,
                                                    userId,
-                                                   omasServerURL,
+                                                   platformURLRoot,
                                                    assetGUID,
                                                    assetResponse.getNoteLogsCount(),
                                                    MAX_CACHE_SIZE,
@@ -308,7 +307,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.externalReferences = new ConnectedExternalReferences(serviceName,
                                                                        remoteServerName,
                                                                        userId,
-                                                                       omasServerURL,
+                                                                       platformURLRoot,
                                                                        assetGUID,
                                                                        assetResponse.getExternalReferencesCount(),
                                                                        MAX_CACHE_SIZE,
@@ -320,7 +319,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.connections = new ConnectedConnections(serviceName,
                                                          remoteServerName,
                                                          userId,
-                                                         omasServerURL,
+                                                         platformURLRoot,
                                                          assetGUID,
                                                          assetResponse.getConnectionCount(),
                                                          MAX_CACHE_SIZE,
@@ -332,7 +331,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.licenses = new ConnectedLicenses(serviceName,
                                                    remoteServerName,
                                                    userId,
-                                                   omasServerURL,
+                                                   platformURLRoot,
                                                    assetGUID,
                                                    assetResponse.getLicenseCount(),
                                                    MAX_CACHE_SIZE,
@@ -344,7 +343,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.certifications = new ConnectedCertifications(serviceName,
                                                                remoteServerName,
                                                                userId,
-                                                               omasServerURL,
+                                                               platformURLRoot,
                                                                assetGUID,
                                                                assetResponse.getCertificationCount(),
                                                                MAX_CACHE_SIZE,
@@ -354,7 +353,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         super.feedback = new ConnectedFeedback(serviceName,
                                                remoteServerName,
                                                userId,
-                                               omasServerURL,
+                                               platformURLRoot,
                                                assetGUID,
                                                assetResponse.getCommentCount(),
                                                assetResponse.getLikeCount(),
@@ -368,7 +367,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.knownLocations = new ConnectedLocations(serviceName,
                                                           remoteServerName,
                                                           userId,
-                                                          omasServerURL,
+                                                          platformURLRoot,
                                                           assetGUID,
                                                           assetResponse.getKnownLocationsCount(),
                                                           MAX_CACHE_SIZE,
@@ -378,7 +377,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         super.lineage = new ConnectedAssetLineage(serviceName,
                                                   remoteServerName,
                                                   userId,
-                                                  omasServerURL,
+                                                  platformURLRoot,
                                                   assetGUID,
                                                   MAX_CACHE_SIZE,
                                                   restClient);
@@ -388,7 +387,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             super.relatedAssets = new ConnectedRelatedAssets(serviceName,
                                                              remoteServerName,
                                                              userId,
-                                                             omasServerURL,
+                                                             platformURLRoot,
                                                              assetGUID,
                                                              assetResponse.getRelatedAssetCount(),
                                                              MAX_CACHE_SIZE,
@@ -399,12 +398,13 @@ public class ConnectedAssetUniverse extends AssetUniverse
         {
             super.schema = this.getSchemaType(serviceName,
                                               remoteServerName,
-                                              omasServerURL,
+                                              platformURLRoot,
                                               userId,
                                               assetResponse.getSchemaType(),
                                               restClient);
         }
     }
+
 
     /**
      * Returns the basic information about the asset.  The connection guid allows the short description for the
@@ -412,7 +412,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param restClient client to call REST API
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
@@ -425,7 +425,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private static AssetResponse getConnectedAssetSummary(String        serviceName,
                                                           String        remoteServerName,
-                                                          String        omasServerURL,
+                                                          String        platformURLRoot,
                                                           OCFRESTClient restClient,
                                                           String        userId,
                                                           String        assetGUID,
@@ -436,14 +436,14 @@ public class ConnectedAssetUniverse extends AssetUniverse
         final String   methodName = "getConnectedAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/via-connection/{4}";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(platformURLRoot, remoteServerName, methodName);
 
         AssetResponse  restResult = null;
 
         try
         {
             restResult = restClient.callOCFAssetGetRESTCall(methodName,
-                                                            omasServerURL + urlTemplate,
+                                                            platformURLRoot + urlTemplate,
                                                             remoteServerName,
                                                             serviceName,
                                                             userId,
@@ -460,7 +460,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         }
         catch (Exception error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, platformURLRoot);
         }
 
         return restResult;
@@ -473,7 +473,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param restClient client to call REST API
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
@@ -485,7 +485,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private static AssetResponse getAssetSummary(String        serviceName,
                                                  String        remoteServerName,
-                                                 String        omasServerURL,
+                                                 String        platformURLRoot,
                                                  OCFRESTClient restClient,
                                                  String        userId,
                                                  String        assetGUID) throws InvalidParameterException,
@@ -495,14 +495,14 @@ public class ConnectedAssetUniverse extends AssetUniverse
         final String   methodName = "getAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}";
         
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(platformURLRoot, remoteServerName, methodName);
 
         AssetResponse  restResult = null;
 
         try
         {
             restResult = restClient.callOCFAssetGetRESTCall(methodName,
-                                                            omasServerURL + urlTemplate,
+                                                            platformURLRoot + urlTemplate,
                                                             remoteServerName,
                                                             serviceName,
                                                             userId,
@@ -518,7 +518,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         }
         catch (Exception error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, platformURLRoot);
         }
 
         return restResult;
@@ -530,7 +530,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
-     * @param omasServerURL  url used to call the server.
+     * @param platformURLRoot  url used to call the server.
      * @param userId     String   userId of user making request.
      * @param bean schema type bean that has the properties for the schema type.
      * @param restClient client to call REST API
@@ -539,7 +539,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private SchemaType getSchemaType(String        serviceName,
                                      String        remoteServerName,
-                                     String        omasServerURL,
+                                     String        platformURLRoot,
                                      String        userId,
                                      SchemaType    bean,
                                      OCFRESTClient restClient)
@@ -553,7 +553,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             return new ConnectedNestedSchemaType((ComplexSchemaType)bean,
                                                  serviceName,
                                                  remoteServerName,
-                                                 omasServerURL,
+                                                 platformURLRoot,
                                                  userId,
                                                  MAX_CACHE_SIZE,
                                                  restClient);
@@ -563,7 +563,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             return new ConnectedDeployedAPISchemaType((APISchemaType) bean,
                                                       serviceName,
                                                       remoteServerName,
-                                                      omasServerURL,
+                                                      platformURLRoot,
                                                       userId,
                                                       MAX_CACHE_SIZE,
                                                       restClient);

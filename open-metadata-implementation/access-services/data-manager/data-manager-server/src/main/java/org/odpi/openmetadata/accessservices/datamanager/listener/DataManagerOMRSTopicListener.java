@@ -296,7 +296,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.NESTED_FILE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_FILE_TYPE_NAME)) ||

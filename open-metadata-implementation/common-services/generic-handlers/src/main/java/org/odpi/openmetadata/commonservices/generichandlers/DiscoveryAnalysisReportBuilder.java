@@ -104,7 +104,7 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataType.ANALYSIS_PARAMS_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ANALYSIS_PARAMETERS.name,
                                                                      analysisParameters,
                                                                      methodName);
 

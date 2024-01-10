@@ -1714,11 +1714,11 @@ public class DataEngineRESTServices {
 
         if (file instanceof CSVFile) {
             CSVFile csvFile = (CSVFile) file;
-            extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
+            extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, csvFile.getFileType());
             extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, csvFile.getDelimiterCharacter());
             extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, csvFile.getQuoteCharacter());
         } else {
-            extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, file.getFileType());
+            extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, file.getFileType());
         }
         return extendedProperties;
     }

@@ -10,13 +10,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage;
  */
 public class ConnectedAssetLineage extends AssetLineage
 {
-    private String                 serviceName;
-    private String                 serverName;
-    private String                 userId;
-    private String                 omasServerURL;
-    private String                 assetGUID;
-    private int                    maxCacheSize;
-    private OCFRESTClient          restClient;
+    private String        serviceName;
+    private String        serverName;
+    private String        userId;
+    private String        platformURLRoot;
+    private String        assetGUID;
+    private int           maxCacheSize;
+    private OCFRESTClient restClient;
 
 
     /**
@@ -26,7 +26,7 @@ public class ConnectedAssetLineage extends AssetLineage
      * @param serviceName calling service
      * @param serverName name of server to use on server calls.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
@@ -35,20 +35,20 @@ public class ConnectedAssetLineage extends AssetLineage
     ConnectedAssetLineage(String                 serviceName,
                           String                 serverName,
                           String                 userId,
-                          String                 omasServerURL,
+                          String                 platformURLRoot,
                           String                 assetGUID,
                           int                    maxCacheSize,
                           OCFRESTClient          restClient)
     {
         super();
 
-        this.serviceName    = serviceName;
-        this.serverName     = serverName;
-        this.userId         = userId;
-        this.omasServerURL  = omasServerURL;
-        this.assetGUID      = assetGUID;
-        this.maxCacheSize   = maxCacheSize;
-        this.restClient     = restClient;
+        this.serviceName     = serviceName;
+        this.serverName      = serverName;
+        this.userId          = userId;
+        this.platformURLRoot = platformURLRoot;
+        this.assetGUID       = assetGUID;
+        this.maxCacheSize    = maxCacheSize;
+        this.restClient      = restClient;
     }
 
 
@@ -63,12 +63,12 @@ public class ConnectedAssetLineage extends AssetLineage
 
         if (template != null)
         {
-            this.serviceName    = template.serviceName;
-            this.serverName     = template.serverName;
-            this.userId         = template.userId;
-            this.omasServerURL  = template.omasServerURL;
-            this.assetGUID      = template.assetGUID;
-            this.restClient     = template.restClient;
+            this.serviceName     = template.serviceName;
+            this.serverName      = template.serverName;
+            this.userId          = template.userId;
+            this.platformURLRoot = template.platformURLRoot;
+            this.assetGUID       = template.assetGUID;
+            this.restClient      = template.restClient;
         }
     }
 }

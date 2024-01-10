@@ -2,12 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
 
+import java.io.Serial;
+
 /**
  * The RESTServerException is thrown by the REST client connector when it is not able to communicate with the
  * REST server.
  */
 public class RESTServerException extends RESTClientCheckedExceptionBase
 {
+    @Serial
+    private static final long     serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

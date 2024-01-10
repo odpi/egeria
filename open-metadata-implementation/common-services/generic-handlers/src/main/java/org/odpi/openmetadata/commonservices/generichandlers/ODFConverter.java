@@ -88,30 +88,6 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
             {
                 return getNewDataSourceMeasurementAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_VALUE_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentValueAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentClassificationAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentRelationshipAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentAttachmentValueAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentAttachmentClassificationAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_NAME))
-            {
-                return getNewDivergentAttachmentRelationshipAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
             else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.QUALITY_ANNOTATION_TYPE_NAME))
             {
                 return getNewQualityAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
@@ -132,11 +108,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
             {
                 return getNewSemanticAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
-            {
-                return getNewSuspectDuplicateAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
-            }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION.typeName))
             {
                 return getNewAnnotation(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
@@ -145,7 +117,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 /*
                  * This will throw an exception
                  */
-                super.validateInstanceType(OpenMetadataType.ANNOTATION_TYPE_NAME,
+                super.validateInstanceType(OpenMetadataType.ANNOTATION.typeName,
                                            beanClass.getName(),
                                            primaryEntity,
                                            methodName);
@@ -497,310 +469,6 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the DivergentValueAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentValueAnnotation(Class<B>           beanClass,
-                                                      EntityDetail       primaryEntity,
-                                                      List<EntityDetail> supplementaryEntities,
-                                                      List<Relationship> relationships,
-                                                      String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentValueAnnotation annotation = new DivergentValueAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentPropertyNames(this.removeDivergentPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the DivergentClassificationAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentClassificationAnnotation(Class<B>           beanClass,
-                                                               EntityDetail       primaryEntity,
-                                                               List<EntityDetail> supplementaryEntities,
-                                                               List<Relationship> relationships,
-                                                               String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentClassificationAnnotation annotation = new DivergentClassificationAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentClassificationName(this.removeDivergentClassificationName(remainingProperties));
-            annotation.setDivergentClassificationPropertyNames(this.removeDivergentClassificationPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the DivergentRelationshipAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentRelationshipAnnotation(Class<B>           beanClass,
-                                                             EntityDetail       primaryEntity,
-                                                             List<EntityDetail> supplementaryEntities,
-                                                             List<Relationship> relationships,
-                                                             String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentRelationshipAnnotation annotation = new DivergentRelationshipAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentRelationshipGUID(this.removeDivergentRelationshipGUID(remainingProperties));
-            annotation.setDivergentRelationshipPropertyNames(this.removeDivergentRelationshipPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the DivergentValueAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentAttachmentValueAnnotation(Class<B>           beanClass,
-                                                                EntityDetail       primaryEntity,
-                                                                List<EntityDetail> supplementaryEntities,
-                                                                List<Relationship> relationships,
-                                                                String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentAttachmentValueAnnotation annotation = new DivergentAttachmentValueAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setAttachmentGUID(this.removeAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAttachmentGUID(this.removeDuplicateAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentPropertyNames(this.removeDivergentPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the DivergentClassificationAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentAttachmentClassificationAnnotation(Class<B>           beanClass,
-                                                                         EntityDetail       primaryEntity,
-                                                                         List<EntityDetail> supplementaryEntities,
-                                                                         List<Relationship> relationships,
-                                                                         String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentAttachmentClassificationAnnotation annotation = new DivergentAttachmentClassificationAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setAttachmentGUID(this.removeAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAttachmentGUID(this.removeDuplicateAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentClassificationName(this.removeDivergentClassificationName(remainingProperties));
-            annotation.setDivergentClassificationPropertyNames(this.removeDivergentClassificationPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the DivergentRelationshipAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewDivergentAttachmentRelationshipAnnotation(Class<B>           beanClass,
-                                                                       EntityDetail       primaryEntity,
-                                                                       List<EntityDetail> supplementaryEntities,
-                                                                       List<Relationship> relationships,
-                                                                       String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            DivergentAttachmentRelationshipAnnotation annotation = new DivergentAttachmentRelationshipAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setAttachmentGUID(this.removeAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAttachmentGUID(this.removeDuplicateAttachmentGUID(remainingProperties));
-            annotation.setDuplicateAnchorGUID(this.removeDuplicateAnchorGUID(remainingProperties));
-            annotation.setDivergentRelationshipGUID(this.removeDivergentRelationshipGUID(remainingProperties));
-            annotation.setDivergentRelationshipPropertyNames(this.removeDivergentClassificationPropertyNames(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Using the supplied instances, return a new instance of the QualityAnnotation bean.
      *
      * @param beanClass name of the class to create
@@ -1068,58 +736,6 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the SuspectDuplicateAnnotation bean.
-     *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the collection of entities that make up the
-     *                      content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied in the constructor
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private Annotation getNewSuspectDuplicateAnnotation(Class<B>           beanClass,
-                                                        EntityDetail       primaryEntity,
-                                                        List<EntityDetail> supplementaryEntities,
-                                                        List<Relationship> relationships,
-                                                        String             methodName) throws PropertyServerException
-    {
-        try
-        {
-            SuspectDuplicateAnnotation annotation = new SuspectDuplicateAnnotation();
-
-            InstanceProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
-                                                                                      annotation,
-                                                                                      primaryEntity,
-                                                                                      supplementaryEntities,
-                                                                                      relationships,
-                                                                                      methodName);
-
-            annotation.setDuplicateAnchorGUIDs(this.removeDuplicateAnchorGUIDs(remainingProperties));
-            annotation.setMatchingPropertyNames(this.removeMatchingPropertyNames(remainingProperties));
-            annotation.setMatchingClassificationNames(this.removeMatchingClassificationNames(remainingProperties));
-            annotation.setMatchingAttachmentGUIDs(this.removeMatchingAttachmentGUIDs(remainingProperties));
-            annotation.setMatchingRelationshipGUIDs(this.removeMatchingRelationshipGUIDs(remainingProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
-
-            return annotation;
-        }
-        catch (ClassCastException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Using the supplied instances, return a new instance of the SchemaAnalysisAnnotation bean.
      *
      * @param beanClass name of the class to create
@@ -1214,7 +830,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 {
                     String actualTypeName = entity.getType().getTypeDefName();
 
-                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ANNOTATION_REVIEW.typeName))
                     {
                         InstanceProperties properties = new InstanceProperties(entity.getProperties());
 
@@ -1232,7 +848,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
             {
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ANNOTATION_REVIEW_LINK_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP.typeName))
                     {
                         annotation.setAnnotationStatus(this.getAnnotationStatusFromProperties(instanceProperties));
                     }
@@ -1258,12 +874,10 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.ANNOTATION_STATUS_PROPERTY_NAME);
+            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataProperty.ANNOTATION_STATUS.name);
 
-            if (instancePropertyValue instanceof EnumPropertyValue)
+            if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
             {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
                 switch (enumPropertyValue.getOrdinal())
                 {
                     case 0:

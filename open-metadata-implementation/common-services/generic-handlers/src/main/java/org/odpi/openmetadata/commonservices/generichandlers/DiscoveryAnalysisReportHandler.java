@@ -139,7 +139,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         repositoryHandler.getEntityByGUID(userId,
                                           discoveryEngineGUIDParameterName,
                                           assetGUID,
-                                          OpenMetadataType.DISCOVERY_ENGINE_TYPE_NAME,
+                                          OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,

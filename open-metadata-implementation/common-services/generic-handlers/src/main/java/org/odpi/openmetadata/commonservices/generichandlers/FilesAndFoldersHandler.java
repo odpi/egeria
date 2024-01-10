@@ -422,7 +422,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         Map<String, Object> extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
 
         return folderHandler.createAssetWithConnection(userId,
                                                        externalSourceGUID,
@@ -508,9 +508,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             extendedProperties = new HashMap<>(initialExtendedProperties);
         }
 
-        extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, fileType);
-        extendedProperties.put(OpenMetadataType.FILE_NAME_PROPERTY_NAME, fileName);
-        extendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, fileName);
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
 
         String fileAssetTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
         if (typeName != null)
@@ -1609,7 +1609,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (pathName != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+            assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         }
 
         if (createTime != null)
@@ -1644,7 +1644,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (fileType != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, fileType);
+            assetExtendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
         }
 
         if (assetExtendedProperties.isEmpty())
@@ -2356,7 +2356,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, delimiterCharacter.toString());
         extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter.toString());
-        extendedProperties.put(OpenMetadataType.FILE_TYPE_PROPERTY_NAME, fileType);
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
 
         Map<String, Object>  configurationProperties = new HashMap<>();
 
@@ -2589,7 +2589,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                 assetExtendedProperties = new HashMap<>();
             }
 
-            assetExtendedProperties.put(OpenMetadataType.FILE_NAME_PROPERTY_NAME, this.getFileName(fullPath));
+            assetExtendedProperties.put(OpenMetadataProperty.FILE_NAME.name, this.getFileName(fullPath));
         }
 
         fileHandler.updateAsset(userId,
@@ -3183,7 +3183,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         final String  pathNameParameterName = "pathName";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         List<EntityDetail> entities = fileHandler.getEntitiesByValue(userId,
                                                                      pathName,
@@ -3249,7 +3249,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         final String  pathNameParameterName = "pathName";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         List<FOLDER> folders = folderHandler.getBeansByValue(userId,
                                                              pathName,
@@ -3320,7 +3320,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         final String  pathNameParameterName = "pathName";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         return folderHandler.getBeansByValue(userId,
                                              pathName,
@@ -3645,7 +3645,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                  PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         List<FILE> files = fileHandler.getBeansByValue(userId,
                                                        pathName,
@@ -3716,7 +3716,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         return fileHandler.getBeansByValue(userId,
                                            pathName,
@@ -3772,7 +3772,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.PATH_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         return fileHandler.getBeansByValue(userId,
                                            name,

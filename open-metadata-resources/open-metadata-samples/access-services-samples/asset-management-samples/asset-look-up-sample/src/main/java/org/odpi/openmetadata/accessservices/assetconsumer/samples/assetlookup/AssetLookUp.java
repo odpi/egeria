@@ -466,7 +466,7 @@ public class AssetLookUp
                     }
                 }
 
-                SchemaType schemaType = assetUniverse.getSchema();
+                SchemaType schemaType = assetUniverse.getRootSchemaType();
                 if (schemaType != null)
                 {
                     System.out.println("   schema: " + schemaType.getDisplayName());

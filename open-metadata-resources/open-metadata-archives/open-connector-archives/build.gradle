@@ -37,6 +37,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:egeria-infrastructure-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')

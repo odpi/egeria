@@ -191,7 +191,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        final String typeName = "SupportedGovernanceService";
+        final String typeName = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -204,9 +204,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "serviceRequestType";
-        final String attribute1Description     = "Request type supported by the governance service (overrides requestType on call to governance service if specified).";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SERVICE_REQUEST_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.SERVICE_REQUEST_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SERVICE_REQUEST_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
