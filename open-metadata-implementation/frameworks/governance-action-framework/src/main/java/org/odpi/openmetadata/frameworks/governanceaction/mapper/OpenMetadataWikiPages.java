@@ -645,6 +645,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0601_DISCOVERY_ENGINES            = "https://egeria-project.org/types/6/0601-Open-Discovery-Engine/";
 
     /**
+     * <a href="https://egeria-project.org/types/6/0603-Survey-Reports/">...</a>
+     */
+    public static final String MODEL_0603_SURVEY_REPORTS             = "https://egeria-project.org/types/6/0603-Survey-Reports/";
+
+    /**
      * <a href="https://egeria-project.org/types/6/0605-Open-Discovery-Analysis-Reports/">...</a>
      */
     public static final String MODEL_0605_DISCOVERY_REPORTS            = "https://egeria-project.org/types/6/0605-Open-Discovery-Analysis-Reports/";

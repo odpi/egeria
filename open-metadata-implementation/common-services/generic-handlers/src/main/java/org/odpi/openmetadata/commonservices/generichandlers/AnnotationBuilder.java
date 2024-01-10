@@ -412,41 +412,40 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.ANNOTATION_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ANNOTATION_TYPE.name,
                                                                   annotationType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SUMMARY.name,
                                                                   summary,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.CONFIDENCE_LEVEL_PROPERTY_NAME,
+                                                               OpenMetadataProperty.CONFIDENCE_LEVEL.name,
                                                                confidenceLevel,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXPRESSION.name,
                                                                   expression,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXPLANATION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXPLANATION.name,
                                                                   explanation,
                                                                   methodName);
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ANALYSIS_STEP_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ANALYSIS_STEP.name,
                                                                   analysisStep,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.JSON_PROPERTIES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.JSON_PROPERTIES.name,
                                                                   jsonProperties,
                                                                   methodName);
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
@@ -497,10 +496,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         {
             return addSemanticAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME))
-        {
-            return this.addSuspectDuplicateAnnotationInstanceProperties(properties, methodName);
-        }
+
 
         return properties;
     }
@@ -786,7 +782,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DISCOVERY_ACTIVITY_PROPERTY_NAME,
+                                                                  OpenMetadataType.ACTION_SOURCE_NAME,
                                                                   discoveryActivity,
                                                                   methodName);
 
@@ -864,50 +860,6 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                        properties,
                                                                        OpenMetadataType.CANDIDATE_GLOSSARY_CATEGORY_GUIDS_PROPERTY_NAME,
                                                                        candidateGlossaryCategoryGUIDs,
-                                                                       methodName);
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object for the annotation entity.
-     *
-     * @param properties properties to fill out
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    private InstanceProperties addSuspectDuplicateAnnotationInstanceProperties(InstanceProperties properties,
-                                                                               String             methodName)
-    {
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.DUPLICATE_ANCHOR_GUIDS_PROPERTY_NAME,
-                                                                       duplicateAnchorGUIDs,
-                                                                       methodName);
-
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.MATCHING_PROPERTY_NAMES_PROPERTY_NAME,
-                                                                       matchingPropertyNames,
-                                                                       methodName);
-
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.MATCHING_CLASSIFICATION_NAMES_PROPERTY_NAME,
-                                                                       matchingClassificationNames,
-                                                                       methodName);
-
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.MATCHING_ATTACHMENT_GUIDS_PROPERTY_NAME,
-                                                                       matchingAttachmentGUIDs,
-                                                                       methodName);
-
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.MATCHING_RELATIONSHIP_GUIDS_PROPERTY_NAME,
-                                                                       matchingRelationshipGUIDs,
                                                                        methodName);
 
         return properties;

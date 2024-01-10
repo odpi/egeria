@@ -1451,11 +1451,10 @@ public class OpenMetadataStoreRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-
                 handler.deleteMetadataElementInStore(userId,
                                                      requestBody.getExternalSourceGUID(),
                                                      requestBody.getExternalSourceName(),
@@ -1468,8 +1467,84 @@ public class OpenMetadataStoreRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.deleteMetadataElementInStore(userId,
+                                                     null,
+                                                     null,
+                                                     metadataElementGUID,
+                                                     false,
+                                                     false,
+                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                     null,
+                                                     methodName);
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to archive this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public  VoidResponse archiveMetadataElementInStore(String             serverName,
+                                                       String             serviceURLMarker,
+                                                       String             userId,
+                                                       String             metadataElementGUID,
+                                                       ArchiveRequestBody requestBody)
+    {
+        final String methodName = "archiveMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.archiveMetadataElementInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
+                                                     metadataElementGUID,
+                                                     requestBody.getArchiveProperties(),
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
+            }
+            else
+            {
+                handler.archiveMetadataElementInStore(userId,
+                                                      null,
+                                                      null,
+                                                      metadataElementGUID,
+                                                      null,
+                                                      false,
+                                                      false,
+                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                      null,
+                                                      methodName);            }
         }
         catch (Exception error)
         {

@@ -319,12 +319,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          governanceActionProcessStepExecutorRelationship.getEntityTwoProxy().getUniqueProperties(),
                                                                          methodName);
         String requestType = repositoryHelper.getStringProperty(serviceName,
-                                                                OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.REQUEST_TYPE.name,
                                                                 governanceActionProcessStepExecutorRelationship.getProperties(),
                                                                 methodName);
 
         Map<String, String> requestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                          OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                           governanceActionProcessStepExecutorRelationship.getProperties(),
                                                                                           methodName);
 
@@ -1117,8 +1117,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    governanceEngineName,
                                                                    governanceEngineNameParameterName,
                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                   OpenMetadataType.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                                   OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                                   OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                                    false,
                                                                    false,
                                                                    serviceSupportedZones,
@@ -1138,11 +1138,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    governanceEngineGUID,
                                                                    governanceEngineNameParameterName,
-                                                                   OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                   OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                   OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                   OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                    null,
-                                                                   OpenMetadataType.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                    2,
                                                                    false,
                                                                    false,
@@ -1167,7 +1167,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         for (Relationship relationship : relationships)
         {
             String relationshipRequestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.REQUEST_TYPE.name,
                                                                                 relationship.getProperties(),
                                                                                 methodName);
 

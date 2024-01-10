@@ -522,9 +522,9 @@ public class OpenMetadataTypesArchive3_13
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.FILE_NAME_PROPERTY_NAME;
-        final String attribute1Description     = "The name of the file with extension.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.FILE_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.FILE_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.FILE_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

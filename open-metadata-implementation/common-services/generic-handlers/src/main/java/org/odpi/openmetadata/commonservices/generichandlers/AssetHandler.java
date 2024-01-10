@@ -634,7 +634,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+            extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         }
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,

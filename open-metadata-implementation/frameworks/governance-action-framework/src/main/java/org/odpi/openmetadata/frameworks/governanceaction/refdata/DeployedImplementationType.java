@@ -139,7 +139,7 @@ public enum DeployedImplementationType
      * Open Discovery Service - A connector that analyzing the contents of a digital resource.
      */
     OPEN_DISCOVERY_SERVICE_CONNECTOR("Open Discovery Service",
-                                     OpenMetadataType.DISCOVERY_SERVICE_TYPE_NAME,
+                                     OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName,
                                      "A connector that analyzing the contents of a digital resource and produces a discovery analysis report.",
                                      "https://egeria-project.org/concepts/open-discovery-service/"),
 
@@ -147,7 +147,7 @@ public enum DeployedImplementationType
      * Open Discovery Engine - A governance engine that runs open discovery services.
      */
     OPEN_DISCOVERY_ENGINE("Open Discovery Engine",
-                          OpenMetadataType.DISCOVERY_ENGINE_TYPE_NAME,
+                          OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
                           "A governance engine that runs open discovery services.",
                           "https://egeria-project.org/concepts/open-discovery-engine/"),
 
@@ -155,7 +155,7 @@ public enum DeployedImplementationType
      * Governance Action Service - A connector that coordinates governance of digital resources and metadata.
      */
     GOVERNANCE_ACTION_SERVICE_CONNECTOR("Governance Action Service",
-                                        OpenMetadataType.GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/concepts/governance-action-service/"),
 
@@ -164,7 +164,7 @@ public enum DeployedImplementationType
      * Governance Action Engine - A governance engine that runs governance action services.
      */
     GOVERNANCE_ACTION_ENGINE("Governance Action Engine",
-                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                              "A governance engine that runs governance action services.",
                              "https://egeria-project.org/concepts/governance-action-engine/"),
 
@@ -173,7 +173,7 @@ public enum DeployedImplementationType
      * Event Action Service - A connector that coordinates governance of context events.
      */
     EVENT_ACTION_SERVICE_CONNECTOR("Event Action Service",
-                                   OpenMetadataType.EVENT_ACTION_SERVICE_TYPE_NAME,
+                                   OpenMetadataType.EVENT_ACTION_SERVICE.typeName,
                                    "A connector that coordinates governance of context events.",
                                    "https://egeria-project.org/concepts/event-action-service/"),
 
@@ -182,16 +182,33 @@ public enum DeployedImplementationType
      * Event Action Engine - A governance engine that runs event action services.
      */
     EVENT_ACTION_ENGINE("Event Action Engine",
-                        OpenMetadataType.EVENT_ACTION_ENGINE_TYPE_NAME,
+                        OpenMetadataType.EVENT_ACTION_ENGINE.typeName,
                         "A governance engine that runs event action services.",
                         "https://egeria-project.org/concepts/event-action-engine/"),
+
+    /**
+     * Event Action Service - A connector that coordinates asset surveys.
+     */
+    SURVEY_ACTION_SERVICE_CONNECTOR("Survey Action Service",
+            OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+            "A connector that coordinates asset surveys.",
+            "https://egeria-project.org/concepts/survey-action-service/"),
+
+
+    /**
+     * Event Action Engine - A governance engine that runs survey action services.
+     */
+    SURVEY_ACTION_ENGINE("Survey Action Engine",
+            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+            "A governance engine that runs survey action services.",
+            "https://egeria-project.org/concepts/survey-action-engine/"),
 
 
     /**
      * Repository Governance Service - A connector that dynamically governs the activity of the open metadata repositories.
      */
     REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR("Repository Governance Service Connector",
-                                            OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE_TYPE_NAME,
+                                            OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName,
                                             "A connector that dynamically governs the activity of the open metadata repositories.",
                                             "https://egeria-project.org/concepts/repository-governance-service"),
 
@@ -199,7 +216,7 @@ public enum DeployedImplementationType
      * A governance engine that runs repository governance services.
      */
     REPOSITORY_GOVERNANCE_ENGINE("Repository Governance Engine",
-                                 OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE_TYPE_NAME,
+                                 OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName,
                                  "A governance engine that runs repository governance services.",
                                  "https://egeria-project.org/concepts/repository-governance-engine/"),
 

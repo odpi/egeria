@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class ConnectedSchemaAttributes extends SchemaAttributes
 {
-    private String                 serviceName;
-    private String                 serverName;
-    private String                 userId;
-    private String                 omasServerURL;
-    private String                 schemaGUID;
-    private int                    maxCacheSize;
-    private OCFRESTClient          restClient;
+    private String        serviceName;
+    private String        serverName;
+    private String        userId;
+    private String        platformRootURL;
+    private String        schemaGUID;
+    private int           maxCacheSize;
+    private OCFRESTClient restClient;
 
     private final RESTExceptionHandler   restExceptionHandler    = new RESTExceptionHandler();
 
@@ -35,7 +35,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
      * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformRootURL url root of the server to use.
      * @param schemaGUID unique identifier of the parent schema type.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
@@ -45,7 +45,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
     ConnectedSchemaAttributes(String                 serviceName,
                               String                 serverName,
                               String                 userId,
-                              String                 omasServerURL,
+                              String                 platformRootURL,
                               String                 schemaGUID,
                               int                    totalElementCount,
                               int                    maxCacheSize,
@@ -56,7 +56,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
+        this.platformRootURL = platformRootURL;
         this.schemaGUID      = schemaGUID;
         this.maxCacheSize    = maxCacheSize;
         this.restClient      = restClient;
@@ -78,7 +78,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
             this.serviceName     = template.serviceName;
             this.serverName      = template.serverName;
             this.userId          = template.userId;
-            this.omasServerURL   = template.omasServerURL;
+            this.platformRootURL = template.platformRootURL;
             this.schemaGUID      = template.schemaGUID;
             this.maxCacheSize    = template.maxCacheSize;
             this.restClient      = template.restClient;
@@ -117,7 +117,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
         try
         {
             SchemaAttributesResponse restResult = restClient.callOCFSchemaAttributesGetRESTCall(methodName,
-                                                                                                omasServerURL + urlTemplate,
+                                                                                                platformRootURL + urlTemplate,
                                                                                                 serverName,
                                                                                                 serviceName,
                                                                                                 userId,
@@ -154,7 +154,7 @@ public class ConnectedSchemaAttributes extends SchemaAttributes
         }
         catch (Exception error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, platformRootURL);
         }
 
         return null;

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
@@ -1728,6 +1730,85 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                      serviceSupportedZones,
                                      effectiveTime,
                                      methodName);
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public  void archiveMetadataElementInStore(String           userId,
+                                              String            externalSourceGUID,
+                                              String            externalSourceName,
+                                              String            metadataElementGUID,
+                                              ArchiveProperties archiveProperties,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              List<String>      serviceSupportedZones,
+                                              Date              effectiveTime,
+                                              String            methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
+
+        if (archiveProperties != null)
+        {
+            super.archiveBeanInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          guidParameterName,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          builder.getMementoProperties(archiveProperties.getArchiveDate(),
+                                                                       userId,
+                                                                       archiveProperties.getArchiveProcess(),
+                                                                       archiveProperties.getArchiveProperties(),
+                                                                       methodName),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+        }
+        else
+        {
+            super.archiveBeanInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          guidParameterName,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          builder.getMementoProperties(null,
+                                                                       userId,
+                                                                       null,
+                                                                       null,
+                                                                       methodName),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+        }
     }
 
 

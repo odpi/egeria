@@ -650,7 +650,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  externalSourceName,
                                  annotationGUID,
                                  annotationGUIDParameterName,
-                                 OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                 OpenMetadataType.ANNOTATION.typeName,
                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                  dataFieldPosition,

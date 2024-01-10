@@ -305,7 +305,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+        assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME, databaseType);
@@ -505,7 +505,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+        assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME, databaseType);
@@ -979,7 +979,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
-        assetExtendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+        assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
 

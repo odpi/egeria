@@ -140,8 +140,293 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0011_MANAGING_REFERENCEABLES,
                                "e5794f9e-adf0-461d-bee2-7ba807dc1511",
                                "Defines source of the information for a referenceable that was created by copying from a template."),
+
+    /* ============================================================================================================================*/
+    /* Area 4 - Governance                                                                                                         */
+    /* ============================================================================================================================*/
+
+    /**
+     * A collection of related governance services of the same type.
+     */
+    GOVERNANCE_ENGINE ("3fa23d4a-aceb-422f-9301-04ed474c6f74",
+                       "GovernanceEngine",
+                       OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                       "11b96995-f6f1-46e6-abee-846a2f77f2a8",
+                       "A collection of related governance services of the same type."),
+
+    /**
+     * A connector that performs some governance operation.
+     */
+    GOVERNANCE_SERVICE ("191d870c-26f4-4310-a021-b8ca8772719d",
+                        "GovernanceService",
+                        OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                        "e091225c-1092-4f28-b7e1-bf53456f9705",
+                        "A connector that performs some governance operation."),
+
+    /**
+     * A collection of related governance services of the same type from the Governance Action Framework (GAF).
+     */
+    GOVERNANCE_ACTION_ENGINE ("5d74250a-57ca-4197-9475-8911f620a94e",
+                              "GovernanceActionEngine",
+                              OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                              "a8f14964-5028-4269-81be-5d23757c9caa",
+                              "A collection of related governance services of the same type from the Governance Action Framework (GAF)."),
+
+    /**
+     * A governance service that conforms to the Governance Action Framework (GAF).
+     */
+    GOVERNANCE_ACTION_SERVICE ("ececb378-31ac-4cc3-99b4-1c44e5fbc4d9",
+                               "GovernanceActionService",
+                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                               "c927dcac-3481-4246-98ec-e0662e5e3a77",
+                               "A governance service that conforms to the Governance Action Framework (GAF)."),
+
+    /**
+     * A governance engine for managing context events and associated actions.
+     */
+    EVENT_ACTION_ENGINE ("796f6493-3c3e-4091-8b21-46ea4e54d011",
+                         "EventActionEngine",
+                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                         "cebad26a-08f6-40b7-a0e0-4f9b1b439992",
+                         "A governance engine for managing context events and associated actions."),
+
+    /**
+     * A governance service for managing context events and associated actions.
+     */
+    EVENT_ACTION_SERVICE ("464bb4d8-f865-4b9d-a06e-7ed19518ff13",
+                          "EventActionService",
+                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                          "6e030483-39ff-4b1b-bd50-1faa64e44690",
+                          "A governance service for managing context events and associated actions."),
+
+    /**
+     * A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
+     */
+    SURVEY_ACTION_ENGINE ("9a6f3982-ebc0-4002-8762-21d415a0c21d",
+                          "SurveyActionEngine",
+                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                          "325b61dd-4d43-4bd7-bcf9-af5f20b77d05",
+                          "A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
+
+    /**
+     * A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
+     */
+    SURVEY_ACTION_SERVICE ("f387389b-77c0-4386-b169-fc701919460a",
+                           "SurveyActionService",
+                           OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                           "16009219-1913-466c-994b-853e0c5c961b",
+                           "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
+
+    /**
+     * A server capability for running open discovery services.
+     */
+    OPEN_DISCOVERY_ENGINE ("be650674-790b-487a-a619-0a9002488055",
+                           "OpenDiscoveryEngine",
+                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                           "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
+                           "A server capability for running open discovery services."),
+
+    /**
+     * A pluggable component for discovering properties about an asset.
+     */
+    OPEN_DISCOVERY_SERVICE ("2f278dfc-4640-4714-b34b-303e84e4fc40",
+                            "OpenDiscoveryService",
+                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                            "38b8d73d-3c60-4e86-8561-256c77e10c16",
+                            "A pluggable component for discovering properties about an asset."),
+
+    /**
+     * A pluggable component that calls multiple discovery services.
+     */
+    OPEN_DISCOVERY_PIPELINE ("081abe00-740e-4143-b0d5-a1f55450fc22",
+                             "OpenDiscoveryPipeline",
+                             OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                             "85a985ab-2f07-4ffc-99d5-d423d787c51e",
+                             "A pluggable component that calls multiple discovery services."),
+
+    /**
+     * A governance engine for open metadata repositories.
+     */
+    REPOSITORY_GOVERNANCE_ENGINE ("2b3bed05-c227-47d7-87a3-139ab0568361",
+                                  "RepositoryGovernanceEngine",
+                                  OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                                  "c283bb2c-f007-485c-b90f-cb81194d4c25",
+                                  "A governance engine for open metadata repositories."),
+
+    /**
+     * A governance service for open metadata repositories.
+     */
+    REPOSITORY_GOVERNANCE_SERVICE ("978e7674-8231-4158-a4e3-a5ccdbcad60e",
+                                   "RepositoryGovernanceService",
+                                   OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                                   "30671690-f94e-440b-abdb-2384ed36d8bf",
+                                   "A governance service for open metadata repositories."),
+
+    /**
+     * Link between a governance engine and one of its services.
+     */
+    SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP ("2726df0e-4f3a-44e1-8433-4ca5301457fd",
+                                               "SupportedGovernanceService",
+                                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                                               "346ca38f-287d-401f-bbe9-375ecd2b938f",
+                                               "Link between a governance engine and one of its services."),
+
+    /* ============================================================================================================================*/
+    /* Area 5 - Schemas                                                                                                            */
+    /* ============================================================================================================================*/
+
+    /**
+     * The root of a complex schema - normally attaches to an asset or port.
+     */
+    ROOT_SCHEMA_TYPE ("126962bf-dd26-4fcf-97d8-d0ad1fdd2d50",
+                      "RootSchemaType",
+                      OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
+                      "3e788ad5-4cad-4790-8744-0ad6674cb7b4",
+                      "The root of a complex schema - normally attaches to an asset or port."),
+
+    /**
+     * A schema type for a graph data structure.
+     */
+    GRAPH_SCHEMA_TYPE( "983c5e72-801b-4e42-bc51-f109527f2317",
+                       "GraphSchemaType",
+                       OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
+                       "f5200884-ff02-4f25-bf3b-2f7ca24a074d",
+                       "A schema type for a graph data structure."),
+
+    /**
+     * A schema attribute for a node in a graph data structure.
+     */
+    GRAPH_VERTEX( "1252ce12-540c-4724-ad70-f70940956de0",
+                  "GraphVertex",
+                  OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
+                  "f5a74d2d-7d8e-4e42-9187-7e10d0979256",
+                  "A schema attribute for a node in a graph data structure."),
+
+    /**
+     * A schema attribute for a relationship in graph data structure.
+     */
+    GRAPH_EDGE( "d4104eb3-4f2d-4d83-aca7-e58dd8d5e0b1",
+                "GraphEdge",
+                OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
+                "b39112b8-e22d-4510-9420-1ef72f84b8e9",
+                "A schema attribute for a relationship in graph data structure."),
+
+    /**
+     * A link between a graph edge and a vertex.   Each edge should have two of these relationships.
+     */
+    GRAPH_EDGE_LINK_RELATIONSHIP( "503b4221-71c8-4ba9-8f3d-6a035b27971c",
+                                  "GraphEdgeLink",
+                                  OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
+                                  "15c806cf-c51e-4ab8-991b-0bf45bd0a96a",
+                                  "A link between a graph edge and a vertex.   Each edge should have two of these relationships."),
+
+
+    /* ============================================================================================================================*/
+    /* Area 6 - Metadata Surveys                                                                                                            */
+    /* ============================================================================================================================*/
+
+    /**
+     * A set of results describing the analysis from the execution of a survey action service.
+     */
+    SURVEY_REPORT ("db9d02a6-11f1-4b6e-86ce-95df2352c3a2",
+                   "SurveyReport",
+                   OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
+                   "97b45655-4393-499b-a997-589015342284",
+                   "A set of results describing the analysis from the execution of a survey action service."),
+
+    /**
+     * Link between an Asset and a SurveyReport generated against its associated resource.
+     */
+    ASSET_SURVEY_REPORT_RELATIONSHIP ("0a5572d4-71fe-4a13-beba-e6ece5104799",
+                                       "AssetSurveyReport",
+                                       OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
+                                      "4b76f90e-3222-480e-9ee3-845f93c72e4f",
+                                       "Link between an Asset and a SurveyReport generated against its associated resource."),
+
+    /**
+     * Link to a SurveyReport from the EngineAction that initiated the request.
+     */
+    ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP ("9ee592d0-ee01-4e47-a7b9-fa97ad9f395e",
+                                      "EngineActionSurveyReport",
+                                      OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
+                                              "efc672a1-4b8f-4197-9038-5eb6ebd7a075",
+                                      "Link to a SurveyReport from the EngineAction that initiated the request."),
+
+    /**
+     * Link between a SurveyReport and an Annotation generated from the same run of a survey action service.
+     */
+    REPORTED_ANNOTATION_RELATIONSHIP ("3af278ed-f4e8-4afc-851b-a5b0908ba06f",
+                                              "ReportedAnnotation",
+                                              OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                                              "69b91341-3f40-4e0a-a78d-cc6ff0aa524a",
+                                              "Link between a SurveyReport and an Annotation generated from the same run of a survey action service."),
+
+    /**
+     * Link between an element and an Annotation that describes a characteristic of its associated real-world counterpart.
+     */
+    ASSOCIATED_ANNOTATION_RELATIONSHIP ("5d4ec403-7417-4146-99da-dd9ea34d4f0a",
+                                      "AssociatedAnnotation",
+                                      OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                                      "09b7622e-e0ea-4197-8f82-83fe69fb70de",
+                                      "Link between an element and an Annotation that describes a characteristic of its associated real-world counterpart."),
+
+    /**
+     * A set of results from specific analysis of a resource by a survey action service.
+     */
+    ANNOTATION ("6cea5b53-558c-48f1-8191-11d48db29fb4",
+                "Annotation",
+                OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                "42de3ec5-b76f-45b7-98b3-7b09d3d4e76a",
+                "A set of results from specific analysis of a resource by a survey action service."),
+
+    /**
+     * A collection of properties about a data field, or number of data fields, in an Asset.
+     */
+    DATA_FIELD_ANNOTATION ( "72ed6de6-79d9-4e7d-aefc-b969382fc4b0",
+                            "DataFieldAnnotation",
+                            OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                            "772b7c96-0838-4b96-8547-6e581b93e8d2",
+                            "A collection of properties about a data field, or number of data fields, in an Asset."),
+
+    /**
+     * Additional information to augment an annotation.
+     */
+    ANNOTATION_EXTENSION_RELATIONSHIP ("605aaa6d-682e-405c-964b-ca6aaa94be1b",
+                                       "AnnotationExtension",
+                                       OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                                       "8b4fd712-505a-4d9c-a39d-3e23e0cbcd0e",
+                                       "Additional information to augment an annotation."),
+
+    /**
+     * The results of a stewardship review of an annotation.
+     */
+    ANNOTATION_REVIEW ( "b893d6fc-642a-454b-beaf-809ee4dd876a",
+                        "AnnotationReview",
+                        OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                        "0b625826-4663-44a0-b524-b04e1eddd7d0",
+                        "The results of a stewardship review of an annotation."),
+
+    /**
+     * Review results for an annotation.
+     */
+    ANNOTATION_REVIEW_LINK_RELATIONSHIP ( "5d3c2fb7-fa04-4d77-83cb-fd9216a07769",
+                                          "AnnotationReviewLink",
+                                          OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
+                                          "d6e66e06-5f3f-45cc-b6eb-f951b423603b",
+                                          "Review results for an annotation."),
+
+    /**
+     * A description of the internal structure of an Asset.
+     */
+    SCHEMA_ANALYSIS_ANNOTATION( "3c5aa68b-d562-4b04-b189-c7b7f0bf2ced",
+                                "SchemaAnalysisAnnotation",
+                                OpenMetadataWikiPages.MODEL_0615_SCHEMA_EXTRACTION,
+                                "32dde7be-5c68-41ea-89f4-31b53fa2e9f2",
+                                "A description of the internal structure of an Asset."),
+
     ;
-    
+
+
     public final String typeGUID;
     public final String typeName;
     public final String wikiURL;
@@ -1904,9 +2189,9 @@ public enum OpenMetadataType
     public static final String EXPECTED_DATA_FORMAT_PROPERTY_NAME                = "expectedDataFormat";
 
     /**
-     * connectorFrameworkNameName
+     * connectorFrameworkName
      */
-    public static final String CONNECTOR_FRAMEWORK_PROPERTY_NAME                 = "connectorFrameworkNameName";
+    public static final String CONNECTOR_FRAMEWORK_PROPERTY_NAME                 = "connectorFrameworkName";
 
     /**
      * connectorInterfaceLanguage
@@ -2083,6 +2368,10 @@ public enum OpenMetadataType
      */
     public static final String ASSET_TO_CONNECTION_TYPE_NAME             = "ConnectionToAsset";
 
+    public static final String CONNECTION_TO_ASSET_TYPE_GUID             = "e777d660-8dbe-453e-8b83-903771f054c0";
+    public static final String CONNECTION_TO_ASSET_TYPE_NAME             = "ConnectionToAsset";
+    /* End1 = Connection; End 2 = Asset */
+
     /**
      * assetSummary
      */
@@ -2097,11 +2386,6 @@ public enum OpenMetadataType
      * DataStore - inherits from Asset
      */
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
-
-    /**
-     * pathName
-     */
-    public static final String PATH_NAME_PROPERTY_NAME                   = "pathName";                              /* from DataStore entity */
 
     /**
      * storeCreateTime
@@ -2364,21 +2648,6 @@ public enum OpenMetadataType
      * ParquetFile - inherits from DataFile
      */
     public static final String PARQUET_FILE_TYPE_NAME                    = "ParquetFile";
-
-    /**
-     * fileName
-     */
-    public static final String FILE_NAME_PROPERTY_NAME                   = "fileName";                   /* from DataFile entity */
-
-    /**
-     * fileType
-     */
-    public static final String FILE_TYPE_PROPERTY_NAME                   = "fileType";                   /* from DataFile entity */
-
-    /**
-     * fileExtension
-     */
-    public static final String FILE_EXTENSION_PROPERTY_NAME              = "fileExtension";              /* from DataFile entity */
 
 
     /**
@@ -3635,56 +3904,6 @@ public enum OpenMetadataType
     public static final String POINT_TYPE_PROPERTY_NAME                   = "pointType";                                /* from Area 4 */
 
 
-    public static final String GOVERNANCE_ENGINE_TYPE_GUID               = "3fa23d4a-aceb-422f-9301-04ed474c6f74";
-    public static final String GOVERNANCE_ENGINE_TYPE_NAME               = "GovernanceEngine";
-    /* SoftwareServerCapability */
-
-    public static final String GOVERNANCE_SERVICE_TYPE_GUID              = "191d870c-26f4-4310-a021-b8ca8772719d";
-    public static final String GOVERNANCE_SERVICE_TYPE_NAME              = "GovernanceService";
-    /* DeployedConnector */
-
-    public static final String GOVERNANCE_ACTION_ENGINE_TYPE_GUID        = "5d74250a-57ca-4197-9475-8911f620a94e";
-    public static final String GOVERNANCE_ACTION_ENGINE_TYPE_NAME        = "GovernanceActionEngine";
-    /* GovernanceEngine */
-
-    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_GUID       = "ececb378-31ac-4cc3-99b4-1c44e5fbc4d9";
-    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GovernanceActionService";
-    /* DeployedConnector */
-
-    public static final String EVENT_ACTION_ENGINE_TYPE_GUID             = "796f6493-3c3e-4091-8b21-46ea4e54d011";
-    public static final String EVENT_ACTION_ENGINE_TYPE_NAME             = "EventActionEngine";
-    /* GovernanceEngine */
-
-    public static final String EVENT_ACTION_SERVICE_TYPE_GUID            = "464bb4d8-f865-4b9d-a06e-7ed19518ff13";
-    public static final String EVENT_ACTION_SERVICE_TYPE_NAME            = "EventActionService";
-    /* DeployedConnector */
-
-    public static final String OPEN_DISCOVERY_ENGINE_TYPE_GUID           = "be650674-790b-487a-a619-0a9002488055";
-    public static final String OPEN_DISCOVERY_ENGINE_TYPE_NAME           = "OpenDiscoveryEngine";
-    /* GovernanceEngine */
-
-    public static final String OPEN_DISCOVERY_SERVICE_TYPE_GUID          = "2f278dfc-4640-4714-b34b-303e84e4fc40";
-    public static final String OPEN_DISCOVERY_SERVICE_TYPE_NAME          = "OpenDiscoveryService";
-    /* DeployedConnector */
-
-
-    public static final String REPOSITORY_GOVERNANCE_ENGINE_TYPE_GUID    = "2b3bed05-c227-47d7-87a3-139ab0568361";
-    public static final String REPOSITORY_GOVERNANCE_ENGINE_TYPE_NAME    = "RepositoryGovernanceEngine";
-    /* GovernanceEngine */
-
-    public static final String REPOSITORY_GOVERNANCE_SERVICE_TYPE_GUID   = "978e7674-8231-4158-a4e3-a5ccdbcad60e";
-    public static final String REPOSITORY_GOVERNANCE_SERVICE_TYPE_NAME   = "RepositoryGovernanceService";
-    /* DeployedConnector */
-
-
-    public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID    = "2726df0e-4f3a-44e1-8433-4ca5301457fd";
-    public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME    = "SupportedGovernanceService";
-    /* End1 = GovernanceEngine; End 2 = GovernanceService */
-
-    public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";        /* from SupportedGovernanceService relationship */
-    public static final String SERVICE_REQUEST_TYPE_PROPERTY_NAME        = "serviceRequestType"; /* from SupportedGovernanceService relationship */
-    public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
-
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_NAME       = "GovernanceActionProcess";
     /* Process */
@@ -4141,23 +4360,6 @@ public enum OpenMetadataType
     public static final String OBJECT_SCHEMA_ATTRIBUTE_TYPE_NAME        = "ObjectSchemaAttribute";
     /* SchemaAttribute */
 
-    public static final String GRAPH_SCHEMA_TYPE_TYPE_GUID              = "983c5e72-801b-4e42-bc51-f109527f2317";   /* from Area 5 */
-    public static final String GRAPH_SCHEMA_TYPE_TYPE_NAME              = "GraphSchemaType";
-    /* ComplexSchemaType */
-
-    public static final String GRAPH_VERTEX_TYPE_GUID                   = "1252ce12-540c-4724-ad70-f70940956de0";   /* from Area 5 */
-    public static final String GRAPH_VERTEX_TYPE_NAME                   = "GraphVertex";
-    /* SchemaAttribute */
-
-    public static final String GRAPH_EDGE_TYPE_GUID                     = "d4104eb3-4f2d-4d83-aca7-e58dd8d5e0b1";   /* from Area 5 */
-    public static final String GRAPH_EDGE_TYPE_NAME                     = "GraphEdge";
-    /* SchemaAttribute */
-
-    /* For Graph Edge/Vertex */
-    public static final String GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_GUID   = "503b4221-71c8-4ba9-8f3d-6a035b27971c";   /* from Area 5 */
-    public static final String GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME   = "GraphEdgeLink";
-    /* End1 = GraphEdge; End 2 = GraphVertex */
-
     public static final String RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID      = "f20f5f45-1afb-41c1-9a09-34d8812626a4";   /* from Area 5 */
     public static final String RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME      = "RelationalDBSchemaType";
     /* ComplexSchemaType */
@@ -4478,7 +4680,7 @@ public enum OpenMetadataType
     public static final String CONCEPT_BEAD_COVERAGE_CATEGORY_PROPERTY_NAME   = "coverageCategory";
 
     public static final String UNIQUE_VALUES_PROPERTY_NAME   = "uniqueValues";
-    public static final String NAVIGABLE_PROPERTY_NAME       = "naviagable";
+    public static final String NAVIGABLE_PROPERTY_NAME       = "navigable";
     public static final String DECORATION_PROPERTY_NAME      = "decoration";
 
 
@@ -4486,77 +4688,7 @@ public enum OpenMetadataType
     /* Area 6 - Discovery                                                                                                          */
     /* ============================================================================================================================*/
 
-    public static final String DISCOVERY_ENGINE_TYPE_GUID                = "be650674-790b-487a-a619-0a9002488055";
-    public static final String DISCOVERY_ENGINE_TYPE_NAME                = "OpenDiscoveryEngine";
-    /* GovernanceEngine */
 
-    public static final String DISCOVERY_SERVICE_TYPE_GUID               = "2f278dfc-4640-4714-b34b-303e84e4fc40";
-    public static final String DISCOVERY_SERVICE_TYPE_NAME               = "OpenDiscoveryService";
-    /* GovernanceService */
-
-    public static final String DISCOVERY_PIPELINE_TYPE_GUID              = "081abe00-740e-4143-b0d5-a1f55450fc22";
-    public static final String DISCOVERY_PIPELINE_TYPE_NAME              = "OpenDiscoveryPipeline";
-    /* GovernanceService */
-
-    public static final String CONNECTION_TO_ASSET_TYPE_GUID             = "e777d660-8dbe-453e-8b83-903771f054c0";
-    public static final String CONNECTION_TO_ASSET_TYPE_NAME             = "ConnectionToAsset";
-    /* End1 = Connection; End 2 = Asset */
-
-    public static final String DISCOVERY_ANALYSIS_REPORT_TYPE_GUID    = "acc7cbc8-09c3-472b-87dd-f78459323dcb";
-    public static final String DISCOVERY_ANALYSIS_REPORT_TYPE_NAME    = "OpenDiscoveryAnalysisReport";
-    /* Referenceable */
-
-    public static final String EXECUTION_DATE_PROPERTY_NAME           = "executionDate";              /* from OpenDiscoveryAnalysisReport entity */
-    public static final String ANALYSIS_PARAMS_PROPERTY_NAME          = "analysisParameters";         /* from OpenDiscoveryAnalysisReport entity */
-    public static final String ANALYSIS_STEP_PROPERTY_NAME            = "discoveryRequestStep";       /* from OpenDiscoveryAnalysisReport entity */
-    public static final String DISCOVERY_SERVICE_STATUS_PROPERTY_NAME = "discoveryServiceStatus";     /* from OpenDiscoveryAnalysisReport entity */
-
-    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
-    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
-
-    public static final String REPORT_TO_ASSET_TYPE_GUID              = "7eded424-f176-4258-9ae6-138a46b2845f";     /* from Area 6 */
-    public static final String REPORT_TO_ASSET_TYPE_NAME              = "AssetDiscoveryReport";
-    /* End1 = Asset; End 2 = OpenDiscoveryAnalysisReport */
-
-    public static final String REPORT_TO_ENGINE_TYPE_GUID             = "2c318c3a-5dc2-42cd-a933-0087d852f67f";    /* from Area 6 */
-    public static final String REPORT_TO_ENGINE_TYPE_NAME             = "DiscoveryEngineReport";
-    /* End1 = OpenDiscoveryEngine; End 2 = OpenDiscoveryAnalysisReport */
-
-    public static final String REPORT_TO_SERVICE_TYPE_GUID            = "1744d72b-903d-4273-9229-de20372a17e2";   /* from Area 6 */
-    public static final String REPORT_TO_SERVICE_TYPE_NAME            = "DiscoveryInvocationReport";
-    /* End1 = OpenDiscoveryService; End 2 = OpenDiscoveryAnalysisReport */
-
-    public static final String REPORT_TO_ANNOTATIONS_TYPE_GUID        = "51d386a3-3857-42e3-a3df-14a6cad08b93";   /* from Area 6 */
-    public static final String REPORT_TO_ANNOTATIONS_TYPE_NAME        = "DiscoveredAnnotation";
-    /* End1 = Annotation; End 2 = OpenDiscoveryAnalysisReport */
-
-
-    public static final String ANNOTATION_TYPE_GUID    = "6cea5b53-558c-48f1-8191-11d48db29fb4";
-    public static final String ANNOTATION_TYPE_NAME    = "Annotation";
-
-    public static final String ANNOTATION_TYPE_PROPERTY_NAME       = "annotationType";        /* from Annotation entity */
-    public static final String CONFIDENCE_LEVEL_PROPERTY_NAME      = "confidenceLevel";       /* from Annotation entity */
-    public static final String EXPLANATION_PROPERTY_NAME           = "explanation";           /* from Annotation entity */
-    public static final String JSON_PROPERTIES_PROPERTY_NAME       = "jsonProperties";        /* from Annotation entity */
-
-    public static final String ANNOTATION_TO_EXTENSION_TYPE_GUID   = "605aaa6d-682e-405c-964b-ca6aaa94be1b";     /* from Area 6 */
-    public static final String ANNOTATION_TO_EXTENSION_TYPE_NAME   = "Annotation";
-    /* End1 = (extended)Annotation; End 2 = Annotation(Extension) */
-
-    /* For AnnotationReview entity */
-    public static final String ANNOTATION_REVIEW_TYPE_GUID         = "b893d6fc-642a-454b-beaf-809ee4dd876a";
-    public static final String ANNOTATION_REVIEW_TYPE_NAME         = "AnnotationReview";
-
-    public static final String REVIEW_DATE_PROPERTY_NAME           = "reviewDate";     /* from AnnotationReview entity */
-    public static final String COMMENT_PROPERTY_NAME               = "comment";        /* from AnnotationReview entity */
-
-    /* For AnnotationReviewLink relationship */
-    public static final String ANNOTATION_REVIEW_LINK_TYPE_GUID    = "5d3c2fb7-fa04-4d77-83cb-fd9216a07769";
-    public static final String ANNOTATION_REVIEW_LINK_TYPE_NAME    = "AnnotationReviewLink";
-    /* End1 = Annotation; End 2 = AnnotationReview */
-
-    public static final String ANNOTATION_STATUS_PROPERTY_NAME     = "annotationStatus";        /* from AnnotationReviewLink relationship */
-    /* Enum Type AnnotationStatus */
 
     /* For SchemaAnalysisAnnotation entity */
     public static final String SCHEMA_ANALYSIS_ANNOTATION_TYPE_GUID         = "3c5aa68b-d562-4b04-b189-c7b7f0bf2ced";
@@ -4565,36 +4697,6 @@ public enum OpenMetadataType
     public static final String SCHEMA_NAME_PROPERTY_NAME           = "schemaName";     /* from SchemaAnalysisAnnotation entity */
     public static final String SCHEMA_TYPE_PROPERTY_NAME           = "schemaType";     /* from SchemaAnalysisAnnotation entity */
 
-    /* For DataField entity */
-    public static final String DATA_FIELD_TYPE_GUID              = "3c5bbc8b-d562-4b04-b189-c7b7f0bf2cea";
-    public static final String DATA_FIELD_TYPE_NAME              = "DataField";
-
-    public static final String DATA_FIELD_NAME_PROPERTY_NAME               = "dataFieldName";        /* from DataField entity */
-    public static final String DATA_FIELD_TYPE_PROPERTY_NAME               = "dataFieldType";        /* from DataField entity */
-    public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME        = "dataFieldDescription"; /* from DataField entity */
-    public static final String DATA_FIELD_ALIASES_PROPERTY_NAME            = "dataFieldAliases";     /* from DataField entity */
-    public static final String DATA_FIELD_NAMESPACE_PROPERTY_NAME          = "dataFieldNamespace";   /* from DataField entity */
-    public static final String VERSION_PROPERTY_NAME                       = "version";              /* from DataField entity */
-    public static final String DATA_FIELD_SORT_ORDER_PROPERTY_NAME         = "dataFieldName";        /* from DataField entity */
-
-    /* For DiscoveredDataField relationship */
-    public static final String DISCOVERED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
-    public static final String DISCOVERED_DATA_FIELD_TYPE_NAME    = "DiscoveredDataField";
-    /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
-
-    /* For DiscoveredDataField relationship */
-    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
-    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME    = "DiscoveredNestedDataField";
-    /* End1 = (parent)DataField; End 2 = DataField */
-
-    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID    = "cca4b116-4490-44c4-84e1-535231ae46a1";
-    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME    = "DiscoveredLinkedDataField";
-    /* End1 = (parent)DataField; End 2 = DataField */
-
-    public static final String DATA_FIELD_POSITION_PROPERTY_NAME     = "dataFieldPosition";    /* from DiscoveredDataField and
-                                                                                                    DiscoveredNestedDataField relationship */
-    public static final String RELATIONSHIP_TYPE_NAME_PROPERTY_NAME  = "relationshipTypeName"; /* from DiscoveredLinkedDataField relationship and
-                                                                                                    RelationshipAdviceAnnotation entity */
     public static final String RELATIONSHIP_END_PROPERTY_NAME        = "relationshipEnd";      /* from DiscoveredLinkedDataField relationship */
 
     /* For DataFieldAnnotation entity */
@@ -4674,70 +4776,16 @@ public enum OpenMetadataType
     public static final String RELATIONSHIP_ADVICE_ANNOTATION_TYPE_GUID = "740f07dc-4ee8-4c2a-baba-efb55c73eb68";
     public static final String RELATIONSHIP_ADVICE_ANNOTATION_TYPE_NAME = "RelationshipAdviceAnnotation";
     /* DataFieldAnnotation */
+    public static final String RELATIONSHIP_TYPE_NAME_PROPERTY_NAME  = "relationshipTypeName";
 
     public static final String RELATED_ENTITY_GUID_PROPERTY_NAME        = "relatedEntityGUID";      /* from RelationshipAdviceAnnotation entity */
     public static final String RELATIONSHIP_PROPERTIES_PROPERTY_NAME    = "relationshipProperties"; /* from RelationshipAdviceAnnotation entity */
-
-    /* For SuspectDuplicateAnnotation entity */
-    public static final String SUSPECT_DUPLICATE_ANNOTATION_TYPE_GUID = "f703a621-4078-4c07-ab22-e7c334b94235";
-    public static final String SUSPECT_DUPLICATE_ANNOTATION_TYPE_NAME = "SuspectDuplicateAnnotation";
-    /* plus Annotation */
 
     public static final String DUPLICATE_ANCHOR_GUIDS_PROPERTY_NAME        = "duplicateAnchorGUIDs";   /* from SuspectDuplicateAnnotation entity */
     public static final String MATCHING_PROPERTY_NAMES_PROPERTY_NAME       = "matchingPropertyNames";  /* from SuspectDuplicateAnnotation entity */
     public static final String MATCHING_CLASSIFICATION_NAMES_PROPERTY_NAME = "matchingClassificationNames"; /* from SuspectDuplicateAnnotation entity */
     public static final String MATCHING_ATTACHMENT_GUIDS_PROPERTY_NAME     = "matchingAttachmentGUIDS";  /* from SuspectDuplicateAnnotation entity */
     public static final String MATCHING_RELATIONSHIP_GUIDS_PROPERTY_NAME   = "matchingRelationshipGUIDs"; /* from SuspectDuplicateAnnotation entity */
-
-    /* For DivergentDuplicateAnnotation entity */
-    public static final String DIVERGENT_DUPLICATE_ANNOTATION_TYPE_GUID                = "251e443c-dee0-47fa-8a73-1a9d511915a0";
-    public static final String DIVERGENT_DUPLICATE_ANNOTATION_TYPE_NAME                = "DivergentDuplicateAnnotation";
-    /* plus Annotation */
-
-    /* For DivergentValueAnnotation entity */
-    public static final String DIVERGENT_VALUE_ANNOTATION_TYPE_GUID                    = "b86cdded-1078-4e42-b6ba-a718c2c67f62";
-    public static final String DIVERGENT_VALUE_ANNOTATION_TYPE_NAME                    = "DivergentValueAnnotation";
-    /* plus DivergentDuplicateAnnotation */
-
-    /* For DivergentClassificationAnnotation entity */
-    public static final String DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_GUID           = "8efd6257-a53e-451d-abfc-8e4899c38b1f";
-    public static final String DIVERGENT_CLASSIFICATION_ANNOTATION_TYPE_NAME           = "DivergentClassificationAnnotation";
-    /* plus DivergentDuplicateAnnotation */
-
-    /* For DivergentRelationshipAnnotation entity */
-    public static final String DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_GUID             = "b6c6938a-fdc9-438f-893c-0b5b1d4a5bb3";
-    public static final String DIVERGENT_RELATIONSHIP_ANNOTATION_TYPE_NAME             = "DivergentRelationshipAnnotation";
-    /* plus DivergentDuplicateAnnotation */
-
-    /* For DivergentAttachmentAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_GUID               = "f3ed48bc-b0ea-4e1f-a8ab-75f9f3cf87a6";
-    public static final String DIVERGENT_ATTACHMENT_ANNOTATION_TYPE_NAME               = "DivergentAttachmentAnnotation";
-    /* plus DivergentDuplicateAnnotation */
-
-    /* For DivergentAttachmentValueAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_VALUE_ANNOTATION_TYPE_GUID         = "e22a1ffe-bd90-4faf-b6a1-13fafb7948a2";
-    public static final String DIVERGENT_ATTACHMENT_VALUE_ANNOTATION_TYPE_NAME         = "DivergentAttachmentValueAnnotation";
-    /* plus DivergentAttachmentAnnotation */
-
-    /* For DivergentAttachmentClassificationAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_GUID         = "a2a5cb74-f8e0-470f-be71-26b7e32166a6";
-    public static final String DIVERGENT_ATTACHMENT_CLASS_ANNOTATION_TYPE_NAME         = "DivergentAttachmentClassificationAnnotation";
-    /* plus DivergentAttachmentAnnotation */
-
-    /* For DivergentAttachmentRelationshipAnnotation entity */
-    public static final String DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_GUID           = "5613677a-865f-474e-8044-4167fa5a31b9";
-    public static final String DIVERGENT_ATTACHMENT_REL_ANNOTATION_TYPE_NAME           = "DivergentAttachmentRelationshipAnnotation";
-    /* plus DivergentAttachmentAnnotation */
-
-    /* for divergent annotations */
-    public static final String DUPLICATE_ANCHOR_GUID_PROPERTY_NAME                      = "duplicateAnchorGUID";
-    // public static final String ATTACHMENT_GUID_PROPERTY_NAME                            = "attachmentGUID";
-    public static final String DUPLICATE_ATTACHMENT_GUID_PROPERTY_NAME                  = "duplicateAttachmentGUID";
-    public static final String DIVERGENT_PROPERTY_NAMES_PROPERTY_NAME                   = "divergentPropertyNames";
-    public static final String DIVERGENT_CLASSIFICATION_NAME_PROPERTY_NAME              = "divergentClassificationName";
-    public static final String DIVERGENT_CLASSIFICATION_PROPERTY_NAMES_PROPERTY_NAME    = "divergentClassificationPropertyNames";
-    public static final String DIVERGENT_RELATIONSHIP_GUID_PROPERTY_NAME                = "divergentRelationshipGUID";
-    public static final String DIVERGENT_RELATIONSHIP_PROPERTY_NAMES_PROPERTY_NAME      = "divergentRelationshipPropertyNames";
 
     /* For DataSourceMeasurementAnnotation entity */
     public static final String DATA_SOURCE_MEASUREMENT_ANNOTATION_TYPE_GUID         = "c85bea73-d7af-46d7-8a7e-cb745910b1d";
@@ -4764,14 +4812,10 @@ public enum OpenMetadataType
     public static final String REQUEST_FOR_ACTION_ANNOTATION_TYPE_NAME         = "RequestForActionAnnotation";
     /* plus DataFieldAnnotation */
 
-    public static final String DISCOVERY_ACTIVITY_PROPERTY_NAME    = "discoveryActivity";      /* from RequestForActionAnnotation entity */
-    public static final String ACTION_REQUESTED_PROPERTY_NAME      = "actionRequested";        /* from RequestForActionAnnotation entity */
-    public static final String ACTION_PROPERTIES_PROPERTY_NAME     = "actionProperties";       /* from RequestForActionAnnotation entity */
+    public static final String ACTION_SOURCE_NAME             = "actionSourceName";      /* from RequestForActionAnnotation entity */
+    public static final String ACTION_REQUESTED_PROPERTY_NAME = "actionRequested";        /* from RequestForActionAnnotation entity */
+    public static final String ACTION_PROPERTIES_PROPERTY_NAME = "actionProperties";       /* from RequestForActionAnnotation entity */
 
-    /* For Discovery Activity relationship */
-    public static final String DISCOVERY_ACTIVITY_TYPE_GUID    = "6cea5b53-558c-48f1-8191-11d48db29fb4";
-    public static final String DISCOVERY_ACTIVITY_TYPE_NAME    = "DiscoveryActivity";
-    /* End1 = RequestForActionAnnotation; End 2 = RequestForAction */
 
     /* ============================================================================================================================*/
     /* Area 7 - Lineage                                                                                                            */
@@ -4838,6 +4882,68 @@ public enum OpenMetadataType
     public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_GUID = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
     public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_NAME = "ProcessingState";
 
+
+    /* ============================================================================================================================*/
+    /* Deprecated Types                                                                                                            */
+    /* ============================================================================================================================*/
+
+
+    public static final String DISCOVERY_ANALYSIS_REPORT_TYPE_GUID    = "acc7cbc8-09c3-472b-87dd-f78459323dcb";
+    public static final String DISCOVERY_ANALYSIS_REPORT_TYPE_NAME    = "OpenDiscoveryAnalysisReport";
+    /* Referenceable */
+
+    public static final String EXECUTION_DATE_PROPERTY_NAME           = "executionDate";              /* from OpenDiscoveryAnalysisReport entity */
+    public static final String DISCOVERY_SERVICE_STATUS_PROPERTY_NAME = "discoveryServiceStatus";     /* from OpenDiscoveryAnalysisReport entity */
+
+    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
+    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
+
+    public static final String REPORT_TO_ASSET_TYPE_GUID              = "7eded424-f176-4258-9ae6-138a46b2845f";     /* from Area 6 */
+    public static final String REPORT_TO_ASSET_TYPE_NAME              = "AssetDiscoveryReport";
+    /* End1 = Asset; End 2 = OpenDiscoveryAnalysisReport */
+
+    public static final String REPORT_TO_ENGINE_TYPE_GUID             = "2c318c3a-5dc2-42cd-a933-0087d852f67f";    /* from Area 6 */
+    public static final String REPORT_TO_ENGINE_TYPE_NAME             = "DiscoveryEngineReport";
+    /* End1 = OpenDiscoveryEngine; End 2 = OpenDiscoveryAnalysisReport */
+
+    public static final String REPORT_TO_SERVICE_TYPE_GUID            = "1744d72b-903d-4273-9229-de20372a17e2";   /* from Area 6 */
+    public static final String REPORT_TO_SERVICE_TYPE_NAME            = "DiscoveryInvocationReport";
+    /* End1 = OpenDiscoveryService; End 2 = OpenDiscoveryAnalysisReport */
+
+    public static final String REPORT_TO_ANNOTATIONS_TYPE_GUID        = "51d386a3-3857-42e3-a3df-14a6cad08b93";   /* from Area 6 */
+    public static final String REPORT_TO_ANNOTATIONS_TYPE_NAME        = "DiscoveredAnnotation";
+    /* End1 = Annotation; End 2 = OpenDiscoveryAnalysisReport */
+
+
+    /* For DataField entity */
+    public static final String DATA_FIELD_TYPE_GUID              = "3c5bbc8b-d562-4b04-b189-c7b7f0bf2cea";
+    public static final String DATA_FIELD_TYPE_NAME              = "DataField";
+
+    public static final String DATA_FIELD_NAME_PROPERTY_NAME               = "dataFieldName";        /* from DataField entity */
+    public static final String DATA_FIELD_TYPE_PROPERTY_NAME               = "dataFieldType";        /* from DataField entity */
+    public static final String DATA_FIELD_DESCRIPTION_PROPERTY_NAME        = "dataFieldDescription"; /* from DataField entity */
+    public static final String DATA_FIELD_ALIASES_PROPERTY_NAME            = "dataFieldAliases";     /* from DataField entity */
+    public static final String DATA_FIELD_NAMESPACE_PROPERTY_NAME          = "dataFieldNamespace";   /* from DataField entity */
+    public static final String VERSION_PROPERTY_NAME                       = "version";              /* from DataField entity */
+    public static final String DATA_FIELD_SORT_ORDER_PROPERTY_NAME         = "dataFieldName";        /* from DataField entity */
+
+    /* For DiscoveredDataField relationship */
+    public static final String DISCOVERED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e22222cd54";
+    public static final String DISCOVERED_DATA_FIELD_TYPE_NAME    = "DiscoveredDataField";
+    /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
+
+    /* For DiscoveredDataField relationship */
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID    = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
+    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME    = "DiscoveredNestedDataField";
+    /* End1 = (parent)DataField; End 2 = DataField */
+
+    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID    = "cca4b116-4490-44c4-84e1-535231ae46a1";
+    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME    = "DiscoveredLinkedDataField";
+    /* End1 = (parent)DataField; End 2 = DataField */
+
+    public static final String DATA_FIELD_POSITION_PROPERTY_NAME     = "dataFieldPosition";
+
+
     /* ============================================================================================================================*/
     /* Enums                                                                                                                       */
     /* ============================================================================================================================*/
@@ -4861,4 +4967,10 @@ public enum OpenMetadataType
     public static final int    UPDATED_LATEST_CHANGE_ACTION_ORDINAL                   = 1;
     public static final int    DELETED_LATEST_CHANGE_ACTION_ORDINAL                   = 2;
     public static final int    OTHER_LATEST_CHANGE_ACTION_ORDINAL                     = 99;
+
+
+
+    public static final String ANNOTATION_STATUS_ENUM_TYPE_GUID    = "71187df6-ef66-4f88-bc03-cd3c7f925165";
+    public static final String ANNOTATION_STATUS_ENUM_TYPE_NAME    = "AnnotationStatus";
+
 }
