@@ -172,7 +172,7 @@ public class OpenMetadataTypesArchive4_0
         add0224TableDataSet();
         add0239DeployedReportType();
         update0385ControlledGlossaries();
-        update0462GovernanceActionProcessStep();
+        update0462GovernanceActionProcesses();
         create0464DynamicIntegrationGroups();
         update0470IncidentClassifierSet();
         update0484AgreementActor();
@@ -705,17 +705,17 @@ public class OpenMetadataTypesArchive4_0
      */
 
 
-    private void update0462GovernanceActionProcessStep()
+    private void update0462GovernanceActionProcesses()
     {
-        this.archiveBuilder.addTypeDefPatch(update0462GovernanceActionProcessStepExecutorRelationship());
+        this.archiveBuilder.addTypeDefPatch(update0462GovernanceActionExecutorRelationship());
     }
 
-    private TypeDefPatch update0462GovernanceActionProcessStepExecutorRelationship()
+    private TypeDefPatch update0462GovernanceActionExecutorRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceActionProcessStepExecutor";
+        final String typeName = OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -728,18 +728,18 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "requestParameterFilter";
-        final String attribute1Description     = "Which requestParameters to remove before calling engine action.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "requestParameterMap";
-        final String attribute2Description     = "The request parameters to rename before calling the engine action. Map is from old name to new name.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "actionTargetFilter";
-        final String attribute3Description     = "Which actionTargets to remove before calling engine action.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "actionTargetMap";
-        final String attribute4Description     = "The action target to rename before calling the engine action. Map is from old name to new name.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.REQUEST_PARAMETER_FILTER.name;
+        final String attribute1Description     = OpenMetadataProperty.REQUEST_PARAMETER_FILTER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.REQUEST_PARAMETER_FILTER.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.REQUEST_PARAMETER_MAP.name;
+        final String attribute2Description     = OpenMetadataProperty.REQUEST_PARAMETER_MAP.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.REQUEST_PARAMETER_MAP.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.ACTION_TARGET_FILTER.name;
+        final String attribute3Description     = OpenMetadataProperty.ACTION_TARGET_FILTER.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.ACTION_TARGET_FILTER.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ACTION_TARGET_MAP.name;
+        final String attribute4Description     = OpenMetadataProperty.ACTION_TARGET_MAP.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ACTION_TARGET_MAP.descriptionGUID;
 
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
                                                                 attribute1Description,

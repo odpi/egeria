@@ -12114,7 +12114,6 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
-
     /**
      * Return the entity that matches the requested value.
      *
@@ -12147,6 +12146,54 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
+        return this.getEntityByValue(userId,
+                                     value,
+                                     valueParameterName,
+                                     resultTypeGUID,
+                                     resultTypeName,
+                                     specificMatchPropertyNames,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     supportedZones,
+                                     effectiveTime,
+                                     methodName);
+    }
+
+
+    /**
+     * Return the entity that matches the requested value.
+     *
+     * @param userId identifier of calling user
+     * @param value  value to search
+     * @param valueParameterName parameter providing value
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return requested entity
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public  EntityDetail getEntityByValue(String       userId,
+                                          String       value,
+                                          String       valueParameterName,
+                                          String       resultTypeGUID,
+                                          String       resultTypeName,
+                                          List<String> specificMatchPropertyNames,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          List<String> serviceSupportedZones,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              value,
                                                              valueParameterName,
@@ -12159,7 +12206,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
-                                                             supportedZones,
+                                                             serviceSupportedZones,
                                                              null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),

@@ -343,7 +343,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
+                                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
             }
         }
 
@@ -390,7 +390,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
+                                                  OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME));
             }
         }
 

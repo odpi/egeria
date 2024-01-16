@@ -32,8 +32,8 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
     protected static NullRequestBody         nullRequestBody         = new NullRequestBody();
 
-    private final String serviceURLMarker;
-    private final OCFRESTClient ocfrestClient;
+    private final String        serviceURLMarker;
+    private final OCFRESTClient ocfRESTClient;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -59,7 +59,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
 
-        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -90,7 +90,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
 
-        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -140,7 +140,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
 
-        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -170,7 +170,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.serviceURLMarker = serviceURLMarker;
 
-        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -195,7 +195,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
     {
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}";
 
-        AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
+        AssetResponse restResult = ocfRESTClient.callOCFAssetGetRESTCall(methodName,
                                                                          serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          serviceURLMarker,
@@ -220,10 +220,10 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public AssetUniverse getAssetProperties(String serviceName,
-                                               String userId,
-                                               String assetGUID) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+                                            String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String   methodName = "getAssetProperties";
         final String   guidParameter = "assetGUID";
@@ -412,6 +412,39 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         return restResult.getConnection();
     }
 
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param userId the userId of the requesting user.
+     * @param assetGUID unique identifier for the asset.
+     * @param serviceName name of survey service
+     * @param message       message to log
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void logAssetAuditMessage(String userId,
+                                     String assetGUID,
+                                     String serviceName,
+                                     String message) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
+    {
+        final String   methodName = "logAssetAuditMessage";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/log-records/{4}";
+
+        ocfRESTClient.callVoidPostRESTCall(methodName,
+                                           serverPlatformURLRoot + urlTemplate,
+                                           message,
+                                           serverName,
+                                           serviceURLMarker,
+                                           userId,
+                                           serviceName);
+    }
+
+
+
     /**
      * Returns the connection corresponding to the supplied asset GUID.
      *
@@ -426,12 +459,12 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected Connection getConnectionForAsset(OCFRESTClient  restClient,
-                                               String         serviceName,
-                                               String         userId,
-                                               String         assetGUID) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public Connection getConnectionForAsset(OCFRESTClient  restClient,
+                                            String         serviceName,
+                                            String         userId,
+                                            String         assetGUID) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         final String   methodName = "getConnectionForAsset";
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
@@ -445,6 +478,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
         return restResult.getConnection();
     }
+
 
 
     /**
@@ -506,7 +540,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
+        AssetResponse restResult = ocfRESTClient.callOCFAssetGetRESTCall(methodName,
                                                                          serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          serviceURLMarker,
@@ -553,11 +587,11 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
-        Connection connection = this.getConnectionByName(ocfrestClient, serviceURLMarker, userId, connectionName);
+        Connection connection = this.getConnectionByName(ocfRESTClient, serviceURLMarker, userId, connectionName);
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(ocfrestClient,
+            return this.getConnectorForConnection(ocfRESTClient,
                                                   serviceURLMarker,
                                                   userId,
                                                   connection,
@@ -597,11 +631,11 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        Connection connection = this.getConnectionForAsset(ocfrestClient, serviceURLMarker, userId, assetGUID);
+        Connection connection = this.getConnectionForAsset(ocfRESTClient, serviceURLMarker, userId, assetGUID);
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(ocfrestClient,
+            return this.getConnectorForConnection(ocfRESTClient,
                                                   serviceURLMarker,
                                                   userId,
                                                   connection,
@@ -641,11 +675,11 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        Connection connection = this.getConnectionByGUID(ocfrestClient, serviceURLMarker, userId, connectionGUID);
+        Connection connection = this.getConnectionByGUID(ocfRESTClient, serviceURLMarker, userId, connectionGUID);
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(ocfrestClient,
+            return this.getConnectorForConnection(ocfRESTClient,
                                                   serviceURLMarker,
                                                   userId,
                                                   connection,
@@ -679,7 +713,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        return this.getConnectorForConnection(ocfrestClient, serviceURLMarker, userId, connection, methodName);
+        return this.getConnectorForConnection(ocfRESTClient, serviceURLMarker, userId, connection, methodName);
     }
 
 

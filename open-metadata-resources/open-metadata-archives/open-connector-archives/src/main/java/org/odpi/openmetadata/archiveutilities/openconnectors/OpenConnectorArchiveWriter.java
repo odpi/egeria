@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider;
@@ -41,10 +42,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileExtension;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileName;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.*;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
@@ -112,6 +110,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private final GovernanceArchiveHelper archiveHelper;
 
     private final Map<String, String>     parentValidValueQNameToGUIDMap = new HashMap<>();
+
 
     /**
      * Default constructor initializes the archive.
@@ -191,6 +190,35 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                     null);
 
 
+        /*
+         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         */
+        String resourceUseParentSetGUID = this.getParentSet(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                             OpenMetadataProperty.RESOURCE_USE.name,
+                                                             null);
+
+        for (ResourceUse resourceUse : ResourceUse.values())
+        {
+            this.archiveHelper.addValidValue(resourceUseParentSetGUID,
+                                             resourceUseParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                             OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                             resourceUse.getQualifiedName(),
+                                             resourceUse.getResourceUse(),
+                                             resourceUse.getDescription(),
+                                             resourceUse.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             resourceUse.getResourceUse(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+        /*
+         * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map
+         * to make it easy to link other elements to these valid values later.
+         */
         Map<String, String> deployedImplementationTypeGUIDs = new HashMap<>();
 
         for (DeployedImplementationType deployedImplementationType : DeployedImplementationType.values())
@@ -205,6 +233,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             deployedImplementationTypeGUIDs.put(deployedImplementationType.getDeployedImplementationType(), guid);
         }
 
+        /*
+         * Egeria also has valid values for its implementation.  These are useful when cataloguing Egeria.
+         * This first list are the different types of OMAG Servers
+         */
         Map<String, String> serverTypeGUIDs = new HashMap<>();
         Map<String, String> serviceGUIDs    = new HashMap<>();
 
@@ -218,9 +250,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             serverTypeGUIDs.put(serverTypeClassification.getServerTypeName(), guid);
         }
 
-        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName());
-        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_SERVER.getServerTypeName());
-
+        /*
+         * Next are the common services of Egeria.
+         */
         for (CommonServicesDescription commonServicesDescription : CommonServicesDescription.values())
         {
             String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
@@ -231,6 +263,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             serviceGUIDs.put(commonServicesDescription.getServiceName(), guid);
         }
 
+        /*
+         * These services support the governance servers.
+         */
         for (GovernanceServicesDescription governanceServicesDescription : GovernanceServicesDescription.values())
         {
             String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
@@ -240,6 +275,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             serviceGUIDs.put(governanceServicesDescription.getServiceName(), guid);
         }
+
+        /*
+         * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
+         */
+        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName());
+        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_SERVER.getServerTypeName());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
@@ -252,13 +293,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID2,
                                                             guid,
-                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
         }
 
+        /*
+         * View services are found in the View Server.  They call an access service.
+         */
         serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.VIEW_SERVER.getServerTypeName());
 
         for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
@@ -270,13 +314,17 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(viewServiceDescription.getViewServicePartnerService()),
-                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
         }
 
+        /*
+         * Engine services are found in the Engine Host.   They call an access service.  They also
+         * Support a particular type of governance engine and governance service.
+         */
         serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.ENGINE_HOST.getServerTypeName());
 
         for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
@@ -288,11 +336,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
-                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
 
             String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineType());
             String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceType());
@@ -301,17 +349,21 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             {
                 archiveHelper.addResourceListRelationshipByGUID(guid,
                                                                 governanceEngineGUID,
-                                                                OpenMetadataValidValues.HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE);
+                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getResourceUse());
 
                 if (governanceServiceGUID != null)
                 {
                     archiveHelper.addResourceListRelationshipByGUID(governanceEngineGUID,
                                                                     governanceServiceGUID,
-                                                                    OpenMetadataValidValues.HOSTED_CONNECTOR_RESOURCE_USE);
+                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse());
                 }
             }
         }
 
+        /*
+         * Integration services are found in the integration daemon.  They each call a particular access service and
+         * host a particular type of connector.
+         */
         for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
         {
             String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
@@ -321,11 +373,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            OpenMetadataValidValues.HOSTED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
-                                                            OpenMetadataValidValues.CALLED_SERVICE_RESOURCE_USE);
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
 
             String connectorTypeGUID = deployedImplementationTypeGUIDs.get(integrationServiceDescription.getConnectorDeployedImplementationType());
 
@@ -333,10 +385,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             {
                 archiveHelper.addResourceListRelationshipByGUID(guid,
                                                                 connectorTypeGUID,
-                                                                OpenMetadataValidValues.HOSTED_CONNECTOR_RESOURCE_USE);
+                                                                ResourceUse.HOSTED_CONNECTOR.getResourceUse());
             }
         }
 
+        /*
+         * Add the valid values for the fileType property.
+         */
         for (FileType fileType : FileType.values())
         {
             this.addFileType(fileType.getFileTypeName(),
@@ -346,6 +401,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                              fileType.getDescription());
         }
 
+        /*
+         * Add the list of special file names.
+         */
         for (FileName fileName : FileName.values())
         {
             this.addFileName(fileName.getFileName(),
@@ -353,18 +411,22 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                              fileName.getDeployedImplementationType());
         }
 
+        /*
+         * Add the list of recognized file extensions.
+         */
         for (FileExtension fileExtension : FileExtension.values())
         {
             this.addFileExtension(fileExtension.getFileExtension(), fileExtension.getFileTypes());
         }
 
-
         /*
-         * Integration Connector Types may need to link to deployedImplementationType valid value element
+         * Integration Connector Types may need to link to deployedImplementationType valid value element.
+         * This information is in the connector provider.
          */
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new CSVFileStoreProvider());
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new DataFolderProvider());
         archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFileStoreProvider());
+        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFolderProvider());
         archiveHelper.addConnectorType(relationalConnectorCategoryGUID, new JDBCResourceConnectorProvider());
         archiveHelper.addConnectorType(kafkaConnectorCategoryGUID, new KafkaOpenMetadataTopicProvider());
         archiveHelper.addConnectorType(null, new ApacheAtlasRESTProvider());
@@ -384,6 +446,23 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
 
+        /*
+         * Create the default integration group.
+         */
+        archiveHelper.addSoftwareCapability(OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                            "Egeria:IntegrationGroup:DefaultIntegrationGroup",
+                                            "DefaultIntegrationGroup",
+                                            "Dynamic integration group to use with Integration Daemon configuration.",
+                                            DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
+                                            null,
+                                            null,
+                                            archiveFileName,
+                                            null,
+                                            null);
+
+        /*
+         * Register the governance services that are going to be in the default governance engines.
+         */
         String fileProvisionerGUID = this.getFileProvisioningGovernanceActionService();
         String watchDogServiceGUID = this.getWatchdogGovernanceActionService();
         String originSeekerGUID = this.getOriginSeekerGovernanceActionService();
@@ -394,12 +473,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String fileSurveyGUID = this.getDataFileSurveyService();
         String folderSurveyGUID = this.getFolderSurveyService();
 
+        /*
+         * Define the file provisioning engine.
+         */
         String fileProvisioningEngineGUID = this.getFileProvisioningEngine();
 
         this.addCopyFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
         this.addMoveFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
         this.addDeleteFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
 
+        /*
+         * Define the AssetGovernance engine
+         */
         String assetGovernanceEngineGUID = this.getAssetGovernanceEngine();
 
         this.addFTPFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
@@ -409,17 +494,27 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
         this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
 
+        /*
+         * Define the AssetDiscovery Engine (deprecated)
+         *
         String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
 
         this.addSmallCSVRequestType(assetDiscoveryEngineGUID, csvDiscoveryGUID);
         this.addApacheAtlasRequestType(assetDiscoveryEngineGUID, atlasDiscoveryGUID);
+         */
 
+        /*
+         * Define the asset survey engine
+         */
         String assetSurveyEngineGUID = this.getAssetSurveyEngine();
 
         this.addCSVFileRequestType(assetSurveyEngineGUID, csvSurveyGUID);
         this.addDataFileRequestType(assetSurveyEngineGUID, fileSurveyGUID);
         this.addFolderRequestType(assetSurveyEngineGUID, folderSurveyGUID);
 
+        /*
+         * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
+         */
         archiveHelper.saveGUIDs();
 
         /*

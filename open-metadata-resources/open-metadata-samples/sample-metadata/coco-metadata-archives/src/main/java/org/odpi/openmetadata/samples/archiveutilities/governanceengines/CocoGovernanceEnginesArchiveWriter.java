@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 
 import java.util.Date;
@@ -22,11 +23,6 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     private static final String                  archiveName        = "CocoGovernanceEngineDefinitions";
     private static final String                  archiveDescription = "Governance Engine for Coco Pharmaceuticals.";
 
-    /*
-     * Specific values for initializing TypeDefs
-     */
-    private static final String OPEN_DISCOVERY_ENGINE_TYPE_NAME  = "OpenDiscoveryEngine";
-    private static final String OPEN_DISCOVERY_SERVICE_TYPE_NAME = "OpenDiscoveryService";
 
     /**
      * Default constructor initializes the archive.
@@ -53,7 +49,7 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         final String assetQualityEngineDisplayName = "AssetQuality Open Discovery Engine";
         final String assetQualityEngineDescription = "Assess the quality of a digital resource identified by the asset in the request.";
 
-        return archiveHelper.addGovernanceEngine(OPEN_DISCOVERY_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
                                                  assetQualityEngineName,
                                                  assetQualityEngineDisplayName,
                                                  assetQualityEngineDescription,

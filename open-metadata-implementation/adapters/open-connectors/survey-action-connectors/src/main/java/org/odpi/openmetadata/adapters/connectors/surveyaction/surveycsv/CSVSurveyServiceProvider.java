@@ -3,7 +3,12 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * CSVSurveyServiceProvider provides the connector provider for the CSV Survey Action Service
@@ -13,6 +18,7 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
     static final String  connectorTypeGUID = "2a844ac9-bb86-4765-9f3c-04df148c05a5";
     static final String  connectorTypeName = "CSV Survey Action Service Connector";
     static final String  connectorTypeDescription = "Connector supports the schema extraction and profiling of data in a CSV file.";
+    static final String  FILE_TARGET_PROPERTY = "fileToSurvey";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -36,5 +42,16 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
+
+        supportedTargetActionNames = new ArrayList<>();
+        supportedTargetActionNames.add(FILE_TARGET_PROPERTY);
+
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(FILE_TARGET_PROPERTY, actionTargetType);
     }
 }

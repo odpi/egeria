@@ -195,6 +195,26 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                    String                description,
                                    String                descriptionGUID)
     {
+        return this.getEmptyEnumDef(guid, name, description, descriptionGUID, null);
+    }
+
+
+    /**
+     * Create an EnumDef that has no valid values defined.  These are added by the caller.
+     *
+     * @param guid unique identifier for the CollectionDef
+     * @param name unique name for the CollectionDef
+     * @param description short default description of the enum type
+     * @param descriptionGUID guid of the valid value describing this enum type
+     * @param descriptionWiki link to the url for documentation of this type
+     * @return basic EnumDef without valid values
+     */
+    public EnumDef getEmptyEnumDef(String                guid,
+                                   String                name,
+                                   String                description,
+                                   String                descriptionGUID,
+                                   String                descriptionWiki)
+    {
         EnumDef  enumDef = new EnumDef();
 
         enumDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
@@ -202,6 +222,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         enumDef.setName(name);
         enumDef.setDescription(description);
         enumDef.setDescriptionGUID(descriptionGUID);
+        enumDef.setDescriptionWiki(descriptionWiki);
         enumDef.setDefaultValue(null);
         enumDef.setVersion(versionNumber);
         enumDef.setVersionName(versionName);

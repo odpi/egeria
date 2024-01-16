@@ -150,7 +150,7 @@ public class DataFieldConverter<B> extends DiscoveryEngineOMASConverter<B>
                                     nestedDataFields++;
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD_ANALYSIS_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD_ANALYSIS_RELATIONSHIP.typeName))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 

@@ -2,86 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase;
 
-import java.util.List;
 
 /**
  * SurveyActionServiceProvider implements the base class for the connector provider for a survey action service.
  */
-public abstract class SurveyActionServiceProvider extends ConnectorProviderBase
+public abstract class SurveyActionServiceProvider extends GovernanceServiceProviderBase
 {
-    /*
-     * The type name of the asset that this connector supports.
-     */
-    protected static final String supportedAssetTypeName = "SurveyActionService";
-
-    /*
-     * Additional configuration to aid choreographing this service in a Governance Action Process.
-     */
-    protected List<String> supportedRequestTypes       = null;
-    protected List<String> supportedRequestParameters  = null;
-    protected List<String> supportedRequestSourceNames = null;
-    protected List<String> supportedTargetActionNames  = null;
-    protected List<String> supportedGuards             = null;
-
-
-    /**
-     * The request types returned are those that affect the survey action service's behaviour.  Other request types may be used
-     * to call the survey action service, but they result in default behaviour.
-     *
-     * @return list of request types
-     */
-    public List<String> supportedRequestTypes()
+    static
     {
-        return supportedRequestTypes;
-    }
-
-
-    /**
-     * The request parameters returned are used by the survey action service to control its behaviour.
-     *
-     * @return list of parameter names used if the connector is provisioning
-     */
-    public List<String> supportedRequestParameters()
-    {
-        return supportedRequestParameters;
-    }
-
-
-    /**
-     * The request source names returned are the request source names that affect the survey action service's behaviour.  Other request
-     * source names may be used in a call the survey action service, but they result in default behaviour.
-     *
-     * @return list of request sources with special meaning
-     */
-    public List<String> supportedRequestSourceNames()
-    {
-        return supportedRequestSourceNames;
-    }
-
-
-    /**
-     * The action target names returned are those that affect the survey action service's behaviour.  Other action target names may be used
-     * in a call the survey action service, but they result in default behaviour.
-     *
-     * @return list of action target names with special meaning
-     */
-    public List<String> supportedActionTargetNames()
-    {
-        return supportedTargetActionNames;
-    }
-
-
-    /**
-     * The guards describe the output assessment from the survey action service.  The list returned is the complete list of
-     * guards to expect from the survey action service.  They are used when defining survey action processes that choreograph
-     * the execution of survey action services using the guards to determine the path in the process to take.
-     *
-     * @return list of guards
-     */
-    public  List<String> supportedGuards()
-    {
-        return supportedGuards;
+        supportedAssetTypeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
     }
 }

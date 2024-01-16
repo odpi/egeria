@@ -83,24 +83,7 @@ public class ClassificationAnnotation extends DataFieldAnnotation
     {
         return "ClassificationAnnotation{" +
                 "candidateClassifications=" + candidateClassifications +
-                ", annotationType='" + getAnnotationType() + '\'' +
-                ", summary='" + getSummary() + '\'' +
-                ", confidenceLevel=" + getConfidenceLevel() +
-                ", expression='" + getExpression() + '\'' +
-                ", explanation='" + getExplanation() + '\'' +
-                ", analysisStep='" + getAnalysisStep() + '\'' +
-                ", jsonProperties='" + getJsonProperties() + '\'' +
-                ", annotationStatus=" + getAnnotationStatus() +
-                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
-                ", reviewDate=" + getReviewDate() +
-                ", steward='" + getSteward() + '\'' +
-                ", reviewComment='" + getReviewComment() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                ", elementHeader=" + getElementHeader() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 

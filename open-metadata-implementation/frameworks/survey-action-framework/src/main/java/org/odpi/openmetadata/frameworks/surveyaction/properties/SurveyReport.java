@@ -30,13 +30,17 @@ public class SurveyReport extends PropertyBase
     private Map<String, String> additionalProperties  = null;
     private String              displayName           = null;
     private String              description           = null;
-    private Date                creationDate          = null;
+    private String              purpose               = null;
+    private String              user                  = null;
     private Map<String, String> analysisParameters    = null;
     private String              assetGUID             = null;
-    private String              governanceEngineGUID  = null;
-    private String              governanceServiceGUID = null;
     private String              engineActionGUID      = null;
+
+    private Date                startDate             = null;
     private String              analysisStep          = null;
+    private Date                completionDate        = null;
+    private String              completionMessage     = null;
+
 
 
     /**
@@ -63,13 +67,15 @@ public class SurveyReport extends PropertyBase
             additionalProperties   = template.getAdditionalProperties();
             displayName            = template.getDisplayName();
             description            = template.getDescription();
-            creationDate           = template.getCreationDate();
+            purpose                = template.getPurpose();
+            user                   = template.getUser();
             analysisParameters     = template.getAnalysisParameters();
             engineActionGUID       = template.getEngineActionGUID();
             assetGUID              = template.getAssetGUID();
-            governanceEngineGUID  = template.getGovernanceEngineGUID();
-            governanceServiceGUID = template.getGovernanceServiceGUID();
-            analysisStep          = template.getAnalysisStep();
+            analysisStep           = template.getAnalysisStep();
+            startDate              = template.getStartDate();
+            completionDate         = template.getCompletionDate();
+            completionMessage      = template.getCompletionMessage();
         }
     }
 
@@ -175,25 +181,92 @@ public class SurveyReport extends PropertyBase
 
 
     /**
-     * Return the creation date for the report.  If this date is not known then null is returned.
+     * Return the purpose of the survey.
      *
      * @return Date that the report was created.
      */
-    public Date getCreationDate()
+    public String getPurpose()
     {
-        return creationDate;
+        return purpose;
     }
 
 
     /**
      * Set up the creation date for the report.  If this date is not known then null is returned.
      *
-     * @param creationDate Date that the report was created.
+     * @param purpose Date that the report was created.
      */
-    public void setCreationDate(Date creationDate)
+    public void setPurpose(String purpose)
     {
-        this.creationDate = creationDate;
+        this.purpose = purpose;
     }
+
+    /**
+     * Return the user that ran the survey action service.
+     *
+     * @return user
+     */
+    public String getUser()
+    {
+        return user;
+    }
+
+
+    /**
+     * Set up the user that ran the survey action service.
+     *
+     * @param user userId
+     */
+    public void setUser(String user)
+    {
+        this.user = user;
+    }
+
+
+    /**
+     * Return the creation date for the report.  If this date is not known then null is returned.
+     *
+     * @return Date that the report was created.
+     */
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+
+    /**
+     * Set up the creation date for the report.  If this date is not known then null is returned.
+     *
+     * @param date Date that the report was created.
+     */
+    public void setStartDate(Date date)
+    {
+        this.startDate = date;
+    }
+
+
+
+    /**
+     * Return the completion date for the report.  If this date is not known then null is returned.
+     *
+     * @return Date that the report was completed.
+     */
+    public Date getCompletionDate()
+    {
+        return completionDate;
+    }
+
+
+    /**
+     * Set up the completion date for the report.  If this date is not known then null is returned.
+     *
+     * @param date Date that the report was completed.
+     */
+    public void setCompletionDate(Date date)
+    {
+        this.completionDate = date;
+    }
+
 
 
     /**
@@ -241,46 +314,24 @@ public class SurveyReport extends PropertyBase
 
 
     /**
-     * Return the unique identifier of the discovery engine that ran the discovery service.
+     * Return the completion message - it may be null which means it completed ok.
      *
-     * @return unique identifier (guid)
+     * @return string text
      */
-    public String getGovernanceEngineGUID()
+    public String getCompletionMessage()
     {
-        return governanceEngineGUID;
+        return completionMessage;
     }
 
 
     /**
-     * Set up the unique identifier of the discovery engine that ran the discovery service.
+     * Set up the completion message - it may be null which means it completed ok.
      *
-     * @param governanceEngineGUID unique identifier (guid)
+     * @param message text of completion message
      */
-    public void setGovernanceEngineGUID(String governanceEngineGUID)
+    public void setCompletionMessage(String message)
     {
-        this.governanceEngineGUID = governanceEngineGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the discovery service.
-     *
-     * @return unique identifier (guid)
-     */
-    public String getGovernanceServiceGUID()
-    {
-        return governanceServiceGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the discovery service.
-     *
-     * @param governanceServiceGUID unique identifier (guid)
-     */
-    public void setGovernanceServiceGUID(String governanceServiceGUID)
-    {
-        this.governanceServiceGUID = governanceServiceGUID;
+        this.completionMessage = message;
     }
 
 
@@ -341,15 +392,18 @@ public class SurveyReport extends PropertyBase
                 ", additionalProperties=" + additionalProperties +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", creationDate=" + creationDate +
+                ", purpose='" + purpose + '\'' +
+                ", user='" + user + '\'' +
                 ", analysisParameters=" + analysisParameters +
                 ", assetGUID='" + assetGUID + '\'' +
-                ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
-                ", governanceServiceGUID='" + governanceServiceGUID + '\'' +
                 ", engineActionGUID='" + engineActionGUID + '\'' +
+                ", startDate=" + startDate +
                 ", analysisStep='" + analysisStep + '\'' +
-                '}';
+                ", completionDate=" + completionDate +
+                ", completionMessage='" + completionMessage + '\'' +
+                "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -373,11 +427,13 @@ public class SurveyReport extends PropertyBase
                 Objects.equals(additionalProperties, that.additionalProperties) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(creationDate, that.creationDate) &&
+                Objects.equals(purpose, that.purpose) &&
+                Objects.equals(user, that.user) &&
                 Objects.equals(analysisParameters, that.analysisParameters) &&
                 Objects.equals(assetGUID, that.assetGUID) &&
-                Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
-                Objects.equals(governanceServiceGUID, that.governanceServiceGUID) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(completionDate, that.completionDate) &&
+                Objects.equals(completionMessage, that.completionMessage) &&
                 Objects.equals(engineActionGUID, that.engineActionGUID) &&
                 Objects.equals(analysisStep, that.analysisStep);
     }
@@ -390,7 +446,7 @@ public class SurveyReport extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, displayName, description, creationDate, analysisParameters,
-                engineActionGUID, assetGUID, governanceEngineGUID, governanceServiceGUID, analysisStep);
+        return Objects.hash(qualifiedName, additionalProperties, displayName, description, purpose, user, analysisParameters,
+                            engineActionGUID, assetGUID, startDate, completionDate, completionMessage, analysisStep);
     }
 }

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.egeria;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
@@ -15,29 +17,45 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
  */
 public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorProvider
 {
-    /*
+    /**
      * Unique identifier of the connector for the audit log.
      */
     private static final int    connectorComponentId   = 663;
 
-    /*
+    /**
      * Unique identifier for the connector type.
      */
     private static final String connectorTypeGUID      = "4bdb586e-2845-40ff-9457-f52e59fbde13";
 
-    /*
+    /**
      * Descriptive information about the connector for the connector type and audit log.
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Infrastructure:Egeria";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorDisplayName   = "Egeria Infrastructure Cataloguing Connector";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorDescription   = "Scavenges information from an Egeria deployment to catalog the platforms, servers, services and connectors.";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/egeria-infrastructure-cataloguing-integration-connector/";
 
-    /*
+    /**
      * Class of the connector.
      */
     private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationConnector";
 
+    /**
+     * The name of the catalog target that contains the platform to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME    = "platformToMonitor";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific store implementation.
@@ -76,5 +94,12 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(DeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
     }
 }

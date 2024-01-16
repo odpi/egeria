@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -271,13 +268,13 @@ public interface CollectionsInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void attachCollection(String  userId,
-                          String  collectionGUID,
-                          String  parentGUID,
-                          String  collectionUse,
-                          boolean makeAnchor) throws InvalidParameterException,
-                                                     PropertyServerException,
-                                                     UserNotAuthorizedException;
+    void attachCollection(String                 userId,
+                          String                 collectionGUID,
+                          String                 parentGUID,
+                          ResourceListProperties collectionUse,
+                          boolean                makeAnchor) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 
 
     /**

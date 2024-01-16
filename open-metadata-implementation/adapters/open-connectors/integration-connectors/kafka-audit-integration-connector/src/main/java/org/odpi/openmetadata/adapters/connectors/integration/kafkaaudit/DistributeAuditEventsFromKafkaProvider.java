@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
@@ -15,17 +17,17 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
  */
 public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnectorProvider
 {
-    /*
+    /**
      * Unique identifier of the connector for the audit log.
      */
     private static final int    connectorComponentId   = 663;
 
-    /*
+    /**
      * Unique identifier for the connector type.
      */
     private static final String connectorTypeGUID      = "b237dfab-12bc-42b2-95d9-b459f17b0af5";
 
-    /*
+    /**
      * Descriptive information about the connector for the connector type and audit log.
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Catalog:LoadAuditEventsFromKafka";
@@ -33,11 +35,15 @@ public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnector
     private static final String connectorDescription   = "Connector listens for audit events from a kafka topic and loads them into a database via JDBC.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/load-audit-log-events-from-kafka/";
 
-    /*
+    /**
      * Class of the connector.
      */
     private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaConnector";
 
+    /**
+     * The name of the catalog target that contains the topic to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME    = "kafkaTopicToMonitor";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
@@ -77,5 +83,12 @@ public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnector
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
     }
 }

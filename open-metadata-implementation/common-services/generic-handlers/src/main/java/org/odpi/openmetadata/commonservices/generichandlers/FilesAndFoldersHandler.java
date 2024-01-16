@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -45,11 +46,20 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private final SchemaAttributeHandler<OpenMetadataAPIDummyBean, OpenMetadataAPIDummyBean> schemaAttributeHandler;
 
     private final static String folderDivider = "/";
-    private final static String fileSystemDivider = "://";
-    private final static String fileTypeDivider = "\\.";
+    private final static String fileSystemDivider    = "://";
+    private final static String fileExtensionDivider = "\\.";
 
     private final static String defaultAvroFileType = "avro";
     private final static String defaultCSVFileType  = "csv";
+
+    private static final String fileTypeCategory =
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataProperty.FILE_TYPE.name,
+                                                                null);
+    private static final String deployedImplementationTypeCategory =
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                null);
 
 
     /**
@@ -158,6 +168,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
+
 
         OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummySchemaAttributeConverter =
                 new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
@@ -271,6 +282,30 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
 
     /**
+     * Return the file extension of the file from the path name.
+     *
+     * @param pathName path name of a file
+     * @return file type or null if no file type
+     */
+    private String getFileExtension(String pathName)
+    {
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileExtensionDivider);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[tokens.length - 1];
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
      * Return the file type of the file from the path name.
      *
      * @param pathName path name of a file
@@ -278,11 +313,28 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      */
     private String getFileType(String pathName)
     {
+        // todo move lookup logic for filetypes from integration connector
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        /*
+        EntityDetail fileTypeValidValue = fileHandler.getEntityByValue(userId,
+                                        qualifiedName,
+                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        specificMatchPropertyNames,
+                                        true,
+                                        false,
+                                        null,
+                                        methodName);
+                                        */
+
         String result = null;
 
         if ((pathName != null) && (! pathName.isEmpty()))
         {
-            String[] tokens = pathName.split(fileTypeDivider);
+            String[] tokens = pathName.split(fileExtensionDivider);
 
             if (tokens.length > 1)
             {
@@ -459,6 +511,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param fileType file extension name
      * @param fileName name of the file
+     * @param fileExtension extension if provided
      * @param pathName qualified name for the file system
      * @param displayName short display name
      * @param versionIdentifier version identifier for the file system
@@ -484,6 +537,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              externalSourceName,
                                    String              fileType,
                                    String              fileName,
+                                   String              fileExtension,
                                    String              pathName,
                                    String              displayName,
                                    String              versionIdentifier,
@@ -508,6 +562,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             extendedProperties = new HashMap<>(initialExtendedProperties);
         }
 
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileExtension);
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, fileName);
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
@@ -1541,11 +1596,13 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         String fileType = this.getFileType(pathName);
         String fileName = this.getFileName(pathName);
+        String fileExtension = this.getFileExtension(pathName);
         String fileAssetGUID = this.createFileAsset(userId,
                                                     externalSourceGUID,
                                                     externalSourceName,
                                                     fileType,
                                                     fileName,
+                                                    fileExtension,
                                                     pathName,
                                                     name,
                                                     versionIdentifier,
@@ -2242,6 +2299,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         String fileType = this.getFileType(fullPath);
         String fileName = this.getFileName(fullPath);
+        String fileExtension = this.getFileExtension(fullPath);
 
         if (fileType == null)
         {
@@ -2253,6 +2311,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceName,
                                                     fileType,
                                                     fileName,
+                                                    fileExtension,
                                                     fullPath,
                                                     name,
                                                     versionIdentifier,
@@ -2337,6 +2396,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         String fileType = this.getFileType(fullPath);
         String fileName = this.getFileName(fullPath);
+        String fileExtension = this.getFileExtension(fullPath);
 
         if (fileType == null)
         {
@@ -2373,6 +2433,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceName,
                                                     fileType,
                                                     fileName,
+                                                    fileExtension,
                                                     fullPath,
                                                     name,
                                                     versionIdentifier,
