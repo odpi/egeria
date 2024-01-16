@@ -110,8 +110,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-008",
             "The local repository mode has not been set for OMAG server {0}",
-            "The local repository mode must be enabled before the event mapper connection is set.  The system is unable to configure the local server.",
-            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection."),
+            "The local repository mode must be enabled before the event mapper connection, local metadata collection id or local metadata collection name is set.",
+            "Set up a local repository for this server, then rerun the failing request."),
 
     /**
      * OMAG-ADMIN-400-009 - The OMAG server {0} has been passed null configuration
