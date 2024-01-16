@@ -42,7 +42,6 @@ public interface SurveyReportInterface
      *
      * @param userId identifier of calling user
      * @param reportGUID identifier of the discovery request.
-     * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      *
@@ -54,7 +53,6 @@ public interface SurveyReportInterface
      */
     List<Annotation> getSurveyReportAnnotations(String           userId,
                                                 String           reportGUID,
-                                                AnnotationStatus annotationStatus,
                                                 int              startFrom,
                                                 int              pageSize) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
@@ -66,7 +64,6 @@ public interface SurveyReportInterface
      *
      * @param userId identifier of calling user
      * @param annotationGUID anchor annotation
-     * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startFrom starting position in the list
      * @param pageSize maximum number of annotations that can be returned.
      *
@@ -78,7 +75,6 @@ public interface SurveyReportInterface
      */
     List<Annotation>  getExtendedAnnotations(String           userId,
                                              String           annotationGUID,
-                                             AnnotationStatus annotationStatus,
                                              int              startFrom,
                                              int              pageSize) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,

@@ -258,8 +258,8 @@ public class StewardshipAction implements SurveyReportInterface,
                                                                                                          false,
                                                                                                          false,
                                                                                                          new Date(),
-                                                                                                         0,
-                                                                                                         0);
+                                                                                                         startFrom,
+                                                                                                         pageSize);
 
         if (reportElements != null)
         {
@@ -301,7 +301,6 @@ public class StewardshipAction implements SurveyReportInterface,
      *
      * @param userId           identifier of calling user
      * @param reportGUID       identifier of the discovery request.
-     * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startFrom        initial position in the stored list.
      * @param pageSize         maximum number of definitions to return on this call.
      * @return list of annotations
@@ -312,7 +311,6 @@ public class StewardshipAction implements SurveyReportInterface,
     @Override
     public List<Annotation> getSurveyReportAnnotations(String           userId,
                                                        String           reportGUID,
-                                                       AnnotationStatus annotationStatus,
                                                        int              startFrom,
                                                        int              pageSize) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -335,7 +333,6 @@ public class StewardshipAction implements SurveyReportInterface,
      *
      * @param userId           identifier of calling user
      * @param annotationGUID   anchor annotation
-     * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startFrom        starting position in the list
      * @param pageSize         maximum number of annotations that can be returned.
      * @return list of Annotation objects
@@ -346,7 +343,6 @@ public class StewardshipAction implements SurveyReportInterface,
     @Override
     public List<Annotation> getExtendedAnnotations(String           userId,
                                                    String           annotationGUID,
-                                                   AnnotationStatus annotationStatus,
                                                    int              startFrom,
                                                    int              pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
