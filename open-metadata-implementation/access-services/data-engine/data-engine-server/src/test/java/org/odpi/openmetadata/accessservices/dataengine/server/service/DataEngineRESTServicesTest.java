@@ -786,8 +786,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                               OpenMetadataType.DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.DATA_FILE.typeName,
+                                                                               OpenMetadataType.DATA_FILE.typeGUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
@@ -800,8 +800,8 @@ class DataEngineRESTServicesTest {
 
         dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE_TYPE_NAME,
-                                                                               OpenMetadataType.CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(OpenMetadataType.CSV_FILE.typeName,
+                                                                               OpenMetadataType.CSV_FILE.typeGUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
                 getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
@@ -1021,7 +1021,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.DATA_FILE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.DATA_FILE.typeName)).thenReturn(Optional.of(mockedEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         dataEngineRESTServices.deleteDataFile(USER, SERVER_NAME, getDeleteRequestBody());
@@ -1055,7 +1055,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.FILE_FOLDER_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.FILE_FOLDER.typeName)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteFolder(USER, SERVER_NAME, getDeleteRequestBody());
 

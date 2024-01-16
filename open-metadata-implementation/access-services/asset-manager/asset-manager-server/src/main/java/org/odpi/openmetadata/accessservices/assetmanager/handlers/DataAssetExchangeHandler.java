@@ -240,8 +240,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         if (assetProperties instanceof DataStoreProperties dataStoreProperties)
         {
             assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, dataStoreProperties.getPathName());
-            assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, dataStoreProperties.getCreateTime());
-            assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, dataStoreProperties.getModifiedTime());
+            assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, dataStoreProperties.getCreateTime());
+            assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, dataStoreProperties.getModifiedTime());
         }
 
         if (assetExtendedProperties.isEmpty())
@@ -290,22 +290,22 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             null,
-                                                                                            OpenMetadataType.ENCODING_PROPERTY_NAME,
+                                                                                            OpenMetadataProperty.ENCODING.name,
                                                                                             dataStoreProperties.getEncodingType(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             classificationProperties,
-                                                                                            OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                            OpenMetadataProperty.ENCODING_LANGUAGE.name,
                                                                                             dataStoreProperties.getEncodingLanguage(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                             classificationProperties,
-                                                                                            OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                            OpenMetadataProperty.ENCODING_DESCRIPTION.name,
                                                                                             dataStoreProperties.getEncodingDescription(),
                                                                                             methodName);
                     classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                                classificationProperties,
-                                                                                               OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.ENCODING_PROPERTIES.name,
                                                                                                dataStoreProperties.getEncodingProperties(),
                                                                                                methodName);
 
@@ -315,9 +315,9 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                assetGUID,
                                                                assetGUIDParameterName,
-                                                               OpenMetadataType.DATA_STORE_TYPE_NAME,
-                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                               OpenMetadataType.DATA_STORE.typeName,
+                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
                                                                classificationProperties,
                                                                true,
                                                                forLineage,
@@ -330,8 +330,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             /*
              * For files and folders
              */
-            if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FILE_TYPE_NAME)) ||
-                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FOLDER_TYPE_NAME))) &&
+            if (((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FILE.typeName)) ||
+                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_FOLDER.typeName))) &&
                 (assetExtendedProperties != null) &&
                 (assetExtendedProperties.get(OpenMetadataProperty.PATH_NAME.name) != null))
             {

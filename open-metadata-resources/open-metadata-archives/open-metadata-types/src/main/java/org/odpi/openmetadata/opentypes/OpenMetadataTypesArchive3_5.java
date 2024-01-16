@@ -337,21 +337,21 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deploymentTime";
-        final String attribute1Description     = "Time that the software capability was deployed to the IT Infrastructure.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that deployed the software capability.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "capabilityStatus";
-        final String attribute5Description     = "The operational status of the software capability on this IT Infrastructure.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYMENT_TIME.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYMENT_TIME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYMENT_TIME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DEPLOYER.name;
+        final String attribute2Description     = OpenMetadataProperty.DEPLOYER.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DEPLOYER.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DEPLOYER_TYPE_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.DEPLOYER_TYPE_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DEPLOYER_TYPE_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.OPERATIONAL_STATUS.name;
+        final String attribute5Description     = OpenMetadataProperty.OPERATIONAL_STATUS.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -369,7 +369,7 @@ public class OpenMetadataTypesArchive3_5
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);

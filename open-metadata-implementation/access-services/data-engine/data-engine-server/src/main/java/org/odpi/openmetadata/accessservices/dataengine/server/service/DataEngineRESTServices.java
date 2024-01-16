@@ -1182,8 +1182,8 @@ public class DataEngineRESTServices {
         SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
 
         Map<String, Object> extendedProperties = getExtendedProperties(file);
-        String fileTypeGuid = file instanceof CSVFile ? OpenMetadataType.CSV_FILE_TYPE_GUID : OpenMetadataType.DATA_FILE_TYPE_GUID;
-        String fileTypeName = file instanceof CSVFile ? OpenMetadataType.CSV_FILE_TYPE_NAME : OpenMetadataType.DATA_FILE_TYPE_NAME;
+        String fileTypeGuid = file instanceof CSVFile ? OpenMetadataType.CSV_FILE.typeGUID : OpenMetadataType.DATA_FILE.typeGUID;
+        String fileTypeName = file instanceof CSVFile ? OpenMetadataType.CSV_FILE.typeName : OpenMetadataType.DATA_FILE.typeName;
         file.setFileType(fileTypeName);
 
         if (CollectionUtils.isNotEmpty(columns)) {
@@ -1247,11 +1247,11 @@ public class DataEngineRESTServices {
         DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
         DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.DATA_FILE_TYPE_NAME, methodName);
+        String dataFileGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.DATA_FILE.typeName, methodName);
 
         String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         dataFileHandler.removeDataFile(userId, dataFileGUID, externalSourceName, externalSourceGuid, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, OpenMetadataType.DATA_FILE_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, dataFileGUID, OpenMetadataType.DATA_FILE.typeName);
     }
 
     /**
@@ -1299,12 +1299,12 @@ public class DataEngineRESTServices {
             EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteFolder";
-        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.FILE_FOLDER_TYPE_NAME, methodName);
+        String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.FILE_FOLDER.typeName, methodName);
 
         DataEngineFolderHierarchyHandler folderHierarchyHandler = instanceHandler.getFolderHierarchyHandler(userId, serverName, methodName);
         folderHierarchyHandler.removeFolder(userId, folderGUID, deleteSemantic, externalSourceName);
 
-        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, folderGUID, OpenMetadataType.FILE_FOLDER.typeName);
     }
 
     /**

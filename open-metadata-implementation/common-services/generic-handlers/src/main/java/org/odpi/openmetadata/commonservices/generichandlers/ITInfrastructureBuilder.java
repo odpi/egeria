@@ -49,105 +49,6 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     }
 
 
-    /**
-     * Return the bean properties describing the link between a host and a software server platform in an InstanceProperties object.
-     *
-     * @param deploymentTime date/time that the capability was deployed
-     * @param deployer user who issued the deploy command
-     * @param platformStatus operational status of the platform
-     * @param methodName name of the calling method
-     * @throws InvalidParameterException there is a problem with the properties
-     * @return InstanceProperties object
-     */
-    InstanceProperties getSoftwareServerPlatformDeploymentProperties(Date   deploymentTime,
-                                                                     String deployer,
-                                                                     int    platformStatus,
-                                                                     String methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties;
-
-        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                null,
-                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
-                                                                deploymentTime,
-                                                                methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
-                                                                  deployer,
-                                                                  methodName);
-
-        try
-        {
-            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataType.PLATFORM_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
-                                                                    platformStatus,
-                                                                    methodName);
-        }
-        catch (TypeErrorException error)
-        {
-            throw new InvalidParameterException(error, OpenMetadataType.PLATFORM_STATUS_PROPERTY_NAME);
-        }
-
-        setEffectivityDates(properties);
-
-        return properties;
-    }
-
-
-    /**
-     * Return the bean properties describing the link between a host and a software server platform in an InstanceProperties object.
-     *
-     * @param deploymentTime date/time that the capability was deployed
-     * @param deployer user who issued the deploy command
-     * @param serverStatus operational status of the platform
-     * @param methodName name of the calling method
-     * @throws InvalidParameterException there is a problem with the properties
-     * @return InstanceProperties object
-     */
-    InstanceProperties getSoftwareServerDeploymentProperties(Date   deploymentTime,
-                                                             String deployer,
-                                                             int    serverStatus,
-                                                             String methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties;
-
-        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                null,
-                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
-                                                                deploymentTime,
-                                                                methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
-                                                                  deployer,
-                                                                  methodName);
-
-        try
-        {
-            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataType.SERVER_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
-                                                                    serverStatus,
-                                                                    methodName);
-        }
-        catch (TypeErrorException error)
-        {
-            throw new InvalidParameterException(error, OpenMetadataType.SERVER_STATUS_PROPERTY_NAME);
-        }
-
-        setEffectivityDates(properties);
-
-        return properties;
-    }
-
 
     /**
      * Return the bean properties describing the link between a software server and a software capability in an InstanceProperties object.
@@ -168,13 +69,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 null,
-                                                                OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME,
+                                                                OpenMetadataProperty.DEPLOYMENT_TIME.name,
                                                                 deploymentTime,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DEPLOYER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DEPLOYER.name,
                                                                   deployer,
                                                                   methodName);
 
@@ -182,7 +83,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.SERVER_CAPABILITY_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.OPERATIONAL_STATUS.name,
                                                                     OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID,
                                                                     OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                                     serverCapabilityStatus,
@@ -190,7 +91,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.SERVER_CAPABILITY_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.OPERATIONAL_STATUS.name);
         }
 
         setEffectivityDates(properties);

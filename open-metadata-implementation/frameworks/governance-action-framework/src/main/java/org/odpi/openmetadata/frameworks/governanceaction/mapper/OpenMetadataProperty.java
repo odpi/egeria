@@ -10,7 +10,22 @@ public enum OpenMetadataProperty
     /**
      * Unique identifier of an open metadata entity or relationship.
      */
-    GUID("guid", "string", "Unique identifier of an open metadata entity or relationship.", null),
+    GUID("guid", "string", "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55"),
+
+    /**
+     * Unique identifier of an open metadata entity or relationship.
+     */
+    TYPE_NAME("typeName", "string", "Unique name of an open metadata entity or relationship.", "7c5a7e83-2709-4789-b014-d23082a659bd"),
+
+    /**
+     * Time that an instance was created.
+     */
+    CREATE_TIME("createTime", "date", "Time that an instance was created.", "433f573a-0044-4943-a8ee-78102ae2fb32"),
+
+    /**
+     * Last time that an instance was updated.
+     */
+    UPDATE_TIME("updateTime", "date", "Last time that an instance was updated.", "6b94347b-f692-4c44-9c61-d050d9758c54"),
 
     /**
      * Timestamp when the archive occurred or was detected.
@@ -279,9 +294,9 @@ public enum OpenMetadataProperty
     LINK_TYPE_NAME("linkTypeName", "string", "Unique name of the link type that connects the edge to the vertex.", "4f275bc0-3a33-4f6a-96ee-cd7bd13ba579"),
 
     /**
-     * If the end of a relationship is significant set to 1 or 2 to indicated the end; otherwise use 0.
+     * If the end of a relationship is significant, set to 1 or 2 to indicate the desired end; otherwise use 0.
      */
-    RELATIONSHIP_END("relationshipEnd", "int", "If the end of a relationship is significant set to 1 or 2 to indicated the end; otherwise use 0.", "8b53224f-e330-4ded-9d18-da6517094994"),
+    RELATIONSHIP_END("relationshipEnd", "int", "If the end of a relationship is significant, set to 1 or 2 to indicated the desired end; otherwise use 0.", "8b53224f-e330-4ded-9d18-da6517094994"),
 
     /**
      * Display name for the relationship end.
@@ -609,6 +624,17 @@ public enum OpenMetadataProperty
     SOURCE_UPDATE_TIME("sourceUpdateTime", "date", "Last known modification time.", "6012bdee-31d7-46d4-9f3b-f4d19c47e662"),
 
     /**
+     * Creation time of the data store.
+     */
+    STORE_CREATE_TIME("storeCreateTime", "date", "Creation time of the data store.", "1a3abee2-f174-433d-8355-44c5810c471b"),
+
+    /**
+     * Last known modification time.
+     */
+    STORE_UPDATE_TIME("storeUpdateTime", "date", "Last known modification time.", "134bbbc3-4b68-4d35-a8da-85719cced8a9"),
+
+
+    /**
      * Size of the data source.
      */
     SIZE("size", "int", "Size of the data source.", "c2d67f78-3387-4b83-9c1c-bd0aa88a4df0"),
@@ -616,7 +642,22 @@ public enum OpenMetadataProperty
     /**
      * Encoding scheme used on the data.
      */
-    ENCODING("encoding", "string", "Encoding scheme used on the data.", "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
+    ENCODING("encoding", "string", "Type of encoding scheme used on the data.", "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
+
+    /**
+     * Language used in the encoding.
+     */
+    ENCODING_LANGUAGE("encodingLanguage", "string", "Language used in the encoding.", "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
+
+    /**
+     * Description of the encoding.
+     */
+    ENCODING_DESCRIPTION("encodingDescription", "string", "Description of the encoding.", "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
+
+    /**
+     * Additional properties describing the encoding.
+     */
+    ENCODING_PROPERTIES("encodingProperties", "string", "Additional properties describing the encoding.", "7ebb8847-5ed3-4881-bee4-0e28c16613b8"),
 
     /**
      * Identifier that describes the type of resource use.
@@ -661,12 +702,7 @@ public enum OpenMetadataProperty
     /**
      * The operational status of the software server capability on this software server.
      */
-    SERVER_CAPABILITY_STATUS("serverCapabilityStatus", "OperationalStatus", "The operational status of the software server capability on this software server.", "30c86736-c31a-4f29-8451-0c849f730a0b"),
-
-    /**
-     * The operational status of the the IT Infrastructure on the specific destination.
-     */
-    DEPLOYMENT_STATUS("deploymentStatus", "OperationalStatus", "The operational status of the the IT Infrastructure on the specific destination.", "30c86736-c31a-4f29-8451-0c849f730a0b"),
+    OPERATIONAL_STATUS("operationalStatus", "OperationalStatus", "The operational status of the deployed infrastructure.", "30c86736-c31a-4f29-8451-0c849f730a0b"),
 
     ;
 

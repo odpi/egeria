@@ -117,7 +117,7 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                     folderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     folderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     folderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     folderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

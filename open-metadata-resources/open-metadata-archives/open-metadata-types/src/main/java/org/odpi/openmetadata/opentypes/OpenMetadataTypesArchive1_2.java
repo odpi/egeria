@@ -2403,8 +2403,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getOperationalStatusEnum()
     {
-        final String guid            = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
-        final String name            = "OperationalStatus";
+        final String guid            = OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_GUID;
+        final String name            = OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME;
         final String description     = "Defines whether a component is operational.";
         final String descriptionGUID = null;
 
@@ -2575,7 +2575,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -2801,7 +2801,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -2990,7 +2990,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = "The operational status of the software server capability on this software server.";
         final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -8113,10 +8113,11 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDataStoreEntity()
     {
-        final String guid            = "30756d0b-362b-4bfa-a0de-fce6a8f47b47";
-        final String name            = OpenMetadataType.DATA_STORE_TYPE_NAME;
-        final String description     = "A physical store of data.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_STORE.typeGUID;
+        final String name            = OpenMetadataType.DATA_STORE.typeName;
+        final String description     = OpenMetadataType.DATA_STORE.description;
+        final String descriptionGUID = OpenMetadataType.DATA_STORE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_STORE.wikiURL;
 
         final String superTypeName = OpenMetadataType.ASSET.typeName;
 
@@ -8124,7 +8125,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -8132,12 +8134,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.SOURCE_CREATE_TIME.name;
-        final String attribute1Description     = OpenMetadataProperty.SOURCE_CREATE_TIME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.SOURCE_CREATE_TIME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.SOURCE_UPDATE_TIME.name;
-        final String attribute2Description     = OpenMetadataProperty.SOURCE_UPDATE_TIME.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.SOURCE_UPDATE_TIME.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.STORE_CREATE_TIME.name;
+        final String attribute1Description     = OpenMetadataProperty.STORE_CREATE_TIME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.STORE_CREATE_TIME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.STORE_UPDATE_TIME.name;
+        final String attribute2Description     = OpenMetadataProperty.STORE_UPDATE_TIME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.STORE_UPDATE_TIME.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -8156,10 +8158,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataContentForDataSetRelationship()
     {
-        final String guid            = "b827683c-2924-4df3-a92d-7be1888e23c0";
-        final String name            = "DataContentForDataSet";
-        final String description     = "The assets that provides data for a data set.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.BOTH;
 
@@ -8168,6 +8171,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -8211,18 +8215,20 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getDataStoreEncodingClassification()
     {
-        final String guid            = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
-        final String name            = "DataStoreEncoding";
-        final String description     = "Description for how data is organized and represented in a data store.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.DATA_STORE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
+                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  false);
 
@@ -8232,18 +8238,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "encoding";
-        final String attribute1Description     = "Encoding type.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "language";
-        final String attribute2Description     = "Language used in the encoding.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description the encoding.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "properties";
-        final String attribute4Description     = "Additional properties for the encoding.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.ENCODING.name;
+        final String attribute1Description     = OpenMetadataProperty.ENCODING.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.ENCODING.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.ENCODING_LANGUAGE.name;
+        final String attribute2Description     = OpenMetadataProperty.ENCODING_LANGUAGE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.ENCODING_LANGUAGE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.ENCODING_DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.ENCODING_DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.ENCODING_DESCRIPTION.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ENCODING_PROPERTIES.name;
+        final String attribute4Description     = OpenMetadataProperty.ENCODING_PROPERTIES.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ENCODING_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -8490,52 +8496,58 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getFileFolderEntity()
     {
-        final String guid            = "229ed5cc-de31-45fc-beb4-9919fd247398";
-        final String name            = "FileFolder";
-        final String description     = "A description of a folder (directory) in a file system.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.FILE_FOLDER.typeGUID;
+        final String name            = OpenMetadataType.FILE_FOLDER.typeName;
+        final String description     = OpenMetadataType.FILE_FOLDER.description;
+        final String descriptionGUID = OpenMetadataType.FILE_FOLDER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.FILE_FOLDER.wikiURL;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
     private EntityDef getDataFolderEntity()
     {
-        final String guid            = "9f1fb984-db15-43ee-85fb-f8b0353bfb8b";
-        final String name            = "DataFolder";
-        final String description     = "A folder (directory) in a file system that contains a collection of data.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_FOLDER.typeGUID;
+        final String name            = OpenMetadataType.DATA_FOLDER.typeName;
+        final String description     = OpenMetadataType.DATA_FOLDER.description;
+        final String descriptionGUID = OpenMetadataType.DATA_FOLDER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_FOLDER.wikiURL;
 
-        final String superTypeName = "FileFolder";
+        final String superTypeName = OpenMetadataType.FILE_FOLDER.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
     private EntityDef getDataFileEntity()
     {
-        final String guid            = "10752b4a-4b5d-4519-9eae-fdd6d162122f";
-        final String name            = OpenMetadataType.DATA_FILE_TYPE_NAME;
-        final String description     = "A description of a file containing data stored in a file system.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_FILE.typeGUID;
+        final String name            = OpenMetadataType.DATA_FILE.typeName;
+        final String description     = OpenMetadataType.DATA_FILE.description;
+        final String descriptionGUID = OpenMetadataType.DATA_FILE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_FILE.wikiURL;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
                                                                  name,
                                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                                  description,
-                                                                 descriptionGUID);
+                                                                 descriptionGUID,
+                                                                 descriptionWiki);
 
         /*
          * Build the attributes
@@ -8565,7 +8577,8 @@ public class OpenMetadataTypesArchive1_2
         final String name            = "CSVFile";
         final String description     = "A description of a comma separated value (CSV) file";
         final String descriptionGUID = null;
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
                                                                  name,
@@ -8605,33 +8618,39 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getAvroFileEntity()
     {
-        final String guid            = "75293260-3373-4777-af7d-7274d5c0b9a5";
-        final String name            = "AvroFile";
-        final String description     = "A description of a file that follows the Apache Avro specification.";
-        final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String guid            = OpenMetadataType.AVRO_FILE.typeGUID;
+        final String name            = OpenMetadataType.AVRO_FILE.typeName;
+        final String description     = OpenMetadataType.AVRO_FILE.description;
+        final String descriptionGUID = OpenMetadataType.AVRO_FILE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.AVRO_FILE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.DATA_FILE.typeName;
 
         return  archiveHelper.getDefaultEntityDef(guid,
                                                   name,
                                                   this.archiveBuilder.getEntityDef(superTypeName),
                                                   description,
-                                                  descriptionGUID);
+                                                  descriptionGUID,
+                                                  descriptionWiki);
     }
 
 
     private EntityDef getJSONFileEntity()
     {
-        final String guid            = "baa608fa-510e-42d7-95cd-7c12fa37bb35";
-        final String name            = "JSONFile";
-        final String description     = "A description of a file that follows the JavaScript Object Notation specification.";
-        final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String guid            = OpenMetadataType.JSON_FILE.typeGUID;
+        final String name            = OpenMetadataType.JSON_FILE.typeName;
+        final String description     = OpenMetadataType.JSON_FILE.description;
+        final String descriptionGUID = OpenMetadataType.JSON_FILE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.JSON_FILE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.DATA_FILE.typeName;
 
         return  archiveHelper.getDefaultEntityDef(guid,
                                                   name,
                                                   this.archiveBuilder.getEntityDef(superTypeName),
                                                   description,
-                                                  descriptionGUID);
+                                                  descriptionGUID,
+                                                  descriptionWiki);
     }
 
 
@@ -8728,7 +8747,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.DATA_FILE.typeName;
         final String                     end2AttributeName            = "nestedFiles";
         final String                     end2AttributeDescription     = "Files stored in this folder.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -8783,7 +8802,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.DATA_FILE.typeName;
         final String                     end2AttributeName            = "linkedFiles";
         final String                     end2AttributeDescription     = "Files linked to the folder.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -8874,7 +8893,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data file containing unstructured data.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -8946,7 +8965,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a data store as one that contains documents.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -9119,7 +9138,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a data store as one that contains one or more graphs.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
                                                                  name,
@@ -9228,7 +9247,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a data file as one containing log records.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -9371,7 +9390,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data store containing relational data.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -9647,7 +9666,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data store containing metadata.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -9683,7 +9702,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data store containing cohort membership registration details.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_STORE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_STORE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -9923,7 +9942,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "An encrypted data store containing authentication and related security information.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -16684,7 +16703,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data file containing exceptions.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -16703,7 +16722,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A data file containing audit log records.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -23453,7 +23472,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.DATA_FILE.typeName;
         final String                     end1AttributeName            = "deployedSchemaAttributes";
         final String                     end1AttributeDescription     = "The analysis of the equivalent data fields from deployed assets.";
         final String                     end1AttributeDescriptionGUID = null;

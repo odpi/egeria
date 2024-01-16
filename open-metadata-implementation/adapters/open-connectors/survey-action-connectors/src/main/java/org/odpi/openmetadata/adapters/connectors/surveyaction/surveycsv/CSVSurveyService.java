@@ -183,11 +183,11 @@ public class CSVSurveyService extends AuditableSurveyService
                 super.throwNoAsset(assetStore.getAssetGUID(), methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.CSV_FILE_TYPE_NAME))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.CSV_FILE.typeName))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                            OpenMetadataType.CSV_FILE.typeName,
                                             methodName);
                 return;
             }

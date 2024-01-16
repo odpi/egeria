@@ -2896,11 +2896,11 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             Date createTime1 = propertyHelper.removeDateProperty(serviceName,
-                                                                 OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STORE_CREATE_TIME.name,
                                                                  elementProperties,
                                                                  methodName);
             Date createTime2 = propertyHelper.removeDateProperty(serviceName,
-                                                                 OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME_DEP,
+                                                                 OpenMetadataProperty.CREATE_TIME.name,
                                                                  elementProperties,
                                                                  methodName);
             return createTime1 == null ? createTime2 : createTime1;
@@ -2923,11 +2923,11 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             Date modifiedTime1 = propertyHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.STORE_UPDATE_TIME.name,
                                                                    elementProperties,
                                                                    methodName);
             Date modifiedTime2 = propertyHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME_DEP,
+                                                                   OpenMetadataProperty.UPDATE_TIME.name,
                                                                    elementProperties,
                                                                    methodName);
             return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;
@@ -2951,7 +2951,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.ENCODING_PROPERTY_NAME,
+                                                    OpenMetadataProperty.ENCODING.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -2973,7 +2973,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                    OpenMetadataProperty.ENCODING_LANGUAGE.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -2995,7 +2995,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                    OpenMetadataProperty.ENCODING_DESCRIPTION.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -3017,7 +3017,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringMapFromProperty(serviceName,
-                                                           OpenMetadataType.ENCODING_PROPERTIES_PROPERTY_NAME,
+                                                           OpenMetadataProperty.ENCODING_PROPERTIES.name,
                                                            elementProperties,
                                                            methodName);
         }
@@ -3032,6 +3032,7 @@ public abstract class OpenMetadataConverterBase<B>
      * @param elementProperties properties from element
      * @return string name or null
      */
+    @SuppressWarnings(value = "deprecation")
     protected String removeDatabaseType(ElementProperties  elementProperties)
     {
         final String methodName = "removeDatabaseType";
@@ -3039,11 +3040,11 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             String type1 = propertyHelper.removeStringProperty(serviceName,
-                                                               OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                elementProperties,
                                                                methodName);
             String type2 = propertyHelper.removeStringProperty(serviceName,
-                                                               OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME_DEP,
+                                                               OpenMetadataProperty.TYPE.name,
                                                                elementProperties,
                                                                methodName);
             return type1 == null ? type2 : type1;
@@ -3249,10 +3250,10 @@ public abstract class OpenMetadataConverterBase<B>
 
             if (type == null)
             {
-                type = propertyHelper.removeStringProperty(serviceName,
-                                                           OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP2,
-                                                           elementProperties,
-                                                           methodName);
+                type = propertyHelper.getStringProperty(serviceName,
+                                                        OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                        elementProperties,
+                                                        methodName);
             }
 
             return type;

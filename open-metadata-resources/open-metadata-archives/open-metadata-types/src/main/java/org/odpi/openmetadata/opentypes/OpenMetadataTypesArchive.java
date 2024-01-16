@@ -759,7 +759,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String typeName = OpenMetadataType.DATA_FILE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -800,7 +800,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing tabular data with formula.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -823,7 +823,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing an XML structure.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -1008,7 +1008,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing compressed files.  These files may be organized into a directory (folder) structure.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -1105,7 +1105,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing an audio recording.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1146,7 +1146,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing instructions to run a build of a software artifact or system.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1187,7 +1187,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing compiled code that can be executed.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1228,7 +1228,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing code that is interpreted when it is run.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -1269,7 +1269,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A file containing a list of properties, typically used for configuration.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

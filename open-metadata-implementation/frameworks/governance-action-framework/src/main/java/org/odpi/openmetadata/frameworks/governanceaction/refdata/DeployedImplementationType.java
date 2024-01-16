@@ -28,7 +28,7 @@ public enum DeployedImplementationType
      */
     FILE("File",
          DeployedImplementationType.DATA_ASSET,
-         OpenMetadataType.DATA_FILE_TYPE_NAME,
+         OpenMetadataType.DATA_FILE.typeName,
          "A file stored on a file system.",
          "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -37,7 +37,7 @@ public enum DeployedImplementationType
      */
     DATA_FILE("Data File",
               DeployedImplementationType.FILE,
-              OpenMetadataType.DATA_FILE_TYPE_NAME,
+              OpenMetadataType.DATA_FILE.typeName,
               "A file containing externally accessible data - other fields provide information on the internal format.",
               "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -46,7 +46,7 @@ public enum DeployedImplementationType
      */
     CSV_FILE("Data File",
               DeployedImplementationType.DATA_FILE,
-              OpenMetadataType.CSV_FILE_TYPE_NAME,
+              OpenMetadataType.CSV_FILE.typeName,
               "A file containing comma-separated (or similar delimited) data.",
               "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -55,7 +55,7 @@ public enum DeployedImplementationType
      */
     PROGRAM_FILE("Program File",
                  DeployedImplementationType.FILE,
-                 OpenMetadataType.DATA_FILE_TYPE_NAME,
+                 OpenMetadataType.DATA_FILE.typeName,
                  "A file containing program logic.",
                  "https://egeria-project.org/types/2/0280-Software-Development-Assets/"),
 
@@ -64,7 +64,7 @@ public enum DeployedImplementationType
      */
     LOG_FILE("Log File",
              DeployedImplementationType.FILE,
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              "A file containing log records.",
              "https://egeria-project.org/types/2/0223-Events-and-Logs/"),
 
@@ -74,7 +74,7 @@ public enum DeployedImplementationType
      */
     ARCHIVE_FILE("Archive File",
                  DeployedImplementationType.FILE,
-                 OpenMetadataType.DATA_FILE_TYPE_NAME,
+                 OpenMetadataType.DATA_FILE.typeName,
                  "A file containing an organized collection of files.",
                  "https://egeria-project.org/types/2/0226-Archive-Files/"),
 
@@ -84,7 +84,7 @@ public enum DeployedImplementationType
      */
     FILE_FOLDER("FileFolder",
                 DeployedImplementationType.DATA_ASSET,
-                OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                OpenMetadataType.FILE_FOLDER.typeName,
                 "A directory (folder) that holds files that are potential data sources.",
                 "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -94,7 +94,7 @@ public enum DeployedImplementationType
      */
     DATA_FOLDER("Data Folder",
                 DeployedImplementationType.FILE_FOLDER,
-                OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                OpenMetadataType.DATA_FOLDER.typeName,
                 "A directory (folder) that holds files representing a single data source.",
                 "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 

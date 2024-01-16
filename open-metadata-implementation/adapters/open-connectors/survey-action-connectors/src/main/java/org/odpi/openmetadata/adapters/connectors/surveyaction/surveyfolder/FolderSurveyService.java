@@ -117,11 +117,11 @@ public class FolderSurveyService extends AuditableSurveyService
                 super.throwNoAsset(assetStore.getAssetGUID(), methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.FILE_FOLDER_TYPE_NAME))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.FILE_FOLDER.typeName))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                            OpenMetadataType.FILE_FOLDER.typeName,
                                             methodName);
                 return;
             }

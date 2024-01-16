@@ -38,7 +38,10 @@ public class OpenMetadataValidValues
      */
     public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
 
-
+    /**
+     * This value is added to the description property of a PropertyFacet
+     */
+    public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE = "vendorProperties";
 
     /**
      * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.

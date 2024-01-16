@@ -875,7 +875,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A data file containing resource use events.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -893,7 +893,7 @@ public class OpenMetadataTypesArchive3_2
         final String description     = "A data file containing operational lineage events.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,

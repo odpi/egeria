@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -5455,9 +5456,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (vendorProperties != null)
         {
-            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     null,
-                                                                    OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     vendorProperties,
                                                                     repositoryHelper,
                                                                     serviceName,
@@ -5474,7 +5475,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.updateBeanInRepository(userId,
                                                         null,
@@ -5555,7 +5556,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.deleteBeanInRepository(userId,
                                                         null,
@@ -5634,7 +5635,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             propertyFacet.getProperties(),
                                                                             methodName);
 
-                    if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                    if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                     {
                         return repositoryHelper.getStringMapFromProperty(serviceName,
                                                                          OpenMetadataType.PROPERTIES_PROPERTY_NAME,
