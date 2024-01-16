@@ -995,11 +995,12 @@ public class OpenMetadataTypesArchive2_6
     private void add0462GovernanceActionProcesses()
     {
         this.archiveBuilder.addEntityDef(addGovernanceActionProcessEntity());
+        this.archiveBuilder.addEntityDef(addGovernanceActionTypeEntity());
         this.archiveBuilder.addEntityDef(addGovernanceActionProcessStepEntity());
 
         this.archiveBuilder.addRelationshipDef(addGovernanceActionProcessFlowRelationship());
         this.archiveBuilder.addRelationshipDef(addNextGovernanceActionProcessStepRelationship());
-        this.archiveBuilder.addRelationshipDef(addGovernanceActionProcessStepExecutorRelationship());
+        this.archiveBuilder.addRelationshipDef(addGovernanceActionExecutorRelationship());
     }
 
     private EntityDef addGovernanceActionProcessEntity()
@@ -1020,14 +1021,15 @@ public class OpenMetadataTypesArchive2_6
                                                  descriptionGUID);
     }
 
-    private EntityDef addGovernanceActionProcessStepEntity()
+
+    private EntityDef addGovernanceActionTypeEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = "92e20083-0393-40c0-a95b-090724a91ddc";
-        final String name            = "GovernanceActionProcessStep";
-        final String description     = "A description of a call to a governance engine action that acts as a template when creating the appropriate engine action instance.";
+        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_GUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
+        final String description     = "A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.";
         final String descriptionGUID = null;
         final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -1046,21 +1048,18 @@ public class OpenMetadataTypesArchive2_6
         final String attribute1Name            = "domainIdentifier";
         final String attribute1Description     = "Identifier used to show which governance domain this action type belongs to.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Name of the action type.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of the action type.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "owner";
-        final String attribute4Description     = "Person, team or engine responsible for this type of action.";
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute4Name            = "waitTime";
+        final String attribute4Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "ownerType";
-        final String attribute5Description     = "Type of element representing the owner.";
+        final String attribute5Name            = "producedGuards";
+        final String attribute5Description     = "List of guards that this action type produces.";
         final String attribute5DescriptionGUID = null;
-        final String attribute7Name            = "supportedGuards";
-        final String attribute7Description     = "List of guards that this action type produces.";
-        final String attribute7DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -1074,18 +1073,51 @@ public class OpenMetadataTypesArchive2_6
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
+                                                        attribute4Description,
+                                                        attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OwnerType",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute5Name,
+                                                                attribute5Description,
+                                                                attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addGovernanceActionProcessStepEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME;
+        final String description     = "A description of a call to a step in a governance action process that acts as a template when creating the appropriate engine action instance.";
+        final String descriptionGUID = null;
+        final String superTypeName   = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "ignoreMultipleTriggers";
+        final String attribute1Description     = "Trigger one or many engine action instances?";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -1210,9 +1242,6 @@ public class OpenMetadataTypesArchive2_6
         final String attribute2Name            = "mandatoryGuard";
         final String attribute2Description     = "Is this guard mandatory for the next step to run.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Allow the step to trigger one or many engine action instances?";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1222,21 +1251,17 @@ public class OpenMetadataTypesArchive2_6
                                                             attribute2Description,
                                                             attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
 
-    private RelationshipDef addGovernanceActionProcessStepExecutorRelationship()
+    private RelationshipDef addGovernanceActionExecutorRelationship()
     {
-        final String guid            = "f672245f-35b5-4ca7-b645-014cf61d5b75";
-        final String name            = "GovernanceActionProcessStepExecutor";
-        final String description     = "Link between a governance action process step and the governance engine that will execute it.";
+        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID;
+        final String name            = OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME;
+        final String description     = "Link between a governance action type, or process step, and the governance engine that will execute it.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -1253,9 +1278,9 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceActionProcessStep";
-        final String                     end1AttributeName            = "supportsGovernanceActionProcessSteps";
-        final String                     end1AttributeDescription     = "Governance action process step that drives calls to a governance engine.";
+        final String                     end1EntityType               = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
+        final String                     end1AttributeName            = "supportsGovernanceActions";
+        final String                     end1AttributeDescription     = "Governance action that drives calls to a governance engine.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -1270,9 +1295,9 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceEngine";
-        final String                     end2AttributeName            = "governanceActionProcessStepExecutor";
-        final String                     end2AttributeDescription     = "Governance engine that will run the requested function.";
+        final String                     end2EntityType               = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
+        final String                     end2AttributeName            = "governanceActionExecutor";
+        final String                     end2AttributeDescription     = "Governance engine that will run the requested action.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
@@ -1868,9 +1893,6 @@ public class OpenMetadataTypesArchive2_6
         final String attribute2Name            = "mandatoryGuard";
         final String attribute2Description     = "Is this guard mandatory for the next action to run.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many next action instances?";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1879,10 +1901,6 @@ public class OpenMetadataTypesArchive2_6
         property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
                                                             attribute2Description,
                                                             attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

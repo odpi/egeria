@@ -4,12 +4,15 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManagementInterface;
+import org.odpi.openmetadata.accessservices.stewardshipaction.api.SurveyReportInterface;
+import org.odpi.openmetadata.accessservices.stewardshipaction.client.converters.SurveyReportConverter;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,30 +20,39 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 
-import java.util.List;
+import java.util.*;
 
 
 /**
  * StewardshipAction provides the generic client-side interface for the Stewardship Action Open Metadata Access Service (OMAS).
- * There are other clients that provide specialized methods for specific types of Asset.
- *
- * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
- * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
+ * This client is initialized with the URL and name of the server that is running the Stewardship Action OMAS.
  */
-public class StewardshipAction implements DuplicateManagementInterface
+public class StewardshipAction implements SurveyReportInterface,
+                                          DuplicateManagementInterface
 
 {
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-    private AuditLog auditLog;                 /* Initialized in constructor */
+    private final String   serverName;               /* Initialized in constructor */
+    private final String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private       AuditLog auditLog;                 /* Initialized in constructor */
 
-    private static NullRequestBody nullRequestBody = new NullRequestBody();
+    private static final NullRequestBody nullRequestBody = new NullRequestBody();
 
-    private InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
-    private StewardshipActionRESTClient restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
+    private final StewardshipActionRESTClient restClient;               /* Initialized in constructor */
 
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
+    private final SurveyReportConverter<SurveyReport> surveyReportConverter;
+
+    private final OpenMetadataStoreClient      openMetadataStoreClient;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -63,6 +75,11 @@ public class StewardshipAction implements DuplicateManagementInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.surveyReportConverter   = new SurveyReportConverter<>(propertyHelper,
+                                                                   AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                   serverName);
+
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
@@ -84,6 +101,12 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = null;
+
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.surveyReportConverter   = new SurveyReportConverter<>(propertyHelper,
+                                                                   AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                   serverName);
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -116,6 +139,11 @@ public class StewardshipAction implements DuplicateManagementInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.surveyReportConverter   = new SurveyReportConverter<>(propertyHelper,
+                                                                   AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                   serverName);
+
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
@@ -142,13 +170,20 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = null;
+
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.surveyReportConverter   = new SurveyReportConverter<>(propertyHelper,
+                                                                   AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                   serverName);
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
     /**
-     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     * Create a new client that is going to be used in an OMAG Server (view service, engine service or
+     * integration service typically).
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
@@ -172,11 +207,155 @@ public class StewardshipAction implements DuplicateManagementInterface
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.surveyReportConverter   = new SurveyReportConverter<>(propertyHelper,
+                                                                   AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                   serverName);
+
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = restClient;
     }
 
+
+    /*
+     * ==============================================
+     * Survey Reports
+     * ==============================================
+     */
+
+
+    /**
+     * Return the survey reports linked to the asset.
+     *
+     * @param userId    calling user
+     * @param assetGUID unique identifier of the asset
+     * @param startFrom position in the list (used when there are so many reports that paging is needed)
+     * @param pageSize  maximum number of elements to return an this call
+     * @return list of discovery analysis reports
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    there was a problem that occurred within the property server.
+     */
+    @Override
+    public List<SurveyReport> getSurveyReports(String userId,
+                                               String assetGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "getSurveyReports";
+        final String elementGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, elementGUIDParameter, methodName);
+
+        List<RelatedMetadataElement> reportElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                         assetGUID,
+                                                                                                         1,
+                                                                                                         OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                         false,
+                                                                                                         false,
+                                                                                                         new Date(),
+                                                                                                         0,
+                                                                                                         0);
+
+        if (reportElements != null)
+        {
+            List<SurveyReport> surveyReports = new ArrayList<>();
+
+            for (RelatedMetadataElement reportElement : reportElements)
+            {
+                if (reportElement != null)
+                {
+                    List<RelatedMetadataElement> engineActionElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                           reportElement.getElement().getElementGUID(),
+                                                                                                                           2,
+                                                                                                                           OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                                           false,
+                                                                                                                           false,
+                                                                                                                           new Date(),
+                                                                                                                           0,
+                                                                                                                           0);
+
+                    surveyReports.add(surveyReportConverter.getSurveyReport(SurveyReport.class,
+                                                                            reportElement.getElement(),
+                                                                            engineActionElements,
+                                                                            methodName));
+                }
+            }
+
+            if (! surveyReports.isEmpty())
+            {
+                return surveyReports;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the annotations linked directly to the report.
+     *
+     * @param userId           identifier of calling user
+     * @param reportGUID       identifier of the discovery request.
+     * @param annotationStatus status of the desired annotations - null means all statuses.
+     * @param startFrom        initial position in the stored list.
+     * @param pageSize         maximum number of definitions to return on this call.
+     * @return list of annotations
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    there was a problem that occurred within the property server.
+     */
+    @Override
+    public List<Annotation> getSurveyReportAnnotations(String           userId,
+                                                       String           reportGUID,
+                                                       AnnotationStatus annotationStatus,
+                                                       int              startFrom,
+                                                       int              pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "getSurveyReportAnnotations";
+        final String elementGUIDParameter = "reportGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(reportGUID, elementGUIDParameter, methodName);
+
+        AnnotationStore annotationStore = new AnnotationStore(userId, openMetadataStoreClient, reportGUID, null, null);
+
+        return annotationStore.getNewAnnotations(startFrom, pageSize);
+    }
+
+
+    /**
+     * Return any annotations attached to this annotation.
+     *
+     * @param userId           identifier of calling user
+     * @param annotationGUID   anchor annotation
+     * @param annotationStatus status of the desired annotations - null means all statuses.
+     * @param startFrom        starting position in the list
+     * @param pageSize         maximum number of annotations that can be returned.
+     * @return list of Annotation objects
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    there was a problem that occurred within the property server.
+     */
+    @Override
+    public List<Annotation> getExtendedAnnotations(String           userId,
+                                                   String           annotationGUID,
+                                                   AnnotationStatus annotationStatus,
+                                                   int              startFrom,
+                                                   int              pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        AnnotationStore annotationStore = new AnnotationStore(userId, openMetadataStoreClient, null, null, null);
+
+        return annotationStore.getExtendedAnnotations(annotationGUID, startFrom, pageSize);
+    }
 
 
     /*
@@ -632,4 +811,5 @@ public class StewardshipAction implements DuplicateManagementInterface
                                         userId,
                                         consolidatedDuplicateGUID);
     }
+
 }

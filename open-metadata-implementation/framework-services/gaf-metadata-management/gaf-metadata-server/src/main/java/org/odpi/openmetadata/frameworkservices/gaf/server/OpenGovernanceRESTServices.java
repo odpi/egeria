@@ -11,18 +11,11 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -57,6 +50,401 @@ public class OpenGovernanceRESTServices
      */
     public OpenGovernanceRESTServices()
     {
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A governance action type describes a template to call a single engine action.
+     */
+
+    /**
+     * Create a new metadata element to represent a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param requestBody properties about the process to store
+     *
+     * @return unique identifier of the new governance action type or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createGovernanceActionType(String                         serverName,
+                                                   String                         serviceURLMarker,
+                                                   String                         userId,
+                                                   GovernanceActionTypeProperties requestBody)
+    {
+        final String methodName = "createGovernanceActionType";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement>
+                        handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                 serverName,
+                                                                                 methodName);
+
+                response.setGUID(handler.createGovernanceActionType(userId,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDomainIdentifier(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getSupportedGuards(),
+                                                                    requestBody.getAdditionalProperties(),
+                                                                    requestBody.getGovernanceEngineGUID(),
+                                                                    requestBody.getRequestType(),
+                                                                    requestBody.getRequestParameters(),
+                                                                    requestBody.getWaitTime(),
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                    new Date(),
+                                                                    methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the metadata element representing a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to update
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateGovernanceActionType(String                                serverName,
+                                                   String                                serviceURLMarker,
+                                                   String                                userId,
+                                                   String                                governanceActionTypeGUID,
+                                                   UpdateGovernanceActionTypeRequestBody requestBody)
+    {
+        final String methodName = "updateGovernanceActionType";
+        final String propertiesParameterName = "requestBody.getProperties";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                GovernanceActionTypeProperties properties = requestBody.getProperties();
+
+                invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
+                handler.updateGovernanceActionType(userId,
+                                                   governanceActionTypeGUID,
+                                                   requestBody.getMergeUpdate(),
+                                                   properties.getQualifiedName(),
+                                                   properties.getDomainIdentifier(),
+                                                   properties.getDisplayName(),
+                                                   properties.getDescription(),
+                                                   properties.getSupportedGuards(),
+                                                   properties.getAdditionalProperties(),
+                                                   properties.getGovernanceEngineGUID(),
+                                                   properties.getRequestType(),
+                                                   properties.getRequestParameters(),
+                                                   properties.getWaitTime(),
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                   new Date(),
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the metadata element representing a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse removeGovernanceActionType(String          serverName,
+                                                   String          serviceURLMarker,
+                                                   String          userId,
+                                                   String          governanceActionTypeGUID,
+                                                   NullRequestBody requestBody)
+    {
+        final String methodName = "removeGovernanceActionType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            handler.removeGovernanceActionType(userId,
+                                                      governanceActionTypeGUID,
+                                                      false,
+                                                      false,
+                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                      new Date(),
+                                                      methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionTypesResponse findGovernanceActionTypes(String                  serverName,
+                                                                   String                  serviceURLMarker,
+                                                                   String                  userId,
+                                                                   int                     startFrom,
+                                                                   int                     pageSize,
+                                                                   SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findGovernanceActionTypes";
+
+        String searchStringParameterName = "searchString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypesResponse response = new GovernanceActionTypesResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                if (requestBody.getSearchStringParameterName() != null)
+                {
+                    searchStringParameterName = requestBody.getSearchStringParameterName();
+                }
+
+                response.setElements(handler.findGovernanceActionTypes(userId,
+                                                                       requestBody.getSearchString(),
+                                                                       searchStringParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       false,
+                                                                       false,
+                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                       new Date(),
+                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionTypesResponse getGovernanceActionTypesByName(String          serverName,
+                                                                        String          serviceURLMarker,
+                                                                        String          userId,
+                                                                        int             startFrom,
+                                                                        int             pageSize,
+                                                                        NameRequestBody requestBody)
+    {
+        final String methodName = "getGovernanceActionTypesByName";
+
+        String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypesResponse response = new GovernanceActionTypesResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
+
+                if (requestBody.getNameParameterName() != null)
+                {
+                    nameParameterName = requestBody.getNameParameterName();
+                }
+
+                response.setElements(handler.getGovernanceActionTypesByName(userId,
+                                                                            requestBody.getName(),
+                                                                            nameParameterName,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                            null,
+                                                                            methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance action type metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the governance action type
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionTypeResponse getGovernanceActionTypeByGUID(String serverName,
+                                                                                    String serviceURLMarker,
+                                                                                    String userId,
+                                                                                    String governanceActionTypeGUID)
+    {
+        final String methodName = "getGovernanceActionTypeByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceActionTypeResponse response = new GovernanceActionTypeResponse();
+        AuditLog                            auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+
+            response.setElement(handler.getGovernanceActionTypeByGUID(userId,
+                                                                      governanceActionTypeGUID,
+                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                      null,
+                                                                      methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -2270,6 +2658,8 @@ public class OpenGovernanceRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProcessName(),
+                                                                     null,
+                                                                     null,
                                                                      requestBody.getRequestSourceName(),
                                                                      requestBody.getOriginatorServiceName(),
                                                                      requestBody.getOriginatorEngineName(),
@@ -2298,6 +2688,65 @@ public class OpenGovernanceRESTServices
 
                     response.setGUID(engineActionGUID);
                 }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Using the named governance action type as a template, initiate an engine action.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param requestBody properties to initiate the new instance of the engine action
+     *
+     * @return unique identifier of the first governance action of the process or
+     *  InvalidParameterException null or unrecognized qualified name of the process
+     *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse initiateGovernanceActionType(String                          serverName,
+                                                     String                          serviceURLMarker,
+                                                     String                          userId,
+                                                     GovernanceActionTypeRequestBody requestBody)
+    {
+        final String methodName = "initiateGovernanceActionType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.initiateGovernanceActionType(userId,
+                                                                      requestBody.getGovernanceActionTypeQualifiedName(),
+                                                                      requestBody.getRequestSourceGUIDs(),
+                                                                      requestBody.getActionTargets(),
+                                                                      requestBody.getRequestParameters(),
+                                                                      requestBody.getStartTime(),
+                                                                      requestBody.getOriginatorServiceName(),
+                                                                      requestBody.getOriginatorEngineName(),
+                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                      methodName));
             }
             else
             {

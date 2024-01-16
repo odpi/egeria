@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 
 import java.io.Serial;
 import java.util.*;
@@ -39,9 +40,9 @@ public class Annotation extends PropertyBase
     private String           jsonProperties   = null;
 
     /*
-     * Details of Annotations attached to this Annotation
+     * Associated Elements
      */
-    private int              numAttachedAnnotations = 0;
+    List<OpenMetadataElement> annotationSubjects = null;
 
     /*
      * Details from the latest AnnotationReview entity.
@@ -50,10 +51,7 @@ public class Annotation extends PropertyBase
     private Date             reviewDate       = null;
     private String           steward          = null;
     private String           reviewComment    = null;
-
-
     private Map<String, String>  additionalProperties = null;
-
 
 
     /**
@@ -83,7 +81,7 @@ public class Annotation extends PropertyBase
             this.explanation = template.getExplanation();
             this.analysisStep = template.getAnalysisStep();
             this.jsonProperties = template.getJsonProperties();
-            this.numAttachedAnnotations = template.getNumAttachedAnnotations();
+            this.annotationSubjects = template.getAnnotationSubjects();
             this.annotationStatus = template.getAnnotationStatus();
             this.reviewDate = template.getReviewDate();
             this.steward = template.getSteward();
@@ -249,6 +247,28 @@ public class Annotation extends PropertyBase
 
 
     /**
+     * Return the list of elements that are linked to this annotation via the AssociatedAnnotation relationship.
+     *
+     * @return open metadata elements
+     */
+    public List<OpenMetadataElement> getAnnotationSubjects()
+    {
+        return annotationSubjects;
+    }
+
+
+    /**
+     * Set up the list of elements that are linked to this annotation via the AssociatedAnnotation relationship.
+     *
+     * @param annotationSubjects open metadata elements
+     */
+    public void setAnnotationSubjects(List<OpenMetadataElement> annotationSubjects)
+    {
+        this.annotationSubjects = annotationSubjects;
+    }
+
+
+    /**
      * Return the current status of the annotation.
      *
      * @return AnnotationStatus current status of annotation
@@ -267,28 +287,6 @@ public class Annotation extends PropertyBase
     public void setAnnotationStatus(AnnotationStatus annotationStatus)
     {
         this.annotationStatus = annotationStatus;
-    }
-
-
-    /**
-     * Return the number of annotations attached to the this annotation.  These generally add further information.
-     *
-     * @return number of annotations
-     */
-    public int getNumAttachedAnnotations()
-    {
-        return numAttachedAnnotations;
-    }
-
-
-    /**
-     * Set up the number of annotations attached to the this annotation.  These generally add further information.
-     *
-     * @param number number of annotations
-     */
-    public void setNumAttachedAnnotations(int number)
-    {
-        this.numAttachedAnnotations = number;
     }
 
 
@@ -396,19 +394,14 @@ public class Annotation extends PropertyBase
                 ", explanation='" + explanation + '\'' +
                 ", analysisStep='" + analysisStep + '\'' +
                 ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
+                ", annotationSubjects=" + annotationSubjects +
                 ", annotationStatus=" + annotationStatus +
                 ", reviewDate=" + reviewDate +
                 ", steward='" + steward + '\'' +
                 ", reviewComment='" + reviewComment + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", headerVersion=" + getHeaderVersion() +
-                ", elementHeader=" + getElementHeader() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -429,13 +422,13 @@ public class Annotation extends PropertyBase
         }
         Annotation that = (Annotation) objectToCompare;
         return confidenceLevel == that.confidenceLevel &&
-                numAttachedAnnotations == that.numAttachedAnnotations &&
                 Objects.equals(annotationType, that.annotationType) &&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(expression, that.expression) &&
                 Objects.equals(explanation, that.explanation) &&
                 Objects.equals(analysisStep, that.analysisStep) &&
                 Objects.equals(jsonProperties, that.jsonProperties) &&
+                Objects.equals(annotationSubjects, that.annotationSubjects) &&
                 annotationStatus == that.annotationStatus &&
                 Objects.equals(reviewDate, that.reviewDate) &&
                 Objects.equals(steward, that.steward) &&
@@ -451,7 +444,8 @@ public class Annotation extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(annotationType, summary, confidenceLevel, expression, explanation, analysisStep, jsonProperties, numAttachedAnnotations
-                , annotationStatus, reviewDate, steward, reviewComment, additionalProperties);
+        return Objects.hash(annotationType, summary, confidenceLevel, expression, explanation, analysisStep,
+                            jsonProperties, annotationSubjects, annotationStatus, reviewDate, steward,
+                            reviewComment, additionalProperties);
     }
 }

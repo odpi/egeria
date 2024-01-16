@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -109,9 +109,9 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     if (relationships != null)
                     {
                         List<RequestSourceElement> requestSourceElements          = new ArrayList<>();
-                        List<ActionTargetElement>            actionTargetElements = new ArrayList<>();
-                        List<RelatedGovernanceActionElement> previousActions      = new ArrayList<>();
-                        List<RelatedGovernanceActionElement> followOnActions      = new ArrayList<>();
+                        List<ActionTargetElement>        actionTargetElements = new ArrayList<>();
+                        List<RelatedEngineActionElement> previousActions      = new ArrayList<>();
+                        List<RelatedEngineActionElement> followOnActions      = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
@@ -120,7 +120,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                 String actualTypeName = relationship.getType().getTypeDefName();
                                 instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME))
                                 {
                                     if (bean.getRequestType() == null)
                                     {
@@ -181,7 +181,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_NAME))
                                 {
-                                    RelatedGovernanceActionElement relatedAction = new RelatedGovernanceActionElement();
+                                    RelatedEngineActionElement relatedAction = new RelatedEngineActionElement();
 
                                     relatedAction.setGuard(this.removeGuard(relationship.getProperties()));
                                     relatedAction.setMandatoryGuard(this.removeMandatoryGuard(relationship.getProperties()));
