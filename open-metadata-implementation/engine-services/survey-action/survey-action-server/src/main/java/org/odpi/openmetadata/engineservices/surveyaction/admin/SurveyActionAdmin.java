@@ -44,6 +44,7 @@ public class SurveyActionAdmin extends EngineServiceAdmin
      * @param engineServiceConfig details of the options and the engines to run
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
+    @Override
     public Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
                                                            String                              localServerName,
                                                            AuditLog                            auditLog,
@@ -237,6 +238,7 @@ public class SurveyActionAdmin extends EngineServiceAdmin
     /**
      * Shutdown the engine service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";
