@@ -14,12 +14,6 @@ import java.util.Objects;
 public class SurveyContext
 {
     private final String                  userId;
-    protected     String                  surveyReportGUID    = null;
-    protected     String                  reportQualifiedName = null;
-    protected     String                  reportDisplayName   = null;
-    protected     String                  reportDescription   = null;
-    protected     Date                    creationDate        = new Date();
-    protected     String                  analysisStep        = null;
     private final String                  assetGUID;
     private final Map<String, String>     requestParameters;
     private final SurveyAssetStore        assetStore;
@@ -50,119 +44,6 @@ public class SurveyContext
         this.assetStore        = assetStore;
         this.annotationStore   = annotationStore;
         this.openMetadataStore = openMetadataStore;
-    }
-
-
-    /**
-     * Return the report identifier for this survey context.  Any new annotations added to this survey context
-     * will be linked to this report.
-     *
-     * @return unique identifier (guid) of the new survey report.
-     */
-    public String getSurveyReportGUID()
-    {
-        return surveyReportGUID;
-    }
-
-
-    /**
-     * Return the locally defined analysis step.  This value is used in annotations generated in this phase.
-     *
-     * @return name of analysis step
-     */
-    public String getAnalysisStep()
-    {
-        return analysisStep;
-    }
-
-
-    /**
-     * Set up the name of the current analysis step.
-     *
-     * @param analysisStep name
-     */
-    public void setAnalysisStep(String analysisStep)
-    {
-        this.analysisStep = analysisStep;
-    }
-
-
-    /**
-     * Return the unique name of the survey report that will result from this survey request.
-     *
-     * @return String report name
-     */
-    public String getReportQualifiedName()
-    {
-        return reportQualifiedName;
-    }
-
-
-    /**
-     * Set up the unique name of the survey report that will result from this survey request.
-     * The survey action engine will set up a default fully-qualified name.  This method enables it to be overridden.
-     *
-     * @param reportName  String report name
-     */
-    public void setReportQualifiedName(String reportName)
-    {
-        this.reportQualifiedName = reportName;
-    }
-
-
-    /**
-     * Return the display name of the survey report that will result from this survey request.
-     *
-     * @return String report name
-     */
-    public String getReportDisplayName()
-    {
-        return reportDisplayName;
-    }
-
-
-    /**
-     * Set up the display name of the survey report that will result from this survey request.
-     * The default name is null.
-     *
-     * @param reportName  String report name
-     */
-    public void setReportDisplayName(String reportName)
-    {
-        this.reportDisplayName = reportName;
-    }
-
-
-    /**
-     * Return the description for the survey report that will result from this survey request.
-     * The default value is null.
-     *
-     * @return String report description
-     */
-    public String getReportDescription()
-    {
-        return reportDescription;
-    }
-
-
-    /**
-     * Set up the description for the survey report that will result from this survey request.
-     *
-     * @param reportDescription String report description
-     */
-    public void setReportDescription(String reportDescription)
-    {
-        this.reportDescription = reportDescription;
-    }
-
-
-    /**
-     * Return the creation date for the survey report that will result from this survey request.
-     *
-     * @return Date that the report was created.
-     */
-    public Date getReportCreationDate() {
-        return creationDate;
     }
 
 
@@ -233,12 +114,6 @@ public class SurveyContext
     {
         return "SurveyContext{" +
                 "userId='" + userId + '\'' +
-                ", surveyReportGUID='" + surveyReportGUID + '\'' +
-                ", reportQualifiedName='" + reportQualifiedName + '\'' +
-                ", reportDisplayName='" + reportDisplayName + '\'' +
-                ", reportDescription='" + reportDescription + '\'' +
-                ", creationDate=" + creationDate +
-                ", analysisStep='" + analysisStep + '\'' +
                 ", assetGUID='" + assetGUID + '\'' +
                 ", requestParameters=" + requestParameters +
                 ", assetStore=" + assetStore +
@@ -260,12 +135,6 @@ public class SurveyContext
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SurveyContext that = (SurveyContext) objectToCompare;
         return Objects.equals(userId, that.userId) &&
-                Objects.equals(surveyReportGUID, that.surveyReportGUID) &&
-                Objects.equals(reportQualifiedName, that.reportQualifiedName) &&
-                Objects.equals(reportDisplayName, that.reportDisplayName) &&
-                Objects.equals(reportDescription, that.reportDescription) &&
-                Objects.equals(creationDate, that.creationDate) &&
-                Objects.equals(analysisStep, that.analysisStep) &&
                 Objects.equals(assetGUID, that.assetGUID) &&
                 Objects.equals(requestParameters, that.requestParameters) &&
                 Objects.equals(assetStore, that.assetStore) &&
@@ -281,7 +150,6 @@ public class SurveyContext
     @Override
     public int hashCode()
     {
-        return Objects.hash(userId, surveyReportGUID, reportQualifiedName, reportDisplayName, reportDescription,
-                creationDate, analysisStep, assetGUID, requestParameters, assetStore, annotationStore, openMetadataStore);
+        return Objects.hash(userId, assetGUID, requestParameters, assetStore, annotationStore, openMetadataStore);
     }
 }

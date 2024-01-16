@@ -7,10 +7,7 @@ import org.odpi.openmetadata.accessservices.digitalservice.client.converters.Col
 import org.odpi.openmetadata.accessservices.digitalservice.client.converters.CollectionMemberConverter;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -141,7 +138,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           parentGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                                                           false,
                                                                                                           false,
                                                                                                           new Date(),
@@ -695,13 +692,13 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public void attachCollection(String  userId,
-                                 String  collectionGUID,
-                                 String  parentGUID,
-                                 String  collectionUse,
-                                 boolean makeAnchor) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    public void attachCollection(String                 userId,
+                                 String                 collectionGUID,
+                                 String                 parentGUID,
+                                 ResourceListProperties collectionUse,
+                                 boolean                makeAnchor) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         final String methodName = "attachCollection";
         final String collectionGUIDParameterName = "collectionGUID";
@@ -711,12 +708,25 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
-        ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataType.RESOURCE_USE_PROPERTY_NAME,
-                                                                        collectionUse);
+        ElementProperties properties = null;
+        if (collectionUse != null)
+        {
+            properties = propertyHelper.addStringProperty(null,
+                                                          OpenMetadataProperty.RESOURCE_USE.name,
+                                                          collectionUse.getResourceUse());
+            properties = propertyHelper.addStringProperty(properties,
+                                                          OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                          collectionUse.getResourceUse());
+            properties = propertyHelper.addStringMapProperty(properties,
+                                                             OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                                                             collectionUse.getResourceUseProperties());
+            properties = propertyHelper.addBooleanProperty(properties,
+                                                           OpenMetadataProperty.WATCH_RESOURCE.name,
+                                                           collectionUse.getWatchResource());
+        }
 
         openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                              parentGUID,
                                                              collectionGUID,
                                                              false,
@@ -725,6 +735,35 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                              null,
                                                              properties,
                                                              new Date());
+
+        if (makeAnchor)
+        {
+            OpenMetadataElement parent = openMetadataStoreClient.getMetadataElementByGUID(userId,
+                                                                                          parentGUID,
+                                                                                          false,
+                                                                                          false,
+                                                                                          new Date());
+
+            if (parent != null)
+            {
+                ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
+                                                                                              OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                              parent.getElementGUID());
+                classificationProperties = propertyHelper.addStringProperty(classificationProperties,
+                                                                            OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                            parent.getType().getTypeName());
+
+                openMetadataStoreClient.classifyMetadataElementInStore(userId,
+                                                                       collectionGUID,
+                                                                       OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                       false,
+                                                                       false,
+                                                                       null,
+                                                                       null,
+                                                                       classificationProperties,
+                                                                       new Date());
+            }
+        }
     }
 
 
@@ -756,7 +795,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                              parentGUID,
                                                              collectionGUID,
                                                              false,

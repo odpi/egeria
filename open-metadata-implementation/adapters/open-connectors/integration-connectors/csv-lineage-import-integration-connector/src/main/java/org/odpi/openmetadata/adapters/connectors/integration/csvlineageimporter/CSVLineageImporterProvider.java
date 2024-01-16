@@ -21,7 +21,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
     private static final String connectorClassName     = CSVLineageImporterConnector.class.getName();
 
     /**
-     * The name of the catalog target that contains the directory to monitor.
+     * The name of the catalog target that contains the file to monitor.
      */
     static public final String CATALOG_TARGET_NAME    = "fileToLoad";
 

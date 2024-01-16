@@ -46,8 +46,8 @@ public abstract class PropertyBase implements Serializable
     /*
      * The typeName and extendedProperties are used to identify subtypes and any properties their type definition supports.
      */
-    private String              typeName                     = null;
-    private Map<String, Object> extendedProperties           = null;
+    private String              openMetadataTypeName = null;
+    private Map<String, Object> extendedProperties   = null;
 
 
     /*
@@ -76,7 +76,7 @@ public abstract class PropertyBase implements Serializable
         if (template != null)
         {
             elementHeader        = template.getElementHeader();
-            typeName             = template.getTypeName();
+            openMetadataTypeName = template.getOpenMetadataTypeName();
             extendedProperties   = template.getExtendedProperties();
             headerVersion        = template.getHeaderVersion();
         }
@@ -140,20 +140,20 @@ public abstract class PropertyBase implements Serializable
      *
      * @return unique open metadata type name
      */
-    public String getTypeName()
+    public String getOpenMetadataTypeName()
     {
-        return typeName;
+        return openMetadataTypeName;
     }
 
 
     /**
      * Set up the name of the type of annotation - default is "Annotation".
      *
-     * @param typeName unique open metadata type name
+     * @param openMetadataTypeName unique open metadata type name
      */
-    public void setTypeName(String typeName)
+    public void setOpenMetadataTypeName(String openMetadataTypeName)
     {
-        this.typeName = typeName;
+        this.openMetadataTypeName = openMetadataTypeName;
     }
 
 

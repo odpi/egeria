@@ -23,6 +23,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     private String              description                     = null;
     private String              governanceEngineGUID            = null;
     private String              governanceEngineName            = null;
+    private String              governanceActionTypeGUID        = null;
+    private String              governanceActionTypeName        = null;
     private String              processName                     = null;
     private String              governanceActionProcessStepGUID = null;
     private String              governanceActionProcessStepName = null;
@@ -45,9 +47,11 @@ public class EngineActionBuilder extends ReferenceableBuilder
      * @param description description of the governance action
      * @param governanceEngineGUID GUID of the governance engine that should execute the request
      * @param governanceEngineName name of the governance engine that should execute the request
+     * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this engine action
+     * @param governanceActionTypeName unique name of the governance action process step that initiated this engine action
      * @param processName name of the process that requested the governance action
-     * @param governanceActionProcessStepGUID unique identifier of the governance action process step that initiated this engine action
-     * @param governanceActionProcessStepName unique name of the governance action process step that initiated this engine action
+     * @param processStepGUID unique identifier of the governance action process step that initiated this engine action
+     * @param processStepName unique name of the governance action process step that initiated this engine action
      * @param requestType request type from the caller
      * @param requestParameters properties to pass to the governance action service
      * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
@@ -68,9 +72,11 @@ public class EngineActionBuilder extends ReferenceableBuilder
                         String               description,
                         String               governanceEngineGUID,
                         String               governanceEngineName,
+                        String               governanceActionTypeGUID,
+                        String               governanceActionTypeName,
                         String               processName,
-                        String               governanceActionProcessStepGUID,
-                        String               governanceActionProcessStepName,
+                        String               processStepGUID,
+                        String               processStepName,
                         String               requestType,
                         Map<String, String>  requestParameters,
                         List<String>         mandatoryGuards,
@@ -99,9 +105,11 @@ public class EngineActionBuilder extends ReferenceableBuilder
         this.description = description;
         this.governanceEngineGUID = governanceEngineGUID;
         this.governanceEngineName = governanceEngineName;
+        this.governanceActionTypeGUID = governanceActionTypeGUID;
+        this.governanceActionTypeName = governanceActionTypeName;
         this.processName = processName;
-        this.governanceActionProcessStepGUID = governanceActionProcessStepGUID;
-        this.governanceActionProcessStepName = governanceActionProcessStepName;
+        this.governanceActionProcessStepGUID = processStepGUID;
+        this.governanceActionProcessStepName = processStepName;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.mandatoryGuards = mandatoryGuards;
@@ -206,19 +214,31 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROCESS_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.name,
+                                                                  governanceActionTypeGUID,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.name,
+                                                                  governanceActionTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.PROCESS_NAME.name,
                                                                   processName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROCESS_STEP_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROCESS_STEP_GUID.name,
                                                                   governanceActionProcessStepGUID,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROCESS_STEP_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROCESS_STEP_NAME.name,
                                                                   governanceActionProcessStepName,
                                                                   methodName);
 

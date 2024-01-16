@@ -223,7 +223,7 @@ public enum AccessServiceDescription implements Serializable
      * Support for automated open discovery services.
      */
     DISCOVERY_ENGINE_OMAS            (217,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Discovery Engine",
                                       "Discovery Engine OMAS",
                                       "discovery-engine",
@@ -327,7 +327,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage exceptions and actions from open governance.
      */
     STEWARDSHIP_ACTION_OMAS          (225,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Stewardship Action",
                                       "Stewardship Action OMAS",
                                       "stewardship-action",
@@ -349,7 +349,6 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED);
 
-    private static final long     serialVersionUID    = 1L;
 
     private final int                        accessServiceCode;
     private final ComponentDevelopmentStatus accessServiceDevelopmentStatus;

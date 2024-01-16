@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.ResourceUse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
@@ -93,8 +94,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             archiveHelper.addResourceListRelationship(domainDefinition.getQualifiedName(),
                                                       communityQName,
-                                                      "Implementing team",
-                                                      false);
+                                                      ResourceUse.SUPPORTING_PEOPLE.getResourceUse());
 
 
             String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME + ": " + domainDefinition.getQualifiedName();

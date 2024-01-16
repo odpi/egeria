@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * UpdateGovernanceActionProcessStepRequestBody describes the request body used to update governance action type properties.
+ * UpdateGovernanceActionProcessStepRequestBody describes the request body used to update governance action process step properties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -20,7 +20,6 @@ public abstract class SurveyAssetStore
     protected Connection    assetConnection = null;
 
 
-
     /**
      * Constructor sets up the key parameters for accessing the asset store.
      *
@@ -58,23 +57,9 @@ public abstract class SurveyAssetStore
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
-    protected abstract Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
-                                                                                        ConnectionCheckedException,
-                                                                                        ConnectorCheckedException;
-
-
-    /**
-     * Return the connection information for the asset.  This is used to create the connector.  The connector
-     * is an Open Connector Framework (OCF) connector that provides access to the asset's data and metadata properties.
-     *
-     * @return Connection bean
-     * @throws InvalidParameterException the asset guid is not recognized
-     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
-     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
-     */
-    protected abstract Connection  getConnectionForAsset() throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+    public abstract Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
+                                                                                     ConnectionCheckedException,
+                                                                                     ConnectorCheckedException;
 
 
     /**
@@ -119,17 +104,9 @@ public abstract class SurveyAssetStore
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    public Connector  getConnectorToAsset() throws InvalidParameterException,
-                                                   ConnectionCheckedException,
-                                                   ConnectorCheckedException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
-    {
-        if (assetConnection == null)
-        {
-            assetConnection = getConnectionForAsset();
-        }
-
-        return this.getConnectorByConnection(assetConnection);
-    }
+    public abstract Connector  getConnectorToAsset() throws InvalidParameterException,
+                                                            ConnectionCheckedException,
+                                                            ConnectorCheckedException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
 }

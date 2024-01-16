@@ -913,10 +913,8 @@ public class RelatedElementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ResourceListProperties)
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
                 {
-                    ResourceListProperties properties = (ResourceListProperties) requestBody.getProperties();
-
                     handler.saveResourceListMember(userId,
                                                    requestBody.getExternalSourceGUID(),
                                                    requestBody.getExternalSourceName(),
@@ -925,6 +923,8 @@ public class RelatedElementRESTServices
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
                                                    properties.getResourceUse(),
+                                                   properties.getResourceUseDescription(),
+                                                   properties.getResourceUseProperties(),
                                                    properties.getWatchResource(),
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
@@ -942,6 +942,8 @@ public class RelatedElementRESTServices
                                                    elementGUIDParameterName,
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
+                                                   null,
+                                                   null,
                                                    null,
                                                    false,
                                                    null,

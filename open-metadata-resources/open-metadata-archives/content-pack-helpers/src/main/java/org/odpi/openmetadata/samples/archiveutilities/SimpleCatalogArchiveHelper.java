@@ -331,10 +331,10 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
                     EntityDetail keywordEntity = null;
 
-                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.KEYWORD_PROPERTY_NAME, keyword, methodName);
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
@@ -343,8 +343,8 @@ public class SimpleCatalogArchiveHelper
 
                     if (keywordEntity == null)
                     {
-                        keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME + ":" + keyword),
+                        keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -356,7 +356,7 @@ public class SimpleCatalogArchiveHelper
                         EntityProxy end1 = archiveHelper.getEntityProxy(externalReferenceEntity);
                         EntityProxy end2 = archiveHelper.getEntityProxy(keywordEntity);
 
-                        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                                                                      idToGUIDMap.getGUID(externalReferenceEntity.getGUID() + "_to_" + keywordEntity.getGUID() + "_search_keyword_link_relationship"),
                                                                                      null,
                                                                                      InstanceStatus.ACTIVE,
@@ -492,10 +492,10 @@ public class SimpleCatalogArchiveHelper
             {
                 if (keyword != null)
                 {
-                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME + ":" + keyword);
+                    String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword);
                     EntityDetail keywordEntity = null;
 
-                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.KEYWORD_PROPERTY_NAME, keyword, methodName);
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
@@ -504,8 +504,8 @@ public class SimpleCatalogArchiveHelper
 
                     if (keywordEntity == null)
                     {
-                        keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
-                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME + ":" + keyword),
+                        keywordEntity  = archiveHelper.getEntityDetail(OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                                                       idToGUIDMap.getGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + ":" + keyword),
                                                                        keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
@@ -517,7 +517,7 @@ public class SimpleCatalogArchiveHelper
                         EntityProxy end1 = archiveHelper.getEntityProxy(mediaReferenceEntity);
                         EntityProxy end2 = archiveHelper.getEntityProxy(keywordEntity);
 
-                        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                                                                      idToGUIDMap.getGUID(mediaReferenceEntity.getGUID() + "_to_" + keywordEntity.getGUID() + "_search_keyword_link_relationship"),
                                                                                      null,
                                                                                      InstanceStatus.ACTIVE,
@@ -646,24 +646,38 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(parentGUID));
         EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(resourceGUID));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.RESOURCE_USE_PROPERTY_NAME, resourceUse, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                  null,
+                                                                                  OpenMetadataProperty.RESOURCE_USE.name,
+                                                                                  resourceUse,
+                                                                                  methodName);
 
-        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME, this.idToGUIDMap.getGUID(parentGUID + "_to_" + resourceGUID + "_resource_list_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                               this.idToGUIDMap.getGUID(parentGUID + "_to_" + resourceGUID + "_resource_list_relationship"),
+                                                                               properties,
+                                                                               InstanceStatus.ACTIVE,
+                                                                               end1,
+                                                                               end2));
     }
 
 
     /**
-     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
+     * Link a referenceable to another referenceable to indicate that the second referenceable is providing
+     * resources in support of the first.
      *
      * @param referenceableQName qualified name of the referenceable
      * @param resourceQName qualified name of the second referenceable
-     * @param resourceUse string description
+     * @param resourceUse string description (use ResourceUse enum from GAF)
+     * @param resourceUseDescription description of how the resource is used
+     * @param resourceUseProperties additional properties associated with the resource
      * @param watchResource should the resource be watched (boolean)
      */
-    public void addResourceListRelationship(String  referenceableQName,
-                                            String  resourceQName,
-                                            String  resourceUse,
-                                            boolean watchResource)
+    public void addResourceListRelationship(String              referenceableQName,
+                                            String              resourceQName,
+                                            String              resourceUse,
+                                            String              resourceUseDescription,
+                                            Map<String, String> resourceUseProperties,
+                                            boolean             watchResource)
     {
         final String methodName = "addResourceListRelationship";
 
@@ -673,10 +687,12 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.RESOURCE_USE_PROPERTY_NAME, resourceUse, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.WATCH_RESOURCE_PROPERTY_NAME, watchResource, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RESOURCE_USE.name, resourceUse, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name, resourceUseDescription, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name, resourceUseProperties, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WATCH_RESOURCE.name, watchResource, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -1072,7 +1088,7 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(profileGUID + "_to_" + contactDetails.getGUID() + "_contact_through_relationship"),
-                                                                     properties,
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -4644,7 +4660,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describedElementId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describerElementId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(describedElementId + "_to_" + describerElementId + "_more_information_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -5170,5 +5186,72 @@ public class SimpleCatalogArchiveHelper
                                                                         InstanceStatus.ACTIVE);
 
         archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
+    }
+
+
+    /**
+     * Add the DeployedOn relationship to the archive.
+     *
+     * @param deployedElementQName qualified name of element being deployed
+     * @param deployedOnQName qualified name of target
+     * @param deploymentTime time of the deployment
+     * @param deployerTypeName type name of the element representing the deployer
+     * @param deployerPropertyName property name used to identify the deployer
+     * @param deployer identifier of the deployer
+     * @param serverCapabilityStatus status of the deployment
+     */
+    public void addSupportedSoftwareCapabilityRelationship(String deployedElementQName,
+                                                           String deployedOnQName,
+                                                           Date   deploymentTime,
+                                                           String deployerTypeName,
+                                                           String deployerPropertyName,
+                                                           String deployer,
+                                                           int    serverCapabilityStatus)
+    {
+        final String methodName = "addSupportedSoftwareCapabilityRelationship";
+        final String operationStatus = OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME;
+
+        String deployedElementId = this.idToGUIDMap.getGUID(deployedElementQName);
+        String deployedOnId = this.idToGUIDMap.getGUID(deployedOnQName);
+
+        EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
+        EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
+
+        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(operationStatus, serverCapabilityStatus);
+
+        InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, "deploymentTime", deploymentTime, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployerTypeName", deployerTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployerPropertyName", deployerPropertyName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, "deployer", deployer, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, "serverCapabilityStatus", statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
+
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship("SupportedSoftwareCapability", this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_supported_software_capability_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
+    }
+
+
+    /**
+     * Add a ServerPurpose classification to an IT Infrastructure element.
+     *
+     * @param elementGUID element to attach the classification
+     * @param classificationName name of the classification
+     * @param deployedImplementationType deployed implementation type property
+     */
+    public void addServerPurposeClassification(String elementGUID,
+                                               String classificationName,
+                                               String deployedImplementationType)
+    {
+        final String methodName = "addServerPurposeClassification";
+
+        EntityDetail   assetEntity    = this.archiveBuilder.getEntity(elementGUID);
+        EntityProxy    entityProxy    = this.archiveHelper.getEntityProxy(assetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                  null,
+                                                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                  deployedImplementationType,
+                                                                                  methodName);
+
+        Classification classification = this.archiveHelper.getClassification(classificationName, properties, InstanceStatus.ACTIVE);
+        this.archiveBuilder.addClassification(this.archiveHelper.getClassificationEntityExtension(entityProxy, classification));
     }
 }

@@ -6,15 +6,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Relate
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworkservices.gaf.client.converters.OpenMetadataConverterBase;
 
 /**
- * Common routines for concerters from Asset Manager OMAS
+ * Common routines for converters from Asset Manager OMAS
  * @param <B> bean class
  */
 public abstract class AssetManagerConverterBase<B> extends OpenMetadataConverterBase<B>

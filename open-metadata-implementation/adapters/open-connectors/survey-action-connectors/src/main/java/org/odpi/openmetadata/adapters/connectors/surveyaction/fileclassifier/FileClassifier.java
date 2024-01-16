@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Manages different types of classifications for a single file.
+ */
 public class FileClassifier
 {
     private String fileExtension              = null;

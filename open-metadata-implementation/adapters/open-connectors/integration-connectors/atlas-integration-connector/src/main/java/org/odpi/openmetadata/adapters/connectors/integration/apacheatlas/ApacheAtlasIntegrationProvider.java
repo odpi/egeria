@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.apacheatlas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -203,6 +205,11 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
     public static final String RELATED_RELATIONSHIP_IGNORE_LIST_CONFIGURATION_PROPERTY     = "relatedRelationshipIgnoreList";
 
     /**
+     * Symbolic name for the catalog target (Apache Atlas).
+     */
+    static public final String CATALOG_TARGET_NAME                             = "apacheAtlasServer";
+
+    /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
      * store implementation.
      */
@@ -254,5 +261,12 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
     }
 }
