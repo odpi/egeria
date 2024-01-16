@@ -53,11 +53,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private final static String defaultCSVFileType  = "csv";
 
     private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.FILE_TYPE.name,
                                                                 null);
     private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                 null);
 
@@ -466,7 +466,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     {
         final String folderAssetGUIDParameterName = "folderAssetGUID";
 
-        String folderAssetTypeName = OpenMetadataType.FILE_FOLDER_TYPE_NAME;
+        String folderAssetTypeName = OpenMetadataType.FILE_FOLDER.typeName;
         if (typeName != null)
         {
             folderAssetTypeName = typeName;
@@ -567,7 +567,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, fileName);
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
 
-        String fileAssetTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        String fileAssetTypeName = OpenMetadataType.DATA_FILE.typeName;
         if (typeName != null)
         {
             fileAssetTypeName = typeName;
@@ -681,7 +681,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          folderName,
                                          versionIdentifier,
                                          null,
-                                         OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                         OpenMetadataType.FILE_FOLDER.typeName,
                                          effectiveFrom,
                                          effectiveTo,
                                          forLineage,
@@ -706,7 +706,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                    folderGUID,
                                                    folderParameterName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
@@ -724,10 +724,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    connectToGUID,
                                                    connectToParameterName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    folderGUID,
                                                    folderParameterName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID,
@@ -960,7 +960,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                            folderGUID,
                                            folderGUIDParameterName,
-                                           OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                           OpenMetadataType.FILE_FOLDER.typeName,
                                            forLineage,
                                            forDuplicateProcessing,
                                            OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
@@ -1015,8 +1015,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                folderGUID,
                                                folderGUIDParameterName,
-                                               OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                               OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                               OpenMetadataType.FILE_FOLDER.typeGUID,
+                                               OpenMetadataType.FILE_FOLDER.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
@@ -1069,10 +1069,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          folderGUID,
                                          folderGUIDParameterName,
-                                         OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                         OpenMetadataType.FILE_FOLDER.typeName,
                                          fileGUID,
                                          fileGUIDParameterName,
-                                         OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                         OpenMetadataType.DATA_FILE.typeName,
                                          forLineage,
                                          forDuplicateProcessing,
                                          OpenMetadataType.LINKED_FILE_TYPE_GUID,
@@ -1126,11 +1126,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                externalSourceName,
                                                fileGUID,
                                                fileGUIDParameterName,
-                                               OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                               OpenMetadataType.DATA_FILE.typeName,
                                                folderGUID,
                                                folderGUIDParameterName,
-                                               OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                               OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                               OpenMetadataType.FILE_FOLDER.typeGUID,
+                                               OpenMetadataType.FILE_FOLDER.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                OpenMetadataType.LINKED_FILE_TYPE_GUID,
@@ -1183,14 +1183,14 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         String newFolderPathName = folderHandler.getBeanStringPropertyFromRepository(userId,
                                                                                      newParentFolder,
                                                                                      newParentFolderGUIDParameterName,
-                                                                                     OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                                                     OpenMetadataType.FILE_FOLDER.typeName,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      effectiveTime,
                                                                                      methodName);
         String existingFilePathName = fileHandler.getBeanStringPropertyFromRepository(userId,
                                                                                       newParentFolder,
                                                                                       newParentFolderGUIDParameterName,
-                                                                                      OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                                      OpenMetadataType.DATA_FILE.typeName,
                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                       effectiveTime,
                                                                                       methodName);
@@ -1212,11 +1212,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               externalSourceName,
                                               fileGUID,
                                               fileGUIDParameterName,
-                                              OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                              OpenMetadataType.DATA_FILE.typeName,
                                               false,
                                               newParentFolder,
                                               newParentFolderGUIDParameterName,
-                                              OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                              OpenMetadataType.FILE_FOLDER.typeName,
                                               forLineage,
                                               forDuplicateProcessing,
                                               OpenMetadataType.LINKED_FILE_TYPE_GUID,
@@ -1230,8 +1230,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    fileGUID,
                                                    fileGUIDParameterName,
-                                                   OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                                   OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                   OpenMetadataType.DATA_FILE.typeGUID,
+                                                   OpenMetadataType.DATA_FILE.typeName,
                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    fullPathName,
                                                    forLineage,
@@ -1249,7 +1249,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             endpointGUIDs = fileHandler.getRelatedEntityGUIDs(userId,
                                                               fileGUID,
                                                               fileGUIDParameterName,
-                                                              OpenMetadataType.DATA_FILE_TYPE_GUID,
+                                                              OpenMetadataType.DATA_FILE.typeGUID,
                                                               relationshipPath,
                                                               OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                               0,
@@ -1478,7 +1478,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
-                                                   OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                   OpenMetadataType.DATA_FILE.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
@@ -1494,7 +1494,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                 String relationshipTypeGUID = OpenMetadataType.NESTED_FILE_TYPE_GUID;
                 String relationshipTypeName = OpenMetadataType.NESTED_FILE_TYPE_NAME;
 
-                if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataType.DATA_FOLDER_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataType.DATA_FOLDER.typeName))
                 {
                     relationshipTypeGUID = OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID;
                     relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME;
@@ -1505,7 +1505,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    fileParentGUID,
                                                    pathNameParameterName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
                                                    fileAssetTypeName,
@@ -1607,7 +1607,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
-                                                    OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                    OpenMetadataType.DATA_FILE.typeName,
                                                     null,
                                                     null,
                                                     effectiveFrom,
@@ -1622,7 +1622,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
-                                     OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                     OpenMetadataType.DATA_FILE.typeName,
                                      pathName,
                                      pathParameterName,
                                      forLineage,
@@ -1671,32 +1671,32 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (createTime != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+            assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
         }
 
         if (modifiedTime != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+            assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
         }
 
         if (encodingType != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.ENCODING_PROPERTY_NAME, encodingType);
+            assetExtendedProperties.put(OpenMetadataProperty.ENCODING.name, encodingType);
         }
 
         if (encodingLanguage != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
+            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_LANGUAGE.name, encodingLanguage);
         }
 
         if (encodingDescription != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_DESCRIPTION.name, encodingDescription);
         }
 
         if (encodingProperties != null)
         {
-            assetExtendedProperties.put(OpenMetadataType.ENCODING_PROPERTIES_PROPERTY_NAME, encodingProperties);
+            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_PROPERTIES.name, encodingProperties);
         }
 
         if (fileType != null)
@@ -1797,7 +1797,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  extendedProperties);
 
 
-        String folderAssetTypeName = OpenMetadataType.DATA_FOLDER_TYPE_NAME;
+        String folderAssetTypeName = OpenMetadataType.DATA_FOLDER.typeName;
 
         if (typeName != null)
         {
@@ -1902,7 +1902,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    name,
                                                    versionIdentifier,
                                                    description,
-                                                   OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.DATA_FOLDER.typeName,
                                                    effectiveFrom,
                                                    effectiveTo,
                                                    forLineage,
@@ -1915,7 +1915,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      folderAssetGUID,
                                      folderAssetParameterName,
-                                     OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                     OpenMetadataType.DATA_FOLDER.typeName,
                                      pathName,
                                      pathParameterName,
                                      forLineage,
@@ -2025,15 +2025,15 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         {
             if (defaultCSVFileType.equals(fileType))
             {
-                fileAssetTypeName = OpenMetadataType.CSV_FILE_TYPE_NAME;
+                fileAssetTypeName = OpenMetadataType.CSV_FILE.typeName;
             }
             else if (defaultAvroFileType.equals(fileType))
             {
-                fileAssetTypeName = OpenMetadataType.AVRO_FILE_TYPE_NAME;
+                fileAssetTypeName = OpenMetadataType.AVRO_FILE.typeName;
             }
             else
             {
-                fileAssetTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+                fileAssetTypeName = OpenMetadataType.DATA_FILE.typeName;
             }
         }
 
@@ -2133,9 +2133,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                 externalSourceName,
                                                                 templateGUID,
                                                                 templateGUIDParameterName,
-                                                                OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                                                OpenMetadataType.DATA_FILE_TYPE_NAME,
-                                                                createQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME, qualifiedName, fullPath, versionIdentifier),
+                                                                OpenMetadataType.DATA_FILE.typeGUID,
+                                                                OpenMetadataType.DATA_FILE.typeName,
+                                                                createQualifiedName(OpenMetadataType.DATA_FILE.typeName, qualifiedName, fullPath, versionIdentifier),
                                                                 pathNameParameterName,
                                                                 name,
                                                                 versionIdentifier,
@@ -2154,7 +2154,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          fileAssetGUID,
                                          fileAssetParameterName,
-                                         OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                         OpenMetadataType.DATA_FILE.typeName,
                                          fullPath,
                                          pathNameParameterName,
                                          forLineage,
@@ -2218,9 +2218,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   externalSourceName,
                                                                   templateGUID,
                                                                   templateGUIDParameterName,
-                                                                  OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                                                  OpenMetadataType.FILE_FOLDER_TYPE_NAME,
-                                                                  this.createQualifiedName(OpenMetadataType.FILE_FOLDER_TYPE_NAME, qualifiedName, pathName, versionIdentifier),
+                                                                  OpenMetadataType.FILE_FOLDER.typeGUID,
+                                                                  OpenMetadataType.FILE_FOLDER.typeName,
+                                                                  this.createQualifiedName(OpenMetadataType.FILE_FOLDER.typeName, qualifiedName, pathName, versionIdentifier),
                                                                   pathNameParameterName,
                                                                   name,
                                                                   versionIdentifier,
@@ -2239,7 +2239,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceName,
                                          folderAssetGUID,
                                          fileAssetParameterName,
-                                         OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                         OpenMetadataType.FILE_FOLDER.typeName,
                                          pathName,
                                          pathNameParameterName,
                                          forLineage,
@@ -2316,7 +2316,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
-                                                    OpenMetadataType.AVRO_FILE_TYPE_NAME,
+                                                    OpenMetadataType.AVRO_FILE.typeName,
                                                     null,
                                                     null,
                                                     effectiveFrom,
@@ -2331,7 +2331,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetParameterName,
-                                     OpenMetadataType.AVRO_FILE_TYPE_NAME,
+                                     OpenMetadataType.AVRO_FILE.typeName,
                                      fullPath,
                                      pathParameterName,
                                      forLineage,
@@ -2438,7 +2438,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
-                                                    OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                                    OpenMetadataType.CSV_FILE.typeName,
                                                     extendedProperties,
                                                     configurationProperties,
                                                     effectiveFrom,
@@ -2455,7 +2455,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                   externalSourceName,
                                                                                   fileAssetGUID,
                                                                                   fileAssetGUIDParameterName,
-                                                                                  OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                                                                  OpenMetadataType.CSV_FILE.typeName,
                                                                                   OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_GUID,
                                                                                   OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                                                                                   effectiveFrom,
@@ -2547,7 +2547,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                      externalSourceName,
                                      fileAssetGUID,
                                      fileAssetGUIDParameterName,
-                                     OpenMetadataType.CSV_FILE_TYPE_NAME,
+                                     OpenMetadataType.CSV_FILE.typeName,
                                      fullPath,
                                      pathParameterName,
                                      forLineage,
@@ -2630,7 +2630,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         }
         if (! isMergeUpdate)
         {
-            qualifiedName = this.createQualifiedName(OpenMetadataType.DATA_FILE_TYPE_NAME, null, fullPath, versionIdentifier);
+            qualifiedName = this.createQualifiedName(OpenMetadataType.DATA_FILE.typeName, null, fullPath, versionIdentifier);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
@@ -2663,8 +2663,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 versionIdentifier,
                                 description,
                                 additionalProperties,
-                                OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                OpenMetadataType.DATA_FILE.typeGUID,
+                                OpenMetadataType.DATA_FILE.typeName,
                                 assetExtendedProperties,
                                 effectiveFrom,
                                 effectiveTo,
@@ -2743,7 +2743,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (! isMergeUpdate)
         {
-            qualifiedName = this.createQualifiedName(OpenMetadataType.DATA_FOLDER_TYPE_NAME, null, fullPath, versionIdentifier);
+            qualifiedName = this.createQualifiedName(OpenMetadataType.DATA_FOLDER.typeName, null, fullPath, versionIdentifier);
         }
 
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
@@ -2767,8 +2767,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 versionIdentifier,
                                 description,
                                 additionalProperties,
-                                OpenMetadataType.DATA_FOLDER_TYPE_GUID,
-                                OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                OpenMetadataType.DATA_FOLDER.typeGUID,
+                                OpenMetadataType.DATA_FOLDER.typeName,
                                 assetExtendedProperties,
                                 effectiveFrom,
                                 effectiveTo,
@@ -2828,7 +2828,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             externalSourceName,
                                             dataFileGUID,
                                             dataFileGUIDParameterName,
-                                            OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                            OpenMetadataType.DATA_FILE.typeName,
                                             builder.getMementoProperties(archiveDate,
                                                                          userId,
                                                                          archiveProcess,
@@ -2842,7 +2842,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         String connectionGUID = fileHandler.getAttachedElementGUID(userId,
                                                                    dataFileGUID,
                                                                    dataFileGUIDParameterName,
-                                                                   OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                                   OpenMetadataType.DATA_FILE.typeName,
                                                                    OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                    OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,
@@ -2921,7 +2921,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                             externalSourceName,
                                             dataFolderGUID,
                                             dataFolderGUIDParameterName,
-                                            OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                            OpenMetadataType.DATA_FOLDER.typeName,
                                             builder.getMementoProperties(archiveDate,
                                                                          userId,
                                                                          archiveProcess,
@@ -2935,7 +2935,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         String connectionGUID = fileHandler.getAttachedElementGUID(userId,
                                                                    dataFolderGUID,
                                                                    dataFolderGUIDParameterName,
-                                                                   OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                                                   OpenMetadataType.DATA_FOLDER.typeName,
                                                                    OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                    OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,
@@ -3003,8 +3003,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            externalSourceName,
                                            dataFileGUID,
                                            dataFileGUIDParameterName,
-                                           OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                           OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                           OpenMetadataType.DATA_FILE.typeGUID,
+                                           OpenMetadataType.DATA_FILE.typeName,
                                            null,
                                            null,
                                            forLineage,
@@ -3052,8 +3052,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            externalSourceName,
                                            dataFolderGUID,
                                            dataFolderGUIDParameterName,
-                                           OpenMetadataType.DATA_FOLDER_TYPE_GUID,
-                                           OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                                           OpenMetadataType.DATA_FOLDER.typeGUID,
+                                           OpenMetadataType.DATA_FOLDER.typeName,
                                            null,
                                            null,
                                            forLineage,
@@ -3208,7 +3208,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return folderHandler.getBeanFromRepository(userId,
                                                    folderGUID,
                                                    guidName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    effectiveTime,
@@ -3249,8 +3249,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         List<EntityDetail> entities = fileHandler.getEntitiesByValue(userId,
                                                                      pathName,
                                                                      pathNameParameterName,
-                                                                     OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                                                     OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                                     OpenMetadataType.FILE_FOLDER.typeGUID,
+                                                                     OpenMetadataType.FILE_FOLDER.typeName,
                                                                      specificMatchPropertyNames,
                                                                      true,
                                                                      null,
@@ -3271,7 +3271,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             return entities.get(0).getGUID();
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER.typeName,
                                                                                                                 pathName,
                                                                                                                 entities.toString(),
                                                                                                                 methodName,
@@ -3315,8 +3315,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         List<FOLDER> folders = folderHandler.getBeansByValue(userId,
                                                              pathName,
                                                              pathNameParameterName,
-                                                             OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                                             OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                             OpenMetadataType.FILE_FOLDER.typeGUID,
+                                                             OpenMetadataType.FILE_FOLDER.typeName,
                                                              specificMatchPropertyNames,
                                                              true,
                                                              null,
@@ -3337,7 +3337,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             return folders.get(0);
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER.typeName,
                                                                                                                 pathName,
                                                                                                                 folders.toString(),
                                                                                                                 methodName,
@@ -3386,8 +3386,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return folderHandler.getBeansByValue(userId,
                                              pathName,
                                              pathNameParameterName,
-                                             OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                             OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                             OpenMetadataType.FILE_FOLDER.typeGUID,
+                                             OpenMetadataType.FILE_FOLDER.typeName,
                                              specificMatchPropertyNames,
                                              false,
                                              null,
@@ -3434,8 +3434,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         final String  nameName = "name";
 
         return folderHandler.findAssetsByName(userId,
-                                              OpenMetadataType.FILE_FOLDER_TYPE_GUID,
-                                              OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                              OpenMetadataType.FILE_FOLDER.typeGUID,
+                                              OpenMetadataType.FILE_FOLDER.typeName,
                                               name,
                                               nameName,
                                               startingFrom,
@@ -3484,7 +3484,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
-                                                     OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                     OpenMetadataType.FILE_FOLDER.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      startingFrom,
@@ -3527,10 +3527,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return folderHandler.getAttachedElementGUIDs(userId,
                                                      parentFolderGUID,
                                                      parentFolderParameterName,
-                                                     OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                     OpenMetadataType.FILE_FOLDER.typeName,
                                                      OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID,
                                                      OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME,
-                                                     OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                     OpenMetadataType.FILE_FOLDER.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      startingFrom,
@@ -3575,10 +3575,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileHandler.getAttachedElementGUIDs(userId,
                                                    folderGUID,
                                                    folderGUIDParameterName,
-                                                   OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                                   OpenMetadataType.FILE_FOLDER.typeName,
                                                    OpenMetadataType.NESTED_FILE_TYPE_GUID,
                                                    OpenMetadataType.NESTED_FILE_TYPE_NAME,
-                                                   OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                   OpenMetadataType.DATA_FILE.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    startingFrom,
@@ -3624,10 +3624,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileHandler.getAttachedElements(userId,
                                                folderGUID,
                                                folderGUIDParameterName,
-                                               OpenMetadataType.FILE_FOLDER_TYPE_NAME,
+                                               OpenMetadataType.FILE_FOLDER.typeName,
                                                OpenMetadataType.NESTED_FILE_TYPE_GUID,
                                                OpenMetadataType.NESTED_FILE_TYPE_NAME,
-                                               OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                               OpenMetadataType.DATA_FILE.typeName,
                                                null,
                                                null,
                                                2,
@@ -3670,7 +3670,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileHandler.getBeanFromRepository(userId,
                                                  dataFileGUID,
                                                  dataFileGUIDParameterName,
-                                                 OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                 OpenMetadataType.DATA_FILE.typeName,
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  effectiveTime,
@@ -3711,8 +3711,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         List<FILE> files = fileHandler.getBeansByValue(userId,
                                                        pathName,
                                                        pathNameParameterName,
-                                                       OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                                       OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                                       OpenMetadataType.DATA_FILE.typeGUID,
+                                                       OpenMetadataType.DATA_FILE.typeName,
                                                        specificMatchPropertyNames,
                                                        true,
                                                        null,
@@ -3733,7 +3733,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             return files.get(0);
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.DATA_FILE_TYPE_NAME,
+        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.DATA_FILE.typeName,
                                                                                                                 pathName,
                                                                                                                 files.toString(),
                                                                                                                 methodName,
@@ -3782,8 +3782,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileHandler.getBeansByValue(userId,
                                            pathName,
                                            pathNameParameterName,
-                                           OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                           OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                           OpenMetadataType.DATA_FILE.typeGUID,
+                                           OpenMetadataType.DATA_FILE.typeName,
                                            specificMatchPropertyNames,
                                            false,
                                            null,
@@ -3838,8 +3838,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileHandler.getBeansByValue(userId,
                                            name,
                                            nameParameterName,
-                                           OpenMetadataType.DATA_FILE_TYPE_GUID,
-                                           OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                           OpenMetadataType.DATA_FILE.typeGUID,
+                                           OpenMetadataType.DATA_FILE.typeName,
                                            specificMatchPropertyNames,
                                            true,
                                            null,

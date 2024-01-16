@@ -377,6 +377,7 @@ include(':open-metadata-resources:open-metadata-samples:open-metadata-security-s
 include(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 include(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility')
 include(':open-metadata-resources:open-metadata-dev-utilities:egeria-ops-utility')
+include(':open-metadata-resources:open-metadata-dev-utilities:guid-generator')
 include(':open-metadata-resources:open-metadata-reports:component-id-report')
 include(':open-metadata-resources:open-metadata-reports:database-report')
 include(':open-metadata-resources:open-metadata-reports:valid-values-report')

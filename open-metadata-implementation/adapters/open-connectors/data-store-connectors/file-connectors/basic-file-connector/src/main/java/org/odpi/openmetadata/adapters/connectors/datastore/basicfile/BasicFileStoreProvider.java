@@ -16,7 +16,7 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
     private static final String  connectorTypeGUID = "ba213761-f5f5-4cf5-a95f-6150aef09e0b";
     private static final String  connectorTypeName = "Basic File Store Connector";
     private static final String  connectorTypeDescription = "Connector supports reading of Files.";
-    private static final String  assetTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+    private static final String  assetTypeName = OpenMetadataType.DATA_FILE.typeName;
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific

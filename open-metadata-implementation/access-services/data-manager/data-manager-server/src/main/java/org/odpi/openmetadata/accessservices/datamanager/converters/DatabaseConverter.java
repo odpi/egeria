@@ -90,7 +90,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     databaseProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     databaseProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

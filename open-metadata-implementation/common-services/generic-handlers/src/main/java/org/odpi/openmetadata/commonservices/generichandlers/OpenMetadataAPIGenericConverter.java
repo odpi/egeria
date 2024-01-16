@@ -3258,11 +3258,11 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             Date createTime1 = repositoryHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.STORE_CREATE_TIME.name,
                                                                    instanceProperties,
                                                                    methodName);
             Date createTime2 = repositoryHelper.removeDateProperty(serviceName,
-                                                                   OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME_DEP,
+                                                                   OpenMetadataProperty.CREATE_TIME.name,
                                                                    instanceProperties,
                                                                    methodName);
             return createTime1 == null ? createTime2 : createTime1;
@@ -3285,11 +3285,11 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             Date modifiedTime1 = repositoryHelper.removeDateProperty(serviceName,
-                                                                     OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.STORE_UPDATE_TIME.name,
                                                                      instanceProperties,
                                                                      methodName);
             Date modifiedTime2 = repositoryHelper.removeDateProperty(serviceName,
-                                                                     OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME_DEP,
+                                                                     OpenMetadataProperty.UPDATE_TIME.name,
                                                                      instanceProperties,
                                                                      methodName);
             return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;
@@ -3313,7 +3313,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.ENCODING_PROPERTY_NAME,
+                                                      OpenMetadataProperty.ENCODING.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3335,7 +3335,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                      OpenMetadataProperty.ENCODING_LANGUAGE.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3357,7 +3357,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                      OpenMetadataProperty.ENCODING_DESCRIPTION.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3379,7 +3379,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringMapFromProperty(serviceName,
-                                                             OpenMetadataType.ENCODING_PROPERTIES_PROPERTY_NAME,
+                                                             OpenMetadataProperty.ENCODING_PROPERTIES.name,
                                                              instanceProperties,
                                                              methodName);
         }
@@ -3394,6 +3394,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return string name or null
      */
+    @SuppressWarnings(value = "deprecation")
     protected String removeDatabaseType(InstanceProperties  instanceProperties)
     {
         final String methodName = "removeDatabaseType";
@@ -3401,11 +3402,11 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             String type1 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                  instanceProperties,
                                                                  methodName);
             String type2 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME_DEP,
+                                                                 OpenMetadataProperty.TYPE.name,
                                                                  instanceProperties,
                                                                  methodName);
             return type1 == null ? type2 : type1;
@@ -3611,10 +3612,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
             if (type == null)
             {
-                type = repositoryHelper.removeStringProperty(serviceName,
-                                                             OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP2,
-                                                             instanceProperties,
-                                                             methodName);
+                type = repositoryHelper.getStringProperty(serviceName,
+                                                          OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                          instanceProperties,
+                                                          methodName);
             }
 
             return type;

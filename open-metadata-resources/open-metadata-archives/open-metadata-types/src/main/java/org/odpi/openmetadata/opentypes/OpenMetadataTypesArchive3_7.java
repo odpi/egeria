@@ -257,9 +257,9 @@ public class OpenMetadataTypesArchive3_7
         final String attribute4Name            = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name;
         final String attribute4Description     = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description;
         final String attribute4DescriptionGUID = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID;
-        final String attribute5Name            = OpenMetadataProperty.DEPLOYMENT_STATUS.name;
-        final String attribute5Description     = OpenMetadataProperty.DEPLOYMENT_STATUS.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.DEPLOYMENT_STATUS.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.OPERATIONAL_STATUS.name;
+        final String attribute5Description     = OpenMetadataProperty.OPERATIONAL_STATUS.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -277,7 +277,7 @@ public class OpenMetadataTypesArchive3_7
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);

@@ -306,9 +306,9 @@ public class RelationalDataHandler<DATABASE,
         }
 
         assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
-        assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
@@ -356,8 +356,8 @@ public class RelationalDataHandler<DATABASE,
                                                               databaseGUID,
                                                               databaseGUIDParameterName,
                                                               OpenMetadataType.DATABASE_TYPE_NAME,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
                                                               classificationProperties,
                                                               true,
                                                               forLineage,
@@ -506,9 +506,9 @@ public class RelationalDataHandler<DATABASE,
         }
 
         assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
-        assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
@@ -549,8 +549,8 @@ public class RelationalDataHandler<DATABASE,
                                                               databaseGUID,
                                                               databaseGUIDParameterName,
                                                               OpenMetadataType.DATABASE_TYPE_NAME,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
                                                               classificationProperties,
                                                               true,
                                                               forLineage,
@@ -980,10 +980,10 @@ public class RelationalDataHandler<DATABASE,
         }
 
         assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
-        assetExtendedProperties.put(OpenMetadataType.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
-        assetExtendedProperties.put(OpenMetadataType.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
+        assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
 
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
         assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
@@ -1024,8 +1024,8 @@ public class RelationalDataHandler<DATABASE,
                                                           databaseGUID,
                                                           elementGUIDParameterName,
                                                           OpenMetadataType.DATABASE_TYPE_NAME,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
                                                           classificationProperties,
                                                           isMergeUpdate,
                                                           forLineage,
@@ -1067,22 +1067,22 @@ public class RelationalDataHandler<DATABASE,
 
         classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                 null,
-                                                                                OpenMetadataType.ENCODING_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.ENCODING.name,
                                                                                 encodingType,
                                                                                 methodName);
         classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                 classificationProperties,
-                                                                                OpenMetadataType.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.ENCODING_LANGUAGE.name,
                                                                                 encodingLanguage,
                                                                                 methodName);
         classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                 classificationProperties,
-                                                                                OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.ENCODING_DESCRIPTION.name,
                                                                                 encodingDescription,
                                                                                 methodName);
         classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                    classificationProperties,
-                                                                                   OpenMetadataType.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.ENCODING_DESCRIPTION.name,
                                                                                    encodingProperties,
                                                                                    methodName);
 
