@@ -132,7 +132,7 @@ public enum FileType
      */
     CSV_FILE("CSV File",
              "CSV",
-             OpenMetadataType.CSV_FILE_TYPE_NAME,
+             OpenMetadataType.CSV_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A text file with comma-separated values."),
 
@@ -141,7 +141,7 @@ public enum FileType
      */
     AVRO_FILE("Avro File",
               "Avro",
-              OpenMetadataType.AVRO_FILE_TYPE_NAME,
+              OpenMetadataType.AVRO_FILE.typeName,
               DeployedImplementationType.DATA_FILE,
               "A text file containing an Avro object structure."),
 
@@ -150,7 +150,7 @@ public enum FileType
      */
     JSON_FILE("JSON File",
               "JSON",
-              OpenMetadataType.JSON_FILE_TYPE_NAME,
+              OpenMetadataType.JSON_FILE.typeName,
               DeployedImplementationType.DATA_FILE,
               "A text file formatted using the JSON (JavaScript Object Notation) standard."),
 
@@ -195,7 +195,7 @@ public enum FileType
      */
     OM_AUDIT_LOG_FOLDER("Open Metadata Audit Log Folder",
                         null,
-                        OpenMetadataType.DATA_FOLDER_TYPE_NAME,
+                        OpenMetadataType.DATA_FOLDER.typeName,
                         DeployedImplementationType.DATA_FOLDER,
                         "A directory (folder) containing audit log records."),
 
@@ -231,7 +231,7 @@ public enum FileType
      */
     ORC_FILE("Optimized Row Columnar (ORC) File",
              "ORC",
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A data file formatted using Optimized Row Columnar (ORC) file format that provides a highly efficient way to store Hive data."),
 
@@ -782,7 +782,7 @@ public enum FileType
      */
     BIN_FILE("Binary Format File",
              "Binary",
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A file containing binary data."),
 
@@ -791,7 +791,7 @@ public enum FileType
      */
     DAT_FILE("Application Data File",
              null,
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A file containing data, typically from an application.  The format is known by the application."),
 
@@ -800,7 +800,7 @@ public enum FileType
      */
     RPT_FILE("Application Report File",
              null,
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A file containing report data, typically from an application.  The format is known by the application."),
 
@@ -809,7 +809,7 @@ public enum FileType
      */
     MPP_FILE("Microsoft Project File",
              null,
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A file containing data from Microsoft Project."),
 
@@ -818,7 +818,7 @@ public enum FileType
      */
     VCF_FILE("Variant Call Format (VCF) File",
              "VCF",
-             OpenMetadataType.DATA_FILE_TYPE_NAME,
+             OpenMetadataType.DATA_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
              "A text file format used in bioinformatics for storing gene sequence variations."),
 

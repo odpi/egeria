@@ -2941,9 +2941,9 @@ public class ITInfrastructureRESTServices
                 List<String> specificMatchPropertyNames = new ArrayList<>();
                 specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
                 specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
                 specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME);
                 specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP1);
-                specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP2);
 
                 List<SoftwareCapabilityElement> capabilities = handler.getBeansByValue(userId,
                                                                                        requestBody.getName(),

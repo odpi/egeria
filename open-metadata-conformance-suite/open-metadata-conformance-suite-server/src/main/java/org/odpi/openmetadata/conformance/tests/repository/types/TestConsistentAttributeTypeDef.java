@@ -8,6 +8,9 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 
+/**
+ * TestConsistentAttributeTypeDef tests attribute type defs
+ */
 public class TestConsistentAttributeTypeDef extends RepositoryConformanceTestCase
 {
     private static final String rootTestCaseId = "repository-consistency-of-attribute-typedef";

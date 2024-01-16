@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +62,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      *
      * @return list of request types
      */
-    public List<String> supportedRequestTypes()
+    public List<String> getSupportedRequestTypes()
     {
         return supportedRequestTypes;
     }
@@ -74,7 +73,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      *
      * @return list of parameter names used if the connector is provisioning
      */
-    public List<String> supportedRequestParameters()
+    public List<String> getSupportedRequestParameters()
     {
         return supportedRequestParameters;
     }
@@ -86,7 +85,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      *
      * @return list of request sources with special meaning
      */
-    public List<String> supportedRequestSourceNames()
+    public List<String> getSupportedRequestSourceNames()
     {
         return supportedRequestSourceNames;
     }
@@ -98,7 +97,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      *
      * @return list of action target names with special meaning
      */
-    public List<String> supportedActionTargetNames()
+    public List<String> getSupportedActionTargetNames()
     {
         return supportedTargetActionNames;
     }
@@ -111,7 +110,7 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      *
      * @return list of guards
      */
-    public  List<String> supportedGuards()
+    public  List<String> getSupportedGuards()
     {
         return supportedGuards;
     }

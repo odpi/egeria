@@ -602,13 +602,13 @@ public class SimpleCatalogArchiveHelper
 
         EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME, deploymentStatus);
 
-        InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataType.DEPLOYMENT_TIME_PROPERTY_NAME, deploymentTime, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEPLOYER_TYPE_NAME_PROPERTY_NAME, deployerTypeName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEPLOYER_PROPERTY_NAME_PROPERTY_NAME, deployerPropertyName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEPLOYER_PROPERTY_NAME, deployer, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEPLOYMENT_STATUS_PROPERTY_NAME, statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_TIME.name, deploymentTime, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_TYPE_NAME.name, deployerTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name, deployerPropertyName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER.name, deployer, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
 
-        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.DEPLOYED_ON_TYPE_NAME, this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.DEPLOYED_ON.typeName, this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
     }
 
 
@@ -659,6 +659,42 @@ public class SimpleCatalogArchiveHelper
                                                                                end1,
                                                                                end2));
     }
+
+
+    /**
+     * Add the ResourceList relationship to the archive.
+     *
+     * @param parentGUID unique identifier of resource consumer
+     * @param resourceGUID unique identifier of resource
+     * @param resourceUse description of use
+     */
+    public void addResourceListRelationshipByGUID(String              parentGUID,
+                                                  String              resourceGUID,
+                                                  String              resourceUse,
+                                                  String              resourceUseDescription,
+                                                  Map<String, String> resourceUseProperties,
+                                                  boolean             watchResource)
+    {
+        final String methodName = "addResourceListRelationshipByGUID";
+
+        EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(parentGUID));
+        EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(resourceGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RESOURCE_USE.name, resourceUse, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name, resourceUseDescription, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name, resourceUseProperties, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WATCH_RESOURCE.name, watchResource, methodName);
+
+        this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                               this.idToGUIDMap.getGUID(parentGUID + "_to_" + resourceGUID + "_resource_list_relationship"),
+                                                                               properties,
+                                                                               InstanceStatus.ACTIVE,
+                                                                               end1,
+                                                                               end2));
+    }
+
+
+
 
 
     /**
@@ -4783,7 +4819,7 @@ public class SimpleCatalogArchiveHelper
                                 boolean             isDeprecated,
                                 Map<String, String> additionalProperties)
     {
-        return this.addValidValue(null, null, null, typeName, qualifiedName, name, description, null, usage, scope, preferredValue, isDeprecated, false, additionalProperties);
+        return this.addValidValue(null, null, null, null, typeName, qualifiedName, name, description, null, usage, scope, preferredValue, isDeprecated, false, additionalProperties);
     }
 
 
@@ -4819,6 +4855,7 @@ public class SimpleCatalogArchiveHelper
         return this.addValidValue(null,
                                   null,
                                   null,
+                                  null,
                                   typeName,
                                   qualifiedName,
                                   name,
@@ -4836,6 +4873,7 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a valid value definition/set.
      *
+     * @param suppliedValidValueGUID optional unique identifier for the type
      * @param setGUID unique identifier of parent set
      * @param anchorGUID unique identifier of the anchor (or null)
      * @param anchorTypeName unique name of type of anchor (or null)
@@ -4853,7 +4891,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @return unique identifier of the valid value
      */
-    public String addValidValue(String              setGUID,
+    public String addValidValue(String              suppliedValidValueGUID,
+                                String              setGUID,
                                 String              anchorGUID,
                                 String              anchorTypeName,
                                 String              typeName,
@@ -4869,6 +4908,17 @@ public class SimpleCatalogArchiveHelper
                                 Map<String, String> additionalProperties)
     {
         final String methodName = "addValidValue";
+
+        String validValueGUID = suppliedValidValueGUID;
+
+        if (validValueGUID == null)
+        {
+            validValueGUID = idToGUIDMap.getGUID(qualifiedName);
+        }
+        else
+        {
+            idToGUIDMap.setGUID(qualifiedName, validValueGUID);
+        }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
@@ -4900,7 +4950,7 @@ public class SimpleCatalogArchiveHelper
         }
 
         EntityDetail  validValueEntity = archiveHelper.getEntityDetail(typeName,
-                                                                       idToGUIDMap.getGUID(qualifiedName),
+                                                                       validValueGUID,
                                                                        properties,
                                                                        InstanceStatus.ACTIVE,
                                                                        entityClassifications);

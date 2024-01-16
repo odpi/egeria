@@ -59,11 +59,11 @@ public class FileSurveyService extends AuditableSurveyService
                 super.throwNoAsset(assetStore.getAssetGUID(), methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.DATA_FILE_TYPE_NAME))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.DATA_FILE.typeName))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                            OpenMetadataType.DATA_FILE.typeName,
                                             methodName);
                 return;
             }

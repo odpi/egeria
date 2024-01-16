@@ -188,11 +188,91 @@ public enum OpenMetadataType
                                  "e8b2dba2-6d3a-4a83-8ebf-1f0555b5164d",
                                  "Links search keywords that have similar meanings together."),
 
+    /**
+     * Identifies an IT Infrastructure asset that is deployed to a specific destination.
+     */
     DEPLOYED_ON("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
                 "DeployedOn",
                 OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                 "d727b3ce-d58b-45d5-8abc-55b1394e030a",
                 "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+
+
+    /* ============================================================================================================================*/
+    /* Area 2 - Assets                                                                                                             */
+    /* ============================================================================================================================*/
+
+    DATA_STORE("30756d0b-362b-4bfa-a0de-fce6a8f47b47",
+               "DataStore",
+               OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+               "186e8199-1987-4578-9799-c13a8eaa08b6",
+               "A physical store of data."),
+
+    /**
+     * The assets that provides data for a data set.
+     */
+    DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP("b827683c-2924-4df3-a92d-7be1888e23c0",
+                                           "DataContentForDataSet",
+                                           OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                                           "64b044b3-f765-447a-aca7-5f72d0f3f9d0",
+                                           "The assets that provides data for a data set."),
+
+    /**
+     * Description for how data is organized and represented in a data store.
+     */
+    DATA_STORE_ENCODING_CLASSIFICATION("f08e48b5-6b66-40f5-8ff6-c2bfe527330b",
+                                       "DataStoreEncoding",
+                                       OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                                       "cdb6971e-3783-42c0-85c6-4d339610113b",
+                                       "Description for how data is organized and represented in a data store."),
+
+    /**
+     * A description of a folder (directory) in a file system.
+     */
+    FILE_FOLDER("229ed5cc-de31-45fc-beb4-9919fd247398",
+                "FileFolder",
+                OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                "4a4d75eb-9098-4e06-8873-47d026f5867f",
+                "A description of a folder (directory) in a file system."),
+
+    /**
+     * A folder (directory) in a file system that contains a collection of data.
+     */
+    DATA_FOLDER("9f1fb984-db15-43ee-85fb-f8b0353bfb8b",
+                "DataFolder",
+                OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                "0432df9c-d04d-4a41-8a27-599e0331d167",
+                "A folder (directory) in a file system that contains a collection of data stored in individual files."),
+
+    /**
+     * A description of a file stored in a file system.
+     */
+    DATA_FILE("10752b4a-4b5d-4519-9eae-fdd6d162122f",
+              "DataFile",
+              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+              "9805da73-c308-44ee-979c-86b1ef018dad",
+              "A description of a file stored in a file system."),
+
+    /**
+     * A description of a comma separated value (CSV) file.
+     */
+    CSV_FILE("2ccb2117-9cee-47ca-8150-9b3a543adcec",
+             "CSVFile",
+             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+             "4072c15f-9792-45a3-a4c9-d0602f4ffe87",
+             "A description of a comma separated value (CSV) file."),
+
+    AVRO_FILE("75293260-3373-4777-af7d-7274d5c0b9a5",
+              "AvroFile",
+              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+              "ac017c45-d167-424a-b0db-501d1dbe7096",
+              "A description of a file that follows the Apache Avro specification."),
+
+    JSON_FILE("baa608fa-510e-42d7-95cd-7c12fa37bb35",
+              "JSONFile",
+              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+              "8fc52dce-17fe-426a-b504-c15d5df35524",
+              "A description of a file that follows the JavaScript Object Notation specification."),
 
 
     /* ============================================================================================================================*/
@@ -747,11 +827,6 @@ public enum OpenMetadataType
     public static final String ROOT_COLLECTION_TYPE_NAME = "RootCollection";
 
 
-
-
-    public static final String RESOURCE_USE_PROPERTY_NAME = "resourceUse";
-    public static final String WATCH_RESOURCE_PROPERTY_NAME = "watchResource";
-
     /**
      * 5cabb76a-e25b-4bb5-8b93-768bbac005af
      */
@@ -840,11 +915,6 @@ public enum OpenMetadataType
      * properties
      */
     public static final String PROPERTIES_PROPERTY_NAME = "properties";         /* from PropertyFacet entity */
-
-    /**
-     * vendorProperties
-     */
-    public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE = "vendorProperties";
 
     /**
      * 58c87647-ada9-4c90-a3c3-a40ace46b1f7
@@ -996,40 +1066,6 @@ public enum OpenMetadataType
      */
     public static final String IT_INFRASTRUCTURE_TYPE_NAME = "ITInfrastructure";
 
-    /**
-     * 6932ba75-9522-4a06-a4a4-ee60a4df6aab
-     */
-    public static final String DEPLOYED_ON_TYPE_GUID = "6932ba75-9522-4a06-a4a4-ee60a4df6aab";
-
-    /**
-     * DeployedOn
-     */
-    public static final String DEPLOYED_ON_TYPE_NAME = "DeployedOn";
-
-    /**
-     * deploymentTime
-     */
-    public static final String DEPLOYMENT_TIME_PROPERTY_NAME = "deploymentTime";
-
-    /**
-     * deployer
-     */
-    public static final String DEPLOYER_PROPERTY_NAME = "deployer";
-
-    /**
-     * deployerTypeName
-     */
-    public static final String DEPLOYER_TYPE_NAME_PROPERTY_NAME = "deployerTypeName";
-
-    /**
-     * deployerPropertyName
-     */
-    public static final String DEPLOYER_PROPERTY_NAME_PROPERTY_NAME = "deployerPropertyName";
-
-    /**
-     * deploymentStatus
-     */
-    public static final String DEPLOYMENT_STATUS_PROPERTY_NAME = "deploymentStatus";
 
     /**
      * 1abd16db-5b8a-4fd9-aee5-205db3febe99
@@ -1232,44 +1268,10 @@ public enum OpenMetadataType
     public static final String SOFTWARE_SERVER_PLATFORM_TYPE_NAME = "SoftwareServerPlatform";
 
     /**
-     * deployedImplementationType
-     */
-    public static final String DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME = "deployedImplementationType"; /* from SoftwareServerPlatform */
-
-    /**
-     * type
-     */
-    public static final String DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME_DEP = "type";                       /* from SoftwareServerPlatform */
-
-    /**
-     * platformVersion
-     */
-    public static final String PLATFORM_VERSION_PROPERTY_NAME = "platformVersion";            /* from SoftwareServerPlatform */
-
-    /**
-     * b909eb3b-5205-4180-9f63-122a65b30738
-     */
-    public static final String SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_GUID = "b909eb3b-5205-4180-9f63-122a65b30738";  /* from Area 0 */
-
-    /**
-     * SoftwareServerPlatformDeployment - End1 = Host; End2 = SoftwareServerPlatform (running on host)
-     */
-    public static final String SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_TYPE_NAME = "SoftwareServerPlatformDeployment";
-
-    /**
      * platformStatus
      */
     public static final String PLATFORM_STATUS_PROPERTY_NAME = "platformStatus";            /* from SoftwareServerPlatform */
 
-    /**
-     * 24e1e33e-9250-4a6c-8b07-05c7adec3a1d
-     */
-    public static final String OPERATIONAL_STATUS_ENUM_TYPE_GUID = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
-
-    /**
-     * OperationalStatus
-     */
-    public static final String OPERATIONAL_STATUS_ENUM_TYPE_NAME = "OperationalStatus";              /* from Area 1 */
 
     /**
      * 896d14c2-7522-4f6c-8519-757711943fe6
@@ -1370,12 +1372,6 @@ public enum OpenMetadataType
      * type
      */
     public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP1 = "type";                       /* from SoftwareServerCapability entity */
-
-    /**
-     * deployedImplementationType
-     */
-    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP2 = "deployedImplementationType"; /* from SoftwareServerCapability entity */
-
     /**
      * capabilityVersion
      */
@@ -2517,65 +2513,7 @@ public enum OpenMetadataType
      */
     public static final String ASSET_SUMMARY_PROPERTY_NAME = "assetSummary";          /* from ConnectionToAsset relationship */
 
-    /**
-     * 30756d0b-362b-4bfa-a0de-fce6a8f47b47
-     */
-    public static final String DATA_STORE_TYPE_GUID = "30756d0b-362b-4bfa-a0de-fce6a8f47b47";  /* from Area 2 */
 
-    /**
-     * DataStore - inherits from Asset
-     */
-    public static final String DATA_STORE_TYPE_NAME = "DataStore";
-
-    /**
-     * storeCreateTime
-     */
-    public static final String STORE_CREATE_TIME_PROPERTY_NAME = "storeCreateTime";                       /* from DataStore entity */
-
-    /**
-     * createTime
-     */
-    public static final String STORE_CREATE_TIME_PROPERTY_NAME_DEP = "createTime";                            /* from DataStore entity */
-
-    /**
-     * storeUpdateTime
-     */
-    public static final String STORE_UPDATE_TIME_PROPERTY_NAME = "storeUpdateTime";                       /* from DataStore entity */
-
-    /**
-     * updateTime
-     */
-    public static final String STORE_UPDATE_TIME_PROPERTY_NAME_DEP = "updateTime";                            /* from DataStore entity */
-
-    /**
-     * f08e48b5-6b66-40f5-8ff6-c2bfe527330b
-     */
-    public static final String DATA_STORE_ENCODING_CLASSIFICATION_GUID = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
-
-    /**
-     * DataStoreEncoding
-     */
-    public static final String DATA_STORE_ENCODING_CLASSIFICATION_NAME = "DataStoreEncoding";
-
-    /**
-     * encoding
-     */
-    public static final String ENCODING_PROPERTY_NAME = "encoding";      /* from DataStoreEncoding classification */
-
-    /**
-     * language
-     */
-    public static final String ENCODING_LANGUAGE_PROPERTY_NAME = "language";      /* from DataStoreEncoding classification */
-
-    /**
-     * description
-     */
-    public static final String ENCODING_DESCRIPTION_PROPERTY_NAME = "description";   /* from DataStoreEncoding classification */
-
-    /**
-     * properties
-     */
-    public static final String ENCODING_PROPERTIES_PROPERTY_NAME = "properties";    /* from DataStoreEncoding classification */
 
     /**
      * 740e76e1-77b4-4426-ad52-d0a4ed15fff9
@@ -2669,16 +2607,6 @@ public enum OpenMetadataType
     public static final String RELATIONAL_DATABASE_TYPE_NAME = "RelationalDatabase";
 
     /**
-     * deployedImplementationType
-     */
-    public static final String DATABASE_TYPE_PROPERTY_NAME = "deployedImplementationType";          /* from Database entity */
-
-    /**
-     * type
-     */
-    public static final String DATABASE_TYPE_PROPERTY_NAME_DEP = "type";          /* from Database entity */
-
-    /**
      * databaseVersion
      */
     public static final String DATABASE_VERSION_PROPERTY_NAME = "databaseVersion";       /* from Database entity */
@@ -2698,25 +2626,6 @@ public enum OpenMetadataType
      */
     public static final String DATABASE_IMPORTED_FROM_PROPERTY_NAME = "importedFrom";  /* from Database entity */
 
-    /**
-     * 229ed5cc-de31-45fc-beb4-9919fd247398
-     */
-    public static final String FILE_FOLDER_TYPE_GUID = "229ed5cc-de31-45fc-beb4-9919fd247398";  /* from Area 2 */
-
-    /**
-     * FileFolder - inherits from DataStore
-     */
-    public static final String FILE_FOLDER_TYPE_NAME = "FileFolder";
-
-    /**
-     * 9f1fb984-db15-43ee-85fb-f8b0353bfb8b
-     */
-    public static final String DATA_FOLDER_TYPE_GUID = "9f1fb984-db15-43ee-85fb-f8b0353bfb8b";  /* from Area 2 */
-
-    /**
-     * DataFolder - inherits from FileFolder
-     */
-    public static final String DATA_FOLDER_TYPE_NAME = "DataFolder";
 
     /**
      * 48ac9028-45dd-495d-b3e1-622685b54a01
@@ -2748,16 +2657,7 @@ public enum OpenMetadataType
      */
     public static final String LINKED_FILE_TYPE_NAME = "LinkedFile";
 
-    /**
-     * 10752b4a-4b5d-4519-9eae-fdd6d162122f
-     */
-    public static final String DATA_FILE_TYPE_GUID = "10752b4a-4b5d-4519-9eae-fdd6d162122f";  /* from Area 2 */
-
-    /**
-     * DataFile
-     */
-    public static final String DATA_FILE_TYPE_NAME = "DataFile";
-
+    
     /**
      * 2f38d248-8633-402b-b085-c88fcbc33fa8
      */
@@ -2906,25 +2806,6 @@ public enum OpenMetadataType
      */
     public static final String EMBEDDED_METADATA_PROPERTY_NAME = "embeddedMetadata";                      /* from MediaFile entity */
 
-    /**
-     * 75293260-3373-4777-af7d-7274d5c0b9a5
-     */
-    public static final String AVRO_FILE_TYPE_GUID = "75293260-3373-4777-af7d-7274d5c0b9a5";  /* from Area 2 */
-
-    /**
-     * AvroFile
-     */
-    public static final String AVRO_FILE_TYPE_NAME = "AvroFile";
-
-    /**
-     * 2ccb2117-9cee-47ca-8150-9b3a543adcec
-     */
-    public static final String CSV_FILE_TYPE_GUID = "2ccb2117-9cee-47ca-8150-9b3a543adcec";  /* from Area 2 */
-
-    /**
-     * CSVFile
-     */
-    public static final String CSV_FILE_TYPE_NAME = "CSVFile";
 
     /**
      * delimiterCharacter
@@ -2935,16 +2816,6 @@ public enum OpenMetadataType
      * quoteCharacter
      */
     public static final String QUOTE_CHARACTER_PROPERTY_NAME = "quoteCharacter";                       /* from CSVFile entity */
-
-    /**
-     * baa608fa-510e-42d7-95cd-7c12fa37bb35
-     */
-    public static final String JSON_FILE_TYPE_GUID = "baa608fa-510e-42d7-95cd-7c12fa37bb35";  /* from Area 2 */
-
-    /**
-     * JSONFile - inherits from DataFile
-     */
-    public static final String JSON_FILE_TYPE_NAME = "JSONFile";
 
     /**
      * ba5111df-3878-4694-82d7-0b0e47565523
@@ -4905,5 +4776,15 @@ public enum OpenMetadataType
 
     public static final String ANNOTATION_STATUS_ENUM_TYPE_GUID = "71187df6-ef66-4f88-bc03-cd3c7f925165";
     public static final String ANNOTATION_STATUS_ENUM_TYPE_NAME = "AnnotationStatus";
+
+    /**
+     * 24e1e33e-9250-4a6c-8b07-05c7adec3a1d
+     */
+    public static final String OPERATIONAL_STATUS_ENUM_TYPE_GUID = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
+
+    /**
+     * OperationalStatus
+     */
+    public static final String OPERATIONAL_STATUS_ENUM_TYPE_NAME = "OperationalStatus";              /* from Area 1 */
 
 }

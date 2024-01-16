@@ -509,7 +509,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String typeName = OpenMetadataType.DATA_FILE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -545,7 +545,7 @@ public class OpenMetadataTypesArchive3_13
         final String description     = "A data file which is formatted using the Apache Parquet format.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.DATA_FILE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

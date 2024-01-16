@@ -98,15 +98,15 @@ public class DataEngineFolderHierarchyHandler {
             }
             folderGuid = upsertFolder(externalSourceGuid, externalSourceName, folder, userId, methodName);
             dataEngineCommonHandler.upsertExternalRelationship(userId, folderGuid, previousEntityGuid, relationshipTypeName,
-                                                               OpenMetadataType.FILE_FOLDER_TYPE_NAME, previousEntityType, externalSourceName, null);
+                                                               OpenMetadataType.FILE_FOLDER.typeName, previousEntityType, externalSourceName, null);
 
             previousEntityGuid = folderGuid;
-            previousEntityType = OpenMetadataType.FILE_FOLDER_TYPE_NAME;
+            previousEntityType = OpenMetadataType.FILE_FOLDER.typeName;
             relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME;
         }
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, externalSourceGuid, folderGuid, OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
-                                                           OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, OpenMetadataType.FILE_FOLDER_TYPE_NAME, externalSourceName, null);
+                                                           OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, OpenMetadataType.FILE_FOLDER.typeName, externalSourceName, null);
     }
 
     /**
@@ -132,7 +132,7 @@ public class DataEngineFolderHierarchyHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, OpenMetadataProperty.GUID.name, methodName);
 
-        dataEngineCommonHandler.removeEntity(userId, folderGUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME, externalSourceName);
+        dataEngineCommonHandler.removeEntity(userId, folderGUID, OpenMetadataType.FILE_FOLDER.typeName, externalSourceName);
     }
 
     private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
@@ -140,7 +140,7 @@ public class DataEngineFolderHierarchyHandler {
 
         Date now = dataEngineCommonHandler.getNow();
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, fileGuid, CommonMapper.GUID_PROPERTY_NAME,
-                                                                             OpenMetadataType.DATA_FILE_TYPE_NAME, OpenMetadataType.NESTED_FILE_TYPE_GUID,
+                                                                             OpenMetadataType.DATA_FILE.typeName, OpenMetadataType.NESTED_FILE_TYPE_GUID,
                                                                              OpenMetadataType.NESTED_FILE_TYPE_NAME, null, null, 2,
                false, false,0, invalidParameterHandler.getMaxPagingSize(),  now, methodName);
 
@@ -155,7 +155,7 @@ public class DataEngineFolderHierarchyHandler {
 
     private String upsertFolder(String externalSourceGuid, String externalSourceName, FileFolder folder, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Optional<EntityDetail> folderAsEntity = dataEngineCommonHandler.findEntity(userId, folder.getQualifiedName(), OpenMetadataType.FILE_FOLDER_TYPE_NAME);
+        Optional<EntityDetail> folderAsEntity = dataEngineCommonHandler.findEntity(userId, folder.getQualifiedName(), OpenMetadataType.FILE_FOLDER.typeName);
 
         if (folderAsEntity.isPresent()) {
             return folderAsEntity.get().getGUID();
@@ -165,7 +165,7 @@ public class DataEngineFolderHierarchyHandler {
                 folder.getQualifiedName(), folder.getDisplayName(), null, folder.getDescription(), folder.getZoneMembership(),
                 folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
                 null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                                                     OpenMetadataType.FILE_FOLDER_TYPE_GUID, OpenMetadataType.FILE_FOLDER_TYPE_NAME,  null, null, null,
+                                                     OpenMetadataType.FILE_FOLDER.typeGUID, OpenMetadataType.FILE_FOLDER.typeName,  null, null, null,
                 InstanceStatus.ACTIVE, dataEngineCommonHandler.getNow(), methodName);
     }
 

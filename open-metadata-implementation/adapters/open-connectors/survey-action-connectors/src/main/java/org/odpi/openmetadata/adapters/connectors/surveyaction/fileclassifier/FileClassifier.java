@@ -23,7 +23,7 @@ public class FileClassifier
     private String fileExtension              = null;
     private String fileType                   = null;
     private String deployedImplementationType = null;
-    private String assetTypeName              = OpenMetadataType.DATA_FILE_TYPE_NAME;
+    private String assetTypeName              = OpenMetadataType.DATA_FILE.typeName;
     private boolean canRead                   = false;
     private boolean canWrite                  = false;
     private boolean canExecute                = false;
@@ -58,11 +58,11 @@ public class FileClassifier
 
 
     private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.FILE_TYPE.name,
                                                                 null);
     private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE_TYPE_NAME,
+            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                 null);
 
@@ -87,7 +87,7 @@ public class FileClassifier
         /*
          * Is the file name or file extension recognized?
          */
-        ValidMetadataValue validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE_TYPE_NAME,
+        ValidMetadataValue validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
                                                                                         OpenMetadataProperty.FILE_NAME.name,
                                                                                         file.getName());
 
@@ -95,7 +95,7 @@ public class FileClassifier
 
         if (validMetadataValue != null)
         {
-            consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE_TYPE_NAME,
+            consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                              OpenMetadataProperty.FILE_NAME.name,
                                                                              null,
                                                                              validMetadataValue.getPreferredValue(),
@@ -106,13 +106,13 @@ public class FileClassifier
         {
             if (this.fileExtension != null)
             {
-                validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
                                                                              OpenMetadataProperty.FILE_EXTENSION.name,
                                                                              this.fileExtension);
 
                 if (validMetadataValue != null)
                 {
-                    consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                    consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                                      OpenMetadataProperty.FILE_EXTENSION.name,
                                                                                      null,
                                                                                      validMetadataValue.getPreferredValue(),
@@ -147,7 +147,7 @@ public class FileClassifier
                         }
 
                         List<ValidMetadataValue> consistentFileTypeValues =
-                                openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE_TYPE_NAME,
+                                openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                               OpenMetadataProperty.FILE_TYPE.name,
                                                                               null,
                                                                               validMetadataValue.getPreferredValue(),

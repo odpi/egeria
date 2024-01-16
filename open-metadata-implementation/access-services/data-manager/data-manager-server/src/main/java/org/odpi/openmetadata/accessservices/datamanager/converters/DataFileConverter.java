@@ -87,7 +87,7 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
                     dataFileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     dataFileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     dataFileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     dataFileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
