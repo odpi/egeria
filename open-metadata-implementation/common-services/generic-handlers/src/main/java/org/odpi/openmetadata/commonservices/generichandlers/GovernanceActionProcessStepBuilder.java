@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GovernanceActionBuilder creates the parts for an entity that represents a governance action.
+ * GovernanceActionProcessStepBuilder creates the parts for an entity that represents a governance action process step.
  */
 public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 {

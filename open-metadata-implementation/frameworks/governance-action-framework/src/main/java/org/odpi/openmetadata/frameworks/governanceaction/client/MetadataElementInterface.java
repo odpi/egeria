@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -656,6 +657,58 @@ public interface MetadataElementInterface
                                       Date    effectiveTime) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void archiveMetadataElementInStore(String            userId,
+                                       String            metadataElementGUID,
+                                       ArchiveProperties archiveProperties,
+                                       boolean           forLineage,
+                                       boolean           forDuplicateProcessing,
+                                       Date              effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void archiveMetadataElementInStore(String            userId,
+                                       String            externalSourceGUID,
+                                       String            externalSourceName,
+                                       String            metadataElementGUID,
+                                       ArchiveProperties archiveProperties,
+                                       boolean           forLineage,
+                                       boolean           forDuplicateProcessing,
+                                       Date              effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**

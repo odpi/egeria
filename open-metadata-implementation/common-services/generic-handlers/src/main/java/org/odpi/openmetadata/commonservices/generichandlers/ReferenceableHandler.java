@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -2758,8 +2759,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                  OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                  OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -2814,8 +2815,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                      OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                      OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -2924,8 +2925,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                        OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -2992,8 +2993,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                        OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3440,7 +3441,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDParameter parameter supplying the beanGUID
      * @param memberGUID unique identifier of the element to link
      * @param memberGUIDParameter parameter supplying the memberGUID
-     * @param resourceUse description of the way that the resource list is used
+     * @param resourceUse string description (use ResourceUse enum from GAF)
+     * @param resourceUseDescription description of how the resource is used
+     * @param resourceUseProperties additional properties associated with the resource
      * @param watchResource should changes in the members result in notifications
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
@@ -3453,33 +3456,47 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void  saveResourceListMember(String  userId,
-                                        String  externalSourceGUID,
-                                        String  externalSourceName,
-                                        String  beanGUID,
-                                        String  beanGUIDParameter,
-                                        String  memberGUID,
-                                        String  memberGUIDParameter,
-                                        String  resourceUse,
-                                        boolean watchResource,
-                                        Date    effectiveFrom,
-                                        Date    effectiveTo,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName)  throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public void  saveResourceListMember(String              userId,
+                                        String              externalSourceGUID,
+                                        String              externalSourceName,
+                                        String              beanGUID,
+                                        String              beanGUIDParameter,
+                                        String              memberGUID,
+                                        String              memberGUIDParameter,
+                                        String              resourceUse,
+                                        String              resourceUseDescription,
+                                        Map<String, String> resourceUseProperties,
+                                        boolean             watchResource,
+                                        Date                effectiveFrom,
+                                        Date                effectiveTo,
+                                        boolean             forLineage,
+                                        boolean             forDuplicateProcessing,
+                                        Date                effectiveTime,
+                                        String              methodName)  throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.RESOURCE_USE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.RESOURCE_USE.name,
                                                                                      resourceUse,
                                                                                      methodName);
 
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                                  resourceUseDescription,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                                                                     resourceUseProperties,
+                                                                     methodName);
+
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.WATCH_RESOURCE_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.WATCH_RESOURCE.name,
                                                                    watchResource,
                                                                    methodName);
 
@@ -3495,8 +3512,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3554,8 +3571,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                           effectiveTime,
                                           methodName);
         }
@@ -3610,8 +3627,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3673,8 +3690,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -5439,9 +5456,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (vendorProperties != null)
         {
-            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     null,
-                                                                    OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     vendorProperties,
                                                                     repositoryHelper,
                                                                     serviceName,
@@ -5458,7 +5475,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.updateBeanInRepository(userId,
                                                         null,
@@ -5539,7 +5556,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.deleteBeanInRepository(userId,
                                                         null,
@@ -5618,7 +5635,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             propertyFacet.getProperties(),
                                                                             methodName);
 
-                    if (OpenMetadataType.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                    if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                     {
                         return repositoryHelper.getStringMapFromProperty(serviceName,
                                                                          OpenMetadataType.PROPERTIES_PROPERTY_NAME,

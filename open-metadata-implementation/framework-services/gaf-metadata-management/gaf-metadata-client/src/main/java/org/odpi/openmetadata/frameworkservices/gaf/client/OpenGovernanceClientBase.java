@@ -14,14 +14,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagementInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionTypeInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 
@@ -34,6 +28,7 @@ import java.util.Map;
  * This includes the ability to define and execute governance action processes as well as manage duplicates.
  */
 public class OpenGovernanceClientBase implements ActionControlInterface,
+                                                 GovernanceActionTypeInterface,
                                                  GovernanceActionProcessInterface,
                                                  DuplicateManagementInterface
 {
@@ -196,7 +191,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
 
     /**
-     * Create a engine action in the metadata store which will trigger the governance service
+     * Create an engine action in the metadata store which will trigger the governance service
      * associated with the supplied request type.  The engine action remains to act as a record
      * of the actions taken for auditing.
      *
@@ -219,7 +214,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      *
      * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
-     * @throws UserNotAuthorizedException the caller is not authorized to create a engine action
+     * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -281,6 +276,63 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
 
     /**
+     * Using the named governance action type as a template, initiate an engine action.
+     *
+     * @param userId caller's userId
+     * @param governanceActionTypeQualifiedName unique name of the governance action type to use
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param requestParameters request properties to be passed to the engine action
+     * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     *
+     * @return unique identifier of the engine action
+     * @throws InvalidParameterException null or unrecognized qualified name of the type
+     * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String initiateGovernanceActionType(String                userId,
+                                               String                governanceActionTypeQualifiedName,
+                                               List<String>          requestSourceGUIDs,
+                                               List<NewActionTarget> actionTargets,
+                                               Date                  startTime,
+                                               Map<String, String>   requestParameters,
+                                               String                originatorServiceName,
+                                               String                originatorEngineName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String methodName = "initiateGovernanceActionType";
+        final String qualifiedNameParameterName = "governanceActionTypeQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/initiate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(governanceActionTypeQualifiedName, qualifiedNameParameterName, methodName);
+
+        GovernanceActionTypeRequestBody requestBody = new GovernanceActionTypeRequestBody();
+
+        requestBody.setGovernanceActionTypeQualifiedName(governanceActionTypeQualifiedName);
+        requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
+        requestBody.setActionTargets(actionTargets);
+        requestBody.setStartTime(startTime);
+        requestBody.setRequestParameters(requestParameters);
+        requestBody.setOriginatorServiceName(originatorServiceName);
+        requestBody.setOriginatorEngineName(originatorEngineName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param userId caller's userId
@@ -288,7 +340,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param requestSourceGUIDs  request source elements for the resulting governance service
      * @param actionTargets list of action target names to GUIDs for the resulting governance service
      * @param startTime future start time or null for "as soon as possible".
-     * @param requestParameters request properties to be passed to the first governance action
+     * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
@@ -335,7 +387,6 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         return restResult.getGUID();
     }
-
 
 
     /**
@@ -437,6 +488,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           serverName,
+                                                                                          serviceURLMarker,
                                                                                           userId,
                                                                                           Integer.toString(startFrom),
                                                                                           Integer.toString(pageSize));
@@ -664,11 +716,256 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         userId);
     }
 
+    /* =====================================================================================================================
+     * A governance action type is a template for a single engine action.
+     */
 
+
+    /**
+     * Create a new metadata element to represent a governance action type.
+     *
+     * @param userId     calling user
+     * @param properties properties about the governance action type to store
+     * @return unique identifier of the new governance action type
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createGovernanceActionType(String                         userId,
+                                             GovernanceActionTypeProperties properties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName = "createGovernanceActionType";
+        final String propertiesParameterName = "properties";
+        final String qualifiedNameParameterName = "properties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/new";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  properties,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata element representing a governance action type.
+     *
+     * @param userId                   calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate            should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param properties               new properties for the metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateGovernanceActionType(String                         userId,
+                                           String                         governanceActionTypeGUID,
+                                           boolean                        isMergeUpdate,
+                                           GovernanceActionTypeProperties properties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "updateGovernanceActionType";
+        final String guidParameterName = "governanceActionTypeGUID";
+        final String propertiesParameterName = "properties";
+        final String qualifiedNameParameterName = "properties.getQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/{3}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceActionTypeGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        UpdateGovernanceActionTypeRequestBody requestBody = new UpdateGovernanceActionTypeRequestBody();
+
+        requestBody.setMergeUpdate(isMergeUpdate);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        governanceActionTypeGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a governance action type.
+     *
+     * @param userId                   calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to remove
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeGovernanceActionType(String userId,
+                                           String governanceActionTypeGUID) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName = "removeGovernanceActionType";
+        final String guidParameterName = "governanceActionTypeGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/{3}/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceActionTypeGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        governanceActionTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId       calling user
+     * @param searchString string to find in the properties
+     * @param startFrom    paging start point
+     * @param pageSize     maximum results that can be returned
+     * @return list of matching metadata elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionTypeElement> findGovernanceActionTypes(String userId,
+                                                                       String searchString,
+                                                                       int    startFrom,
+                                                                       int    pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName = "findGovernanceActionTypes";
+        final String searchStringParameterName = "searchString";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/by-search-string?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        GovernanceActionTypesResponse restResult = restClient.callGovernanceTypesPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              serviceURLMarker,
+                                                                                              userId,
+                                                                                              Integer.toString(startFrom),
+                                                                                              Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId    calling user
+     * @param name      name to search for
+     * @param startFrom paging start point
+     * @param pageSize  maximum results that can be returned
+     * @return list of matching metadata elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String userId,
+                                                                            String name,
+                                                                            int    startFrom,
+                                                                            int    pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        final String methodName = "getGovernanceActionTypesByName";
+        final String nameParameterName = "name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/by-name?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        GovernanceActionTypesResponse restResult = restClient.callGovernanceTypesPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              serviceURLMarker,
+                                                                                              userId,
+                                                                                              Integer.toString(startFrom),
+                                                                                              Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the governance action type metadata element with the supplied unique identifier.
+     *
+     * @param userId                   calling user
+     * @param governanceActionTypeGUID unique identifier of the governance action type
+     * @return requested metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GovernanceActionTypeElement getGovernanceActionTypeByGUID(String userId,
+                                                                     String governanceActionTypeGUID) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        final String methodName = "getGovernanceActionTypeByGUID";
+        final String guidParameterName = "governanceActionTypeGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-types/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceActionTypeGUID, guidParameterName, methodName);
+
+        GovernanceActionTypeResponse restResult = restClient.callGovernanceActionTypeGetRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 serverName,
+                                                                                                 serviceURLMarker,
+                                                                                                 userId,
+                                                                                                 governanceActionTypeGUID);
+
+        return restResult.getElement();
+    }
 
 
     /* =====================================================================================================================
-     * A governance action process describes a well defined series of steps that gets something done.
+     * A governance action process describes a well-defined series of steps that gets something done.
      * The steps are defined using GovernanceActionProcessSteps.
      */
 
@@ -695,7 +992,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String methodName = "createGovernanceActionProcess";
         final String propertiesParameterName = "processProperties";
         final String qualifiedNameParameterName = "processProperties.getQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
@@ -710,6 +1007,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
+                                                                  serviceURLMarker,
                                                                   userId);
 
         return restResult.getGUID();
@@ -743,7 +1041,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String guidParameterName = "processGUID";
         final String propertiesParameterName = "processProperties";
         final String qualifiedNameParameterName = "processProperties.getQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -764,6 +1062,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID);
     }
@@ -789,7 +1088,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "publishGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/publish";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/publish";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -798,6 +1097,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID);
     }
@@ -824,7 +1124,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "withdrawGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/withdraw";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -833,6 +1133,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID);
     }
@@ -857,7 +1158,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "removeGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -866,6 +1167,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID);
     }
@@ -897,7 +1199,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "findGovernanceActionProcesses";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/by-search-string?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -911,6 +1213,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                                                                         urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
+                                                                                                                        serviceURLMarker,
                                                                                                                         userId,
                                                                                                                         Integer.toString(startFrom),
                                                                                                                         Integer.toString(pageSize));
@@ -945,7 +1248,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getGovernanceActionProcessesByName";
         final String nameParameterName = "name";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/by-name?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -959,13 +1262,13 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                                                                         urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
+                                                                                                                        serviceURLMarker,
                                                                                                                         userId,
                                                                                                                         Integer.toString(startFrom),
                                                                                                                         Integer.toString(pageSize));
 
         return restResult.getElements();
     }
-
 
 
     /**
@@ -988,7 +1291,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getGovernanceActionProcessByGUID";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -996,6 +1299,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         GovernanceActionProcessElementResponse restResult = restClient.callGovernanceActionProcessGetRESTCall(methodName,
                                                                                                               urlTemplate,
                                                                                                               serverName,
+                                                                                                              serviceURLMarker,
                                                                                                               userId,
                                                                                                               processGUID);
 
@@ -1030,7 +1334,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String methodName = "createGovernanceActionProcessStep";
         final String propertiesParameterName = "processStepProperties";
         final String qualifiedNameParameterName = "processStepProperties.getQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(processStepProperties, propertiesParameterName, methodName);
@@ -1040,11 +1344,11 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                   urlTemplate,
                                                                   processStepProperties,
                                                                   serverName,
+                                                                  serviceURLMarker,
                                                                   userId);
 
         return restResult.getGUID();
     }
-
 
 
     /**
@@ -1071,7 +1375,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String guidParameterName = "processStepGUID";
         final String propertiesParameterName = "processStepProperties";
         final String qualifiedNameParameterName = "processStepProperties.getQualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/{3}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
@@ -1091,6 +1395,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processStepGUID);
     }
@@ -1114,7 +1419,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "removeGovernanceActionProcessStep";
         final String guidParameterName = "processStepGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/{3}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
@@ -1123,6 +1428,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processStepGUID);
     }
@@ -1153,7 +1459,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "findGovernanceActionProcessSteps";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/by-search-string?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -1167,6 +1473,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                                                             urlTemplate,
                                                                                                             requestBody,
                                                                                                             serverName,
+                                                                                                            serviceURLMarker,
                                                                                                             userId,
                                                                                                             Integer.toString(startFrom),
                                                                                                             Integer.toString(pageSize));
@@ -1200,7 +1507,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getGovernanceActionProcessStepsByName";
         final String nameParameterName = "name";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/by-name?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -1214,6 +1521,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                                                             urlTemplate,
                                                                                                             requestBody,
                                                                                                             serverName,
+                                                                                                            serviceURLMarker,
                                                                                                             userId,
                                                                                                             Integer.toString(startFrom),
                                                                                                             Integer.toString(pageSize));
@@ -1242,7 +1550,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getGovernanceActionProcessStepByGUID";
         final String guidParameterName = "processStepGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
@@ -1250,6 +1558,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         GovernanceActionProcessStepResponse restResult = restClient.callGovernanceActionProcessStepGetRESTCall(methodName,
                                                                                                                urlTemplate,
                                                                                                                serverName,
+                                                                                                               serviceURLMarker,
                                                                                                                userId,
                                                                                                                processStepGUID);
 
@@ -1282,7 +1591,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String methodName = "setupFirstActionProcessStep";
         final String processGUIDParameterName = "processGUID";
         final String processStepGUIDParameterName = "processStepGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/first-action-process-step/{4}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
@@ -1292,6 +1601,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         guard,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID,
                                         processStepGUID);
@@ -1318,7 +1628,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getFirstActionProcessStep";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/first-action-process-step";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -1326,6 +1636,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         GovernanceActionProcessStepResponse restResult = restClient.callGovernanceActionProcessStepGetRESTCall(methodName,
                                                                                                                urlTemplate,
                                                                                                                serverName,
+                                                                                                               serviceURLMarker,
                                                                                                                userId,
                                                                                                                processGUID);
 
@@ -1351,7 +1662,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "removeFirstActionProcessStep";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-process-step/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/{3}/first-action-process-step/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -1360,6 +1671,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processGUID);
     }
@@ -1396,7 +1708,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         final String methodName = "setupNextActionProcessStep";
         final String currentGUIDParameterName = "currentActionProcessStepGUID";
         final String nextGUIDParameterName = "nextActionProcessStepGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/next-process-steps/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/{3}/next-process-steps/{4}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentActionProcessStepGUID, currentGUIDParameterName, methodName);
@@ -1411,6 +1723,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
+                                                                  serviceURLMarker,
                                                                   userId,
                                                                   currentActionProcessStepGUID,
                                                                   nextActionProcessStepGUID);
@@ -1435,7 +1748,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      */
     @Override
     public void updateNextActionProcessStep(String  userId,
-                                            String nextProcessStepLinkGUID,
+                                            String  nextProcessStepLinkGUID,
                                             String  guard,
                                             boolean mandatoryGuard,
                                             boolean ignoreMultipleTriggers) throws InvalidParameterException,
@@ -1444,7 +1757,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "updateNextActionProcessStep";
         final String guidParameterName = "nextActionLinkGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/next-process-steps/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/next-process-steps/{3}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(nextProcessStepLinkGUID, guidParameterName, methodName);
@@ -1458,6 +1771,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         nextProcessStepLinkGUID);
     }
@@ -1487,7 +1801,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "getNextGovernanceActionProcessSteps";
         final String guidParameterName = "processStepGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/{2}/next-process-step?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/{3}/next-process-step?startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
@@ -1495,6 +1809,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         NextGovernanceActionProcessStepsResponse restResult = restClient.callNextGovernanceActionProcessStepsGetRESTCall(methodName,
                                                                                                                          urlTemplate,
                                                                                                                          serverName,
+                                                                                                                         serviceURLMarker,
                                                                                                                          userId,
                                                                                                                          processStepGUID,
                                                                                                                          Integer.toString(startFrom),
@@ -1522,7 +1837,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     {
         final String methodName = "removeFirstActionProcessStep";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-process-steps/next-process-step/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-process-steps/next-process-step/{3}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepLinkGUID, guidParameterName, methodName);
@@ -1531,6 +1846,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         processStepLinkGUID);
     }

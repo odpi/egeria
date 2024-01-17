@@ -157,7 +157,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
                                                                               OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                                                               null,
-                                                                              OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME,
+                                                                              OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName,
                                                                               0,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -650,7 +650,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  externalSourceName,
                                  annotationGUID,
                                  annotationGUIDParameterName,
-                                 OpenMetadataType.ANNOTATION_TYPE_NAME,
+                                 OpenMetadataType.ANNOTATION.typeName,
                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                  dataFieldPosition,
@@ -780,13 +780,13 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataType.RELATIONSHIP_END_PROPERTY_NAME,
+                                                                                              OpenMetadataProperty.RELATIONSHIP_END.name,
                                                                                               relationshipEnd,
                                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name,
                                                                               relationshipTypeName,
                                                                               methodName);
 

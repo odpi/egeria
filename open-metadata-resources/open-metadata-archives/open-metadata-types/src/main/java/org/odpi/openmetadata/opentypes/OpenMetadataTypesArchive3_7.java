@@ -188,10 +188,11 @@ public class OpenMetadataTypesArchive3_7
 
     private RelationshipDef getDeployedOnRelationship()
     {
-        final String guid            = "6932ba75-9522-4a06-a4a4-ee60a4df6aab";
-        final String name            = "DeployedOn";
-        final String description     = "Identifies an IT Infrastructure asset that is deployed to a specific destination.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DEPLOYED_ON.typeGUID;
+        final String name            = OpenMetadataType.DEPLOYED_ON.typeName;
+        final String description     = OpenMetadataType.DEPLOYED_ON.description;
+        final String descriptionGUID = OpenMetadataType.DEPLOYED_ON.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DEPLOYED_ON.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -200,6 +201,7 @@ public class OpenMetadataTypesArchive3_7
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -207,7 +209,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ITInfrastructure";
+        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME;
         final String                     end1AttributeName            = "deployedElement";
         final String                     end1AttributeDescription     = "IT infrastructure deployed to this asset.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -243,21 +245,21 @@ public class OpenMetadataTypesArchive3_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deploymentTime";
-        final String attribute1Description     = "Time that the IT Infrastructure was deployed.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that deployed the IT Infrastructure.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "deploymentStatus";
-        final String attribute5Description     = "The operational status of the the IT Infrastructure on the specific destination.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYMENT_TIME.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYMENT_TIME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYMENT_TIME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DEPLOYER.name;
+        final String attribute2Description     = OpenMetadataProperty.DEPLOYER.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DEPLOYER.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DEPLOYER_TYPE_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.DEPLOYER_TYPE_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DEPLOYER_TYPE_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.OPERATIONAL_STATUS.name;
+        final String attribute5Description     = OpenMetadataProperty.OPERATIONAL_STATUS.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -275,7 +277,7 @@ public class OpenMetadataTypesArchive3_7
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);

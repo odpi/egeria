@@ -117,7 +117,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                     fileProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     fileProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     fileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     fileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

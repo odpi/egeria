@@ -6,9 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -111,13 +109,6 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         connectorType.setDeployedImplementationType(DeployedImplementationType.FILES_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
-
-        CatalogTargetType catalogTargetType = new CatalogTargetType();
-
-        catalogTargetType.setTypeName(OpenMetadataType.DATA_FOLDER_TYPE_NAME);
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
-
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
 
         /*
          * Set up the component description used in the connector's audit log messages.

@@ -21,7 +21,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
     private static final String connectorClassName     = CSVLineageImporterConnector.class.getName();
 
     /**
-     * The name of the catalog target that contains the directory to monitor.
+     * The name of the catalog target that contains the file to monitor.
      */
     static public final String CATALOG_TARGET_NAME    = "fileToLoad";
 
@@ -53,7 +53,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
-        catalogTargetType.setTypeName(OpenMetadataType.CSV_FILE_TYPE_NAME);
+        catalogTargetType.setTypeName(OpenMetadataType.CSV_FILE.typeName);
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
 
         super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);

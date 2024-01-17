@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -738,15 +739,21 @@ public class OpenMetadataTypesArchive3_4
         final String attribute4Name            = "executorEngineName";
         final String attribute4Description     = "Unique identifier of the governance engine nominated to run the request.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "processName";
-        final String attribute5Description     = "Unique name of the process that initiated this request.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "processStepGUID";
-        final String attribute6Description     = "Unique identifier of the governance action process step that initiated this request.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "processStepName";
-        final String attribute7Description     = "Unique name of the governance action process step that initiated this request.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute5Name            = OpenMetadataProperty.PROCESS_NAME.name;
+        final String attribute5Description     = OpenMetadataProperty.PROCESS_NAME.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.PROCESS_NAME.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.PROCESS_STEP_GUID.name;
+        final String attribute6Description     = OpenMetadataProperty.PROCESS_STEP_GUID.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.PROCESS_STEP_GUID.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.PROCESS_STEP_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.PROCESS_STEP_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.PROCESS_STEP_NAME.descriptionGUID;
+        final String attribute8Name            = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.name;
+        final String attribute8Description     = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_GUID.descriptionGUID;
+        final String attribute9Name            = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.name;
+        final String attribute9Description     = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.description;
+        final String attribute9DescriptionGUID = OpenMetadataProperty.GOVERNANCE_ACTION_TYPE_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -775,6 +782,14 @@ public class OpenMetadataTypesArchive3_4
         property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
                                                            attribute7Description,
                                                            attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
+                                                           attribute8Description,
+                                                           attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
+                                                           attribute9Description,
+                                                           attribute9DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     // Compile only - already included in egeria
@@ -60,3 +64,7 @@ dependencies {
 
 description = 'An OMRS Repository Connector for a historical metadata back-end based on XTDB.'
 
+shadowJar {
+    mainClassName = ''
+    archiveClassifier = 'jar-with-dependencies'
+}

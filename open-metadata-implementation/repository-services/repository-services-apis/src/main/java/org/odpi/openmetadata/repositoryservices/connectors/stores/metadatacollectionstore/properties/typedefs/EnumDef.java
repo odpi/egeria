@@ -132,6 +132,7 @@ public class EnumDef extends AttributeTypeDef
                 ", category=" + getCategory() +
                 ", GUID='" + getGUID() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 '}';
     }
 

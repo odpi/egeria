@@ -25,7 +25,7 @@ public class ConnectedCommentReplies extends CommentReplies
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
-    private String                 omasServerURL;
+    private String                 platformURLRoot;
     private String                 rootCommentGUID;
     private int                    maxCacheSize;
     private OCFRESTClient          restClient;
@@ -38,7 +38,7 @@ public class ConnectedCommentReplies extends CommentReplies
      * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param rootCommentGUID unique identifier of the comment that the replies are attached to.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
@@ -48,7 +48,7 @@ public class ConnectedCommentReplies extends CommentReplies
     ConnectedCommentReplies(String                 serviceName,
                             String                 serverName,
                             String                 userId,
-                            String                 omasServerURL,
+                            String                 platformURLRoot,
                             String                 rootCommentGUID,
                             int                    totalElementCount,
                             int                    maxCacheSize,
@@ -59,7 +59,7 @@ public class ConnectedCommentReplies extends CommentReplies
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
+        this.platformURLRoot   = platformURLRoot;
         this.rootCommentGUID = rootCommentGUID;
         this.maxCacheSize    = maxCacheSize;
         this.restClient      = restClient;
@@ -80,7 +80,7 @@ public class ConnectedCommentReplies extends CommentReplies
             this.serviceName     = template.serviceName;
             this.serverName      = template.serverName;
             this.userId          = template.userId;
-            this.omasServerURL   = template.omasServerURL;
+            this.platformURLRoot   = template.platformURLRoot;
             this.rootCommentGUID = template.rootCommentGUID;
             this.maxCacheSize    = template.maxCacheSize;
             this.restClient      = template.restClient;
@@ -142,7 +142,7 @@ public class ConnectedCommentReplies extends CommentReplies
         try
         {
             CommentsResponse restResult = restClient.callOCFCommentsGetRESTCall(methodName,
-                                                                                omasServerURL + urlTemplate,
+                                                                                platformURLRoot + urlTemplate,
                                                                                 serverName,
                                                                                 serviceName,
                                                                                 userId,
@@ -175,7 +175,7 @@ public class ConnectedCommentReplies extends CommentReplies
                             commentReplies = new ConnectedCommentReplies(serviceName,
                                                                          serverName,
                                                                          userId,
-                                                                         omasServerURL,
+                                                                         platformURLRoot,
                                                                          bean.getGUID(),
                                                                          commentResponse.getReplyCount(),
                                                                          maxCacheSize,
@@ -194,7 +194,7 @@ public class ConnectedCommentReplies extends CommentReplies
         }
         catch (Exception  error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, platformURLRoot);
         }
 
         return null;

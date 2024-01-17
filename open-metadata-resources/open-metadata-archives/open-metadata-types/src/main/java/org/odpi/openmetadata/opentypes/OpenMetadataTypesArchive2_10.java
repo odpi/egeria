@@ -283,7 +283,6 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceOfficer());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStep());
         this.archiveBuilder.addTypeDefPatch(updateIncidentClassifier());
         this.archiveBuilder.addTypeDefPatch(updateIncidentReport());
         this.archiveBuilder.addTypeDefPatch(updateAssetOrigin());
@@ -1051,53 +1050,6 @@ public class OpenMetadataTypesArchive2_10
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate the ownership properties - use Ownership classification instead
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateGovernanceActionProcessStep()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceActionProcessStep";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "owner";
-        final String attribute1Description     = "Deprecated Attribute. Person, team or engine responsible for this type of action.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "ownerType";
-        final String attribute2Description     = "Deprecated Attribute. Type of element representing the owner.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OwnerType",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
 

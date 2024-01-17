@@ -5,8 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -117,5 +120,12 @@ public class GenericElementWatchdogGovernanceActionProvider extends GenericWatch
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
+
+        super.actionTargetTypes.put(INSTANCE_TO_MONITOR_PROPERTY, actionTargetType);
     }
 }

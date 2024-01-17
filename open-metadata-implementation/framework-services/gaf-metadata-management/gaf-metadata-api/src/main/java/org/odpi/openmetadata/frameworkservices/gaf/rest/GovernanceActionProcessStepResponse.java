@@ -16,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceActionTypeElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
- * GovernanceActionType element object as a response.
+ * GovernanceActionProcessStepElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * GovernanceActionProcessStep element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

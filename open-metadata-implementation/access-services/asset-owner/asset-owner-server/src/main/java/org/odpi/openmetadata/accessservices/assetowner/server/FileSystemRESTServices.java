@@ -447,7 +447,7 @@ public class FileSystemRESTServices
                                                         String                  userId,
                                                         NewFileAssetRequestBody requestBody)
     {
-        final String methodName = "addDataFileAssetToCatalog";
+        final String methodName = "addDataFolderAssetToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

@@ -5,8 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * QualifiedNamePeerDuplicateGovernanceActionProvider is the OCF connector provider for the Deduplication Governance Action Service.
@@ -18,6 +21,8 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:Deduplication";
     private static final String  connectorTypeDisplayName = "Deduplication Governance Action Service";
     private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.";
+
+    static final String ACTION_TARGET_NAME = "elementGUID";
 
     static final String DUPLICATE_ASSIGNED_GUARD = "duplicate-detected";
     static final String DUPLICATE_ALREADY_ASSIGNED_GUARD = "duplicate-already-assigned";
@@ -56,5 +61,12 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
+
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
+
+        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

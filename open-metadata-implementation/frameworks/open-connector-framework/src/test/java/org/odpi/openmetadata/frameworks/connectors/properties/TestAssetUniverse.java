@@ -193,7 +193,7 @@ public class TestAssetUniverse
                                                      relatedAssets);
 
         assertTrue(testObject.getMeanings() == null);
-        assertTrue(testObject.getSchema() == null);
+        assertTrue(testObject.getRootSchemaType() == null);
         assertTrue(testObject.getFeedback() == null);
         assertTrue(testObject.getKnownLocations() == null);
         assertTrue(testObject.getLineage() == null);
@@ -236,7 +236,7 @@ public class TestAssetUniverse
                                                      relatedAssets);
 
         assertTrue(testObject.getMeanings() == null);
-        assertTrue(testObject.getSchema() != null);
+        assertTrue(testObject.getRootSchemaType() != null);
         assertTrue(testObject.getFeedback() != null);
         assertTrue(testObject.getKnownLocations() != null);
         assertTrue(testObject.getLineage() != null);

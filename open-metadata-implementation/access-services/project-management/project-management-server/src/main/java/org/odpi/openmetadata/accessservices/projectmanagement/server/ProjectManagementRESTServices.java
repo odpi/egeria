@@ -1987,10 +1987,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ResourceListProperties)
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
                 {
-                    ResourceListProperties properties = (ResourceListProperties) requestBody.getProperties();
-
                     handler.saveResourceListMember(userId,
                                                    requestBody.getExternalSourceGUID(),
                                                    requestBody.getExternalSourceName(),
@@ -1999,6 +1997,8 @@ public class ProjectManagementRESTServices
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
                                                    properties.getResourceUse(),
+                                                   properties.getResourceUseDescription(),
+                                                   properties.getResourceUseProperties(),
                                                    properties.getWatchResource(),
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
@@ -2016,6 +2016,8 @@ public class ProjectManagementRESTServices
                                                    elementGUIDParameterName,
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
+                                                   null,
+                                                   null,
                                                    null,
                                                    false,
                                                    null,

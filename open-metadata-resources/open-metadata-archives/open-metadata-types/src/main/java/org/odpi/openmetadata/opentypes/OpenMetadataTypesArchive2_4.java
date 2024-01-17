@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
+ * OpenMetadataTypesArchive builds an open metadata archive containing all the standard open metadata types.
  * These types have hardcoded dates and guids so that however many times this archive is rebuilt, it will
  * produce the same content.
  * <p>
@@ -108,7 +108,7 @@ public class OpenMetadataTypesArchive2_4
 
 
     /**
-     * Returns the open metadata type archive containing all of the standard open metadata types.
+     * Returns the open metadata type archive containing all the standard open metadata types.
      *
      * @return populated open metadata archive object
      */
@@ -407,40 +407,40 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "changeTarget";
-        final String attribute1Description     = "The relationship of element that has been changed to the anchor.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "changeAction";
-        final String attribute2Description     = "The type of change.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "classificationName";
-        final String attribute3Description     = "If a classification name changed, this is its name.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "attachmentGUID";
-        final String attribute4Description     = "If an attached entity or relationship to it changed, this is its unique identifier of the entity.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "attachmentType";
-        final String attribute5Description     = "If an attached entity or relationship to changed, this is its unique type name of the entity.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "relationshipType";
-        final String attribute6Description     = "If an attached entity or relationship to changed, this is its unique type name of the relationship.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "user";
-        final String attribute7Description     = "The user identifier for the person/system making the change.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "description";
-        final String attribute8Description     = "Description of the change.  Also known as the actionDescription.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.CHANGE_TARGET.name;
+        final String attribute1Description     = OpenMetadataProperty.CHANGE_TARGET.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.CHANGE_TARGET.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.CHANGE_ACTION.name;
+        final String attribute2Description     = OpenMetadataProperty.CHANGE_ACTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CHANGE_ACTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.CLASSIFICATION_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.CLASSIFICATION_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.CLASSIFICATION_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.ATTACHMENT_GUID.name;
+        final String attribute4Description     = OpenMetadataProperty.ATTACHMENT_GUID.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.ATTACHMENT_GUID.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.ATTACHMENT_TYPE.name;
+        final String attribute5Description     = OpenMetadataProperty.ATTACHMENT_TYPE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.ATTACHMENT_TYPE.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.RELATIONSHIP_TYPE.name;
+        final String attribute6Description     = OpenMetadataProperty.RELATIONSHIP_TYPE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.RELATIONSHIP_TYPE.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.USER.name;
+        final String attribute7Description     = OpenMetadataProperty.USER.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.USER.descriptionGUID;
+        final String attribute8Name            = OpenMetadataProperty.ACTION_DESCRIPTION.name;
+        final String attribute8Description     = OpenMetadataProperty.ACTION_DESCRIPTION.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.ACTION_DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("LatestChangeTarget",
                                                          attribute1Name,
                                                          attribute1Description,
-                                                         attribute1DescriptionGUID);;
+                                                         attribute1DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("LatestChangeAction",
                                                          attribute2Name,
                                                          attribute2Description,
-                                                         attribute2DescriptionGUID);;
+                                                         attribute2DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -483,8 +483,8 @@ public class OpenMetadataTypesArchive2_4
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_TYPE_NAME));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW_TYPE_NAME));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING_TYPE_NAME));
@@ -593,16 +593,18 @@ public class OpenMetadataTypesArchive2_4
 
     private EntityDef getSearchKeywordEntity()
     {
-        final String guid            = "0134c9ae-0fe6-4224-bb3b-e18b78a90b1e";
-        final String name            = "SearchKeyword";
-        final String description     = "A shareable keyword to help locating relevant assets.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SEARCH_KEYWORD.typeGUID;
+        final String name            = OpenMetadataType.SEARCH_KEYWORD.typeName;
+        final String description     = OpenMetadataType.SEARCH_KEYWORD.description;
+        final String descriptionGUID = OpenMetadataType.SEARCH_KEYWORD.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SEARCH_KEYWORD.wikiURL;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
                                                                 null,
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -610,12 +612,12 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "keyword";
-        final String attribute1Description     = "Name of the keyword.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the keyword to clarify its meaning/uses.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.KEYWORD.name;
+        final String attribute1Description     = OpenMetadataProperty.KEYWORD.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.KEYWORD.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -633,10 +635,11 @@ public class OpenMetadataTypesArchive2_4
 
     private RelationshipDef addSearchKeywordLinkRelationship()
     {
-        final String guid            = "d2f8df24-6905-49b8-b389-31b2da156ece";
-        final String name            = "SearchKeywordLink";
-        final String description     = "Provides a link to a keyword that helps to identify specific elements in a search.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -645,6 +648,7 @@ public class OpenMetadataTypesArchive2_4
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -669,7 +673,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SearchKeyword";
+        final String                     end2EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end2AttributeName            = "searchKeywords";
         final String                     end2AttributeDescription     = "Keywords to describe the element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -687,10 +691,11 @@ public class OpenMetadataTypesArchive2_4
 
     private RelationshipDef addRelatedKeywordRelationship()
     {
-        final String guid            = "f9ffa8a8-80f5-4e6d-9c05-a3a5e0277d62";
-        final String name            = "RelatedKeyword";
-        final String description     = "Links search keywords that have similar meanings together.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -699,6 +704,7 @@ public class OpenMetadataTypesArchive2_4
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -706,7 +712,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SearchKeyword";
+        final String                     end1EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end1AttributeName            = "relatedKeyword";
         final String                     end1AttributeDescription     = "Keyword with similar meaning or usage.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -723,7 +729,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SearchKeyword";
+        final String                     end2EntityType               = OpenMetadataType.SEARCH_KEYWORD.typeName;
         final String                     end2AttributeName            = "relatedKeyword";
         final String                     end2AttributeDescription     = "Keyword with similar meaning or usage.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2370,7 +2376,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "Annotation";
+        final String typeName = OpenMetadataType.ANNOTATION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2506,8 +2512,6 @@ public class OpenMetadataTypesArchive2_4
         this.archiveBuilder.addTypeDefPatch(updateMetadataServerClassification());
         this.archiveBuilder.addTypeDefPatch(updateRepositoryProxyClassification());
         this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDataStoreEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDataSourcePhysicalStatusAnnotationEntity());
         this.archiveBuilder.addTypeDefPatch(updateEnterpriseAccessLayerEntity());
         this.archiveBuilder.addTypeDefPatch(updateMetadataCollectionEntity());
         this.archiveBuilder.addTypeDefPatch(updateExternalReferenceEntity());
@@ -3221,150 +3225,6 @@ public class OpenMetadataTypesArchive2_4
                                                          attribute2Name,
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
-
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateDataStoreEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataStore";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "createTime";
-        final String attribute1Description     = "Deprecated attribute. Use the storeCreateTime attribute to describe the creation time of the data store.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "storeCreateTime";
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "storeCreateTime";
-        final String attribute2Description     = "Creation time of the data store.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-
-        properties.add(property);
-
-        final String attribute3Name            = "modifiedTime";
-        final String attribute3Description     = "Deprecated attribute. Use the storeUpdateTime attribute to define the last known modification time of the data store.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute3ReplacedBy      = "storeUpdateTime";
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute3ReplacedBy);
-        properties.add(property);
-
-        final String attribute4Name            = "storeUpdateTime";
-        final String attribute4Description     = "Last known modification time of the data store.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                                                         attribute4Description,
-                                                         attribute4DescriptionGUID);
-
-        properties.add(property);
-
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateDataSourcePhysicalStatusAnnotationEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataSourcePhysicalStatusAnnotation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "createTime";
-        final String attribute1Description     = "Deprecated attribute. Use the sourceCreateTime attribute to describe when the data source was created.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "sourceCreateTime";
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "sourceCreateTime";
-        final String attribute2Description     = "When the data source was created.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
-
-        properties.add(property);
-
-        final String attribute3Name            = "modifiedTime";
-        final String attribute3Description     = "Deprecated attribute. Use the sourceUpdateTime attribute to describe when the data source was last modified.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute3ReplacedBy      = "sourceUpdateTime";
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute3ReplacedBy);
-        properties.add(property);
-
-        final String attribute4Name            = "sourceUpdateTime";
-        final String attribute4Description     = "When the data source was last modified.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                                                         attribute4Description,
-                                                         attribute4DescriptionGUID);
 
         properties.add(property);
 

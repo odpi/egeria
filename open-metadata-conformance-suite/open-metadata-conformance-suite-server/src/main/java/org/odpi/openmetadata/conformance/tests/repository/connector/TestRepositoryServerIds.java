@@ -7,6 +7,9 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+/**
+ * TestRepositoryServerIds tests server ids
+ */
 public class TestRepositoryServerIds extends RepositoryConformanceTestCase
 {
     private static final  String testCaseId   = "repository-server-ids";

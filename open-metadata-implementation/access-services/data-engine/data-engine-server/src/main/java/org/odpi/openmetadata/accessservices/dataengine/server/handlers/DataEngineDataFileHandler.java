@@ -141,12 +141,12 @@ public class DataEngineDataFileHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID,
-                                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.DATA_FILE_TYPE_NAME);
+                                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.DATA_FILE.typeName);
         if (schemaType.isPresent()) {
             dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
 
             fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, OpenMetadataProperty.GUID.name,
-                                               OpenMetadataType.DATA_FILE_TYPE_GUID, OpenMetadataType.DATA_FILE_TYPE_NAME, null, null, false,
+                                               OpenMetadataType.DATA_FILE.typeGUID, OpenMetadataType.DATA_FILE.typeName, null, null, false,
                                                false, dataEngineCommonHandler.getNow(), methodName);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
@@ -157,7 +157,7 @@ public class DataEngineDataFileHandler {
                                           EntityDetail fileAsEntity, DataFile file, Map<String, Object> extendedProperties,
                                           String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.DATA_FILE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.DATA_FILE.typeName);
 
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
                CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(), null,

@@ -39,25 +39,9 @@ public class OpenMetadataValidValues
     public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
 
     /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of server and a type of service.
+     * This value is added to the description property of a PropertyFacet
      */
-    public static final String HOSTED_SERVICE_RESOURCE_USE = "Hosted Service";
-
-    /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service/engine and a type of connector.
-     */
-    public static final String HOSTED_CONNECTOR_RESOURCE_USE = "Hosted Connector";
-
-
-    /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service and a type of governance engine.
-     */
-    public static final String HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE = "Hosted Governance Engine";
-
-    /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service and another type of service it calls.
-     */
-    public static final String CALLED_SERVICE_RESOURCE_USE = "Called Service";
+    public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE = "vendorProperties";
 
     /**
      * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.

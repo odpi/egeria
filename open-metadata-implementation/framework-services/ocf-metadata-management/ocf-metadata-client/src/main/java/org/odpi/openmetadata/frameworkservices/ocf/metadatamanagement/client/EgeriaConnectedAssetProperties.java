@@ -39,7 +39,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
     private String               userId              = null;
     private String               localServerUserId   = null;
     private String               localServerPassword = null;
-    private String               omasServerURL       = null;
+    private String               platformURLRoot       = null;
     private String               connectorInstanceId = null;
     private ConnectionProperties connection          = null;
     private String               assetGUID           = null;
@@ -54,7 +54,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
      * @param userId  identifier of calling user
-     * @param omasServerURL  url of server
+     * @param platformURLRoot  url of server
      * @param connectorInstanceId  unique identifier of connector.
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
@@ -62,7 +62,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
     public EgeriaConnectedAssetProperties(String               serviceName,
                                           String               remoteServerName,
                                           String               userId,
-                                          String               omasServerURL,
+                                          String               platformURLRoot,
                                           String               connectorInstanceId,
                                           ConnectionProperties connection,
                                           String               assetGUID)
@@ -72,7 +72,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         this.serviceName         = serviceName;
         this.remoteServerName    = remoteServerName;
         this.userId              = userId;
-        this.omasServerURL       = omasServerURL;
+        this.platformURLRoot       = platformURLRoot;
         this.connectorInstanceId = connectorInstanceId;
         this.connection          = connection;
         this.assetGUID           = assetGUID;
@@ -87,7 +87,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
      * @param localServerUserId userId to use on the rest call.
      * @param localServerPassword password to use on the rest call.
      * @param userId  identifier of calling user
-     * @param omasServerURL  url of server
+     * @param platformURLRoot  url of server
      * @param connectorInstanceId  unique identifier of connector.
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
@@ -97,7 +97,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
                                           String               localServerUserId,
                                           String               localServerPassword,
                                           String               userId,
-                                          String               omasServerURL,
+                                          String               platformURLRoot,
                                           String               connectorInstanceId,
                                           ConnectionProperties connection,
                                           String               assetGUID)
@@ -109,7 +109,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         this.localServerUserId   = localServerUserId;
         this.localServerPassword = localServerPassword;
         this.userId              = userId;
-        this.omasServerURL       = omasServerURL;
+        this.platformURLRoot       = platformURLRoot;
         this.connectorInstanceId = connectorInstanceId;
         this.connection          = connection;
         this.assetGUID           = assetGUID;
@@ -134,7 +134,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
             this.userId              = template.userId;
             this.connection          = template.connection;
             this.connectorInstanceId = template.connectorInstanceId;
-            this.omasServerURL       = template.omasServerURL;
+            this.platformURLRoot       = template.platformURLRoot;
             this.assetGUID           = template.assetGUID;
         }
     }
@@ -165,7 +165,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
                                                                 remoteServerName,
                                                                 localServerUserId,
                                                                 localServerPassword,
-                                                                omasServerURL,
+                                                                platformURLRoot,
                                                                 userId,
                                                                 assetGUID,
                                                                 connection.getGUID());
@@ -174,7 +174,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
             {
                 assetProperties = ConnectedAssetUniverse.create(serviceName,
                                                                 remoteServerName,
-                                                                omasServerURL,
+                                                                platformURLRoot,
                                                                 userId,
                                                                 assetGUID,
                                                                 connection.getGUID());
@@ -186,7 +186,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         }
         catch (Exception  error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, platformURLRoot);
         }
 
         log.debug("Returning from method: " + methodName + " having retrieved: " + assetProperties.toString());
@@ -206,7 +206,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
                 ", remoteServerName='" + remoteServerName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", localServerUserId='" + localServerUserId + '\'' +
-                ", omasServerURL='" + omasServerURL + '\'' +
+                ", platformURLRoot='" + platformURLRoot + '\'' +
                 ", connectorInstanceId='" + connectorInstanceId + '\'' +
                 ", connection=" + connection +
                 ", assetGUID='" + assetGUID + '\'' +

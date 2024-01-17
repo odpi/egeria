@@ -620,15 +620,12 @@ public class OpenMetadataTypesArchive3_8
 
     /**
      * Make supported governance service multi-link and add support for RepositoryGovernanceEngine and RepositoryGovernanceService.
-     * ArchiveEngine and ArchiveService are deprecated in favour of these new entity types
      */
     private void update0461GovernanceEngines()
     {
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceEngineEntity());
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceServiceEntity());
         this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateArchiveEngine());
-        this.archiveBuilder.addTypeDefPatch(deprecateArchiveService());
     }
 
 
@@ -637,7 +634,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Create the Patch
          */
-        final String typeName = "SupportedGovernanceService";
+        final String typeName = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -650,60 +647,25 @@ public class OpenMetadataTypesArchive3_8
     }
 
 
-    private TypeDefPatch deprecateArchiveEngine()
-    {
-        /*
-         * Create the Patch - the super type is updated so that existing archive engines will run in the repository governance OMES
-         */
-        final String typeName = "ArchiveEngine";
-        final String superTypeName = "RepositoryGovernanceEngine";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateArchiveService()
-    {
-        /*
-         * Create the Patch - the super type is updated so that existing archive services will run in the repository governance OMES
-         */
-        final String typeName = "ArchiveService";
-        final String superTypeName = "RepositoryGovernanceService";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
     private EntityDef getRepositoryGovernanceEngineEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = "2b3bed05-c227-47d7-87a3-139ab0568361";
-        final String name            = "RepositoryGovernanceEngine";
-        final String description     = "A governance engine for open metadata repositories.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceEngine";
+        final String guid            = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeGUID;
+        final String name            = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName;
+        final String description     = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.description;
+        final String descriptionGUID = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
 
     }
 
@@ -713,17 +675,20 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Build the Entity
          */
-        final String guid            = "978e7674-8231-4158-a4e3-a5ccdbcad60e";
-        final String name            = "RepositoryGovernanceService";
-        final String description     = "A governance service for open metadata repositories.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceService";
+        final String guid            = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeGUID;
+        final String name            = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName;
+        final String description     = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.description;
+        final String descriptionGUID = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.wikiURL;
+
+        final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
 
     }
 

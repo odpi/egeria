@@ -313,7 +313,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "Annotation";
+        final String typeName = OpenMetadataType.ANNOTATION.typeName;
 
         final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 

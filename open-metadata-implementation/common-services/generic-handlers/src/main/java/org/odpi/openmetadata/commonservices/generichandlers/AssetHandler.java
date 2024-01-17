@@ -634,7 +634,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             extendedProperties = new HashMap<>();
 
-            extendedProperties.put(OpenMetadataType.PATH_NAME_PROPERTY_NAME, pathName);
+            extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         }
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
@@ -4117,9 +4117,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUIDs(userId,
                                             keywordGUID,
                                             keywordGUIDParameterName,
-                                            OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
-                                            OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                            OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                            OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                            OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                             OpenMetadataType.ASSET.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
@@ -4166,9 +4166,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         keywordGUID,
                                         keywordGUIDParameterName,
-                                        OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
-                                        OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                        OpenMetadataType.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                        OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                         OpenMetadataType.REFERENCEABLE.typeName,
                                         null,
                                         null,

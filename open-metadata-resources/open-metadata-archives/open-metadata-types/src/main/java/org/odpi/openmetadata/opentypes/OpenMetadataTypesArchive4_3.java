@@ -438,7 +438,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = "DataStore";
+        final String typeName = OpenMetadataType.DATA_STORE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

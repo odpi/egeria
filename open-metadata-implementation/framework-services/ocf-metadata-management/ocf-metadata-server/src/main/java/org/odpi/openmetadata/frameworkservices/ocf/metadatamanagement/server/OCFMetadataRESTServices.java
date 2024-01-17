@@ -6,10 +6,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OCFMetadataAuditCode;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -40,6 +42,52 @@ public class OCFMetadataRESTServices
     public OCFMetadataRESTServices()
     {
     }
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     * @param governanceService name of governance service
+     * @param message        message to log
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public VoidResponse logAssetAuditMessage(String serverName,
+                                             String userId,
+                                             String assetGUID,
+                                             String governanceService,
+                                             String message)
+    {
+        final String   methodName = "logAssetAuditMessage";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            auditLog.logMessage(methodName, OCFMetadataAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID,
+                                                                                                      governanceService,
+                                                                                                      message));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
     /**

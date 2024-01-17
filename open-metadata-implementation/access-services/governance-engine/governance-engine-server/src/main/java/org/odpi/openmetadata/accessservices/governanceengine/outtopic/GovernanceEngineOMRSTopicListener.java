@@ -127,7 +127,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME))
+                                              OpenMetadataType.GOVERNANCE_ENGINE.typeName))
                 {
                     eventPublisher.publishRefreshGovernanceEngineEvent(entity.getGUID(),
                                                                       repositoryHelper.getStringProperty(sourceName,
@@ -161,7 +161,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME));
+                                                  OpenMetadataType.GOVERNANCE_ENGINE.typeName));
             }
         }
 
@@ -190,7 +190,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName))
                 {
                     EntityProxy governanceEngineEntityProxy = relationship.getEntityOneProxy();
                     EntityProxy governanceServiceEntityProxy = relationship.getEntityTwoProxy();
@@ -204,7 +204,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                                methodName),
                                                                             governanceServiceEntityProxy.getGUID(),
                                                                             repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                               OpenMetadataProperty.REQUEST_TYPE.name,
                                                                                                                relationship.getProperties(),
                                                                                                                methodName));
                         return true;
@@ -236,7 +236,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                  return repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
+                                                  OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
             }
         }
 
@@ -343,7 +343,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 return repositoryHelper.isTypeOf(sourceName,
                                                  type.getTypeDefName(),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME);
+                                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
             }
         }
 
@@ -369,7 +369,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
+                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName))
                 {
                     return true;
                 }
@@ -390,7 +390,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
-                                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME));
+                                                  OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME));
             }
         }
 

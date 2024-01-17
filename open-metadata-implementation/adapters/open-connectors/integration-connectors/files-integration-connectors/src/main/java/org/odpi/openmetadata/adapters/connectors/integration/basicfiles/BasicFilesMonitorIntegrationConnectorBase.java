@@ -313,7 +313,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * Seems to be new - but we need to check that this is not matching the endpoint catalog target.
          */
-        if ((this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_FOLDER_TYPE_NAME)) &&
+        if ((this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_FOLDER.typeName)) &&
                     ((catalogTarget.getCatalogTargetName() == null) || (CATALOG_TARGET_NAME.equals(catalogTarget.getCatalogTargetName()))))
         {
             /*

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -156,9 +157,7 @@ public class OpenMetadataTypesArchive1_5
 
         update0298LineageRelationships();
         update0501SchemaElements();
-        update0602OpenDiscoveryServices();
         update0605OpenDiscoveryAnalysisReports();
-        update0650RelationshipDiscovery();
     }
 
 
@@ -347,65 +346,6 @@ public class OpenMetadataTypesArchive1_5
     }
 
 
-    private void update0602OpenDiscoveryServices()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSupportedDiscoveryRelationship());
-    }
-
-
-    /**
-     * 0602 SupportedDiscoveryRelationship - replacing assetTypes with discoveryRequestTypes and
-     *      adding defaultAnalysisParameters
-     */
-    private TypeDefPatch updateSupportedDiscoveryRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SupportedDiscoveryService";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "assetTypes";
-        final String attribute1Description     = "Deprecated property.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "discoveryRequestTypes";
-        final String attribute2Description     = "Types of discovery request that links to the discovery service.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "defaultAnalysisParameters";
-        final String attribute3Description     = "Map of parameter name to value that is passed to the discovery service by default.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
-                                                                attribute1Description,
-                                                                attribute1DescriptionGUID);
-        property.setReplacedByAttribute(attribute2Name);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute2Name,
-                                                                attribute2Description,
-                                                                attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
     private void update0605OpenDiscoveryAnalysisReports()
     {
         this.archiveBuilder.addEnumDef(getDiscoveryServiceRequestStatusEnum());
@@ -565,48 +505,6 @@ public class OpenMetadataTypesArchive1_5
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private void update0650RelationshipDiscovery()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateRelationshipAdviceAnnotation());
-    }
-
-
-    /**
-     * 0605 Add relatedEntityGUID to RelationshipAdviceAnnotation
-     */
-    private TypeDefPatch updateRelationshipAdviceAnnotation()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "RelationshipAdviceAnnotation";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name = "relatedEntityGUID";
-        final String attribute1Description = "entity that should be linked to the asset being analyzed";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

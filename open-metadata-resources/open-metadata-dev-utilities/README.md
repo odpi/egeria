@@ -16,6 +16,7 @@ Also, feel free to extend them to match your specific deployment.
   It has a list of default values at the top of the file and that you can update for your environment
   and you can extend with new commands and options.
 
+* **guid-generator** - generates random unique identifiers (GUIDs).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

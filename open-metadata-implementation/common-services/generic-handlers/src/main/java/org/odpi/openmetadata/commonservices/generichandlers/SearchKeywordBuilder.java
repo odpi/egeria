@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -32,8 +33,8 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
                          String               serviceName,
                          String               serverName)
     {
-        super(OpenMetadataType.SEARCH_KEYWORD_TYPE_GUID,
-              OpenMetadataType.SEARCH_KEYWORD_TYPE_NAME,
+        super(OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+              OpenMetadataType.SEARCH_KEYWORD.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -57,13 +58,13 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.KEYWORD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.KEYWORD.name,
                                                                   keyword,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.KEYWORD_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 

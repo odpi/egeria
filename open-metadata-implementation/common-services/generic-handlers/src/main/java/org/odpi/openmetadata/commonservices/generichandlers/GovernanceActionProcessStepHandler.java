@@ -212,13 +212,13 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                 OpenMetadataProperty.REQUEST_TYPE.name,
                                                                                                  requestType,
                                                                                                  methodName);
 
         relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                  relationshipProperties,
-                                                                                 OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                  requestParameters,
                                                                                  methodName);
 
@@ -230,12 +230,12 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                   governanceEngineGUID,
                                   governanceEngineGUIDParameterName,
-                                  OpenMetadataType.GOVERNANCE_ENGINE_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   serviceSupportedZones,
-                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_GUID,
-                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_NAME,
+                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
+                                  OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                   setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -317,8 +317,8 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
             Relationship executorRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                               processStepGUID,
                                                                                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_GUID,
-                                                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_EXECUTOR_TYPE_NAME,
+                                                                                              OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
+                                                                                              OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                                               2,
                                                                                               forLineage,
                                                                                               forDuplicateProcessing,
@@ -483,13 +483,13 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.REQUEST_TYPE_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.REQUEST_TYPE.name,
                                                                               requestType,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                  relationshipProperties,
-                                                                                 OpenMetadataType.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                  requestParameters,
                                                                                  methodName);
 

@@ -14,7 +14,7 @@ class ConnectedNestedSchemaType extends NestedSchemaType
      * @param bean super class properties
      * @param serviceName calling service
      * @param serverName  name of the server.
-     * @param omasServerURL url root of the server to use.
+     * @param platformRootURL url root of the server to use.
      * @param userId user id to use on server calls.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
@@ -23,7 +23,7 @@ class ConnectedNestedSchemaType extends NestedSchemaType
     ConnectedNestedSchemaType(ComplexSchemaType      bean,
                               String                 serviceName,
                               String                 serverName,
-                              String                 omasServerURL,
+                              String                 platformRootURL,
                               String                 userId,
                               int                    maxCacheSize,
                               OCFRESTClient          restClient)
@@ -33,7 +33,7 @@ class ConnectedNestedSchemaType extends NestedSchemaType
         super.schemaAttributes = new ConnectedSchemaAttributes(serviceName,
                                                                serverName,
                                                                userId,
-                                                               omasServerURL,
+                                                               platformRootURL,
                                                                this.getGUID(),
                                                                this.getAttributeCount(),
                                                                maxCacheSize,

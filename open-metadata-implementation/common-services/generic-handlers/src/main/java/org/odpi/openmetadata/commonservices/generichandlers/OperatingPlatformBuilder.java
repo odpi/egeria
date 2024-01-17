@@ -107,7 +107,7 @@ public class OperatingPlatformBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.PLATFORM_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.BYTE_ORDERING_PROPERTY_NAME);
         }
     }
 }
