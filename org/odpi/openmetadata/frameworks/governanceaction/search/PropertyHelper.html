@@ -108,11 +108,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,boolean)" class="member-name-link">addBooleanProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addBooleanMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied map property to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,boolean)" class="member-name-link">addBooleanProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  boolean&nbsp;propertyValue)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBooleanPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addBooleanPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property map to an element properties object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDateProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Date)" class="member-name-link">addDateProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -137,18 +150,44 @@ loadScripts(document, 'script');</script>
 <div class="block">Add the supplied property to an element properties object.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,int)" class="member-name-link">addIntProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addIntMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied map property to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,int)" class="member-name-link">addIntProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  int&nbsp;propertyValue)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addIntPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addIntPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied property map to an element properties object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addLongMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;mapValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add the supplied map property to an element properties object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,long)" class="member-name-link">addLongProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ long&nbsp;propertyValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the supplied property to an element properties object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,long)" class="member-name-link">addLongProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- long&nbsp;propertyValue)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLongPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addLongPropertyMap</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;mapValues)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied property to an element properties object.</div>
+<div class="block">Add the supplied property map to an element properties object.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)" class="member-name-link">addMapProperty</a><wbr>(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
@@ -726,10 +765,118 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addBooleanMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)">
+<h3>addBooleanMapProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addBooleanMapProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied map property to an element properties object.  The supplied map is stored as a single
+ property in the instances properties.   If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addIntMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)">
+<h3>addIntMapProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addIntMapProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied map property to an element properties object.  The supplied map is stored as a single
+ property in the instances properties.   If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addLongMapProperty(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.Map)">
+<h3>addLongMapProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addLongMapProperty</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied map property to an element properties object.  The supplied map is stored as a single
+ property in the instances properties.   If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addStringPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
 <h3>addStringPropertyMap</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addStringPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
+ as a separate property in element properties.  If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addIntPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
+<h3>addIntPropertyMap</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addIntPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
+ as a separate property in element properties.  If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addLongPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
+<h3>addLongPropertyMap</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addLongPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;mapValues)</span></div>
+<div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
+ as a separate property in element properties.  If the element properties object
+ supplied is null, a new element properties object is created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - properties object to add property to, may be null.</dd>
+<dd><code>mapValues</code> - contents of the map</dd>
+<dt>Returns:</dt>
+<dd>resulting element properties object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addBooleanPropertyMap(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
+<h3>addBooleanPropertyMap</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a></span>&nbsp;<span class="element-name">addBooleanPropertyMap</span><wbr><span class="parameters">(<a href="ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;mapValues)</span></div>
 <div class="block">Add the supplied property map to an element properties object.  Each of the entries in the map is added
  as a separate property in element properties.  If the element properties object
  supplied is null, a new element properties object is created.</div>

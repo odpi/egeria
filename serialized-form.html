@@ -13214,7 +13214,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>followOnActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt; followOnActions</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; followOnActions</pre>
 </li>
 <li class="block-list">
 <h5>governanceActionTypeGUID</h5>
@@ -13238,7 +13238,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>previousActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt; previousActions</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; previousActions</pre>
 </li>
 <li class="block-list">
 <h5>processingEngineUserId</h5>
@@ -16230,10 +16230,6 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ResourceListProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties</a></h3>
 <div class="type-signature">class ResourceListProperties extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -16242,6 +16238,14 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>resourceUse</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> resourceUse</pre>
+</li>
+<li class="block-list">
+<h5>resourceUseDescription</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> resourceUseDescription</pre>
+</li>
+<li class="block-list">
+<h5>resourceUseProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; resourceUseProperties</pre>
 </li>
 <li class="block-list">
 <h5>watchResource</h5>
@@ -18250,6 +18254,19 @@ loadScripts(document, 'script');</script>
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
 </dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>deployedImplementationType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> deployedImplementationType</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
 </section>
 </li>
 <li>
@@ -18597,10 +18614,6 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> platformSource</pre>
 </li>
 <li class="block-list">
-<h5>platformType</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> platformType</pre>
-</li>
-<li class="block-list">
 <h5>platformUserId</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> platformUserId</pre>
 </li>
@@ -18630,10 +18643,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>softwareServerSource</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> softwareServerSource</pre>
-</li>
-<li class="block-list">
-<h5>softwareServerType</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> softwareServerType</pre>
 </li>
 <li class="block-list">
 <h5>softwareServerUserId</h5>
@@ -20364,10 +20373,6 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.projectmanagement.properties.ResourceListProperties">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/projectmanagement/properties/ResourceListProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">org.odpi.openmetadata.accessservices.projectmanagement.properties.ResourceListProperties</a></h3>
 <div class="type-signature">class ResourceListProperties extends <a href="org/odpi/openmetadata/accessservices/projectmanagement/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">RelationshipProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -20376,6 +20381,14 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>resourceUse</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> resourceUse</pre>
+</li>
+<li class="block-list">
+<h5>resourceUseDescription</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> resourceUseDescription</pre>
+</li>
+<li class="block-list">
+<h5>resourceUseProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; resourceUseProperties</pre>
 </li>
 <li class="block-list">
 <h5>watchResource</h5>
@@ -32098,7 +32111,15 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>followOnActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt; followOnActions</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; followOnActions</pre>
+</li>
+<li class="block-list">
+<h5>governanceActionTypeGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceActionTypeGUID</pre>
+</li>
+<li class="block-list">
+<h5>governanceActionTypeName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceActionTypeName</pre>
 </li>
 <li class="block-list">
 <h5>governanceEngineGUID</h5>
@@ -32114,7 +32135,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>previousActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt; previousActions</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; previousActions</pre>
 </li>
 <li class="block-list">
 <h5>processingEngineUserId</h5>
@@ -32278,7 +32299,57 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessStepProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties</a></h3>
-<div class="type-signature">class GovernanceActionProcessStepProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class GovernanceActionProcessStepProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>ignoreMultipleTriggers</h5>
+<pre>boolean ignoreMultipleTriggers</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeElement</a></h3>
+<div class="type-signature">class GovernanceActionTypeElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>actionTypeProperties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeProperties</a> actionTypeProperties</pre>
+</li>
+<li class="block-list">
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties</a></h3>
+<div class="type-signature">class GovernanceActionTypeProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -32303,10 +32374,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>governanceEngineGUID</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineGUID</pre>
-</li>
-<li class="block-list">
-<h5>ignoreMultipleTriggers</h5>
-<pre>boolean ignoreMultipleTriggers</pre>
 </li>
 <li class="block-list">
 <h5>requestParameters</h5>
@@ -32478,9 +32545,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement</a></h3>
-<div class="type-signature">class RelatedGovernanceActionElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement</a></h3>
+<div class="type-signature">class RelatedEngineActionElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -32822,6 +32889,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="org/odpi/openmetadata/frameworks/surveyaction/properties/AnnotationStatus.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.properties">AnnotationStatus</a> annotationStatus</pre>
 </li>
 <li class="block-list">
+<h5>annotationSubjects</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt; annotationSubjects</pre>
+</li>
+<li class="block-list">
 <h5>annotationType</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> annotationType</pre>
 </li>
@@ -32840,10 +32911,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>jsonProperties</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> jsonProperties</pre>
-</li>
-<li class="block-list">
-<h5>numAttachedAnnotations</h5>
-<pre>int numAttachedAnnotations</pre>
 </li>
 <li class="block-list">
 <h5>reviewComment</h5>
@@ -33113,8 +33180,8 @@ loadScripts(document, 'script');</script>
 <pre>long headerVersion</pre>
 </li>
 <li class="block-list">
-<h5>typeName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> typeName</pre>
+<h5>openMetadataTypeName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> openMetadataTypeName</pre>
 </li>
 </ul>
 </section>
@@ -33303,8 +33370,12 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> assetGUID</pre>
 </li>
 <li class="block-list">
-<h5>creationDate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> creationDate</pre>
+<h5>completionDate</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> completionDate</pre>
+</li>
+<li class="block-list">
+<h5>completionMessage</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> completionMessage</pre>
 </li>
 <li class="block-list">
 <h5>description</h5>
@@ -33319,16 +33390,20 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> engineActionGUID</pre>
 </li>
 <li class="block-list">
-<h5>governanceEngineGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineGUID</pre>
-</li>
-<li class="block-list">
-<h5>governanceServiceGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceServiceGUID</pre>
+<h5>purpose</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> purpose</pre>
 </li>
 <li class="block-list">
 <h5>qualifiedName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
+</li>
+<li class="block-list">
+<h5>startDate</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> startDate</pre>
+</li>
+<li class="block-list">
+<h5>user</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> user</pre>
 </li>
 </ul>
 </section>
@@ -36225,6 +36300,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>descriptionGUID</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> descriptionGUID</pre>
+</li>
+<li class="block-list">
+<h5>descriptionWiki</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> descriptionWiki</pre>
 </li>
 <li class="block-list">
 <h5>guid</h5>

@@ -122,49 +122,10 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#BAD_ENTITY" class="member-name-link">BAD_ENTITY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-STORE-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_ENTITY_PROXY" class="member-name-link">BAD_ENTITY_PROXY</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-STORE-500-012 - A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#BAD_INSTANCE_TYPE" class="member-name-link">BAD_INSTANCE_TYPE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-STORE-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
- because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#BAD_RELATIONSHIP" class="member-name-link">BAD_RELATIONSHIP</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-STORE-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_BEAN_CLASS" class="member-name-link">INVALID_BEAN_CLASS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-STORE-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
- open metadata access service {2} on server {3}; error message was: {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_CONVERTER_METHOD" class="member-name-link">MISSING_CONVERTER_METHOD</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-STORE-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
- bean class {3} and so is unable to create the bean for method {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#MISSING_METADATA_INSTANCE" class="member-name-link">MISSING_METADATA_INSTANCE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-STORE-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
- because a metadata instance of type {2} has not passed to method {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-STORE-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-STORE-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
- open metadata access service {2} on server {3}; the expected class name is: {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -230,73 +191,6 @@ the order they are declared.</div>
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
 <div class="block">OPEN-METADATA-STORE-404-002 - The open metadata repository services are not initialized for the {0} operation</div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_BEAN_CLASS">
-<h3>INVALID_BEAN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">INVALID_BEAN_CLASS</span></div>
-<div class="block">OPEN-METADATA-STORE-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
- open metadata access service {2} on server {3}; error message was: {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="MISSING_CONVERTER_METHOD">
-<h3>MISSING_CONVERTER_METHOD</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">MISSING_CONVERTER_METHOD</span></div>
-<div class="block">OPEN-METADATA-STORE-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
- bean class {3} and so is unable to create the bean for method {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_BEAN_CLASS">
-<h3>UNEXPECTED_BEAN_CLASS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_BEAN_CLASS</span></div>
-<div class="block">OPEN-METADATA-STORE-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
- open metadata access service {2} on server {3}; the expected class name is: {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="MISSING_METADATA_INSTANCE">
-<h3>MISSING_METADATA_INSTANCE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">MISSING_METADATA_INSTANCE</span></div>
-<div class="block">OPEN-METADATA-STORE-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
- because a metadata instance of type {2} has not passed to method {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_INSTANCE_TYPE">
-<h3>BAD_INSTANCE_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">BAD_INSTANCE_TYPE</span></div>
-<div class="block">OPEN-METADATA-STORE-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
- because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ENTITY">
-<h3>BAD_ENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY</span></div>
-<div class="block">OPEN-METADATA-STORE-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_ENTITY_PROXY">
-<h3>BAD_ENTITY_PROXY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY_PROXY</span></div>
-<div class="block">OPEN-METADATA-STORE-500-012 - A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="BAD_RELATIONSHIP">
-<h3>BAD_RELATIONSHIP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">BAD_RELATIONSHIP</span></div>
-<div class="block">OPEN-METADATA-STORE-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
-<h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
 </section>
 </li>
 </ul>

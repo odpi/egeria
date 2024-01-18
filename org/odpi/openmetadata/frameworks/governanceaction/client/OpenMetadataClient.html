@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MetadataElementInterface</a></code>, <code><a href="MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MultiLanguageInterface</a></code>, <code><a href="OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataTypesInterface</a></code>, <code><a href="StewardshipActionInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipActionInterface</a></code>, <code><a href="ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ValidMetadataValuesInterface</a></code></dd>
+<dd><code><a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MetadataElementInterface</a></code>, <code><a href="MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MultiLanguageInterface</a></code>, <code><a href="OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataTypesInterface</a></code>, <code><a href="StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipRequestInterface</a></code>, <code><a href="ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ValidMetadataValuesInterface</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataClient</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataTypesInterface</a>, <a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MetadataElementInterface</a>, <a href="StewardshipActionInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipActionInterface</a>, <a href="MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MultiLanguageInterface</a>, <a href="ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ValidMetadataValuesInterface</a></span></div>
+implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataTypesInterface</a>, <a href="MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MetadataElementInterface</a>, <a href="StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipRequestInterface</a>, <a href="MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MultiLanguageInterface</a>, <a href="ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ValidMetadataValuesInterface</a></span></div>
 <div class="block">OpenMetadataClient provides access to metadata elements stored in the metadata repositories.  It is implemented by a
  metadata repository provider. In Egeria, this class is implemented in the GAF Metadata Management running in the
  Metadata Access Server OMAG Server.</div>
@@ -393,20 +393,25 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the relationship using its unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypeDefByGUID(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the TypeDef identified by the GUID.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerName()" class="member-name-link">getServerName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the server that this client is connected to.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypeDefByName(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypeDefByGUID(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the TypeDef identified by the GUID.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTypeDefByName(java.lang.String,java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the TypeDef identified by the unique name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestSourceGUIDs,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
@@ -414,11 +419,11 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorEngineName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  boolean&nbsp;replaceProperties,
@@ -426,16 +431,16 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
  boolean&nbsp;forDuplicateProcessing,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  boolean&nbsp;forLineage,
@@ -443,61 +448,61 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  boolean&nbsp;replaceAllProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties of a specific metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../../connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;newElementStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the status of specific metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  boolean&nbsp;replaceProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties associated with a relationship.</div>
 </div>
 </div>
@@ -513,8 +518,8 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.MultiLanguageInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">MultiLanguageInterface</a></h3>
 <code><a href="MultiLanguageInterface.html#clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearTranslation</a>, <a href="MultiLanguageInterface.html#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTranslation</a>, <a href="MultiLanguageInterface.html#getTranslations(java.lang.String,java.lang.String,int,int)">getTranslations</a>, <a href="MultiLanguageInterface.html#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail)">setTranslation</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.StewardshipActionInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="StewardshipActionInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipActionInterface</a></h3>
-<code><a href="StewardshipActionInterface.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.util.List)">openToDo</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.StewardshipRequestInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipRequestInterface</a></h3>
+<code><a href="StewardshipRequestInterface.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.util.List)">openToDo</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.client.ValidMetadataValuesInterface">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.governanceaction.client.<a href="ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ValidMetadataValuesInterface</a></h3>
 <code><a href="ValidMetadataValuesInterface.html#clearValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapName</a>, <a href="ValidMetadataValuesInterface.html#clearValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapValue</a>, <a href="ValidMetadataValuesInterface.html#clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataValue</a>, <a href="ValidMetadataValuesInterface.html#getConsistentMetadataValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getConsistentMetadataValues</a>, <a href="ValidMetadataValuesInterface.html#getValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapName</a>, <a href="ValidMetadataValuesInterface.html#getValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapValue</a>, <a href="ValidMetadataValuesInterface.html#getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataValue</a>, <a href="ValidMetadataValuesInterface.html#getValidMetadataValues(java.lang.String,java.lang.String,java.lang.String,int,int)">getValidMetadataValues</a>, <a href="ValidMetadataValuesInterface.html#setConsistentMetadataValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setConsistentMetadataValues</a>, <a href="ValidMetadataValuesInterface.html#setUpValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapName</a>, <a href="ValidMetadataValuesInterface.html#setUpValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapValue</a>, <a href="ValidMetadataValuesInterface.html#setUpValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataValue</a>, <a href="ValidMetadataValuesInterface.html#validateMetadataMapName(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapName</a>, <a href="ValidMetadataValuesInterface.html#validateMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapValue</a>, <a href="ValidMetadataValuesInterface.html#validateMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataValue</a></code></div>
@@ -578,6 +583,17 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getServerName()">
+<h3>getServerName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerName</span>()</div>
+<div class="block">Return the name of the server that this client is connected to.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string name</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getAllTypes(java.lang.String)">
 <h3>getAllTypes</h3>
@@ -1685,7 +1701,7 @@ implements <a href="OpenMetadataTypesInterface.html" title="interface in org.odp
  This incident report will be processed by other governance activities.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="StewardshipActionInterface.html#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a></code>&nbsp;in interface&nbsp;<code><a href="StewardshipActionInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipActionInterface</a></code></dd>
+<dd><code><a href="StewardshipRequestInterface.html#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a></code>&nbsp;in interface&nbsp;<code><a href="StewardshipRequestInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">StewardshipRequestInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>qualifiedName</code> - unique identifier to give this new incident report</dd>

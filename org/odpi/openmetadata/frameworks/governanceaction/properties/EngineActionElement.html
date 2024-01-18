@@ -86,7 +86,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">EngineActionElement contains the properties and header for a EngineAction entity retrieved from the metadata
- repository that represents a governance action type (plus relevant relationships and properties).</div>
+ repository that represents the execution of a call to a governance engine. This may be triggered by directly
+ creating the engine action, or using a governance action type as a template or as a step in a governance action
+ process.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -136,12 +138,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionStatus()" class="member-name-link">getActionStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the current status of the governance action.</div>
+<div class="block">Return the current status of the engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionTargetElements()" class="member-name-link">getActionTargetElements</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of elements that the governance action will work on.</div>
+<div class="block">Return the list of elements that the engine action will work on.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompletionGuards()" class="member-name-link">getCompletionGuards</a>()</code></div>
@@ -161,12 +163,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the description of the governance action.</div>
+<div class="block">Return the description of the engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the display name for the governance action.</div>
+<div class="block">Return the display name for the engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainIdentifier()" class="member-name-link">getDomainIdentifier</a>()</code></div>
@@ -178,35 +180,45 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element header associated with the properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFollowOnActions()" class="member-name-link">getFollowOnActions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of governance actions that will run after this governance action has completed.</div>
+<div class="block">Return the list of engine actions that will run after this engine action has completed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypeGUID()" class="member-name-link">getGovernanceActionTypeGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier for the governance action type that acted as a template for this engine action (if appropriate).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypeName()" class="member-name-link">getGovernanceActionTypeName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique name for the governance action type that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineGUID()" class="member-name-link">getGovernanceEngineGUID</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
+<div class="block">Return the unique identifier of governance engine that is processing the engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineName()" class="member-name-link">getGovernanceEngineName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique name of governance engine that is processing the governance action.</div>
+<div class="block">Return the unique name of governance engine that is processing the engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMandatoryGuards()" class="member-name-link">getMandatoryGuards</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of guards that must be received before this governance action can proceed.</div>
+<div class="block">Return the list of guards that must be received before this engine action can proceed.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviousActions()" class="member-name-link">getPreviousActions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of governance actions that preceded this governance action.</div>
+<div class="block">Return the list of engine actions that preceded this engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessingEngineUserId()" class="member-name-link">getProcessingEngineUserId</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessName()" class="member-name-link">getProcessName</a>()</code></div>
@@ -216,12 +228,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessStepGUID()" class="member-name-link">getProcessStepGUID</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Return the unique identifier for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessStepName()" class="member-name-link">getProcessStepName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Return the unique name for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReceivedGuards()" class="member-name-link">getReceivedGuards</a>()</code></div>
@@ -231,7 +243,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestedTime()" class="member-name-link">getRequestedTime</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the time that the governance action was created.</div>
+<div class="block">Return the time that the engine action was created.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestParameters()" class="member-name-link">getRequestParameters</a>()</code></div>
@@ -251,7 +263,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStartTime()" class="member-name-link">getStartTime</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the time that this governance action should start (null means as soon as possible).</div>
+<div class="block">Return the time that this engine action should start (null means as soon as possible).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -261,12 +273,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus)" class="member-name-link">setActionStatus</a><wbr>(<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;actionStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the current status of the governance action.</div>
+<div class="block">Set up the current status of the engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActionTargetElements(java.util.List)" class="member-name-link">setActionTargetElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of elements that the governance action will work on.</div>
+<div class="block">Set up the list of elements that the engine action will work on.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCompletionGuards(java.util.List)" class="member-name-link">setCompletionGuards</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;completionGuards)</code></div>
@@ -286,12 +298,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDescription(java.lang.String)" class="member-name-link">setDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the description of the governance action.</div>
+<div class="block">Set up the description of the engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayName(java.lang.String)" class="member-name-link">setDisplayName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the display name for the governance action.</div>
+<div class="block">Set up the display name for the engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDomainIdentifier(int)" class="member-name-link">setDomainIdentifier</a><wbr>(int&nbsp;domainIdentifier)</code></div>
@@ -304,34 +316,44 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Set up the element header associated with the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFollowOnActions(java.util.List)" class="member-name-link">setFollowOnActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;&nbsp;followOnActions)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFollowOnActions(java.util.List)" class="member-name-link">setFollowOnActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;&nbsp;followOnActions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of governance actions that will run after this governance action has completed.</div>
+<div class="block">Set up the list of engine actions that will run after this engine action has completed.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceActionTypeGUID(java.lang.String)" class="member-name-link">setGovernanceActionTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionTypeGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the unique identifier for the governance action type that acted as a template for this engine action (if appropriate).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceActionTypeName(java.lang.String)" class="member-name-link">setGovernanceActionTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the unique name for the governance action type that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineGUID(java.lang.String)" class="member-name-link">setGovernanceEngineGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
+<div class="block">Set up the unique identifier of governance engine that is processing the engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineName(java.lang.String)" class="member-name-link">setGovernanceEngineName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique name of governance engine that is processing the governance action.</div>
+<div class="block">Set up the unique name of governance engine that is processing the engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMandatoryGuards(java.util.List)" class="member-name-link">setMandatoryGuards</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mandatoryGuards)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of guards that must be received before this governance action can proceed.</div>
+<div class="block">Set up the list of guards that must be received before this engine action can proceed.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPreviousActions(java.util.List)" class="member-name-link">setPreviousActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;&nbsp;previousActions)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPreviousActions(java.util.List)" class="member-name-link">setPreviousActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;&nbsp;previousActions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of governance actions that preceded this governance action.</div>
+<div class="block">Set up the list of engine actions that preceded this engine action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProcessingEngineUserId(java.lang.String)" class="member-name-link">setProcessingEngineUserId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processingEngineUserId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this engine action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProcessName(java.lang.String)" class="member-name-link">setProcessName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processName)</code></div>
@@ -341,12 +363,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProcessStepGUID(java.lang.String)" class="member-name-link">setProcessStepGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Set up the unique identifier for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProcessStepName(java.lang.String)" class="member-name-link">setProcessStepName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Set up the unique name for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReceivedGuards(java.util.List)" class="member-name-link">setReceivedGuards</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;receivedGuards)</code></div>
@@ -356,7 +378,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestedTime(java.util.Date)" class="member-name-link">setRequestedTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the time that the governance action was created.</div>
+<div class="block">Set up the time that the engine action was created.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestParameters(java.util.Map)" class="member-name-link">setRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters)</code></div>
@@ -376,7 +398,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStartTime(java.util.Date)" class="member-name-link">setStartTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the time that this governance action should start (null means as soon as possible).</div>
+<div class="block">Set up the time that this engine action should start (null means as soon as possible).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -477,7 +499,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getDisplayName()">
 <h3>getDisplayName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
-<div class="block">Return the display name for the governance action.</div>
+<div class="block">Return the display name for the engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string name</dd>
@@ -488,7 +510,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setDisplayName(java.lang.String)">
 <h3>setDisplayName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDisplayName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</span></div>
-<div class="block">Set up the display name for the governance action.</div>
+<div class="block">Set up the display name for the engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>displayName</code> - string name</dd>
@@ -499,7 +521,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the description of the governance action.</div>
+<div class="block">Return the description of the engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string text</dd>
@@ -510,7 +532,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setDescription(java.lang.String)">
 <h3>setDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
-<div class="block">Set up the description of the governance action.</div>
+<div class="block">Set up the description of the engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>description</code> - string text</dd>
@@ -521,7 +543,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getMandatoryGuards()">
 <h3>getMandatoryGuards</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getMandatoryGuards</span>()</div>
-<div class="block">Return the list of guards that must be received before this governance action can proceed.</div>
+<div class="block">Return the list of guards that must be received before this engine action can proceed.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of guards</dd>
@@ -532,7 +554,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setMandatoryGuards(java.util.List)">
 <h3>setMandatoryGuards</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMandatoryGuards</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;mandatoryGuards)</span></div>
-<div class="block">Set up the list of guards that must be received before this governance action can proceed.</div>
+<div class="block">Set up the list of guards that must be received before this engine action can proceed.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>mandatoryGuards</code> - list of guards</dd>
@@ -565,7 +587,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getGovernanceEngineGUID()">
 <h3>getGovernanceEngineGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceEngineGUID</span>()</div>
-<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
+<div class="block">Return the unique identifier of governance engine that is processing the engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string guid</dd>
@@ -576,7 +598,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setGovernanceEngineGUID(java.lang.String)">
 <h3>setGovernanceEngineGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceEngineGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID)</span></div>
-<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
+<div class="block">Set up the unique identifier of governance engine that is processing the engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>governanceEngineGUID</code> - string guid</dd>
@@ -587,7 +609,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getGovernanceEngineName()">
 <h3>getGovernanceEngineName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceEngineName</span>()</div>
-<div class="block">Return the unique name of governance engine that is processing the governance action.</div>
+<div class="block">Return the unique name of governance engine that is processing the engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string name</dd>
@@ -598,10 +620,54 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setGovernanceEngineName(java.lang.String)">
 <h3>setGovernanceEngineName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceEngineName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</span></div>
-<div class="block">Set up the unique name of governance engine that is processing the governance action.</div>
+<div class="block">Set up the unique name of governance engine that is processing the engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>governanceEngineName</code> - string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernanceActionTypeGUID()">
+<h3>getGovernanceActionTypeGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceActionTypeGUID</span>()</div>
+<div class="block">Return the unique identifier for the governance action type that acted as a template for this engine action (if appropriate).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGovernanceActionTypeGUID(java.lang.String)">
+<h3>setGovernanceActionTypeGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceActionTypeGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionTypeGUID)</span></div>
+<div class="block">Set up the unique identifier for the governance action type that acted as a template for this engine action (if appropriate).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>governanceActionTypeGUID</code> - guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernanceActionTypeName()">
+<h3>getGovernanceActionTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceActionTypeName</span>()</div>
+<div class="block">Return the unique name for the governance action type that acted as a template for this engine action (if appropriate).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGovernanceActionTypeName(java.lang.String)">
+<h3>setGovernanceActionTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGovernanceActionTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceActionTypeName)</span></div>
+<div class="block">Set up the unique name for the governance action type that acted as a template for this engine action (if appropriate).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>governanceActionTypeName</code> - name</dd>
 </dl>
 </section>
 </li>
@@ -631,7 +697,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getProcessStepGUID()">
 <h3>getProcessStepGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProcessStepGUID</span>()</div>
-<div class="block">Return the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Return the unique identifier for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>guid</dd>
@@ -642,7 +708,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setProcessStepGUID(java.lang.String)">
 <h3>setProcessStepGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProcessStepGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID)</span></div>
-<div class="block">Set up the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Set up the unique identifier for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>processStepGUID</code> - guid</dd>
@@ -653,7 +719,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getProcessStepName()">
 <h3>getProcessStepName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProcessStepName</span>()</div>
-<div class="block">Return the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Return the unique name for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>name</dd>
@@ -664,7 +730,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setProcessStepName(java.lang.String)">
 <h3>setProcessStepName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProcessStepName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepName)</span></div>
-<div class="block">Set up the unique name for the governance action type that acted as a template for this governance action (if appropriate).</div>
+<div class="block">Set up the unique name for the governance action process step that acted as a template for this engine action (if appropriate).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>processStepName</code> - name</dd>
@@ -675,7 +741,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getActionStatus()">
 <h3>getActionStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a></span>&nbsp;<span class="element-name">getActionStatus</span>()</div>
-<div class="block">Return the current status of the governance action.</div>
+<div class="block">Return the current status of the engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>status enum</dd>
@@ -686,7 +752,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setActionStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus)">
 <h3>setActionStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setActionStatus</span><wbr><span class="parameters">(<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;actionStatus)</span></div>
-<div class="block">Set up the current status of the governance action.</div>
+<div class="block">Set up the current status of the engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>actionStatus</code> - status enum</dd>
@@ -697,7 +763,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getProcessingEngineUserId()">
 <h3>getProcessingEngineUserId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProcessingEngineUserId</span>()</div>
-<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<div class="block">Return the userId of the governance engine that is responsible for running the governance service for this engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string userId</dd>
@@ -708,7 +774,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setProcessingEngineUserId(java.lang.String)">
 <h3>setProcessingEngineUserId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProcessingEngineUserId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processingEngineUserId)</span></div>
-<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this governance action.</div>
+<div class="block">Set up the userId of the governance engine that is responsible for running the governance service for this engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>processingEngineUserId</code> - string userId</dd>
@@ -741,7 +807,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getActionTargetElements()">
 <h3>getActionTargetElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;</span>&nbsp;<span class="element-name">getActionTargetElements</span>()</div>
-<div class="block">Return the list of elements that the governance action will work on.</div>
+<div class="block">Return the list of elements that the engine action will work on.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of elements</dd>
@@ -752,7 +818,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setActionTargetElements(java.util.List)">
 <h3>setActionTargetElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setActionTargetElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt;&nbsp;actionTargetElements)</span></div>
-<div class="block">Set up the list of elements that the governance action will work on.</div>
+<div class="block">Set up the list of elements that the engine action will work on.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>actionTargetElements</code> - list of elements</dd>
@@ -763,7 +829,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getRequestedTime()">
 <h3>getRequestedTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getRequestedTime</span>()</div>
-<div class="block">Return the time that the governance action was created.</div>
+<div class="block">Return the time that the engine action was created.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>date/time</dd>
@@ -774,7 +840,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setRequestedTime(java.util.Date)">
 <h3>setRequestedTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRequestedTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;requestedTime)</span></div>
-<div class="block">Set up the time that the governance action was created.</div>
+<div class="block">Set up the time that the engine action was created.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>requestedTime</code> - date/time</dd>
@@ -785,7 +851,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getStartTime()">
 <h3>getStartTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getStartTime</span>()</div>
-<div class="block">Return the time that this governance action should start (null means as soon as possible).</div>
+<div class="block">Return the time that this engine action should start (null means as soon as possible).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>date object</dd>
@@ -796,7 +862,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setStartTime(java.util.Date)">
 <h3>setStartTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStartTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startTime)</span></div>
-<div class="block">Set up the time that this governance action should start (null means as soon as possible).</div>
+<div class="block">Set up the time that this engine action should start (null means as soon as possible).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>startTime</code> - date object</dd>
@@ -916,8 +982,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="getPreviousActions()">
 <h3>getPreviousActions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;</span>&nbsp;<span class="element-name">getPreviousActions</span>()</div>
-<div class="block">Return the list of governance actions that preceded this governance action.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">getPreviousActions</span>()</div>
+<div class="block">Return the list of engine actions that preceded this engine action.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of element stubs</dd>
@@ -927,8 +993,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="setPreviousActions(java.util.List)">
 <h3>setPreviousActions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPreviousActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;&nbsp;previousActions)</span></div>
-<div class="block">Set up the list of governance actions that preceded this governance action.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPreviousActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;&nbsp;previousActions)</span></div>
+<div class="block">Set up the list of engine actions that preceded this engine action.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>previousActions</code> - list of element stubs</dd>
@@ -938,8 +1004,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="getFollowOnActions()">
 <h3>getFollowOnActions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;</span>&nbsp;<span class="element-name">getFollowOnActions</span>()</div>
-<div class="block">Return the list of governance actions that will run after this governance action has completed.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;</span>&nbsp;<span class="element-name">getFollowOnActions</span>()</div>
+<div class="block">Return the list of engine actions that will run after this engine action has completed.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of element stubs</dd>
@@ -949,8 +1015,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="setFollowOnActions(java.util.List)">
 <h3>setFollowOnActions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFollowOnActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedGovernanceActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedGovernanceActionElement</a>&gt;&nbsp;followOnActions)</span></div>
-<div class="block">Set up the list of governance actions that will run after this governance action has completed.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFollowOnActions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt;&nbsp;followOnActions)</span></div>
+<div class="block">Set up the list of engine actions that will run after this engine action has completed.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>followOnActions</code> - list of element stubs</dd>

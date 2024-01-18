@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected final <a href="StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.integration.context">StewardshipAction</a></code></div>
 <div class="col-second even-row-color"><code><a href="#stewardshipAction" class="member-name-link">stewardshipAction</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#validMetadataValues" class="member-name-link">validMetadataValues</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -114,10 +114,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.frameworks.integration.context.MultiLanguageManagement,org.odpi.openmetadata.frameworks.integration.context.StewardshipAction,org.odpi.openmetadata.frameworks.integration.context.ValidMetadataValues)" class="member-name-link">IntegrationGovernanceContext</a><wbr>(<a href="OpenMetadataAccess.html" title="class in org.odpi.openmetadata.frameworks.integration.context">OpenMetadataAccess</a>&nbsp;openMetadataAccess,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.frameworks.integration.context.MultiLanguageManagement,org.odpi.openmetadata.frameworks.integration.context.StewardshipAction,org.odpi.openmetadata.frameworks.integration.context.ValidMetadataValuesContext)" class="member-name-link">IntegrationGovernanceContext</a><wbr>(<a href="OpenMetadataAccess.html" title="class in org.odpi.openmetadata.frameworks.integration.context">OpenMetadataAccess</a>&nbsp;openMetadataAccess,
  <a href="MultiLanguageManagement.html" title="class in org.odpi.openmetadata.frameworks.integration.context">MultiLanguageManagement</a>&nbsp;multiLanguageManagement,
  <a href="StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.integration.context">StewardshipAction</a>&nbsp;stewardshipAction,
- <a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a>&nbsp;validMetadataValues)</code></div>
+ <a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a>&nbsp;validMetadataValuesContext)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create an integration context.</div>
 </div>
@@ -150,8 +150,8 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an extension to the context that provides access to the stewardship action support from the Governance Action Framework (GAF).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMetadataValues()" class="member-name-link">getValidMetadataValues</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMetadataValuesContext()" class="member-name-link">getValidMetadataValuesContext</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an extension to the context that provides access to the valid values defined for open metadata from the Governance Action Framework
  (GAF).</div>
@@ -194,7 +194,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="validMetadataValues">
 <h3>validMetadataValues</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a></span>&nbsp;<span class="element-name">validMetadataValues</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a></span>&nbsp;<span class="element-name">validMetadataValues</span></div>
 </section>
 </li>
 </ul>
@@ -206,19 +206,19 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.frameworks.integration.context.MultiLanguageManagement,org.odpi.openmetadata.frameworks.integration.context.StewardshipAction,org.odpi.openmetadata.frameworks.integration.context.ValidMetadataValues)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess,org.odpi.openmetadata.frameworks.integration.context.MultiLanguageManagement,org.odpi.openmetadata.frameworks.integration.context.StewardshipAction,org.odpi.openmetadata.frameworks.integration.context.ValidMetadataValuesContext)">
 <h3>IntegrationGovernanceContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationGovernanceContext</span><wbr><span class="parameters">(<a href="OpenMetadataAccess.html" title="class in org.odpi.openmetadata.frameworks.integration.context">OpenMetadataAccess</a>&nbsp;openMetadataAccess,
  <a href="MultiLanguageManagement.html" title="class in org.odpi.openmetadata.frameworks.integration.context">MultiLanguageManagement</a>&nbsp;multiLanguageManagement,
  <a href="StewardshipAction.html" title="class in org.odpi.openmetadata.frameworks.integration.context">StewardshipAction</a>&nbsp;stewardshipAction,
- <a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a>&nbsp;validMetadataValues)</span></div>
+ <a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a>&nbsp;validMetadataValuesContext)</span></div>
 <div class="block">Create an integration context.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataAccess</code> - Governance Action Framework (GAF) extension for accessing open metadata</dd>
 <dd><code>multiLanguageManagement</code> - Governance Action Framework (GAF) extension for managing multi-language content</dd>
 <dd><code>stewardshipAction</code> - Governance Action Framework (GAF) extension to requesting help from stewards</dd>
-<dd><code>validMetadataValues</code> - Governance Action Framework (GAF) extension for working with valid values for metadata</dd>
+<dd><code>validMetadataValuesContext</code> - Governance Action Framework (GAF) extension for working with valid values for metadata</dd>
 </dl>
 </section>
 </li>
@@ -265,9 +265,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getValidMetadataValues()">
-<h3>getValidMetadataValues</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ValidMetadataValues.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValues</a></span>&nbsp;<span class="element-name">getValidMetadataValues</span>()</div>
+<section class="detail" id="getValidMetadataValuesContext()">
+<h3>getValidMetadataValuesContext</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ValidMetadataValuesContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ValidMetadataValuesContext</a></span>&nbsp;<span class="element-name">getValidMetadataValuesContext</span>()</div>
 <div class="block">Return an extension to the context that provides access to the valid values defined for open metadata from the Governance Action Framework
  (GAF).</div>
 <dl class="notes">

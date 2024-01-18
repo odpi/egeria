@@ -137,12 +137,16 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last odd-row-color">
 <div class="block">BASIC-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FILE_SPECIFIED" class="member-name-link">FILE_SPECIFIED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">BASIC-FILE-CONNECTOR-400-004 - The file {0} given in Connection object {1} is a directory</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">BASIC-FILE-CONNECTOR-500-002 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_SECURITY_EXCEPTION" class="member-name-link">UNEXPECTED_SECURITY_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_SECURITY_EXCEPTION" class="member-name-link">UNEXPECTED_SECURITY_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">BASIC-FILE-CONNECTOR-500-001 - The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}</div>
 </div>
 </div>
@@ -224,6 +228,13 @@ the order they are declared.</div>
 <h3>FILE_NOT_READABLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc">BasicFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_NOT_READABLE</span></div>
 <div class="block">BASIC-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FILE_SPECIFIED">
+<h3>FILE_SPECIFIED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFileConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc">BasicFileConnectorErrorCode</a></span>&nbsp;<span class="element-name">FILE_SPECIFIED</span></div>
+<div class="block">BASIC-FILE-CONNECTOR-400-004 - The file {0} given in Connection object {1} is a directory</div>
 </section>
 </li>
 <li>

@@ -116,49 +116,100 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_CONFIGURATION" class="member-name-link">BAD_CONFIGURATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector encountered an {1} exception when opening directory {2} sourced from {3} during the {4} method.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAD_FILE_ELEMENT" class="member-name-link">BAD_FILE_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0013 - The {0} integration connector retrieved an incomplete DataFile asset: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#BAD_FOLDER_ELEMENT" class="member-name-link">BAD_FOLDER_ELEMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0003 - The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_CONFIGURATION" class="member-name-link">CONNECTOR_CONFIGURATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0001 - The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0009 - The {0} integration connector has stopped its file monitoring and is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DATA_FILE_ARCHIVED" class="member-name-link">DATA_FILE_ARCHIVED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0020 - The {0} integration connector has archived the DataFile {1} ({2}) because the real-world file is no longer stored in the directory</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DATA_FILE_CREATED" class="member-name-link">DATA_FILE_CREATED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0016 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DATA_FILE_CREATED_FROM_TEMPLATE" class="member-name-link">DATA_FILE_CREATED_FROM_TEMPLATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0017 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file using template {3} ({4})</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DATA_FILE_DELETED" class="member-name-link">DATA_FILE_DELETED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector has deleted the DataFile {1} ({2}) because the real-world file is no longer stored in the directory</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DATA_FILE_UPDATED" class="member-name-link">DATA_FILE_UPDATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0018 - The {0} integration connector has updated the DataFile {1} ({2}) because the real-world file changed</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DATA_FOLDER_UPDATED" class="member-name-link">DATA_FOLDER_UPDATED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0010 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DATA_FOLDER_UPDATED_FOR_FILE" class="member-name-link">DATA_FOLDER_UPDATED_FOR_FILE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0011 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2} because of changes to file {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DIRECTORY_MONITORING_STARTING" class="member-name-link">DIRECTORY_MONITORING_STARTING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0005 - The {0} integration connector is initiating the monitoring of file directory {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DIRECTORY_MONITORING_STOPPING" class="member-name-link">DIRECTORY_MONITORING_STOPPING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0007 - The {0} integration connector is stopping the monitoring of file directory {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0015 - The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_DATA_FILE_UPDATE" class="member-name-link">UNEXPECTED_EXC_DATA_FILE_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0014 - An unexpected {0} exception was returned to the {1}
+ integration connector when it tried to update the DataFile in the metadata repositories for file {2}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_FOLDER_UPDATE" class="member-name-link">UNEXPECTED_EXC_FOLDER_UPDATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0012 - An unexpected {0} exception was returned to the {1} integration
+ connector when it tried to update the DataFolder {2} in the metadata repositories for directory {3}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_START" class="member-name-link">UNEXPECTED_EXC_MONITOR_START</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0006</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_STOP" class="member-name-link">UNEXPECTED_EXC_MONITOR_STOP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0008 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
+ FileAlterationMonitor for directory {2} while it stopping the monitoring service.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS" class="member-name-link">UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1} integration
+ connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID" class="member-name-link">UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0021 - An unexpected {0} exception was returned to the {1} integration
+ connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME" class="member-name-link">UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0004 - An unexpected {0} exception was returned to the {1} integration connector by the
+ Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for
+ directory {3} (absolute path {4}).</div>
+</div>
 </div>
 </section>
 </li>
@@ -223,132 +274,162 @@ the order they are declared.</div>
 <section class="detail" id="CONNECTOR_CONFIGURATION">
 <h3>CONNECTOR_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CONFIGURATION</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0001 - The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIGURATION">
 <h3>BAD_CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">BAD_CONFIGURATION</span></div>
+<div class="block">The {0} integration connector encountered an {1} exception when opening directory {2} sourced from {3} during the {4} method.  The exception message included was {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_FOLDER_ELEMENT">
 <h3>BAD_FOLDER_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">BAD_FOLDER_ELEMENT</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0003 - The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME">
 <h3>UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0004 - An unexpected {0} exception was returned to the {1} integration connector by the
+ Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for
+ directory {3} (absolute path {4}).  The error message was {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DIRECTORY_MONITORING_STARTING">
 <h3>DIRECTORY_MONITORING_STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DIRECTORY_MONITORING_STARTING</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0005 - The {0} integration connector is initiating the monitoring of file directory {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_MONITOR_START">
 <h3>UNEXPECTED_EXC_MONITOR_START</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_MONITOR_START</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0006</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DIRECTORY_MONITORING_STOPPING">
 <h3>DIRECTORY_MONITORING_STOPPING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DIRECTORY_MONITORING_STOPPING</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0007 - The {0} integration connector is stopping the monitoring of file directory {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_MONITOR_STOP">
 <h3>UNEXPECTED_EXC_MONITOR_STOP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_MONITOR_STOP</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0008 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
+ FileAlterationMonitor for directory {2} while it stopping the monitoring service.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_STOPPING">
 <h3>CONNECTOR_STOPPING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0009 - The {0} integration connector has stopped its file monitoring and is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FOLDER_UPDATED">
 <h3>DATA_FOLDER_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FOLDER_UPDATED</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0010 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FOLDER_UPDATED_FOR_FILE">
 <h3>DATA_FOLDER_UPDATED_FOR_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FOLDER_UPDATED_FOR_FILE</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0011 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2} because of changes to file {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_FOLDER_UPDATE">
 <h3>UNEXPECTED_EXC_FOLDER_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_FOLDER_UPDATE</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0012 - An unexpected {0} exception was returned to the {1} integration
+ connector when it tried to update the DataFolder {2} in the metadata repositories for directory {3}.  The error message was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_FILE_ELEMENT">
 <h3>BAD_FILE_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">BAD_FILE_ELEMENT</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0013 - The {0} integration connector retrieved an incomplete DataFile asset: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_DATA_FILE_UPDATE">
 <h3>UNEXPECTED_EXC_DATA_FILE_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_DATA_FILE_UPDATE</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0014 - An unexpected {0} exception was returned to the {1}
+ integration connector when it tried to update the DataFile in the metadata repositories for file {2}.
+ The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MISSING_TEMPLATE">
 <h3>MISSING_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">MISSING_TEMPLATE</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0015 - The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FILE_CREATED">
 <h3>DATA_FILE_CREATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FILE_CREATED</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0016 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FILE_CREATED_FROM_TEMPLATE">
 <h3>DATA_FILE_CREATED_FROM_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FILE_CREATED_FROM_TEMPLATE</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0017 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file using template {3} ({4})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FILE_UPDATED">
 <h3>DATA_FILE_UPDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FILE_UPDATED</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0018 - The {0} integration connector has updated the DataFile {1} ({2}) because the real-world file changed</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FILE_DELETED">
 <h3>DATA_FILE_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FILE_DELETED</span></div>
+<div class="block">The {0} integration connector has deleted the DataFile {1} ({2}) because the real-world file is no longer stored in the directory</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_FILE_ARCHIVED">
 <h3>DATA_FILE_ARCHIVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">DATA_FILE_ARCHIVED</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0020 - The {0} integration connector has archived the DataFile {1} ({2}) because the real-world file is no longer stored in the directory</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID">
 <h3>UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-0021 - An unexpected {0} exception was returned to the {1} integration
+ connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS">
 <h3>UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS</span></div>
+<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1} integration
+ connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}</div>
 </section>
 </li>
 </ul>

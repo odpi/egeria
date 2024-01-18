@@ -125,18 +125,36 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-400-009 - {0} is unable to add a new element to location {1} of an array of size {2} value</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DUPLICATE_ELEMENT" class="member-name-link">DUPLICATE_ELEMENT</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#BAD_ENTITY" class="member-name-link">BAD_ENTITY</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">GAF-CONVERTER-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#BAD_INSTANCE_TYPE" class="member-name-link">BAD_INSTANCE_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GAF-CONVERTER-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
+ because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_RELATIONSHIP" class="member-name-link">BAD_RELATIONSHIP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-CONVERTER-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATE_ELEMENT" class="member-name-link">DUPLICATE_ELEMENT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-400-007 - The unique name {0} passed on the {1} parameter of the {2} operation matches multiple elements: {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#HELPER_LOGIC_ERROR" class="member-name-link">HELPER_LOGIC_ERROR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#HELPER_LOGIC_ERROR" class="member-name-link">HELPER_LOGIC_ERROR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-PROPERTIES-HELPER-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HELPER_LOGIC_EXCEPTION" class="member-name-link">HELPER_LOGIC_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#HELPER_LOGIC_EXCEPTION" class="member-name-link">HELPER_LOGIC_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
  request resulting in an unexpected exception {3} with message {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_BEAN_CLASS" class="member-name-link">INVALID_BEAN_CLASS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-CONVERTER-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; error message was: {4}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#INVALID_GOVERNANCE_SERVICE_CONNECTION" class="member-name-link">INVALID_GOVERNANCE_SERVICE_CONNECTION</a></code></div>
 <div class="col-last even-row-color">
@@ -163,6 +181,16 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last odd-row-color">
 <div class="block">GAF-PROPERTIES-500-002 - The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveTypeCategory {2}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#MISSING_CONVERTER_METHOD" class="member-name-link">MISSING_CONVERTER_METHOD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GAF-CONVERTER-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
+ bean class {3} and so is unable to create the bean for method {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_METADATA_INSTANCE" class="member-name-link">MISSING_METADATA_INSTANCE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GAF-CONVERTER-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
+ because a metadata instance of type {2} has not passed to method {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_GOVERNANCE_CONTEXT" class="member-name-link">NULL_GOVERNANCE_CONTEXT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">GAF-GOVERNANCE-SERVICE-400-001 - No governance context supplied to the governance action service {0}</div>
@@ -179,12 +207,17 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last odd-row-color">
 <div class="block">GAF-PROPERTIES-400-008 - Null property name passed to properties object</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_BEAN_CLASS" class="member-name-link">UNEXPECTED_BEAN_CLASS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GAF-CONVERTER-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; the expected class name is: {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GAF-GOVERNANCE-SERVICE-500-001 - Unexpected {0} exception in governance action service {1} of type {2} detected by method {3}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GAF-PROPERTIES-400-006 - The unique name {0} passed on the {1} parameter of the {2} operation is not known to the metadata store</div>
 </div>
 </div>
@@ -359,6 +392,60 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">HELPER_LOGIC_EXCEPTION</span></div>
 <div class="block">GAF-PROPERTIES-HELPER-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
  request resulting in an unexpected exception {3} with message {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INVALID_BEAN_CLASS">
+<h3>INVALID_BEAN_CLASS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_BEAN_CLASS</span></div>
+<div class="block">GAF-CONVERTER-500-001 - An unsupported bean class named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; error message was: {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_CONVERTER_METHOD">
+<h3>MISSING_CONVERTER_METHOD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">MISSING_CONVERTER_METHOD</span></div>
+<div class="block">GAF-CONVERTER-500-002 - The {0} service has not implemented the {1} method in a subclass of the {2} converter class for
+ bean class {3} and so is unable to create the bean for method {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_BEAN_CLASS">
+<h3>UNEXPECTED_BEAN_CLASS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_BEAN_CLASS</span></div>
+<div class="block">GAF-CONVERTER-500-003 - An unexpected bean class named {0} was passed to the repository services by the {1} request for
+ open metadata access service {2} on server {3}; the expected class name is: {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_METADATA_INSTANCE">
+<h3>MISSING_METADATA_INSTANCE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">MISSING_METADATA_INSTANCE</span></div>
+<div class="block">GAF-CONVERTER-500-004 - One of the converters for the {0} service is not able to populate a bean of type {1}
+ because a metadata instance of type {2} has not passed to method {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BAD_INSTANCE_TYPE">
+<h3>BAD_INSTANCE_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">BAD_INSTANCE_TYPE</span></div>
+<div class="block">GAF-CONVERTER-500-005 - One of the converters for the {0} service is not able to populate a bean of type {1}
+ because a metadata instance of type {2} was passed to method {3} instead of the expected type of {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BAD_ENTITY">
+<h3>BAD_ENTITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENTITY</span></div>
+<div class="block">GAF-CONVERTER-500-011 - An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BAD_RELATIONSHIP">
+<h3>BAD_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">GAFErrorCode</a></span>&nbsp;<span class="element-name">BAD_RELATIONSHIP</span></div>
+<div class="block">GAF-CONVERTER-500-013 - A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}</div>
 </section>
 </li>
 </ul>

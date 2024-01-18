@@ -75,6 +75,10 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../../accessservices/stewardshipaction/client/SurveyAssetStoreClient.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.client">SurveyAssetStoreClient</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SurveyAssetStore</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
@@ -142,25 +146,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectionForAsset()" class="member-name-link">getConnectionForAsset</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorByConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">getConnectorByConnection</a><wbr>(<a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the connection information for the asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorByConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">getConnectorByConnection</a><wbr>(<a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the connector corresponding to the supplied connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorToAsset()" class="member-name-link">getConnectorToAsset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorToAsset()" class="member-name-link">getConnectorToAsset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the connector to the requested asset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#logAssetAuditMessage(java.lang.String,java.lang.String)" class="member-name-link">logAssetAuditMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyService,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#logAssetAuditMessage(java.lang.String,java.lang.String)" class="member-name-link">logAssetAuditMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyService,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Log an audit message about this asset.</div>
 </div>
 </div>
@@ -241,8 +240,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getConnectorByConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>getConnectorByConnection</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorByConnection</span><wbr><span class="parameters">(<a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
-                                               throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorByConnection</span><wbr><span class="parameters">(<a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
+                                            throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Returns the connector corresponding to the supplied connection.</div>
@@ -256,25 +255,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
 <dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectionForAsset()">
-<h3>getConnectionForAsset</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getConnectionForAsset</span>()
-                                             throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Return the connection information for the asset.  This is used to create the connector.  The connector
- is an Open Connector Framework (OCF) connector that provides access to the asset's data and metadata properties.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>Connection bean</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the asset guid is not recognized</dd>
-<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access the asset and/or connection</dd>
-<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem in the store whether the asset/connection properties are kept.</dd>
 </dl>
 </section>
 </li>
@@ -319,8 +299,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getConnectorToAsset()">
 <h3>getConnectorToAsset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToAsset</span>()
-                              throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToAsset</span>()
+                                       throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
 <a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,

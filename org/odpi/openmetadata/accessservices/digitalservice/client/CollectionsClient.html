@@ -143,10 +143,10 @@ implements <a href="../api/CollectionsInterface.html" title="interface in org.od
 <div class="block">Add an element to a collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#attachCollection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)" class="member-name-link">attachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.ResourceListProperties,boolean)" class="member-name-link">attachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionUse,
+ <a href="../properties/ResourceListProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ResourceListProperties</a>&nbsp;collectionUse,
  boolean&nbsp;makeAnchor)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
@@ -644,12 +644,12 @@ implements <a href="../api/CollectionsInterface.html" title="interface in org.od
 </section>
 </li>
 <li>
-<section class="detail" id="attachCollection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">
+<section class="detail" id="attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.ResourceListProperties,boolean)">
 <h3>attachCollection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">attachCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionUse,
+ <a href="../properties/ResourceListProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ResourceListProperties</a>&nbsp;collectionUse,
  boolean&nbsp;makeAnchor)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
@@ -657,7 +657,7 @@ implements <a href="../api/CollectionsInterface.html" title="interface in org.od
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/CollectionsInterface.html#attachCollection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">attachCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CollectionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.api">CollectionsInterface</a></code></dd>
+<dd><code><a href="../api/CollectionsInterface.html#attachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.ResourceListProperties,boolean)">attachCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CollectionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.digitalservice.api">CollectionsInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection</dd>

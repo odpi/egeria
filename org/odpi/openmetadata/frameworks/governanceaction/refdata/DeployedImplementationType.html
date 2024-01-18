@@ -146,6 +146,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Cohort Registry Store - Stores information about the repositories registered in the open metadata repository cohort.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#CSV_FILE" class="member-name-link">CSV_FILE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">A file containing externally accessible data - other fields provide information on the internal format.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_ASSET" class="member-name-link">DATA_ASSET</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">A collection of data, either at rest or in motion.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DATA_FILE" class="member-name-link">DATA_FILE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">A file containing externally accessible data - other fields provide information on the internal format.</div>
@@ -170,29 +178,53 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Event Action Service - A connector that coordinates governance of context events.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FILE_FOLDER" class="member-name-link">FILE_FOLDER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FILE" class="member-name-link">FILE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A file stored on a file system.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FILE_FOLDER" class="member-name-link">FILE_FOLDER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A directory (folder) that holds files that are potential data sources.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FILE_SYSTEM" class="member-name-link">FILE_SYSTEM</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#FILE_SYSTEM" class="member-name-link">FILE_SYSTEM</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A system that manages hierarchically organized files on persistent storage.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FILES_INTEGRATION_CONNECTOR" class="member-name-link">FILES_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FILES_INTEGRATION_CONNECTOR" class="member-name-link">FILES_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Files Integration Connector - Connector that manages metadata exchange with a third-party filesystem technology.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_ENGINE" class="member-name-link">GOVERNANCE_ACTION_ENGINE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_ENGINE" class="member-name-link">GOVERNANCE_ACTION_ENGINE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Governance Action Engine - A governance engine that runs governance action services.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_CONNECTOR" class="member-name-link">GOVERNANCE_ACTION_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_CONNECTOR" class="member-name-link">GOVERNANCE_ACTION_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Governance Action Service - A connector that coordinates governance of digital resources and metadata.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INFRASTRUCTURE_INTEGRATION_CONNECTOR" class="member-name-link">INFRASTRUCTURE_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ENGINE" class="member-name-link">GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Manages the execution of automated governance activity requested via engine actions.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_SERVICE" class="member-name-link">GOVERNANCE_SERVICE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Provides the description of a component that implements an automated governance activity.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INFRASTRUCTURE_INTEGRATION_CONNECTOR" class="member-name-link">INFRASTRUCTURE_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Infrastructure Integration Connector - Connector that manages metadata exchange with a third-party infrastructure catalog (CMDB) technology.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INTEGRATION_CONNECTOR" class="member-name-link">INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Connector that manages metadata exchange with a third party technology.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INTEGRATION_GROUP" class="member-name-link">INTEGRATION_GROUP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provides the list of integration connectors that should run in an Integration Daemon.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#JDBC_RELATIONAL_DATABASE" class="member-name-link">JDBC_RELATIONAL_DATABASE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">A database hosted on a relational database server capable of being called through a JDBC Driver.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#LINEAGE_INTEGRATION_CONNECTOR" class="member-name-link">LINEAGE_INTEGRATION_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
@@ -202,76 +234,88 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">A file containing log records.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OMAG_SERVER_PLATFORM" class="member-name-link">OMAG_SERVER_PLATFORM</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OCF_CONNECTOR" class="member-name-link">OCF_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A pluggable software component that conforms to the Open Connector Framework (OCF).</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OMAG_SERVER_PLATFORM" class="member-name-link">OMAG_SERVER_PLATFORM</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OMAG_SERVER_RUNTIME" class="member-name-link">OMAG_SERVER_RUNTIME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OMAG_SERVER_RUNTIME" class="member-name-link">OMAG_SERVER_RUNTIME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OPEN_DISCOVERY_ENGINE" class="member-name-link">OPEN_DISCOVERY_ENGINE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OPEN_DISCOVERY_ENGINE" class="member-name-link">OPEN_DISCOVERY_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Open Discovery Engine - A governance engine that runs open discovery services.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_DISCOVERY_SERVICE_CONNECTOR" class="member-name-link">OPEN_DISCOVERY_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPEN_DISCOVERY_SERVICE_CONNECTOR" class="member-name-link">OPEN_DISCOVERY_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Open Discovery Service - A connector that analyzing the contents of a digital resource.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ORGANIZATION_INTEGRATION_CONNECTOR" class="member-name-link">ORGANIZATION_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ORGANIZATION_INTEGRATION_CONNECTOR" class="member-name-link">ORGANIZATION_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Organization Integration Connector - Connector that manages metadata exchange with a third-party application containing data about people and organizations.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PLATFORM_SECURITY_CONNECTOR" class="member-name-link">PLATFORM_SECURITY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PLATFORM_SECURITY_CONNECTOR" class="member-name-link">PLATFORM_SECURITY_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POSTGRESQL_DATABASE" class="member-name-link">POSTGRESQL_DATABASE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#POSTGRESQL_DATABASE" class="member-name-link">POSTGRESQL_DATABASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A database hosted on a PostgreSQL server.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRESQL_SERVER" class="member-name-link">POSTGRESQL_SERVER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#POSTGRESQL_SERVER" class="member-name-link">POSTGRESQL_SERVER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A database server running the PostgreSQL software.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROGRAM_FILE" class="member-name-link">PROGRAM_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROGRAM_FILE" class="member-name-link">PROGRAM_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A file containing program logic.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REPOSITORY_CONNECTOR" class="member-name-link">REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REPOSITORY_CONNECTOR" class="member-name-link">REPOSITORY_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS Repository Connector - Maps open metadata calls to a metadata repository.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_ENGINE" class="member-name-link">REPOSITORY_GOVERNANCE_ENGINE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REPOSITORY_GOVERNANCE_ENGINE" class="member-name-link">REPOSITORY_GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A governance engine that runs repository governance services.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Repository Governance Service - A connector that dynamically governs the activity of the open metadata repositories.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SEARCH_INTEGRATION_CONNECTOR" class="member-name-link">SEARCH_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SEARCH_INTEGRATION_CONNECTOR" class="member-name-link">SEARCH_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Search Integration Connector - Connector that manages metadata exchange with a third-party search technology.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SECURITY_INTEGRATION_CONNECTOR" class="member-name-link">SECURITY_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SECURITY_INTEGRATION_CONNECTOR" class="member-name-link">SECURITY_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Security Integration Connector - Connector that manages metadata exchange with a third-party security management technology.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SECURITY_CONNECTOR" class="member-name-link">SERVER_SECURITY_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVER_SECURITY_CONNECTOR" class="member-name-link">SERVER_SECURITY_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_ENGINE" class="member-name-link">SURVEY_ACTION_ENGINE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SOFTWARE_COMPONENT" class="member-name-link">SOFTWARE_COMPONENT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">A deployable software component.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SOFTWARE_SERVER" class="member-name-link">SOFTWARE_SERVER</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">A callable software server.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_ENGINE" class="member-name-link">SURVEY_ACTION_ENGINE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Event Action Engine - A governance engine that runs survey action services.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_SERVICE_CONNECTOR" class="member-name-link">SURVEY_ACTION_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_SERVICE_CONNECTOR" class="member-name-link">SURVEY_ACTION_SERVICE_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Event Action Service - A connector that coordinates asset surveys.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TOPIC_INTEGRATION_CONNECTOR" class="member-name-link">TOPIC_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TOPIC_INTEGRATION_CONNECTOR" class="member-name-link">TOPIC_INTEGRATION_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Topic Integration Connector - Connector that manages metadata exchange with a third-party event management technology.</div>
 </div>
 </div>
@@ -313,29 +357,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description for this value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsATypeOf()" class="member-name-link">getIsATypeOf</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name for this deployed implementation type.</div>
+<div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the URL to more information.</div>
+<div class="block">Return the qualified name for this deployed implementation type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWikiLink()" class="member-name-link">getWikiLink</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the URL to more information.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -360,9 +409,30 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="DATA_ASSET">
+<h3>DATA_ASSET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DATA_ASSET</span></div>
+<div class="block">A collection of data, either at rest or in motion.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FILE">
+<h3>FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">FILE</span></div>
+<div class="block">A file stored on a file system.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="DATA_FILE">
 <h3>DATA_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DATA_FILE</span></div>
+<div class="block">A file containing externally accessible data - other fields provide information on the internal format.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CSV_FILE">
+<h3>CSV_FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">CSV_FILE</span></div>
 <div class="block">A file containing externally accessible data - other fields provide information on the internal format.</div>
 </section>
 </li>
@@ -381,10 +451,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="DATA_FOLDER">
-<h3>DATA_FOLDER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DATA_FOLDER</span></div>
-<div class="block">A directory (folder) that holds files representing a single data source.</div>
+<section class="detail" id="ARCHIVE_FILE">
+<h3>ARCHIVE_FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">ARCHIVE_FILE</span></div>
+<div class="block">A file containing an organized collection of files.</div>
 </section>
 </li>
 <li>
@@ -395,17 +465,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ARCHIVE_FILE">
-<h3>ARCHIVE_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">ARCHIVE_FILE</span></div>
-<div class="block">A file containing an organized collection of files.</div>
+<section class="detail" id="DATA_FOLDER">
+<h3>DATA_FOLDER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">DATA_FOLDER</span></div>
+<div class="block">A directory (folder) that holds files representing a single data source.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="POSTGRESQL_SERVER">
-<h3>POSTGRESQL_SERVER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">POSTGRESQL_SERVER</span></div>
-<div class="block">A database server running the PostgreSQL software.</div>
+<section class="detail" id="JDBC_RELATIONAL_DATABASE">
+<h3>JDBC_RELATIONAL_DATABASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">JDBC_RELATIONAL_DATABASE</span></div>
+<div class="block">A database hosted on a relational database server capable of being called through a JDBC Driver.</div>
 </section>
 </li>
 <li>
@@ -413,6 +483,20 @@ the order they are declared.</div>
 <h3>POSTGRESQL_DATABASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">POSTGRESQL_DATABASE</span></div>
 <div class="block">A database hosted on a PostgreSQL server.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOFTWARE_SERVER">
+<h3>SOFTWARE_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">SOFTWARE_SERVER</span></div>
+<div class="block">A callable software server.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="POSTGRESQL_SERVER">
+<h3>POSTGRESQL_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">POSTGRESQL_SERVER</span></div>
+<div class="block">A database server running the PostgreSQL software.</div>
 </section>
 </li>
 <li>
@@ -458,10 +542,38 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SOFTWARE_COMPONENT">
+<h3>SOFTWARE_COMPONENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">SOFTWARE_COMPONENT</span></div>
+<div class="block">A deployable software component.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OCF_CONNECTOR">
+<h3>OCF_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">OCF_CONNECTOR</span></div>
+<div class="block">A pluggable software component that conforms to the Open Connector Framework (OCF).</div>
+</section>
+</li>
+<li>
 <section class="detail" id="REPOSITORY_CONNECTOR">
 <h3>REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">REPOSITORY_CONNECTOR</span></div>
 <div class="block">OMRS Repository Connector - Maps open metadata calls to a metadata repository.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_ENGINE">
+<h3>GOVERNANCE_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_ENGINE</span></div>
+<div class="block">Manages the execution of automated governance activity requested via engine actions.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_SERVICE">
+<h3>GOVERNANCE_SERVICE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">GOVERNANCE_SERVICE</span></div>
+<div class="block">Provides the description of a component that implements an automated governance activity.</div>
 </section>
 </li>
 <li>
@@ -532,6 +644,13 @@ the order they are declared.</div>
 <h3>REPOSITORY_GOVERNANCE_ENGINE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">REPOSITORY_GOVERNANCE_ENGINE</span></div>
 <div class="block">A governance engine that runs repository governance services.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INTEGRATION_CONNECTOR">
+<h3>INTEGRATION_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">INTEGRATION_CONNECTOR</span></div>
+<div class="block">Connector that manages metadata exchange with a third party technology.</div>
 </section>
 </li>
 <li>
@@ -653,6 +772,13 @@ the order they are declared.</div>
 <div class="block">Audit Log Destination - Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="INTEGRATION_GROUP">
+<h3>INTEGRATION_GROUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">INTEGRATION_GROUP</span></div>
+<div class="block">Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -713,6 +839,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIsATypeOf()">
+<h3>getIsATypeOf</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.refdata">DeployedImplementationType</a></span>&nbsp;<span class="element-name">getIsATypeOf</span>()</div>
+<div class="block">Return the optional deployed implementation type that this technology is a tye of.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>deployed implementation type enum</dd>
 </dl>
 </section>
 </li>
