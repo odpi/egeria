@@ -28,14 +28,24 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSet
 {
     /**
-     * CONNECTOR-CONFIGURATION-FACTORY-400-001 Invalid Connector Provider class {0}; class loader exception was {1} with message {2}
+     * CONNECTOR-CONFIGURATION-FACTORY-400-001 Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the 'loader.path' option); also check that the 'loader.path' value is correct. Class loader exception was {1} with message {2}
      */
-    INVALID_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-001 ",
-            "Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the loader.path option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}",
-            "The system is unable to create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +
+    UNKNOWN_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-001",
+                               "Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the 'loader.path' option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}",
+                               "The system is unable to create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +
                                        ".  This has resulted in an exception in the class loader.",
-            "Update the configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of " +
-                                       "the connection's connectorType. Then retry the request.");
+                               "Update the configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of " +
+                                       "the connection's connectorType. Then retry the request."),
+
+    /**
+     * CONNECTOR-CONFIGURATION-FACTORY-400-002 Connector Provider class name {0} does not inherit from 'org.odpi.openmetadata.frameworks.connectors.ConnectorProvider'
+     */
+    INVALID_CONNECTOR_PROVIDER(400, "CONNECTOR-CONFIGURATION-FACTORY-400-002",
+                               "Connector Provider class name {0} does not inherit from 'org.odpi.openmetadata.frameworks.connectors.ConnectorProvider'",
+                               "The system is unable to create the requested connector type because the supplied Connector Provider class is not implemented correctly.",
+                               "Update the configuration to include a valid connector provider in the connectorProviderClassName property of " +
+                                       "the connection's connectorType. Then retry the request."),
+    ;
 
 
     private final int    httpErrorCode;

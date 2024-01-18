@@ -264,24 +264,24 @@ public enum OpenMetadataProperty
     REQUEST_PARAMETERS("requestParameters", "map<string, string>", "Request parameters to pass to the governance service when called.", "882a5a30-3724-41ea-90ff-667cb7627bde"),
 
     /**
-     * Properties that configure the governance service for this type of request.
+     * Lists the names of the request parameters to remove from the requestParameters supplied by the caller.
      */
-    REQUEST_PARAMETER_FILTER("requestParameterFilter", "array<string>", "List the names of the request parameters to remove from the supplied requestParameters.", "9f7e13d1-ec51-4c95-9931-383b3ab9295b"),
+    REQUEST_PARAMETER_FILTER("requestParameterFilter", "array<string>", "Lists the names of the request parameters to remove from the requestParameters supplied by the caller.", "9f7e13d1-ec51-4c95-9931-383b3ab9295b"),
 
     /**
-     * Provide a translation map between the supplied name of the requestParameters and the names supported by the implementation of the governance service.
+     * Provides a translation map between the supplied name of the requestParameters and the names supported by the implementation of the governance service.
      */
-    REQUEST_PARAMETER_MAP("requestParameterMap", "map<string, string>", "Provide a translation map between the supplied name of the requestParameters and the names supported by the implementation of the governance service.", "64730138-399a-4f30-a0b8-1f6cc487cb53"),
+    REQUEST_PARAMETER_MAP("requestParameterMap", "map<string, string>", "Provides a translation map between the supplied names in the requestParameters and the names supported by the implementation of the governance service.", "64730138-399a-4f30-a0b8-1f6cc487cb53"),
 
     /**
-     * List the names of the action targets to remove from the supplied action targets.
+     * Lists the names of the action targets to remove from the supplied action targets.
      */
-    ACTION_TARGET_FILTER("actionTargetFilter", "array<string>", "List the names of the action targets to remove from the supplied action targets.", "91b5c627-2c3a-4598-af72-e1b52f1f03c5"),
+    ACTION_TARGET_FILTER("actionTargetFilter", "array<string>", "Lists the names of the action targets to remove from the supplied action targets.", "91b5c627-2c3a-4598-af72-e1b52f1f03c5"),
 
     /**
-     * Provide a translation map between the supplied name of an action target and the name supported by the implementation of the governance service.
+     * Provides a translation map between the supplied name of an action target and the name supported by the implementation of the governance service.
      */
-    ACTION_TARGET_MAP("actionTargetMap", "map<string, string>", "Provide a translation map between the supplied name of an action target and the name supported by the implementation of the governance service.", "b848b720-4171-4d28-9e4c-1d34f51aaf5f"),
+    ACTION_TARGET_MAP("actionTargetMap", "map<string, string>", "Provides a translation map between the supplied name of an action target and the name supported by the implementation of the governance service.", "b848b720-4171-4d28-9e4c-1d34f51aaf5f"),
 
     /**
      * Request type supported by the governance service (overrides requestType on call to governance service if specified)

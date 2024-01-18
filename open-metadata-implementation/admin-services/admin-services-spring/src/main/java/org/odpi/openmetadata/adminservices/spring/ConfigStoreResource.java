@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -27,6 +29,64 @@ import org.springframework.web.bind.annotation.*;
 public class ConfigStoreResource
 {
     private final OMAGServerAdminStoreServices  adminStoreAPI = new OMAGServerAdminStoreServices();
+
+    /**
+     * Override the default server configuration document.
+     *
+     * @param userId calling user.
+     * @param defaultServerConfig values to include in every new configured server.
+     * @return void response
+     */
+    @PostMapping(path = "/default-configuration-document")
+
+    @Operation(summary="setDefaultOMAGServerConfig",
+            description="Override the default server configuration document.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public  VoidResponse setDefaultOMAGServerConfig(@PathVariable String           userId,
+                                                    @RequestBody  OMAGServerConfig defaultServerConfig)
+    {
+        return adminStoreAPI.setDefaultOMAGServerConfig(userId, defaultServerConfig);
+    }
+
+
+    /**
+     * Return the default server configuration document.
+     *
+     * @param userId calling user
+     * @return connection response
+     */
+    @GetMapping(path = "/default-configuration-document")
+
+    @Operation(summary="getDefaultOMAGServerConfig",
+            description="Return the default server configuration document.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public OMAGServerConfigResponse getDefaultOMAGServerConfig(@PathVariable String       userId)
+    {
+        return adminStoreAPI.getDefaultOMAGServerConfig(userId);
+    }
+
+
+    /**
+     * Clear the default configuration document.
+     *
+     * @param userId calling user
+     * @return current setting of default server configuration
+     */
+    @DeleteMapping(path = "/default-configuration-document")
+
+    @Operation(summary="clearDefaultServerConfig",
+            description="Clear the default configuration document.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public VoidResponse clearDefaultServerConfig(@PathVariable String   userId)
+    {
+        return adminStoreAPI.clearDefaultServerConfig(userId);
+    }
 
 
     /**

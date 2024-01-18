@@ -2,11 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -92,6 +96,9 @@ public class OMAGServerPlatform
 
     @Value("${platform.configstore.endpoint:}") // Default value is zero length string
     String configStoreEndpoint;
+
+    @Value("${platform.default.config.document:}") // Default value is zero length string
+    String defaultConfigDocument;
 
     @Value("${platform.security.provider:}") // Default value is zero length string
     String platformSecurityProvider;
@@ -238,6 +245,7 @@ public class OMAGServerPlatform
     @Component
     public class ApplicationContextListener
     {
+        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
         /**
          * Print out message to say that the platform is ready.
@@ -247,7 +255,7 @@ public class OMAGServerPlatform
         {
             try
             {
-                if ((configStoreProvider != null) && (! configStoreProvider.isEmpty()))
+                if ((configStoreProvider != null) && (! configStoreProvider.isBlank()))
                 {
                     Connection    configStoreConnection = new Connection();
                     ConnectorType connectorType         = new ConnectorType();
@@ -262,7 +270,13 @@ public class OMAGServerPlatform
                     configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
                 }
 
-                if ((platformSecurityProvider != null) && (! platformSecurityProvider.isEmpty()))
+                OMAGServerConfig defaultConfigurationDocument = this.getDefaultConfigurationDocument();
+                if (defaultConfigurationDocument != null)
+                {
+                    configStoreServices.setDefaultOMAGServerConfig(sysUser, defaultConfigurationDocument);
+                }
+
+                if ((platformSecurityProvider != null) && (! platformSecurityProvider.isBlank()))
                 {
                     Connection    securityConnection = new Connection();
                     ConnectorType connectorType      = new ConnectorType();
@@ -281,7 +295,8 @@ public class OMAGServerPlatform
             }
             catch (Exception error)
             {
-                log.error("Unable to set up platform connectors", error);
+                log.error("Unable to set up platform connectors and/or default configuration document", error);
+                System.out.println("Unable to set up platform connectors and/or default configuration document due to " + error.getClass().getName() + " exception with message " + error.getMessage());
             }
 
             autoStartConfig();
@@ -292,6 +307,17 @@ public class OMAGServerPlatform
                 Runtime.getRuntime().halt(43);
             }
             System.out.println(new Date() + " OMAG server platform ready for more configuration");
+        }
+
+        private OMAGServerConfig getDefaultConfigurationDocument() throws JsonProcessingException
+        {
+            if ((defaultConfigDocument != null) && (! defaultConfigDocument.isBlank()))
+            {
+                return OBJECT_MAPPER.readValue(defaultConfigDocument, OMAGServerConfig.class);
+
+            }
+
+            return null;
         }
 
 
@@ -306,6 +332,7 @@ public class OMAGServerPlatform
             temporaryDeactivateServers();
         }
     }
+
 
     /**
      * Detect failures
