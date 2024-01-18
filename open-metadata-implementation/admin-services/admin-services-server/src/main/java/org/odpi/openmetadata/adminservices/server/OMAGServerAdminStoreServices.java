@@ -142,7 +142,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return current setting of default server configuration
      */
-    public synchronized VoidResponse clearDefaultServerConfig(String   userId)
+    public synchronized VoidResponse clearDefaultOMAGServerConfig(String   userId)
     {
         final String methodName = "clearDefaultServerConfig";
 
@@ -417,7 +417,7 @@ public class OMAGServerAdminStoreServices
     /**
      * Get the OMAG Server Config store for retrieving all the server configurations associated with this platform.
      *
-     * @param serverConfigStore the server config store- note this may not support this operations
+     * @param serverConfigStore the server config store - note the configured config store may not support this operation
      * @param methodName current operation
      * @return the store to use for the retrieve all server configurations
      * @throws OMAGConfigurationErrorException the store does not support the retrieve all configured servers for this platform operation
