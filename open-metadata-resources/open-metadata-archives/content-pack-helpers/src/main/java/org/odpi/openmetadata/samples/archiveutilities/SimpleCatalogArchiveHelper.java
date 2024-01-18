@@ -667,6 +667,9 @@ public class SimpleCatalogArchiveHelper
      * @param parentGUID unique identifier of resource consumer
      * @param resourceGUID unique identifier of resource
      * @param resourceUse description of use
+     * @param resourceUseProperties properties
+     * @param resourceUseDescription description
+     * @param watchResource should watch?
      */
     public void addResourceListRelationshipByGUID(String              parentGUID,
                                                   String              resourceGUID,
@@ -2593,11 +2596,7 @@ public class SimpleCatalogArchiveHelper
                 entityClassifications = new ArrayList<>();
             }
 
-            InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ANCHOR_GUID.name, designModelGUID, methodName);
-            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataProperty.ANCHOR_TYPE_NAME.name, designModelTypeName, methodName);
-            Classification     classification           = archiveHelper.getClassification(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName, classificationProperties, InstanceStatus.ACTIVE);
-
-            entityClassifications.add(classification);
+            entityClassifications.add(this.getAnchorClassification(designModelGUID, designModelTypeName, methodName));
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -3553,6 +3552,8 @@ public class SimpleCatalogArchiveHelper
      * @param additionalProperties any other properties.
      * @param connectorTypeGUID unique identifier for the connector type
      * @param endpointGUID unique identifier for the endpoint of the asset
+     * @param anchorGUID unique identifier for the anchor - can be null
+     * @param anchorTypeName unique name of the anchor - set if anchorGUID set.
      *
      * @return id for the connection
      */
@@ -3566,7 +3567,9 @@ public class SimpleCatalogArchiveHelper
                                 Map<String, Object> configurationProperties,
                                 Map<String, String> additionalProperties,
                                 String              connectorTypeGUID,
-                                String              endpointGUID)
+                                String              endpointGUID,
+                                String              anchorGUID,
+                                String              anchorTypeName)
     {
         final String methodName = "addConnection";
 
@@ -3580,11 +3583,20 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME, configurationProperties, methodName);
 
+        List<Classification> entityClassifications = null;
+
+        if (anchorGUID != null)
+        {
+            entityClassifications = new ArrayList<>();
+
+            entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+        }
+
         EntityDetail connectionEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                      entityClassifications);
 
         archiveBuilder.addEntity(connectionEntity);
 
@@ -4937,16 +4949,7 @@ public class SimpleCatalogArchiveHelper
         {
             entityClassifications = new ArrayList<>();
 
-            InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
-                                                                                                    OpenMetadataProperty.ANCHOR_GUID.name,
-                                                                                                    anchorGUID, methodName);
-            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
-                                                                                 OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
-                                                                                 anchorTypeName, methodName);
-            Classification classification = archiveHelper.getClassification(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                                                            classificationProperties, InstanceStatus.ACTIVE);
-
-            entityClassifications.add(classification);
+            entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, methodName));
         }
 
         EntityDetail  validValueEntity = archiveHelper.getEntityDetail(typeName,
@@ -4963,6 +4966,31 @@ public class SimpleCatalogArchiveHelper
         }
 
         return validValueEntity.getGUID();
+    }
+
+
+    /**
+     * Set up an anchor classification.
+     *
+     * @param anchorGUID unique identifier for the anchor - can be null
+     * @param anchorTypeName unique name of the anchor - set if anchorGUID set
+     * @param methodName calling method
+     * @return classification
+     */
+    Classification getAnchorClassification(String anchorGUID,
+                                           String anchorTypeName,
+                                           String methodName)
+    {
+        InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
+                                                                                                OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                                anchorGUID, methodName);
+
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
+                                                                             OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                             anchorTypeName, methodName);
+
+        return archiveHelper.getClassification(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                               classificationProperties, InstanceStatus.ACTIVE);
     }
 
 

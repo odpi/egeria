@@ -47,7 +47,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      * open metadata access service {2} on server {3}; message was {0}
      */
     PROPERTY_SERVER_ERROR("OMAG-REPOSITORY-HANDLER-0003",
-                          AuditLogRecordSeverityLevel.EXCEPTION,
+                          AuditLogRecordSeverityLevel.ERROR,
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service {2} on " +
                                   "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",

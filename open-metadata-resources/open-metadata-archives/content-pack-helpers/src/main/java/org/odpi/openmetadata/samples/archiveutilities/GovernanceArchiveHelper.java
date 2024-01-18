@@ -160,6 +160,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
+            String serviceGUID = super.addAsset(serviceTypeName, qualifiedName, displayName, description, additionalProperties, extendedProperties);
+
             String connectionGUID = super.addConnection(qualifiedName + "_implementation",
                                                        displayName + " Governance Service Provider Implementation",
                                                        "Connection for governance service: " + qualifiedName,
@@ -170,9 +172,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                        configurationProperties,
                                                        null,
                                                        connectorTypeGUID,
-                                                       null);
-
-            String serviceGUID = super.addAsset(serviceTypeName, qualifiedName, displayName, description, additionalProperties, extendedProperties);
+                                                       null,
+                                                        serviceGUID,
+                                                        serviceTypeName);
 
             if ((serviceGUID != null) && (connectionGUID != null))
             {

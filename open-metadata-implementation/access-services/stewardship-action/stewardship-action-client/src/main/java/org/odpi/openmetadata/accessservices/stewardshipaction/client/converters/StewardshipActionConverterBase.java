@@ -13,6 +13,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
+/**
+ * Base class converter for Stewardship Action OMAS.
+ *
+ * @param <B> bean class
+ */
 public abstract class StewardshipActionConverterBase<B> extends OpenMetadataConverterBase<B>
 {
     /**

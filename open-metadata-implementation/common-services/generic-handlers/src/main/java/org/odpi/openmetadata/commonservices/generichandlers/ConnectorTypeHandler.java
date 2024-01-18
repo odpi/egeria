@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -538,9 +539,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                           connectorType.getProperties(),
                                                                           methodName);
 
-                    if ((framework == null) || (OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT.equals(framework)))
+                    if ((framework == null) || (OpenMetadataValidValues.CONNECTOR_FRAMEWORK_DEFAULT.equals(framework)))
                     {
-                        if ((language == null) || (OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
+                        if ((language == null) || (OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
                         {
                             return connectorType.getGUID();
                         }
