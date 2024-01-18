@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adminservices.server;
 import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SolutionViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
@@ -38,8 +37,8 @@ public class OMAGServerAdminForViewServices
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
-    private final OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
-    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -329,8 +328,6 @@ public class OMAGServerAdminForViewServices
                                                                  viewServiceConfigList);
 
             this.storeViewServicesConfig(userId, serverName, serviceURLMarker, viewServiceConfigList, methodName);
-
-
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -443,32 +440,20 @@ public class OMAGServerAdminForViewServices
      * @return newly created config object
      */
     private ViewServiceConfig createViewServiceConfig(ViewServiceRegistrationEntry registration,
-                                                      ViewServiceConfig          requestedViewServiceConfig)
+                                                      ViewServiceConfig            requestedViewServiceConfig)
     {
         ViewServiceConfig viewServiceConfig;
 
-        if (requestedViewServiceConfig instanceof IntegrationViewServiceConfig)
+        if (requestedViewServiceConfig instanceof IntegrationViewServiceConfig requestedIntegrationViewServiceConfig)
         {
             /*
              * The requested configuration is for an Integration View Service
              */
-            IntegrationViewServiceConfig requestedIntegrationViewServiceConfig = (IntegrationViewServiceConfig)requestedViewServiceConfig;
             IntegrationViewServiceConfig createdViewServiceConfig = new IntegrationViewServiceConfig(registration);
             createdViewServiceConfig.setResourceEndpoints(requestedIntegrationViewServiceConfig.getResourceEndpoints());
             viewServiceConfig = createdViewServiceConfig;
             // some integration view services require the OMAGServerPlatformRootURL
             createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
-        }
-        else if (requestedViewServiceConfig instanceof SolutionViewServiceConfig)
-        {
-            /*
-             * The requested configuration is for a Solution View Service
-             */
-            SolutionViewServiceConfig requestedSolutionViewServiceConfig = (SolutionViewServiceConfig)requestedViewServiceConfig;
-            SolutionViewServiceConfig createdViewServiceConfig = new SolutionViewServiceConfig(registration);
-            createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedSolutionViewServiceConfig.getOMAGServerPlatformRootURL());
-            createdViewServiceConfig.setOMAGServerName(requestedSolutionViewServiceConfig.getOMAGServerName());
-            viewServiceConfig =  createdViewServiceConfig;
         }
         else
         {

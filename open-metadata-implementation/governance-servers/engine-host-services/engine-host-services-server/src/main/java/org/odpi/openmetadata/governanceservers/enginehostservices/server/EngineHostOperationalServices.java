@@ -413,7 +413,10 @@ public class EngineHostOperationalServices
 
         auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
-        engineHostInstance.shutdown();
+        if (engineHostInstance != null)
+        {
+            engineHostInstance.shutdown();
+        }
 
         /*
          * Shutdown the engine services

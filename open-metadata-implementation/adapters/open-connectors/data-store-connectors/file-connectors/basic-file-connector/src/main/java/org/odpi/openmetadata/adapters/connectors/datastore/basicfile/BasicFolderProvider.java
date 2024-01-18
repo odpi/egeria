@@ -27,7 +27,7 @@ public class BasicFolderProvider extends ConnectorProviderBase
     {
         super();
 
-        Class<BasicFileStoreConnector>  connectorClass = BasicFileStoreConnector.class;
+        Class<BasicFolderConnector>  connectorClass = BasicFolderConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
