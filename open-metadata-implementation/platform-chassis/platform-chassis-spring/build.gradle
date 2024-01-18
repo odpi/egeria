@@ -26,6 +26,7 @@ dependencies {
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')
     runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
@@ -33,6 +34,9 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.slf4j:slf4j-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'com.fasterxml.jackson.core:jackson-core'
     runtimeOnly 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:user-security:user-authn')
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')

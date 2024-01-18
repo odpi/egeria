@@ -205,7 +205,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
      * Open Watchdog Governance Action Services: {0}
      */
     WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0017",
-                   AuditLogRecordSeverityLevel.INFO,
+                   AuditLogRecordSeverityLevel.EVENT,
                           "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: {0}",
                           "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
                                   "associated with processing governance services).  These events are passed to listening Open Watchdog Governance Action Services " +

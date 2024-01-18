@@ -30,6 +30,7 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
@@ -1526,9 +1527,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String surveyServiceName = "folder-survey-service";
         final String surveyServiceDisplayName = "Folder (directory) Survey Service";
         final String surveyServiceDescription = "Discovers the types of files located within a file system directory (and its sub-directories).";
-        final String surveyServiceProviderClassName = FileSurveyServiceProvider.class.getName();
+        final String surveyServiceProviderClassName = FolderSurveyServiceProvider.class.getName();
 
-        FileSurveyServiceProvider provider = new FileSurveyServiceProvider();
+        FolderSurveyServiceProvider provider = new FolderSurveyServiceProvider();
 
         GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
 

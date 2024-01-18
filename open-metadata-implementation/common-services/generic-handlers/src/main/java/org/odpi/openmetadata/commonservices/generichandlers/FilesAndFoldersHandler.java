@@ -1494,7 +1494,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                 String relationshipTypeGUID = OpenMetadataType.NESTED_FILE_TYPE_GUID;
                 String relationshipTypeName = OpenMetadataType.NESTED_FILE_TYPE_NAME;
 
-                if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataType.DATA_FOLDER.typeName))
+                if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataType.FILE_FOLDER.typeName))
                 {
                     relationshipTypeGUID = OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID;
                     relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME;

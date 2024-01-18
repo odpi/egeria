@@ -143,10 +143,10 @@ public class IntegrationContext
                                                                                      externalSourceName,
                                                                                      integrationReportWriter);
             MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction       stewardshipAction       = new StewardshipAction(openMetadataStore, userId);
-            ValidMetadataValues     validMetadataValues     = new ValidMetadataValues(openMetadataStore, userId);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId);
+            ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
-            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValues);
+            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
         }
 
         return null;

@@ -51,6 +51,13 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
+     * BASIC-FILE-CONNECTOR-400-004 - The file {0} given in Connection object {1} is a directory
+     */
+    FILE_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-004",
+                        "The pathname {0} given in Connection object {1} points to a file not a directory",
+                        "The connector is unable to work with a file.",
+                        "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object."),
+    /**
      * BASIC-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
      */
     FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
