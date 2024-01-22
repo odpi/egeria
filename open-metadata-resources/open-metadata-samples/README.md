@@ -11,7 +11,11 @@ the access services.
 * [Open Metadata Security samples](open-metadata-security-samples) - illustrations of how to
 implement the Open Metadata Security Connectors.
 
-* [Postman REST API scripts for ODPi Egeria](postman-rest-samples) - collections of pre-canned calls to Egeria's REST APIs.
+* [Postman REST API scripts for ODPi Egeria](postman-rest-samples) - collections of pre-canned calls to Egeria's REST APIs using Postman.
+
+* [HTTP-Client REST API scripts for ODPi Egeria](postman-rest-samples) - collections of pre-canned calls to Egeria's REST APIs using 
+the Jetbrains HTTP-client.
+
 
 
 
