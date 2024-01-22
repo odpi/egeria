@@ -3,14 +3,16 @@
 
 # Sample Jetbrains HTTP Scripts
 
-The Jetbrains HTTP Client is a useful utility for testing REST APIs that is both integrated into the Jetbrains tooling 
+The Jetbrains  HTTP Client  is a useful utility for testing REST APIs that is both integrated into the Jetbrains tooling 
 and freely available to be run standalone. Further information can be found at 
-[Jebrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html). Information about the freely downloadable client can be found at 
+[Jetbrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html). 
+Information about the freely downloadable client can be found at 
 [Download HTTP Client CLI: CI-friendly way of executing .http files](https://www.jetbrains.com/ijhttp/download/#section=zip-archive).
 
 
-It captures, stores and executes specific REST API calls so you do not have to keep typing the URL and parameters
-each time you want to issue a request. You can also sequence and script REST calls into scenarios for testing or demonstation.
+It captures, stores and executes specific REST API calls, so you do not have to keep typing the URL and parameters
+each time you want to issue a request. You can also sequence and script REST calls into scenarios for testing or 
+demonstration.
 
 
 ## Sample Collections
@@ -25,20 +27,26 @@ In order to run these, you should have a set of environment variables configured
 
 The HTTP Client supports the definition of variables like hostname, kafka queue, userId, etc.  These can then be used in
 specific HTTP Client commands.  This makes it easier for them to be used by multiple users, or with different
-configurations.
+configurations. Environment variables are stored in a file named either `http-client.env.json` or 
+`http-client.private.env.json`. The first is meant to be shared across all users and the second meant for private 
+customizations. 
 
-A superset of all the potential variables that we use in our samples (along with default values) are provided in:
-open-metadata-resources/open-metadata-deployment/http-client.env.json. This file contains several JSON structures that 
+A superset of potential variables that we use in our samples (along with default values) are provided in:
+open-metadata-resources/open-metadata-deployment/http-client-rest-samples/http-client.env.json. This file contains 
+several JSON structures that 
 group environment variables for different purposes - the Egeria grouping has generally used variables while, for 
 instance the Atlas grouping has variables specialized for Atlas. This file can be copied, into your own to adapt to your
 own environment and requirements.
 
 You will most likely want to override some of these values (such as `baseURL` or `kafkaep`) depending on your
-own environment's configuration; or you may even want to create your own JSON structure within the file or make several copies -
-with different settings in each to be able to quickly change between different environments you have running at the same time.
+own environment's configuration - updating the `http-client-private.env.json` file with your own customizations make it 
+easy to preserve the defaults but select the configuration you need. A given environment file can have many configuration
+sets within it, each created to support a different use case. Selection of the environment to use can be done
+at execution time or when editing the requests file. You can, for example, set up different environments for development, 
+test, and production.
 
-Note that many of the variables are optional, depending on your particular configuration. The mandatory variables are
-the following:
+Note that many of the variables are optional, depending on your particular configuration. The most commonly used
+variables are the following:
 
 - `baseURL`: the base URL of your Egeria OMAG Server Platform, including the 'https://' prefix
 - `user`: the user name of the user carrying out operations within the Egeria OMAG Server Platform
