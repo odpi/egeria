@@ -15,7 +15,7 @@ public enum EngineServiceDescription
      * in a discovery analysis report that is attached to the asset in the open metadata repositories.
      */
     ASSET_ANALYSIS_OMES(400,
-                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        ComponentDevelopmentStatus.DEPRECATED,
                         "Asset Analysis",
                         "Asset Analysis OMES",
                         "asset-analysis",
@@ -69,6 +69,23 @@ public enum EngineServiceDescription
                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
                       DeployedImplementationType.EVENT_ACTION_ENGINE.getDeployedImplementationType(),
                       DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+
+
+    /**
+     * Analyses the content of an asset's real world counterpart (resource), generates annotations
+     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
+     */
+    SURVEY_ACTION_OMES(404,
+                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        "Survey Action",
+                        "Survey Action OMES",
+                        "survey-action",
+                        "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
+                                "in a survey report that is attached to the asset in the open metadata repositories.",
+                        "https://egeria-project.org/services/omes/survey-action/overview/",
+                        AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getDeployedImplementationType(),
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
     ;
 
 

@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+
 /**
  * DataFolderMonitorIntegrationProvider is the OCF connector provider for the Data Folder Monitor Integration Connector.
  * This is one of the basic files integration connectors.
@@ -29,5 +32,12 @@ public class DataFolderMonitorIntegrationProvider extends BasicFilesMonitorInteg
               connectorDescription,
               connectorWikiPage,
               "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationConnector");
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
     }
 }

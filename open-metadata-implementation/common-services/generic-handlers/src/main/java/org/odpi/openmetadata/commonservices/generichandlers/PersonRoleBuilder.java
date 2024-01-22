@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -129,8 +131,8 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                       String               serviceName,
                       String               serverName)
     {
-        super(OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+        super(OpenMetadataType.PERSON_ROLE_TYPE_GUID,
+              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -151,25 +153,25 @@ public class PersonRoleBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  OpenMetadataType.IDENTIFIER_PROPERTY_NAME,
                                                                   identifier,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   name,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                   scope,
                                                                   methodName);
 
@@ -177,7 +179,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME,
+                                                                   OpenMetadataType.HEAD_COUNT_PROPERTY_NAME,
                                                                    headCount,
                                                                    methodName);
         }
@@ -188,11 +190,11 @@ public class PersonRoleBuilder extends ReferenceableBuilder
              * The domain identifier may have been set in the extended properties which are populated by the super class.
              * This ensures the value fromm extended properties is not overridden.
              */
-            if ((properties == null) || (properties.getPropertyValue(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME) == null))
+            if ((properties == null) || (properties.getPropertyValue(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME) == null))
             {
                 properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                                       OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                                        domainIdentifier,
                                                                        methodName);
             }
@@ -213,7 +215,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
+                                                                                     OpenMetadataType.POSITION_PROPERTY_NAME,
                                                                                      position,
                                                                                      methodName);
 
@@ -235,7 +237,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties =  repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
+                                                                                      OpenMetadataType.POSITION_PROPERTY_NAME,
                                                                                       position,
                                                                                       methodName);
 
@@ -261,7 +263,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                                                       isPublic,
                                                                                       methodName);
 

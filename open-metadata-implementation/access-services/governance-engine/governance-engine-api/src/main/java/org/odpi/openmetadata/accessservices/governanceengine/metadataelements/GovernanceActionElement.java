@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.properties.Referenc
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 
 import java.io.Serial;
@@ -55,9 +55,9 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
     private String                               processingEngineUserId   = null;
     private Date                                 completionTime           = null;
     private List<String>                         completionGuards         = null;
-    private String                               completionMessage = null;
-    private List<RelatedGovernanceActionElement> previousActions   = null;
-    private List<RelatedGovernanceActionElement> followOnActions   = null;
+    private String                           completionMessage = null;
+    private List<RelatedEngineActionElement> previousActions   = null;
+    private List<RelatedEngineActionElement> followOnActions   = null;
 
 
     /**
@@ -663,7 +663,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @return list of element stubs
      */
-    public List<RelatedGovernanceActionElement> getPreviousActions()
+    public List<RelatedEngineActionElement> getPreviousActions()
     {
         return previousActions;
     }
@@ -674,7 +674,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @param previousActions list of element stubs
      */
-    public void setPreviousActions(List<RelatedGovernanceActionElement> previousActions)
+    public void setPreviousActions(List<RelatedEngineActionElement> previousActions)
     {
         this.previousActions = previousActions;
     }
@@ -685,7 +685,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @return list of element stubs
      */
-    public List<RelatedGovernanceActionElement> getFollowOnActions()
+    public List<RelatedEngineActionElement> getFollowOnActions()
     {
         return followOnActions;
     }
@@ -696,7 +696,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @param followOnActions list of element stubs
      */
-    public void setFollowOnActions(List<RelatedGovernanceActionElement> followOnActions)
+    public void setFollowOnActions(List<RelatedEngineActionElement> followOnActions)
     {
         this.followOnActions = followOnActions;
     }

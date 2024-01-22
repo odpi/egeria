@@ -355,7 +355,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param userId caller's userId
-     * @param governanceActionGUID unique identifier of the governance action to update
+     * @param engineActionGUID unique identifier of the governance action to update
      * @param requestParameters request properties from the caller (will be passed onto any follow-on actions)
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -368,7 +368,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      */
     @Override
     public void recordCompletionStatus(String                userId,
-                                       String                governanceActionGUID,
+                                       String engineActionGUID,
                                        Map<String, String>   requestParameters,
                                        CompletionStatus      status,
                                        List<String>          outputGuards,
@@ -398,7 +398,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                         serverName,
                                         serviceURLMarker,
                                         userId,
-                                        governanceActionGUID);
+                                        engineActionGUID);
     }
 
 

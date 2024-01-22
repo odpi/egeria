@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -36,7 +37,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 
 /**
  * DataEngineCommonHandler manages objects from the property server. It runs server-side in the DataEngine OMAS
@@ -221,7 +221,7 @@ public class DataEngineCommonHandler {
 
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
-                                                            GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
+                                                            OpenMetadataProperty.GUID.name, originalRelationship.getType().getTypeDefName(), true,
                                                             relationshipProperties, false, false, getNow(), methodName);
             }
         }
@@ -295,7 +295,7 @@ public class DataEngineCommonHandler {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
-        genericHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, entityGUID, GUID_PROPERTY_NAME,
+        genericHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, entityGUID, OpenMetadataProperty.GUID.name,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), null, null,
                 false, false, getNow(), methodName);
     }
@@ -418,7 +418,7 @@ public class DataEngineCommonHandler {
         invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
-        EntityDetail entity = genericHandler.getAttachedEntity(userId, entityGUID, GUID_PROPERTY_NAME,
+        EntityDetail entity = genericHandler.getAttachedEntity(userId, entityGUID, OpenMetadataProperty.GUID.name,
                 entityTypeName, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), null,
                 false, false, getNow(), methodName);
         return Optional.ofNullable(entity);

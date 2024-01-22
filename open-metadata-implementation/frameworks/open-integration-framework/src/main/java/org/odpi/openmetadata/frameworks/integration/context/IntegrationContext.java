@@ -143,10 +143,10 @@ public class IntegrationContext
                                                                                      externalSourceName,
                                                                                      integrationReportWriter);
             MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction       stewardshipAction       = new StewardshipAction(openMetadataStore, userId);
-            ValidMetadataValues     validMetadataValues     = new ValidMetadataValues(openMetadataStore, userId);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId);
+            ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
-            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValues);
+            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
         }
 
         return null;
@@ -421,7 +421,7 @@ public class IntegrationContext
 
 
     /* ========================================================
-     * Register for inbound events from the file system
+     * Register/unregister for inbound events from the file system
      */
 
 
@@ -437,6 +437,21 @@ public class IntegrationContext
                                      File                  fileToMonitor) throws InvalidParameterException
     {
         listenerManager.registerFileListener(listener, fileToMonitor);
+    }
+
+
+    /**
+     * Unregister a listener object that will be called each time a specific file is created, changed or deleted.
+     *
+     * @param listener      listener object
+     * @param fileToMonitor name of the file to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterFileListener(FileListenerInterface listener,
+                                       File                  fileToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterFileListener(listener, fileToMonitor);
     }
 
 
@@ -459,6 +474,21 @@ public class IntegrationContext
 
 
     /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the file directory unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryListener(FileDirectoryListenerInterface listener,
+                                            File                           directoryToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterDirectoryListener(listener, directoryToMonitor);
+    }
+
+
+    /**
      * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
      * and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.
      *
@@ -473,6 +503,21 @@ public class IntegrationContext
                                               FileFilter                     fileFilter) throws InvalidParameterException
     {
         listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
+    }
+
+
+    /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the root file directory to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                File                           directoryToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterDirectoryTreeListener(listener, directoryToMonitor);
     }
 
 

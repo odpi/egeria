@@ -136,11 +136,11 @@ public class AssetConverter extends ReferenceableConverter
                                                                             ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                             instanceProperties,
                                                                             methodName));
-                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                bean.setResourceName(repositoryHelper.removeStringProperty(serviceName,
                                                                           AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName,
+                bean.setResourceDescription(repositoryHelper.removeStringProperty(serviceName,
                                                                           AssetMapper.DESCRIPTION_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));

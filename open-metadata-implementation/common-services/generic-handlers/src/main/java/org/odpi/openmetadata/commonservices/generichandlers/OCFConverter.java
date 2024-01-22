@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -207,7 +208,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -240,7 +241,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -266,7 +267,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
 
                 if (instancePropertyValue instanceof EnumPropertyValue)
                 {
@@ -321,11 +322,11 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             String actualTypeName = primaryEntity.getType().getTypeDefName();
 
-            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.VIRTUAL_CONNECTION_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME))
             {
                 return getNewVirtualConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTION_TYPE_NAME))
             {
                 return getNewConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
@@ -334,7 +335,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                 /*
                  * This will throw an exception
                  */
-                super.validateInstanceType(OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                super.validateInstanceType(OpenMetadataType.CONNECTION_TYPE_NAME,
                                            beanClass.getName(),
                                            primaryEntity,
                                            methodName);
@@ -416,7 +417,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             {
                 if ((relationship != null) && (relationship.getType() != null))
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.EMBEDDED_CONNECTION_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
                     {
                         EntityProxy parentConnectionProxy = relationship.getEntityOneProxy();
 
@@ -505,7 +506,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                     {
                         String actualTypeName = entity.getType().getTypeDefName();
 
-                        if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT_TYPE_NAME))
                         {
                             Endpoint endpoint = getEndpoint(entity, methodName);
 
@@ -514,7 +515,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                              */
                             connection.setEndpoint(endpoint);
                         }
-                        else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME))
+                        else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME))
                         {
                             ConnectorType connectorType = getConnectorType(entity, methodName);
 
@@ -552,7 +553,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                                             List<Relationship> relationships,
                                             String             methodName) throws PropertyServerException
     {
-        this.setUpElementHeader(connection, entity, OpenMetadataAPIMapper.CONNECTION_TYPE_NAME, methodName);
+        this.setUpElementHeader(connection, entity, OpenMetadataType.CONNECTION_TYPE_NAME, methodName);
 
         /*
          * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -582,7 +583,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             {
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME))
                     {
                         connection.setAssetSummary(this.getAssetSummary(instanceProperties));
                     }
@@ -606,7 +607,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     {
         Endpoint endpoint = new Endpoint();
 
-        this.setUpElementHeader(endpoint, entity, OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME, methodName);
+        this.setUpElementHeader(endpoint, entity, OpenMetadataType.ENDPOINT_TYPE_NAME, methodName);
 
         /*
          * The initial set of values come from the entity.
@@ -644,7 +645,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     {
         ConnectorType connectorType = new ConnectorType();
 
-        this.setUpElementHeader(connectorType, entity, OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME, methodName);
+        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
 
         /*
          * The initial set of values come from the entity.

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -35,10 +36,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * OMAGServerAdminStoreServices provides the capability to store and retrieve configuration documents.
- *
  * A configuration document provides the configuration information for a server.  By default, a
  * server's configuration document is stored in its own file.  However, it is possible to override
  * the default location using setConfigurationStoreConnection.  This override affects all
@@ -47,12 +48,139 @@ import java.util.Set;
 public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
+    private static OMAGServerConfig defaultServerConfig = new OMAGServerConfig();
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
     private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
     private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
+
+
+    /**
+     * Override the default server configuration document.
+     *
+     * @param userId calling user.
+     * @param defaultServerConfig values to include in every new configured server.
+     * @return void response
+     */
+    public synchronized VoidResponse setDefaultOMAGServerConfig(String           userId,
+                                                                OMAGServerConfig defaultServerConfig)
+    {
+        final String methodName = "setDefaultOMAGServerConfig";
+        final String parameterName = "defaultServerConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            errorHandler.validatePropertyNotNull(defaultServerConfig, parameterName, null, methodName);
+
+            OMAGServerAdminStoreServices.defaultServerConfig = defaultServerConfig;
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the default server configuration document.
+     *
+     * @param userId calling user
+     * @return connection response
+     */
+    public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig(String       userId)
+    {
+        final String methodName = "getDefaultOMAGServerConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        OMAGServerConfigResponse  response = new OMAGServerConfigResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            response.setOMAGServerConfig(defaultServerConfig);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Clear the default configuration document.
+     *
+     * @param userId calling user
+     * @return current setting of default server configuration
+     */
+    public synchronized VoidResponse clearDefaultServerConfig(String   userId)
+    {
+        final String methodName = "clearDefaultServerConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            defaultServerConfig = new OMAGServerConfig();
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the default server configuration document.
+     *
+     * @return default server config
+     */
+    private synchronized OMAGServerConfig getDefaultServerConfig()
+    {
+        return defaultServerConfig;
+    }
+
 
     /**
      * Override the default location of the configuration documents.
@@ -190,6 +318,7 @@ public class OMAGServerAdminStoreServices
         }
     }
 
+
     /**
      * Retrieve the connection for the configuration document store.  If a connection has been provided by an
      * external party then return that - otherwise extract the file connector for the server.
@@ -209,7 +338,6 @@ public class OMAGServerAdminStoreServices
             return configurationStoreConnection;
         }
     }
-
 
 
     /**
@@ -250,6 +378,8 @@ public class OMAGServerAdminStoreServices
                                                     error);
         }
     }
+
+
     /**
      * Retrieve the connection to the config files.
      *
@@ -341,11 +471,11 @@ public class OMAGServerAdminStoreServices
      * @throws OMAGInvalidParameterException problem with the configuration file
      * @throws OMAGNotAuthorizedException user not authorized to make these changes
      */
-    public OMAGServerConfig getServerConfig(String userId,
-                                            String serverName,
+    public OMAGServerConfig getServerConfig(String  userId,
+                                            String  serverName,
                                             boolean adminCall,
-                                            String methodName) throws OMAGInvalidParameterException,
-                                                                 OMAGNotAuthorizedException
+                                            String  methodName) throws OMAGInvalidParameterException,
+                                                                       OMAGNotAuthorizedException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         OMAGServerConfig        serverConfig      = null;
@@ -366,9 +496,10 @@ public class OMAGServerAdminStoreServices
                 throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
             }
 
-            serverConfig = new OMAGServerConfig();
+            serverConfig = new OMAGServerConfig(this.getDefaultServerConfig());
             serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
             serverConfig.setLocalServerType(OMAGServerConfig.defaultLocalServerType);
+            serverConfig.setLocalServerId(UUID.randomUUID().toString());
         }
         else
         {

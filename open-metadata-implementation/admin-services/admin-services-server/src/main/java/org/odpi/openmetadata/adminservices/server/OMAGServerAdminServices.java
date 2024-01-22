@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.BasicServerProperties;
 import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -679,6 +680,63 @@ public class OMAGServerAdminServices
             this.setServerPassword(serverConfig, userId, serverName, requestBody.getLocalServerPassword(), methodName);
             this.setServerRootURL(serverConfig, userId, serverName, requestBody.getLocalServerURL(), methodName);
             this.setMaxPageSize(serverConfig, userId, serverName, requestBody.getMaxPageSize(), methodName);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Set up the basic server properties in a single request.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return properties response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
+     */
+
+    public BasicServerPropertiesResponse getBasicServerProperties(String userId,
+                                                                  String serverName)
+    {
+        final String methodName = "setBasicServerProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        BasicServerPropertiesResponse response = new BasicServerPropertiesResponse();
+        BasicServerProperties properties = new BasicServerProperties();
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            properties.setOrganizationName(serverConfig.getOrganizationName());
+            properties.setLocalServerDescription(serverConfig.getLocalServerDescription());
+            properties.setLocalServerUserId(serverConfig.getLocalServerUserId());
+            properties.setLocalServerPassword(serverConfig.getLocalServerPassword());
+            properties.setLocalServerURL(serverConfig.getLocalServerURL());
+            properties.setMaxPageSize(serverConfig.getMaxPageSize());
+
+            response.setBasicServerProperties(properties);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -2400,6 +2458,84 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
+
+
+
+    /**
+     * Return the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @return guid response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    public StringResponse getLocalMetadataCollectionName(String userId,
+                                                         String serverName)
+    {
+        final String methodName = "getLocalMetadataCollectionName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StringResponse response = new StringResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+            LocalRepositoryConfig    localRepositoryConfig    = null;
+
+            /*
+             * Extract any existing local repository configuration
+             */
+            if (repositoryServicesConfig != null)
+            {
+                localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+            }
+
+            /*
+             * The local repository should be partially configured already by setLocalRepositoryMode()
+             */
+            if (localRepositoryConfig == null)
+            {
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET.getMessageDefinition(serverName),
+                                                        this.getClass().getName(),
+                                                        methodName);
+            }
+
+            /*
+             * Set up the metadata collection name in the local repository config and save.
+             */
+            response.setResultString(localRepositoryConfig.getMetadataCollectionName());
+
+            return response;
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**

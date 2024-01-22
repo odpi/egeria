@@ -21,18 +21,27 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  */
 public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageSet
 {
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0001 - The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}
+     */
     CONNECTOR_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0001",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector has been initialized to monitor file directory {1} with allowCatalogDelete={2} and templateQualifiedName={3}",
-                            "The connector is designed to monitor changes to the content of the named file directory (folder).  " +
+                            "The {0} integration connector has been initialized with directoryToMonitor={1}, allowCatalogDelete={2}, waitForDirectory={3}, fileTemplateQualifiedName={4}, directoryTemplateQualifiedName={5}, toDoTemplateQualifiedName={6} and incidentReportTemplateQualifiedName={7}",
+                            "The connector is designed to monitor changes to the content of directories (folders).  The directoryToMonitor is an initial directory to monitor that is supplied in the connector's endpoint.  It is optional, and can be supplemented with catalog targets associated " +
+                                    "with the connector.  By default, if any of the directories to monitor do not exist, the connector fails.  The waitForDirectory flag overrides this behaviour, so directories that do not exist are skipped.  " +
                                   "If allowCatalogDelete is set to true, it will delete catalog entries for files that are deleted from the file system, " +
                                   "otherwise the catalog entries are marked as archived so they remain available to act as tombstones in the lineage graphs.  " +
-                                  "If the templateQualifiedName is set, it identifies a template entity to use ",
+                                  "If the fileTemplateQualifiedName and/or directoryTemplateQualifiedName is set, it identifies a template entity to use when cataloguing either a file or a directory.  " +
+                                    "If the toDoTemplateQualifiedName is set, the connector will create ToDos using the named template if there are any problems in cataloguing a file.  " +
+                                    "Similarly, if the incidentReportTemplateQualifiedName is set, the connector will create IncidentReports using the named template if there are any problems in cataloguing a file.",
                             "No specific action is required.  This message is to confirm the configuration for the integration connector."),
 
+    /**
+     * The {0} integration connector encountered an {1} exception when opening directory {2} sourced from {3} during the {4} method.  The exception message included was {5}
+     */
     BAD_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0002",
                       AuditLogRecordSeverityLevel.ERROR,
-                          "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message included was {4}",
+                          "The {0} integration connector encountered an {1} exception when opening directory {2} sourced from {3} during the {4} method.  The exception message included was {5}",
                           "The exception is passed back to the Files Integrator OMIS in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
                                   "error handling that was performed.  These can help to determine how to recover from this error.",
@@ -41,6 +50,9 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0003 - The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}
+     */
     BAD_FOLDER_ELEMENT("BASIC-FILES-INTEGRATION-CONNECTORS-0003",
                        AuditLogRecordSeverityLevel.ERROR,
                        "The {0} integration connector retrieved an incomplete FileFolder asset for directory {1}: {2}",
@@ -50,14 +62,23 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
                                "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
 
-    UNEXPECTED_EXC_RETRIEVING_FOLDER("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
-                                     AuditLogRecordSeverityLevel.ERROR,
-                            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
-                                    "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
-                                     "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
-                                     "Use the message in the nested exception to determine the root cause of the error. Once this is " +
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0004 - An unexpected {0} exception was returned to the {1} integration connector by the
+     * Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for
+     * directory {3} (absolute path {4}).  The error message was {5}
+     */
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
+                                                  AuditLogRecordSeverityLevel.ERROR,
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                          "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for " +
+                                                          "directory {3} (absolute path {4}).  The error message was {5}",
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                                              "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0005 - The {0} integration connector is initiating the monitoring of file directory {1}
+     */
     DIRECTORY_MONITORING_STARTING("BASIC-FILES-INTEGRATION-CONNECTORS-0005",
                                   AuditLogRecordSeverityLevel.INFO,
                               "The {0} integration connector is initiating the monitoring of file directory {1}",
@@ -66,6 +87,9 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                       "directory will be reported to this integration connector.",
                               "No action is required unless there are errors that follow indicating that the monitoring of the directory failed to start."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0006
+     */
     UNEXPECTED_EXC_MONITOR_START("BASIC-FILES-INTEGRATION-CONNECTORS-0006",
                                  AuditLogRecordSeverityLevel.ERROR,
                                      "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
@@ -76,6 +100,9 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                              "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector. " +
                                              "Then validate that the monitoring starts successfully."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0007 - The {0} integration connector is stopping the monitoring of file directory {1}
+     */
     DIRECTORY_MONITORING_STOPPING("BASIC-FILES-INTEGRATION-CONNECTORS-0007",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector is stopping the monitoring of file directory {1}",
@@ -84,6 +111,10 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                           "directory will be ignored by the connector.",
                                   "No action is required unless there are errors that follow indicating that the monitoring failed to stop."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0008 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
+     * FileAlterationMonitor for directory {2} while it stopping the monitoring service.  The error message was {3}
+     */
     UNEXPECTED_EXC_MONITOR_STOP("BASIC-FILES-INTEGRATION-CONNECTORS-0008",
                                 AuditLogRecordSeverityLevel.ERROR,
                                  "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
@@ -92,24 +123,37 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                  "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
                                          "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0009 - The {0} integration connector has stopped its file monitoring and is shutting down
+     */
     CONNECTOR_STOPPING("BASIC-FILES-INTEGRATION-CONNECTORS-0009",
                        AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector has stopped its file monitoring and is shutting down",
                                   "The connector is disconnecting.",
                                   "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0010 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2}
+     */
     DATA_FOLDER_UPDATED("BASIC-FILES-INTEGRATION-CONNECTORS-0010",
                         AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has updated the last updated time in the DataFolder {1} to {2}",
                        "The connector updated the DataFolder as part of its refresh processing.",
                        "No action is required.  This message is to record the reason for the update to the DataFolder."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0011 - The {0} integration connector has updated the last updated time in the DataFolder {1} to {2} because of changes to file {3}
+     */
     DATA_FOLDER_UPDATED_FOR_FILE("BASIC-FILES-INTEGRATION-CONNECTORS-0011",
                                  AuditLogRecordSeverityLevel.INFO,
                         "The {0} integration connector has updated the last updated time in the DataFolder {1} to {2} because of changes to file {3}",
                         "The connector updated the DataFolder as part of its monitoring of the files in the file directory.",
                         "No action is required.  This message is to record the reason why the DataFolder was updated."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0012 - An unexpected {0} exception was returned to the {1} integration
+     * connector when it tried to update the DataFolder {2} in the metadata repositories for directory {3}.  The error message was {4}
+     */
     UNEXPECTED_EXC_FOLDER_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0012",
                                  AuditLogRecordSeverityLevel.ERROR,
                                 "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
@@ -118,6 +162,9 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                 "Use the message in the unexpected exception to determine the root cause of the error and restart " +
                                         "the connector once it is resolved."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0013 - The {0} integration connector retrieved an incomplete DataFile asset: {1}
+     */
     BAD_FILE_ELEMENT("BASIC-FILES-INTEGRATION-CONNECTORS-0013",
                      AuditLogRecordSeverityLevel.ERROR,
                        "The {0} integration connector retrieved an incomplete DataFile asset: {1}",
@@ -127,6 +174,11 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
                                "ask the Egeria community for help to determine why the DataFile element is incomplete."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0014 - An unexpected {0} exception was returned to the {1}
+     * integration connector when it tried to update the DataFile in the metadata repositories for file {2}.
+     * The error message was {3}
+     */
     UNEXPECTED_EXC_DATA_FILE_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0014",
                                     AuditLogRecordSeverityLevel.ERROR,
                                  "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
@@ -135,6 +187,9 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                          "This file is not catalogued at this time but may succeed later.",
                                  "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0015 - The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}
+     */
     MISSING_TEMPLATE("BASIC-FILES-INTEGRATION-CONNECTORS-0015",
                      AuditLogRecordSeverityLevel.ERROR,
                      "The {0} integration connector is unable to retrieve the DataFile template with qualified name: {1}",
@@ -145,12 +200,18 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                              "its next periodic refresh or you can force it to refresh immediately by calling the refresh" +
                              "operation on the integration daemon."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0016 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file
+     */
     DATA_FILE_CREATED("BASIC-FILES-INTEGRATION-CONNECTORS-0016",
                       AuditLogRecordSeverityLevel.INFO,
                      "The {0} integration connector created the DataFile {1} ({2}) for a new real-world file",
                      "The connector created the DataFile as part of its monitoring of the files in the file directory.",
                      "No action is required.  This message is to record the reason why the DataFolder was created."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0017 - The {0} integration connector created the DataFile {1} ({2}) for a new real-world file using template {3} ({4})
+     */
     DATA_FILE_CREATED_FROM_TEMPLATE("BASIC-FILES-INTEGRATION-CONNECTORS-0017",
                                     AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector created the DataFile {1} ({2}) for a new real-world file using template {3} ({4})",
@@ -159,18 +220,27 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                               "It was specified in the templateQualifiedName configuration property of the connector.",
                       "No action is required.  This message is to record the reason why the DataFile was created with the template."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0018 - The {0} integration connector has updated the DataFile {1} ({2}) because the real-world file changed
+     */
     DATA_FILE_UPDATED("BASIC-FILES-INTEGRATION-CONNECTORS-0018",
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector has updated the DataFile {1} ({2}) because the real-world file changed",
                       "The connector updated the DataFile as part of its monitoring of the files in the file directory.",
                       "No action is required.  This message is to record the reason why the DataFile was updated."),
 
+    /**
+     * The {0} integration connector has deleted the DataFile {1} ({2}) because the real-world file is no longer stored in the directory
+     */
     DATA_FILE_DELETED("BASIC-FILES-INTEGRATION-CONNECTORS-0019",
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector has deleted the DataFile {1} ({2}) because the real-world file is no longer stored in the directory",
                       "The connector removed the DataFile as part of its monitoring of the files in the file directory.",
                       "No action is required.  This message is to record the reason why the DataFile was removed."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0020 - The {0} integration connector has archived the DataFile {1} ({2}) because the real-world file is no longer stored in the directory
+     */
     DATA_FILE_ARCHIVED("BASIC-FILES-INTEGRATION-CONNECTORS-0020",
                        AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector has archived the DataFile {1} ({2}) because the real-world file is no longer stored in the directory",
@@ -178,7 +248,29 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                               "Its presence is still needed in the metadata repository for lineage reporting.",
                       "No action is required.  This message is to record the reason why the DataFile was archived."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0021 - An unexpected {0} exception was returned to the {1} integration
+     * connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}
+     */
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID("BASIC-FILES-INTEGRATION-CONNECTORS-0021",
+                                                  AuditLogRecordSeverityLevel.ERROR,
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                          "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                          "perform error handling since this is likely to be a logic error.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1} integration
+     * connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}
+     */
+    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS("BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
+                                              AuditLogRecordSeverityLevel.ERROR,
+                                              "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                                                      "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
+                                              "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                      "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
+                                              "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
     ;
 
     private final String                      logMessageId;

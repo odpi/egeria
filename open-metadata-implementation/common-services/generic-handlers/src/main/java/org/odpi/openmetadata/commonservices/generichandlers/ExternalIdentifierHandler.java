@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
@@ -549,7 +551,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             {
                 newProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                            null,
-                                                                           OpenMetadataAPIMapper.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                                           OpenMetadataType.LAST_SYNCHRONIZED_PROPERTY_NAME,
                                                                            new Date(),
                                                                            methodName);
             }
@@ -557,7 +559,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             {
                 newProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                            new InstanceProperties(resourceLink.getProperties()),
-                                                                           OpenMetadataAPIMapper.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                                           OpenMetadataType.LAST_SYNCHRONIZED_PROPERTY_NAME,
                                                                            new Date(),
                                                                            methodName);
             }
@@ -618,14 +620,14 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
          */
         List<String> propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.IDENTIFIER_PROPERTY_NAME);
 
         int queryPageSize = invalidParameterHandler.getMaxPagingSize();
 
         RepositoryIteratorForEntities identifierIterator = getEntitySearchIterator(userId,
                                                                                    identifier,
-                                                                                   OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-                                                                                   OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                                   OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+                                                                                   OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                    propertyNames,
                                                                                    true,
                                                                                    false,
@@ -704,10 +706,10 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                    elementGUID,
                                                                    elementGUIDParameterName,
                                                                    elementTypeName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                                                   OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                    externalIdGUID,
-                                                                   OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                   OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
@@ -782,9 +784,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             List<Relationship> externalIdScopes = this.getAttachmentLinks(userId,
                                                                           externalIdEntity.getGUID(),
                                                                           externalIdGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                                                          OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                          OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_GUID,
+                                                                          OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                           scopeGUID,
                                                                           scopeTypeName,
                                                                           0,
@@ -886,8 +888,8 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
         String externalIdGUID = this.createBeanInRepository(userId,
                                                             null,
                                                             null,
-                                                            OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                            OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+                                                            OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -905,12 +907,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                scopeTypeName,
                                                externalIdGUID,
                                                externalIdGUIDParameterName,
-                                               OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                               OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                               OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_GUID,
+                                               OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                scopeProperties,
                                                effectiveTime,
                                                methodName);
@@ -975,8 +977,8 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                     null,
                                     externalIdGUID,
                                     externalIdGUIDParameterName,
-                                    OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-                                    OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                    OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+                                    OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -1048,12 +1050,12 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                   elementTypeName,
                                   externalIdGUID,
                                   externalIdGUIDParameterName,
-                                  OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                  OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                  OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                   resourceLinkProperties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -1094,9 +1096,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
              */
             InstanceProperties existingProperties = externalIdLink.getProperties();
 
-            if ((propertyUpdateNeeded(identifierDescription, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, existingProperties, methodName)) ||
-                (propertyUpdateNeeded(identifierUsage, OpenMetadataAPIMapper.USAGE_PROPERTY_NAME, existingProperties, methodName)) ||
-                (propertyUpdateNeeded(identifierSource, OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, existingProperties, methodName)))
+            if ((propertyUpdateNeeded(identifierDescription, OpenMetadataProperty.DESCRIPTION.name, existingProperties, methodName)) ||
+                (propertyUpdateNeeded(identifierUsage, OpenMetadataType.USAGE_PROPERTY_NAME, existingProperties, methodName)) ||
+                (propertyUpdateNeeded(identifierSource, OpenMetadataType.SOURCE_PROPERTY_NAME, existingProperties, methodName)))
             {
                 InstanceProperties properties = builder.getExternalIdResourceLinkProperties(identifierDescription,
                                                                                             identifierUsage,
@@ -1214,9 +1216,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1266,7 +1268,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                    elementTypeName,
                                                    serviceSupportedZones,
                                                    null,
-                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                    null,
                                                    startingFrom,
                                                    pageSize,
@@ -1382,10 +1384,10 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      elementGUID,
                                                                      elementGUIDParameterName,
                                                                      elementTypeName,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                                                     OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                      null,
-                                                                     OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                     OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                      0,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
@@ -1408,7 +1410,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                     EntityDetail externalIdEntity = this.getEntityFromRepository(userId,
                                                                                  externalIdGUID,
                                                                                  externalIdGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                                 OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                  null,
                                                                                  null,
                                                                                  forLineage,
@@ -1422,9 +1424,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                         List<Relationship> externalIdScopes = this.getAttachmentLinks(userId,
                                                                                       externalIdEntity,
                                                                                       externalIdGUIDParameterName,
-                                                                                      OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                                                                      OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                                      OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_GUID,
+                                                                                      OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                                       null,
                                                                                       scopeTypeName,
                                                                                       0,
@@ -1524,8 +1526,8 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                      userId,
                                                                                                      scopeGUID,
                                                                                                      scopeTypeName,
-                                                                                                     OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
-                                                                                                     OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                                                                                     OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_GUID,
+                                                                                                     OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                                                      null,
                                                                                                      forLineage,
                                                                                                      forDuplicateProcessing,
@@ -1547,9 +1549,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                           invalidParameterHandler,
                                                                                                           userId,
                                                                                                           externalIdEntity.getGUID(),
-                                                                                                          OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                                                                                          OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                                                          OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                                                                                          OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
                                                                                                           null,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
@@ -1636,13 +1638,13 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         List<String> propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.IDENTIFIER_PROPERTY_NAME);
 
         List<EntityDetail> matchingExternalIds = this.getEntitiesByValue(userId,
                                                                          externalIdentifier,
                                                                          externalIdentifierParameterName,
-                                                                         OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                         OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+                                                                         OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                          propertyNames,
                                                                          true,
                                                                          false,
@@ -1672,9 +1674,9 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                     List<Relationship> externalIdRelationships = this.getAttachmentLinks(userId,
                                                                                          matchingExternalId,
                                                                                          matchingEntityGUIDParameterName,
-                                                                                         OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
-                                                                                         OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                                                                         OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                                         OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_GUID,
+                                                                                         OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                                                          scopeGUID,
                                                                                          scopeTypeName,
                                                                                          1,
@@ -1744,10 +1746,10 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
         List<EntityDetail> elementEntities = this.getAttachedEntities(userId,
                                                                       externalId,
                                                                       externalIdGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
-                                                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                      OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
+                                                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                       null,
                                                                       null,
                                                                       1,

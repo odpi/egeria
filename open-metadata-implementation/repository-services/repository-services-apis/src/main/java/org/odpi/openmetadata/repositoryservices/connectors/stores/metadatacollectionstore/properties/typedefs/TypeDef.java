@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
+import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -30,11 +31,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class TypeDef extends TypeDefSummary
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected TypeDefLink                   superType                = null;
     protected String                        description              = null;
     protected String                        descriptionGUID          = null;
+    protected String                        descriptionWiki          = null;
     protected String                        origin                   = null;
     protected String                        createdBy                = null;
     protected String                        updatedBy                = null;
@@ -102,6 +105,7 @@ public abstract class TypeDef extends TypeDefSummary
             this.superType = template.getSuperType();
             this.description = template.getDescription();
             this.descriptionGUID = template.getDescriptionGUID();
+            this.descriptionWiki = template.getDescriptionWiki();
             this.origin = template.getOrigin();
             this.createdBy = template.getCreatedBy();
             this.updatedBy = template.getUpdatedBy();
@@ -185,7 +189,7 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Return the unique identifier (guid) of the glossary term that describes this TypeDef.
+     * Return the unique identifier (guid) of the valid value definition that describes this TypeDef.
      *
      * @return String guid
      */
@@ -196,13 +200,35 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Set up the unique identifier (guid) of the glossary term that describes this TypeDef.
+     * Set up the unique identifier (guid) of the valid value definition that describes this TypeDef.
      *
      * @param descriptionGUID String guid
      */
     public void setDescriptionGUID(String descriptionGUID)
     {
         this.descriptionGUID = descriptionGUID;
+    }
+
+
+    /**
+     * Return the URL to the wiki page that gives more information for this type.
+     *
+     * @return url string
+     */
+    public String getDescriptionWiki()
+    {
+        return descriptionWiki;
+    }
+
+
+    /**
+     * Set up the URL to the wiki page that gives more information for this type.
+     *
+     * @param descriptionWiki url string
+     */
+    public void setDescriptionWiki(String descriptionWiki)
+    {
+        this.descriptionWiki = descriptionWiki;
     }
 
 
@@ -499,6 +525,7 @@ public abstract class TypeDef extends TypeDefSummary
                 ", superType=" + superType +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 ", origin='" + origin + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
@@ -542,6 +569,7 @@ public abstract class TypeDef extends TypeDefSummary
         return Objects.equals(superType, typeDef.superType) &&
                        Objects.equals(description, typeDef.description) &&
                        Objects.equals(descriptionGUID, typeDef.descriptionGUID) &&
+                       Objects.equals(descriptionWiki, typeDef.descriptionWiki) &&
                        Objects.equals(origin, typeDef.origin) &&
                        Objects.equals(createdBy, typeDef.createdBy) &&
                        Objects.equals(updatedBy, typeDef.updatedBy) &&
@@ -563,7 +591,7 @@ public abstract class TypeDef extends TypeDefSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), superType, description, descriptionGUID, origin, createdBy, updatedBy, createTime, updateTime, options,
-                            externalStandardMappings, validInstanceStatusList, initialStatus, propertiesDefinition);
+        return Objects.hash(super.hashCode(), superType, description, descriptionGUID, descriptionWiki, origin, createdBy, updatedBy,
+                            createTime, updateTime, options, externalStandardMappings, validInstanceStatusList, initialStatus, propertiesDefinition);
     }
 }

@@ -7,9 +7,9 @@
 dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'org.testng:testng'

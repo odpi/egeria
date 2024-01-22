@@ -8,9 +8,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.DataFieldHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.DiscoveryAnalysisReportHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -68,8 +73,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getBeanGUIDsByType(userId,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         OpenMetadataType.ASSET.typeGUID,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          null,
                                                          false,
                                                          false,
@@ -123,8 +128,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getBeanGUIDsByQualifiedName(userId,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.ASSET.typeGUID,
+                                                                  OpenMetadataType.ASSET.typeName,
                                                                   name,
                                                                   nameParameterName,
                                                                   false,
@@ -179,8 +184,8 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByName(userId,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                          OpenMetadataType.ASSET.typeGUID,
+                                                          OpenMetadataType.ASSET.typeName,
                                                           name,
                                                           nameParameterName,
                                                           startFrom,
@@ -238,8 +243,8 @@ public class DiscoveryEngineRESTServices
             response.setGUIDs(handler.findBeanGUIDs(userId,
                                                     searchString,
                                                     searchStringParameterName,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeGUID,
+                                                    OpenMetadataType.ASSET.typeName,
                                                     null,
                                                     startFrom,
                                                     pageSize,
@@ -1425,6 +1430,7 @@ public class DiscoveryEngineRESTServices
     /**
      * Link two exising data fields together in a peer relationship.
      *
+     * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
      * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
      * @param relationshipProperties optional properties for the relationship

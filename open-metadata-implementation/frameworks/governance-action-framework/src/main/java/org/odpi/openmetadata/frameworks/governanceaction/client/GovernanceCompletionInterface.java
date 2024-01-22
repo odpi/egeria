@@ -109,6 +109,7 @@ public interface GovernanceCompletionInterface
      * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param userId caller's userId
+     * @param engineActionGUID unique identifier of the associated engine action
      * @param requestParameters request properties from the caller (will be passed onto any follow on actions)
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -120,7 +121,7 @@ public interface GovernanceCompletionInterface
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     void recordCompletionStatus(String                userId,
-                                String                governanceActionGUID,
+                                String                engineActionGUID,
                                 Map<String, String>   requestParameters,
                                 CompletionStatus      status,
                                 List<String>          outputGuards,

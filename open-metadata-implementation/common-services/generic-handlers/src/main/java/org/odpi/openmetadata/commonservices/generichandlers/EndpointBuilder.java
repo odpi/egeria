@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -90,8 +92,8 @@ class EndpointBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-              OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+              OpenMetadataType.ENDPOINT_TYPE_GUID,
+              OpenMetadataType.ENDPOINT_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -117,31 +119,31 @@ class EndpointBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ENDPOINT_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.ENDPOINT_DISPLAY_NAME_PROPERTY_NAME,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                  OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
                                                                   networkAddress,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME,
+                                                                  OpenMetadataType.PROTOCOL_PROPERTY_NAME,
                                                                   protocol,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ENCRYPTION_METHOD_PROPERTY_NAME,
+                                                                  OpenMetadataType.ENCRYPTION_METHOD_PROPERTY_NAME,
                                                                   encryptionMethod,
                                                                   methodName);
 

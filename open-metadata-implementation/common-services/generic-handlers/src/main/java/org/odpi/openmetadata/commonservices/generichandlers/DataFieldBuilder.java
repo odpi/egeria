@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -87,25 +89,25 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DATA_FIELD_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.DATA_FIELD_NAME_PROPERTY_NAME,
                                                                   dataFieldName,
                                                                   methodName);
 
        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                  properties,
-                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataType.DATA_FIELD_TYPE_PROPERTY_NAME,
                                                                  dataFieldType,
                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DATA_FIELD_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataType.DATA_FIELD_DESCRIPTION_PROPERTY_NAME,
                                                                   dataFieldDescription,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.DATA_FIELD_ALIASES_PROPERTY_NAME,
+                                                                       OpenMetadataType.DATA_FIELD_ALIASES_PROPERTY_NAME,
                                                                        dataFieldAliases,
                                                                        methodName);
 
@@ -113,27 +115,27 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.DATA_FIELD_SORT_ORDER_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.DATA_ITEM_SORT_ORDER_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DATA_ITEM_SORT_ORDER_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FIELD_SORT_ORDER_PROPERTY_NAME,
+                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_GUID,
+                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_NAME,
                                                                     dataFieldSortOrder,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.SORT_ORDER_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
-                                                                      defaultValue,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  defaultValue,
+                                                                  methodName);
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                         additionalProperties,
-                                                                         methodName);
+                                                                     properties,
+                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                     additionalProperties,
+                                                                     methodName);
 
         return properties;
     }

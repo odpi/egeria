@@ -2,12 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -108,7 +111,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                     if (this.getEntityFromRepository(userId,
                                                      connectorType.getGUID(),
                                                      guidParameterName,
-                                                     OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                      null,
                                                      null,
                                                      false,
@@ -135,9 +138,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 retrievedGUID = this.getBeanGUIDByUniqueName(userId,
                                                              connectorType.getQualifiedName(),
                                                              qualifiedNameParameter,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                             OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                              false,
                                                              false,
                                                              supportedZones,
@@ -150,9 +153,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 retrievedGUID = this.getBeanGUIDByUniqueName(userId,
                                                              connectorType.getDisplayName(),
                                                              displayNameParameter,
-                                                             OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                             OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                             OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                             OpenMetadataProperty.DISPLAY_NAME.name,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                              false,
                                                              false,
                                                              supportedZones,
@@ -342,7 +345,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -350,7 +353,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -453,10 +456,10 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                           OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                           OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -492,13 +495,13 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
 
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.SUPPORTED_ASSET_TYPE_NAME);
+        specificMatchPropertyNames.add(OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME);
 
         List<EntityDetail> connectorTypes = this.getEntitiesByValue(userId,
                                                                     supportedAssetTypeName,
                                                                     parameterName,
-                                                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                     specificMatchPropertyNames,
                                                                     true,
                                                                     false,
@@ -528,17 +531,17 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 if (connectorType != null)
                 {
                     String framework = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME,
+                                                                          OpenMetadataType.CONNECTOR_FRAMEWORK_NAME,
                                                                           connectorType.getProperties(),
                                                                           methodName);
                     String language  = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                          OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE,
                                                                           connectorType.getProperties(),
                                                                           methodName);
 
-                    if ((framework == null) || (OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT.equals(framework)))
+                    if ((framework == null) || (OpenMetadataValidValues.CONNECTOR_FRAMEWORK_DEFAULT.equals(framework)))
                     {
-                        if ((language == null) || (OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
+                        if ((language == null) || (OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
                         {
                             return connectorType.getGUID();
                         }
@@ -625,9 +628,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         String connectorTypeGUID = this.getBeanGUIDByUniqueName(userId,
                                                                 qualifiedName,
                                                                 qualifiedNameParameterName,
-                                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                                                OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 supportedZones,
@@ -747,7 +750,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -755,7 +758,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -837,8 +840,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     guid,
                                     guidParameterName,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -883,8 +886,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                              OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                              OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                               forLineage,
                               forDuplicateProcessing,
                               supportedZones,
@@ -929,15 +932,15 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                       PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.CONNECTOR_PROVIDER_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                    OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -983,7 +986,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                          OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

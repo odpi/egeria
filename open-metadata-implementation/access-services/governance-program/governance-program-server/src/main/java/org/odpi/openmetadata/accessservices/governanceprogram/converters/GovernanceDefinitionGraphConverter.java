@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Certifi
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -85,19 +85,19 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                     String typeName = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties;
 
-                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new CertificationTypeProperties();
 
                         ((CertificationTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new LicenseTypeProperties();
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 
@@ -142,23 +142,23 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                                 EntityProxy otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
                                 RelatedElement element = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME))
                                 {
                                     externalReferences.add(element);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
                                 {
                                     metrics.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) ||
-                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) ||
-                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_POLICY_LINK_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
                                 {
 
                                     peers.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) ||
-                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_RESPONSE_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
                                 {
                                     if (primaryEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
                                     {

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -117,7 +119,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.LOCATION_TYPE_NAME;
+        String typeName = OpenMetadataType.LOCATION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -125,7 +127,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                   OpenMetadataType.LOCATION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -210,10 +212,10 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                           OpenMetadataType.LOCATION_TYPE_GUID,
+                                           OpenMetadataType.LOCATION_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            locationBuilder,
                                            supportedZones,
                                            methodName);
@@ -279,7 +281,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataAPIMapper.LOCATION_TYPE_NAME;
+        String typeName = OpenMetadataType.LOCATION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -287,7 +289,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                   OpenMetadataType.LOCATION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -376,9 +378,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
-                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.LOCATION_TYPE_NAME,
+                                           OpenMetadataType.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.FIXED_LOCATION_CLASSIFICATION_TYPE_NAME,
                                            builder.getFixedLocationProperties(coordinates, 
                                                                               mapProjection,
                                                                               postalAddress,
@@ -428,9 +430,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
-                                                OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.LOCATION_TYPE_NAME,
+                                                OpenMetadataType.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -487,9 +489,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
-                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.LOCATION_TYPE_NAME,
+                                           OpenMetadataType.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.SECURE_LOCATION_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecureLocationProperties(description, level, methodName),
                                            false,
                                            forLineage,
@@ -532,9 +534,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
-                                                OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.LOCATION_TYPE_NAME,
+                                                OpenMetadataType.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -589,9 +591,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
-                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.LOCATION_TYPE_NAME,
+                                           OpenMetadataType.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.CYBER_LOCATION_CLASSIFICATION_TYPE_NAME,
                                            builder.getCyberLocationProperties(networkAddress, methodName),
                                            false,
                                            forLineage,
@@ -634,9 +636,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
-                                                OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.LOCATION_TYPE_NAME,
+                                                OpenMetadataType.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -686,15 +688,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   locationParentGUID,
                                   locationParentGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   locationChildGUID,
                                   locationChildGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
+                                  OpenMetadataType.NESTED_LOCATION_TYPE_GUID,
+                                  OpenMetadataType.NESTED_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -742,15 +744,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       locationParentGUID,
                                       locationParentGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       locationChildGUID,
                                       locationChildGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_GUID,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
+                                      OpenMetadataType.NESTED_LOCATION_TYPE_GUID,
+                                      OpenMetadataType.NESTED_LOCATION_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -798,15 +800,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   locationOneGUID,
                                   locationOneGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   locationTwoGUID,
                                   locationTwoGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
+                                  OpenMetadataType.ADJACENT_LOCATION_TYPE_GUID,
+                                  OpenMetadataType.ADJACENT_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -854,15 +856,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       locationOneGUID,
                                       locationOneGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       locationTwoGUID,
                                       locationTwoGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_GUID,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
+                                      OpenMetadataType.ADJACENT_LOCATION_TYPE_GUID,
+                                      OpenMetadataType.ADJACENT_LOCATION_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -908,22 +910,22 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ASSOCIATION_TYPE_PROPERTY_NAME, associationType, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.ASSOCIATION_TYPE_PROPERTY_NAME, associationType, methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
                                   actorProfileGUID,
                                   actorProfileGUIDParameterName,
-                                  OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                  OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                   locationGUID,
                                   locationGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                  OpenMetadataType.PROFILE_LOCATION_TYPE_GUID,
+                                  OpenMetadataType.PROFILE_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -971,15 +973,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       actorProfileGUID,
                                       actorProfileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                      OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                       locationGUID,
                                       locationGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_GUID,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                      OpenMetadataType.PROFILE_LOCATION_TYPE_GUID,
+                                      OpenMetadataType.PROFILE_LOCATION_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -1027,15 +1029,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   locationGUID,
                                   locationGUIDParameterName,
-                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  OpenMetadataType.LOCATION_TYPE_NAME,
                                   assetGUID,
                                   assetGUIDParameterName,
-                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                  OpenMetadataType.ASSET.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                  OpenMetadataType.ASSET_LOCATION_TYPE_GUID,
+                                  OpenMetadataType.ASSET_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -1083,15 +1085,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       locationGUID,
                                       locationGUIDParameterName,
-                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      OpenMetadataType.LOCATION_TYPE_NAME,
                                       assetGUID,
                                       assetGUIDParameterName,
-                                      OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                      OpenMetadataType.ASSET.typeGUID,
+                                      OpenMetadataType.ASSET.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                      OpenMetadataType.ASSET_LOCATION_TYPE_GUID,
+                                      OpenMetadataType.ASSET_LOCATION_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -1131,8 +1133,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     locationGUID,
                                     locationGUIDParameterName,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                    OpenMetadataType.LOCATION_TYPE_GUID,
+                                    OpenMetadataType.LOCATION_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -1181,9 +1183,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
-                                        OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        OpenMetadataType.ADJACENT_LOCATION_TYPE_GUID,
+                                        OpenMetadataType.ADJACENT_LOCATION_TYPE_NAME,
+                                        OpenMetadataType.LOCATION_TYPE_NAME,
                                         null,
                                         null,
                                         0,
@@ -1236,9 +1238,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
-                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        OpenMetadataType.NESTED_LOCATION_TYPE_GUID,
+                                        OpenMetadataType.NESTED_LOCATION_TYPE_NAME,
+                                        OpenMetadataType.LOCATION_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1291,9 +1293,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
-                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        OpenMetadataType.NESTED_LOCATION_TYPE_GUID,
+                                        OpenMetadataType.NESTED_LOCATION_TYPE_NAME,
+                                        OpenMetadataType.LOCATION_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -1333,9 +1335,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                      OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                      OpenMetadataType.ASSET.typeName,
+                                      OpenMetadataType.ASSET_LOCATION_TYPE_GUID,
+                                      OpenMetadataType.ASSET_LOCATION_TYPE_NAME,
                                       1,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -1422,9 +1424,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
-                                        OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        OpenMetadataType.ASSET_LOCATION_TYPE_GUID,
+                                        OpenMetadataType.ASSET_LOCATION_TYPE_NAME,
+                                        OpenMetadataType.LOCATION_TYPE_NAME,
                                         null,
                                         null,
                                         1,
@@ -1516,9 +1518,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
-                                        OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        OpenMetadataType.PROFILE_LOCATION_TYPE_GUID,
+                                        OpenMetadataType.PROFILE_LOCATION_TYPE_NAME,
+                                        OpenMetadataType.LOCATION_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -1567,8 +1569,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                              OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                              OpenMetadataType.LOCATION_TYPE_GUID,
+                              OpenMetadataType.LOCATION_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -1613,15 +1615,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                    PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.IDENTIFIER_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                    OpenMetadataType.LOCATION_TYPE_GUID,
+                                    OpenMetadataType.LOCATION_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1666,15 +1668,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                              PropertyServerException
     {
         return this.getBeansByType(userId,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    supportedZones,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
+                                   OpenMetadataType.LOCATION_TYPE_GUID,
+                                   OpenMetadataType.LOCATION_TYPE_NAME,
+                                   null,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   supportedZones,
+                                   startFrom,
+                                   pageSize,
+                                   effectiveTime,
+                                   methodName);
     }
 }

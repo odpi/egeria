@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapp
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications.ClassificationFactory;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -106,25 +108,25 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                     PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                     actualValue = primitivePropertyValue.getPrimitiveValue();
                     // All nodes are Referenceables at this time so they all have qualifiedName
-                    if (propertyName.equals(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME)) {
+                    if (propertyName.equals(OpenMetadataProperty.QUALIFIED_NAME.name)) {
                         if (actualValue != null) {
                             node.setQualifiedName((String) actualValue);
                         }
-                    } else if (propertyName.equals(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME) || propertyName.equals(OpenMetadataAPIMapper.NAME_PROPERTY_NAME)) {
+                    } else if (propertyName.equals(OpenMetadataProperty.DISPLAY_NAME.name) || propertyName.equals(OpenMetadataProperty.NAME.name)) {
                         if (actualValue!=null) {
                             node.setName((String) actualValue);
                         }
-                    } else if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
+                    } else if (propertyName.equals(OpenMetadataProperty.DESCRIPTION.name)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
                         // if the node is Taxonomy or TaxonomyAndCanonicalGlossary then it can have a scope attribute
-                    } else if (propertyName.equals(OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME) && (nodeType == NodeType.Taxonomy || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
+                    } else if (propertyName.equals(OpenMetadataType.SCOPE_PROPERTY_NAME) && (nodeType == NodeType.Taxonomy || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
                         // if the node is CanonicalGlossary or TaxonomyAndCanonicalGlossary then it can have an organisingPrinciple attribute
-                    } else if (propertyName.equals(OpenMetadataAPIMapper.ORGANIZING_PRINCIPLE_PROPERTY_NAME) && (nodeType == NodeType.CanonicalGlossary || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
+                    } else if (propertyName.equals(OpenMetadataType.ORGANIZING_PRINCIPLE_PROPERTY_NAME) && (nodeType == NodeType.CanonicalGlossary || nodeType == NodeType.TaxonomyAndCanonicalGlossary)) {
                         if (actualValue!=null) {
                             node.setDescription((String) actualValue);
                         }
@@ -151,7 +153,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                     MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                     InstanceProperties instancePropertyForMap = mapPropertyValue.getMapValues();
                     // All nodes as Referenceables at this time so they all have additionalProperties.
-                    if (propertyName.equals(OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
+                    if (propertyName.equals(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name)) {
                         // Only support Map<String,String> at this time.
                         Map<String, String> actualMap = new HashMap<>();
                         Iterator<String> iter = instancePropertyForMap.getPropertyNames();
@@ -206,7 +208,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(genericHandler.getServiceName(),
-                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -356,20 +358,20 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         mapNodeEffectivityToInstanceProperties(node, instanceProperties);
         //  map the Referencable node properties to instanceproperties
         if (node.getQualifiedName()!=null) {
-            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,node.getQualifiedName(),methodName);
+            repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataProperty.QUALIFIED_NAME.name, node.getQualifiedName(), methodName);
         }
         if (node.getName()!=null) {
             if (node.getNodeType() == NodeType.Project || node.getNodeType() == NodeType.GlossaryProject) {
-                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
-                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataAPIMapper.NAME_PROPERTY_NAME, node.getName(), methodName);
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataProperty.NAME.name);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataProperty.NAME.name, node.getName(), methodName);
             } else {
-                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
-                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, node.getName(), methodName);
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataProperty.DISPLAY_NAME.name);
+                repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataProperty.DISPLAY_NAME.name, node.getName(), methodName);
             }
         }
 
-        if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
-           repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(),instanceProperties,OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,node.getDescription(),methodName);
+        if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
+           repositoryHelper.addStringPropertyToInstance(genericHandler.getServiceName(), instanceProperties, OpenMetadataProperty.DESCRIPTION.name, node.getDescription(), methodName);
         }
         // if there are additionalProperties then we should honour them and send them through to omrs.
         if (node.getAdditionalProperties()!=null) {
@@ -434,7 +436,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             mapPropertyValue.setMapValue(key,primitivePropertyValue);
         }
 
-        instanceProperties.setProperty(OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, mapPropertyValue);
+        instanceProperties.setProperty(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, mapPropertyValue);
     }
 
     /**

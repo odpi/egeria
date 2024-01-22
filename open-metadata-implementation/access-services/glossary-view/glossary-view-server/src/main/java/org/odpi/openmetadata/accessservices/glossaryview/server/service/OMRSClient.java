@@ -6,13 +6,13 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +50,8 @@ public class OMRSClient {
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
             entityDetail = Optional.ofNullable(entitiesHandler.getEntityFromRepository(userId, guid,
-                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME, entityTypeName, null, null,
-                    false, false, null, null, methodName));
+                                                                                       OpenMetadataProperty.GUID.name, entityTypeName, null, null,
+                                                                                       false, false, null, null, methodName));
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){
@@ -89,9 +89,9 @@ public class OMRSClient {
 
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
-            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                    null, null, 0, false, false, from, size, null, methodName);
+            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataProperty.GUID.name,
+                                                                entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                                                                null, null, 0, false, false, from, size, null, methodName);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){
@@ -131,10 +131,10 @@ public class OMRSClient {
         try {
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
-            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                    entityTypeName, relationshipTypeGUID,relationshipTypeName, null,
-                    null, null, 2, false,
-                    false, null, from, size, null, methodName);
+            entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataProperty.GUID.name,
+                                                                entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                                                                null, null, 2, false,
+                                                                false, null, from, size, null, methodName);
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         }catch (Exception e){

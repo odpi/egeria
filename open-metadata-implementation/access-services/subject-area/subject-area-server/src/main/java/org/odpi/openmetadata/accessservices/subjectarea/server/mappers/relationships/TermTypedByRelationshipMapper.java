@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -31,16 +33,16 @@ public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
     @Override
     protected void mapRelationshipToInstanceProperties(TypedBy termTYPEDBYRelationship, InstanceProperties instanceProperties) {
         if (termTYPEDBYRelationship.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (termTYPEDBYRelationship.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (termTYPEDBYRelationship.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
         }
         if (termTYPEDBYRelationship.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
         }
     }
 
@@ -56,15 +58,15 @@ public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
     protected boolean mapPrimitiveToRelationship(TypedBy termTYPEDBYRelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.DESCRIPTION.name)) {
             termTYPEDBYRelationship.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
             termTYPEDBYRelationship.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
             termTYPEDBYRelationship.setSource(stringValue);
             foundProperty = true;
         }
@@ -74,7 +76,7 @@ public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
     @Override
     protected boolean mapEnumToRelationship(TypedBy termTYPEDBYRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             termTYPEDBYRelationship.setStatus(status);
             foundProperty = true;

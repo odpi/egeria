@@ -38,6 +38,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorConnector;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -55,8 +57,6 @@ import java.util.Set;
  */
 public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegratorConnector implements ITInfrastructureEventListener
 {
-    private static final String omagServerPlatformName = "OMAG Server Platform";
-
     private static final String ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER          = "org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider";
     private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER                     = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
     private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER                         = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
@@ -78,7 +78,6 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
 
     List<PlatformDetails> monitoredPlatforms = new ArrayList<>();
     String                clientUserId = "garygeeke";
-    String                platformName = null;
 
 
     /**
@@ -108,7 +107,6 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
     }
 
 
-    private static final String platformTypeName       = "SoftwareServerPlatform";
 
     /**
      * Default constructor
@@ -116,8 +114,6 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
     public EgeriaCataloguerIntegrationConnector()
     {
         super();
-
-        platformName = omagServerPlatformName;
 
         connectorProviderToAsset.put(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER, "JSONFile");
         connectorProviderToAsset.put(IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER, "Topic");
@@ -165,7 +161,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
             /*
              * Populate the monitored platforms with the catalogued SoftwareServerPlatforms.
              */
-            List<SoftwareServerPlatformElement> cataloguedPlatforms = super.getContext().findSoftwareServerPlatforms(platformName, null, 0, 0);
+            List<SoftwareServerPlatformElement> cataloguedPlatforms = super.getContext().findSoftwareServerPlatforms(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType(), null, 0, 0);
 
             if (cataloguedPlatforms != null)
             {
@@ -226,8 +222,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
 
                 if (element != null)
                 {
-                    if (element.getProperties().getQualifiedName().contains(omagServerPlatformName))
-                     //   if (omagServerPlatformName.equals(element.getProperties().getSoftwareServerPlatformType()))
+                    if (element.getProperties().getDeployedImplementationType().equals(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType()))
                     {
                         platformDetails.platformQualifiedName = element.getProperties().getQualifiedName();
                         platformDetails.platformDisplayName = element.getProperties().getDisplayName();
@@ -947,7 +942,8 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
                                             String       elementTypeName,
                                             List<String> elementSuperTypes)
     {
-        if ((platformTypeName.equals(elementTypeName)) || ((elementSuperTypes != null) && (elementSuperTypes.contains(platformTypeName))))
+        if ((OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME.equals(elementTypeName)) ||
+                ((elementSuperTypes != null) && (elementSuperTypes.contains(OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME))))
         {
             /*
              * Element is a software server platform. Is this a new platform?

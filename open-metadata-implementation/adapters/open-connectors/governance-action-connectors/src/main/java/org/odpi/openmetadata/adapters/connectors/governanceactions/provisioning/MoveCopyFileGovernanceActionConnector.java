@@ -189,7 +189,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *

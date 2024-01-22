@@ -107,6 +107,7 @@ public class PrimitiveDef extends AttributeTypeDef
                 ", guid='" + guid + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 '}';
     }
 

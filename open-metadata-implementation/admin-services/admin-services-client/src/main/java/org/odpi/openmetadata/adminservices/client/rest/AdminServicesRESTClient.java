@@ -212,6 +212,30 @@ public class AdminServicesRESTClient
         return restResult;
     }
 
+    /**
+     * Issue a GET REST call that returns a BasicServerPropertiesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return BasicServerPropertiesResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    public BasicServerPropertiesResponse callBasicServerPropertiesGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws OMAGInvalidParameterException,
+                                                                                                       OMAGNotAuthorizedException,
+                                                                                                       OMAGConfigurationErrorException
+    {
+        BasicServerPropertiesResponse restResult = this.callGetRESTCall(methodName, BasicServerPropertiesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
 
 
     /**

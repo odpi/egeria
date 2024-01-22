@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -118,8 +120,8 @@ public class ProjectBuilder extends ReferenceableBuilder
                    String               serviceName,
                    String               serverName)
     {
-        super(OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-              OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+        super(OpenMetadataType.PROJECT_TYPE_GUID,
+              OpenMetadataType.PROJECT_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -137,7 +139,7 @@ public class ProjectBuilder extends ReferenceableBuilder
     public void setCampaignClassification(String userId,
                                           String methodName) throws InvalidParameterException
     {
-        this.setProjectTypeClassification(userId, OpenMetadataAPIMapper.CAMPAIGN_CLASSIFICATION_TYPE_NAME, methodName);
+        this.setProjectTypeClassification(userId, OpenMetadataType.CAMPAIGN_CLASSIFICATION_TYPE_NAME, methodName);
     }
 
 
@@ -152,7 +154,7 @@ public class ProjectBuilder extends ReferenceableBuilder
     public void setTaskClassification(String userId,
                                       String methodName) throws InvalidParameterException
     {
-        this.setProjectTypeClassification(userId, OpenMetadataAPIMapper.TASK_CLASSIFICATION_TYPE_NAME, methodName);
+        this.setProjectTypeClassification(userId, OpenMetadataType.TASK_CLASSIFICATION_TYPE_NAME, methodName);
     }
 
 
@@ -185,7 +187,7 @@ public class ProjectBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -204,39 +206,39 @@ public class ProjectBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  OpenMetadataType.IDENTIFIER_PROPERTY_NAME,
                                                                   identifier,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   name,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
-                                                                      startDate,
-                                                                      methodName);
+                                                                properties,
+                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                startDate,
+                                                                methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PLANNED_END_DATE_PROPERTY_NAME,
-                                                                      plannedEndDate,
-                                                                      methodName);
+                                                                properties,
+                                                                OpenMetadataType.PLANNED_END_DATE_PROPERTY_NAME,
+                                                                plannedEndDate,
+                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.PROJECT_STATUS_PROPERTY_NAME,
+                                                                  properties,
+                                                                  OpenMetadataType.PROJECT_STATUS_PROPERTY_NAME,
                                                                   projectStatus,
-                                                                      methodName);
+                                                                  methodName);
 
         return properties;
     }
