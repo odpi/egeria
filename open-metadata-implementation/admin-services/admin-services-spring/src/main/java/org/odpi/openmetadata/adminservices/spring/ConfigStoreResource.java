@@ -78,14 +78,14 @@ public class ConfigStoreResource
      */
     @DeleteMapping(path = "/default-configuration-document")
 
-    @Operation(summary="clearDefaultServerConfig",
+    @Operation(summary="clearDefaultOMAGServerConfig",
             description="Clear the default configuration document.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document/"))
 
-    public VoidResponse clearDefaultServerConfig(@PathVariable String   userId)
+    public VoidResponse clearDefaultOMAGServerConfig(@PathVariable String   userId)
     {
-        return adminStoreAPI.clearDefaultServerConfig(userId);
+        return adminStoreAPI.clearDefaultOMAGServerConfig(userId);
     }
 
 
