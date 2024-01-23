@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminForViewServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.rest.ViewServiceConfigResponse;
@@ -76,6 +77,30 @@ public class ConfigViewServicesResource
 
 
     /**
+     * Add the view services configuration for this server as a single call.
+     * This operation is used for editing existing view service configuration.
+     *
+     * @param userId calling user
+     * @param serverName name of server
+     * @param viewServiceConfigs list of configured view services
+     * @return void
+     */
+    @PostMapping(path = "/view-services/configuration")
+
+    @Operation(summary="setViewServicesConfiguration",
+            description="Add the view services configuration for this server as a single call.  This operation is used for editing existing view service configuration.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/"))
+
+    public VoidResponse setViewServicesConfiguration(@PathVariable String                  userId,
+                                                     @PathVariable String                  serverName,
+                                                     @RequestBody  List<ViewServiceConfig> viewServiceConfigs)
+    {
+        return adminAPI.setViewServicesConfiguration(userId, serverName, viewServiceConfigs);
+    }
+
+
+    /**
      * Return the configuration of a specific view service.
      *
      * @param userId calling user
@@ -118,65 +143,33 @@ public class ConfigViewServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omvs/"))
 
-    public VoidResponse configureViewService(@PathVariable  String            userId,
-                                             @PathVariable  String            serverName,
-                                             @PathVariable  String            serviceURLMarker,
-                                             @RequestBody   ViewServiceConfig requestBody)
+    public VoidResponse configureViewService(@PathVariable  String                 userId,
+                                             @PathVariable  String                 serverName,
+                                             @PathVariable  String                 serviceURLMarker,
+                                             @RequestBody   ViewServiceRequestBody requestBody)
     {
         return adminAPI.configureViewService(userId, serverName, serviceURLMarker, requestBody);
     }
 
 
-    // ============================================================================================================================== //
-    //   NOTE: This API has been removed, possibly temporarily, until the design is completed for how multiple view services          //
-    //         can be configured with the same config properties or default properties. See issue #3836 for details.                  //
-    // ============================================================================================================================== //
-    //
-    // /**
-    //  * Enable all view services that are registered with this server platform.
-    //  * The view services are set up to use the default event bus.
-    //  *
-    //  * @param userId      user that is issuing the request.
-    //  * @param serverName  local server name.
-    //  * @param requestBody  view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL for view services to use.
-    //  * @return void response or
-    //  * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-    //  * OMAGConfigurationErrorException the event bus has not been configured or
-    //  * OMAGInvalidParameterException invalid serverName parameter.
-    //  */
-    // @PostMapping(path = "/view-services")
-    // public VoidResponse configureAllViewServices(@PathVariable String            userId,
-    //                                              @PathVariable String            serverName,
-    //                                              @RequestBody  ViewServiceConfig requestBody)
-    // {
-    //     return adminAPI.configureAllViewServices(userId, serverName, requestBody);
-    // }
-
 
     /**
-     * Set up the configuration for selected open metadata view services (OMVSs).  This overrides
-     * the current default values.
+     * Enable all view services that are registered with this server platform.
      *
-     * @param userId                user that is issuing the request.
-     * @param serverName            local server name.
-     * @param viewServicesConfig    list of configuration properties for each view service.
+     * @param userId      user that is issuing the request.
+     * @param serverName  local server name.
+     * @param requestBody  view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL for view services to use.
      * @return void response or
-     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter or
-     * OMAGConfigurationErrorException unusual state in the admin server.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/view-services/configuration")
-
-    @Operation(summary="setViewServicesConfig",
-               description="Set up the configuration for selected open metadata view services (OMVSs).  This overrides the current default values.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/services/omvs/"))
-
-    public VoidResponse setViewServicesConfig(@PathVariable String                  userId,
-                                              @PathVariable String                  serverName,
-                                              @RequestBody  List<ViewServiceConfig> viewServicesConfig)
+    @PostMapping(path = "/view-services")
+    public VoidResponse configureAllViewServices(@PathVariable String                 userId,
+                                                 @PathVariable String                 serverName,
+                                                 @RequestBody  ViewServiceRequestBody requestBody)
     {
-        return adminAPI.setViewServicesConfig(userId, serverName, viewServicesConfig);
+        return adminAPI.configureAllViewServices(userId, serverName, requestBody);
     }
 
 
