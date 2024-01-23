@@ -17,7 +17,10 @@ demonstration.
 
 ## Sample Collections
 
-Collections help to group related REST API calls together.
+Collections help to group related REST API calls together. Collections are stored in files with a `.http` suffix. 
+In the Egeria source you can see collections for many of the Egeria modules. When Egeria is built, these collections are
+assembled into the Egeria distribution and can be found at `egeria-distribution-root/opt/http-client/collections`. 
+You can, of course, create your own collections using the contents of the these samples as starting points.
 
 In order to run these, you should have a set of environment variables configured as detailed in the [next section](#environment-variables).
 
@@ -32,11 +35,12 @@ configurations. Environment variables are stored in a file named either `http-cl
 customizations. 
 
 A superset of potential variables that we use in our samples (along with default values) are provided in:
-open-metadata-resources/open-metadata-deployment/http-client-rest-samples/http-client.env.json. This file contains 
+`open-metadata-resources/open-metadata-deployment/http-client-rest-samples/http-client.env.json`. This file contains 
 several JSON structures that 
 group environment variables for different purposes - the Egeria grouping has generally used variables while, for 
-instance the Atlas grouping has variables specialized for Atlas. This file can be copied, into your own to adapt to your
-own environment and requirements.
+instance an Atlas grouping has variables specialized for Atlas. This file can be copied, into your own private environment
+file and adapted to your own environment and requirements. The default private environment file is called 
+`http-client-private.env.json`.
 
 You will most likely want to override some of these values (such as `baseURL` or `kafkaep`) depending on your
 own environment's configuration - updating the `http-client-private.env.json` file with your own customizations make it 
