@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.platformchassis.springboot;
+package org.odpi.openmetadata.serverchassis.springboot;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -10,9 +10,9 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.tokenmanager.http.HTTPRequestHeadersFilter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.http.HttpHelper;
+import org.odpi.openmetadata.http.HttpRequestHeadersFilter;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "4.4-SNAPSHOT",
+                version = "4.3",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -84,7 +84,7 @@ public class OMAGServerPlatform
     @Value("${startup.server.list:}") // Default value is zero length string
     String startupServers;
 
-    @Value("${authn.header.name.list:}") // Default value is zero length string
+    @Value("${header.name.list:}") // Default value is zero length string
     List<String> headerNames;
 
     @Value("${platform.configstore.provider:}") // Default value is zero length string
@@ -171,25 +171,19 @@ public class OMAGServerPlatform
         if (!startupServers.trim().isEmpty())
         {
             String[] splits = startupServers.split(",");
-            List<String> serverList = new ArrayList<>();
+            //remove eventual duplicates
+            TreeSet<String> serverSet = new TreeSet<String>();
 
-            for (String serverName : splits)
-            {
-                if ((serverName != null) && (! serverName.trim().isEmpty()))
-                {
-                    serverList.add(serverName.trim());
-                }
-            }
+            Collections.addAll(serverSet, splits);
 
-            if (! serverList.isEmpty())
+            if (! serverSet.isEmpty())
             {
-                return serverList;
+                return new ArrayList<>(serverSet);
             }
         }
 
         return null;
     }
-
 
     /**
      * Starts the servers specified in the startup.server.list property
@@ -259,14 +253,10 @@ public class OMAGServerPlatform
                     ConnectorType connectorType         = new ConnectorType();
                     connectorType.setConnectorProviderClassName(configStoreProvider);
 
-                    configStoreConnection.setConnectorType(connectorType);
-
                     if (configStoreEndpoint != null)
                     {
                         Endpoint endpoint = new Endpoint();
                         endpoint.setAddress(configStoreEndpoint);
-
-                        configStoreConnection.setEndpoint(endpoint);
                     }
 
                     configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
@@ -277,8 +267,6 @@ public class OMAGServerPlatform
                     Connection    securityConnection = new Connection();
                     ConnectorType connectorType      = new ConnectorType();
                     connectorType.setConnectorProviderClassName(platformSecurityProvider);
-
-                    securityConnection.setConnectorType(connectorType);
 
                     String platformName = platformSecurityName;
                     if ((platformName == null) || (platformName.isEmpty()))
@@ -334,15 +322,15 @@ public class OMAGServerPlatform
     }
 
     /**
-     * Initialization of HTTPRequestHeadersFilter. headerNames is a list of headers defined in application properties.
+     * Initialization of HttpRequestHeadersFilter. headerNames is a list of headers defined in application properties.
      * @return bean of an initialized FilterRegistrationBean
      */
     @Bean
-    public FilterRegistrationBean<HTTPRequestHeadersFilter> getRequestHeadersFilter()
+    public FilterRegistrationBean<HttpRequestHeadersFilter> getRequestHeadersFilter()
     {
-        FilterRegistrationBean<HTTPRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
+        FilterRegistrationBean<HttpRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
 
-        registrationBean.setFilter(new HTTPRequestHeadersFilter(headerNames));
+        registrationBean.setFilter(new HttpRequestHeadersFilter(headerNames));
         registrationBean.addUrlPatterns("/servers/*");
         registrationBean.setOrder(1);
 

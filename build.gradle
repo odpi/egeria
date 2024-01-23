@@ -29,7 +29,7 @@ plugins {
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '4.4-SNAPSHOT'
+    version = '4.3'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
@@ -251,7 +251,7 @@ javadoc {
     include("**/contextmanager/*.java")
     include("**/graph/*.java")
     include("**/model/*.java")
-    include("**/ffdc/*.java")
+    include("**/auditlog/*.java")
     include("**/omrstopic/*.java")
     include("**/openmetadatatopic/*.java")
     include("**/archivestore/*.java")
