@@ -395,17 +395,17 @@ distributions {
                         }
                 fileMode = 0755
             }
-            into('assembly/opt/postman-collections/sample-configs') {
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment" }
+            into('assembly/opt/postman-collections/conformance-suite') {
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         {
                             include 'Egeria*.json'
                         }
                 fileMode = 0755
             }
-            into('assembly/opt/http-client-collections/sample-configs') {
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment" }
+            into('assembly/opt/http-client-collections/conformance-suite') {
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         {
-                            include 'http-client.env.json'
+                            include 'Egeria*.http'
                         }
                 fileMode = 0755
             }
