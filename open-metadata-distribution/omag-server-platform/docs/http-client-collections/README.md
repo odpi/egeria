@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Sample Jetbrains HTTP Scripts
+# Sample JetBrains HTTP Scripts
 
-The Jetbrains  HTTP Client  is a useful utility for testing REST APIs that is both integrated into the Jetbrains tooling 
+The JetBrains  HTTP Client  is a useful utility for testing REST APIs that is both integrated into the JetBrains tooling 
 and freely available to be run standalone. Further information can be found at 
-[Jetbrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html). 
+[JetBrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html). 
 Information about the freely downloadable client can be found at 
 [Download HTTP Client CLI: CI-friendly way of executing .http files](https://www.jetbrains.com/ijhttp/download/#section=zip-archive).
 
