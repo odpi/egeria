@@ -123,17 +123,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove a view service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureAllViewServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig)" class="member-name-link">configureAllViewServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureAllViewServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody)" class="member-name-link">configureAllViewServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;requestedViewServiceConfig)</code></div>
+ <a href="../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Enable all view services that are registered with this server platform.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureViewService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig)" class="member-name-link">configureViewService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureViewService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody)" class="member-name-link">configureViewService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;requestedViewServiceConfig)</code></div>
+ <a href="../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Configure a single view service.</div>
 </div>
@@ -157,11 +157,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the view services configuration for this server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServicesConfig(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setViewServicesConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServicesConfiguration(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">setViewServicesConfiguration</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;viewServicesConfig)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;viewServiceConfigs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the configuration for all the open metadata view services (OMASs).</div>
+<div class="block">Add the view services configuration for this server as a single call.</div>
 </div>
 </div>
 </div>
@@ -226,6 +226,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="setViewServicesConfiguration(java.lang.String,java.lang.String,java.util.List)">
+<h3>setViewServicesConfiguration</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setViewServicesConfiguration</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;viewServiceConfigs)</span></div>
+<div class="block">Add the view services configuration for this server as a single call.
+ This operation is used for editing existing view service configuration.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>serverName</code> - name of server</dd>
+<dd><code>viewServiceConfigs</code> - list of configured view services</dd>
+<dt>Returns:</dt>
+<dd>void</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getViewServiceConfig(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getViewServiceConfig</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ViewServiceConfigResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceConfigResponse</a></span>&nbsp;<span class="element-name">getViewServiceConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -243,19 +261,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="configureViewService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig)">
+<section class="detail" id="configureViewService(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody)">
 <h3>configureViewService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureViewService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
- <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;requestedViewServiceConfig)</span></div>
+ <a href="../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Configure a single view service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
 <dd><code>serviceURLMarker</code> - view service name used in URL</dd>
-<dd><code>requestedViewServiceConfig</code> - view service config</dd>
+<dd><code>requestBody</code> - view service config</dd>
 <dt>Returns:</dt>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -265,18 +283,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="configureAllViewServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig)">
+<section class="detail" id="configureAllViewServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody)">
 <h3>configureAllViewServices</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">configureAllViewServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&nbsp;requestedViewServiceConfig)</span></div>
+ <a href="../rest/ViewServiceRequestBody.html" title="class in org.odpi.openmetadata.adminservices.rest">ViewServiceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Enable all view services that are registered with this server platform.   The configuration properties
  for each view service can be changed from their default using setViewServicesConfig operation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
-<dd><code>requestedViewServiceConfig</code> - requested View Service Config containing the OMAGServerName and OMAGServerRootPlatformURL</dd>
+<dd><code>requestBody</code> - requested View Service Config containing the OMAGServerName and OMAGServerRootPlatformURL,
+                     view service options and resource endpoints</dd>
 <dt>Returns:</dt>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -319,26 +338,6 @@ loadScripts(document, 'script');</script>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName  parameter.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setViewServicesConfig(java.lang.String,java.lang.String,java.util.List)">
-<h3>setViewServicesConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setViewServicesConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/ViewServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">ViewServiceConfig</a>&gt;&nbsp;viewServicesConfig)</span></div>
-<div class="block">Set up the configuration for all the open metadata view services (OMASs).  This overrides
- the current values.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - user that is issuing the request.</dd>
-<dd><code>serverName</code> - local server name.</dd>
-<dd><code>viewServicesConfig</code> - list of configuration properties for each view service.</dd>
-<dt>Returns:</dt>
-<dd>void response or
- OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter.</dd>
 </dl>
 </section>
 </li>
