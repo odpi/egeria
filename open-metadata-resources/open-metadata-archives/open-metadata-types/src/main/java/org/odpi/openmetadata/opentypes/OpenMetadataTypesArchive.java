@@ -2629,11 +2629,11 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.ANNOTATION.typeName;
-        final String                     end1AttributeName            = "reportedAnnotations";
-        final String                     end1AttributeDescription     = "The annotations providing the contents for the report.";
+        final String                     end1EntityType               = OpenMetadataType.SURVEY_REPORT.typeName;
+        final String                     end1AttributeName            = "fromSurveyReport";
+        final String                     end1AttributeDescription     = "The report that the annotations belong to.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -2642,15 +2642,14 @@ public class OpenMetadataTypesArchive
                                                                  end1Cardinality);
         relationshipDef.setEndDef1(relationshipEndDef);
 
-
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.SURVEY_REPORT.typeName;
-        final String                     end2AttributeName            = "fromSurveyReport";
-        final String                     end2AttributeDescription     = "The report that the annotations belong to.";
+        final String                     end2EntityType               = OpenMetadataType.ANNOTATION.typeName;
+        final String                     end2AttributeName            = "reportedAnnotations";
+        final String                     end2AttributeDescription     = "The annotations providing the contents for the report.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,

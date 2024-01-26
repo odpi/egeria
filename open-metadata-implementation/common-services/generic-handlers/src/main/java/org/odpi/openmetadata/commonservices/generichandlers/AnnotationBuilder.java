@@ -644,11 +644,11 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                 modifiedTime,
                                                                 methodName);
 
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataProperty.SIZE.name,
-                                                               size,
-                                                               methodName);
+        properties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.SIZE.name,
+                                                                size,
+                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

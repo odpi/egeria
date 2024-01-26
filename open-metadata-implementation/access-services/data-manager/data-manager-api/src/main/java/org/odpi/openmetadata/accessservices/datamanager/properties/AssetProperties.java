@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class AssetProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String name              = null;
     private String versionIdentifier = null;
     private String description       = null;

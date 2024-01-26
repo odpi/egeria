@@ -84,7 +84,7 @@ public class FileSurveyService extends AuditableSurveyService
             measurementAnnotation.setAnnotationType("ExtractDataStoreProperties");
             measurementAnnotation.setSummary("Extract properties from the file.");
             measurementAnnotation.setModifiedTime(new Date(file.lastModified()));
-            measurementAnnotation.setSize(Integer.getInteger(String.valueOf(file.length())));
+            measurementAnnotation.setSize(file.length());
 
             Map<String, String> dataSourceProperties = new HashMap<>();
 

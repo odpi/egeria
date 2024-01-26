@@ -165,6 +165,12 @@ public class ConfigViewServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/view-services")
+
+    @Operation(summary="configureAllViewServices",
+            description="Enable all view services that are registered with this OMAG server platform.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/"))
+
     public VoidResponse configureAllViewServices(@PathVariable String                 userId,
                                                  @PathVariable String                 serverName,
                                                  @RequestBody  ViewServiceRequestBody requestBody)

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         server running the Governance Engine OMAS that provides configuration for the governance engines
  *         as well as the governance actions that drive the automated execution of governance requests.</li>
  *
- *     <li>An array of EngineServiceConfig properties, one for each engine service to run.</li>
+ *     <li>An array of Engine properties, one for each engine to run.</li>
+ *
+ *     <li>An optional array of EngineServiceConfig properties, one for each engine service to run.</li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -31,9 +34,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EngineHostServicesConfig extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    
+
+    private List<EngineConfig>        engineList           = null;
     private List<EngineServiceConfig> engineServiceConfigs = null;
 
 
@@ -57,15 +62,44 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
 
         if (template != null)
         {
+            engineList = template.getEngineList();
             engineServiceConfigs = template.getEngineServiceConfigs();
         }
     }
 
 
     /**
-     * Return the list of configuration for the engine services that will run in this server.
+     * Return the list of engines that should run on the engine host.  The engine host will start the engine
+     * services needed assuming they will use the same metadata access server as the engine host uses for the
+     * governance engine configuration.
      *
-     * @return list of qualified names
+     * @return list of engine configurations
+     */
+    public List<EngineConfig> getEngineList()
+    {
+        return engineList;
+    }
+
+
+    /**
+     * Set up list of engines that should run on the engine host.  The engine host will start the engine
+     * services needed assuming they will use the same metadata access server as the engine host uses for the
+     * governance engine configuration.
+     *
+     * @param engineList list of engine configurations
+     */
+    public void setEngineList(List<EngineConfig> engineList)
+    {
+        this.engineList = engineList;
+    }
+
+
+    /**
+     * Return the list of configuration for the engine services that will run in this server.
+     * This configuration is only required if the services use a different metadata access store to
+     * the engine host.
+     *
+     * @return list of engine service configurations
      */
     public List<EngineServiceConfig> getEngineServiceConfigs()
     {
@@ -75,8 +109,10 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
 
     /**
      * Set up the list of configuration for the engine services that will run in this server.
+     * This configuration is only required if the services use a different metadata access store to
+     * the engine host.
      *
-     * @param engineServiceConfigs list of qualified names
+     * @param engineServiceConfigs list of engine service configurations
      */
     public void setEngineServiceConfigs(List<EngineServiceConfig> engineServiceConfigs)
     {
@@ -93,10 +129,9 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
     public String toString()
     {
         return "EngineHostServicesConfig{" +
-                       "engineServiceConfigs=" + engineServiceConfigs +
-                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
-                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
-                       '}';
+                "engineList=" + engineList +
+                ", engineServiceConfigs=" + engineServiceConfigs +
+                "} " + super.toString();
     }
 
 
@@ -122,7 +157,8 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
             return false;
         }
         EngineHostServicesConfig that = (EngineHostServicesConfig) objectToCompare;
-        return Objects.equals(engineServiceConfigs, that.engineServiceConfigs);
+        return Objects.equals(engineList, that.engineList) &&
+                Objects.equals(engineServiceConfigs, that.engineServiceConfigs);
     }
 
 
@@ -134,6 +170,6 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), engineServiceConfigs);
+        return Objects.hash(super.hashCode(), engineList, engineServiceConfigs);
     }
 }

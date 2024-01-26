@@ -49,6 +49,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
     private Map<String, String>                  requestParameters        = null;
     private List<RequestSourceElement>           requestSourceElements    = null;
     private List<ActionTargetElement>            actionTargetElements     = null;
+    @SuppressWarnings(value = "deprecation")
     private GovernanceActionStatus               actionStatus             = null;
     private Date                                 requestedTime            = null;
     private Date                                 startTime                = null;
@@ -381,6 +382,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @return status enum
      */
+    @SuppressWarnings(value = "deprecation")
     public GovernanceActionStatus getActionStatus()
     {
         return actionStatus;
@@ -392,6 +394,7 @@ public class GovernanceActionElement extends ReferenceableProperties implements 
      *
      * @param actionStatus status enum
      */
+    @SuppressWarnings(value = "deprecation")
     public void setActionStatus(GovernanceActionStatus actionStatus)
     {
         this.actionStatus = actionStatus;

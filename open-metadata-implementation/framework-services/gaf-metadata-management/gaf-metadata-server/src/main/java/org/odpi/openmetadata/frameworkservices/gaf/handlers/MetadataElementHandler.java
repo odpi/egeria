@@ -36,18 +36,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypeProper
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1414,20 +1408,34 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         {
             for (String classificationName : initialClassifications.keySet())
             {
-                Classification classification = new Classification();
-
-                classification.setMetadataCollectionName(classificationName);
-
                 ElementProperties classificationProperties = initialClassifications.get(classificationName);
 
+                Map<String,InstancePropertyValue> instancePropertyValueMap = null;
                 if (classificationProperties != null)
                 {
-                    Map<String,InstancePropertyValue> instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
-
-                    classification.setProperties(builder.getInstanceProperties(instancePropertyValueMap, null, null));
+                    instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
                 }
 
-                builder.setClassification(classification);
+                try
+                {
+                    Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                          null,
+                                                                                          null,
+                                                                                          InstanceProvenanceType.LOCAL_COHORT,
+                                                                                          userId,
+                                                                                          classificationName,
+                                                                                          metadataElementTypeName,
+                                                                                          ClassificationOrigin.ASSIGNED,
+                                                                                          null,
+                                                                                          builder.getInstanceProperties(instancePropertyValueMap, null, null));
+                    builder.setClassification(classification);
+                }
+                catch (TypeErrorException error)
+                {
+                    errorHandler.handleUnsupportedType(error, methodName, classificationName);
+                }
+
+
             }
         }
 

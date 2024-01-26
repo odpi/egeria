@@ -13,6 +13,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
+/**
+ * Provide base converter functions for the Digital Service OMAS.
+ *
+ * @param <B> bean class
+ */
 public abstract class DigitalServiceConverterBase<B> extends OpenMetadataConverterBase<B>
 {
     /**

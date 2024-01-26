@@ -159,11 +159,11 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
         final String methodName  = "setViewServicesConfiguration";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/configuration";
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  viewServices,
-                                                                  adminUserId,
-                                                                  serverName);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        viewServices,
+                                        adminUserId,
+                                        serverName);
     }
 
 
@@ -175,6 +175,8 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
     /**
      * Enable a single view service.
      *
+     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
+     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param serviceURLMarker string indicating which view service it is configuring
      * @param viewServiceOptions property name/value pairs used to configure the view service
      *
@@ -182,17 +184,21 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureViewService(String              serviceURLMarker,
+    public void configureViewService(String              partnerOMASServerURLRoot,
+                                     String              partnerOMASServerName,
+                                     String              serviceURLMarker,
                                      Map<String, Object> viewServiceOptions) throws OMAGNotAuthorizedException,
                                                                                     OMAGInvalidParameterException,
                                                                                     OMAGConfigurationErrorException
     {
-        this.configureViewService(serviceURLMarker, viewServiceOptions, null);
+        this.configureViewService(partnerOMASServerURLRoot, partnerOMASServerName, serviceURLMarker, viewServiceOptions, null);
     }
 
     /**
      * Enable a single view service.
      *
+     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
+     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param serviceURLMarker string indicating which view service it is configuring
      * @param viewServiceOptions property name/value pairs used to configure the view service
      * @param resourceEndpoints list of resource endpoint configuration objects
@@ -201,7 +207,9 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureViewService(String                       serviceURLMarker,
+    public void configureViewService(String                       partnerOMASServerURLRoot,
+                                     String                       partnerOMASServerName,
+                                     String                       serviceURLMarker,
                                      Map<String, Object>          viewServiceOptions,
                                      List<ResourceEndpointConfig> resourceEndpoints) throws OMAGNotAuthorizedException,
                                                                                             OMAGInvalidParameterException,
@@ -222,8 +230,8 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
 
         ViewServiceRequestBody requestBody = new ViewServiceRequestBody();
 
-        requestBody.setOMAGServerPlatformRootURL(serverPlatformRootURL);
-        requestBody.setOMAGServerName(serverName);
+        requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
+        requestBody.setOMAGServerName(partnerOMASServerName);
         requestBody.setViewServiceOptions(viewServiceOptions);
         requestBody.setResourceEndpoints(resourceEndpoints);
 
@@ -275,7 +283,7 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * Enable all registered view services with the same partner server and options.
      *
      * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
-     * @param partnerOMASServerName name of server where the access service used by this view service is running
+     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param viewServiceOptions property name/value pairs used to configure the view service
      * @param resourceEndpoints list of resource endpoint configuration objects
      *

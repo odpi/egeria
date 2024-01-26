@@ -920,6 +920,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType request type to identify the governance service to run
      * @param requestParameters properties to pass to the governance service
+     * @param governanceActionTypeGUID unique identifier for the governance action type (if any)
+     * @param governanceActionTypeName unique name for the governance action type (if any)
      * @param anchorGUID identifier of the first engine action of the process (null for standalone engine actions and the first engine
      *                   action in a governance action process).
      * @param processStepGUID unique identifier of the governance action process step that initiated this engine action as part of
@@ -2005,6 +2007,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                      */
                     AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
 
+                    String anchorGUID = null;
+
+                    if (anchorIdentifiers != null)
+                    {
+                        anchorGUID = anchorIdentifiers.anchorGUID;
+                    }
+
                     String processName = repositoryHelper.getStringProperty(serviceName,
                                                                             OpenMetadataProperty.PROCESS_NAME.name,
                                                                             properties,
@@ -2012,7 +2021,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     this.initiateNextEngineActions(userId,
                                                    engineActionGUID,
                                                    governanceActionProcessStepGUID,
-                                                   anchorIdentifiers.anchorGUID,
+                                                   anchorGUID,
                                                    processName,
                                                    outputGuards,
                                                    newActionTargets,

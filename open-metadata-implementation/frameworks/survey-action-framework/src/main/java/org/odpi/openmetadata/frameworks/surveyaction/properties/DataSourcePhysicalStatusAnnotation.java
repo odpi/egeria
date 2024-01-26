@@ -26,7 +26,7 @@ public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnn
 
     private Date   createTime = null;
     private Date   modifiedTime = null;
-    private int    size = 0;
+    private long   size = 0;
     private String encoding = null;
 
 
@@ -106,7 +106,7 @@ public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnn
      *
      * @return int
      */
-    public int getSize()
+    public long getSize()
     {
         return size;
     }
@@ -117,7 +117,7 @@ public class DataSourcePhysicalStatusAnnotation extends DataSourceMeasurementAnn
      *
      * @param size int
      */
-    public void setSize(int size)
+    public void setSize(long size)
     {
         this.size = size;
     }

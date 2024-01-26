@@ -51,8 +51,8 @@ public class OpenMetadataTypesArchive2_6
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -1991,7 +1991,9 @@ public class OpenMetadataTypesArchive2_6
      * -------------------------------------------------------------------------------------------------------
      */
 
-
+    /**
+     * Add types for duplicate processing
+     */
     public void add0465DuplicateProcessing()
     {
         this.archiveBuilder.addEnumDef(addDuplicateTypeEnum());
@@ -2000,6 +2002,12 @@ public class OpenMetadataTypesArchive2_6
 
     }
 
+
+    /**
+     * Define DuplicateTypeEnum.
+     *
+     * @return enum def
+     */
     private EnumDef addDuplicateTypeEnum()
     {
         final String guid            = "2f6a3dc1-aa98-4b92-add4-68de53b7369c";
@@ -2638,6 +2646,9 @@ public class OpenMetadataTypesArchive2_6
      */
 
 
+    /**
+     * Add instance metadata classification
+     */
     public void add0550InstanceMetadata()
     {
         this.archiveBuilder.addClassificationDef(addInstanceMetadataClassification());
@@ -2702,6 +2713,9 @@ public class OpenMetadataTypesArchive2_6
      */
 
 
+    /**
+     * Update the discovery engines.
+     */
     private void update06xxDiscoveryEnginesAndServices()
     {
         this.archiveBuilder.addTypeDefPatch(updateOpenDiscoveryEngine());
@@ -2709,6 +2723,11 @@ public class OpenMetadataTypesArchive2_6
 
     }
 
+    /**
+     * Update the engine
+     *
+     * @return type def patch
+     */
     private TypeDefPatch updateOpenDiscoveryEngine()
     {
         final String typeName = OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName;
@@ -2725,6 +2744,11 @@ public class OpenMetadataTypesArchive2_6
     }
 
 
+    /**
+     * Update the service.
+     *
+     * @return typedef patch
+     */
     private TypeDefPatch updateOpenDiscoveryService()
     {
         final String typeName = OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName;

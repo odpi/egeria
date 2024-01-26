@@ -156,6 +156,7 @@ public class EgeriaReport
         System.out.println(getSpaceIndent(indentLevel) + reportText);
 
         fileOutStream.write(reportText.getBytes());
+        fileOutStream.write("\n".getBytes());
     }
 
 
@@ -190,6 +191,51 @@ public class EgeriaReport
         printReportLine(indentLevel, " | " + displayName);
         printReportLine(indentLevel, " | " + description);
         printReportLine(indentLevel, " |");
+    }
+
+
+    /**
+     * Prints out information about a metadata element as a single line in a table.
+     *
+     * @param indentLevel number of spaces to indent
+     * @param tableHeadings list of table headings - only needed if they are to be printed
+     * @param tableRow list of table values
+     * @throws IOException problem writing report
+     */
+    public void printElementInTable(int          indentLevel,
+                                    List<String> tableHeadings,
+                                    List<String> tableRow) throws IOException
+    {
+        if (tableHeadings != null)
+        {
+            String separatorChar = "|";
+            StringBuilder dottedLine  = new StringBuilder();
+            StringBuilder headingLine = new StringBuilder("\n| ");
+
+            for (int i=0; i<tableHeadings.size(); i++)
+            {
+                dottedLine.append(separatorChar);
+                separatorChar = " | ";
+                dottedLine.append("--------------");
+                headingLine.append(tableHeadings.get(i));
+                headingLine.append(" |");
+            }
+
+            dottedLine.append("|");
+
+            printReportLine(indentLevel, headingLine.toString());
+            printReportLine(indentLevel, dottedLine.toString());
+        }
+
+        StringBuilder tableRowLine  = new StringBuilder("|");
+
+        for (int i=0; i<tableRow.size(); i++)
+        {
+            tableRowLine.append(tableRow.get(i));
+            tableRowLine.append("|");
+        }
+
+        printReportLine(indentLevel, tableRowLine.toString());
     }
 
 
