@@ -7012,16 +7012,16 @@ public abstract class OpenMetadataConverterBase<B>
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected int removeSize(ElementProperties elementProperties)
+    protected long removeSize(ElementProperties elementProperties)
     {
         final String methodName = "removeSize";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(serviceName,
-                                                    OpenMetadataProperty.SIZE.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeLongProperty(serviceName,
+                                                     OpenMetadataProperty.SIZE.name,
+                                                     elementProperties,
+                                                     methodName);
         }
 
         return 0;

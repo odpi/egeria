@@ -1,0 +1,38 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
+dependencies {
+    implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
+    compileOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
+    compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
+    compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
+    compileOnly "com.fasterxml.jackson.core:jackson-annotations"
+    runtimeOnly 'ch.qos.logback:logback-classic'
+}
+
+description = 'Explores and displays the contents of the survey reports attached to an asset.'
+
+java {
+    withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.reports.surveyreport.SurveyReport'
+    archiveClassifier = 'jar-with-dependencies'
+}

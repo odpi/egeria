@@ -1074,7 +1074,7 @@ public class AnnotationStore
 
         private Date createTime   = null;
         private Date modifiedTime = null;
-        private int    size           = 0;
+        private long   size           = 0;
         private String encoding       = null;
 
         /*
@@ -1298,7 +1298,7 @@ public class AnnotationStore
                                                           Map<String, String> dataSourceProperties,
                                                           Date                createTime,
                                                           Date                modifiedTime,
-                                                          int                 size,
+                                                          long                size,
                                                           String              encoding)
         {
             if (this.openMetadataTypeName == null)
@@ -1636,9 +1636,9 @@ public class AnnotationStore
                                                         OpenMetadataProperty.SOURCE_UPDATE_TIME.name,
                                                         modifiedTime);
 
-            properties = propertyHelper.addIntProperty(properties,
-                                                       OpenMetadataProperty.SIZE.name,
-                                                       size);
+            properties = propertyHelper.addLongProperty(properties,
+                                                        OpenMetadataProperty.SIZE.name,
+                                                        size);
 
             properties = propertyHelper.addStringProperty(properties,
                                                           OpenMetadataProperty.ENCODING.name,

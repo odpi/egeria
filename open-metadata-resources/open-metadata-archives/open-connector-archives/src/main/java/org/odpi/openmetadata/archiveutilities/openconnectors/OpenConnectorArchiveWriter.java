@@ -340,7 +340,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         /*
          * Engine services are found in the Engine Host.   They call an access service.  They also
-         * Support a particular type of governance engine and governance service.
+         * support a particular type of governance engine and governance service.
          */
         serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.ENGINE_HOST.getServerTypeName());
 
@@ -359,8 +359,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
                                                             ResourceUse.CALLED_SERVICE.getResourceUse());
 
-            String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineType());
-            String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceType());
+            String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
+            String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceDeployedImplementationType());
 
             if (governanceEngineGUID != null)
             {

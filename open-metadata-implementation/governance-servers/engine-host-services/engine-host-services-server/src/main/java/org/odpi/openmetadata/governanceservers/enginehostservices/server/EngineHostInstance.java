@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.threads.Engine
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -25,9 +25,7 @@ import java.util.Map;
 public class EngineHostInstance extends GovernanceServerServiceInstance
 {
     private final EngineConfigurationRefreshThread     configurationRefreshThread;
-    private final Map<String, GovernanceEngineHandler> governanceEngineHandlers;
-    private final Map<String, List<String>>            serviceEngineNames;
-
+    private final GovernanceEngineMap                  governanceEngineHandlers;
 
 
     /**
@@ -40,22 +38,19 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
      * @param maxPageSize max number of results to return on single request
      * @param configurationRefreshThread handler managing the threading for the active integration connectors in this server
      * @param governanceEngineHandlers map from governance engine name to governance engine handler
-     * @param serviceEngineNames map for engine service URL marker to governance engine qualified names
      */
-    EngineHostInstance(String                                            serverName,
-                       String                                            serviceName,
-                       AuditLog                                          auditLog,
-                       String                                            localServerUserId,
-                       int                                               maxPageSize,
-                       EngineConfigurationRefreshThread                  configurationRefreshThread,
-                       Map<String, GovernanceEngineHandler>              governanceEngineHandlers,
-                       Map<String, List<String>>                         serviceEngineNames)
+    EngineHostInstance(String                           serverName,
+                       String                           serviceName,
+                       AuditLog                         auditLog,
+                       String                           localServerUserId,
+                       int                              maxPageSize,
+                       EngineConfigurationRefreshThread configurationRefreshThread,
+                       GovernanceEngineMap              governanceEngineHandlers)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
         this.configurationRefreshThread = configurationRefreshThread;
         this.governanceEngineHandlers = governanceEngineHandlers;
-        this.serviceEngineNames = serviceEngineNames;
     }
 
 
@@ -79,14 +74,14 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, serviceOperationName);
 
-        if ((governanceEngineHandlers == null) || (governanceEngineHandlers.isEmpty()))
+        if (governanceEngineHandlers == null)
         {
             throw new PropertyServerException(EngineHostServicesErrorCode.NO_GOVERNANCE_ENGINES.getMessageDefinition(serverName),
                                               this.getClass().getName(),
                                               serviceOperationName);
         }
 
-        GovernanceEngineHandler handler = governanceEngineHandlers.get(governanceEngineName);
+        GovernanceEngineHandler handler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineName);
 
         if (handler == null)
         {
@@ -117,14 +112,14 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, serviceOperationName);
 
-        if ((governanceEngineHandlers == null) || (governanceEngineHandlers.isEmpty()))
+        if (governanceEngineHandlers == null)
         {
             throw new PropertyServerException(EngineHostServicesErrorCode.NO_GOVERNANCE_ENGINES.getMessageDefinition(serverName),
                                               this.getClass().getName(),
                                               serviceOperationName);
         }
 
-        GovernanceEngineHandler handler = governanceEngineHandlers.get(governanceEngineName);
+        GovernanceEngineHandler handler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineName);
 
         if (handler == null)
         {
@@ -155,7 +150,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         invalidParameterHandler.validateName(serviceURLMarker, nameParameterName, serviceOperationName);
 
-        List<String> governanceEngineNames = serviceEngineNames.get(serviceURLMarker);
+        List<String> governanceEngineNames = governanceEngineHandlers.getGovernanceEngineNames(serviceURLMarker);
 
         if (governanceEngineNames == null)
         {
@@ -202,7 +197,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
     List<GovernanceEngineSummary> getGovernanceEngineSummaries(String serviceOperationName) throws InvalidParameterException,
                                                                                                    PropertyServerException
     {
-        if ((governanceEngineHandlers == null) || (governanceEngineHandlers.isEmpty()))
+        if (governanceEngineHandlers == null)
         {
             throw new PropertyServerException(EngineHostServicesErrorCode.NO_GOVERNANCE_ENGINES.getMessageDefinition(serverName),
                                               this.getClass().getName(),
@@ -211,7 +206,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         List<GovernanceEngineSummary> summaries = new ArrayList<>();
 
-        for (String governanceEngineName : governanceEngineHandlers.keySet())
+        for (String governanceEngineName : governanceEngineHandlers.getGovernanceEngineNames())
         {
             if (governanceEngineName != null)
             {
@@ -236,9 +231,9 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
     @Override
     public void shutdown()
     {
-        if ((governanceEngineHandlers != null) && (! governanceEngineHandlers.isEmpty()))
+        if ((governanceEngineHandlers != null) && (! governanceEngineHandlers.getGovernanceEngineHandlers().isEmpty()))
         {
-            for (GovernanceEngineHandler handler : governanceEngineHandlers.values())
+            for (GovernanceEngineHandler handler : governanceEngineHandlers.getGovernanceEngineHandlers())
             {
                 if (handler != null)
                 {
@@ -255,5 +250,4 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         super.shutdown();
     }
-
 }

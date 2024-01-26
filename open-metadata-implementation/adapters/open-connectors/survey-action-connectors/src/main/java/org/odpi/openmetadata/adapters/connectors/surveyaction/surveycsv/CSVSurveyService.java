@@ -253,7 +253,6 @@ public class CSVSurveyService extends AuditableSurveyService
 
             CSVFileStoreConnector    assetConnector    = (CSVFileStoreConnector)connector;
 
-            int                      delimiterCount  = 0;
             long                     recordCount     = assetConnector.getRecordCount();
             List<String>             columnNames     = assetConnector.getColumnNames();
 
@@ -296,7 +295,7 @@ public class CSVSurveyService extends AuditableSurveyService
 
             measurementAnnotation.setModifiedTime(assetConnector.getLastUpdateDate());
             measurementAnnotation.setDataSourceProperties(measurementProperties);
-            measurementAnnotation.setSize(Integer.getInteger(String.valueOf(assetConnector.getFile().length())));
+            measurementAnnotation.setSize(assetConnector.getFile().length());
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
 
@@ -326,11 +325,6 @@ public class CSVSurveyService extends AuditableSurveyService
                         dataFields.put(position, dataField);
                         position++;
                     }
-                }
-
-                if (position > 0)
-                {
-                    delimiterCount = position - 1;
                 }
 
                 for (int recordNumber=0; recordNumber < recordCount ; recordNumber++)
@@ -386,7 +380,7 @@ public class CSVSurveyService extends AuditableSurveyService
                      * and lineage relationships are not lost.
                      *
                      * CSV files are positional.  They may have multiple columns with the same names,
-                     * so we can only cater for small changes to the schema, eg adding/deleting columns.
+                     * so we can only cater for small changes to the schema, such as adding/deleting columns.
                      * A comprehensive reorganization of the columns will result in a new schema.
                      */
                     int columnNumber = 0;
@@ -401,7 +395,6 @@ public class CSVSurveyService extends AuditableSurveyService
                             if (dataField.getDataFieldName().equals(schemaAttribute.getDisplayName()))
                             {
                                 dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getGUID());
-                                columnNumber = i;
                                 found = true;
                                 break;
                             }
@@ -428,10 +421,11 @@ public class CSVSurveyService extends AuditableSurveyService
 
                         if (dataField.getMatchingSchemaAttributeGUID() == null)
                         {
-                            addSchemaAttributeToSchemaType(openMetadataStore,
-                                                           assetUniverse,
-                                                           schemaTypeGUID,
-                                                           dataField);
+                            String schemaAttributeGUID = addSchemaAttributeToSchemaType(openMetadataStore,
+                                                                                        assetUniverse,
+                                                                                        schemaTypeGUID,
+                                                                                        dataField);
+                            dataField.setMatchingSchemaAttributeGUID(schemaAttributeGUID);
                         }
                         else
                         {
@@ -439,6 +433,9 @@ public class CSVSurveyService extends AuditableSurveyService
                                                   dataField.getMatchingSchemaAttributeGUID(),
                                                   dataField);
                         }
+
+                        annotationStore.addAnnotation(dataField.getDataProfileAnnotation(),
+                                                      dataField.getMatchingSchemaAttributeGUID());
                     }
                 }
             }
@@ -589,7 +586,6 @@ public class CSVSurveyService extends AuditableSurveyService
                                                            false,
                                                            classificationProperties);
     }
-
 
 
     /**

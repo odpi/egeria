@@ -23219,7 +23219,7 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.SCHEMA_NAME.name();
+        final String attribute1Name            = OpenMetadataProperty.SCHEMA_NAME.name;
         final String attribute1Description     = OpenMetadataProperty.SCHEMA_NAME.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.SCHEMA_NAME.descriptionGUID;
         final String attribute2Name            = OpenMetadataProperty.SCHEMA_TYPE.name;
@@ -24506,9 +24506,9 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
+        property = archiveHelper.getLongTypeDefAttribute(attribute3Name,
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,

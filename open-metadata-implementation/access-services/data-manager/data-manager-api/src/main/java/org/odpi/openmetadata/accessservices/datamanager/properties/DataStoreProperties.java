@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataStoreProperties extends AssetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              deployedImplementationType = null;
     private String              pathName                   = null;
     private Date                createTime                 = null;

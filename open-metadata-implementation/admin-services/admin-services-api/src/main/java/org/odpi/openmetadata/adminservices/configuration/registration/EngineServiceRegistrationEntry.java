@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,10 +11,8 @@ import java.util.Objects;
  * The registration is dynamic because engine services from third parties can be written and run in the
  * OMAGServerPlatform.
  */
-public class EngineServiceRegistrationEntry implements Serializable
+public class EngineServiceRegistrationEntry
 {
-    private static final long serialVersionUID = 1L;
-
     private int                        engineServiceId                = 0;
     private ComponentDevelopmentStatus engineServiceDevelopmentStatus = null;
     private String                     engineServiceName              = null;
@@ -26,6 +23,8 @@ public class EngineServiceRegistrationEntry implements Serializable
     private String                     engineServicePartnerOMAS       = null;
     private ServiceOperationalStatus   engineServiceOperationalStatus = null;
     private String                     engineServiceAdminClass        = null;
+    private String                     hostedGovernanceEngineType     = null;
+    private String                     hostedGovernanceServiceType    = null;
 
 
     /**
@@ -39,6 +38,8 @@ public class EngineServiceRegistrationEntry implements Serializable
      * @param engineServiceDescription short description for this engine service
      * @param engineServiceWiki wiki page for the engine service for this engine service
      * @param engineServicePartnerOMAS full name of the OMAS that this engine service is partnered with
+     * @param hostedGovernanceEngineType type of governance engine hosted by this service
+     * @param hostedGovernanceServiceType type of governance service hosted by this service
      * @param engineServiceOperationalStatus default initial operational status for the engine service
      * @param engineServiceAdminClassName  name of EngineServiceAdmin implementation class for the engine service
      */
@@ -50,6 +51,8 @@ public class EngineServiceRegistrationEntry implements Serializable
                                           String                     engineServiceDescription,
                                           String                     engineServiceWiki,
                                           String                     engineServicePartnerOMAS,
+                                          String                     hostedGovernanceEngineType,
+                                          String                     hostedGovernanceServiceType,
                                           ServiceOperationalStatus   engineServiceOperationalStatus,
                                           String                     engineServiceAdminClassName)
     {
@@ -61,6 +64,8 @@ public class EngineServiceRegistrationEntry implements Serializable
         this.engineServiceDescription = engineServiceDescription;
         this.engineServiceWiki = engineServiceWiki;
         this.engineServicePartnerOMAS = engineServicePartnerOMAS;
+        this.hostedGovernanceEngineType = hostedGovernanceEngineType;
+        this.hostedGovernanceServiceType = hostedGovernanceServiceType;
         this.engineServiceOperationalStatus = engineServiceOperationalStatus;
         this.engineServiceAdminClass = engineServiceAdminClassName;
     }
@@ -85,6 +90,8 @@ public class EngineServiceRegistrationEntry implements Serializable
              engineServiceDescription.getEngineServiceDescription(),
              engineServiceDescription.getEngineServiceWiki(),
              engineServiceDescription.getEngineServicePartnerService(),
+             engineServiceDescription.getHostedGovernanceEngineType(),
+             engineServiceDescription.getHostedGovernanceServiceType(),
              engineServiceOperationalStatus,
              engineServiceAdminClassName);
     }
@@ -118,6 +125,8 @@ public class EngineServiceRegistrationEntry implements Serializable
             engineServicePartnerOMAS        = template.getEngineServicePartnerOMAS();
             engineServiceOperationalStatus  = template.getEngineServiceOperationalStatus();
             engineServiceAdminClass         = template.getEngineServiceAdminClass();
+            hostedGovernanceEngineType      = template.getHostedGovernanceEngineType();
+            hostedGovernanceServiceType     = template.getHostedGovernanceServiceType();
         }
     }
 
@@ -359,6 +368,48 @@ public class EngineServiceRegistrationEntry implements Serializable
     }
 
 
+    /**
+     * Return the open metadata type of governance engine that this engine service supports.
+     *
+     * @return engine open metadata type name
+     */
+    public String getHostedGovernanceEngineType()
+    {
+        return hostedGovernanceEngineType;
+    }
+
+
+    /**
+     * Set up the open metadata type of governance engine that this engine service supports.
+     *
+     * @param hostedGovernanceEngineType open metadata type name
+     */
+    public void setHostedGovernanceEngineType(String hostedGovernanceEngineType)
+    {
+        this.hostedGovernanceEngineType = hostedGovernanceEngineType;
+    }
+
+
+    /**
+     * Return the open metadata type of governance service that this engine service supports.
+     *
+     * @return governance service connector open metadata type name
+     */
+    public String getHostedGovernanceServiceType()
+    {
+        return hostedGovernanceServiceType;
+    }
+
+
+    /**
+     * Set up the open metadata type of governance service that this engine service supports.
+     *
+     * @param hostedGovernanceServiceType open metadata type name
+     */
+    public void setHostedGovernanceServiceType(String hostedGovernanceServiceType)
+    {
+        this.hostedGovernanceServiceType = hostedGovernanceServiceType;
+    }
 
 
     /**

@@ -1398,7 +1398,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -1757,7 +1757,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setArchiveProperties(archiveProperties);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -1976,7 +1976,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -2080,7 +2080,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -2170,7 +2170,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,

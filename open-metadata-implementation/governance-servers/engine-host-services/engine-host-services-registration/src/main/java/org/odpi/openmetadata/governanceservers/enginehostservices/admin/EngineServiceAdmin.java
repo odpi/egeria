@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
@@ -42,19 +43,19 @@ public abstract class EngineServiceAdmin
      * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions
      * @param governanceActionClient client used to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run
-     *
-     * @return map of governance engine names to handlers
+     * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    public abstract Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
-                                                                    String                              localServerName,
-                                                                    AuditLog                            auditLog,
-                                                                    String                              localServerUserId,
-                                                                    String                              localServerPassword,
-                                                                    int                                 maxPageSize,
-                                                                    GovernanceEngineConfigurationClient configurationClient,
-                                                                    GovernanceContextClient             governanceActionClient,
-                                                                    EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException;
+    public abstract void initialize(String                              localServerId,
+                                    String                              localServerName,
+                                    AuditLog                            auditLog,
+                                    String                              localServerUserId,
+                                    String                              localServerPassword,
+                                    int                                 maxPageSize,
+                                    GovernanceEngineConfigurationClient configurationClient,
+                                    GovernanceContextClient             governanceActionClient,
+                                    EngineServiceConfig                 engineServiceConfig,
+                                    GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException;
 
 
 

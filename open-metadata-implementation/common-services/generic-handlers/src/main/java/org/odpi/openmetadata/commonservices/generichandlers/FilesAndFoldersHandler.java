@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.FileType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -1644,6 +1646,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param encodingDescription the description of the file
      * @param encodingProperties the properties used to drive the encoding
      * @param fileType the type of file override (default is to use the file extension)
+     * @param fileExtension file extension
+     * @param deployedImplementationType optional deployed implementation type
      * @param extendedProperties extended properties supplied by the caller
      * @return filled out map or null
      */
@@ -1655,6 +1659,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       String              encodingDescription,
                                                       Map<String, String> encodingProperties,
                                                       String              fileType,
+                                                      String              fileExtension,
+                                                      String              deployedImplementationType,
                                                       Map<String, Object> extendedProperties)
     {
         Map<String, Object> assetExtendedProperties = extendedProperties;
@@ -1702,6 +1708,16 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         if (fileType != null)
         {
             assetExtendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
+        }
+
+        if (fileExtension != null)
+        {
+            assetExtendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileExtension);
+        }
+
+        if (deployedImplementationType != null)
+        {
+            assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType);
         }
 
         if (assetExtendedProperties.isEmpty())
@@ -1794,8 +1810,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  encodingDescription,
                                                                                  encodingProperties,
                                                                                  null,
+                                                                                 null,
+                                                                                 DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
                                                                                  extendedProperties);
-
 
         String folderAssetTypeName = OpenMetadataType.DATA_FOLDER.typeName;
 
@@ -1936,6 +1953,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param versionIdentifier version identifier for the file
      * @param description description of the file
      * @param pathName  the fully qualified physical location of the data store - default is qualified name
+     * @param deployedImplementationType optional deployed implementation type
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
      * @param encodingType the type of encoding used on the file
@@ -1975,6 +1993,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String              encodingDescription,
                                           Map<String, String> encodingProperties,
                                           String              suppliedFileType,
+                                          String              deployedImplementationType,
                                           Map<String, String> additionalProperties,
                                           String              connectorProviderClassName,
                                           String              typeName,
@@ -2005,7 +2024,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         String fileType = suppliedFileType;
 
-        if (fileType != null)
+        if (fileType == null)
         {
             fileType = this.getFileType(fullPath);
         }
@@ -2018,6 +2037,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  encodingDescription,
                                                                                  encodingProperties,
                                                                                  fileType,
+                                                                                 this.getFileExtension(fullPath),
+                                                                                 deployedImplementationType,
                                                                                  extendedProperties);
 
         String fileAssetTypeName = typeName;
@@ -2576,6 +2597,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param encodingDescription the description of the file
      * @param encodingProperties the properties used to drive the encoding
      * @param suppliedFileType the type of file override (default is to use the file extension)
+     * @param deployedImplementationType optional deployed implementation type
      * @param additionalProperties additional properties from the user
      * @param extendedProperties any additional properties for the file type
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -2605,6 +2627,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                     String              encodingDescription,
                                     Map<String, String> encodingProperties,
                                     String              suppliedFileType,
+                                    String              deployedImplementationType,
                                     Map<String, String> additionalProperties,
                                     Map<String, Object> extendedProperties,
                                     Date                effectiveFrom,
@@ -2623,10 +2646,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         String qualifiedName = null;
         String fileType = suppliedFileType;
+        String fileExtension = null;
 
         if ((fullPath != null) && (fileType == null))
         {
             fileType = this.getFileType(fullPath);
+            fileExtension = this.getFileExtension(fullPath);
         }
         if (! isMergeUpdate)
         {
@@ -2641,6 +2666,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  encodingDescription,
                                                                                  encodingProperties,
                                                                                  fileType,
+                                                                                 fileExtension,
+                                                                                 deployedImplementationType,
                                                                                  extendedProperties);
 
         if (fullPath != null)
@@ -2754,6 +2781,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  encodingDescription,
                                                                                  encodingProperties,
                                                                                  null,
+                                                                                 null,
+                                                                                 DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
                                                                                  extendedProperties);
 
 

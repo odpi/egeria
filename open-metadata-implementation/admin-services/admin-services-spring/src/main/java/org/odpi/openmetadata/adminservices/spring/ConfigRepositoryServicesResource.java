@@ -439,9 +439,9 @@ public class ConfigRepositoryServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/connectors/repository/xtdb/"))
 
-    public VoidResponse setXTDBLocalRepository(@PathVariable  String              userId,
-                                                @PathVariable String              serverName,
-                                                @RequestBody  Map<String, Object> storageProperties)
+    public VoidResponse setXTDBLocalRepository(@PathVariable String             userId,
+                                               @PathVariable String              serverName,
+                                               @RequestBody  Map<String, Object> storageProperties)
     {
         return adminAPI.setXTDBLocalRepository(userId, serverName, storageProperties);
     }
