@@ -333,6 +333,11 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/postman-collections" }
                 fileMode = 0755
             }
+            into('assembly/opt/http-client-collections') {
+                // Describe the sample-clients layout
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/http-client-collections" }
+                fileMode = 0755
+            }
             into('assembly/opt/postman-collections') {
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/postman-rest-samples" }
                         {
@@ -344,6 +349,20 @@ distributions {
                             include 'repository-services/Egeria*.json'
                             include 'platform-services/Egeria*.json'
                             include 'access-services/*/Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/http-client-collections') {
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/postman-rest-samples" }
+                        {
+                            include 'Egeria*.http'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation" }
+                        {
+                            include 'admin-services/Egeria*.http'
+                            include 'repository-services/Egeria*.http'
+                            include 'platform-services/Egeria*.http'
+                            include 'access-services/*/Egeria*.http'
                         }
                 fileMode = 0755
             }
@@ -362,10 +381,32 @@ distributions {
                         }
                 fileMode = 0755
             }
-            into('assembly/opt/postman-collections/sample-configs') {
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment" }
+            into('assembly/opt/http-client-collections/framework-services') {
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
+                        {
+                            include 'Egeria*.http'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
+                        {
+                            include 'Egeria*.http'
+                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
+                        {
+                            include 'Egeria*.http'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/postman-collections/conformance-suite') {
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         {
                             include 'Egeria*.json'
+                        }
+                fileMode = 0755
+            }
+            into('assembly/opt/http-client-collections/conformance-suite') {
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
+                        {
+                            include 'Egeria*.http'
                         }
                 fileMode = 0755
             }
