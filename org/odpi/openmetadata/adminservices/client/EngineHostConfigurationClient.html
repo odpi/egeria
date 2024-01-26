@@ -154,7 +154,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Disable the engine services.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(java.lang.String,java.util.Map,java.util.List)" class="member-name-link">configureEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configureEngineService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.List)" class="member-name-link">configureEngineService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;engineServiceOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -371,9 +373,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="configureEngineService(java.lang.String,java.util.Map,java.util.List)">
+<section class="detail" id="configureEngineService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.List)">
 <h3>configureEngineService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configureEngineService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;partnerOMASServerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;engineServiceOptions,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engines)</span>
                             throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
@@ -382,6 +386,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Enable a single engine service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>partnerOMASServerURLRoot</code> - URL root of the OMAG Server Platform where the access service used by this view service is running</dd>
+<dd><code>partnerOMASServerName</code> - name of metadata access server where the access service used by this view service is running</dd>
 <dd><code>serviceURLMarker</code> - string indicating which engine service it is configuring</dd>
 <dd><code>engineServiceOptions</code> - property name/value pairs used to configure the engine service</dd>
 <dd><code>engines</code> - list of qualified names of the engines and optional user information</dd>

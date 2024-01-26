@@ -690,6 +690,7 @@ org.odpi.openmetadata.governanceservers.dataengineproxy.rest
 org.odpi.openmetadata.governanceservers.enginehostservices.admin
 org.odpi.openmetadata.governanceservers.enginehostservices.client
 org.odpi.openmetadata.governanceservers.enginehostservices.client.rest
+org.odpi.openmetadata.governanceservers.enginehostservices.enginemap
 org.odpi.openmetadata.governanceservers.enginehostservices.ffdc
 org.odpi.openmetadata.governanceservers.enginehostservices.listener
 org.odpi.openmetadata.governanceservers.enginehostservices.properties
@@ -835,6 +836,7 @@ org.odpi.openmetadata.reports
 org.odpi.openmetadata.reports.componentid
 org.odpi.openmetadata.reports.databasereport
 org.odpi.openmetadata.reports.platform
+org.odpi.openmetadata.reports.surveyreport
 org.odpi.openmetadata.reports.validvalues
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager

@@ -401,7 +401,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Verify that a metadata instance can be updated by the metadataCollection. The caller can update a
  metadata instance provided: the instance is locally homed (matching metadataCollectionId) OR the
  instance has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
-
  Any other combination suggests that this is either a reference copy of an instance from the local cohort or
  a reference copy of an external entity (and something else is responsible for its replication): in these cases
  we are not permitted to update the metadata instance and will instead throw an InvalidParameterException.</div>
@@ -430,7 +429,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Verify that a metadata instance can be updated by the metadataCollection. The caller can update a
  metadata instance provided: the instance is locally homed (matching metadataCollectionId) OR the
  instance has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
-
  Any other combination suggests that this is either a reference copy of an instance from the local cohort or
  a reference copy of an external entity (and something else is responsible for its replication): in these cases
  we are not permitted to update the metadata instance and will instead throw an InvalidParameterException.</div>

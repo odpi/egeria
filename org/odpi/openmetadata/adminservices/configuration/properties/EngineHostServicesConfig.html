@@ -95,7 +95,9 @@ loadScripts(document, 'script');</script>
          server running the Governance Engine OMAS that provides configuration for the governance engines
          as well as the governance actions that drive the automated execution of governance requests.</li>
 
-     <li>An array of EngineServiceConfig properties, one for each engine service to run.</li>
+     <li>An array of Engine properties, one for each engine to run.</li>
+
+     <li>An optional array of EngineServiceConfig properties, one for each engine service to run.</li>
  </ul></div>
 <dl class="notes">
 <dt>See Also:</dt>
@@ -143,15 +145,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate that an object is equal depending on their stored values.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceConfigs()" class="member-name-link">getEngineServiceConfigs</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineList()" class="member-name-link">getEngineList</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of engines that should run on the engine host.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineServiceConfigs()" class="member-name-link">getEngineServiceConfigs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of configuration for the engine services that will run in this server.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineList(java.util.List)" class="member-name-link">setEngineList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineList)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up list of engines that should run on the engine host.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEngineServiceConfigs(java.util.List)" class="member-name-link">setEngineServiceConfigs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServiceConfigs)</code></div>
@@ -210,13 +222,41 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getEngineList()">
+<h3>getEngineList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;</span>&nbsp;<span class="element-name">getEngineList</span>()</div>
+<div class="block">Return the list of engines that should run on the engine host.  The engine host will start the engine
+ services needed assuming they will use the same metadata access server as the engine host uses for the
+ governance engine configuration.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of engine configurations</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEngineList(java.util.List)">
+<h3>setEngineList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&gt;&nbsp;engineList)</span></div>
+<div class="block">Set up list of engines that should run on the engine host.  The engine host will start the engine
+ services needed assuming they will use the same metadata access server as the engine host uses for the
+ governance engine configuration.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>engineList</code> - list of engine configurations</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getEngineServiceConfigs()">
 <h3>getEngineServiceConfigs</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;</span>&nbsp;<span class="element-name">getEngineServiceConfigs</span>()</div>
-<div class="block">Return the list of configuration for the engine services that will run in this server.</div>
+<div class="block">Return the list of configuration for the engine services that will run in this server.
+ This configuration is only required if the services use a different metadata access store to
+ the engine host.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of qualified names</dd>
+<dd>list of engine service configurations</dd>
 </dl>
 </section>
 </li>
@@ -224,10 +264,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setEngineServiceConfigs(java.util.List)">
 <h3>setEngineServiceConfigs</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEngineServiceConfigs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&gt;&nbsp;engineServiceConfigs)</span></div>
-<div class="block">Set up the list of configuration for the engine services that will run in this server.</div>
+<div class="block">Set up the list of configuration for the engine services that will run in this server.
+ This configuration is only required if the services use a different metadata access store to
+ the engine host.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>engineServiceConfigs</code> - list of qualified names</dd>
+<dd><code>engineServiceConfigs</code> - list of engine service configurations</dd>
 </dl>
 </section>
 </li>

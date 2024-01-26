@@ -80,7 +80,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">OMAGEngineServiceRegistration provides static methods to enable an engine service to dynamically
  register itself with the OMAG Server.
-
  Static methods are needed to be able to get this information to the Admin Services REST API singletons
  created by Spring.</div>
 </section>
@@ -120,8 +119,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve the list of registered OMESs</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="GovernanceEngineHandlerFactory.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">GovernanceEngineHandlerFactory</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandlerFactoryMap()" class="member-name-link">getGovernanceEngineHandlerFactoryMap</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the requested OMES governance engine handler factory map</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGovernanceEngineTypeName(java.lang.String)" class="member-name-link">getGovernanceEngineTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the type name of the governance engine for the url marker for the engine service.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerEngineService(org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry)" class="member-name-link">registerEngineService</a><wbr>(<a href="../../../adminservices/configuration/registration/EngineServiceRegistrationEntry.html" title="class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceRegistrationEntry</a>&nbsp;registration)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerEngineService(org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry,org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory)" class="member-name-link">registerEngineService</a><wbr>(<a href="../../../adminservices/configuration/registration/EngineServiceRegistrationEntry.html" title="class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceRegistrationEntry</a>&nbsp;registration,
+ <a href="GovernanceEngineHandlerFactory.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">GovernanceEngineHandlerFactory</a>&nbsp;engineHandlerFactory)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Register Open Metadata Engine Service (OMES)</div>
 </div>
@@ -157,13 +167,15 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="registerEngineService(org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry)">
+<section class="detail" id="registerEngineService(org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry,org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory)">
 <h3>registerEngineService</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerEngineService</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/registration/EngineServiceRegistrationEntry.html" title="class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceRegistrationEntry</a>&nbsp;registration)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerEngineService</span><wbr><span class="parameters">(<a href="../../../adminservices/configuration/registration/EngineServiceRegistrationEntry.html" title="class in org.odpi.openmetadata.adminservices.configuration.registration">EngineServiceRegistrationEntry</a>&nbsp;registration,
+ <a href="GovernanceEngineHandlerFactory.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">GovernanceEngineHandlerFactory</a>&nbsp;engineHandlerFactory)</span></div>
 <div class="block">Register Open Metadata Engine Service (OMES)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>registration</code> - information about the specific OMES</dd>
+<dd><code>engineHandlerFactory</code> - factory object for the engine service</dd>
 </dl>
 </section>
 </li>
@@ -186,6 +198,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>urlMarker</code> - URL insert that identifies the service</dd>
+<dt>Returns:</dt>
+<dd>engine service registration info</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernanceEngineTypeName(java.lang.String)">
+<h3>getGovernanceEngineTypeName</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceEngineTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker)</span></div>
+<div class="block">Return the type name of the governance engine for the url marker for the engine service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serviceURLMarker</code> - url marker for the engine service</dd>
+<dt>Returns:</dt>
+<dd>open metadata type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernanceEngineHandlerFactoryMap()">
+<h3>getGovernanceEngineHandlerFactoryMap</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="GovernanceEngineHandlerFactory.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.registration">GovernanceEngineHandlerFactory</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceEngineHandlerFactoryMap</span>()</div>
+<div class="block">Retrieve the requested OMES governance engine handler factory map</div>
+<dl class="notes">
 <dt>Returns:</dt>
 <dd>engine service registration info</dd>
 </dl>

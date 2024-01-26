@@ -75,25 +75,12 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry</div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">EngineServiceRegistrationEntry</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">EngineServiceRegistrationEntry is used by an engine service to register its admin services interface.
  The registration is dynamic because engine services from third parties can be written and run in the
  OMAGServerPlatform.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,7 +96,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color">
 <div class="block">Default constructor for use with Jackson libraries</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">EngineServiceRegistrationEntry</a><wbr>(int&nbsp;engineServiceCode,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">EngineServiceRegistrationEntry</a><wbr>(int&nbsp;engineServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;engineServiceDevelopmentStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceFullName,
@@ -117,6 +104,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceWiki,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServicePartnerOMAS,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceEngineType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceServiceType,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;engineServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceAdminClassName)</code></div>
 <div class="col-last odd-row-color">
@@ -201,6 +190,16 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the wiki page link for the engine service.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHostedGovernanceEngineType()" class="member-name-link">getHostedGovernanceEngineType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the open metadata type of governance engine that this engine service supports.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHostedGovernanceServiceType()" class="member-name-link">getHostedGovernanceServiceType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the open metadata type of governance service that this engine service supports.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -256,6 +255,16 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the wiki page link for the engine service.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHostedGovernanceEngineType(java.lang.String)" class="member-name-link">setHostedGovernanceEngineType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceEngineType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the open metadata type of governance engine that this engine service supports.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHostedGovernanceServiceType(java.lang.String)" class="member-name-link">setHostedGovernanceServiceType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceServiceType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the open metadata type of governance service that this engine service supports.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -279,7 +288,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
 <h3>EngineServiceRegistrationEntry</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EngineServiceRegistrationEntry</span><wbr><span class="parameters">(int&nbsp;engineServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;engineServiceDevelopmentStatus,
@@ -289,6 +298,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceWiki,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServicePartnerOMAS,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceEngineType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceServiceType,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;engineServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineServiceAdminClassName)</span></div>
 <div class="block">Complete Constructor</div>
@@ -302,6 +313,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dd><code>engineServiceDescription</code> - short description for this engine service</dd>
 <dd><code>engineServiceWiki</code> - wiki page for the engine service for this engine service</dd>
 <dd><code>engineServicePartnerOMAS</code> - full name of the OMAS that this engine service is partnered with</dd>
+<dd><code>hostedGovernanceEngineType</code> - type of governance engine hosted by this service</dd>
+<dd><code>hostedGovernanceServiceType</code> - type of governance service hosted by this service</dd>
 <dd><code>engineServiceOperationalStatus</code> - default initial operational status for the engine service</dd>
 <dd><code>engineServiceAdminClassName</code> - name of EngineServiceAdmin implementation class for the engine service</dd>
 </dl>
@@ -569,6 +582,50 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>engineServiceOperationalStatus</code> - ServiceOperationalStatus enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHostedGovernanceEngineType()">
+<h3>getHostedGovernanceEngineType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getHostedGovernanceEngineType</span>()</div>
+<div class="block">Return the open metadata type of governance engine that this engine service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>engine open metadata type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setHostedGovernanceEngineType(java.lang.String)">
+<h3>setHostedGovernanceEngineType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHostedGovernanceEngineType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceEngineType)</span></div>
+<div class="block">Set up the open metadata type of governance engine that this engine service supports.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hostedGovernanceEngineType</code> - open metadata type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHostedGovernanceServiceType()">
+<h3>getHostedGovernanceServiceType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getHostedGovernanceServiceType</span>()</div>
+<div class="block">Return the open metadata type of governance service that this engine service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>governance service connector open metadata type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setHostedGovernanceServiceType(java.lang.String)">
+<h3>setHostedGovernanceServiceType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHostedGovernanceServiceType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hostedGovernanceServiceType)</span></div>
+<div class="block">Set up the open metadata type of governance service that this engine service supports.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hostedGovernanceServiceType</code> - open metadata type name</dd>
 </dl>
 </section>
 </li>
