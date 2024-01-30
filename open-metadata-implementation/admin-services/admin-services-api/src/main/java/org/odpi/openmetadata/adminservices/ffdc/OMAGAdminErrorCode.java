@@ -128,9 +128,24 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
             "The system is unable to initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
-            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
-                                   "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +
-                                   "services and the cohort services."),
+            "Use the administration services to add the repository services configuration."),
+
+
+    /**
+     * OMAG-ADMIN-400-011 No configuration document was found for OMAG server {0}
+     */
+    NO_CONFIG_DOCUMENT(400, "OMAG-ADMIN-400-011",
+                           "No configuration document was found for OMAG server {0}",
+                           "The system is unable to initialize the local server instance without a configuration document.",
+                           "Use the administration services to build up the definition of the server into a configuration document."),
+
+    /**
+     * OMAG-ADMIN-400-012 Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}
+     */
+    CONFIG_DOCUMENT_PARSE_ERROR(400, "OMAG-ADMIN-400-012",
+                       "Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}",
+                       "The system is unable to process a configuration document.",
+                       "Review the error message to understand why the parsing error occurred."),
 
 
     /**

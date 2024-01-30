@@ -5,8 +5,13 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
 
+import java.io.Serial;
+
 class ConnectedNestedSchemaType extends NestedSchemaType
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Typical constructor creates an NestedSchemaType object primed with information to retrieve an asset's schema
      * information.

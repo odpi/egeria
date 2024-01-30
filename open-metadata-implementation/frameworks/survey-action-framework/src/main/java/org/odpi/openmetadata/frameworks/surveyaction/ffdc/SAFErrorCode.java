@@ -28,36 +28,36 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum SAFErrorCode implements ExceptionMessageSet
 {
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-001 - No discovery context supplied to the discovery service {0}
+     * SAF-SURVEY-ACTION-SERVICE-400-001 - No survey context supplied to the survey action service {0}
      */
     NULL_SURVEY_CONTEXT(400, "SAF-SURVEY-ACTION-SERVICE-400-001",
-            "No discovery context supplied to the discovery service {0}",
-            "The discovery service is not able to determine which asset to analyze.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
+            "No survey context supplied to the survey action service {0}",
+            "The survey action service is not able to determine which asset to analyze.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-002 - No embedded discovery services supplied to the discovery pipeline {0}
+     * SAF-SURVEY-ACTION-SERVICE-400-002 - No embedded survey action services supplied to the survey action pipeline {0}
      */
     NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "SAF-SURVEY-ACTION-SERVICE-400-002",
-            "No embedded discovery services supplied to the discovery pipeline {0}",
-            "The discovery pipeline is not able to discovery which discovery services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery pipeline service.  Once the cause is resolved, retry the discovery request."),
+            "No embedded survey action services supplied to the survey action pipeline {0}",
+            "The survey action pipeline is not able to survey action which survey action services to run.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-003 - No embedded discovery services supplied to the discovery pipeline {0}
+     * SAF-SURVEY-ACTION-SERVICE-400-003 - No embedded survey action services supplied to the survey action pipeline {0}
      */
     INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "SAF-SURVEY-ACTION-SERVICE-400-003",
-            "No embedded discovery services supplied to the discovery pipeline {0}",
-            "The discovery pipeline is not able to discover which discovery services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery pipeline service or the associated open discovery engine.  Once the cause is resolved, retry the discovery request."),
+            "No embedded survey action services supplied to the survey action pipeline {0}",
+            "The survey action pipeline is not able to discover which survey action services to run.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in discovery service {0} of type {1} detected by method {2}.  The error message was {3}
+     * SAF-SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
      */
     UNEXPECTED_EXCEPTION(500, "SAF-SURVEY-ACTION-SERVICE-500-001",
-            "Unexpected exception in discovery service {0} of type {1} detected by method {2}.  The error message was {3}",
-            "The discovery service failed during its operation.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
+            "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
+            "The survey action service failed during its operation.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
     ;
 
     private final int    httpErrorCode;

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ExternalReferences
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalReference;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class ConnectedExternalReferences extends ExternalReferences
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.

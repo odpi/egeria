@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Comments;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class ConnectedComments extends Comments
     private int                    maxCacheSize;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

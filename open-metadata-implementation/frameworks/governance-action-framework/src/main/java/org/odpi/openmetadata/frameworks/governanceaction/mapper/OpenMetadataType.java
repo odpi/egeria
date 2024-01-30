@@ -667,13 +667,13 @@ public enum OpenMetadataType
                                   "A request for a stewardship action to be initiated against an Asset."),
 
     /**
-     * Link to the log file containing the data profile information.
+     * Link to the external data resource containing the data profile data..
      */
-    DATA_PROFILE_LOG_FILE_RELATIONSHIP("75026fac-f9e5-4da8-9ad1-e9c68d47f577",
-                                       "DataProfileLogFile",
-                                       OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                                       "11050162-ed05-4e5a-8a72-872c50001b5b",
-                                       "Link to the log file containing the data profile information."),
+    DATA_PROFILE_DATA_RELATIONSHIP("2ebf2c09-b272-42a1-8fc0-e3eb44df296d",
+                                   "DataProfileData",
+                                   OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
+                                   "11050162-ed05-4e5a-8a72-872c50001b5b",
+                                   "Link to the external data resource containing the data profile data."),
 
     ;
 

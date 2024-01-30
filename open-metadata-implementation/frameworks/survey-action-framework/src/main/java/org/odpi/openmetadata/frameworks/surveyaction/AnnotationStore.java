@@ -689,20 +689,45 @@ public class AnnotationStore
                                                                                    null,
                                                                                    true);
 
-            if ((annotationGUID != null) && (associatedElementGUID != null))
+            if (annotationGUID != null)
             {
-                openMetadataStore.createRelatedElementsInStore(userId,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                               associatedElementGUID,
-                                                               annotationGUID,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               this.getEffectiveTime());
+                if (builder.getDataProfileDataGUIDs() != null)
+                {
+                    for (String dataProfileDataGUID : builder.getDataProfileDataGUIDs())
+                    {
+                        if (dataProfileDataGUID != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName,
+                                                                           annotationGUID,
+                                                                           dataProfileDataGUID,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           this.getEffectiveTime());
+                        }
+                    }
+                }
+
+                if  (associatedElementGUID != null)
+                {
+                    openMetadataStore.createRelatedElementsInStore(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                   associatedElementGUID,
+                                                                   annotationGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   this.getEffectiveTime());
+                }
             }
         }
 
@@ -839,6 +864,11 @@ public class AnnotationStore
                                                       dataClassAnnotation.getCandidateDataClassGUIDs(),
                                                       dataClassAnnotation.getMatchingValues(),
                                                       dataClassAnnotation.getNonMatchingValues());
+            }
+            else if (annotation instanceof DataProfileLogAnnotation dataProfileLogAnnotation)
+            {
+                builder.setDataProfileLogSubtypeProperties(OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName,
+                                                           dataProfileLogAnnotation.getDataProfileLogGUIDs());
             }
             else if (annotation instanceof DataProfileAnnotation dataProfileAnnotation)
             {
@@ -1048,6 +1078,12 @@ public class AnnotationStore
         private long         matchingValues = 0;
         private long         nonMatchingValues = 0;
 
+        /*
+         * Attributes for the DataProfileLogAnnotation
+         */
+
+        private List<String> dataProfileDataGUIDs = null;
+
 
         /*
          * Attributes for the DataProfileAnnotation
@@ -1208,6 +1244,36 @@ public class AnnotationStore
             this.candidateDataClassGUIDs = candidateDataClassGUIDs;
             this.matchingValues          = matchingValues;
             this.nonMatchingValues       = nonMatchingValues;
+        }
+
+
+        /**
+         * Add properties for annotation subtype.
+         *
+         * @param annotationTypeName type name for this subtype
+         * @param logFileGUIDs list of assetGUIDs for additional profile information
+         */
+        void setDataProfileLogSubtypeProperties(String       annotationTypeName,
+                                                List<String> logFileGUIDs)
+        {
+            if (this.openMetadataTypeName == null)
+            {
+                this.openMetadataTypeName = annotationTypeName;
+            }
+
+            this.dataProfileDataGUIDs = logFileGUIDs;
+        }
+
+
+        /**
+         * Return the list of log file guids that represent associated profile data that is too big for metadata and
+         * has been written to and external data resource.
+         *
+         * @return list of asset GUIDs or null
+         */
+        public List<String> getDataProfileDataGUIDs()
+        {
+            return dataProfileDataGUIDs;
         }
 
 
@@ -1429,9 +1495,8 @@ public class AnnotationStore
          * Return the supplied bean properties in an ElementProperties object for the annotation entity.
          *
          * @return ElementProperties object
-         * @throws InvalidParameterException there is a problem with the properties
          */
-        public ElementProperties getElementProperties() throws InvalidParameterException
+        public ElementProperties getElementProperties()
         {
             ElementProperties properties;
 
@@ -2051,7 +2116,7 @@ public class AnnotationStore
                                                                                          methodName);
 
 
-                List<String> dataProfileLogNames = new ArrayList<>();
+                List<String> dataProfileLogs = new ArrayList<>();
 
                 if (relationships != null)
                 {
@@ -2059,29 +2124,20 @@ public class AnnotationStore
                     {
                         if (relationship != null)
                         {
-                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeName))
+                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName))
                             {
                                 OpenMetadataElement logFile = relationship.getElement();
 
                                 if (logFile != null)
                                 {
-                                    String name = propertyHelper.getStringProperty(serviceName,
-                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                   logFile.getElementProperties(),
-                                                                                   methodName);
-                                    if (name == null)
-                                    {
-                                        name = logFile.getElementGUID();
-                                    }
-
-                                    dataProfileLogNames.add(name);
+                                    dataProfileLogs.add(logFile.getElementGUID());
                                 }
                             }
                         }
                     }
                 }
 
-                annotation.setDataProfileLogFileNames(dataProfileLogNames);
+                annotation.setDataProfileLogGUIDs(dataProfileLogs);
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are

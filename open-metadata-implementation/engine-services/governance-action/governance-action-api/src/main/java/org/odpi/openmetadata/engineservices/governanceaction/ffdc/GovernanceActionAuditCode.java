@@ -26,7 +26,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
      */
     ENGINE_SERVICE_INITIALIZING("OMES-GOVERNANCE-ACTION-0001",
                                 AuditLogRecordSeverityLevel.STARTUP,
-                                "The Governance Action engine services are initializing in server {0}",
+                                "The Governance Action engine services are initializing in server {0}; they will call Governance Engine OMAS on server {1} at {2}",
                                 "A new OMAG server has been started that is configured to run the Governance Action OMES.  " +
                                  "Within this engine service are one or more governance action engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +

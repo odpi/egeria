@@ -32,7 +32,7 @@ public abstract class SurveyActionPipelineConnector extends SurveyActionServiceC
          */
         super.start();
 
-        embeddedSurveyActionServices = getEmbeddedDiscoveryServices();
+        embeddedSurveyActionServices = getEmbeddedSurveyActionServices();
 
         if (embeddedSurveyActionServices == null)
         {

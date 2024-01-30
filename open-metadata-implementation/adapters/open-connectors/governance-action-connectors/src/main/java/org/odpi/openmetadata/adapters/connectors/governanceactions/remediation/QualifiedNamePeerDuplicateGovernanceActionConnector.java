@@ -21,7 +21,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +60,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
                 OpenMetadataStore store = governanceContext.getOpenMetadataStore();
+                store.setForDuplicateProcessing(true);
 
                 String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);
@@ -71,9 +71,6 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                false,
-                                                                                true,
-                                                                                new Date(),
                                                                                 0,
                                                                                 0);
 

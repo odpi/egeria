@@ -23,7 +23,7 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private List<String>   dataProfileLogFileNames = null;
+    private List<String> dataProfileLogGUIDs = null;
 
     /**
      * Default constructor
@@ -44,7 +44,7 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
 
         if (template != null)
         {
-            dataProfileLogFileNames = template.getDataProfileLogFileNames();
+            dataProfileLogGUIDs = template.getDataProfileLogGUIDs();
         }
     }
 
@@ -52,31 +52,31 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
     /**
      * Return the names of the log files used to store the profile data.
      *
-     * @return list of names of log files
+     * @return list of guid of log files
      */
-    public List<String> getDataProfileLogFileNames()
+    public List<String> getDataProfileLogGUIDs()
     {
-        if (dataProfileLogFileNames == null)
+        if (dataProfileLogGUIDs == null)
         {
             return null;
         }
-        else if (dataProfileLogFileNames.isEmpty())
+        else if (dataProfileLogGUIDs.isEmpty())
         {
             return null;
         }
 
-        return dataProfileLogFileNames;
+        return dataProfileLogGUIDs;
     }
 
 
     /**
-     * Set up the names of the log files used to store the profile data.
+     * Set up the description of the log files used to store the profile data.
      *
-     * @param dataProfileLogFileNames list of names of log files
+     * @param dataProfileLogFileNames list of guids of log files
      */
-    public void setDataProfileLogFileNames(List<String> dataProfileLogFileNames)
+    public void setDataProfileLogGUIDs(List<String> dataProfileLogFileNames)
     {
-        this.dataProfileLogFileNames = dataProfileLogFileNames;
+        this.dataProfileLogGUIDs = dataProfileLogFileNames;
     }
 
 
@@ -89,7 +89,7 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
     public String toString()
     {
         return "DataProfileLogAnnotation{" +
-                "dataProfileLogFileNames=" + dataProfileLogFileNames +
+                "dataProfileLogFiles=" + dataProfileLogGUIDs +
                 "} " + super.toString();
     }
 
@@ -116,7 +116,7 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
             return false;
         }
         DataProfileLogAnnotation that = (DataProfileLogAnnotation) objectToCompare;
-        return Objects.equals(dataProfileLogFileNames, that.dataProfileLogFileNames);
+        return Objects.equals(dataProfileLogGUIDs, that.dataProfileLogGUIDs);
     }
 
 
@@ -128,6 +128,6 @@ public class DataProfileLogAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dataProfileLogFileNames);
+        return Objects.hash(super.hashCode(), dataProfileLogGUIDs);
     }
 }

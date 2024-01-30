@@ -4,12 +4,13 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -22,8 +23,7 @@ import java.util.Map;
 
 
 /**
- * FileSurveyService is a survey action service implementation for analysing a file to
- * columns and profile the data in them.
+ * FileSurveyService is a survey action service implementation for extracting properties about a file.
  */
 public class FileSurveyService extends AuditableSurveyService
 {
@@ -88,12 +88,13 @@ public class FileSurveyService extends AuditableSurveyService
 
             Map<String, String> dataSourceProperties = new HashMap<>();
 
-            dataSourceProperties.put(OpenMetadataProperty.FILE_NAME.name, file.getName());
-            dataSourceProperties.put(OpenMetadataProperty.PATH_NAME.name, file.getAbsolutePath());
+            dataSourceProperties.put(OpenMetadataProperty.FILE_NAME.name, fileClassifier.getFileName());
+            dataSourceProperties.put(OpenMetadataProperty.PATH_NAME.name, fileClassifier.getPathName());
             dataSourceProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileClassifier.getFileExtension());
             dataSourceProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileClassifier.getFileType());
             dataSourceProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassifier.getDeployedImplementationType());
-            dataSourceProperties.put("assetTypeName", fileClassifier.getAssetTypeName());
+            dataSourceProperties.put(OpenMetadataProperty.ENCODING.name, fileClassifier.getEncoding());
+            dataSourceProperties.put(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME, fileClassifier.getAssetTypeName());
             dataSourceProperties.put("canRead", Boolean.toString(fileClassifier.isCanRead()));
             dataSourceProperties.put("canWrite", Boolean.toString(fileClassifier.isCanWrite()));
             dataSourceProperties.put("canExecute", Boolean.toString(fileClassifier.isCanExecute()));

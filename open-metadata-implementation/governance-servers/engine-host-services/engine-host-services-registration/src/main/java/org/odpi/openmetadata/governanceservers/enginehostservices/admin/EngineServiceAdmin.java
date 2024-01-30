@@ -155,35 +155,4 @@ public abstract class EngineServiceAdmin
 
         return accessServiceServerName;
     }
-
-
-    /**
-     * Retrieve the list of engine names for this engine service from the configuration.
-     *
-     * @param engineServiceConfig configuration
-     * @return list of engines
-     * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
-     */
-    protected List<EngineConfig> getEngines(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
-    {
-        List<EngineConfig> engineNames = engineServiceConfig.getEngines();
-
-        if ((engineNames == null) || (engineNames.isEmpty()))
-        {
-            final String actionDescription = "Validate engine services configuration.";
-            final String methodName        = "getEngines";
-
-            auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                      localServerName));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                         localServerName),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-        else
-        {
-            return engineNames;
-        }
-    }
 }

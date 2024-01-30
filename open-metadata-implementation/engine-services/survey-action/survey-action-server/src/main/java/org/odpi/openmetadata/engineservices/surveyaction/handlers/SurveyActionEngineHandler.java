@@ -2,10 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
+import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
+import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.accessservices.stewardshipaction.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.stewardshipaction.client.SurveyAssetStoreClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -32,6 +34,8 @@ import java.util.*;
 public class SurveyActionEngineHandler extends GovernanceEngineHandler
 {
     private final ConnectedAssetClient connectedAssetClient;    /* Initialized in constructor */
+    private final FileSystemAssetOwner fileSystemAssetOwner;    /* Initialized in constructor */
+    private final CSVFileAssetOwner    csvFileAssetOwner;    /* Initialized in constructor */
     private final OpenMetadataClient   openMetadataClient;      /* Initialized in constructor */
 
     /**
@@ -42,8 +46,10 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client used by the engine host services to control the execution of governance action requests
-     * @param connectedAssetClient REST client from the OCF that is linked to the Stewardship Action OMAS
-     * @param openMetadataClient REST Client from the GAF that is linked to the Stewardship Action OMAS
+     * @param connectedAssetClient REST client from the OCF that is linked to the Asset Owner OMAS
+     * @param fileSystemAssetOwner REST client that is linked to the Asset Owner OMAS
+     * @param csvFileAssetOwner REST client that is linked to the Asset Owner OMAS
+     * @param openMetadataClient REST Client from the GAF that is linked to the Asset Owner OMAS
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -53,6 +59,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                      GovernanceEngineConfigurationClient configurationClient,
                                      GovernanceContextClient             serverClient,
                                      ConnectedAssetClient                connectedAssetClient,
+                                     FileSystemAssetOwner                fileSystemAssetOwner,
+                                     CSVFileAssetOwner                   csvFileAssetOwner,
                                      OpenMetadataClient                  openMetadataClient,
                                      AuditLog                            auditLog,
                                      int                                 maxPageSize)
@@ -67,6 +75,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
               maxPageSize);
 
         this.connectedAssetClient = connectedAssetClient;
+        this.fileSystemAssetOwner = fileSystemAssetOwner;
+        this.csvFileAssetOwner    = csvFileAssetOwner;
         this.openMetadataClient   = openMetadataClient;
     }
 
@@ -186,7 +196,9 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 
         SurveyAssetStore assetStore = new SurveyAssetStoreClient(assetGUID,
                                                                  engineUserId,
-                                                                 connectedAssetClient);
+                                                                 connectedAssetClient,
+                                                                 fileSystemAssetOwner,
+                                                                 csvFileAssetOwner);
 
         SurveyOpenMetadataStore openMetadataStore = new SurveyOpenMetadataStore(openMetadataClient,
                                                                                 engineUserId,

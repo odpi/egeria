@@ -99,6 +99,9 @@ public class OMAGServerPlatform
     @Value("${platform.default.config.document:}") // Default value is zero length string
     String defaultConfigDocument;
 
+    @Value("${platform.placeholder.variables:}") // Default value is zero length string
+    String placeholderVariables;
+
     @Value("${platform.security.provider:}") // Default value is zero length string
     String platformSecurityProvider;
     @Value("${platform.security.name:}") // Default value is zero length string
@@ -285,6 +288,12 @@ public class OMAGServerPlatform
                     configStoreServices.setDefaultOMAGServerConfig(sysUser, defaultConfigurationDocument);
                 }
 
+                Map<String, String> placeholderVariables = this.getPlaceholderVariables();
+                if (placeholderVariables != null)
+                {
+                    configStoreServices.setPlaceholderVariables(sysUser, placeholderVariables);
+                }
+
                 if ((platformSecurityProvider != null) && (! platformSecurityProvider.isBlank()))
                 {
                     Connection    securityConnection = new Connection();
@@ -320,12 +329,35 @@ public class OMAGServerPlatform
             System.out.println(new Date() + " OMAG server platform ready for more configuration");
         }
 
+
+        /**
+         * Read the placeholder properties.
+         *
+         * @return string name
+         * @throws JsonProcessingException problem parsing property
+         */
+        private Map<String, String> getPlaceholderVariables() throws JsonProcessingException
+        {
+            if ((placeholderVariables != null) && (! placeholderVariables.isBlank()))
+            {
+                return OBJECT_MAPPER.readValue(placeholderVariables, LinkedHashMap.class);
+            }
+
+            return null;
+        }
+
+
+        /**
+         * Read the default configuration document.
+         *
+         * @return OMAGServerConfig
+         * @throws JsonProcessingException problem parsing property
+         */
         private OMAGServerConfig getDefaultConfigurationDocument() throws JsonProcessingException
         {
             if ((defaultConfigDocument != null) && (! defaultConfigDocument.isBlank()))
             {
                 return OBJECT_MAPPER.readValue(defaultConfigDocument, OMAGServerConfig.class);
-
             }
 
             return null;

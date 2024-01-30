@@ -155,7 +155,7 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(userId, serverName, false, methodName));
+            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfigForStartUp(userId, serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {

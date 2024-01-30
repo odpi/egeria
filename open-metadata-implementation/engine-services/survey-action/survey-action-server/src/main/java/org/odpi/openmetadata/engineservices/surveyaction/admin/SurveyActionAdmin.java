@@ -39,6 +39,7 @@ public class SurveyActionAdmin extends EngineServiceAdmin
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
+    @SuppressWarnings(value = "deprecation")
     @Override
     public void initialize(String                              localServerId,
                            String                              localServerName,
@@ -57,8 +58,6 @@ public class SurveyActionAdmin extends EngineServiceAdmin
         this.auditLog = auditLog;
         this.localServerName = localServerName;
 
-        auditLog.logMessage(actionDescription, SurveyActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
-
         try
         {
             this.validateConfigDocument(engineServiceConfig);
@@ -66,16 +65,19 @@ public class SurveyActionAdmin extends EngineServiceAdmin
             /*
              * The survey action services need access to an open metadata server to retrieve information about the asset they are analysing and
              * to store the resulting analysis results in Annotations.
-             * Open metadata is accessed through the Stewardship Action OMAS.
+             * Open metadata is accessed through the Asset Owner OMAS.
              */
             String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
             String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
-            List<EngineConfig> surveyActionEngines     = this.getEngines(engineServiceConfig);
+
+            auditLog.logMessage(actionDescription, SurveyActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName,
+                                                                                                                          accessServiceServerName,
+                                                                                                                          accessServiceRootURL));
 
             /*
              * Create an entry in the governance engine map for each configured engine.
              */
-            governanceEngineMap.setGovernanceEngineProperties(surveyActionEngines,
+            governanceEngineMap.setGovernanceEngineProperties(engineServiceConfig.getEngines(),
                                                               accessServiceServerName,
                                                               accessServiceRootURL);
 

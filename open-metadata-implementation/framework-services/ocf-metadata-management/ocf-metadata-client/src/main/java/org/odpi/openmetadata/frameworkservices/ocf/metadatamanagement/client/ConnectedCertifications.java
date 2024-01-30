@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Certifications;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Certification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,8 @@ class ConnectedCertifications extends Certifications
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

@@ -327,7 +327,7 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
                 {
                     if (relationship != null)
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeName))
+                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName))
                         {
                             EntityProxy endTwo = relationship.getEntityTwoProxy();
 

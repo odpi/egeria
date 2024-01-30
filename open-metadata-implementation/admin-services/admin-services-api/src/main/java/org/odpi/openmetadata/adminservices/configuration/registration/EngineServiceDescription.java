@@ -94,7 +94,7 @@ public enum EngineServiceDescription
                         "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
                                 "in a survey report that is attached to the asset in the open metadata repositories.",
                         "https://egeria-project.org/services/omes/survey-action/overview/",
-                        AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                        AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
                         DeployedImplementationType.SURVEY_ACTION_ENGINE.getAssociatedTypeName(),
                         DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getDeployedImplementationType(),
