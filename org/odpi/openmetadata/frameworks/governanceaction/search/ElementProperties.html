@@ -288,7 +288,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newPropertyName,
  <a href="PropertyValue.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyValue</a>&nbsp;newPropertyValue)</span></div>
 <div class="block">Adds or updates an instance property.
- If a null is supplied for the property name, an OMRS runtime exception is thrown.
+ If a null is supplied for the property name, the property name "null" is used.
  If a null is supplied for the property value, the property is removed.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

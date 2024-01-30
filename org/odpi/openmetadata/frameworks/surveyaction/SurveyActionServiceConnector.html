@@ -170,9 +170,9 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionServiceConnector</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmbeddedDiscoveryServices()" class="member-name-link">getEmbeddedDiscoveryServices</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmbeddedSurveyActionServices()" class="member-name-link">getEmbeddedSurveyActionServices</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve and validate the list of embedded connectors and cast them to discovery service connector.</div>
+<div class="block">Retrieve and validate the list of embedded connectors and cast them to survey action service connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyContext</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyContext()" class="member-name-link">getSurveyContext</a>()</code></div>
@@ -180,15 +180,15 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="block">Return the survey context for this survey action service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUnexpectedException(java.lang.String,java.lang.Throwable)" class="member-name-link">handleUnexpectedException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;error)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUnexpectedException(java.lang.String,java.lang.Exception)" class="member-name-link">handleUnexpectedException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;error)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide a common exception for unexpected errors.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.</div>
+<div class="block">Set up the list of survey action services connectors that will be invoked as part of this survey action pipeline.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
@@ -208,7 +208,7 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Indicates that the discovery service is completely configured and can begin processing.</div>
+<div class="block">Indicates that the survey action service is completely configured and can begin processing.</div>
 </div>
 </div>
 </div>
@@ -310,15 +310,15 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <section class="detail" id="initializeEmbeddedConnectors(java.util.List)">
 <h3>initializeEmbeddedConnectors</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeEmbeddedConnectors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</span></div>
-<div class="block">Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
+<div class="block">Set up the list of survey action services connectors that will be invoked as part of this survey action pipeline.
  The connectors are initialized waiting to start.  After start() is called on the
- discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
+ survey action pipeline, it will choreograph the invocation of its embedded survey action services by calling
  start() to each of them when they are to run. Similar processing is needed for the disconnect() method.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../connectors/VirtualConnectorExtension.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a></code>&nbsp;in interface&nbsp;<code><a href="../connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>embeddedConnectors</code> - list of embedded connectors that are hopefully discovery services</dd>
+<dd><code>embeddedConnectors</code> - list of embedded connectors that are hopefully survey action services</dd>
 </dl>
 </section>
 </li>
@@ -330,8 +330,8 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>surveyContext</code> - information about the asset to analyze and the results of analysis of
-                         other discovery service request.  Partial results from other discovery
-                         services run as part of the same discovery service request may also be
+                         other survey action service request.  Partial results from other survey action
+                         services run as part of the same survey action service request may also be
                          stored in the newAnnotations list.</dd>
 </dl>
 </section>
@@ -355,22 +355,22 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
  method is called.  If called before disconnect(), it may only contain partial results.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>discovery context containing the results discovered (so far) by the discovery service.</dd>
+<dd>survey context containing the results discovered (so far) by the survey action service.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getEmbeddedDiscoveryServices()">
-<h3>getEmbeddedDiscoveryServices</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionServiceConnector</a>&gt;</span>&nbsp;<span class="element-name">getEmbeddedDiscoveryServices</span>()
-                                                                   throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
+<section class="detail" id="getEmbeddedSurveyActionServices()">
+<h3>getEmbeddedSurveyActionServices</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionServiceConnector</a>&gt;</span>&nbsp;<span class="element-name">getEmbeddedSurveyActionServices</span>()
+                                                                      throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Retrieve and validate the list of embedded connectors and cast them to survey action service connector.
  This is used by DiscoveryPipelines and DiscoveryScanningServices.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of discovery service connectors</dd>
+<dd>list of survey action service connectors</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - one of the embedded connectors is not a discovery service</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - one of the embedded connectors is not a survey action service</dd>
 </dl>
 </section>
 </li>
@@ -379,23 +379,23 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <h3>start</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
            throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Indicates that the discovery service is completely configured and can begin processing.
- This is where the function of the discovery service is implemented.
+<div class="block">Indicates that the survey action service is completely configured and can begin processing.
+ This is where the function of the survey action service is implemented.
  This is a standard method from the Open Connector Framework (OCF) so
  be sure to call super.start() in your version.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the discovery service.</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the survey action service.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="handleUnexpectedException(java.lang.String,java.lang.Throwable)">
+<section class="detail" id="handleUnexpectedException(java.lang.String,java.lang.Exception)">
 <h3>handleUnexpectedException</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">handleUnexpectedException</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;error)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;error)</span>
                                   throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Provide a common exception for unexpected errors.</div>
 <dl class="notes">

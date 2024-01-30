@@ -82,6 +82,7 @@ org.odpi.openmetadata.accessservices.assetmanager.server.spring
 org.odpi.openmetadata.accessservices.assetowner.admin
 org.odpi.openmetadata.accessservices.assetowner.api
 org.odpi.openmetadata.accessservices.assetowner.client
+org.odpi.openmetadata.accessservices.assetowner.client.converters
 org.odpi.openmetadata.accessservices.assetowner.client.rest
 org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic
 org.odpi.openmetadata.accessservices.assetowner.converters
@@ -481,7 +482,6 @@ org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.envar
 org.odpi.openmetadata.adapters.connectors.surveyaction
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
-org.odpi.openmetadata.adapters.connectors.surveyaction.fileclassifier
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
@@ -632,6 +632,7 @@ org.odpi.openmetadata.frameworks.governanceaction.client
 org.odpi.openmetadata.frameworks.governanceaction.converters
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
+org.odpi.openmetadata.frameworks.governanceaction.fileclassifier
 org.odpi.openmetadata.frameworks.governanceaction.mapper
 org.odpi.openmetadata.frameworks.governanceaction.properties
 org.odpi.openmetadata.frameworks.governanceaction.refdata

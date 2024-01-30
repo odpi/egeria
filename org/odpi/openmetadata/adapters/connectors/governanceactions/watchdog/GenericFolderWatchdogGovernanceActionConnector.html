@@ -207,7 +207,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Indicates that the governance action service is completely configured and can begin processing.
-
  This is a standard method from the Open Connector Framework (OCF) so
  be sure to call super.start() at the start of your overriding version.</div>
 <dl class="notes">
@@ -225,11 +224,9 @@ loadScripts(document, 'script');</script>
                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
  or the administrator requested this governance action service stop running or the hosting server is shutting down.
-
  If disconnect completes before the governance action service records
  its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
  If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-
  The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
  be sure to call super.disconnect() in your version.</div>
 <dl class="notes">
