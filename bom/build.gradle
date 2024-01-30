@@ -75,7 +75,7 @@ ext {
     lettuceVersion = '6.2.6.RELEASE'
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
-    openlineageVersion = '1.4.1'
+    openlineageVersion = '1.8.0'
     ossVersion = '4.16.0'
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
