@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
+import java.io.Serial;
+
 
 /**
  * ConnectedAssetUniverse is the client library implementation of the Open Connector Framework
@@ -28,6 +30,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
     private static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private static final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Private constructor for the "create()" static factory methods used to instantiate ConnectedAssetUniverse objects.

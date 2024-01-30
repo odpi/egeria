@@ -5,8 +5,13 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPISchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.APISchemaType;
 
+import java.io.Serial;
+
 class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Typical constructor creates an DeployedAPISchemaType object primed with information to retrieve an asset's API operations.
      *

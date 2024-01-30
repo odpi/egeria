@@ -40,6 +40,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
+    @SuppressWarnings(value = "deprecation")
     @Override
     public void initialize(String                              localServerId,
                            String                              localServerName,
@@ -58,8 +59,6 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
         this.auditLog = auditLog;
         this.localServerName = localServerName;
 
-        auditLog.logMessage(actionDescription, RepositoryGovernanceAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
-
         try
         {
             this.validateConfigDocument(engineServiceConfig);
@@ -71,15 +70,17 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
              */
             String             partnerServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
             String             partnerServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
-            List<EngineConfig> engineConfigs            = this.getEngines(engineServiceConfig);
+
+            auditLog.logMessage(actionDescription, RepositoryGovernanceAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName,
+                                                                                                                                  partnerServiceServerName,
+                                                                                                                                  partnerServiceRootURL));
 
             /*
              * Create an entry in the governance engine map for each configured engine.
              */
-            governanceEngineMap.setGovernanceEngineProperties(engineConfigs,
+            governanceEngineMap.setGovernanceEngineProperties(engineServiceConfig.getEngines(),
                                                               partnerServiceServerName,
                                                               partnerServiceRootURL);
-
 
             /*
              * Set up the REST APIs.

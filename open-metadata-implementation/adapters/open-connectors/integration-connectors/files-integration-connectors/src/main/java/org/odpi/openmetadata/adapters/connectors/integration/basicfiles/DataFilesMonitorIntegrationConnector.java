@@ -13,18 +13,14 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.Bas
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.context.ValidMetadataValuesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -34,14 +30,6 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 {
     private static final Logger log = LoggerFactory.getLogger(DataFilesMonitorIntegrationConnector.class);
 
-    private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.FILE_TYPE.name,
-                                                                null);
-    private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                null);
 
     private String templateGUID = null;
 
@@ -290,122 +278,18 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 {
                     if (fileTemplateQualifiedName == null)
                     {
-                        ValidMetadataValuesContext validMetadataValuesContext = this.getContext().getIntegrationGovernanceContext().getValidMetadataValuesContext();
-
-                        String fileExtension = this.getContext().getFileExtension(file.getAbsolutePath());
-                        String fileType = null;
-                        String deployedImplementationType = null;
-                        String assetTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-                        /*
-                         * Is the file name or file extension recognized?
-                         */
-                        ValidMetadataValue validMetadataValue;
-                        try
-                        {
-                            validMetadataValue = validMetadataValuesContext.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                                                  OpenMetadataProperty.FILE_NAME.name,
-                                                                                                  file.getName());
-                        }
-                        catch (InvalidParameterException notKnown)
-                        {
-                            validMetadataValue = null;
-                        }
-
-                        List<ValidMetadataValue> consistentValues = null;
-
-                        if (validMetadataValue != null)
-                        {
-                            consistentValues = validMetadataValuesContext.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                                                      OpenMetadataProperty.FILE_NAME.name,
-                                                                                                      null,
-                                                                                                      validMetadataValue.getPreferredValue(),
-                                                                                                      0,
-                                                                                                      5);
-                        }
-                        else
-                        {
-                            if (fileExtension != null)
-                            {
-                                try
-                                {
-                                    validMetadataValue = validMetadataValuesContext.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                                                          OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                                          fileExtension);
-                                }
-                                catch (InvalidParameterException notKnown)
-                                {
-                                    // nothing to do
-                                }
-
-                                if (validMetadataValue != null)
-                                {
-                                    consistentValues = validMetadataValuesContext.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                                                              OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                                              null,
-                                                                                                              validMetadataValue.getPreferredValue(),
-                                                                                                              0,
-                                                                                                              5);
-                                }
-                            }
-                        }
-
-                        /*
-                         * The fileType valid metadata value links to the deployed implementation type.
-                         */
-                        if (consistentValues != null)
-                        {
-                            for (ValidMetadataValue consistentValue : consistentValues)
-                            {
-                                if (consistentValue != null)
-                                {
-                                    if (fileTypeCategory.equals(consistentValue.getCategory()))
-                                    {
-                                        fileType = consistentValue.getPreferredValue();
-
-                                        if ((consistentValue.getAdditionalProperties() != null) &&
-                                                    (consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME) != null))
-                                        {
-                                            assetTypeName = consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME);
-                                        }
-
-                                        List<ValidMetadataValue> consistentFileTypeValues = validMetadataValuesContext.getConsistentMetadataValues(
-                                                OpenMetadataType.DATA_FILE.typeName,
-                                                OpenMetadataProperty.FILE_TYPE.name,
-                                                null,
-                                                fileType,
-                                                0,
-                                                5);
-
-                                        if (consistentFileTypeValues != null)
-                                        {
-                                            for (ValidMetadataValue consistentFileTypeValue : consistentFileTypeValues)
-                                            {
-                                                if (consistentFileTypeValue != null)
-                                                {
-                                                    if (deployedImplementationTypeCategory.equals(consistentFileTypeValue.getCategory()))
-                                                    {
-                                                        deployedImplementationType = consistentFileTypeValue.getPreferredValue();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
+                        FileClassifier fileClassifier = new FileClassifier(this.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess(), file);
 
                         /*
                          * Create the file ...
                          */
                         DataFileProperties properties = new DataFileProperties();
 
-                        properties.setTypeName(assetTypeName);
-                        properties.setDeployedImplementationType(deployedImplementationType);
-                        properties.setPathName(file.getAbsolutePath());
-                        properties.setName(file.getName());
-                        properties.setFileType(fileType);
+                        properties.setTypeName(fileClassifier.getAssetTypeName());
+                        properties.setDeployedImplementationType(fileClassifier.getDeployedImplementationType());
+                        properties.setPathName(fileClassifier.getPathName());
+                        properties.setName(fileClassifier.getFileName());
+                        properties.setFileType(fileClassifier.getFileType());
                         properties.setModifiedTime(new Date(file.lastModified()));
 
                         List<String> guids = this.getContext().addDataFileToCatalog(properties, null);

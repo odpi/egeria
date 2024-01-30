@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 
+import java.io.Serial;
+
 
 /**
  * EgeriaConnectedAssetProperties is associated with a Connector.  Connectors provide access to
@@ -44,6 +46,9 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
     private ConnectionProperties connection          = null;
     private String               assetGUID           = null;
 
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final Logger log = LoggerFactory.getLogger(EgeriaConnectedAssetProperties.class);
 

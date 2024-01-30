@@ -23909,11 +23909,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataProfileLogFileRelationship()
     {
-        final String guid            = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.wikiURL;
+        final String guid            = OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -23947,8 +23947,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.LOG_FILE_TYPE_NAME;
-        final String                     end2AttributeName            = "dataProfileLogFiles";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
+        final String                     end2AttributeName            = "dataProfileLogs";
         final String                     end2AttributeDescription     = "Location of the data profile information.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;

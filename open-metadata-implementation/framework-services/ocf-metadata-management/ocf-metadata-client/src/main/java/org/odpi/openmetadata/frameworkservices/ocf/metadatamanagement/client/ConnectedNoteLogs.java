@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.NoteLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.NoteLogs;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class ConnectedNoteLogs extends NoteLogs
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.

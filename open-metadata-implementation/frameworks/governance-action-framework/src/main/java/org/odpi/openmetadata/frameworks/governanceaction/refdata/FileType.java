@@ -134,7 +134,7 @@ public enum FileType
              "CSV",
              OpenMetadataType.CSV_FILE.typeName,
              DeployedImplementationType.DATA_FILE,
-             "A text file with comma-separated values."),
+             "A text file containing tabular data organized using comma-separated values."),
 
     /**
      * A text file containing an Avro object structure.
@@ -143,7 +143,7 @@ public enum FileType
               "Avro",
               OpenMetadataType.AVRO_FILE.typeName,
               DeployedImplementationType.DATA_FILE,
-              "A text file containing an Avro object structure."),
+              "A text file containing data organized using an Avro object structure."),
 
     /**
      * A text file formatted using the JSON (JavaScript Object Notation) standard.
@@ -152,7 +152,7 @@ public enum FileType
               "JSON",
               OpenMetadataType.JSON_FILE.typeName,
               DeployedImplementationType.DATA_FILE,
-              "A text file formatted using the JSON (JavaScript Object Notation) standard."),
+              "A text file containing data formatted using the JSON (JavaScript Object Notation) standard."),
 
     /**
      * A JSON (JavaScript Object Notation) file containing Open Metadata Types and Instances.

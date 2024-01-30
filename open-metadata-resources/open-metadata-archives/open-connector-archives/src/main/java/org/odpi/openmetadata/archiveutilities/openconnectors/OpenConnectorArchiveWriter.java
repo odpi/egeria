@@ -467,9 +467,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          * Create the default integration group.
          */
         archiveHelper.addSoftwareCapability(OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
-                                            "Egeria:IntegrationGroup:DefaultIntegrationGroup",
-                                            "DefaultIntegrationGroup",
-                                            "Dynamic integration group to use with Integration Daemon configuration.",
+                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME,
+                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_NAME,
+                                            "Dynamic integration group to use with an Integration Daemon configuration.",
                                             DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
                                             null,
                                             null,

@@ -459,6 +459,7 @@ public class OMAGServerAdminForEngineServices
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
+    @SuppressWarnings(value = "deprecation")
     public VoidResponse configureEngineService(String                   userId,
                                                String                   serverName,
                                                String                   serviceURLMarker,
@@ -547,7 +548,6 @@ public class OMAGServerAdminForEngineServices
         final String methodName                    = "configureEngineService";
         final String serviceConfigParameterName    = "serviceConfig";
         final String serviceURLMarkerParameterName = "serviceConfig.serviceURLMarker";
-        final String engineNamesParameterName      = "serviceConfig.engineNames";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -563,7 +563,6 @@ public class OMAGServerAdminForEngineServices
             errorHandler.validateOMAGServerClientConfig(serverName, serviceConfig, methodName);
             errorHandler.validatePropertyNotNull(serviceConfig, serviceConfigParameterName, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceConfig.getEngineServiceURLMarker(), serviceURLMarkerParameterName, serverName, methodName);
-            errorHandler.validatePropertyNotNull(serviceConfig.getEngines(), engineNamesParameterName, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 

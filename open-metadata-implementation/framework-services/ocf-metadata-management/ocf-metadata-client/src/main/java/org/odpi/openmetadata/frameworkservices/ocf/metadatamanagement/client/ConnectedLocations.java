@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Locations;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Location;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class ConnectedLocations extends Locations
     private String                 platformURLRoot;
     private String                 assetGUID;
     private OCFRESTClient          restClient;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

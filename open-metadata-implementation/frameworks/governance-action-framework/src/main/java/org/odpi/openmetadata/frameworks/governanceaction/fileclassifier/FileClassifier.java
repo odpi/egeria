@@ -1,16 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.surveyaction.fileclassifier;
+package org.odpi.openmetadata.frameworks.governanceaction.fileclassifier;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 
 import java.io.File;
 import java.util.List;
@@ -20,36 +20,51 @@ import java.util.List;
  */
 public class FileClassifier
 {
-    private String fileExtension              = null;
-    private String fileType                   = null;
-    private String deployedImplementationType = null;
-    private String assetTypeName              = OpenMetadataType.DATA_FILE.typeName;
-    private boolean canRead                   = false;
-    private boolean canWrite                  = false;
-    private boolean canExecute                = false;
+    private final String  fileName;
+    private final String  pathName;
+    private final String  fileExtension;
+    private final boolean canRead;
+    private final boolean canWrite;
+    private final boolean canExecute;
+    private       String  fileType                   = null;
+    private       String  deployedImplementationType = null;
+    private       String  encoding                   = null;
+    private       String  assetTypeName              = OpenMetadataType.DATA_FILE.typeName;
+
+    private final static String folderDivider = "/";
+    private final static String fileExtensionDivider = "\\.";
 
 
     /**
-     * Retrieves the extension from a path name.  For example, if the pathname is "one/two/three.txt", the method
+     * Retrieves the extension from a file name.  For example, if the file name is "three.txt", the method
      * returns "txt".  If the path name has multiple extensions, such as "my-jar.jar.gz", the final extension is returned (ie "gz").
-     * Null is returned if there is no file extension in the path name.
+     * Null is returned if there is no file extension in the file name.
      *
-     * @param pathName path name of file or directory
+     * @param fileName short name
      * @return file extension
      */
-    public static String getFileExtension(String pathName)
+    public static String getFileExtension(String fileName)
     {
-        final String  fileTypeDivider = "\\.";
-
         String result = null;
 
-        if ((pathName != null) && (! pathName.isEmpty()))
+        if ((fileName != null) && (! fileName.isEmpty()))
         {
-            String[] tokens = pathName.split(fileTypeDivider);
+            String[] tokens = fileName.split(fileExtensionDivider);
 
-            if (tokens.length > 1)
+            if (fileName.startsWith("."))
             {
-                result = tokens[tokens.length - 1];
+                if (tokens.length > 2)
+                {
+                    result = tokens[tokens.length - 1];
+                }
+            }
+            else
+            {
+
+                if (tokens.length > 1)
+                {
+                    result = tokens[tokens.length - 1];
+                }
             }
         }
 
@@ -76,20 +91,32 @@ public class FileClassifier
      * @throws PropertyServerException problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
      */
-    public FileClassifier (SurveyOpenMetadataStore openMetadataStore,
-                           File                     file) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public FileClassifier (OpenMetadataStore openMetadataStore,
+                           File              file) throws InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException
     {
-        this.fileExtension = getFileExtension(file.getAbsolutePath());
-
+        this.fileName      = file.getName();
+        this.pathName      = file.getAbsolutePath();
+        this.fileExtension = getFileExtension(file.getName());
+        this.canRead       = file.canRead();
+        this.canWrite      = file.canWrite();
+        this.canExecute    = file.canExecute();
 
         /*
          * Is the file name or file extension recognized?
          */
-        ValidMetadataValue validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                                        OpenMetadataProperty.FILE_NAME.name,
-                                                                                        file.getName());
+        ValidMetadataValue validMetadataValue;
+        try
+        {
+            validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
+                                                                         OpenMetadataProperty.FILE_NAME.name,
+                                                                         file.getName());
+        }
+        catch (InvalidParameterException notKnown)
+        {
+            validMetadataValue = null;
+        }
 
         List<ValidMetadataValue> consistentValues = null;
 
@@ -106,9 +133,16 @@ public class FileClassifier
         {
             if (this.fileExtension != null)
             {
-                validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                             OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                             this.fileExtension);
+                try
+                {
+                    validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
+                                                                                 OpenMetadataProperty.FILE_EXTENSION.name,
+                                                                                 this.fileExtension);
+                }
+                catch (InvalidParameterException notKnown)
+                {
+                    // validMetadataValue = null - already set
+                }
 
                 if (validMetadataValue != null)
                 {
@@ -120,10 +154,6 @@ public class FileClassifier
                                                                                      5);
                 }
             }
-
-            this.canRead = file.canRead();
-            this.canWrite = file.canWrite();
-            this.canExecute = file.canExecute();
         }
 
 
@@ -140,17 +170,24 @@ public class FileClassifier
                     {
                         this.fileType = consistentValue.getPreferredValue();
 
-                        if ((consistentValue.getAdditionalProperties() != null) &&
-                                (consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME) != null))
+                        if (consistentValue.getAdditionalProperties() != null)
                         {
-                            this.assetTypeName = consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME);
+                            if (consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME) != null)
+                            {
+                                this.assetTypeName = consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME);
+                            }
+
+                            if (consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name) != null)
+                            {
+                                this.encoding = consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name);
+                            }
                         }
 
                         List<ValidMetadataValue> consistentFileTypeValues =
                                 openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                               OpenMetadataProperty.FILE_TYPE.name,
                                                                               null,
-                                                                              validMetadataValue.getPreferredValue(),
+                                                                              consistentValue.getPreferredValue(),
                                                                               0,
                                                                               5);
 
@@ -160,9 +197,9 @@ public class FileClassifier
                             {
                                 if (consistentFileTypeValue != null)
                                 {
-                                    if (deployedImplementationTypeCategory.equals(consistentValue.getCategory()))
+                                    if (deployedImplementationTypeCategory.equals(consistentFileTypeValue.getCategory()))
                                     {
-                                        this.deployedImplementationType = consistentValue.getPreferredValue();
+                                        this.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
                                     }
                                 }
                             }
@@ -171,10 +208,28 @@ public class FileClassifier
                 }
             }
         }
+    }
 
-        this.canRead = file.canRead();
-        this.canWrite = file.canWrite();
-        this.canExecute = file.canExecute();
+
+    /**
+     * Return the short file name of the file.
+     *
+     * @return string name
+     */
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+
+    /**
+     * Return the full pathname of the file.
+     *
+     * @return string name
+     */
+    public String getPathName()
+    {
+        return pathName;
     }
 
 
@@ -219,6 +274,17 @@ public class FileClassifier
     public String getAssetTypeName()
     {
         return assetTypeName;
+    }
+
+
+    /**
+     * Return the encoding of the file - may be null
+     *
+     * @return encoding standard
+     */
+    public String getEncoding()
+    {
+        return encoding;
     }
 
 

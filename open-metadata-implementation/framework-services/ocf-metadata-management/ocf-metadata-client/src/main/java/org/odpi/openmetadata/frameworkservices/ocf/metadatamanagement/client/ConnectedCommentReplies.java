@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class ConnectedCommentReplies extends CommentReplies
     private int                    maxCacheSize;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.

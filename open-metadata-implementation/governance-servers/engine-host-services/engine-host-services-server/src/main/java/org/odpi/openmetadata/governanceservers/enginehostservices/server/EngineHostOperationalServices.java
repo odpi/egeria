@@ -6,15 +6,12 @@ import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceCo
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -179,21 +176,42 @@ public class EngineHostOperationalServices
                                                                                          auditLog,
                                                                                          maxPageSize);
 
-            List<String> activatedServiceList = initializeEngineServices(configuration.getEngineServiceConfigs(),
-                                                                         configurationClient,
-                                                                         serverClient,
-                                                                         serviceEngineLists,
-                                                                         governanceEngineHandlers);
-
+            /*
+             * Add details of the governance engines that have been configured in the engine list.
+             */
             if ((configuration.getEngineList() != null) && (! configuration.getEngineList().isEmpty()))
             {
                 governanceEngineHandlers.setGovernanceEngineProperties(configuration.getEngineList(),
                                                                        accessServiceServerName,
                                                                        accessServiceRootURL);
 
-                activatedServiceList = EngineServiceDescription.getEngineServiceNames();
             }
 
+            /*
+             * All engine services need to be started.  Some may be configured explicitly.  Start with a default list of
+             * all engine services using the details of the partner metadata server provided for the engine configuration
+             * then overlay the explicitly configured engines.
+             */
+            Map<String, EngineServiceConfig> engineServiceConfigMap = this.getDefaultEngineServiceConfigs(accessServiceRootURL,
+                                                                                                          accessServiceServerName);
+
+            if (configuration.getEngineServiceConfigs() != null)
+            {
+                for (EngineServiceConfig engineServiceConfig : configuration.getEngineServiceConfigs())
+                {
+                    if (engineServiceConfig != null)
+                    {
+                        engineServiceConfigMap.put(engineServiceConfig.getEngineServiceURLMarker(), engineServiceConfig);
+                    }
+                }
+            }
+
+
+            List<String> activatedServiceList = initializeEngineServices(new ArrayList<>(engineServiceConfigMap.values()),
+                                                                         configurationClient,
+                                                                         serverClient,
+                                                                         serviceEngineLists,
+                                                                         governanceEngineHandlers);
 
             /*
              * Register a listener for the Governance Engine OMAS out topic.  This call will fail if
@@ -289,6 +307,37 @@ public class EngineHostOperationalServices
 
 
     /**
+     * Use the partner access service information to create a default definition for each engine service.
+     *
+     * @param partnerURLRoot platform URL root for the partner access service set up for the engine host
+     * @param partnerServerName name of the server where the access service is located
+     * @return map of default engine service configurations
+     */
+    private Map<String, EngineServiceConfig> getDefaultEngineServiceConfigs(String partnerURLRoot,
+                                                                            String partnerServerName)
+    {
+        Map<String, EngineServiceConfig> engineServiceConfigList = new HashMap<>();
+
+        for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
+        {
+            EngineServiceRegistrationEntry engineServiceRegistrationEntry = OMAGEngineServiceRegistration.getEngineServiceRegistration(engineServiceDescription.getEngineServiceURLMarker());
+
+            if (engineServiceRegistrationEntry != null)
+            {
+                EngineServiceConfig engineServiceConfig = new EngineServiceConfig(engineServiceRegistrationEntry);
+
+                engineServiceConfig.setOMAGServerPlatformRootURL(partnerURLRoot);
+                engineServiceConfig.setOMAGServerName(partnerServerName);
+
+                engineServiceConfigList.put(engineServiceRegistrationEntry.getEngineServiceURLMarker(), engineServiceConfig);
+            }
+        }
+
+        return engineServiceConfigList;
+    }
+
+
+    /**
      * Start up the engine services.
      *
      * @param engineServiceConfigList       configured engine services
@@ -330,7 +379,8 @@ public class EngineHostOperationalServices
                     enabledEngineServiceCount++;
                     this.setServerServiceActiveStatus(engineServiceConfig.getEngineServiceFullName(), ServerActiveStatus.STARTING);
 
-                    serviceEngineLists.put(engineServiceConfig.getEngineServiceURLMarker(), this.getEngineNames(engineServiceConfig));
+                    serviceEngineLists.put(engineServiceConfig.getEngineServiceURLMarker(),
+                                           governanceEngineHandlers.getGovernanceEngineNames(engineServiceConfig.getEngineServiceURLMarker()));
 
                     try
                     {
@@ -565,64 +615,5 @@ public class EngineHostOperationalServices
         }
 
         return accessServiceServerName;
-    }
-
-
-    /**
-     * Retrieve the list of engine names for this engine service from the configuration.
-     *
-     * @param engineServiceConfig configuration
-     * @return list of engines
-     * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
-     */
-    private List<String> getEngineNames(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
-    {
-        final String actionDescription = "Validate engine services configuration.";
-        final String methodName        = "getEngineNames";
-
-        List<EngineConfig> engineConfigList = engineServiceConfig.getEngines();
-
-        if ((engineConfigList == null) || (engineConfigList.isEmpty()))
-        {
-            auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.NO_ENGINES_FOR_SERVICE.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                      localServerName));
-
-            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_ENGINES_FOR_SERVICE.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                         localServerName),
-                                                      this.getClass().getName(),
-                                                      methodName);
-        }
-        else
-        {
-            List<String>  engineNames = new ArrayList<>();
-
-            for (EngineConfig engineConfig : engineConfigList)
-            {
-                if (engineConfig != null)
-                {
-
-                    if (engineConfig.getEngineQualifiedName() == null)
-                    {
-                        auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.NULL_ENGINE_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                                  localServerName));
-
-                        throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NULL_ENGINE_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
-                                                                                                                                          localServerName),
-                                                                  this.getClass().getName(),
-                                                                  methodName);
-                    }
-
-                    engineNames.add(engineConfig.getEngineQualifiedName());
-                }
-            }
-
-
-            if (engineNames.isEmpty())
-            {
-                return null;
-            }
-
-            return engineNames;
-        }
     }
 }

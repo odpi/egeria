@@ -39,6 +39,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
+    @SuppressWarnings(value = "deprecation")
     @Override
     public void initialize(String                              localServerId,
                            String                              localServerName,
@@ -57,8 +58,6 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
         this.auditLog = auditLog;
         this.localServerName = localServerName;
 
-        auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
-
         try
         {
             this.validateConfigDocument(engineServiceConfig);
@@ -69,12 +68,15 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
              */
             String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
             String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
-            List<EngineConfig> governanceActionEngines = this.getEngines(engineServiceConfig);
+
+            auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName,
+                                                                                                                              accessServiceServerName,
+                                                                                                                              accessServiceRootURL));
 
             /*
              * Create an entry in the governance engine map for each configured engine.
              */
-            governanceEngineMap.setGovernanceEngineProperties(governanceActionEngines,
+            governanceEngineMap.setGovernanceEngineProperties(engineServiceConfig.getEngines(),
                                                               accessServiceServerName,
                                                               accessServiceRootURL);
 

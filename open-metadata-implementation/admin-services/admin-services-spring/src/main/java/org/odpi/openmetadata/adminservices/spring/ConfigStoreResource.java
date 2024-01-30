@@ -10,9 +10,12 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * ConfigStoreResource provides the API to configure the connector that should be used to manage
@@ -55,7 +58,7 @@ public class ConfigStoreResource
      * Return the default server configuration document.
      *
      * @param userId calling user
-     * @return connection response
+     * @return OMAGServerConfig response
      */
     @GetMapping(path = "/default-configuration-document")
 
@@ -74,7 +77,7 @@ public class ConfigStoreResource
      * Clear the default configuration document.
      *
      * @param userId calling user
-     * @return current setting of default server configuration
+     * @return void
      */
     @DeleteMapping(path = "/default-configuration-document")
 
@@ -86,6 +89,65 @@ public class ConfigStoreResource
     public VoidResponse clearDefaultOMAGServerConfig(@PathVariable String   userId)
     {
         return adminStoreAPI.clearDefaultOMAGServerConfig(userId);
+    }
+
+
+    /**
+     * Override the placeholder variables.
+     *
+     * @param userId calling user.
+     * @param placeholderVariables values to include in every new configured server.
+     * @return void response
+     */
+    @PostMapping(path = "/placeholder-variables")
+
+    @Operation(summary="setPlaceholderVariables",
+            description="Override the placeholder variables that will replace placeholders found in an OMAG server's configuration document at server start up.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public  VoidResponse setPlaceholderVariables(@PathVariable String              userId,
+                                                 @RequestBody  Map<String, String> placeholderVariables)
+    {
+        return adminStoreAPI.setPlaceholderVariables(userId, placeholderVariables);
+    }
+
+
+    /**
+     * Return the placeholder variables.
+     *
+     * @param userId calling user
+     * @return string map response
+     */
+    @GetMapping(path = "/placeholder-variables")
+
+    @Operation(summary="getPlaceholderVariables",
+            description="Return the placeholder variables that will replace placeholders found in an OMAG server's configuration document at server start up.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public StringMapResponse getPlaceholderVariables(@PathVariable String       userId)
+    {
+        return adminStoreAPI.getPlaceholderVariables(userId);
+    }
+
+
+    /**
+     * Clear the placeholder variables used whenever an OMAG Server is started.
+     *
+     * @param userId calling user
+     * @return current setting of default server configuration
+     */
+    @DeleteMapping(path = "/placeholder-variables")
+
+    @Operation(summary="clearPlaceholderVariables",
+            description="Clear the placeholder variables used whenever an OMAG Server is started.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/configuration-document/"))
+
+    public VoidResponse clearPlaceholderVariables(@PathVariable String   userId)
+    {
+        return adminStoreAPI.clearPlaceholderVariables(userId);
     }
 
 

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.APIOperations;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class ConnectedAPIOperations extends APIOperations
     private OCFRESTClient restClient;
 
     private final RESTExceptionHandler   restExceptionHandler    = new RESTExceptionHandler();
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.

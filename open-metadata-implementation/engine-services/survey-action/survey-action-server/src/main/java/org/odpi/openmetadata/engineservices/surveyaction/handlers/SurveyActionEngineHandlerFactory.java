@@ -3,10 +3,12 @@
 
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
+import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
+import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.accessservices.stewardshipaction.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.stewardshipaction.client.ConnectedAssetClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -49,12 +51,20 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
         if (engineConfig != null)
         {
             ConnectedAssetClient surveyActionEngineClient;
+            FileSystemAssetOwner fileSystemAssetOwner;
+            CSVFileAssetOwner    csvFileAssetOwner;
             OpenMetadataClient   openMetadataClient;
 
             if (localServerPassword == null)
             {
                 surveyActionEngineClient = new ConnectedAssetClient(partnerServerName,
                                                                     partnerURLRoot);
+
+                fileSystemAssetOwner = new FileSystemAssetOwner(partnerServerName,
+                                                                partnerURLRoot);
+
+                csvFileAssetOwner = new CSVFileAssetOwner(partnerServerName,
+                                                          partnerURLRoot);
 
                 openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
                                                                  partnerURLRoot);
@@ -65,6 +75,16 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                                                                     partnerURLRoot,
                                                                     localServerUserId,
                                                                     localServerPassword);
+
+                fileSystemAssetOwner = new FileSystemAssetOwner(partnerServerName,
+                                                                partnerURLRoot,
+                                                                localServerUserId,
+                                                                localServerPassword);
+
+                csvFileAssetOwner = new CSVFileAssetOwner(partnerServerName,
+                                                          partnerURLRoot,
+                                                          localServerUserId,
+                                                          localServerPassword);
 
                 openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
                                                                  partnerURLRoot,
@@ -78,6 +98,8 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                                                  configurationClient,
                                                  serverClient,
                                                  surveyActionEngineClient,
+                                                 fileSystemAssetOwner,
+                                                 csvFileAssetOwner,
                                                  openMetadataClient,
                                                  auditLog,
                                                  maxPageSize);

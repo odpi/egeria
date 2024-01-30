@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
@@ -23,6 +25,7 @@ import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -35,8 +38,10 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * OMAGServerAdminStoreServices provides the capability to store and retrieve configuration documents.
@@ -49,12 +54,15 @@ public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
     private static OMAGServerConfig defaultServerConfig = new OMAGServerConfig();
+    private static Map<String,String> placeHolderVariables = null;
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
     private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
     private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 
     /**
@@ -105,7 +113,7 @@ public class OMAGServerAdminStoreServices
      * Return the default server configuration document.
      *
      * @param userId calling user
-     * @return connection response
+     * @return OMAGServerConfig response
      */
     public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig(String       userId)
     {
@@ -140,7 +148,7 @@ public class OMAGServerAdminStoreServices
      * Clear the default configuration document.
      *
      * @param userId calling user
-     * @return current setting of default server configuration
+     * @return void response
      */
     public synchronized VoidResponse clearDefaultOMAGServerConfig(String   userId)
     {
@@ -179,6 +187,132 @@ public class OMAGServerAdminStoreServices
     private synchronized OMAGServerConfig getDefaultServerConfig()
     {
         return defaultServerConfig;
+    }
+
+
+    /**
+     * Set up the placeholder variables that will be used on each server start up.
+     *
+     * @param userId calling user.
+     * @param placeholderVariables map of variable name to value.
+     * @return void response
+     */
+    public synchronized VoidResponse setPlaceholderVariables(String              userId,
+                                                             Map<String, String> placeholderVariables)
+    {
+        final String methodName = "setPlaceholderVariables";
+        final String parameterName = "placeholderVariables";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            errorHandler.validatePropertyNotNull(placeholderVariables, parameterName, null, methodName);
+
+            OMAGServerAdminStoreServices.placeHolderVariables = placeholderVariables;
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the placeholder variables that will be used on each server start up.
+     *
+     * @param userId calling user
+     * @return string map response
+     */
+    public synchronized StringMapResponse getPlaceholderVariables(String       userId)
+    {
+        final String methodName = "getPlaceholderVariables";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        StringMapResponse  response = new StringMapResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            response.setStringMap(placeHolderVariables);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Clear the placeholder variables.
+     *
+     * @param userId calling user
+     * @return void response
+     */
+    public synchronized VoidResponse clearPlaceholderVariables(String   userId)
+    {
+        final String methodName = "clearPlaceholderVariables";
+
+        RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            placeHolderVariables = null;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the placeholder variables.
+     *
+     * @return string map or null
+     */
+    private synchronized Map<String, String> getPlaceholderVariables()
+    {
+        return placeHolderVariables;
     }
 
 
@@ -661,6 +795,244 @@ public class OMAGServerAdminStoreServices
                 }
             }
         }
+
+        return serverConfig;
+    }
+
+
+    /**
+     * Retrieve any saved configuration for this server.
+     *
+     * @param userId calling user
+     * @param serverName  name of the server
+     * @param methodName  method requesting the server details
+     * @return  configuration properties
+     * @throws OMAGInvalidParameterException problem with the configuration file
+     * @throws OMAGNotAuthorizedException user not authorized to make these changes
+     * @throws OMAGConfigurationErrorException unable to parse the OMAGServerConfig
+     */
+    public OMAGServerConfig getServerConfigForStartUp(String  userId,
+                                                      String  serverName,
+                                                      String  methodName) throws OMAGInvalidParameterException,
+                                                                                 OMAGNotAuthorizedException,
+                                                                                 OMAGConfigurationErrorException
+    {
+        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
+        OMAGServerConfig        serverConfig      = null;
+
+        if (serverConfigStore != null)
+        {
+            serverConfig = serverConfigStore.retrieveServerConfig();
+        }
+
+        if (serverConfig == null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NO_CONFIG_DOCUMENT.getMessageDefinition(serverName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        String  versionId           = serverConfig.getVersionId();
+        boolean isCompatibleVersion = false;
+
+        if (versionId == null)
+        {
+            versionId = OMAGServerConfig.VERSION_ONE;
+        }
+
+        for (String compatibleVersion : OMAGServerConfig.COMPATIBLE_VERSIONS)
+        {
+            if (compatibleVersion.equals(versionId))
+            {
+                isCompatibleVersion = true;
+                break;
+            }
+        }
+
+        if (!isCompatibleVersion)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.INCOMPATIBLE_CONFIG_FILE.getMessageDefinition(serverName,
+                                                                                                                     versionId,
+                                                                                                                     OMAGServerConfig.COMPATIBLE_VERSIONS.toString()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
+
+        try
+        {
+            OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
+
+            securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
+                                                       serverName,
+                                                       null,
+                                                       serverConfig.getServerSecurityConnection());
+
+            securityVerifier.validateUserAsServerOperator(userId);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
+        }
+
+        serverConfig.setLocalServerName(serverName);
+
+        /*
+         * Refresh the definition of any access service to match the current platform implementation.
+         */
+        if (serverConfig.getAccessServicesConfig() != null)
+        {
+            for (AccessServiceConfig accessServiceConfig : serverConfig.getAccessServicesConfig())
+            {
+                if (accessServiceConfig != null)
+                {
+                    AccessServiceDescription description = AccessServiceDescription.getAccessServiceDefinition(accessServiceConfig.getAccessServiceId());
+
+                    if (description != null)
+                    {
+                        accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
+                        accessServiceConfig.setAccessServiceDevelopmentStatus(description.getAccessServiceDevelopmentStatus());
+                        accessServiceConfig.setAccessServiceFullName(description.getAccessServiceFullName());
+                        accessServiceConfig.setAccessServiceDescription(description.getAccessServiceDescription());
+                        accessServiceConfig.setAccessServiceURLMarker(description.getAccessServiceURLMarker());
+                        accessServiceConfig.setAccessServiceWiki(description.getAccessServiceWiki());
+                    }
+                }
+            }
+        }
+
+        /*
+         * Refresh the definition of any engine service to match the current platform implementation.
+         */
+        if (serverConfig.getEngineHostServicesConfig() != null)
+        {
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig.getEngineServiceConfigs() != null)
+            {
+                for (EngineServiceConfig engineServiceConfig : engineHostServicesConfig.getEngineServiceConfigs())
+                {
+                    if (engineServiceConfig != null)
+                    {
+                        EngineServiceDescription description = EngineServiceDescription.getEngineServiceDefinition(engineServiceConfig.getEngineServiceId());
+
+                        if (description != null)
+                        {
+                            engineServiceConfig.setEngineServiceName(description.getEngineServiceName());
+                            engineServiceConfig.setEngineServiceDevelopmentStatus(description.getEngineServiceDevelopmentStatus());
+                            engineServiceConfig.setEngineServiceFullName(description.getEngineServiceFullName());
+                            engineServiceConfig.setEngineServiceDescription(description.getEngineServiceDescription());
+                            engineServiceConfig.setEngineServiceURLMarker(description.getEngineServiceURLMarker());
+                            engineServiceConfig.setEngineServiceWiki(description.getEngineServiceWiki());
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * Refresh the definition of any integration service to match the current platform implementation.
+         */
+        if (serverConfig.getIntegrationServicesConfig() != null)
+        {
+            for (IntegrationServiceConfig integrationServiceConfig : serverConfig.getIntegrationServicesConfig())
+            {
+                if (integrationServiceConfig != null)
+                {
+                    IntegrationServiceDescription description = IntegrationServiceDescription.getIntegrationServiceDefinition(integrationServiceConfig.getIntegrationServiceId());
+
+                    if (description != null)
+                    {
+                        integrationServiceConfig.setIntegrationServiceName(description.getIntegrationServiceName());
+                        integrationServiceConfig.setIntegrationServiceDevelopmentStatus(description.getIntegrationServiceDevelopmentStatus());
+                        integrationServiceConfig.setIntegrationServiceFullName(description.getIntegrationServiceFullName());
+                        integrationServiceConfig.setIntegrationServiceDescription(description.getIntegrationServiceDescription());
+                        integrationServiceConfig.setIntegrationServiceURLMarker(description.getIntegrationServiceURLMarker());
+                        integrationServiceConfig.setIntegrationServiceWiki(description.getIntegrationServiceWiki());
+                    }
+                }
+            }
+        }
+
+        /*
+         * Refresh the definition of any view service to match the current platform implementation.
+         */
+        if (serverConfig.getViewServicesConfig() != null)
+        {
+            for (ViewServiceConfig viewServiceConfig : serverConfig.getViewServicesConfig())
+            {
+                if (viewServiceConfig != null)
+                {
+                    ViewServiceDescription description = ViewServiceDescription.getViewServiceDefinition(viewServiceConfig.getViewServiceId());
+
+                    if (description != null)
+                    {
+                        viewServiceConfig.setViewServiceName(description.getViewServiceName());
+                        viewServiceConfig.setViewServiceDevelopmentStatus(description.getViewServiceDevelopmentStatus());
+                        viewServiceConfig.setViewServiceFullName(description.getViewServiceFullName());
+                        viewServiceConfig.setViewServiceDescription(description.getViewServiceDescription());
+                        viewServiceConfig.setViewServiceURLMarker(description.getViewServiceURLMarker());
+                        viewServiceConfig.setViewServiceWiki(description.getViewServiceWiki());
+                    }
+                }
+            }
+        }
+
+        /*
+         * Replace placeholder variables with real values if required.
+         */
+        if ((placeHolderVariables != null) && (! placeHolderVariables.isEmpty()))
+        {
+            try
+            {
+                String omagServerConfigString = OBJECT_MAPPER.writeValueAsString(serverConfig);
+
+                for (String variableName : placeHolderVariables.keySet())
+                {
+                    String regExMatchString = Pattern.quote("{{"+ variableName + "}}");
+                    String[] configBits = omagServerConfigString.split(regExMatchString);
+
+                    if (configBits.length > 1)
+                    {
+                        StringBuilder newConfigString = new StringBuilder();
+                        boolean       firstPart       = true;
+
+                        for (String configBit : configBits)
+                        {
+                            if (! firstPart)
+                            {
+                                newConfigString.append(placeHolderVariables.get(variableName));
+                            }
+
+                            firstPart = false;
+
+                            if (configBit != null)
+                            {
+                                newConfigString.append(configBit);
+                            }
+                        }
+
+                        omagServerConfigString = newConfigString.toString();
+                    }
+                }
+
+                serverConfig = OBJECT_MAPPER.readValue(omagServerConfigString, OMAGServerConfig.class);
+            }
+            catch (JsonProcessingException parsingError)
+            {
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CONFIG_DOCUMENT_PARSE_ERROR.getMessageDefinition(serverName,
+                                                                                                                              parsingError.getClass().getName(),
+                                                                                                                              parsingError.getMessage()),
+                                                          this.getClass().getName(),
+                                                          methodName);
+            }
+        }
+
 
         return serverConfig;
     }

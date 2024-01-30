@@ -115,6 +115,8 @@ egeria-lineage-repositories/**
 
 # Ignore report output
 component-id-report.md
+survey-report*.md
+valid-values-report*.md
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
@@ -164,6 +166,10 @@ jitdump*dmp
 
 # License files (generated)
 THIRD_PARTY*.txt
+
+# Local test files
+extra/**
+lib/**
 
 # gradle
 !gradle/**

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
+
 
 /**
  * RelatedAssetProperties is associated a related asset for a connector's EgeriaConnectedAssetProperties.  Connectors provide access to
@@ -41,6 +43,8 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetRelatedAssetProperties.class);
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor.

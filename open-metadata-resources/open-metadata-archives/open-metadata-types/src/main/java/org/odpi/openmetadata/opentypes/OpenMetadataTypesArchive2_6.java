@@ -2183,6 +2183,9 @@ public class OpenMetadataTypesArchive2_6
      */
 
 
+    /**
+     * Add incident reports
+     */
     public void add0470IncidentReports()
     {
         this.archiveBuilder.addEnumDef(getIncidentReportStatusEnum());
