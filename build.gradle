@@ -95,6 +95,10 @@ subprojects {
             options.compilerArgs << "-Xlint:all" << "-Xmaxerrs" << "1000" << "-Xmaxwarns" << "1000"
         }
 
+        tasks.withType(Javadoc).configureEach {
+            options.addStringOption('Xdoclint:-missing', '-quiet')
+        }
+
         // javadoc
         javadoc {
             options
@@ -115,7 +119,7 @@ subprojects {
                                 // Code
                                 license {
                                     name = 'The Apache License, Version 2.0'
-                                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                    url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                                 }
                                 // Docs
                                 license {
@@ -143,7 +147,7 @@ subprojects {
                             scm {
                                 connection = 'scm:git:git://github.com/odpi/egeria.git'
                                 developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
-                                url = 'http://github.com/odpi/egeria'
+                                url = 'https://github.com/odpi/egeria'
                             }
                             organization {
                                 name = 'LF AI & Data Foundation'

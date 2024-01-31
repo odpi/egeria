@@ -180,6 +180,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
      * @param userId   calling userId
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
+     * @param parentQualifiedName qualified name of parent - typically the connection
      * @param endpoint object to add
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -193,6 +194,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
     String saveEndpoint(String   userId,
                         String   externalSourceGUID,
                         String   externalSourceName,
+                        String   parentQualifiedName,
                         Endpoint endpoint,
                         boolean  forLineage,
                         boolean  forDuplicateProcessing,
@@ -205,11 +207,17 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         if (existingEndpointGUID == null)
         {
+            String endpointQualifiedName = endpoint.getQualifiedName();
+
+            if (endpointQualifiedName == null)
+            {
+                endpointQualifiedName = parentQualifiedName + "-Endpoint";
+            }
             return createEndpoint(userId,
                                   externalSourceGUID,
                                   externalSourceName,
                                   null,
-                                  endpoint.getQualifiedName(),
+                                  endpointQualifiedName,
                                   endpoint.getDisplayName(),
                                   endpoint.getDescription(),
                                   endpoint.getAddress(),
@@ -239,7 +247,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                            endpoint.getAdditionalProperties(),
                            null,
                            null,
-                           false,
+                           true,
                            null,
                            null,
                            forLineage,
@@ -300,7 +308,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        final String nameParameter = "qualifiedName";
+        final String nameParameter = "endpoint.qualifiedName";
         final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
@@ -575,7 +583,10 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
     {
         final String nameParameter = "qualifiedName";
 
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        }
 
         String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
 
