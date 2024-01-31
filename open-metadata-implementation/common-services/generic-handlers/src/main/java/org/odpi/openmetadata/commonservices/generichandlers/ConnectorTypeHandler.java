@@ -178,6 +178,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param userId calling userId
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
+     * @param parentQualifiedName qualified name of parent object (typically connection)
      * @param connectorType object to add
      * @param methodName calling method
      *
@@ -189,6 +190,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
     String saveConnectorType(String                 userId,
                              String                 externalSourceGUID,
                              String                 externalSourceName,
+                             String                 parentQualifiedName,
                              ConnectorType          connectorType,
                              String                 methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
@@ -200,11 +202,18 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
             if (existingConnectorType == null)
             {
+                String connectorTypeQualifiedName = connectorType.getQualifiedName();
+
+                if (connectorTypeQualifiedName == null)
+                {
+                    connectorTypeQualifiedName = parentQualifiedName + "-ConnectorType";
+                }
+
                 return this.createConnectorType(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
                                                 null,
-                                                connectorType.getQualifiedName(),
+                                                connectorTypeQualifiedName,
                                                 connectorType.getDisplayName(),
                                                 connectorType.getDescription(),
                                                 connectorType.getSupportedAssetTypeName(),
@@ -258,7 +267,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                          null,
                                          null,
                                          null,
-                                         false,
+                                         true,
                                          false,
                                          false,
                                          new Date(),
@@ -340,7 +349,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        final String nameParameter = "qualifiedName";
+        final String nameParameter = "connectorType.qualifiedName";
         final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
@@ -748,7 +757,10 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
     {
         final String nameParameter = "qualifiedName";
 
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        }
 
         String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
 

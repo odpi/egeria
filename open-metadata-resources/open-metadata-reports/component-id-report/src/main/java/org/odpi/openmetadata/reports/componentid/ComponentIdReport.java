@@ -33,16 +33,23 @@ public class ComponentIdReport
     private static final String fileMetadataArchiveConnector = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
     private static final String inMemRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
     private static final String readOnlyRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
+    private static final String xtdbRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
+    private static final String janusRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
     private static final String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
     private static final String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
     private static final String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
     private static final String jdbcResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
+    private static final String dataFolderResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider";
+    private static final String fileFolderResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider";
+    private static final String fileResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider";
+    private static final String csvFileResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider";
+    private static final String inmemTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
     private static final String kafkaTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
     private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider";
     private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
     private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
     private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
-    private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.CSVLineageImporterProvider";
+    private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider";
     private static final String jdbcIntegrationConnectorProviderClassName               = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
     private static final String kafkaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider";
     private static final String openAPIIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
@@ -54,6 +61,10 @@ public class ComponentIdReport
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider";
     private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider";
+    private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.SequentialSurveyPipelineProvider";
+    private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
+    private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";
+    private static final String csvFileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider";
 
 
     /**
@@ -199,11 +210,18 @@ public class ComponentIdReport
         this.addConnectorDescription(directoryMetadataArchiveConnector, report);
         this.addConnectorDescription(fileMetadataArchiveConnector, report);
         this.addConnectorDescription(inMemRepositoryConnector, report);
+        // Problem with gradle file this.addConnectorDescription(janusRepositoryConnector, report);
+        this.addConnectorDescription(xtdbRepositoryConnector, report);
         this.addConnectorDescription(readOnlyRepositoryConnector, report);
         this.addConnectorDescription(restRepositoryConnector, report);
         this.addConnectorDescription(platformSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(serverSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(csvFileResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(fileResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(fileFolderResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(dataFolderResourceConnectorProviderClassName, report);
+        this.addConnectorDescription(inmemTopicConnectorProviderClassName, report);
         this.addConnectorDescription(kafkaTopicConnectorProviderClassName, report);
         this.addConnectorDescription(atlasIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
@@ -221,6 +239,10 @@ public class ComponentIdReport
         this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
         this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
         this.addConnectorDescription(apacheAtlasDiscoveryServiceProviderClassName, report);
+        this.addConnectorDescription(folderSurveyActionProviderClassName, report);
+        this.addConnectorDescription(fileSurveyActionProviderClassName, report);
+        this.addConnectorDescription(csvFileSurveyActionProviderClassName, report);
+        this.addConnectorDescription(sequentialSurveyPipelineProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

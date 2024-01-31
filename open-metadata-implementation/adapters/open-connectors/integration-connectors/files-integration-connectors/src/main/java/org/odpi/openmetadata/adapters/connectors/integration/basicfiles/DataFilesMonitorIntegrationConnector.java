@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFol
 import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
@@ -46,7 +46,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
         return super.getFolderElement(dataFolderFile,
                                       DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName(),
                                       DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
-                                      BasicFileStoreProvider.class.getName());
+                                      BasicFolderProvider.class.getName());
     }
 
 
