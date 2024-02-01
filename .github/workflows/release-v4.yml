@@ -88,7 +88,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.3.0
         with:
           name: Assemblies
           path: open-metadata-distribution/open-metadata-assemblies/build/distributions/*.gz
