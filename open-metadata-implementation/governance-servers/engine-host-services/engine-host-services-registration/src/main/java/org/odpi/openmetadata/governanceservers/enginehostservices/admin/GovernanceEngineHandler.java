@@ -340,7 +340,7 @@ public abstract class GovernanceEngineHandler
         if (governanceEngineProperties == null)
         {
             throw new PropertyServerException(EngineHostServicesErrorCode.GOVERNANCE_ENGINE_NOT_INITIALIZED.getMessageDefinition(serverName,
-                                                                                                                            governanceEngineName),
+                                                                                                                                 governanceEngineName),
                                                this.getClass().getName(),
                                                methodName);
         }

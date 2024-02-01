@@ -13,16 +13,28 @@ import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorErr
  * SearchIntegratorConnector is the base class for an integration connector that is managed by the
  * Search Integrator OMIS.
  */
-public abstract class SearchIntegratorConnector extends IntegrationConnectorBase implements  SearchIntegratorOMISConnector {
+public abstract class SearchIntegratorConnector extends IntegrationConnectorBase implements  SearchIntegratorOMISConnector
+{
     private SearchIntegratorContext context = null;
 
 
-    public SearchIntegratorConnector() {
+    /**
+     * Constructor
+     */
+    public SearchIntegratorConnector()
+    {
         super();
         System.out.println("calling constructor");
     }
 
-    public SearchIntegratorConnector(SearchIntegratorContext context) {
+
+    /**
+     * Constructor
+     *
+     * @param context integration context
+     */
+    public SearchIntegratorConnector(SearchIntegratorContext context)
+    {
         super.setContext(context);
         this.context = context;
     }
@@ -32,7 +44,8 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
      *
      * @param context context for this connector's private use.
      */
-    public synchronized void setContext(SearchIntegratorContext context) {
+    public synchronized void setContext(SearchIntegratorContext context)
+    {
         super.setContext(context);
         this.context = context;
     }
@@ -43,13 +56,18 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
      * @return context for this connector's private use.
      * @throws ConnectorCheckedException internal issue setting up context
      */
-    public synchronized SearchIntegratorContext getContext() throws ConnectorCheckedException {
+    public synchronized SearchIntegratorContext getContext() throws ConnectorCheckedException
+    {
         final String methodName = "getContext";
 
-        if (context != null) {
+        if (context != null)
+        {
             return this.context;
-        } else {
-            if (auditLog != null) {
+        }
+        else
+        {
+            if (auditLog != null)
+            {
                 auditLog.logMessage(methodName, SearchIntegratorAuditCode.NULL_CONTEXT.getMessageDefinition(connectorName));
             }
 

@@ -139,7 +139,7 @@ public class GovernedAssetHandler {
         return repositoryHelper.isTypeOf(serverName, entityType.getTypeDefName(), Constants.SCHEMA_ATTRIBUTE);
     }
 
-    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "createSoftwareServerCapability";
         invalidParameterHandler.validateUserId(userId, methodName);
 

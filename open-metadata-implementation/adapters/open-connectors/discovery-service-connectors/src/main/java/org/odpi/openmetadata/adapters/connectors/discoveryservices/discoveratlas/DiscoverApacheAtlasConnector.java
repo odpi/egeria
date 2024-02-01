@@ -73,6 +73,7 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
     private final static String attachedBusinessMetadataTypesAnnotationTypeName = "Apache Atlas Attached Business Metadata Types";
     private final static String attachedEnd1EntityTypesAnnotationTypeName       = "Apache Atlas Attached End 1 Entity Types";
     private final static String attachedEnd2EntityTypesAnnotationTypeName       = "Apache Atlas Attached End 2 Entity Types";
+    private final static String attachedPairedEntityTypesAnnotationTypeName     = "Apache Atlas Attached Entity Type Pairs";
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
@@ -256,7 +257,7 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
                     {
                         /*
                          * The final step in the analysis is to retrieve each entity instance from the Apache Atlas repository and
-                         * Create data profile annotations based on the number of instances of each type discovered.
+                         * create data profile annotations based on the number of instances of each type discovered.
                          */
                         discoveryAnalysisReportStore.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
 
@@ -463,6 +464,19 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
                             annotationStore.addAnnotationToDataField(dataFieldGUID, dataProfileAnnotation);
+
+                            /*
+                             * Pair
+                             */
+                            dataProfileAnnotation = new DataProfileAnnotation();
+
+                            dataProfileAnnotation.setAnalysisStep(DiscoverApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
+                            dataProfileAnnotation.setAnnotationType(attachedPairedEntityTypesAnnotationTypeName);
+                            dataProfileAnnotation.setExplanation("Count of entity type pairs for this type of relationship.");
+                            dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
+                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+
+                            annotationStore.addAnnotationToDataField(dataFieldGUID, dataProfileAnnotation);
                         }
                     }
                 }
@@ -631,6 +645,11 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
                 }
             }
 
+
+            /*
+             * Process the relationships attached to the entity.  Notice that because we are processing relationships from an entity perspective,
+             * each relationship is processed twice.  Therefore, the relationship oriented counts are only incremented when the entity is at end 1.
+             */
             if ((atlasRelationships != null) && (! atlasRelationships.isEmpty()))
             {
                 for (AtlasRelationship relationship : atlasRelationships)
@@ -648,6 +667,9 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
                     if (relationship.getEnd1().getGuid().equals(atlasEntity.getGuid()))
                     {
                         relationshipTypeMetrics.incrementInstanceCount(); // only count relationship once
+                        relationshipTypeMetrics.incrementEntityPairCount(relationship.getEnd1().getTypeName(),
+                                                                         relationship.getEnd2().getTypeName());
+
                         relationshipTypeMetrics.incrementEntityAtEnd1Count(entityTypeName);
                         entityTypeMetrics.incrementRelationshipEnd1Count(relationshipTypeName);
                     }
@@ -1094,6 +1116,7 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
         private int                        instanceCount = 0;
         private final Map<String, Integer> entityAtEnd1Count = new HashMap<>();
         private final Map<String, Integer> entityAtEnd2Count = new HashMap<>();
+        private final Map<String, Integer> entityPairCount   = new HashMap<>();
 
 
         /**
@@ -1141,6 +1164,30 @@ public class DiscoverApacheAtlasConnector extends DiscoveryService
             else
             {
                 entityAtEnd2Count.put(entityTypeName, currentCount + 1);
+            }
+        }
+
+
+        /**
+         * Increment the count of entities of particular types connected via this relationship.
+         *
+         * @param entityOneTypeName entity type
+         * @param entityTwoTypeName entity type
+         */
+        void incrementEntityPairCount(String entityOneTypeName,
+                                      String entityTwoTypeName)
+        {
+            String pairName = entityOneTypeName + ":" + entityTwoTypeName;
+
+            Integer currentCount = entityPairCount.get(pairName);
+
+            if (currentCount == null)
+            {
+                entityPairCount.put(pairName, 0);
+            }
+            else
+            {
+                entityPairCount.put(entityOneTypeName, currentCount + 1);
             }
         }
     }

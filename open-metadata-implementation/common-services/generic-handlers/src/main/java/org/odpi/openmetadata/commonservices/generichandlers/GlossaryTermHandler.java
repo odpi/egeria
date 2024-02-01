@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities;
@@ -97,8 +99,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 if ((typeDef != null) && (typeDef.getStatus() == TypeDefStatus.ACTIVE_TYPEDEF) && (typeDef instanceof RelationshipDef relationshipDef))
                 {
-                    if ((relationshipDef.getEndDef1().getEntityType().getName().equals(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)) &&
-                        (relationshipDef.getEndDef2().getEntityType().getName().equals(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)))
+                    if ((relationshipDef.getEndDef1().getEntityType().getName().equals(OpenMetadataType.GLOSSARY_TERM_TYPE_NAME)) &&
+                        (relationshipDef.getEndDef2().getEntityType().getName().equals(OpenMetadataType.GLOSSARY_TERM_TYPE_NAME)))
                     {
                         relationshipNames.add(relationshipDef.getName());
                     }
@@ -178,15 +180,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         }
         else if ((initialStatus == null) || (initialStatus == InstanceStatus.ACTIVE))
         {
-            typeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+            typeName = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
         }
         else
         {
-            typeName = OpenMetadataAPIMapper.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+            typeName = OpenMetadataType.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
         }
 
         TypeDef glossaryTypeDef = invalidParameterHandler.validateTypeDefName(typeName,
-                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                               serviceName,
                                                                               methodName,
                                                                               repositoryHelper);
@@ -217,7 +219,16 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        builder.setAnchors(userId, glossaryGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
+
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String glossaryTermGUID = this.createBeanInRepository(userId,
@@ -241,15 +252,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                false,
                                                false,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                               OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                               OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                null,
                                                effectiveTime,
                                                methodName);
@@ -315,17 +326,25 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        builder.setAnchors(userId, glossaryGUID, methodName);
+        this.addAnchorGUIDToBuilder(userId,
+                                    glossaryGUID,
+                                    glossaryGUIDParameterName,
+                                    false,
+                                    false,
+                                    null,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String glossaryTermGUID = this.createBeanFromTemplate(userId,
                                                               externalSourceGUID,
                                                               externalSourceName,
                                                               templateGUID,
                                                               templateGUIDParameterName,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                              OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                               qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
                                                               builder,
                                                               supportedZones,
                                                               deepCopy,
@@ -343,8 +362,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceName,
                                                   glossaryTermGUID,
                                                   glossaryTermGUIDParameterName,
-                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                  OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                   false,
                                                   false,
                                                   initialStatus,
@@ -361,15 +380,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                false,
                                                false,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                               OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                               OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                null,
                                                null,
                                                methodName);
@@ -446,7 +465,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                   OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -524,8 +543,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                           externalSourceName,
                                           glossaryTermGUID,
                                           glossaryTermGUIDParameterName,
-                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                          OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
@@ -578,7 +597,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         templateGUID,
                                                                         templateGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -587,7 +606,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         EntityDetail termEntity = repositoryHandler.getEntityByGUID(userId,
                                                                     glossaryTermGUID,
                                                                     glossaryTermGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     effectiveTime,
@@ -614,7 +633,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                         /*
                          * Ignore qualified name.
                          */
-                        if (! OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME.equals(propertyName))
+                        if (! OpenMetadataProperty.QUALIFIED_NAME.name.equals(propertyName))
                         {
                             templateProperties.setProperty(propertyName, templateEntity.getProperties().getPropertyValue(propertyName));
                         }
@@ -627,8 +646,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         externalSourceName,
                                         termEntity,
                                         glossaryTermGUIDParameterName,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -643,14 +662,14 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 for (Classification classification : templateEntity.getClassifications())
                 {
-                    if (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                    if (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getName()))
                     {
                         this.setClassificationInRepository(userId,
                                                            externalSourceGUID,
                                                            externalSourceName,
                                                            termEntity,
                                                            glossaryTermGUIDParameterName,
-                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                            classification.getType().getTypeDefGUID(),
                                                            classification.getType().getTypeDefName(),
                                                            classification.getProperties(),
@@ -670,7 +689,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 for (Classification classification : termEntity.getClassifications())
                 {
-                    if ((! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classification.getName())) &&
+                    if ((! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getName())) &&
                                 (! updatedClassifications.contains(classification.getName())))
                     {
                         this.removeClassificationFromRepository(userId,
@@ -678,7 +697,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                 externalSourceName,
                                                                 termEntity.getGUID(),
                                                                 glossaryTermGUIDParameterName,
-                                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                 classification.getType().getTypeDefGUID(),
                                                                 classification.getType().getTypeDefName(),
                                                                 forLineage,
@@ -729,7 +748,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         EntityDetail termEntity = repositoryHandler.getEntityByGUID(userId,
                                                                     glossaryTermGUID,
                                                                     glossaryTermGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     effectiveTime,
@@ -738,11 +757,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         List<Relationship> termAnchors = this.getAttachmentLinks(userId,
                                                                  termEntity.getGUID(),
                                                                  glossaryTermGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                 OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                                                 OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                                  null,
-                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                 OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                                  1,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
@@ -773,9 +792,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 termEntity.getGUID(),
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -789,15 +808,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   newGlossaryGUID,
                                   newGlossaryGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TYPE_NAME,
                                   termEntity.getGUID(),
                                   glossaryTermGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                  OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                  OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                   null,
                                   null,
                                   null,
@@ -858,15 +877,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   glossaryCategoryGUID,
                                   glossaryCategoryGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                  OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
+                                  OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
                                   builder.getTermCategorizationProperties(description, relationshipStatus, methodName),
                                   effectiveFrom,
                                   effectiveTo,
@@ -918,15 +937,15 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       glossaryCategoryGUID,
                                       glossaryCategoryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                       glossaryTermGUID,
                                       glossaryTermGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                      OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
+                                      OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -1001,10 +1020,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   glossaryTermOneGUID,
                                   glossaryTermOneGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   glossaryTermTwoGUID,
                                   glossaryTermTwoGUIDParameterName,
-                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -1096,10 +1115,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         externalSourceName,
                                         glossaryTermOneGUID,
                                         glossaryTermOneGUIDParameterName,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         glossaryTermTwoGUID,
                                         glossaryTermTwoGUIDParameterName,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -1171,11 +1190,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       glossaryTermOneGUID,
                                       glossaryTermOneGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                       glossaryTermTwoGUID,
                                       glossaryTermTwoGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       relationshipTypeGUID,
@@ -1228,9 +1247,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            isMergeUpdate,
                                            forLineage,
@@ -1277,9 +1296,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1330,9 +1349,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            isMergeUpdate,
                                            forLineage,
@@ -1379,9 +1398,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1438,9 +1457,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
                                            builder.getActivityTypeProperties(activityType, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -1487,9 +1506,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1548,9 +1567,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
                                            builder.getContextDescriptionProperties(description, scope, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -1597,9 +1616,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1650,9 +1669,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            isMergeUpdate,
                                            forLineage,
@@ -1699,9 +1718,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.SPINE_OBJECT_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.SPINE_OBJECT_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1752,9 +1771,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            isMergeUpdate,
                                            forLineage,
@@ -1801,9 +1820,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.SPINE_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1854,9 +1873,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                           OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                            isMergeUpdate,
                                            forLineage,
@@ -1903,9 +1922,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
-                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataAPIMapper.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1949,7 +1968,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            glossaryTermGUID,
                                                            glossaryTermGUIDParameterName,
-                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                            null,
                                                            null,
                                                            true,
@@ -1965,9 +1984,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                          entity.getGUID(),
                                          entity,
                                          glossaryTermGUIDParameterName,
-                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
-                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                         OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID,
+                                         OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                          ClassificationOrigin.ASSIGNED,
                                          entity.getGUID(),
                                          builder.getMementoProperties(archiveDate,
@@ -2016,8 +2035,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     glossaryTermGUID,
                                     glossaryTermGUIDParameterName,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                    OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -2063,8 +2082,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         final String entityGUIDParameterName = "termEntity.getGUID";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
@@ -2073,8 +2092,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
          */
         RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
                                                                          name,
-                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                                         OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                          specificMatchPropertyNames,
                                                                          true,
                                                                          false,
@@ -2111,9 +2130,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                               effectiveTime,
                                               methodName);
 
-                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorGUID))) &&
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorIdentifiers.anchorGUID))) &&
                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(entity.getStatus()))))
                     {
                         matchCount ++;
@@ -2181,8 +2200,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
          */
         RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
                                                                          searchString,
-                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                                         OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                                                          null,
                                                                          false,
                                                                          false,
@@ -2208,7 +2227,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                 {
                     this.validateAnchorEntity(userId,
                                               termEntity.getGUID(),
-                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                               termEntity,
                                               entityGUIDParameterName,
                                               false,
@@ -2219,9 +2238,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                               effectiveTime,
                                               methodName);
 
-                    String termAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
+                    AnchorIdentifiers termAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
 
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorGUID))) &&
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorIdentifiers.anchorGUID))) &&
                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
                     {
                         matchCount ++;
@@ -2238,10 +2257,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                         List<EntityDetail> categoryEntities = this.getAttachedEntities(userId,
                                                                                        termEntity.getGUID(),
                                                                                        entityGUIDParameterName,
-                                                                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
-                                                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                       OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                                       OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                       OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                       OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                        null,
                                                                                        null,
                                                                                        1,
@@ -2259,9 +2278,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                             {
                                 if (categoryEntity != null)
                                 {
-                                    String categoryAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(categoryEntity, methodName);
+                                    AnchorIdentifiers categoryAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(categoryEntity, methodName);
 
-                                    if ((glossaryGUID.equals(categoryAnchorGUID)) &&
+                                    if ((glossaryGUID.equals(categoryAnchorIdentifiers.anchorGUID)) &&
                                         ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
                                     {
                                         matchCount ++;
@@ -2320,7 +2339,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameter,
-                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,
@@ -2362,10 +2381,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElements(userId,
                                         glossaryGUID,
                                         glossaryGUIDParameterName,
-                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                        OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                        OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                        OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -2418,10 +2437,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             return this.getAttachedElements(userId,
                                             glossaryCategoryGUID,
                                             glossaryCategoryGUIDParameterName,
-                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
-                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                            OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
+                                            OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,
                                             2,
@@ -2437,14 +2456,14 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             return this.getAttachedElements(userId,
                                             glossaryCategoryGUID,
                                             glossaryCategoryGUIDParameterName,
-                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
-                                            OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                            OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
+                                            OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,
                                             limitResultsByStatus,
-                                            OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                            OpenMetadataType.STATUS_PROPERTY_NAME,
                                             2,
                                             forLineage,
                                             forDuplicateProcessing,
@@ -2462,6 +2481,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param glossaryGUIDParameterName property supplying the glossaryGUID
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
@@ -2480,6 +2500,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
     public List<B>  getRelatedTerms(String        userId,
                                     String        glossaryGUID,
                                     String        glossaryGUIDParameterName,
+                                    String        relationshipTypeName,
                                     List<Integer> limitResultsByStatus,
                                     int           startFrom,
                                     int           pageSize,
@@ -2490,15 +2511,26 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            relationshipTypeName,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
         if ((limitResultsByStatus == null) || (limitResultsByStatus.isEmpty()))
         {
             return this.getAttachedElements(userId,
                                             glossaryGUID,
                                             glossaryGUIDParameterName,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                            null,
-                                            null,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                            relationshipTypeGUID,
+                                            relationshipTypeName,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,
                                             0,
@@ -2514,14 +2546,14 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             return this.getAttachedElements(userId,
                                             glossaryGUID,
                                             glossaryGUIDParameterName,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                            null,
-                                            null,
-                                            OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                            relationshipTypeGUID,
+                                            relationshipTypeName,
+                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                             null,
                                             null,
                                             limitResultsByStatus,
-                                            OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                            OpenMetadataType.STATUS_PROPERTY_NAME,
                                             0,
                                             forLineage,
                                             forDuplicateProcessing,
@@ -2572,9 +2604,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         null,
                                         null,
                                         0,

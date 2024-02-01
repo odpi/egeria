@@ -44,7 +44,7 @@ jobs:
           queries: security-and-quality
           ram: 4096
       - name: Build
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           # codeQL requires a full before/after build to compare results. Caching can result in action failing
           #cache-read-only: true

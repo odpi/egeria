@@ -190,6 +190,7 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
                 ", superType=" + superType +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 ", origin='" + origin + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +

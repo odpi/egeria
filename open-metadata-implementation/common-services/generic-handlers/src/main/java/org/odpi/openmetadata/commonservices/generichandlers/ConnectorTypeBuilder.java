@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -129,8 +131,8 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,
-              OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+              OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+              OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -155,91 +157,91 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SUPPORTED_ASSET_TYPE_NAME,
+                                                                  OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME,
                                                                   supportedAssetTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXPECTED_DATA_FORMAT,
+                                                                  OpenMetadataType.EXPECTED_DATA_FORMAT,
                                                                   expectedDataFormat,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONNECTOR_PROVIDER_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME,
                                                                   connectorProviderClassName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME,
+                                                                  OpenMetadataType.CONNECTOR_FRAMEWORK_NAME,
                                                                   connectorFrameworkName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                  OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE,
                                                                   connectorInterfaceLanguage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.CONNECTOR_INTERFACES,
+                                                                       OpenMetadataType.CONNECTOR_INTERFACES,
                                                                        connectorInterfaces,
                                                                        methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TARGET_TECHNOLOGY_SOURCE,
+                                                                  OpenMetadataType.TARGET_TECHNOLOGY_SOURCE,
                                                                   targetTechnologySource,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TARGET_TECHNOLOGY_NAME,
+                                                                  OpenMetadataType.TARGET_TECHNOLOGY_NAME,
                                                                   targetTechnologyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.TARGET_TECHNOLOGY_INTERFACES,
+                                                                       OpenMetadataType.TARGET_TECHNOLOGY_INTERFACES,
                                                                        targetTechnologyInterfaces,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.TARGET_TECHNOLOGY_VERSIONS,
+                                                                       OpenMetadataType.TARGET_TECHNOLOGY_VERSIONS,
                                                                        targetTechnologyVersions,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataType.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
                                                                        recognizedAdditionalProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataType.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
                                                                        recognizedSecuredProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataType.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
                                                                        recognizedConfigurationProperties,
                                                                        methodName);
 

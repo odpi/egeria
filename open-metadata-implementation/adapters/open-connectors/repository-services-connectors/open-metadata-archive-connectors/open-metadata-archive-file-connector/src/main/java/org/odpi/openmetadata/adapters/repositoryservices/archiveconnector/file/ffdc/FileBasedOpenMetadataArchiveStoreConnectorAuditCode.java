@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
  * The FileBasedOpenMetadataArchiveStoreConnectorAuditCode is used to define the message content for the Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -25,10 +24,10 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
      * FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001 - Opening file {0} for Open Metadata Archive Store
      */
     OPENING_FILE("FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
-              OMRSAuditLogRecordSeverity.STARTUP,
-              "Opening file {0} for Open Metadata Archive Store",
-              "The local server is requesting the contents of the open metadata archive store which is located in the named file.",
-              "Validate that the file name is correct.  Look particularly for extraneous quotes, " +
+                 AuditLogRecordSeverityLevel.STARTUP,
+                 "Opening file {0} for Open Metadata Archive Store",
+                 "The local server is requesting the contents of the open metadata archive store which is located in the named file.",
+                 "Validate that the file name is correct.  Look particularly for extraneous quotes, " +
                       "incorrect directory name (relative files are read from the perspective of the server's home directory) or incorrect characters.  " +
                       "Once the file name is corrected (either in the server's configuration or the command that loaded the archive) then retry the" +
                       "mechanism that loads the archive."),
@@ -37,7 +36,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
      * FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002 - Unable to open file {0}.  Message from {1} exception was {2}
      */
     BAD_FILE("FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
-              OMRSAuditLogRecordSeverity.ERROR,
+             AuditLogRecordSeverityLevel.ERROR,
               "Unable to open file {0}.  Message from {1} exception was {2}",
               "The server is is unable to open an open metadata archive store.",
               "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
@@ -45,34 +44,36 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
 
     ;
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
 
     /**
      * The constructor for FileBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
      * FileBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
-     *
      *     FileBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
+     * This will expand out to the 5 parameters shown below.
      *
-     * This will expand out to the 4 parameters shown below.
-     *
-     * @param messageId unique Id for the message
+     * @param messageId unique id for the message
      * @param severity severity of the message
      * @param message text for the message
      * @param systemAction description of the action taken by the system when the condition happened
      * @param userAction instructions for resolving the situation, if any
      */
-    FileBasedOpenMetadataArchiveStoreConnectorAuditCode(String                     messageId,
-                                                        OMRSAuditLogRecordSeverity severity,
-                                                        String                     message,
-                                                        String                     systemAction,
-                                                        String                     userAction)
+    FileBasedOpenMetadataArchiveStoreConnectorAuditCode(String                      messageId,
+                                                        AuditLogRecordSeverityLevel severity,
+                                                        String                      message,
+                                                        String                      systemAction,
+                                                        String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -84,7 +85,11 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -95,9 +100,32 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

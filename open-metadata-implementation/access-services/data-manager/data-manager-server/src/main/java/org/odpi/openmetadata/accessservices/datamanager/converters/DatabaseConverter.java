@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -90,7 +90,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     databaseProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     databaseProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

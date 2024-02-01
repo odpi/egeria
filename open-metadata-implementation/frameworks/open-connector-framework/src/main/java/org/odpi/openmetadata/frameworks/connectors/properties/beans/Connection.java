@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The connection is an object that contains the properties needed to create and initialise a connector to access a
  * specific data assets.
- *
  * The properties for a connection are defined in model 0201.  They include the following options for connector name:
  * <ul>
  *     <li>
@@ -37,7 +37,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * </ul>
  *
  *  Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
- *
  *  Other properties for the connection include:
  *  <ul>
  *      <li>
@@ -92,7 +91,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Connection extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /*
      * Attributes of a connector

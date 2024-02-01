@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,8 @@ import java.util.Objects;
  */
 public class AssetDetail extends AssetSummary
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected ExternalIdentifiers    externalIdentifiers    = null;
     protected RelatedMediaReferences relatedMediaReferences = null;
@@ -104,7 +106,8 @@ public class AssetDetail extends AssetSummary
 
         if (templateAssetDetail != null)
         {
-            schema = templateAssetDetail.getSchema();
+            schema = templateAssetDetail.getRootSchemaType();
+
             ExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
             RelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
             NoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
@@ -276,7 +279,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return SchemaElement schema object to query the schema associated with the connected asset.
      */
-    public SchemaType getSchema()
+    public SchemaType getRootSchemaType()
     {
         return schema;
     }

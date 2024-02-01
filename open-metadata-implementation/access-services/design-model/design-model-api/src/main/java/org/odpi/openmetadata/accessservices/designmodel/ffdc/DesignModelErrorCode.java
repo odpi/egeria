@@ -27,6 +27,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum DesignModelErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OMAS-DESIGN-MODEL-404-001 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-DESIGN-MODEL-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
@@ -35,30 +38,29 @@ public enum DesignModelErrorCode implements ExceptionMessageSet
     ;
 
 
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
-    private final ExceptionMessageDefinition messageDefinition;
 
     /**
-     * The constructor for DesignModelErrorCode expects to be passed one of the enumeration rows defined in
-     * DesignModelErrorCode above.   For example:
-     *
-     *     DesignModelErrorCode   errorCode = DesignModelErrorCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DesignModelErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DesignModelErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -70,7 +72,11 @@ public enum DesignModelErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -83,6 +89,12 @@ public enum DesignModelErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -90,15 +102,19 @@ public enum DesignModelErrorCode implements ExceptionMessageSet
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "DesignModelErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

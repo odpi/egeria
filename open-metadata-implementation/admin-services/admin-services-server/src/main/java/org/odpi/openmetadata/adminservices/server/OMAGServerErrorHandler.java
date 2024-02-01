@@ -115,10 +115,12 @@ public class OMAGServerErrorHandler
                                           IntegrationServiceRequestBody integrationServiceConfig,
                                           String                        methodName) throws OMAGInvalidParameterException
     {
+        final String connectorConfigsPropertyName = "integrationServerConfig.connectorConfigs";
         final String connectorConfigPropertyName = "integrationServerConfig.connectorConfig";
         final String connectorNamePropertyName = "integrationServerConfig.connectorConfig.connectorName";
 
         this.validateOMAGServerClientConfig(serverName, integrationServiceConfig, methodName);
+        this.validatePropertyNotNull(integrationServiceConfig.getIntegrationConnectorConfigs(), connectorConfigsPropertyName, serverName, methodName);
 
         for (IntegrationConnectorConfig connectorConfig : integrationServiceConfig.getIntegrationConnectorConfigs())
         {

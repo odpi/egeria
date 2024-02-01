@@ -36,6 +36,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperti
 import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -80,6 +81,7 @@ public class TopicIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public TopicIntegratorContext(String                       connectorId,
@@ -97,6 +99,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                   String                       integrationConnectorGUID,
                                   String                       externalSourceGUID,
                                   String                       externalSourceName,
+                                  AuditLog                     auditLog,
                                   int                          maxPageSize)
     {
         super(connectorId,
@@ -110,6 +113,7 @@ public class TopicIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.eventBrokerClient       = eventBrokerClient;

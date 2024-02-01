@@ -32,14 +32,14 @@ public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
      * Descriptive information about the connector for the connector type and audit log.
      */
     private static final String connectorQualifiedName = "Egeria:OpenDiscoveryService:DiscoverApacheAtlas";
-    private static final String connectorDisplayName   = "DiscoverApacheAtlas Open Discovery Service";
+    private static final String connectorDisplayName   = "Discover Apache Atlas Open Discovery Service";
     private static final String connectorDescription   = "Connector publishes insights about a deployment of Apache Atlas.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/discovery/apache-atlas-discovery-service/";
 
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName     = DiscoverApacheAtlasConnector.class.getName();
+    private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasConnector";
 
     /**
      * Property name to control how much profiling the discovery service does.
@@ -99,7 +99,7 @@ public class DiscoverApacheAtlasProvider extends DiscoveryServiceProvider
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

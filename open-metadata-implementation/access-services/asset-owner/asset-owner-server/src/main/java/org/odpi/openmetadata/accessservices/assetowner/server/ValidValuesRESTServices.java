@@ -22,7 +22,6 @@ import java.util.Date;
  * ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
- *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
@@ -86,11 +85,14 @@ public class ValidValuesRESTServices
                                                              requestBody.getQualifiedName(),
                                                              requestBody.getDisplayName(),
                                                              requestBody.getDescription(),
+                                                             requestBody.getCategory(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
                                                              false,
+                                                             false,
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
+                                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                              null,
                                                              null,
                                                              new Date(),
@@ -154,12 +156,15 @@ public class ValidValuesRESTServices
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
+                                                                    requestBody.getCategory(),
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
                                                                     false,
+                                                                    false,
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     null,
                                                                     null,
                                                                     false,
@@ -224,12 +229,15 @@ public class ValidValuesRESTServices
                                          requestBody.getQualifiedName(),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
+                                         requestBody.getCategory(),
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
+                                         false,
                                          false,
                                          requestBody.getPreferredValue(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
+                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                          null,
                                          null,
                                          true,
@@ -357,6 +365,7 @@ public class ValidValuesRESTServices
                                           isDefaultValue,
                                           null,
                                           null,
+                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
                                           false,
                                           false,
                                           new Date(),
@@ -459,6 +468,7 @@ public class ValidValuesRESTServices
                                                             validValueGUID,
                                                             false,
                                                             false,
+                                                            instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                             new Date(),
                                                             methodName));
         }
@@ -516,6 +526,7 @@ public class ValidValuesRESTServices
                                                                     pageSize,
                                                                     false,
                                                                     false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     new Date(),
                                                                     methodName));
             }
@@ -574,6 +585,7 @@ public class ValidValuesRESTServices
                                                                 pageSize,
                                                                 false,
                                                                 false,
+                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                 new Date(),
                                                                 methodName));
             }
@@ -629,6 +641,7 @@ public class ValidValuesRESTServices
                                                                     pageSize,
                                                                     false,
                                                                     false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     new Date(),
                                                                     methodName));
         }
@@ -683,6 +696,7 @@ public class ValidValuesRESTServices
                                                                  pageSize,
                                                                  false,
                                                                  false,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                  new Date(),
                                                                  methodName));
         }

@@ -2,12 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
 
+import java.io.Serial;
+
 /**
  * The RESTConfigurationException is thrown by the connector when it is not able to configure
  * a client to call a REST API.
  */
 public class RESTConfigurationException extends RESTClientCheckedExceptionBase
 {
+    @Serial
+    private static final long     serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

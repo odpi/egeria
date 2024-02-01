@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,24 +25,24 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
      * OMAG-COMMON-0001 - The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}
      */
     UNEXPECTED_EXCEPTION("OMAG-COMMON-0001",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
-             "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
-             "The request returns a PropertyServerException.",
-             "This is probably a logic error. Review the stack trace to identify where the error " +
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
+                         "The request returns a PropertyServerException.",
+                         "This is probably a logic error. Review the stack trace to identify where the error " +
                                  "occurred and work to resolve the cause."),
 
     /**
      * OMAG-COMMON-0002 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}
      */
     CLIENT_SIDE_REST_API_ERROR( "OMAG-COMMON-0002",
-             OMRSAuditLogRecordSeverity.ERROR,
+             AuditLogRecordSeverityLevel.ERROR,
              "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
              "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
              "Look for errors in the local server's console to understand and correct the source of the error.")
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -54,7 +54,7 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
      * <br><br>
      *     OMAGCommonAuditCode   auditCode = OMAGCommonAuditCode.SERVER_NOT_AVAILABLE;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -63,7 +63,7 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     OMAGCommonAuditCode(String                     messageId,
-                        OMRSAuditLogRecordSeverity severity,
+                        AuditLogRecordSeverityLevel severity,
                         String                     message,
                         String                     systemAction,
                         String                     userAction)

@@ -8,7 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 
+import java.io.Serial;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,8 +35,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ITInfrastructureProperties extends AssetProperties
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
+    private static final String deployedImplementationTypeProperty = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
+
+
+    private String deployedImplementationType = null;
 
     /**
      * Default constructor
@@ -50,6 +59,11 @@ public class ITInfrastructureProperties extends AssetProperties
     public ITInfrastructureProperties(ITInfrastructureProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.deployedImplementationType = template.getDeployedImplementationType();
+        }
     }
 
 
@@ -61,6 +75,22 @@ public class ITInfrastructureProperties extends AssetProperties
     public ITInfrastructureProperties(AssetProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            Map<String, Object> assetExtendedProperties = template.getExtendedProperties();
+
+            if (assetExtendedProperties != null)
+            {
+                if (assetExtendedProperties.get(deployedImplementationTypeProperty) != null)
+                {
+                    deployedImplementationType = assetExtendedProperties.get(deployedImplementationTypeProperty).toString();
+                    assetExtendedProperties.remove(deployedImplementationTypeProperty);
+                }
+
+                super.setExtendedProperties(assetExtendedProperties);
+            }
+        }
     }
 
 
@@ -74,8 +104,51 @@ public class ITInfrastructureProperties extends AssetProperties
     @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
-        return super.cloneToAsset(subTypeName);
+        AssetProperties assetProperties = super.cloneToAsset(subTypeName);
+
+        Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
+
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
+        if (deployedImplementationType != null)
+        {
+            assetExtendedProperties.put(deployedImplementationTypeProperty, deployedImplementationType);
+        }
+
+        if (! assetExtendedProperties.isEmpty())
+        {
+            assetProperties.setExtendedProperties(assetExtendedProperties);
+        }
+
+        return assetProperties;
     }
+
+
+
+    /**
+     * Return the type description for the technology's type.
+     *
+     * @return type description string
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the type description for the technology's type.
+     *
+     * @param platformType type description string
+     */
+    public void setDeployedImplementationType(String platformType)
+    {
+        this.deployedImplementationType = platformType;
+    }
+
 
 
     /**
@@ -87,17 +160,44 @@ public class ITInfrastructureProperties extends AssetProperties
     public String toString()
     {
         return "ITInfrastructureProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "deployedImplementationType='" + deployedImplementationType + '\'' +
+                "} " + super.toString();
+    }
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        SoftwareServerPlatformProperties that = (SoftwareServerPlatformProperties) objectToCompare;
+        return Objects.equals(deployedImplementationType, that.getDeployedImplementationType());
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), deployedImplementationType);
     }
 }

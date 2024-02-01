@@ -37,7 +37,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -787,7 +787,7 @@ public class CollaborationExchangeRESTServices
                 response.setElement(handler.getCommentByGUID(userId,
                                                              commentGUID,
                                                              guidParameterName,
-                                                             OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                             OpenMetadataType.COMMENT_TYPE_NAME,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              requestBody.getEffectiveTime(),
@@ -798,7 +798,7 @@ public class CollaborationExchangeRESTServices
                 response.setElement(handler.getCommentByGUID(userId,
                                                              commentGUID,
                                                              guidParameterName,
-                                                             OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                             OpenMetadataType.COMMENT_TYPE_NAME,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              null,
@@ -1399,7 +1399,7 @@ public class CollaborationExchangeRESTServices
                                     null,
                                     elementGUID,
                                     elementGUIDParameterName,
-                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                    OpenMetadataType.ASSET.typeName,
                                     tagGUID,
                                     tagGUIDParameterName,
                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -1462,7 +1462,7 @@ public class CollaborationExchangeRESTServices
                                          null,
                                          elementGUID,
                                          elementGUIDParameterName,
-                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                         OpenMetadataType.ASSET.typeName,
                                          tagGUID,
                                          tagGUIDParameterName,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -1518,10 +1518,10 @@ public class CollaborationExchangeRESTServices
             response.setGUIDs(handler.getAttachedElementGUIDs(userId,
                                                               tagGUID,
                                                               tagGUIDParameterName,
-                                                              OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                                              OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                                               null,
                                                               null,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                               false,
                                                               false,
                                                               startFrom,

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.oif.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
  * The OpenIntegrationAuditCode is used to define the message content for the OMRS Audit Log.
@@ -21,29 +21,41 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum OpenIntegrationAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OPEN-INTEGRATION-SERVICE-0001 - The Open Integration Service is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OPEN-INTEGRATION-SERVICE-0001",
-                         OMRSAuditLogRecordSeverity.STARTUP,
+                         AuditLogRecordSeverityLevel.STARTUP,
                          "The Open Integration Service is initializing a new server instance",
                          "The local server has started up a new instance of the Open Integration Service.  " +
                                  "It will support open integration REST requests.",
                          "This is part of the normal start up of the service.  No action is required if this service " +
                                  "startup was intentional."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0005 - "The Open Integration Service has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OPEN-INTEGRATION-SERVICE-0005",
-                        OMRSAuditLogRecordSeverity.STARTUP,
+                        AuditLogRecordSeverityLevel.STARTUP,
                         "The Open Integration Service has initialized a new instance for server {0}",
                         "The Open Integration Service has completed initialization of a new server instance.",
                         "Verify that there are no error messages logged by the service.  If there are none it means that " +
                                 "all parts of the service initialized successfully."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0006 - The Open Integration Service are unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OPEN-INTEGRATION-SERVICE-0006",
-                             OMRSAuditLogRecordSeverity.ERROR,
+                             AuditLogRecordSeverityLevel.ERROR,
                              "The Open Integration Service are unable to initialize a new instance; error message is {0}",
                              "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0008 - The Open Integration Service detected an unexpected {0} exception during the initialization of its services; error message is {1}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION("OPEN-INTEGRATION-SERVICE-0008",
-                                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                                        AuditLogRecordSeverityLevel.EXCEPTION,
                                         "The Open Integration Service detected an unexpected {0} exception during the " +
                                                 "initialization of its services; error message is {1}",
                                         "The service detected an error during the start up of a specific server instance.  Its services are not available " +
@@ -51,22 +63,31 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
                                         "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0009 - The Open Integration Service are shutting down server instance {0}
+     */
     SERVICE_TERMINATING("OPEN-INTEGRATION-SERVICE-0009",
-                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Open Integration Service are shutting down server instance {0}",
                         "The local handlers has requested shut down of the Open Integration Service.",
                         "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0012 - The Open Integration Service are shutting down its instance for server {0}
+     */
     SERVICE_SHUTDOWN("OPEN-INTEGRATION-SERVICE-0012",
-                     OMRSAuditLogRecordSeverity.SHUTDOWN,
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
                      "The Open Integration Service are shutting down its instance for server {0}",
                      "The local administrator has requested shut down of an Open Integration Service instance.  " +
                              "The open integration service interfaces are no longer available and no configuration events will " +
                              "be published to the out topic",
                      "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0020 - Log message for element {0} from integration connector {1}: {2}
+     */
     ASSET_AUDIT_LOG("OPEN-INTEGRATION-SERVICE-0020",
-                    OMRSAuditLogRecordSeverity.INFO,
+                    AuditLogRecordSeverityLevel.INFO,
                     "Log message for element {0} from integration connector {1}: {2}",
                     "A governance service has logged a message about an asset.",
                     "Review the message to ensure no action is required."),
@@ -74,8 +95,13 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
+    
     /**
      * The constructor for OpenIntegrationAuditCode expects to be passed one of the enumeration rows defined in
      * OpenIntegrationAuditCode above.   For example:
@@ -90,17 +116,17 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    OpenIntegrationAuditCode(String                     messageId,
-                             OMRSAuditLogRecordSeverity severity,
-                             String                     message,
-                             String                     systemAction,
-                             String                     userAction)
+    OpenIntegrationAuditCode(String                      messageId,
+                             AuditLogRecordSeverityLevel severity,
+                             String                      message,
+                             String                      systemAction,
+                             String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -112,7 +138,11 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -125,6 +155,11 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -138,8 +173,12 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OpenIntegrationAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

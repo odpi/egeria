@@ -19,14 +19,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValueProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
-    private String  displayName    = null;
-    private String  description    = null;
-    private String  usage          = null;
-    private String  scope          = null;
-    private String  preferredValue = null;
-    private boolean isDeprecated   = false;
+    private String  displayName     = null;
+    private String  description     = null;
+    private String  usage           = null;
+    private String  scope           = null;
+    private String  category        = null;
+    private String  preferredValue  = null;
+    private boolean isDeprecated    = false;
+    private boolean isCaseSensitive = false;
 
 
     /**
@@ -52,8 +52,10 @@ public class ValidValueProperties extends ReferenceableProperties
             description = template.getDescription();
             usage = template.getUsage();
             scope = template.getScope();
+            category = template.getCategory();
             preferredValue = template.getPreferredValue();
             isDeprecated = template.getIsDeprecated();
+            isCaseSensitive = template.getIsCaseSensitive();
         }
     }
 
@@ -149,6 +151,28 @@ public class ValidValueProperties extends ReferenceableProperties
 
 
     /**
+     * Return the category of reference data.
+     *
+     * @return string name
+     */
+    public String getCategory()
+    {
+        return category;
+    }
+
+
+    /**
+     * Set up the category of reference data.
+     *
+     * @param category string name
+     */
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+
+    /**
      * Return the preferred values to use in implementations (normally used with definitions)
      *
      * @return String value
@@ -191,6 +215,29 @@ public class ValidValueProperties extends ReferenceableProperties
         isDeprecated = deprecated;
     }
 
+
+    /**
+     * Return whether this valid value is case-sensitive, or will match irrespective of case.
+     *
+     * @return boolean flag
+     */
+    public boolean getIsCaseSensitive()
+    {
+        return isCaseSensitive;
+    }
+
+
+    /**
+     * Set up whether this valid value is case-sensitive, or will match irrespective of case.
+     *
+     * @param caseSensitive boolean flag
+     */
+    public void setIsCaseSensitive(boolean caseSensitive)
+    {
+        isCaseSensitive = caseSensitive;
+    }
+
+
     /**
      * Generate a string containing the properties.
      *
@@ -200,19 +247,18 @@ public class ValidValueProperties extends ReferenceableProperties
     public String toString()
     {
         return "ValidValueProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", displayName='" + displayName + '\'' +
+                       "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", usage='" + usage + '\'' +
                        ", scope='" + scope + '\'' +
+                       ", category='" + category + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", isDeprecated=" + isDeprecated +
+                       ", isCaseSensitive=" + isCaseSensitive +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -243,7 +289,9 @@ public class ValidValueProperties extends ReferenceableProperties
                 Objects.equals(description, that.description) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
+                Objects.equals(category, that.category) &&
                 Objects.equals(isDeprecated, that.isDeprecated) &&
+                Objects.equals(isCaseSensitive, that.isCaseSensitive) &&
                 Objects.equals(preferredValue, that.preferredValue);
     }
 
@@ -256,6 +304,6 @@ public class ValidValueProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue, isDeprecated);
+        return Objects.hash(super.hashCode(), displayName, description, usage, scope, category, preferredValue, isDeprecated, isCaseSensitive);
     }
 }

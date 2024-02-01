@@ -14,7 +14,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The PropertyCondition class provides support for searching against a single property using a single comparison
  * mechanism, or for nesting further SearchProperties.
- *
  * The use of {@literal nestedConditions} is mutually exclusive with the use of the {@literal property},
  * {@literal operator}, {@literal value} construct.
  */

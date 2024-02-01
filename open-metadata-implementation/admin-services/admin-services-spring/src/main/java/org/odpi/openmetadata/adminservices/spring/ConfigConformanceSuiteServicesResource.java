@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGConformanceSuiteConfigServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
@@ -42,6 +43,12 @@ public class ConfigConformanceSuiteServicesResource
      */
     @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/repositories")
 
+    @Operation(summary="enableRepositoryConformanceSuiteWorkbench",
+               description="Request that the conformance suite services are activated in this server to test the" +
+                                   " support of the repository services running in the server named tutRepositoryServerName.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String                               userId,
                                                                   @PathVariable String                               serverName,
                                                                   @RequestBody  RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
@@ -63,6 +70,12 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/performance")
+
+    @Operation(summary="enableRepositoryPerformanceSuiteWorkbench",
+               description="Request that the conformance suite services are activated in this server to test the" +
+                                   " performance of the repository services running in the server named tutRepositoryServerName.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
 
     public VoidResponse enableRepositoryPerformanceSuiteWorkbench(@PathVariable String                               userId,
                                                                   @PathVariable String                               serverName,
@@ -86,6 +99,12 @@ public class ConfigConformanceSuiteServicesResource
      */
     @PostMapping(path = "/conformance-suite-workbenches/platform-workbench/platforms")
 
+    @Operation(summary="enablePlatformConformanceSuiteWorkbench",
+               description="Request that the conformance suite services are activated in this server to test the" +
+                                   " support of the platform services running in the server named tutPlatformRootURL.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse enablePlatformConformanceSuiteWorkbench(@PathVariable String         userId,
                                                                 @PathVariable String         serverName,
                                                                 @RequestBody  URLRequestBody requestBody)
@@ -105,6 +124,12 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/repository-workbench")
+
+    @Operation(summary="disableRepositoryConformanceSuiteServices",
+               description="Request that the repository conformance suite tests are deactivated in this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    userId,
                                                                   @PathVariable String    serverName)
     {
@@ -113,7 +138,7 @@ public class ConfigConformanceSuiteServicesResource
 
 
     /**
-     * Request that the repository conformance suite tests are deactivated in this server.
+     * Request that the platform conformance suite tests are deactivated in this server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -123,6 +148,12 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches/platform-workbench")
+
+    @Operation(summary="disablePlatformConformanceSuiteServices",
+               description="Request that the platform conformance suite tests are deactivated in this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    userId,
                                                                 @PathVariable String    serverName)
     {
@@ -131,7 +162,7 @@ public class ConfigConformanceSuiteServicesResource
 
 
     /**
-     * Request that the conformance suite services are deactivated in this server.
+     * Request that all the conformance suite services are deactivated in this server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -141,6 +172,12 @@ public class ConfigConformanceSuiteServicesResource
      * OMAGConfigurationErrorException unexpected exception.
      */
     @DeleteMapping(path = "/conformance-suite-workbenches")
+
+    @Operation(summary="disableAllConformanceSuiteWorkbenches",
+               description="Request that all the conformance suite services are deactivated in this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/guides/cts/overview/"))
+
     public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    userId,
                                                               @PathVariable String    serverName)
     {

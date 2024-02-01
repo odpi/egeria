@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -57,14 +57,12 @@ public class AssetConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof Asset)
+            if (returnBean instanceof Asset bean)
             {
-                Asset bean = (Asset) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.ASSET_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.ASSET.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -97,16 +95,16 @@ public class AssetConverter<B> extends OCFConverter<B>
                  * The values in the classifications override the values in the main properties of the Asset's entity.
                  * Having these properties in the main entity is deprecated.
                  */
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
                 bean.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
                 bean.setOwner(this.getOwner(instanceProperties));
                 bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
                 Map<String, String> originMap = this.getOtherOriginValues(instanceProperties);
 
@@ -122,12 +120,12 @@ public class AssetConverter<B> extends OCFConverter<B>
 
                     if (orgOriginValue != null)
                     {
-                        originMap.put(OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME, orgOriginValue);
+                        originMap.put(OpenMetadataType.ORGANIZATION_PROPERTY_NAME, orgOriginValue);
                     }
 
                     if (bizOriginValue != null)
                     {
-                        originMap.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME, bizOriginValue);
+                        originMap.put(OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME, bizOriginValue);
                     }
                 }
 

@@ -150,6 +150,16 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-013 - Unable to initiate an instance of the {0} governance action type because the name is not recognized
+     */
+    UNKNOWN_GOVERNANCE_ACTION_TYPE(400, "OMAG-GENERIC-HANDLERS-400-013",
+                                   "Unable to initiate an instance of the {0} governance action type because the name is not recognized",
+                                   "The system is unable to initiate a governance action type because its definition is missing.",
+                                   "Verify that the name (qualifiedName of a GovernanceActionType entity) is correct.  " +
+                                           "Either set up the caller to use the correct name or create a GovernanceActionType entity with the requested qualifiedName.  " +
+                                           "Then retry the request once the definition is added."),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */
@@ -337,30 +347,29 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
     ;
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for GenericHandlersErrorCode expects to be passed one of the enumeration rows defined in
-     * DiscoveryEngineErrorCode above.   For example:
-     * <br>
-     *     GenericHandlersErrorCode   errorCode = GenericHandlersErrorCode.ASSET_NOT_FOUND;
-     * <br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique identifier for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    GenericHandlersErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    GenericHandlersErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -372,7 +381,11 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -385,6 +398,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -399,8 +418,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "GenericHandlersErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

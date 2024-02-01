@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -17,8 +18,45 @@ import java.util.List;
  */
 class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvider
 {
-    static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
-    static final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
+    /**
+     * The optional qualified name of a data asset used for cataloguing files.  If this is null, no template is used.
+     */
+    static public final String FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "fileTemplateQualifiedName";
+
+    /**
+     * The optional qualified name of a data asset used for cataloguing directories (folders).  If it is null, no template is used.
+     */
+    static public final String DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "directoryTemplateQualifiedName";
+
+    /**
+     * An optional boolean flag to indicate whether the connector should delete the catalog entry for files that have
+     * been deleted (true) or just archive them (false - the default).
+     */
+    static public final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY     = "allowCatalogDelete";
+
+    /**
+     * An optional qualified name of a template To Do entity that is created if there is confusion identifying the correct
+     * reference data for a file being catalogued.
+     */
+    static public final String TO_DO_TEMPLATE_CONFIGURATION_PROPERTY           = "toDoTemplateQualifiedName";
+
+    /**
+     * An optional qualified name of a template Incident Report entity that is created if there is confusion identifying the correct
+     * reference data for a file being catalogued.
+     */
+    static public final String INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY = "incidentReportTemplateQualifiedName";
+
+    /**
+     * An optional flag that instructs the connector to wait for the monitoring directory to be created if it does not exist rather than
+     * throwing an exception to force the integration connector into failed state.  It can be set to any value - just defining the
+     * property causes the connector to wait.
+     */
+    static public final String WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY       = "waitForDirectory";
+
+    /**
+     * The name of the catalog target that contains the directory to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME                             = "directoryToMonitor";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -59,11 +97,16 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(TO_DO_TEMPLATE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY);
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(DeployedImplementationType.FILES_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 
@@ -74,7 +117,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

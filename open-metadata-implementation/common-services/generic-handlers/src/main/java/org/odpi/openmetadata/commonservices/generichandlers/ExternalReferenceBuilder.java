@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -95,8 +97,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -129,8 +131,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -152,8 +154,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
                              String               serviceName,
                              String               serverName)
     {
-        super(OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+        super(OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -173,32 +175,32 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  displayName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.URL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataType.URL_PROPERTY_NAME,
                                                                   url,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.REFERENCE_VERSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.REFERENCE_VERSION_PROPERTY_NAME,
                                                                   referenceVersion,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
+                                                                  OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
                                                                   organization,
                                                                   methodName);
 
@@ -223,13 +225,13 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.REFERENCE_ID_PROPERTY_NAME,
+                                                                      OpenMetadataType.REFERENCE_ID_PROPERTY_NAME,
                                                                       referenceId,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                       description,
                                                                       methodName);
 

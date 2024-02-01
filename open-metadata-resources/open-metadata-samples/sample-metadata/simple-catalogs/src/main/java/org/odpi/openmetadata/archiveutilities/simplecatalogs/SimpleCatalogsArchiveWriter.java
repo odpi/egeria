@@ -21,16 +21,16 @@ import java.util.List;
 public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
 {
     private static final String openMetadataArchiveRootName           = "SimpleCatalog";
-    private static final String eventOpenMetadataArchiveFileName      = "SimpleEventCatalog.json";
+    private static final String eventOpenMetadataArchiveFileName      = "SimpleEventCatalog.omarchive";
     private static final String eventOpenMetadataArchiveName          = "SimpleEventCatalog";
-    private static final String apiOpenMetadataArchiveFileName        = "SimpleAPICatalog.json";
+    private static final String apiOpenMetadataArchiveFileName        = "SimpleAPICatalog.omarchive";
     private static final String apiOpenMetadataArchiveName            = "SimpleAPICatalog";
-    private static final String dataOpenMetadataArchiveFileName       = "SimpleDataCatalog.json";
+    private static final String dataOpenMetadataArchiveFileName       = "SimpleDataCatalog.omarchive";
     private static final String dataOpenMetadataArchiveName           = "SimpleDataCatalog";
-    private static final String governanceOpenMetadataArchiveFileName = "SimpleGovernanceCatalog.json";
+    private static final String governanceOpenMetadataArchiveFileName = "SimpleGovernanceCatalog.omarchive";
     private static final String governanceOpenMetadataArchiveName     = "SimpleGovernanceCatalog";
 
-    private static final String comboOpenMetadataArchiveFileName      = "SimpleCatalog.json";
+    private static final String comboOpenMetadataArchiveFileName      = "SimpleCatalog.omarchive";
     private static final String comboOpenMetadataArchiveName          = "SimpleComboCatalog";
 
     /**

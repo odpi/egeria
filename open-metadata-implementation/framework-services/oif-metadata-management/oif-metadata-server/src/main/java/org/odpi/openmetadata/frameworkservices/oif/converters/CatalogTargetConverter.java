@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworkservices.oif.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -59,15 +59,15 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
             {
                 B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-                if (returnBean instanceof CatalogTarget)
+                if (returnBean instanceof CatalogTarget bean)
                 {
-                    returnBean = (B)super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName);
-
-                    CatalogTarget bean = (CatalogTarget) returnBean;
+                    bean.setRelationshipGUID(relationship.getGUID());
                     bean.setCatalogTargetName(repositoryHelper.getStringProperty(serviceName,
-                                                                                 OpenMetadataAPIMapper.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                                                  relationship.getProperties(),
                                                                                  methodName));
+                    bean.setCatalogTargetElement(super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+
                     return returnBean;
                 }
             }

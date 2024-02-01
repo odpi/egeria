@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.security.connector.SecurityIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.security.connector.SecurityIntegratorContext;
 import org.odpi.openmetadata.integrationservices.security.ffdc.SecurityIntegratorAuditCode;
@@ -188,7 +188,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof SecurityIntegratorConnector)
+        if (integrationConnector instanceof SecurityIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 SecurityIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -210,8 +210,6 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                     localServerUserId,
                                                                                     localServerPassword,
                                                                                     connectorId);
-
-            SecurityIntegratorConnector serviceSpecificConnector = (SecurityIntegratorConnector)integrationConnector;
 
             SecurityIntegratorContext integratorContext = new SecurityIntegratorContext(connectorId,
                                                                                         connectorName,

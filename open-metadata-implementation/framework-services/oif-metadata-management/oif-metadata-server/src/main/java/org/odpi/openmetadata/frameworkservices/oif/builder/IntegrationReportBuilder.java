@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.oif.builder;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -93,57 +94,57 @@ public class IntegrationReportBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SERVER_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.SERVER_NAME_PROPERTY_NAME,
                                                                   daemonName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONNECTOR_ID_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONNECTOR_ID_PROPERTY_NAME,
                                                                   connectorId,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONNECTOR_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
                                                                   connectorName,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.REFRESH_START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataType.REFRESH_START_DATE_PROPERTY_NAME,
                                                                 refreshStartDate,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.REFRESH_COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataType.REFRESH_COMPLETION_DATE_PROPERTY_NAME,
                                                                 refreshCompletionDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.CREATED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataType.CREATED_ELEMENTS_PROPERTY_NAME,
                                                                        createdElements,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.UPDATED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataType.UPDATED_ELEMENTS_PROPERTY_NAME,
                                                                        updatedElements,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.DELETED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataType.DELETED_ELEMENTS_PROPERTY_NAME,
                                                                        deletedElements,
                                                                        methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                       additionalProperties,
-                                                                       methodName);
+                                                                     properties,
+                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                     additionalProperties,
+                                                                     methodName);
 
         return properties;
     }

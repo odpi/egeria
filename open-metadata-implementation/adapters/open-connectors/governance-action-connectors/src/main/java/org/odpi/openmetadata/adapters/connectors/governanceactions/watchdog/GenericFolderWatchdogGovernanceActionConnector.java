@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
@@ -28,7 +29,6 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -102,14 +102,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         {
             try
             {
-                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, "pathName", false, false, null);
+                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, OpenMetadataProperty.PATH_NAME.name);
 
                 if (folderGUID == null)
                 {
                     throw new InvalidParameterException(GovernanceActionConnectorsErrorCode.FOLDER_ELEMENT_NOT_FOUND.getMessageDefinition(folderName),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        "folderName");
+                                                        OpenMetadataProperty.PATH_NAME.name);
                 }
             }
             catch (OCFCheckedExceptionBase error)
@@ -144,10 +144,8 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         {
             try
             {
-                if (event instanceof WatchdogMetadataElementEvent)
+                if (event instanceof WatchdogMetadataElementEvent metadataElementEvent)
                 {
-                    WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
-
                     String fileGUID = metadataElementEvent.getMetadataElement().getElementGUID();
 
                     if ((matchFolderToFileName(metadataElementEvent.getMetadataElement().getElementProperties())) || (fileInFolder(fileGUID)))
@@ -401,9 +399,6 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                                                       2,
                                                                                                                                       relationshipName,
-                                                                                                                                      false,
-                                                                                                                                      false,
-                                                                                                                                      null,
                                                                                                                                       0,
                                                                                                                                       0);
 
@@ -424,9 +419,6 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                              2,
                                                                                                              relationshipName,
-                                                                                                             false,
-                                                                                                             false,
-                                                                                                             null,
                                                                                                              0,
                                                                                                              0);
         }
@@ -449,11 +441,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
      * or the administrator requested this governance action service stop running or the hosting server is shutting down.
-     *
      * If disconnect completes before the governance action service records
      * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
      * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     *
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *

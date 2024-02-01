@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.integrationservices.database.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,16 +25,16 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-DATABASE-INTEGRATOR-0001 - The database integrator context manager is being initialized for calls to server {0} on platform {1}
      */
     CONTEXT_INITIALIZING("OMIS-DATABASE-INTEGRATOR-0001",
-                        OMRSAuditLogRecordSeverity.STARTUP,
-                        "The database integrator context manager is being initialized for calls to server {0} on platform {1}",
-                        "The Database Integrator OMIS is initializing its context manager.",
-                        "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The database integrator context manager is being initialized for calls to server {0} on platform {1}",
+                         "The Database Integrator OMIS is initializing its context manager.",
+                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
     /**
      * OMIS-DATABASE-INTEGRATOR-0002 -  Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
      */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-DATABASE-INTEGRATOR-0002",
-                                   OMRSAuditLogRecordSeverity.STARTUP,
+                                   AuditLogRecordSeverityLevel.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
                                    "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
@@ -45,7 +45,7 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-DATABASE-INTEGRATOR-0003 - Integration connector {0} has a null context
      */
     NULL_CONTEXT("OMIS-DATABASE-INTEGRATOR-0003",
-                 OMRSAuditLogRecordSeverity.ERROR,
+                 AuditLogRecordSeverityLevel.ERROR,
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
                  "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
@@ -53,8 +53,11 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -63,7 +66,7 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
      * <br><br>
      *     DatabaseIntegratorAuditCode   auditCode = DatabaseIntegratorAuditCode.SERVER_SHUTDOWN;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -71,17 +74,17 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    DatabaseIntegratorAuditCode(String                     messageId,
-                                OMRSAuditLogRecordSeverity severity,
-                                String                     message,
-                                String                     systemAction,
-                                String                     userAction)
+    DatabaseIntegratorAuditCode(String                      messageId,
+                                AuditLogRecordSeverityLevel severity,
+                                String                      message,
+                                String                      systemAction,
+                                String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -93,7 +96,11 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -104,23 +111,32 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "DatabaseIntegratorAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

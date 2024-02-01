@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseColumnProperties extends TabularColumnProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                        formula = null;
     private List<DatabaseQueryProperties> queries = null;
 

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactM
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ITProfileProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -114,7 +114,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
@@ -135,7 +135,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
 
                                     userIdentities.put(entity.getGUID(), userBean);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME))
                                 {
                                     ContactMethodElement    contactMethodBean       = new ContactMethodElement();
                                     ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
@@ -184,7 +184,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
                             {
                                 String relationshipTypeName = relationship.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -192,7 +192,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

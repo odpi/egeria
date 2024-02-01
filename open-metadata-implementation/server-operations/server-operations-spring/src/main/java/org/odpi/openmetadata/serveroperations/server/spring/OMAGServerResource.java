@@ -4,11 +4,16 @@ package org.odpi.openmetadata.serveroperations.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +60,7 @@ public class OMAGServerResource
                     "document may have changed since the server was started.  This operation makes it possible to verify the " +
                     "configuration values actually being used in the running server. " +
                                 "An InvalidParameterException is returned if the server is not running.",
-            externalDocs=@ExternalDocumentation(description="Configuration Documents",
+            externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/configuration-document"))
 
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
@@ -83,13 +88,42 @@ public class OMAGServerResource
                description="Retrieve the status for a running instance of a server. The stored configuration " +
                                    "document may have changed since the server was started.  This operation makes it possible to verify that " +
                                    "all the services. An InvalidParameterException is returned if the server is not running.",
-               externalDocs=@ExternalDocumentation(description="OMAG Server",
+               externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server"))
 
     public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String userId,
                                                           @PathVariable String serverName)
     {
         return serverOperationalServices.getActiveServerStatus(userId, serverName);
+    }
+
+
+    /**
+     * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
+     *
+     * @param userId name of the user making the request
+     * @param serverName name of the server of interest
+     * @return server name and list od services running within
+     */
+    @GetMapping(path = "/servers/{serverName}/services")
+    @Operation( summary = "getActiveServiceListForServer",
+                description="Return the list of services that are active on the named server",
+                responses = {
+                        @ApiResponse(responseCode = "200", description="List of server services",
+                                     content = @Content(
+                                             mediaType ="application/json",
+                                             schema = @Schema(implementation= ServerServicesListResponse.class)
+                                     )
+
+                        )
+                },
+                externalDocs=@ExternalDocumentation(description="Further Information",
+                                                    url="https://egeria-project.org/concepts/omag-server"))
+
+    public ServerServicesListResponse getActiveServices(@Parameter(description="calling user") @PathVariable String    userId,
+                                                        @Parameter(description="server name")  @PathVariable String    serverName)
+    {
+        return serverOperationalServices.getActiveServices(userId, serverName);
     }
 
 
@@ -109,7 +143,7 @@ public class OMAGServerResource
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
-               externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
+               externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
@@ -136,7 +170,7 @@ public class OMAGServerResource
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
-            externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
+            externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String     userId,

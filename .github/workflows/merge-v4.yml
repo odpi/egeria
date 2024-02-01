@@ -33,7 +33,7 @@ jobs:
       # Build first - lombok & other pre-processing may be needed. safer...
       - name: build and publish to maven central
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
           arguments: build publish
@@ -47,14 +47,14 @@ jobs:
       # In other cases just build but don't publish
       - name: build (no publish to maven central)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
           arguments: build
       # Now aggregate javadoc - main only
       - name: build
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
           arguments: aggregateJavadoc

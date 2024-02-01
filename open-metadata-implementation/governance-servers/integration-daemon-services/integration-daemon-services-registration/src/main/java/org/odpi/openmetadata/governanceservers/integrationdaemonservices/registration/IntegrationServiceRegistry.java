@@ -3,15 +3,14 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,7 @@ public class IntegrationServiceRegistry
             config.setIntegrationServiceURLMarker(serviceDescription.getIntegrationServiceURLMarker());
             config.setIntegrationServiceDescription(serviceDescription.getIntegrationServiceDescription());
             config.setIntegrationServiceWiki(serviceDescription.getIntegrationServiceWiki());
-            config.setIntegrationServicePartnerOMAS(serviceDescription.getIntegrationServicePartnerOMAS());
+            config.setIntegrationServicePartnerOMAS(serviceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName());
             config.setDefaultPermittedSynchronization(serviceDescription.getDefaultPermittedSynchronization());
 
             config.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
