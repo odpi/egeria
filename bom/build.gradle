@@ -61,7 +61,7 @@ ext {
     jaxbVersion = '2.3.1'
     jenaVersion = '4.7.0'
     jodatimeVersion = '2.12.5'
-    jsonldVersion = '0.13.4'
+    jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.10.0'
     junitplatformVersion = '1.9.2'
