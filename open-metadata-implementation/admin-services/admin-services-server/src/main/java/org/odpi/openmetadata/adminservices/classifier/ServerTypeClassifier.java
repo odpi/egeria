@@ -133,7 +133,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
 
             this.validateSubsystemNotConfigured(serverName,
@@ -183,7 +183,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
         }
 
@@ -218,7 +218,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
         }
 
@@ -253,7 +253,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
         }
 
@@ -288,7 +288,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
         }
 
@@ -358,7 +358,7 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 openLineageServerConfig);
         }
 

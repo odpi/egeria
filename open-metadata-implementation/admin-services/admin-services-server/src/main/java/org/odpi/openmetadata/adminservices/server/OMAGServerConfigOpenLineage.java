@@ -20,7 +20,7 @@ import java.util.List;
 public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
 
-    private static final String serviceName = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
+    private static final String serviceName = GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName();
     private static final String defaultInTopicName = "inTopic";
 
 

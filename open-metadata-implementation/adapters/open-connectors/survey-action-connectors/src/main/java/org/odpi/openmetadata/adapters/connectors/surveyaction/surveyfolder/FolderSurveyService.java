@@ -2,15 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 
-import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
+import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
-import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
@@ -21,7 +23,8 @@ import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnot
 import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileLogAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourceMeasurementAnnotation;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -113,7 +116,7 @@ public class FolderSurveyService extends AuditableSurveyService
              * the cast will fail.
              */
             connector = assetStore.getConnectorToAsset();
-            BasicFileStore assetConnector = (BasicFileStore)connector;
+            BasicFolderConnector assetConnector = (BasicFolderConnector)connector;
 
             File rootFolder = assetConnector.getFile();
 
@@ -234,29 +237,46 @@ public class FolderSurveyService extends AuditableSurveyService
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        String logFileName = "surveys/report" + surveyReportGUID + "-fileNameCounts.csv";
-        File   logFile     = new File(logFileName);
+        final String methodName = "setUpExternalLogFile";
 
-        FileWriter  fileWriter  = new FileWriter(logFile);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
+        String           logFileName = "surveys/report-" + surveyReportGUID + "-fileNameCounts.csv";
+        SurveyAssetStore assetStore = surveyContext.getAssetStore();
 
-        printWriter.print("FileName, Number of Occurrences");
+        String assetGUID = assetStore.addCSVFileToCatalog("File name counts for survey report " + surveyReportGUID,
+                                                          "Shows how many occurrences of each file name was found in the nested directory structure.",
+                                                          logFileName,
+                                                          null,
+                                                          ',',
+                                                          '"');
+
+        File logFile = new File(logFileName);
+
+        try
+        {
+            FileUtils.sizeOf(logFile);
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                             logFileName));
+        }
+        catch (IllegalArgumentException notFound)
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                              logFileName,
+                                                                                              assetGUID));
+
+            FileUtils.writeStringToFile(logFile, "FileName, Number of Occurrences\n", (String)null, false);
+        }
+
 
         for (String fileName : fileNameCounts.keySet())
         {
-            printWriter.printf("%s, %d", fileName, fileNameCounts.get(fileName));
+            String row = fileName + "," + fileNameCounts.get(fileName) + "\n";
+
+            FileUtils.writeStringToFile(logFile, row, (String)null, true);
         }
 
-        printWriter.close();
-
-        SurveyAssetStore assetStore = surveyContext.getAssetStore();
-
-        return assetStore.addCSVFileToCatalog("File name counts for survey report " + surveyReportGUID,
-                                              "Shows how many occurrences of each file name was found in the nested directory structure.",
-                                              logFileName,
-                                              null,
-                                              ',',
-                                              '"');
+        return assetGUID;
     }
 
 

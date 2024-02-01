@@ -117,6 +117,7 @@ egeria-lineage-repositories/**
 component-id-report.md
 survey-report*.md
 valid-values-report*.md
+surveys/*
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
