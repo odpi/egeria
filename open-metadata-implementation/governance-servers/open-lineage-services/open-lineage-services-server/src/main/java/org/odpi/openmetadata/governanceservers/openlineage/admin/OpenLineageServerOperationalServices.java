@@ -156,7 +156,7 @@ public class OpenLineageServerOperationalServices {
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
                 localServerName,
-                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                 maxPageSize,
                 openLineageHandler);
 

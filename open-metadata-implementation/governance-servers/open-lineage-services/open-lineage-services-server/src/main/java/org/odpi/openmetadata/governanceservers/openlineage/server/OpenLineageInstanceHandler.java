@@ -22,7 +22,7 @@ class OpenLineageInstanceHandler extends OMAGServerServiceInstanceHandler {
      * Default constructor registers the governance server
      */
     OpenLineageInstanceHandler() {
-        super(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+        super(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
     }
 
 
