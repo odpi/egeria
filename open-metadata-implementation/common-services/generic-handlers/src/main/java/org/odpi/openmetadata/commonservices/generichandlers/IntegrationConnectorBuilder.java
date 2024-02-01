@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -27,8 +28,8 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
                                 String               serviceName,
                                 String               serverName)
     {
-        super(OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-              OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+        super(OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -104,10 +105,10 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.USES_BLOCKING_CALLS_PROPERTY_NAME,
-                                                                  usesBlockingCalls,
-                                                                  methodName);
+                                                                   properties,
+                                                                   OpenMetadataType.USES_BLOCKING_CALLS_PROPERTY_NAME,
+                                                                   usesBlockingCalls,
+                                                                   methodName);
 
         return properties;
     }
@@ -126,7 +127,7 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.USES_BLOCKING_CALLS_PROPERTY_NAME,
+                                                                   OpenMetadataType.USES_BLOCKING_CALLS_PROPERTY_NAME,
                                                                    usesBlockingCalls,
                                                                    methodName);
 
@@ -147,7 +148,7 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
     {
         return repositoryHelper.addStringPropertyToInstance(serviceName,
                                                             null,
-                                                            OpenMetadataAPIMapper.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                            OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                             catalogTargetName,
                                                             methodName);
 
@@ -167,7 +168,7 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
     {
         return repositoryHelper.addStringPropertyToInstance(serviceName,
                                                             null,
-                                                            OpenMetadataAPIMapper.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                            OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                             catalogTargetName,
                                                             methodName);
 

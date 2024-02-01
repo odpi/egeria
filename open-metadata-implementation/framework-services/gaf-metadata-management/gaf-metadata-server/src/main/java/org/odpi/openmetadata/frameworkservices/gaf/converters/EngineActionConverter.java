@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedGovernanceActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -95,10 +95,12 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                     bean.setGovernanceEngineName(this.removeExecutorEngineName(instanceProperties));
                     bean.setProcessName(this.removeProcessName(instanceProperties));
                     bean.setProcessStepGUID(this.removeProcessStepGUID(instanceProperties));
-                    bean.setProcessStepGUID(this.removeGovernanceActionTypeName(instanceProperties));
+                    bean.setProcessStepName(this.removeProcessStepName(instanceProperties));
+                    bean.setGovernanceActionTypeGUID(this.removeGovernanceActionTypeGUID(instanceProperties));
+                    bean.setGovernanceActionTypeName(this.removeGovernanceActionTypeName(instanceProperties));
                     bean.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     bean.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
-                    bean.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                    bean.setActionStatus(this.removeActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                     bean.setStartTime(this.removeStartDate(instanceProperties));
                     bean.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
                     bean.setCompletionTime(this.removeCompletionDate(instanceProperties));
@@ -109,9 +111,9 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                     if (relationships != null)
                     {
                         List<RequestSourceElement> requestSourceElements          = new ArrayList<>();
-                        List<ActionTargetElement>            actionTargetElements = new ArrayList<>();
-                        List<RelatedGovernanceActionElement> previousActions      = new ArrayList<>();
-                        List<RelatedGovernanceActionElement> followOnActions      = new ArrayList<>();
+                        List<ActionTargetElement>        actionTargetElements = new ArrayList<>();
+                        List<RelatedEngineActionElement> previousActions      = new ArrayList<>();
+                        List<RelatedEngineActionElement> followOnActions      = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
@@ -120,7 +122,7 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                                 String actualTypeName = relationship.getType().getTypeDefName();
                                 instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME))
                                 {
                                     if (bean.getRequestType() == null)
                                     {
@@ -140,12 +142,12 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                                         }
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 
                                     actionTargetElement.setActionTargetName(this.removeActionTargetName(instanceProperties));
-                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, instanceProperties));
+                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.STATUS_PROPERTY_NAME, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
                                     actionTargetElement.setCompletionMessage(this.removeCompletionMessage(instanceProperties));
@@ -160,7 +162,7 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
 
                                     actionTargetElements.add(actionTargetElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
                                 {
                                     String requestSourceGUID = relationship.getEntityOneProxy().getGUID();
 
@@ -179,9 +181,9 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                                         requestSourceElements.add(requestSourceElement);
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.NEXT_ENGINE_ACTION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_NAME))
                                 {
-                                    RelatedGovernanceActionElement relatedAction = new RelatedGovernanceActionElement();
+                                    RelatedEngineActionElement relatedAction = new RelatedEngineActionElement();
 
                                     relatedAction.setGuard(this.removeGuard(relationship.getProperties()));
                                     relatedAction.setMandatoryGuard(this.removeMandatoryGuard(relationship.getProperties()));

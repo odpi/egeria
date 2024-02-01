@@ -8,13 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.oif.handlers.OpenIntegrationHandler;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
@@ -24,7 +20,6 @@ import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBod
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -83,8 +78,8 @@ public class OpenIntegrationRESTServices
                 SoftwareCapabilityHandler<Object> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     requestBody.getName(),
                                                                     parameterName,
                                                                     false,

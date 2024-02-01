@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,10 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerTypeClassificationSummary extends AdminServicesAPIResponse
+public class ServerTypeClassificationSummary
 {
-    private static final long     serialVersionUID    = 1L;
-
     private String                          serverTypeName;
     private String                          serverTypeDescription;
     private ServerTypeClassificationSummary serverSuperType;
@@ -179,19 +176,8 @@ public class ServerTypeClassificationSummary extends AdminServicesAPIResponse
                 ", serverTypeDescription='" + serverTypeDescription + '\'' +
                 ", serverSuperType=" + serverSuperType +
                 ", serverTypeWiki='" + serverTypeWiki + '\'' +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.

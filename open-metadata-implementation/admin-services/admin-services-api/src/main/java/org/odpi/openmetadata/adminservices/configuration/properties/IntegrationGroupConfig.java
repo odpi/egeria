@@ -15,9 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EngineServiceConfig provides the properties to configure a single engine service in an engine hosting server.  The engine service
- * runs one or more engines of a specific type.  The configuration for each of these engines is extracted from the partner OMAS using
- * the engine name as the qualified name.
+ * IntegrationGroupConfig provides the properties to configure a dynamic integration group in an integration
+ * daemon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

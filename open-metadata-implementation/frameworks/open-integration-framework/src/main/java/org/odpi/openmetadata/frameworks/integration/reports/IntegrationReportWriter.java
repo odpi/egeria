@@ -49,6 +49,10 @@ public class IntegrationReportWriter
     /**
      * Set up the integration report writer.
      *
+     * @param serverName name of this integration daemon
+     * @param connectorId identifier of this running integration connector instance
+     * @param connectorName name of this integration connector
+     * @param userId calling user
      * @param openIntegrationClient client used to publish reports.
      * @param openMetadataStore client used to find out about metadata elements.
      */

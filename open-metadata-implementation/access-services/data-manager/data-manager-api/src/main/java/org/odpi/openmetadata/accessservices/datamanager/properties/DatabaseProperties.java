@@ -18,8 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseProperties extends DataStoreProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String databaseType         = null;
     private String databaseVersion      = null;
     private String databaseInstance     = null;
@@ -150,10 +148,11 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", name='" + getName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       "databaseType='" + databaseType + '\'' +
+                       ", databaseVersion='" + databaseVersion + '\'' +
+                       ", databaseInstance='" + databaseInstance + '\'' +
+                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -161,10 +160,9 @@ public class DatabaseProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
-                       ", databaseType='" + databaseType + '\'' +
-                       ", databaseVersion='" + databaseVersion + '\'' +
-                       ", databaseInstance='" + databaseInstance + '\'' +
-                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +

@@ -6,6 +6,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.custo
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -18,23 +20,40 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
      */
     private static final int    connectorComponentId   = 661;
 
-    /*
+    /**
      * Unique identifier for the connector type.
      */
     private static final String connectorTypeGUID      = "49cd6772-1efd-40bb-a1d9-cc9460962ff6";
 
-    /*
+    /**
      * Descriptive information about the connector for the connector type and audit log.
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Database:JDBC";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorDisplayName   = "JDBC Relational Database Integration Connector";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorDescription   = "This connector retrieves schema information about a relational database's tables and columns and catalogs them in the open metadata ecosystem.";
+
+    /**
+     * Descriptive information about the connector for the connector type and audit log.
+     */
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/jdbc-integration-connector";
 
-    /*
+    /**
      * Class of the connector.
      */
     private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnector";
+
+    /**
+     * The name of the catalog target that contains the database to monitor.
+     */
+    static public final String CATALOG_TARGET_NAME    = "databaseToCatalog";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -78,10 +97,17 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        CatalogTargetType catalogTargetType = new CatalogTargetType();
+
+        catalogTargetType.setTypeName(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType());
+
+        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
     }
 }

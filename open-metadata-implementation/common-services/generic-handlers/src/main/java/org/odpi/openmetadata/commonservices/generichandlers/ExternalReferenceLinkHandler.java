@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -101,9 +102,9 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                      OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -167,15 +168,15 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                               externalSourceName,
                                               referenceableGUID,
                                               referenceableGUIDParameterName,
-                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                              OpenMetadataType.REFERENCEABLE.typeName,
                                               externalReferenceGUID,
                                               externalReferenceGUIDParameterName,
-                                              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
-                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                              OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
+                                              OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                               setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                               effectiveTime,
                                               methodName);
@@ -230,7 +231,7 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                         externalSourceName,
                                         relationshipGUID,
                                         relationshipGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -278,7 +279,7 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
         Relationship relationship = this.getAttachmentLink(userId,
                                                            relationshipGUID,
                                                            relationshipGUIDParameterName,
-                                                           OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                                           OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                                            effectiveTime,
                                                            methodName);
 
@@ -288,14 +289,14 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       relationship.getEntityOneProxy().getGUID(),
                                       referenceableGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       relationship.getEntityTwoProxy().getGUID(),
                                       externalReferenceGUIDParameterName,
-                                      OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                      OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                      OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                       relationship,
                                       effectiveTime,
                                       methodName);
@@ -351,10 +352,10 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                                                     startingGUID,
                                                                     startingGUIDParameterName,
                                                                     startingTypeName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
+                                                                    OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -382,7 +383,7 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                     EntityDetail entity = this.getEntityFromRepository(userId,
                                                                        relationship.getEntityTwoProxy().getGUID(),
                                                                        entityGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                       OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                        null,
                                                                        null,
                                                                        forLineage,

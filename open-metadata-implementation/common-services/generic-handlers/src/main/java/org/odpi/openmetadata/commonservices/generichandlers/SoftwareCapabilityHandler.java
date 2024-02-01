@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -129,8 +131,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           patchLevel,
                                                                           source,
                                                                           additionalProperties,
-                                                                          OpenMetadataAPIMapper.DATA_MANAGER_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
+                                                                          OpenMetadataType.DATA_MANAGER_TYPE_GUID,
+                                                                          OpenMetadataType.DATA_MANAGER_TYPE_NAME,
                                                                           null,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -143,8 +145,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         String fileSystemGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,
                                                             externalSourceName,
-                                                            OpenMetadataAPIMapper.DATA_MANAGER_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
+                                                            OpenMetadataType.DATA_MANAGER_TYPE_GUID,
+                                                            OpenMetadataType.DATA_MANAGER_TYPE_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -215,14 +217,14 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        String typeGUID = OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID;
-        String typeName = OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME;
+        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID;
+        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME;
 
         if (specializedTypeName != null)
         {
             typeName = specializedTypeName;
             typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 serviceName,
                                                                 methodName,
                                                                 repositoryHelper);
@@ -319,10 +321,10 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -379,7 +381,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            softwareCapabilityGUID,
                                            softwareCapabilityGUIDParameterName,
-                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                            classificationTypeGUID,
                                            classificationName,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -448,8 +450,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        String typeGUID = OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID;
-        String typeName = OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME;
+        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID;
+        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME;
 
         SoftwareCapabilityBuilder builder = new SoftwareCapabilityBuilder(uniqueName,
                                                                           displayName,
@@ -608,7 +610,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                             PropertyServerException
     {
         return this.getBeansByClassification(userId,
-                                             OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                             OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
                                              classificationName,
                                              forLineage,
                                              forDuplicateProcessing,
@@ -649,7 +651,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                               PropertyServerException
     {
         return this.getBeanGUIDsByClassification(userId,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
                                                  classificationName,
                                                  forLineage,
                                                  forDuplicateProcessing,

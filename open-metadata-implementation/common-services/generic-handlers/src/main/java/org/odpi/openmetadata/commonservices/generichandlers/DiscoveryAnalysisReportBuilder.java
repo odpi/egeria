@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -54,8 +56,8 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
-              OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+              OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
+              OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
               extendedProperties,
               InstanceStatus.DRAFT,
               repositoryHelper,
@@ -84,25 +86,25 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.EXECUTION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataType.EXECUTION_DATE_PROPERTY_NAME,
                                                                 creationDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.ANALYSIS_PARAMS_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ANALYSIS_PARAMETERS.name,
                                                                      analysisParameters,
                                                                      methodName);
 
@@ -110,15 +112,15 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.DISCOVERY_REQUEST_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DISCOVERY_REQUEST_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.DISCOVERY_REQUEST_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.DISCOVERY_REQUEST_STATUS_ENUM_TYPE_NAME,
                                                                     discoveryRequestStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
         }
 
         return properties;

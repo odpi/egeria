@@ -17,8 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FileFolderProperties extends DataStoreProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */
@@ -48,9 +46,7 @@ public class FileFolderProperties extends DataStoreProperties
     public String toString()
     {
         return "FileFolderProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       "deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
@@ -58,6 +54,9 @@ public class FileFolderProperties extends DataStoreProperties
                        ", encodingLanguage='" + getEncodingLanguage() + '\'' +
                        ", encodingDescription='" + getEncodingDescription() + '\'' +
                        ", encodingProperties=" + getEncodingProperties() +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +

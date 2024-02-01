@@ -7,9 +7,24 @@ package org.odpi.openmetadata.archiveutilities.designmodels.base.properties;
  */
 public enum ConceptModelDecoration
 {
+    /**
+     * None
+     */
     NONE(0),
+
+    /**
+     * AGGREGATION
+     */
     AGGREGATION(1),
+
+    /**
+     * COMPOSITION
+     */
     COMPOSITION(2),
+
+    /**
+     * EXTENSION
+     */
     EXTENSION(3);
 
 

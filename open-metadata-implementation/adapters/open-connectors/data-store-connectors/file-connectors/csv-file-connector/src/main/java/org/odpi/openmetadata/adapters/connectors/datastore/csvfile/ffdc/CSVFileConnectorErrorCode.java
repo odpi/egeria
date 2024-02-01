@@ -27,26 +27,49 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
 {
+    /**
+     * CSV-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}
+     */
     FILE_NOT_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-001",
             "The file name is null in the Connection object {0}",
             "The connector is unable to open the structure file because the name of the file is not passed in the Connection object.",
             "The name of the file should be set up in the address property of the connection's Endpoint object."),
+
+    /**
+     * CSV-FILE-CONNECTOR-400-002 - The file {0} given in Connection object {1} is a directory
+     */
     DIRECTORY_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-002",
             "The file {0} given in Connection object {1} is a directory",
             "The connector is unable to work with a directory.",
             "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * CSV-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable
+     */
     FILE_NOT_READABLE(400, "CSV-FILE-CONNECTOR-400-003",
             "The file {0} given in Connection object {1} is not readable",
             "The connector is unable to open the file.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * CSV-FILE-CONNECTOR-400-004 - File {0} does not have {1} rows
+     */
     FILE_TOO_SHORT(400, "CSV-FILE-CONNECTOR-400-004",
             "File {0} does not have {1} rows",
             "The connector is unable to retrieve the requested record because the file is too short.",
             "Ensure the record number requested is within the size of the file.  Method getRecordCount will provide information on the number of data records in the file"),
+
+    /**
+     * CSV-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
+     */
     FILE_NOT_FOUND(404, "CSV-FILE-CONNECTOR-404-001",
              "The file named {0} in the Connection object {1} does not exist",
              "The connector is unable to open the structure file.",
              "Add an existing file to the address property of the connection's Endpoint object."),
+
+    /**
+     * CSV-FILE-CONNECTOR-500-001 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
+     */
     UNEXPECTED_IO_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-001",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the structure file.",

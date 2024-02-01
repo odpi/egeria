@@ -6,15 +6,18 @@ import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.Rela
 import org.odpi.openmetadata.accessservices.digitalservice.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworkservices.gaf.client.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 
+/**
+ * Provide base converter functions for the Digital Service OMAS.
+ *
+ * @param <B> bean class
+ */
 public abstract class DigitalServiceConverterBase<B> extends OpenMetadataConverterBase<B>
 {
     /**

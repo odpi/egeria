@@ -19,6 +19,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -45,7 +46,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -176,8 +176,8 @@ class DataEngineCommonHandlerTest {
                 RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, null, null, null, methodName);
 
         verify(genericHandler, times(1)).updateRelationshipProperties(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, RELATIONSHIP_GUID, GUID_PROPERTY_NAME, RELATIONSHIP_TYPE_NAME,
-                true, null, false, false, null, methodName);
+                                                                      EXTERNAL_SOURCE_DE_QUALIFIED_NAME, RELATIONSHIP_GUID, OpenMetadataProperty.GUID.name, RELATIONSHIP_TYPE_NAME,
+                                                                      true, null, false, false, null, methodName);
     }
 
     @Test
@@ -190,7 +190,7 @@ class DataEngineCommonHandlerTest {
         verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME,
                 methodName);
         verify(genericHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, OpenMetadataProperty.GUID.name, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
                 null, null, false, false, null,methodName);
     }
 
@@ -202,7 +202,7 @@ class DataEngineCommonHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(genericHandler).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, OpenMetadataProperty.GUID.name, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
                 null, null, false, false, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> dataEngineCommonHandler.removeEntity(USER, GUID,
@@ -306,7 +306,7 @@ class DataEngineCommonHandlerTest {
         final String methodName = "getEntityForRelationship";
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         EntityDetail mockedEntity = mock(EntityDetail.class);
-        when(genericHandler.getAttachedEntity(USER, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
+        when(genericHandler.getAttachedEntity(USER, GUID, OpenMetadataProperty.GUID.name, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
                 RELATIONSHIP_TYPE_NAME, null, false, false, null,
                 methodName)).thenReturn(mockedEntity);
 
@@ -323,7 +323,7 @@ class DataEngineCommonHandlerTest {
         final String methodName = "getEntityForRelationship";
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
 
-        when(genericHandler.getAttachedEntity(USER, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
+        when(genericHandler.getAttachedEntity(USER, GUID, OpenMetadataProperty.GUID.name, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
                 RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME, false, false, null,
                 methodName)).thenReturn(null);
 

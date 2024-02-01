@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4.1.0
       - uses: gradle/wrapper-validation-action@v1
       - name: Setup Java JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -44,7 +44,7 @@ jobs:
           queries: security-and-quality
           ram: 4096
       - name: Build
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           # codeQL requires a full before/after build to compare results. Caching can result in action failing
           #cache-read-only: true

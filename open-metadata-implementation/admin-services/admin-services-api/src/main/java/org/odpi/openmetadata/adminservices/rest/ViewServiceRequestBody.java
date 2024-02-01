@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 
+import java.io.Serial;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,16 +17,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ViewServiceRequestBody passes the minimum information to set up an view server.
+ * ViewServiceRequestBody passes the minimum information to set up a view server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ViewServiceRequestBody extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private Map<String, Object>  viewServiceOptions = null;
+    private Map<String, Object>          viewServiceOptions = null;
+    private List<ResourceEndpointConfig> resourceEndpoints;
 
 
     /**
@@ -47,6 +52,7 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
         if (template != null)
         {
             viewServiceOptions = template.getViewServiceOptions();
+            resourceEndpoints = template.getResourceEndpoints();
         }
     }
 
@@ -85,6 +91,28 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
 
 
     /**
+     * Return the resourceEndpoints list.
+     *
+     * @return displayName
+     */
+    public List<ResourceEndpointConfig> getResourceEndpoints()
+    {
+        return resourceEndpoints;
+    }
+
+
+    /**
+     * Set the resourceEndpoints of resource.
+     *
+     * @param resourceEndpoints list of resource endpoint configuration objects
+     */
+    public void setResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints)
+    {
+        this.resourceEndpoints = resourceEndpoints;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -94,6 +122,7 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
     {
         return "ViewServiceRequestBody{" +
                 "viewServiceOptions=" + viewServiceOptions +
+                ", resourceEndpoints=" + resourceEndpoints +
                 ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
                 ", OMAGServerName='" + getOMAGServerName() + '\'' +
                 '}';
@@ -123,7 +152,8 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
             return false;
         }
         ViewServiceRequestBody that = (ViewServiceRequestBody) objectToCompare;
-        return Objects.equals(viewServiceOptions, that.viewServiceOptions);
+        return Objects.equals(viewServiceOptions, that.viewServiceOptions) &&
+                Objects.equals(resourceEndpoints, that.resourceEndpoints);
     }
 
 
@@ -135,6 +165,6 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), viewServiceOptions);
+        return Objects.hash(super.hashCode(), viewServiceOptions, resourceEndpoints);
     }
 }

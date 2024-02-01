@@ -150,6 +150,16 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-013 - Unable to initiate an instance of the {0} governance action type because the name is not recognized
+     */
+    UNKNOWN_GOVERNANCE_ACTION_TYPE(400, "OMAG-GENERIC-HANDLERS-400-013",
+                                   "Unable to initiate an instance of the {0} governance action type because the name is not recognized",
+                                   "The system is unable to initiate a governance action type because its definition is missing.",
+                                   "Verify that the name (qualifiedName of a GovernanceActionType entity) is correct.  " +
+                                           "Either set up the caller to use the correct name or create a GovernanceActionType entity with the requested qualifiedName.  " +
+                                           "Then retry the request once the definition is added."),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */

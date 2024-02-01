@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.EngineServ
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EngineServiceConfig extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                        engineServiceId                  = 0;
     private ComponentDevelopmentStatus engineServiceDevelopmentStatus   = null;
@@ -57,6 +59,7 @@ public class EngineServiceConfig extends OMAGServerClientConfig
      *
      * @param template object to copy
      */
+    @SuppressWarnings(value = "deprecation")
     public EngineServiceConfig(EngineServiceConfig template)
     {
         super(template);
@@ -241,7 +244,6 @@ public class EngineServiceConfig extends OMAGServerClientConfig
     }
 
 
-
     /**
      * Return the short description of the engine service.  The default value is in English but this can be changed.
      *
@@ -365,9 +367,11 @@ public class EngineServiceConfig extends OMAGServerClientConfig
 
     /**
      * Return the list of unique names (qualifiedName) for the governance engines that will run in this server.
+     * This call is deprecated, use setEngineList() instead.
      *
      * @return list of qualified names and userIds
      */
+    @Deprecated
     public List<EngineConfig> getEngines()
     {
         return engines;
@@ -376,9 +380,11 @@ public class EngineServiceConfig extends OMAGServerClientConfig
 
     /**
      * Set up the list of unique names (qualifiedName) for the governance engines that will run in this server.
+     * This call is deprecated, use setEngineList() instead.
      *
      * @param engines list of qualified names and userIds
      */
+    @Deprecated
     public void setEngines(List<EngineConfig> engines)
     {
         this.engines = engines;

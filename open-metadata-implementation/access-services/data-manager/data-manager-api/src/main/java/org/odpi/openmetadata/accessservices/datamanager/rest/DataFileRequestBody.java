@@ -18,8 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFileRequestBody extends DataFileProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String externalSourceGUID         = null;
     private String externalSourceName         = null;
     private String connectorProviderClassName = null;
@@ -139,26 +137,30 @@ public class DataFileRequestBody extends DataFileProperties
     public String toString()
     {
         return "DataFileRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                ", connectorClassName='" + connectorProviderClassName + '\'' +
-                ", fileType='" + getFileType() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", encodingProperties=" + getEncodingProperties() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                       ", fileType='" + getFileType() + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", createTime=" + getCreateTime() +
+                       ", modifiedTime=" + getModifiedTime() +
+                       ", encodingType='" + getEncodingType() + '\'' +
+                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                       ", encodingDescription='" + getEncodingDescription() + '\'' +
+                       ", encodingProperties=" + getEncodingProperties() +
+                       ", name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
-
 
 
     /**

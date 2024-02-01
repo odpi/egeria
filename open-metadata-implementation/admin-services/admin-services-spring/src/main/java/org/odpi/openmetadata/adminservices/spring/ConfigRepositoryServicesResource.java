@@ -439,9 +439,9 @@ public class ConfigRepositoryServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/connectors/repository/xtdb/"))
 
-    public VoidResponse setXTDBLocalRepository(@PathVariable  String              userId,
-                                                @PathVariable String              serverName,
-                                                @RequestBody  Map<String, Object> storageProperties)
+    public VoidResponse setXTDBLocalRepository(@PathVariable String             userId,
+                                               @PathVariable String              serverName,
+                                               @RequestBody  Map<String, Object> storageProperties)
     {
         return adminAPI.setXTDBLocalRepository(userId, serverName, storageProperties);
     }
@@ -643,6 +643,31 @@ public class ConfigRepositoryServicesResource
     {
         return adminAPI.setRepositoryProxyEventMapper(userId, serverName, connectorProvider, eventSource, additionalProperties);
     }
+
+
+    /**
+     * Return the local metadata collection name.  If the local repository is not configured then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @return guid response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @GetMapping(path = "/local-repository/metadata-collection-name")
+
+    @Operation(summary="getLocalMetadataCollectionName",
+            description="Return the local metadata collection name.  If the local repository is not configured then the invalid parameter exception is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/metadata-collection-id/"))
+
+    public StringResponse getLocalMetadataCollectionName(@PathVariable  String userId,
+                                                         @PathVariable  String serverName)
+    {
+        return adminAPI.getLocalMetadataCollectionName(userId, serverName);
+    }
+
 
 
     /**
@@ -1169,7 +1194,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * Clear the list of open metadata archives.  These are the open metadata types and instances that are loaded at
      * repository start up.
      *
      * @param userId  user that is issuing the request.
@@ -1181,7 +1206,7 @@ public class ConfigRepositoryServicesResource
     @DeleteMapping(path = "/open-metadata-archives")
 
     @Operation(summary="clearOpenMetadataArchives",
-               description="Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at" +
+               description="Clear the list of open metadata archives.  These are the open metadata types and instances that are loaded at" +
                                    " repository start up.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/open-metadata-archive/"))

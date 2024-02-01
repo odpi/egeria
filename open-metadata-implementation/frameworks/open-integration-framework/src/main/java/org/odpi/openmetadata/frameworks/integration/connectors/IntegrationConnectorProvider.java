@@ -5,8 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 
 import java.util.HashMap;
@@ -40,7 +39,7 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
     /**
      * The type name of the asset that the connection object for this connector should be linked to.
      */
-    protected static final String supportedAssetTypeName = OpenMetadataTypesMapper.INTEGRATION_CONNECTOR_TYPE_NAME;
+    protected static final String supportedAssetTypeName = OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME;
 
     /*
      * Default descriptive information about the connector for the connector type and audit log.

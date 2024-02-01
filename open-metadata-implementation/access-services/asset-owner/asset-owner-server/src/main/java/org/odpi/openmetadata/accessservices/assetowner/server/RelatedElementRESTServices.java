@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -231,8 +231,8 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getMoreInformation(userId,
                                                                elementGUID,
                                                                guidPropertyName,
-                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                                startFrom,
                                                                pageSize,
                                                                false,
@@ -288,8 +288,8 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getDescriptiveElements(userId,
                                                                    detailGUID,
                                                                    guidPropertyName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    startFrom,
                                                                    pageSize,
                                                                    false,
@@ -512,8 +512,8 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getStakeholders(userId,
                                                             elementGUID,
                                                             guidPropertyName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             startFrom,
                                                             pageSize,
                                                             false,
@@ -569,8 +569,8 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getCommissionedByStakeholder(userId,
                                                                          stakeholderGUID,
                                                                          guidPropertyName,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                                          startFrom,
                                                                          pageSize,
                                                                          false,
@@ -637,6 +637,8 @@ public class RelatedElementRESTServices
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
                                                    properties.getResourceUse(),
+                                                   properties.getResourceUseDescription(),
+                                                   properties.getResourceUseProperties(),
                                                    properties.getWatchResource(),
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
@@ -654,6 +656,8 @@ public class RelatedElementRESTServices
                                                    elementGUIDParameterName,
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
+                                                   null,
+                                                   null,
                                                    null,
                                                    false,
                                                    null,
@@ -796,7 +800,7 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getResourceList(userId,
                                                             elementGUID,
                                                             guidPropertyName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             startFrom,
                                                             pageSize,
                                                             false,
@@ -853,7 +857,7 @@ public class RelatedElementRESTServices
             response.setElementList(handler.getSupportedByResource(userId,
                                                                    resourceGUID,
                                                                    guidPropertyName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    startFrom,
                                                                    pageSize,
                                                                    false,

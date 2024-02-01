@@ -16,7 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
@@ -573,8 +573,8 @@ public class UserIdentityRESTServices
                 List<UserIdentityElement> elements = handler.findBeans(userId,
                                                                        requestBody.getSearchString(),
                                                                        searchStringParameterName,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                                                       OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
