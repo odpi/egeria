@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * GovernanceActionProcessStepsResponse is the response structure used on REST API calls that returns a
- * list of GovernanceActionProcessElement objects as a response.
+ * list of GovernanceActionProcessStepElement objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

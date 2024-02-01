@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorContext;
 import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorAuditCode;
@@ -162,7 +162,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof FilesIntegratorConnector)
+        if (integrationConnector instanceof FilesIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 FilesIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -170,8 +170,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                                              metadataSourceQualifiedName,
                                                                                                              permittedSynchronizationName,
                                                                                                              serviceOptionsString));
-
-            FilesIntegratorConnector serviceSpecificConnector = (FilesIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "DataManager", "FileSystem");
             String externalSourceName = metadataSourceQualifiedName;
@@ -203,6 +201,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                   integrationConnectorGUID,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
+                                                                                  auditLog,
                                                                                   maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

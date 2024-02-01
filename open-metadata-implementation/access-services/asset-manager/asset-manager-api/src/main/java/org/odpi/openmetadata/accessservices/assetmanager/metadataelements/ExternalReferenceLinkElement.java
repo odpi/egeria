@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,10 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReferenceLinkElement implements MetadataElement, Serializable
+public class ExternalReferenceLinkElement implements MetadataElement
 {
-    private static final long    serialVersionUID = 1L;
-
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
     private ExternalReferenceLinkProperties link               = null;

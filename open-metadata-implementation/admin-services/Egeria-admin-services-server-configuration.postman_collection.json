@@ -1153,7 +1153,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "content-packs/DataStoreConnectorTypes.json"
+													"raw": "content-packs/OpenConnectorsArchive.omarchive"
 												},
 												"url": {
 													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives/file",

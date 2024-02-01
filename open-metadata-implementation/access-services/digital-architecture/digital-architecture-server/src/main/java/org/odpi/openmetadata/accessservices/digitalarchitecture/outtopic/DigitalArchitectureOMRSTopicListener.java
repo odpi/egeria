@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
@@ -777,7 +777,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
 
                     referenceableHandler.validateAnchorEntity(userId,
                                                               fullEntity.getGUID(),
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                               fullEntity,
                                                               guidParameterName,
                                                               false,
@@ -833,6 +833,6 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      */
     private boolean isTypeOfInterest(InstanceHeader instanceHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, instanceHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME);
+        return repositoryHelper.isTypeOf(serviceName, instanceHeader.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName);
     }
 }

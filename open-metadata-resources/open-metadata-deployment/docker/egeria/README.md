@@ -50,15 +50,15 @@ Run `docker build -t egeria:myversion -f Dockerfile.selfbuild .`
 The following additional arguments are allowed
 
 
-|parameter| regular | selfbuild | default | description |
-|--|---------|--|--|--|
-| runimg   | No     | Yes | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for building egeria |
-| buildimg | No     |Yes | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for runtime ie launching egeria |
-| version  | Yes      | Yes | 4.4-SNAPSHOT | Version string - must be correct so that the right jar file gets launched. Do not rely on default |
-| srcurl | No | Yes | https://github.com/odpi/egeria | Specifies url of github repo to clone |
-| srcref | No | Yes | main | Specifies branch, or tag of code within the repo
-| buildparms | No | Yes | build -x test -x javadoc | Gradle invocation to build egeria |
-| now | No | Yes | <undefined> | timestamp - purely used as additional metadata to describe the image |
+| parameter  | regular | selfbuild | default                                    | description                                                                                       |
+|------------|---------|-----------|--------------------------------------------|---------------------------------------------------------------------------------------------------|
+| runimg     | No      | Yes       | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for building egeria                                                          |
+| buildimg   | No      | Yes       | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for runtime ie launching egeria                                              |
+| version    | Yes     | Yes       | 4.4-SNAPSHOT                               | Version string - must be correct so that the right jar file gets launched. Do not rely on default |
+| srcurl     | No      | Yes       | https://github.com/odpi/egeria             | Specifies url of github repo to clone                                                             |
+| srcref     | No      | Yes       | main                                       | Specifies branch, or tag of code within the repo                                                  |
+| buildparms | No      | Yes       | build -x test -x javadoc                   | Gradle invocation to build egeria                                                                 |
+| now        | No      | Yes       | <undefined>                                | timestamp - purely used as additional metadata to describe the image                              |
 
 
 ## Running the egeria image
@@ -183,7 +183,7 @@ INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRat
 Note that you'll be able to see the image version, build date, last git update etc (this is an old example from 1.6, when we used http & port 8080)
 ```
 $ docker inspect --format='{{range $k, $v := .ContainerConfig.Labels}} {{- printf "%s = \"%s\"\n" $k $v -}} {{end}}' odpi/egeria:latest
-org.opencontainers.image.vendor = "= ODPi       org.opencontainers.image.title = Egeria       org.opencontainers.image.description = Common image for core ODPi Egeria runtime.       org.opencontainers.image.url = https://egeria.odpi.org/       org.opencontainers.image.source = https://github.com/odpi/egeria       org.opencontainers.image.authors = ODPi Egeria       org.opencontainers.image.revision = 2e8b97d       org.opencontainers.image.licenses = Apache-2.0       org.opencontainers.image.created = 2020-03-25T12:03:52+0000       org.opencontainers.image.version = 1.6-SNAPSHOT       org.opencontainers.image.documentation = https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/egeria/       org.opencontainers.image.ext.vcs-date = 2020-03-25T11:46:50+0000       org.opencontainers.image.ext.docker.cmd = docker run -d -p 8080:8080 odpi/egeria       org.opencontainers.image.ext.docker.cmd.devel = docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria       org.opencontainers.image.ext.docker.debug = docker exec -it  /bin/sh       org.opencontainers.image.ext.docker.params = JAVA_DEBUG=set to true to enable JVM debugging"
+org.opencontainers.image.vendor = "= ODPi       org.opencontainers.image.title = Egeria       org.opencontainers.image.description = Common image for core ODPi Egeria runtime.       org.opencontainers.image.url = https://egeria.odpi.org/       org.opencontainers.image.source = https://github.com/odpi/egeria       org.opencontainers.image.authors = ODPi Egeria       org.opencontainers.image.revision = 2e8b97d       org.opencontainers.image.licenses = Apache-2.0       org.opencontainers.image.created = 2020-03-25T12:03:52+0000       org.opencontainers.image.version = 4.3       org.opencontainers.image.documentation = https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/egeria/       org.opencontainers.image.ext.vcs-date = 2020-03-25T11:46:50+0000       org.opencontainers.image.ext.docker.cmd = docker run -d -p 8080:8080 odpi/egeria       org.opencontainers.image.ext.docker.cmd.devel = docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria       org.opencontainers.image.ext.docker.debug = docker exec -it  /bin/sh       org.opencontainers.image.ext.docker.params = JAVA_DEBUG=set to true to enable JVM debugging"
 
 ```
 ### Runtime parameters
@@ -236,6 +236,7 @@ you may need to create another job to retrieve the required libraries or content
 #### Adding to the image through a docker build
 
 Use the egeria image as a base, for example begin your custom Dockerfile with
+
 `FROM odpi/egeria:4.4-SNAPSHOT`
 
 Then add in the files you need, as well as customize the LOADER_PATH variable ie

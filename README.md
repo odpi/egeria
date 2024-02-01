@@ -24,7 +24,7 @@ You will also need the [Java 17 SDK installed](https://adoptium.net/).
 Then run the following gradle command from the top-level directory to build the code and run the tests.
 
 ```bash
-./gradlew clean build
+../gradlew clean build
 ```
 
 Once you see the "Build Successful" message, go to the `open-metadata-distributions` directory.

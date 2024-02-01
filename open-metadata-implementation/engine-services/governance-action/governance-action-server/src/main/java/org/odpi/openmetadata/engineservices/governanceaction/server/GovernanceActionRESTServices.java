@@ -37,7 +37,6 @@ public class GovernanceActionRESTServices
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector report or
-     *
      *  InvalidParameterException the connector provider class name is not a valid connector fo this service
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service

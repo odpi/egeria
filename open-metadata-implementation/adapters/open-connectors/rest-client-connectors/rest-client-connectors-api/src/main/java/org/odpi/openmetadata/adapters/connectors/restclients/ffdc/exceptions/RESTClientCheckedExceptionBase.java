@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
- * AssetConsumerCheckedExceptionBase provides a checked exception for reporting errors found when using
- * the Asset Consumer OMAS services.
- *
- * Typically these errors are either configuration or operational errors that can be fixed by an administrator
+ * RESTClientCheckedExceptionBase provides a checked exception for reporting errors found when using
+ * the Egeria services.
+ * Typically, these errors are either configuration or operational errors that can be fixed by an administrator
  * or the developer that wrote the consuming service.   However, there may be the odd bug that surfaces here.
  * The AssetConsumerErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
@@ -23,6 +23,8 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
     private final String    reportedUserAction;
     private Exception reportedCaughtException = null;
 
+    @Serial
+    private static final long     serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an exception.
@@ -42,6 +44,7 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
                                           String userAction)
     {
         super(errorMessage);
+
         this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
@@ -72,6 +75,7 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
                                           Exception caughtError)
     {
         super(errorMessage, caughtError);
+
         this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
@@ -170,11 +174,10 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
         {
             return true;
         }
-        if (!(objectToCompare instanceof RESTClientCheckedExceptionBase))
+        if (!(objectToCompare instanceof RESTClientCheckedExceptionBase that))
         {
             return false;
         }
-        RESTClientCheckedExceptionBase that = (RESTClientCheckedExceptionBase) objectToCompare;
         return getReportedHTTPCode() == that.getReportedHTTPCode() &&
                 Objects.equals(getReportingClassName(), that.getReportingClassName()) &&
                 Objects.equals(getReportingActionDescription(), that.getReportingActionDescription()) &&

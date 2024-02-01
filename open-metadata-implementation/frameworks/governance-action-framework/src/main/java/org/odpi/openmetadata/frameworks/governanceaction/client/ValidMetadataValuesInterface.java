@@ -313,4 +313,63 @@ public interface ValidMetadataValuesInterface
                                                           int    pageSize) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
+
+
+
+    /**
+     * Retrieve all the consistent valid values for the requested property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional name of map key that this valid value applies
+     * @param preferredValue the value to match against
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    List<ValidMetadataValue> getConsistentMetadataValues(String userId,
+                                                         String typeName,
+                                                         String propertyName,
+                                                         String mapName,
+                                                         String preferredValue,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
+
+
+    /**
+     * Set up consistent metadata values relationship between the two property values.
+     *
+     * @param userId caller's userId
+     * @param typeName1 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName1 name of property that this valid value applies
+     * @param mapName1 optional name of map key that this valid value applies
+     * @param preferredValue1 the value to match against
+     * @param typeName2 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName2 name of property that this valid value applies
+     * @param mapName2 optional name of map key that this valid value applies
+     * @param preferredValue2 the value to match against
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    void setConsistentMetadataValues(String userId,
+                                     String typeName1,
+                                     String propertyName1,
+                                     String mapName1,
+                                     String preferredValue1,
+                                     String typeName2,
+                                     String propertyName2,
+                                     String mapName2,
+                                     String preferredValue2) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 }

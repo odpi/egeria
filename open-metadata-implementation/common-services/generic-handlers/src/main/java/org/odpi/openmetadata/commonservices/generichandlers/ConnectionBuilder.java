@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -96,8 +98,8 @@ public class ConnectionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+              OpenMetadataType.CONNECTION_TYPE_GUID,
+              OpenMetadataType.CONNECTION_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -123,44 +125,44 @@ public class ConnectionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.SECURED_PROPERTIES_PROPERTY_NAME,
-                                                                         securedProperties,
-                                                                         methodName);
+                                                                     properties,
+                                                                     OpenMetadataType.SECURED_PROPERTIES_PROPERTY_NAME,
+                                                                     securedProperties,
+                                                                     methodName);
 
         properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataAPIMapper.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
-                                                                   configurationProperties,
-                                                                   methodName);
+                                                               properties,
+                                                               OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                               configurationProperties,
+                                                               methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME,
-                                                                      connectorUserId,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.USER_ID_PROPERTY_NAME,
+                                                                  connectorUserId,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CLEAR_PASSWORD_PROPERTY_NAME,
-                                                                      clearPassword,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                                  clearPassword,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ENCRYPTED_PASSWORD_PROPERTY_NAME,
-                                                                      encryptedPassword,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.ENCRYPTED_PASSWORD_PROPERTY_NAME,
+                                                                  encryptedPassword,
+                                                                  methodName);
 
         return properties;
     }

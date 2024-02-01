@@ -32,7 +32,7 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
         externalDocs=@ExternalDocumentation(
                 description="Further Information",
                 url="https://egeria-project.org/services/omas/glossary-view/overview/"))
-
+@Deprecated
 public class TermResource {
 
     private final TermService termService;

@@ -5,11 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 
 /**
@@ -325,101 +320,34 @@ public enum OCFErrorCode implements ExceptionMessageSet
     NOT_VIRTUAL_CONNECTOR(500,"OCF-CONNECTOR-500-012",
             "Java class {0} is not a VirtualConnector and so can not support VirtualConnection {1}",
             "The system is unable to create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector.",
-            "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.");
+            "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
 
-    private final ExceptionMessageDefinition messageDefinition;
+    ;
 
-    private static final Logger log = LoggerFactory.getLogger(OCFErrorCode.class);
+
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for OCFErrorCode expects to be passed one of the enumeration rows defined in
-     * OCFErrorCode above.   For example:
-     * <br><br>
-     *     OCFErrorCode   errorCode = OCFErrorCode.UNKNOWN_ENDPOINT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique identifier for the message
+     * @param errorMessageId   unique 1d for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OCFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OCFErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
-    }
-
-
-    /**
-     * Return the HTTP error code for this exception.
-     *
-     * @return int
-     */
-    @Deprecated
-    public int getHTTPErrorCode()
-    {
-        return messageDefinition.getHttpErrorCode();
-    }
-
-
-    /**
-     * Returns the unique identifier for the error message.
-     *
-     * @return errorMessageId
-     */
-    @Deprecated
-    public String getErrorMessageId()
-    {
-        return messageDefinition.getMessageId();
-    }
-
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    @Deprecated
-    public String getFormattedErrorMessage(String... params)
-    {
-        MessageFormat mf = new MessageFormat(messageDefinition.getMessageTemplate());
-        String result = mf.format(params);
-
-        log.debug(String.format("OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    @Deprecated
-    public String getSystemAction()
-    {
-        return messageDefinition.getSystemAction();
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    @Deprecated
-    public String getUserAction()
-    {
-        return messageDefinition.getUserAction();
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -431,7 +359,11 @@ public enum OCFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -444,6 +376,12 @@ public enum OCFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -458,8 +396,12 @@ public enum OCFErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "OCFErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

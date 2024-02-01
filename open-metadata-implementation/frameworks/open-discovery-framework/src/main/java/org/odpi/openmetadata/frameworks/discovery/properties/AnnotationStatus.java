@@ -19,13 +19,44 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AnnotationStatus implements Serializable
 {
+    /**
+     * Annotation has been created but not reviewed.
+     */
     NEW_ANNOTATION      (0,  0,  "New",      "Annotation has been created but not reviewed"),
+
+    /**
+     * Annotation has been reviewed by no decision has been made.
+     */
     REVIEWED_ANNOTATION (1,  1,  "Reviewed", "Annotation has been reviewed by no decision has been made"),
+
+    /**
+     * Annotation has been approved.
+     */
     APPROVED_ANNOTATION (2,  2,  "Approved", "Annotation has been approved"),
+
+    /**
+     * Annotation has been approved and insight has been added to Asset's metadata.
+     */
     ACTIONED_ANNOTATION (3,  3,  "Actioned", "Annotation has been approved and insight has been added to Asset's metadata"),
+
+    /**
+     * Annotation has been reviewed and declared invalid.
+     */
     INVALID_ANNOTATION  (4,  4,  "Invalid",  "Annotation has been reviewed and declared invalid"),
+
+    /**
+     * Annotation is invalid and should be ignored.
+     */
     IGNORE_ANNOTATION   (5,  5,  "Ignore",   "Annotation is invalid and should be ignored"),
+
+    /**
+     * Annotation's status stored in additional properties
+     */
     OTHER_STATUS        (98, 99, "Other",    "Annotation's status stored in additional properties"),
+
+    /**
+     * Annotation has not had a status assigned
+     */
     UNKNOWN_STATUS      (99, 0,  "Unknown",  "Annotation has not had a status assigned");
 
     private static final long     serialVersionUID = 1L;
@@ -33,10 +64,10 @@ public enum AnnotationStatus implements Serializable
     private static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";
     private static final String ENUM_TYPE_NAME  = "AnnotationStatus";
 
-    private int    statusCode;
-    private int    openTypeOrdinal;
-    private String statusName;
-    private String statusDescription;
+    private final int    statusCode;
+    private final int    openTypeOrdinal;
+    private final String statusName;
+    private final String statusDescription;
 
 
     /**

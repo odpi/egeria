@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -120,7 +121,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+        String typeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -128,7 +129,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                   OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -144,10 +145,15 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        if (profileGUID != null)
-        {
-            builder.setAnchors(userId, profileGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    profileGUID,
+                                    profileGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         String userIdentityGUID = this.createBeanInRepository(userId,
                                                               externalSourceGUID,
@@ -167,15 +173,15 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                profileGUID,
                                                profileGUIDParameterName,
-                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                userIdentityGUID,
                                                userIdentityGUIDParameterName,
-                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                               OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                               OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                null,
                                                effectiveTime,
                                                methodName);
@@ -240,7 +246,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                   OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -309,8 +315,8 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     userIdentityGUID,
                                     userIdentityGUIDParameterName,
-                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                    OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                    OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -363,25 +369,25 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         this.relinkElementToNewElement(userId,
                                        externalSourceGUID,
                                        externalSourceName,
                                        userIdentityGUID,
                                        userIdentityGUIDParameterName,
-                                       OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                       OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                        false,
                                        profileGUID,
                                        profileGUIDParameterName,
-                                       OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                       OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,
-                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                       OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                       OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                       OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                        this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                        effectiveTime,
                                        methodName);
@@ -434,24 +440,24 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataType.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         this.updateElementToElementLink(userId,
                                         externalSourceGUID,
                                         externalSourceName,
                                         profileGUID,
                                         profileGUIDParameterName,
-                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                         userIdentityGUID,
                                         userIdentityGUIDParameterName,
-                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                        OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
-                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                         isMergeUpdate,
                                         this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                         effectiveTime,
@@ -498,16 +504,16 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       profileGUID,
                                       profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                      OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                       userIdentityGUID,
                                       userIdentityGUIDParameterName,
-                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                      OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                      OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -546,14 +552,14 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                       PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataType.USER_ID_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                    OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                    OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -599,7 +605,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                          OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

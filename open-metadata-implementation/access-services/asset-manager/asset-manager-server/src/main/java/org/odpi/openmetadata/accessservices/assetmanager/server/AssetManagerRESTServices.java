@@ -16,12 +16,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -144,8 +143,8 @@ public class AssetManagerRESTServices
                 String softwareCapabilityGUID = handler.createSoftwareCapability(userId,
                                                                                  null,
                                                                                  null,
-                                                                                 OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
-                                                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                                 OpenMetadataType.CATALOG_TYPE_NAME,
+                                                                                 OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                                                                                  assetManagerProperties.getQualifiedName(),
                                                                                  assetManagerProperties.getTechnicalName(),
                                                                                  assetManagerProperties.getTechnicalDescription(),
@@ -168,7 +167,7 @@ public class AssetManagerRESTServices
                 handler.maintainSupplementaryProperties(userId,
                                                         softwareCapabilityGUID,
                                                         softwareCapabilityGUIDParameterName,
-                                                        OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
+                                                        OpenMetadataType.CATALOG_TYPE_NAME,
                                                         assetManagerProperties.getQualifiedName(),
                                                         assetManagerProperties.getDisplayName(),
                                                         assetManagerProperties.getSummary(),
@@ -245,8 +244,8 @@ public class AssetManagerRESTServices
                                                                                                                   methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 nameParameterName,
                                                                 false,
@@ -348,7 +347,7 @@ public class AssetManagerRESTServices
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
-                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
@@ -456,7 +455,7 @@ public class AssetManagerRESTServices
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
-                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
@@ -546,7 +545,7 @@ public class AssetManagerRESTServices
                                                                     requestBody.getAssetManagerGUID(),
                                                                     assetManagerGUIDParameterName,
                                                                     requestBody.getAssetManagerName(),
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     false,
                                                                     false,
                                                                     null,
@@ -655,7 +654,7 @@ public class AssetManagerRESTServices
                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
                                                  assetManagerGUIDParameterName,
                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
-                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                 OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                                                  permittedSynchronizationOrdinal,
                                                  requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
                                                  forLineage,
@@ -745,7 +744,7 @@ public class AssetManagerRESTServices
                                                requestBody.getAssetManagerGUID(),
                                                assetManagerGUIDParameterName,
                                                requestBody.getAssetManagerName(),
-                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                null,
@@ -827,7 +826,7 @@ public class AssetManagerRESTServices
                                                                                openMetadataGUIDParameterName,
                                                                                openMetadataElementTypeName,
                                                                                requestBody.getAssetManagerGUID(),
-                                                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                requestBody.getAssetManagerName(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
@@ -911,7 +910,7 @@ public class AssetManagerRESTServices
                 response.setElementList(handler.getElementsForExternalIdentifier(userId,
                                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
                                                                                  assetManagerGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                                 OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                                                  requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                                                  startFrom,

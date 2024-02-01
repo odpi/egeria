@@ -186,7 +186,6 @@ public class CSVFileReaderSample
     /**
      * This method creates a connection.  The connection object provides the OCF with the properties to create the
      * connector and the properties needed by the connector to access the asset.
-     *
      * The Connection object includes a Connector Type object.  This defines the type of connector to create.
      * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
      * to the Asset.

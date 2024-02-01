@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * The DinoViewRESTResource provides the Spring API endpoints of the Dino Open Metadata View Service (OMVS).
- * This interface provides an interfaces for Egeria operators.
+ * This interface provides a service for Egeria operators.
  */
 
 @RestController

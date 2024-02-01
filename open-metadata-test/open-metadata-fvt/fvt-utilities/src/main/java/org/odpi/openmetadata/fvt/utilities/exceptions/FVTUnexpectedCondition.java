@@ -4,16 +4,30 @@
 package org.odpi.openmetadata.fvt.utilities.exceptions;
 
 
+import java.io.Serial;
+
 /**
  * FVTUnexpectedCondition is an exception used by the FVT test cases to indicate that an unexpected
  * condition has occurred.
  */
 public class FVTUnexpectedCondition extends Exception
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
+    /**
+     * Name of test case
+     */
     private final String    testCaseName;
+
+    /**
+     * Description of test activity
+     */
     private final String    activityDescription;
+
+    /**
+     * Any exception that occurred
+     */
     private Throwable caughtException     = null;
 
     /**

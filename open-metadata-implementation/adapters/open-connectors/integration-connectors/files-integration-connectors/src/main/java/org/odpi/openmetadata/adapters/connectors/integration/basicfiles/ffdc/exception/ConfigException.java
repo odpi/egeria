@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.ex
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +16,14 @@ import java.util.Objects;
  */
 public class ConfigException extends ConnectorCheckedException
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * File in error.
+     */
     private final  String fileName;
+    private final  String fileNameSource;
 
 
     /**
@@ -24,15 +32,18 @@ public class ConfigException extends ConnectorCheckedException
      * @param messageDefinition content of message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
+     * @param fileNameSource how was the file name supplied to the connector
      * @param fileName name of the invalid parameter if known
      */
     public ConfigException(ExceptionMessageDefinition messageDefinition,
                            String                     className,
                            String                     actionDescription,
+                           String                     fileNameSource,
                            String                     fileName)
     {
         super(messageDefinition, className, actionDescription);
 
+        this.fileNameSource = fileNameSource;
         this.fileName = fileName;
     }
 
@@ -43,17 +54,20 @@ public class ConfigException extends ConnectorCheckedException
      * @param messageDefinition content of message
      * @param className   name of class reporting error
      * @param actionDescription   description of function it was performing when error detected
+     * @param fileNameSource how was the file name supplied to the connector
      * @param fileName name of the invalid parameter if known
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public ConfigException(ExceptionMessageDefinition messageDefinition,
                            String                     className,
                            String                     actionDescription,
+                           String                     fileNameSource,
                            String                     fileName,
                            Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
 
+        this.fileNameSource = fileNameSource;
         this.fileName = fileName;
     }
 
@@ -65,16 +79,19 @@ public class ConfigException extends ConnectorCheckedException
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError the error that resulted in this exception.
+     * @param fileNameSource how was the file name supplied to the connector
      * @param fileName name of the invalid parameter if known
      */
     public ConfigException(ExceptionMessageDefinition messageDefinition,
                            String                     className,
                            String                     actionDescription,
                            Exception                  caughtError,
+                           String                     fileNameSource,
                            String                     fileName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
 
+        this.fileNameSource = fileNameSource;
         this.fileName = fileName;
     }
 
@@ -86,6 +103,7 @@ public class ConfigException extends ConnectorCheckedException
      * @param className name of class reporting error
      * @param actionDescription description of function it was performing when error detected
      * @param caughtError the error that resulted in this exception.
+     * @param fileNameSource how was the file name supplied to the connector
      * @param fileName name of the invalid parameter if known
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
@@ -93,12 +111,25 @@ public class ConfigException extends ConnectorCheckedException
                            String                     className,
                            String                     actionDescription,
                            Exception                  caughtError,
+                           String                     fileNameSource,
                            String                     fileName,
                            Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
 
+        this.fileNameSource = fileNameSource;
         this.fileName = fileName;
+    }
+
+
+    /**
+     * Return the source of the file name.
+     *
+     * @return string name
+     */
+    public String getFileNameSource()
+    {
+        return fileNameSource;
     }
 
 

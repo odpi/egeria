@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -162,7 +164,6 @@ public class OpenMetadataTypesArchive3_15
          * Calls for new and changed types go here
          */
         updateGovernanceEngines();
-        updateGovernanceActionProcessSteps();
         updateEngineActions();
         update0710DigitalServices();
         update0715DigitalServiceOwnership();
@@ -189,7 +190,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        final String typeName = "SupportedGovernanceService";
+        final String typeName = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -202,9 +203,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "serviceRequestType";
-        final String attribute1Description     = "Request type supported by the governance service (overrides requestType on call to governance service if specified).";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SERVICE_REQUEST_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.SERVICE_REQUEST_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SERVICE_REQUEST_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -216,127 +217,6 @@ public class OpenMetadataTypesArchive3_15
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Adjust properties used to control the execution of engine actions.
-     */
-    private void updateGovernanceActionProcessSteps()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStepEntity());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionProcessStepRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextEngineActionRelationship());
-    }
-
-    private TypeDefPatch updateGovernanceActionProcessStepEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceActionProcessStep";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "waitTime";
-        final String attribute1Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many engine action instances?";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateNextGovernanceActionProcessStepRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "NextGovernanceActionProcessStep";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many next action instances? (deprecated)";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateNextEngineActionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "NextEngineAction";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many next action instances? (deprecated)";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -467,7 +347,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalProducts";
         final String                     end2AttributeDescription     = "The associated digital products.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -529,9 +409,9 @@ public class OpenMetadataTypesArchive3_15
         final String attribute9Name = "withdrawDate";
         final String attribute9Description = "What date what the product withdrawn, preventing new consumers.";
         final String attribute9DescriptionGUID = null;
-        final String attribute10Name = "additionalProperties";
-        final String attribute10Description = "Any additional properties needed to describe the product.";
-        final String attribute10DescriptionGUID = null;
+        final String attribute10Name = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
+        final String attribute10Description = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
                                                                   attribute1Description,
@@ -606,7 +486,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -649,7 +529,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Referenceable";
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;

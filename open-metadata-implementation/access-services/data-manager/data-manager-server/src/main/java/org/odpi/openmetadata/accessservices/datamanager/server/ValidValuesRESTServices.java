@@ -82,23 +82,24 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueProperties)
+                if (requestBody.getProperties() instanceof ValidValueProperties properties)
                 {
-                    ValidValueProperties properties = (ValidValueProperties)requestBody.getProperties();
-
                     String validValueGUID = handler.createValidValue(userId,
                                                                      requestBody.getExternalSourceGUID(),
                                                                      requestBody.getExternalSourceName(),
                                                                      properties.getQualifiedName(),
                                                                      properties.getDisplayName(),
                                                                      properties.getDescription(),
+                                                                     properties.getCategory(),
                                                                      properties.getUsage(),
                                                                      properties.getScope(),
                                                                      properties.getIsDeprecated(),
+                                                                     properties.getIsCaseSensitive(),
                                                                      properties.getPreferredValue(),
                                                                      properties.getAdditionalProperties(),
                                                                      properties.getTypeName(),
                                                                      properties.getExtendedProperties(),
+                                                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                      properties.getEffectiveFrom(),
                                                                      properties.getEffectiveTo(),
                                                                      new Date(),
@@ -174,10 +175,8 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueProperties)
+                if (requestBody.getProperties() instanceof ValidValueProperties properties)
                 {
-                    ValidValueProperties properties = (ValidValueProperties) requestBody.getProperties();
-
                     handler.updateValidValue(userId,
                                              requestBody.getExternalSourceGUID(),
                                              requestBody.getExternalSourceName(),
@@ -185,12 +184,15 @@ public class ValidValuesRESTServices
                                              properties.getQualifiedName(),
                                              properties.getDisplayName(),
                                              properties.getDescription(),
+                                             properties.getCategory(),
                                              properties.getUsage(),
                                              properties.getScope(),
                                              properties.getIsDeprecated(),
+                                             properties.getIsCaseSensitive(),
                                              properties.getPreferredValue(),
                                              properties.getAdditionalProperties(),
                                              properties.getExtendedProperties(),
+                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
                                              properties.getEffectiveFrom(),
                                              properties.getEffectiveTo(),
                                              isMergeUpdate,
@@ -266,10 +268,8 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueMembershipProperties)
+                if (requestBody.getProperties() instanceof ValidValueMembershipProperties properties)
                 {
-                    ValidValueMembershipProperties properties = (ValidValueMembershipProperties) requestBody.getProperties();
-
                     handler.attachValidValueToSet(userId,
                                                   requestBody.getExternalSourceGUID(),
                                                   requestBody.getExternalSourceName(),
@@ -278,6 +278,7 @@ public class ValidValuesRESTServices
                                                   properties.getDefaultValue(),
                                                   properties.getEffectiveFrom(),
                                                   properties.getEffectiveTo(),
+                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                   false,
                                                   false,
                                                   new Date(),
@@ -293,6 +294,7 @@ public class ValidValuesRESTServices
                                                   false,
                                                   null,
                                                   null,
+                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                   false,
                                                   false,
                                                   new Date(),
@@ -416,10 +418,8 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueAssignmentProperties)
+                if (requestBody.getProperties() instanceof ValidValueAssignmentProperties properties)
                 {
-                    ValidValueAssignmentProperties properties = (ValidValueAssignmentProperties) requestBody.getProperties();
-
                     handler.assignValidValueToConsumer(userId,
                                                        requestBody.getExternalSourceGUID(),
                                                        requestBody.getExternalSourceName(),
@@ -428,6 +428,7 @@ public class ValidValuesRESTServices
                                                        properties.getStrictRequirement(),
                                                        properties.getEffectiveFrom(),
                                                        properties.getEffectiveTo(),
+                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                        false,
                                                        false,
                                                        new Date(),
@@ -443,6 +444,7 @@ public class ValidValuesRESTServices
                                                        false,
                                                        null,
                                                        null,
+                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                        false,
                                                        false,
                                                        new Date(),
@@ -566,10 +568,8 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ReferenceValueAssignmentProperties)
+                if (requestBody.getProperties() instanceof ReferenceValueAssignmentProperties properties)
                 {
-                    ReferenceValueAssignmentProperties properties = (ReferenceValueAssignmentProperties) requestBody.getProperties();
-
                     handler.assignReferenceValueToItem(userId,
                                                        requestBody.getExternalSourceGUID(),
                                                        requestBody.getExternalSourceName(),
@@ -581,6 +581,7 @@ public class ValidValuesRESTServices
                                                        properties.getStewardTypeName(),
                                                        properties.getStewardPropertyName(),
                                                        properties.getNotes(),
+                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                        properties.getEffectiveFrom(),
                                                        properties.getEffectiveTo(),
                                                        false,
@@ -601,6 +602,7 @@ public class ValidValuesRESTServices
                                                        null,
                                                        null,
                                                        null,
+                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                        null,
                                                        null,
                                                        false,
@@ -793,6 +795,7 @@ public class ValidValuesRESTServices
                                                                               pageSize,
                                                                               false,
                                                                               false,
+                                                                              instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                               new Date(),
                                                                               methodName);
 
@@ -858,6 +861,7 @@ public class ValidValuesRESTServices
                                                                                   pageSize,
                                                                                   false,
                                                                                   false,
+                                                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                   new Date(),
                                                                                   methodName);
 
@@ -889,7 +893,6 @@ public class ValidValuesRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of valid value beans
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -915,14 +918,15 @@ public class ValidValuesRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setElementList(handler.getValidValueSetMembers(userId,
-                                                               validValueSetGUID,
-                                                               guidParameterName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date(),
-                                                               methodName));
+                                                                    validValueSetGUID,
+                                                                    guidParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                    new Date(),
+                                                                    methodName));
         }
         catch (Exception error)
         {
@@ -944,7 +948,6 @@ public class ValidValuesRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of valid value beans
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -976,6 +979,7 @@ public class ValidValuesRESTServices
                                                                  pageSize,
                                                                  false,
                                                                  false,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                  new Date(),
                                                                  methodName));
         }
@@ -1021,12 +1025,13 @@ public class ValidValuesRESTServices
             ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValueHandler(userId, serverName, methodName);
 
             ValidValueElement validValue = handler.getAssignedValidValues(userId,
-                                                                       elementGUID,
-                                                                       guidParameterName,
-                                                                       false,
-                                                                       false,
-                                                                       new Date(),
-                                                                       methodName);
+                                                                          elementGUID,
+                                                                          guidParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                          new Date(),
+                                                                          methodName);
 
             response.setElement(setUpVendorProperties(userId, validValue, handler, methodName));
         }
@@ -1051,7 +1056,6 @@ public class ValidValuesRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -1137,6 +1141,7 @@ public class ValidValuesRESTServices
                                                                             pageSize,
                                                                             false,
                                                                             false,
+                                                                            instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                             new Date(),
                                                                             methodName);
 
@@ -1163,7 +1168,6 @@ public class ValidValuesRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -1245,6 +1249,7 @@ public class ValidValuesRESTServices
                                                                          pageSize,
                                                                          false,
                                                                          false,
+                                                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                          new Date(),
                                                                          methodName);
 
@@ -1294,6 +1299,7 @@ public class ValidValuesRESTServices
                                                                        guid,
                                                                        false,
                                                                        false,
+                                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                        new Date(),
                                                                        methodName);
 

@@ -11,9 +11,9 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
  */
 public class CanonicalGlossaryOwlArchiveWriter extends OMRSArchiveWriter
 {
-    private  String openMetadataArchiveFileName;
+    private final String openMetadataArchiveFileName;
 
-    private String modelLocation;
+    private final String modelLocation;
 
 
     /**
@@ -25,12 +25,12 @@ public class CanonicalGlossaryOwlArchiveWriter extends OMRSArchiveWriter
     {
         this.modelLocation = modelLocation;
         // parser checks that the last 5 characters of the supplied file name are .json
-        this.openMetadataArchiveFileName = modelLocation.substring(0,modelLocation.length()-5) + "Archive.json";
+        this.openMetadataArchiveFileName = modelLocation.substring(0,modelLocation.length()-5) + "Archive.omarchive";
     }
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the elements extracted from the supplied jsonld file.
+     * Generates and writes out an open metadata archive containing all the elements extracted from the supplied jsonld file.
      */
     void writeOpenMetadataArchive()
     {
@@ -42,9 +42,9 @@ public class CanonicalGlossaryOwlArchiveWriter extends OMRSArchiveWriter
             super.writeOpenMetadataArchive(this.openMetadataArchiveFileName,
                                            modelArchiveBuilder.getOpenMetadataArchive());
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            System.out.println("error is " + error.toString());
+            System.out.println("error is " + error);
         }
     }
 
@@ -72,9 +72,9 @@ public class CanonicalGlossaryOwlArchiveWriter extends OMRSArchiveWriter
             CanonicalGlossaryOwlArchiveWriter archiveWriter = new CanonicalGlossaryOwlArchiveWriter(args[0]);
             archiveWriter.writeOpenMetadataArchive();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            System.err.println("Exception: " + error.toString());
+            System.err.println("Exception: " + error);
             System.exit(-1);
         }
     }

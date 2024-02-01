@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.*;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -79,19 +79,19 @@ public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConve
                     String typeName = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties;
 
-                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new CertificationTypeProperties();
 
                         ((CertificationTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new LicenseTypeProperties();
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 
@@ -210,19 +210,19 @@ public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConve
                     String typeName = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties;
 
-                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new CertificationTypeProperties();
 
                         ((CertificationTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LICENSE_TYPE_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new LicenseTypeProperties();
 
                         ((LicenseTypeProperties) governanceDefinitionProperties).setDetails(this.removeDetails(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.SECURITY_GROUP_TYPE_NAME))
                     {
                         governanceDefinitionProperties = new SecurityGroupProperties();
 

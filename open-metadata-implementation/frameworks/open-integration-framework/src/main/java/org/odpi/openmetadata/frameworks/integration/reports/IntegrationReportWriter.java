@@ -25,7 +25,8 @@ public class IntegrationReportWriter
     private boolean activeReportPublishing = true;
 
     private final String userId;
-    private final Map<String, String> anchorMap = new HashMap<>(); // map of element GUIDs to their anchors
+    private final Map<String, String> anchorMap = new HashMap<>();       // map of element GUIDs to their anchors
+    private final Map<String, String> anchorTypeMap = new HashMap<>();   // map of anchor GUIDs to their type
 
     private Set<String>         createdElements = new HashSet<>();       // Set of elementGUIDs that have been created
     private Set<String>         updatedElements = new HashSet<>();       // Set of elementGUIDs that have been updated
@@ -48,6 +49,10 @@ public class IntegrationReportWriter
     /**
      * Set up the integration report writer.
      *
+     * @param serverName name of this integration daemon
+     * @param connectorId identifier of this running integration connector instance
+     * @param connectorName name of this integration connector
+     * @param userId calling user
      * @param openIntegrationClient client used to publish reports.
      * @param openMetadataStore client used to find out about metadata elements.
      */
@@ -131,7 +136,7 @@ public class IntegrationReportWriter
                     elementList = getAllAnchoredElements(anchorGUID, deletedElements);
                     report.setDeletedElements(elementList);
 
-                    openIntegrationClient.publishIntegrationReport(userId, null, report);
+                    openIntegrationClient.publishIntegrationReport(userId, anchorGUID, anchorTypeMap.get(anchorGUID), report);
                 }
             }
         }
@@ -205,10 +210,46 @@ public class IntegrationReportWriter
      *
      * @param elementGUID unique identifier of the element
      * @param anchorGUID unique identifier of the associated anchor
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setAnchor(String elementGUID, String anchorGUID)
+    public void setAnchor(String elementGUID,
+                          String anchorGUID) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
     {
         anchorMap.put(elementGUID, anchorGUID);
+
+        if (anchorTypeMap.get(anchorGUID) != null)
+        {
+            OpenMetadataElement anchorElement = openMetadataStore.getMetadataElementByGUID(userId,
+                                                                                           anchorGUID,
+                                                                                           false,
+                                                                                           false,
+                                                                                           null);
+            if (anchorElement != null)
+            {
+                anchorTypeMap.put(anchorGUID, anchorElement.getType().getTypeName());
+            }
+        }
+    }
+
+
+    /**
+     * Save the relationship between an element and its anchor.  This is used to identify
+     * which report that the element should be reported under.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param anchorGUID unique identifier of the associated anchor
+     * @param anchorTypeName type of the associated anchor
+     */
+    public void setAnchor(String elementGUID,
+                          String anchorGUID,
+                          String anchorTypeName)
+    {
+        anchorMap.put(elementGUID, anchorGUID);
+        anchorTypeMap.put(anchorGUID, anchorTypeName);
     }
 
 
@@ -272,17 +313,23 @@ public class IntegrationReportWriter
                             if ("Anchors".equals(classification.getClassificationName()))
                             {
                                 String anchorGUIDPropertyName = "anchorGUID";
+                                String anchorTypeNamePropertyName = "anchorTypeName";
                                 String anchorGUID = propertyHelper.getStringProperty(sourceName,
                                                                                      anchorGUIDPropertyName,
                                                                                      classification.getClassificationProperties(),
                                                                                      methodName);
+                                String anchorTypeName = propertyHelper.getStringProperty(sourceName,
+                                                                                         anchorTypeNamePropertyName,
+                                                                                         classification.getClassificationProperties(),
+                                                                                         methodName);
 
                                 if (anchorGUID == null)
                                 {
                                     anchorGUID = elementGUID;
+                                    anchorTypeName = metadataElement.getType().getTypeName();
                                 }
 
-                                setAnchor(elementGUID, anchorGUID);
+                                setAnchor(elementGUID, anchorGUID, anchorTypeName);
                             }
                         }
                     }

@@ -865,34 +865,9 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
 
         if (openMetadataTypeDefGallery != null)
         {
-            if (openMetadataTypeDefGallery.getAttributeTypeDefs() != null)
-            {
-                for (OpenMetadataAttributeTypeDef attributeTypeDef : openMetadataTypeDefGallery.getAttributeTypeDefs())
-                {
-                    if ((attributeTypeDef instanceof OpenMetadataEnumDef openMetadataEnumDef) &&
-                        (! exclusionList.contains(attributeTypeDef.getName())))
-                    {
-                        try
-                        {
-                            atlasClient.addOpenMetadataEnumType(openMetadataEnumDef);
-                        }
-                        catch (Exception error)
-                        {
-                            if (auditLog != null)
-                            {
-                                auditLog.logException(methodName,
-                                                      ApacheAtlasAuditCode.UNABLE_TO_DEFINE_TYPE_IN_ATLAS.getMessageDefinition(connectorName,
-                                                                                                                               error.getClass().getName(),
-                                                                                                                               attributeTypeDef.getCategory().getName(),
-                                                                                                                               attributeTypeDef.getName(),
-                                                                                                                               error.getMessage()),
-                                                      error);
-                            }
-                        }
-                    }
-                }
-            }
-
+            /*
+             * Note that open metadata enums are added to Apache Atlas as strings
+             */
             if (openMetadataTypeDefGallery.getTypeDefs() != null)
             {
                 for (OpenMetadataTypeDef typeDef : openMetadataTypeDefGallery.getTypeDefs())

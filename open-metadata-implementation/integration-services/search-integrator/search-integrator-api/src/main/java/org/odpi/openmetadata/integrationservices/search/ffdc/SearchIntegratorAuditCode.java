@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.integrationservices.search.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-SEARCH-INTEGRATOR-0001 - The search integrator context manager is being initialized for calls to server {0} on platform {1}
      */
     CONTEXT_INITIALIZING("OMIS-SEARCH-INTEGRATOR-0001",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "The search integrator context manager is being initialized for calls to server {0} on platform {1}",
             "The search Integrator OMIS is initializing its context manager.",
             "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
@@ -34,7 +34,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-SEARCH-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} and service options of {3}
      */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-SEARCH-INTEGRATOR-0002",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "Creating context for integration connector {0} ({1}) connecting to third party technology {2} and service options of {3}",
             "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
                     "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
@@ -44,7 +44,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-SEARCH-INTEGRATOR-0003 - Integration connector {0} has a null context
      */
     NULL_CONTEXT("OMIS-SEARCH-INTEGRATOR-0003",
-            OMRSAuditLogRecordSeverity.ERROR,
+            AuditLogRecordSeverityLevel.ERROR,
             "Integration connector {0} has a null context",
             "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
             "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
@@ -54,7 +54,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-SEARCH-INTEGRATOR-0004 - Integration connector {0} has an exception while attempting to register an Asset Catalog event listener
      */
     REGISTER_CATALOG_LISTENER_ERROR("OMIS-SEARCH-INTEGRATOR-0004",
-            OMRSAuditLogRecordSeverity.ERROR,
+            AuditLogRecordSeverityLevel.ERROR,
             "Integration connector {0} has an exception while attempting to register an Asset Catalog event listener",
             "The integration connector is running, but does not have a listener",
             "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
@@ -62,13 +62,16 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
 
     ;
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
     /**
      * The constructor for SearchIntegratorAuditCode expects to be passed one of the enumeration rows defined in
      * SearchIntegratorAuditCode above.       *
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId    - unique id for the message
      * @param severity     - severity of the message
@@ -77,16 +80,16 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * @param userAction   - instructions for resolving the situation, if any
      */
     SearchIntegratorAuditCode(String                     messageId,
-                              OMRSAuditLogRecordSeverity severity,
+                              AuditLogRecordSeverityLevel severity,
                               String                     message,
                               String                     systemAction,
                               String                     userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -96,8 +99,13 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition() {
-        return messageDefinition;
+    public AuditLogMessageDefinition getMessageDefinition()
+    {
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -110,21 +118,30 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "SearchIntegratorAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

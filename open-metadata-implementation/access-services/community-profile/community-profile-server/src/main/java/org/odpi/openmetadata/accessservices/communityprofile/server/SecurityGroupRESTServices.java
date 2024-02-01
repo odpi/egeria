@@ -15,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -295,11 +295,11 @@ public class SecurityGroupRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElementList(handler.getGovernanceDefinitionsByStringParameter(userId,
-                                                                                      OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
+                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
+                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                                       distinguishedName,
                                                                                       distinguishedNameParameterName,
-                                                                                      OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                                      OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                                       startFrom,
                                                                                       pageSize,
                                                                                       false,
@@ -381,7 +381,7 @@ public class SecurityGroupRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
+                                                                          OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
                                                                           startFrom,

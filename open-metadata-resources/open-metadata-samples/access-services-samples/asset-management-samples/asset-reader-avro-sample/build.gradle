@@ -11,7 +11,6 @@ plugins {
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     compileOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     runtimeOnly 'ch.qos.logback:logback-classic'

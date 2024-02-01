@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 /**
  * DigitalServiceBaseClient supports the common properties and functions for the Digital Service OMAS.
  */
-public class DigitalServiceBaseClient
+public abstract class DigitalServiceBaseClient
 {
     final protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     final protected PropertyHelper          propertyHelper          = new PropertyHelper();

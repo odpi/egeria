@@ -197,6 +197,7 @@ public class RelationshipDef extends TypeDef
                 ", multiLink=" + multiLink +
                 ", superType=" + getSuperType() +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +

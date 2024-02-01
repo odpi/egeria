@@ -10,6 +10,9 @@ import java.io.Serializable;
  */
 public enum PlatformConformanceProfileRequirement implements Serializable
 {
+    /**
+     * The technology under test is able to return the identifier of the platform.
+     */
     ORIGIN_IDENTIFIER           (0, "Origin identifier",
                                    "The technology under test is able to return the identifier of the platform.",
                                    "https://egeria-project.org/guides/cts/platform-workbench/profiles/platform-origin/origin-identifier",
@@ -17,20 +20,20 @@ public enum PlatformConformanceProfileRequirement implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int                        ordinal;
-    private String                     name;
-    private String                     description;
-    private String                     documentationURL;
-    private PlatformConformanceProfile profile;
+    private final int                        ordinal;
+    private final String                     name;
+    private final String                     description;
+    private final String                     documentationURL;
+    private final PlatformConformanceProfile profile;
 
 
 
     /**
      * Default constructor sets up the values for this enum instance.
      *
-     * @param ordinal int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param ordinal int identifier for the enum, used for indexing arrays etcetera with the enum.
      * @param name String name for the enum, used for message content.
-     * @param description String default description for the enum, used when there is not natural
+     * @param description String default description for the enum, used when there is not a natural
      *                             language resource bundle available.
      * @param documentationURL link to more information
      * @param profile parent profile.
@@ -50,7 +53,7 @@ public enum PlatformConformanceProfileRequirement implements Serializable
 
 
     /**
-     * Return the identifier for the enum, used for indexing arrays etc with the enum.
+     * Return the identifier for the enum, used for indexing arrays etcetera with the enum.
      *
      * @return int identifier
      */
@@ -72,7 +75,7 @@ public enum PlatformConformanceProfileRequirement implements Serializable
 
 
     /**
-     * Return the default description for the enum, used when there is not natural
+     * Return the default description for the enum, used when there is not a natural
      * language resource bundle available.
      *
      * @return String default description

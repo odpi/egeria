@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                     MetadataElementInterface,
-                                                    StewardshipActionInterface,
+                                                    StewardshipRequestInterface,
                                                     MultiLanguageInterface,
                                                     ValidMetadataValuesInterface
 {
@@ -46,6 +46,17 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
         this.serviceURLMarker = serviceURLMarker;
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+    }
+
+
+    /**
+     * Return the name of the server that this client is connected to.
+     *
+     * @return string name
+     */
+    public String getServerName()
+    {
+        return serverName;
     }
 
 

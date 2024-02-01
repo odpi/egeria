@@ -9,9 +9,6 @@ The File Connectors module contains connectors to different types of data stores
 * **[basic-file-connector](basic-file-connector)** provides connector to read a file.
 It has no special knowledge of the format.
 
-* **[avro-file-connector](avro-file-connector)** provides connector to read files
-that have an [Apache Avro](https://avro.apache.org/) format.
-
 * **[csv-file-connector](csv-file-connector)** provides connector to read files
 that have a CSV tabular format.
 

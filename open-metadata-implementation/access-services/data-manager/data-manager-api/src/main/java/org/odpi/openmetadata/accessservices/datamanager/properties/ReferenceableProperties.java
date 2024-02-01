@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,11 +31,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ValidValueSetProperties.class, name = "ValidValueSetProperties"),
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 

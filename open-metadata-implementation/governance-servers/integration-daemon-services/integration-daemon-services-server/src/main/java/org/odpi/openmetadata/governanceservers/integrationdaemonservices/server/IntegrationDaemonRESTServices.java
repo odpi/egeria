@@ -7,8 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
@@ -46,7 +48,6 @@ public class IntegrationDaemonRESTServices
      * @param connectorName name of a specific connector
      *
      * @return properties map or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -90,7 +91,6 @@ public class IntegrationDaemonRESTServices
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -138,6 +138,118 @@ public class IntegrationDaemonRESTServices
 
 
     /**
+     * Update the endpoint network address for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param requestBody name of a specific connector or null for all connectors and the properties to change
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+
+    public  VoidResponse updateEndpointNetworkAddress(String            serverName,
+                                                      String            userId,
+                                                      String            connectorName,
+                                                      StringRequestBody requestBody)
+    {
+        final String methodName = "updateEndpointNetworkAddress";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId,
+                                                   serverName,
+                                                   methodName);
+
+            if (requestBody != null)
+            {
+                instanceHandler.updateEndpointNetworkAddress(userId,
+                                                             serverName,
+                                                             methodName,
+                                                             connectorName,
+                                                             requestBody.getString());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param requestBody new connection object
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+
+    public  VoidResponse updateConnectorConnection(String     serverName,
+                                                   String     userId,
+                                                   String     connectorName,
+                                                   Connection requestBody)
+    {
+        final String methodName = "updateConnectorConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId,
+                                                   serverName,
+                                                   methodName);
+
+            if (requestBody != null)
+            {
+                instanceHandler.updateConnectorConnection(userId,
+                                                          serverName,
+                                                          methodName,
+                                                          connectorName,
+                                                          requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Request that the integration daemon refresh all the connectors in all the integration services and groups
      *
      * @param serverName name of the integration daemon
@@ -145,7 +257,6 @@ public class IntegrationDaemonRESTServices
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -194,7 +305,6 @@ public class IntegrationDaemonRESTServices
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -244,7 +354,6 @@ public class IntegrationDaemonRESTServices
      * @param requestBody name of a specific connector to refresh - if null all connectors are refreshed
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -296,7 +405,6 @@ public class IntegrationDaemonRESTServices
      * @param requestBody name of a specific connector to refresh - if null all connectors are restarted.
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
@@ -345,7 +453,6 @@ public class IntegrationDaemonRESTServices
      * @param serverName integration daemon name
      * @param userId calling user
      * @return list of statuses - on for each assigned integration services or group
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -407,7 +514,6 @@ public class IntegrationDaemonRESTServices
      * @param serverName integration daemon name
      * @param userId calling user
      * @return list of statuses - on for each assigned integration services
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration daemon.
@@ -468,7 +574,6 @@ public class IntegrationDaemonRESTServices
      * @param userId identifier of calling user
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  IntegrationGroupException there was a problem detected by the integration group.
@@ -548,7 +653,6 @@ public class IntegrationDaemonRESTServices
      * @param serverName integration daemon server name
      * @param userId calling user
      * @return list of statuses - on for each assigned integration groups or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */

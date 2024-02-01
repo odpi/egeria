@@ -3,6 +3,7 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
@@ -25,6 +26,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementRes
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
@@ -43,13 +45,13 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossarySearchStringRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermActivityTypeListResponse;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody;
@@ -59,6 +61,7 @@ import org.odpi.openmetadata.viewservices.glossarybrowser.rest.RelationshipReque
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 /**
@@ -81,6 +84,59 @@ public class GlossaryBrowserRESTServices extends TokenController
      */
     public GlossaryBrowserRESTServices()
     {
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementResponse getMetadataElementByGUID(String  serverName,
+                                                                String  elementGUID,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing,
+                                                                Date    effectiveTime)
+    {
+        final String methodName = "getMetadataElementByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementResponse response = new OpenMetadataElementResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                 elementGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -1285,6 +1341,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 response.setElementList(handler.getRelatedTerms(userId,
                                                                 glossaryTermGUID,
+                                                                requestBody.getRelationshipTypeName(),
                                                                 requestBody.getLimitResultsByStatus(),
                                                                 startFrom,
                                                                 pageSize,
@@ -1296,6 +1353,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 response.setElementList(handler.getRelatedTerms(userId,
                                                                 glossaryTermGUID,
+                                                                null,
                                                                 null,
                                                                 startFrom,
                                                                 pageSize,

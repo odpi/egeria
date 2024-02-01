@@ -198,6 +198,7 @@ public class CatalogIntegratorContext extends IntegrationContext
               assetManagerGUID,
               assetManagerName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         final String methodName = "CatalogIntegratorContext";

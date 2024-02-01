@@ -6,8 +6,12 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -77,6 +81,28 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedTargetActionNames.add(DESTINATION_FOLDER_PROPERTY);
         supportedTargetActionNames.add(NEW_ASSET_GUID_PROPERTY);
 
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(SOURCE_FILE_PROPERTY, actionTargetType);
+
+        actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(DESTINATION_FOLDER_PROPERTY, actionTargetType);
+
+        actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(NEW_ASSET_GUID_PROPERTY, actionTargetType);
+
         supportedGuards = new ArrayList<>();
         supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
         supportedGuards.add(PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
@@ -106,5 +132,6 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
     }
 }

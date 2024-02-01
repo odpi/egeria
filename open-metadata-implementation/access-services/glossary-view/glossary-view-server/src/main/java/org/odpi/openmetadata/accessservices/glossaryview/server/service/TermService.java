@@ -29,7 +29,7 @@ public class TermService extends GlossaryViewOMAS {
     private static final String USED_IN_CONTEXT_RELATIONSHIP_NAME = "UsedInContext";
     private static final String SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME = "SemanticAssignment";
     private static final String TERM_HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
-    private static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOFRelationship";
+    private static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOfRelationship";
     private static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
 
     /**

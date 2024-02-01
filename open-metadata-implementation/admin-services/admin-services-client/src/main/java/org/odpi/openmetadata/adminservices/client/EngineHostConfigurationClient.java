@@ -36,8 +36,8 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      *                                       REST API calls.
      */
     public EngineHostConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL) throws OMAGInvalidParameterException
+                                         String serverName,
+                                         String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -56,10 +56,10 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      *                                       REST API calls.
      */
     public EngineHostConfigurationClient(String adminUserId,
-                                  String serverName,
-                                  String serverPlatformRootURL,
-                                  String connectionUserId,
-                                  String connectionPassword) throws OMAGInvalidParameterException
+                                         String serverName,
+                                         String serverPlatformRootURL,
+                                         String connectionUserId,
+                                         String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }
@@ -216,6 +216,8 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
     /**
      * Enable a single engine service.
      *
+     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
+     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param serviceURLMarker string indicating which engine service it is configuring
      * @param engineServiceOptions property name/value pairs used to configure the engine service
      * @param engines list of qualified names of the engines and optional user information
@@ -224,7 +226,9 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void configureEngineService(String              serviceURLMarker,
+    public void configureEngineService(String              partnerOMASServerURLRoot,
+                                       String              partnerOMASServerName,
+                                       String              serviceURLMarker,
                                        Map<String, Object> engineServiceOptions,
                                        List<EngineConfig>  engines) throws OMAGNotAuthorizedException,
                                                                            OMAGInvalidParameterException,
@@ -245,8 +249,8 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
         EngineServiceRequestBody requestBody = new EngineServiceRequestBody();
 
-        requestBody.setOMAGServerPlatformRootURL(serverPlatformRootURL);
-        requestBody.setOMAGServerName(serverName);
+        requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
+        requestBody.setOMAGServerName(partnerOMASServerName);
         requestBody.setEngineServiceOptions(engineServiceOptions);
         requestBody.setEngines(engines);
 
@@ -267,9 +271,9 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void disableEngineService(String              serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                           OMAGInvalidParameterException,
-                                                                           OMAGConfigurationErrorException
+    public void disableEngineService(String serviceURLMarker) throws OMAGNotAuthorizedException,
+                                                                     OMAGInvalidParameterException,
+                                                                     OMAGConfigurationErrorException
     {
         final String methodName    = "disableEngineService";
         final String parameterName = "serviceURLMarker";
@@ -419,7 +423,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Clear the configuration for the metadata server that provides the governance engine definitions through the
+     * Clear the configuration for the metadata access server that provides the governance engine definitions through the
      * Governance Engine OMAS.
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
@@ -462,7 +466,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Disable the engine services.  This removes all configuration for the engine host server.
+     * Disable the engine services.  This removes all configuration for the engine services from the engine host server.
      *
      * @param serviceURLMarker engine service name used in URL
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.

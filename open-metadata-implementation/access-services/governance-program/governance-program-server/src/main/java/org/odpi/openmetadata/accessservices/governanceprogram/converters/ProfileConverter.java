@@ -9,10 +9,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.ActorPr
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.UserIdentityProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -108,7 +107,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
@@ -129,7 +128,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
                                     userIdentities.add(userBean);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME))
                                 {
                                     ContactMethodElement    contactMethodBean       = new ContactMethodElement();
                                     ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
@@ -203,7 +202,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
 
             switch (ordinal)
             {
