@@ -14,6 +14,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
     compileOnly 'org.slf4j:slf4j-api'
+    implementation 'commons-io:commons-io'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

@@ -1398,6 +1398,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                       assetGUID,
                                                                       assetGUIDParameterName,
                                                                       typeName,
+                                                                      qualifiedName,
                                                                       connection,
                                                                       assetSummary,
                                                                       forLineage,

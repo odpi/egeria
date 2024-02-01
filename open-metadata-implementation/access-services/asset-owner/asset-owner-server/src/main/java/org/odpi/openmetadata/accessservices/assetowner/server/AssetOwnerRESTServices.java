@@ -3627,6 +3627,7 @@ public class AssetOwnerRESTServices
                                                      assetGUID,
                                                      assetGUIDParameterName,
                                                      OpenMetadataType.ASSET.typeName,
+                                                     null,
                                                      connection,
                                                      assetSummary,
                                                      false,
