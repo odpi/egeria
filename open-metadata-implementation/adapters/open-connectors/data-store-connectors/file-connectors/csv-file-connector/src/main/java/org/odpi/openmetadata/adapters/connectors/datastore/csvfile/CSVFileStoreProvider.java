@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
@@ -15,15 +17,40 @@ import java.util.List;
  */
 public class CSVFileStoreProvider extends ConnectorProviderBase
 {
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId   = 96;
+
+    /*
+     * Unique identifier for the connector type.
+     */
     private static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
+    private static final String  connectorQualifiedName = "Egeria:ResourceConnector:CSVFile";
     private static final String  connectorTypeName = "CSV File Connector";
     private static final String  connectorTypeDescription = "Connector supports reading of structured (CSV) files.";
+    private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/csv-file-resource-connector/";
+
+
+    private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector";
+
 
     private static final String  expectedDataFormat = "csv";
     private static final String  assetTypeName = "CSVFile";
 
+    /**
+     * columnNames configuration property
+     */
     public static final String  columnNamesProperty = "columnNames";
+
+    /**
+     * delimiterCharacter configuration property
+     */
     public static final String  delimiterCharacterProperty = "delimiterCharacter";
+
+    /**
+     * quote character configuration property
+     */
     public static final String  quoteCharacterProperty = "quoteCharacter";
 
 
@@ -35,16 +62,14 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
     {
         super();
 
-        Class<?>    connectorClass = CSVFileStoreConnector.class;
-
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClass);
 
         connectorInterfaces.add(CSVFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
+        connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
@@ -60,5 +85,18 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
+        componentDescription.setComponentName(connectorTypeName);
+        componentDescription.setComponentDescription(connectorTypeDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }

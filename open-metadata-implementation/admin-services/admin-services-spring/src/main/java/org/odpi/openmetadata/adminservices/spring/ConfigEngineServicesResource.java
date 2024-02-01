@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminForEngineServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
@@ -20,7 +21,7 @@ import java.util.List;
 
 /**
  * ConfigEngineServicesResource provides the configuration for setting up the Open Metadata Engine
- * Services (OMISs).
+ * Services (OMESs).
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
@@ -126,6 +127,34 @@ public class ConfigEngineServicesResource
                                                          @RequestBody  OMAGServerClientConfig clientConfig)
     {
         return adminAPI.setEngineDefinitionsClientConfig(userId, serverName, clientConfig);
+    }
+
+
+    /**
+     * Set up the list of governance engines that will use the metadata from the same metadata access server as the
+     * engine host uses for retrieving the engine configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param engines  URL root and server name for the metadata server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping("/engine-list")
+
+    @Operation(summary="setEngineList",
+            description="Set up the list of governance engine that will use the metadata from the same metadata access server as the" +
+                    " engine host uses for retrieving the engine configuration.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
+
+    public VoidResponse setEngineList(@PathVariable String             userId,
+                                      @PathVariable String             serverName,
+                                      @RequestBody  List<EngineConfig> engines)
+    {
+        return adminAPI.setEngineList(userId, serverName, engines);
     }
 
 
@@ -284,6 +313,31 @@ public class ConfigEngineServicesResource
                                                            @PathVariable String serverName)
     {
         return adminAPI.clearEngineDefinitionsClientConfig(userId, serverName);
+    }
+
+
+    /**
+     * Remove the configuration for the engine list in a single call.  This overrides the current values.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/engine-list")
+
+    @Operation(summary="clearEngineList",
+            description="Remove the configuration for the engine list in a single call.  " +
+                    "This overrides the current values.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
+
+    public VoidResponse clearEngineList(@PathVariable String userId,
+                                        @PathVariable String serverName)
+    {
+        return adminAPI.clearEngineList(userId, serverName);
     }
 
 

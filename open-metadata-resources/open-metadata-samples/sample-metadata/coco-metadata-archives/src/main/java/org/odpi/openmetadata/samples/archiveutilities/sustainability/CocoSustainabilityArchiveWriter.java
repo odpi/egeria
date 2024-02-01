@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
@@ -62,9 +62,9 @@ public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
      */
     private void writeFacilityTypeValidValueSet()
     {
-        String validValueSetQName = OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME + ":" + FacilityTypeDefinition.validValueSetName;
+        String validValueSetQName = OpenMetadataType.VALID_VALUE_SET_TYPE_NAME + ":" + FacilityTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                FacilityTypeDefinition.validValueSetName,
                                                                FacilityTypeDefinition.validValueSetDescription,
@@ -80,7 +80,7 @@ public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
 
             for (FacilityTypeDefinition facilityTypeDefinition : FacilityTypeDefinition.values())
             {
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     facilityTypeDefinition.getQualifiedName(),
                                                                     facilityTypeDefinition.getDisplayName(),
                                                                     facilityTypeDefinition.getDescription(),

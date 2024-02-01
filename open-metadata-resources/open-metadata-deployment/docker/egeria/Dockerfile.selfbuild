@@ -25,11 +25,12 @@ ARG runimg=registry.access.redhat.com/ubi9/openjdk-17
 
 FROM $buildimg as build
 
-# Defaults to 'main' but could be 'egeria-release-4.0' or a commit id like '969fde1042fc4fda70961f979c4634159466e081'
+# Defaults to 'main' but could be 'egeria-release-4.3' or a commit id like '969fde1042fc4fda70961f979c4634159466e081'
 ARG srcref=main
 # Defaults to egeria repo - but could be a different fork if needed
 ARG srcurl=https://github.com/odpi/egeria
 # this should not be needed, and must match the source, but we'll use for now
+
 ARG version=4.4-SNAPSHOT
 # Replace build parms if needed
 ARG buildparms="build -x test -x javadoc --no-build-cache"

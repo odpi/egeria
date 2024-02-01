@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.NoteLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.NoteLogs;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,12 @@ public class ConnectedNoteLogs extends NoteLogs
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
-    private String                 omasServerURL;
+    private String                 platformURLRoot;
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -37,7 +39,7 @@ public class ConnectedNoteLogs extends NoteLogs
      * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
@@ -47,7 +49,7 @@ public class ConnectedNoteLogs extends NoteLogs
     ConnectedNoteLogs(String                 serviceName,
                       String                 serverName,
                       String                 userId,
-                      String                 omasServerURL,
+                      String                 platformURLRoot,
                       String                 assetGUID,
                       int                    totalElementCount,
                       int                    maxCacheSize,
@@ -58,7 +60,7 @@ public class ConnectedNoteLogs extends NoteLogs
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
+        this.platformURLRoot   = platformURLRoot;
         this.assetGUID       = assetGUID;
         this.restClient      = restClient;
     }
@@ -78,7 +80,7 @@ public class ConnectedNoteLogs extends NoteLogs
             this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
-            this.omasServerURL  = template.omasServerURL;
+            this.platformURLRoot  = template.platformURLRoot;
             this.assetGUID      = template.assetGUID;
             this.restClient     = template.restClient;
         }
@@ -117,7 +119,7 @@ public class ConnectedNoteLogs extends NoteLogs
         try
         {
             NoteLogsResponse restResult = restClient.callOCFNoteLogsGetRESTCall(methodName,
-                                                                                omasServerURL + urlTemplate,
+                                                                                platformURLRoot + urlTemplate,
                                                                                 serverName,
                                                                                 serviceName,
                                                                                 userId,
@@ -148,7 +150,7 @@ public class ConnectedNoteLogs extends NoteLogs
                                                        new ConnectedNotes(serviceName,
                                                                           serverName,
                                                                           userId,
-                                                                          omasServerURL,
+                                                                          platformURLRoot,
                                                                           noteLogResponse.getNoteLog().getGUID(),
                                                                           noteLogResponse.getNoteCount(),
                                                                           maximumSize,
@@ -162,7 +164,7 @@ public class ConnectedNoteLogs extends NoteLogs
         }
         catch (Exception  error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, platformURLRoot);
         }
 
         return null;

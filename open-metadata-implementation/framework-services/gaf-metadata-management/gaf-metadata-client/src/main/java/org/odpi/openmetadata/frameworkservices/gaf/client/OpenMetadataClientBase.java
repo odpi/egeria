@@ -1398,7 +1398,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -1681,6 +1681,93 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void archiveMetadataElementInStore(String            userId,
+                                              String            metadataElementGUID,
+                                              ArchiveProperties archiveProperties,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              Date              effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        this.archiveMetadataElementInStore(userId,
+                                           null,
+                                           null,
+                                           metadataElementGUID,
+                                           archiveProperties,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime);
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void archiveMetadataElementInStore(String            userId,
+                                              String            externalSourceGUID,
+                                              String            externalSourceName,
+                                              String            metadataElementGUID,
+                                              ArchiveProperties archiveProperties,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              Date              effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName        = "archiveMetadataElementInStore";
+        final String guidParameterName = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/archive";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        ArchiveRequestBody requestBody = new ArchiveRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setForLineage(forLineage);
+        requestBody.setForDuplicateProcessing(forDuplicateProcessing);
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setArchiveProperties(archiveProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        metadataElementGUID);
+    }
+
+
+    /**
      * Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
      * a metadata element.
      *
@@ -1889,7 +1976,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -1993,7 +2080,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -2083,7 +2170,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,

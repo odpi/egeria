@@ -47,7 +47,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      * open metadata access service {2} on server {3}; message was {0}
      */
     PROPERTY_SERVER_ERROR("OMAG-REPOSITORY-HANDLER-0003",
-                          AuditLogRecordSeverityLevel.EXCEPTION,
+                          AuditLogRecordSeverityLevel.ERROR,
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service {2} on " +
                                   "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
@@ -117,7 +117,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      * forLineage={9} and forDuplicateProcessing={10}
      */
     UNAVAILABLE_ENTITY( "OMAG-REPOSITORY-HANDLER-0009",
-                        AuditLogRecordSeverityLevel.ERROR,
+                        AuditLogRecordSeverityLevel.INFO,
                         "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of forLineage={9} and forDuplicateProcessing={10}",
                         "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
                         "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),

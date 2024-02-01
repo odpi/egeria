@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * EngineServiceDescription provides a list of registered engine services.  These engine services run on an Engine Host OMAG Server.
  */
@@ -15,7 +18,7 @@ public enum EngineServiceDescription
      * in a discovery analysis report that is attached to the asset in the open metadata repositories.
      */
     ASSET_ANALYSIS_OMES(400,
-                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        ComponentDevelopmentStatus.DEPRECATED,
                         "Asset Analysis",
                         "Asset Analysis OMES",
                         "asset-analysis",
@@ -23,6 +26,8 @@ public enum EngineServiceDescription
                                 "in a discovery analysis report that is attached to the asset in the open metadata repositories.",
                         "https://egeria-project.org/services/omes/asset-analysis/overview/",
                         AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
+                        DeployedImplementationType.OPEN_DISCOVERY_ENGINE.getAssociatedTypeName(),
+                        DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR.getAssociatedTypeName(),
                         DeployedImplementationType.OPEN_DISCOVERY_ENGINE.getDeployedImplementationType(),
                         DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -38,6 +43,8 @@ public enum EngineServiceDescription
                                    "real-world counterparts.",
                            "https://egeria-project.org/services/omes/governance-action/overview/",
                            AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                           DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getAssociatedTypeName(),
+                           DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getDeployedImplementationType(),
                            DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -52,6 +59,8 @@ public enum EngineServiceDescription
                                "Dynamically govern open metadata repositories in the connected cohorts.",
                                "https://egeria-project.org/services/omes/repository-governance/overview/",
                                CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(),
+                               DeployedImplementationType.REPOSITORY_GOVERNANCE_ENGINE.getAssociatedTypeName(),
+                               DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                DeployedImplementationType.REPOSITORY_GOVERNANCE_ENGINE.getDeployedImplementationType(),
                                DeployedImplementationType.REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -67,8 +76,29 @@ public enum EngineServiceDescription
                       "Executes requested event action services to monitor, assess and maintain context events.",
                       "https://egeria-project.org/services/omes/event-action/overview/",
                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                      DeployedImplementationType.EVENT_ACTION_ENGINE.getAssociatedTypeName(),
+                      DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                       DeployedImplementationType.EVENT_ACTION_ENGINE.getDeployedImplementationType(),
                       DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+
+
+    /**
+     * Analyses the content of an asset's real world counterpart (resource), generates annotations
+     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
+     */
+    SURVEY_ACTION_OMES(404,
+                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        "Survey Action",
+                        "Survey Action OMES",
+                        "survey-action",
+                        "Analyses the content of an asset's real world counterpart (resource), generates annotations " +
+                                "in a survey report that is attached to the asset in the open metadata repositories.",
+                        "https://egeria-project.org/services/omes/survey-action/overview/",
+                        AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getAssociatedTypeName(),
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                       DeployedImplementationType.SURVEY_ACTION_ENGINE.getDeployedImplementationType(),
+                       DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
     ;
 
 
@@ -82,6 +112,8 @@ public enum EngineServiceDescription
     private final String                     engineServicePartnerService;
     private final String                     hostedGovernanceEngineType;
     private final String                     hostedGovernanceServiceType;
+    private final String                     hostedGovernanceEngineDeployedImplementationType;
+    private final String                     hostedGovernanceServiceDeployedImplementationType;
 
 
     /**
@@ -97,6 +129,8 @@ public enum EngineServiceDescription
      * @param engineServicePartnerService name of the OMAS that is partnered with this engine service
      * @param hostedGovernanceEngineType type of governance engine hosted by this service
      * @param hostedGovernanceServiceType type of governance service hosted by this service
+     * @param hostedGovernanceEngineDeployedImplementationType deployed implementation type of governance engine hosted by this service
+     * @param hostedGovernanceServiceDeployedImplementationType deployed implementation type of governance service hosted by this service
      */
     EngineServiceDescription(int                        engineServiceCode,
                              ComponentDevelopmentStatus engineServiceDevelopmentStatus,
@@ -107,21 +141,25 @@ public enum EngineServiceDescription
                              String                     engineServiceWiki,
                              String                     engineServicePartnerService,
                              String                     hostedGovernanceEngineType,
-                             String                     hostedGovernanceServiceType)
+                             String                     hostedGovernanceServiceType,
+                             String                     hostedGovernanceEngineDeployedImplementationType,
+                             String                     hostedGovernanceServiceDeployedImplementationType)
     {
         /*
          * Save the values supplied
          */
-        this.engineServiceCode              = engineServiceCode;
-        this.engineServiceDevelopmentStatus = engineServiceDevelopmentStatus;
-        this.engineServiceName              = engineServiceName;
-        this.engineServiceFullName          = engineServiceFullName;
-        this.engineServiceURLMarker         = engineServiceURLMarker;
-        this.engineServiceDescription       = engineServiceDescription;
-        this.engineServiceWiki              = engineServiceWiki;
-        this.engineServicePartnerService    = engineServicePartnerService;
-        this.hostedGovernanceEngineType     = hostedGovernanceEngineType;
-        this.hostedGovernanceServiceType    = hostedGovernanceServiceType;
+        this.engineServiceCode                                 = engineServiceCode;
+        this.engineServiceDevelopmentStatus                    = engineServiceDevelopmentStatus;
+        this.engineServiceName                                 = engineServiceName;
+        this.engineServiceFullName                             = engineServiceFullName;
+        this.engineServiceURLMarker                            = engineServiceURLMarker;
+        this.engineServiceDescription                          = engineServiceDescription;
+        this.engineServiceWiki                                 = engineServiceWiki;
+        this.engineServicePartnerService                       = engineServicePartnerService;
+        this.hostedGovernanceEngineType                        = hostedGovernanceEngineType;
+        this.hostedGovernanceServiceType                       = hostedGovernanceServiceType;
+        this.hostedGovernanceEngineDeployedImplementationType  = hostedGovernanceEngineDeployedImplementationType;
+        this.hostedGovernanceServiceDeployedImplementationType = hostedGovernanceServiceDeployedImplementationType;
     }
 
 
@@ -142,6 +180,24 @@ public enum EngineServiceDescription
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the full names of all the registered engine service names.
+     *
+     * @return list of names
+     */
+    public static List<String> getEngineServiceNames()
+    {
+        List<String> engineServiceNames = new ArrayList<>();
+
+        for (EngineServiceDescription serviceDescription : EngineServiceDescription.values())
+        {
+            engineServiceNames.add(serviceDescription.getEngineServiceFullName());
+        }
+
+        return engineServiceNames;
     }
 
 
@@ -234,9 +290,9 @@ public enum EngineServiceDescription
 
 
     /**
-     * Return the type of governance engine that this engine service supports.
+     * Return the open metadata type of governance engine that this engine service supports.
      *
-     * @return engine deployed implementation type name
+     * @return engine open metadata type name
      */
     public String getHostedGovernanceEngineType()
     {
@@ -245,12 +301,34 @@ public enum EngineServiceDescription
 
 
     /**
-     * Return the type of governance service that this engine service supports.
+     * Return the open metadata type of governance service that this engine service supports.
      *
-     * @return governance service connector deployed implementation type name
+     * @return governance service connector open metadata type name
      */
     public String getHostedGovernanceServiceType()
     {
         return hostedGovernanceServiceType;
+    }
+
+
+    /**
+     * Return the type of governance engine that this engine service supports.
+     *
+     * @return engine deployed implementation type name
+     */
+    public String getHostedGovernanceEngineDeployedImplementationType()
+    {
+        return hostedGovernanceEngineDeployedImplementationType;
+    }
+
+
+    /**
+     * Return the deployed implementation type of governance service that this engine service supports.
+     *
+     * @return governance service connector deployed implementation type name
+     */
+    public String getHostedGovernanceServiceDeployedImplementationType()
+    {
+        return hostedGovernanceServiceDeployedImplementationType;
     }
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -160,8 +161,6 @@ public class OpenMetadataTypesArchive3_12
          */
         add0053XRootSchemaType();
         add0042ProcessingStateClassification();
-
-
     }
 
 
@@ -233,23 +232,26 @@ public class OpenMetadataTypesArchive3_12
         this.archiveBuilder.addTypeDefPatch(updateAPISchemaType());
         this.archiveBuilder.addTypeDefPatch(updateDisplayDataSchemaType());
         this.archiveBuilder.addTypeDefPatch(updateQuerySchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateGraphSchemaType());
     }
 
 
     private EntityDef getRootSchemaTypeEntity()
     {
-        final String guid            = "126962bf-dd26-4fcf-97d8-d0ad1fdd2d50";
-        final String name            = "RootSchemaType";
-        final String description     = "The root of a complex schema - normally attaches to an asset or port.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.ROOT_SCHEMA_TYPE.typeGUID;
+        final String name            = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
+        final String description     = OpenMetadataType.ROOT_SCHEMA_TYPE.description;
+        final String descriptionGUID = OpenMetadataType.ROOT_SCHEMA_TYPE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.ROOT_SCHEMA_TYPE.wikiURL;
 
-        final String superTypeName = "ComplexSchemaType";
+        final String superTypeName = OpenMetadataType.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
@@ -258,9 +260,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "TabularSchemaType";
+        final String typeName = OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -277,9 +279,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "DocumentSchemaType";
+        final String typeName = OpenMetadataType.DOCUMENT_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -296,9 +298,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "ObjectSchemaType";
+        final String typeName = OpenMetadataType.OBJECT_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -316,9 +318,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "EventType";
+        final String typeName = OpenMetadataType.EVENT_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -335,9 +337,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "RelationalDBSchemaType";
+        final String typeName = OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -354,9 +356,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "APISchemaType";
+        final String typeName = OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -373,9 +375,9 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "DisplayDataSchemaType";
+        final String typeName = OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -392,9 +394,28 @@ public class OpenMetadataTypesArchive3_12
         /*
          * Create the Patch
          */
-        final String typeName = "QuerySchemaType";
+        final String typeName = OpenMetadataType.QUERY_SCHEMA_TYPE_TYPE_NAME;
 
-        final String superTypeName = "RootSchemaType";
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateGraphSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName;
+
+        final String superTypeName = OpenMetadataType.ROOT_SCHEMA_TYPE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

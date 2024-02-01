@@ -21,6 +21,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  */
 public enum OpenIntegrationAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OPEN-INTEGRATION-SERVICE-0001 - The Open Integration Service is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OPEN-INTEGRATION-SERVICE-0001",
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The Open Integration Service is initializing a new server instance",
@@ -29,6 +32,9 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
                          "This is part of the normal start up of the service.  No action is required if this service " +
                                  "startup was intentional."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0005 - "The Open Integration Service has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OPEN-INTEGRATION-SERVICE-0005",
                         AuditLogRecordSeverityLevel.STARTUP,
                         "The Open Integration Service has initialized a new instance for server {0}",
@@ -36,12 +42,18 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
                         "Verify that there are no error messages logged by the service.  If there are none it means that " +
                                 "all parts of the service initialized successfully."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0006 - The Open Integration Service are unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OPEN-INTEGRATION-SERVICE-0006",
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Open Integration Service are unable to initialize a new instance; error message is {0}",
                              "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0008 - The Open Integration Service detected an unexpected {0} exception during the initialization of its services; error message is {1}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION("OPEN-INTEGRATION-SERVICE-0008",
                                         AuditLogRecordSeverityLevel.EXCEPTION,
                                         "The Open Integration Service detected an unexpected {0} exception during the " +
@@ -51,12 +63,18 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
                                         "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0009 - The Open Integration Service are shutting down server instance {0}
+     */
     SERVICE_TERMINATING("OPEN-INTEGRATION-SERVICE-0009",
                         AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Open Integration Service are shutting down server instance {0}",
                         "The local handlers has requested shut down of the Open Integration Service.",
                         "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0012 - The Open Integration Service are shutting down its instance for server {0}
+     */
     SERVICE_SHUTDOWN("OPEN-INTEGRATION-SERVICE-0012",
                      AuditLogRecordSeverityLevel.SHUTDOWN,
                      "The Open Integration Service are shutting down its instance for server {0}",
@@ -65,6 +83,9 @@ public enum OpenIntegrationAuditCode implements AuditLogMessageSet
                              "be published to the out topic",
                      "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
+    /**
+     * OPEN-INTEGRATION-SERVICE-0020 - Log message for element {0} from integration connector {1}: {2}
+     */
     ASSET_AUDIT_LOG("OPEN-INTEGRATION-SERVICE-0020",
                     AuditLogRecordSeverityLevel.INFO,
                     "Log message for element {0} from integration connector {1}: {2}",

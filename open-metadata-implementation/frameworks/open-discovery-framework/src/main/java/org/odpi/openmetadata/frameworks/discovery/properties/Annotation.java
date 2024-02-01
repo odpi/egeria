@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,11 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaAnalysisAnnotation.class, name = "SchemaAnalysisAnnotation"),
                 @JsonSubTypes.Type(value = DataSourceMeasurementAnnotation.class, name = "DataSourceMeasurementAnnotation"),
                 @JsonSubTypes.Type(value = DataFieldAnnotation.class, name = "DataFieldAnnotation"),
-                @JsonSubTypes.Type(value = SuspectDuplicateAnnotation.class, name = "SuspectDuplicateAnnotation"),
         })
 public class Annotation extends PropertyBase
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String           annotationType   = null;
     private String           summary          = null;

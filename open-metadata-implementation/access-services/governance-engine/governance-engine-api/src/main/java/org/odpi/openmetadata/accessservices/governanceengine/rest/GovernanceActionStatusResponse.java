@@ -26,6 +26,7 @@ public class GovernanceActionStatusResponse extends GovernanceEngineOMASAPIRespo
 {
     private static final long    serialVersionUID = 1L;
 
+    @SuppressWarnings(value = "deprecation")
     private GovernanceActionStatus governanceActionStatus = null;
 
     /**
@@ -58,6 +59,7 @@ public class GovernanceActionStatusResponse extends GovernanceEngineOMASAPIRespo
      *
      * @return governanceActionStatus
      */
+    @SuppressWarnings(value = "deprecation")
     public GovernanceActionStatus getGovernanceActionStatus()
     {
         if (governanceActionStatus == null)
@@ -76,6 +78,7 @@ public class GovernanceActionStatusResponse extends GovernanceEngineOMASAPIRespo
      *
      * @param governanceActionStatus - governanceActionStatus object
      */
+    @SuppressWarnings(value = "deprecation")
     public void setGovernanceActionStatus(GovernanceActionStatus governanceActionStatus)
     {
         this.governanceActionStatus = governanceActionStatus;

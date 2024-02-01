@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseViewProperties extends DatabaseTableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                        formula = null;
     private List<DatabaseQueryProperties> queries = null;
 

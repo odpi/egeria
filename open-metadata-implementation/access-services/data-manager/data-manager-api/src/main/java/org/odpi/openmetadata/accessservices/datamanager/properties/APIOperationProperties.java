@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class APIOperationProperties extends ComplexSchemaTypeProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String path     = null;
     private String command     = null;
 

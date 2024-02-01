@@ -27,7 +27,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
      */
     ENGINE_SERVICE_INITIALIZING("OMES-REPOSITORY-GOVERNANCE-0001",
                                 AuditLogRecordSeverityLevel.STARTUP,
-                                "The Repository Governance engine services are initializing in server {0}",
+                                "The Repository Governance engine services are initializing in server {0}; they will call the Open Metadata Repository Services (OMRS) on server {1} at {2}",
                                 "A new OMAG server has been started that is configured to run the Repository Governance OMES.  " +
                                  "Within this engine service are one or more repository governance engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +

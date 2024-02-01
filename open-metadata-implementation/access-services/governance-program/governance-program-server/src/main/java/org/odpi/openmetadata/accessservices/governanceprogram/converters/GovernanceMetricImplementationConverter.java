@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricImplementation;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -204,13 +204,13 @@ public class GovernanceMetricImplementationConverter<B> extends GovernanceProgra
                         {
                             if (relationship != null)
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESULTS_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_RESULTS_TYPE_NAME))
                                 {
                                     RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
 
                                     implementations.add(element);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
                                 {
                                     RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
 

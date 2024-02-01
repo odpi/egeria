@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
@@ -182,8 +182,8 @@ public class DataManagerRESTServices
                 response.setGUID(handler.createSoftwareCapability(userId,
                                                                   requestBody.getExternalSourceGUID(),
                                                                   requestBody.getExternalSourceName(),
-                                                                  OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
-                                                                  OpenMetadataAPIMapper.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.DATA_MANAGER_TYPE_NAME,
+                                                                  OpenMetadataType.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getDisplayName(),
                                                                   requestBody.getDescription(),
@@ -246,7 +246,7 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareCapability(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
-                                                              OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
+                                                              OpenMetadataType.DATABASE_MANAGER_TYPE_NAME,
                                                               null,
                                                               requestBody.getQualifiedName(),
                                                               requestBody.getDisplayName(),
@@ -310,7 +310,7 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareCapability(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
-                                                              OpenMetadataAPIMapper.API_MANAGER_TYPE_NAME,
+                                                              OpenMetadataType.API_MANAGER_TYPE_NAME,
                                                               null,
                                                               requestBody.getQualifiedName(),
                                                               requestBody.getDisplayName(),
@@ -373,7 +373,7 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareCapability(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
-                                                              OpenMetadataAPIMapper.EVENT_BROKER_TYPE_NAME,
+                                                              OpenMetadataType.EVENT_BROKER_TYPE_NAME,
                                                               null,
                                                               requestBody.getQualifiedName(),
                                                               requestBody.getDisplayName(),
@@ -436,7 +436,7 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareCapability(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
-                                                              OpenMetadataAPIMapper.APPLICATION_TYPE_NAME,
+                                                              OpenMetadataType.APPLICATION_TYPE_NAME,
                                                               null,
                                                               requestBody.getQualifiedName(),
                                                               requestBody.getDisplayName(),
@@ -499,7 +499,7 @@ public class DataManagerRESTServices
             response.setGUID(handler.createSoftwareCapability(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
-                                                              OpenMetadataAPIMapper.ENGINE_TYPE_NAME,
+                                                              OpenMetadataType.ENGINE_TYPE_NAME,
                                                               null,
                                                               requestBody.getQualifiedName(),
                                                               requestBody.getDisplayName(),
@@ -562,8 +562,8 @@ public class DataManagerRESTServices
                 SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     requestBody.getName(),
                                                                     parameterName,
                                                                     false,

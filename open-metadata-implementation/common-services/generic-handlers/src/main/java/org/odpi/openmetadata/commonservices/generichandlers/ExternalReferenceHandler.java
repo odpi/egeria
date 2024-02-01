@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -120,7 +122,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
     {
         final String anchorGUIDParameterName = "anchorGUID";
 
-        String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
+        String typeName = OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -128,7 +130,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                   OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -162,8 +164,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
-                                           OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                           OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                           OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -229,7 +231,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
+        String typeName = OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -237,7 +239,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                   OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -309,8 +311,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     externalReferenceGUID,
                                     externalReferenceGUIDParameterName,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -350,9 +352,9 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         return this.getBeanByUniqueName(userId,
                                         qualifiedName,
                                         qualifiedNameParameter,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                        OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                        OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                        OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                         forLineage,
                                         forDuplicateProcessing,
                                         effectiveTime,
@@ -393,13 +395,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                          PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return this.getBeansByValue(userId,
                                     referenceId,
                                     referenceIdParameterName,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -449,14 +451,14 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                            PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -506,13 +508,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                           PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.URL_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataType.URL_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     url,
                                     urlParameterName,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -556,8 +558,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                   OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                                   OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,
@@ -604,8 +606,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
-                              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
+                              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,

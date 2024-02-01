@@ -6,24 +6,9 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactM
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PortType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -69,7 +54,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
 
             switch (ordinal)
             {
@@ -117,7 +102,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME, properties, methodName);
 
             switch (ordinal)
             {
@@ -161,7 +146,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
+                                                                     OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEven
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -997,7 +997,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 
                 assetHandler.validateAnchorEntity(userId,
                                                   fullEntity.getGUID(),
-                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                   fullEntity,
                                                   guidParameterName,
                                                   false,

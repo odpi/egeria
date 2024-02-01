@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.NextGovernanceActionTypeElement;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -57,11 +57,11 @@ public class NextGovernanceActionTypeConverter
             if (instanceProperties != null)
             {
                 bean.setGuard(repositoryHelper.getStringProperty(serviceName,
-                                                                 OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                 OpenMetadataType.GUARD_PROPERTY_NAME,
                                                                  instanceProperties,
                                                                  methodName));
                 bean.setMandatoryGuard(repositoryHelper.getBooleanProperty(serviceName,
-                                                                           OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                           OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
                                                                            instanceProperties,
                                                                            methodName));
 

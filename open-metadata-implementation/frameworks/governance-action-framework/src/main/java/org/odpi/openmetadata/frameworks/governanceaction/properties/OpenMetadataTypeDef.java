@@ -42,6 +42,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
     protected OpenMetadataTypeDefLink            superType                    = null;
     protected String                             description                  = null;
     protected String                             descriptionGUID              = null;
+    protected String                             descriptionWiki              = null;
     protected String                             origin                       = null;
     protected String                             createdBy                    = null;
     protected String                             updatedBy                    = null;
@@ -109,6 +110,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
             this.superType = template.getSuperType();
             this.description = template.getDescription();
             this.descriptionGUID = template.getDescriptionGUID();
+            this.descriptionWiki = template.getDescriptionWiki();
             this.origin = template.getOrigin();
             this.createdBy = template.getCreatedBy();
             this.updatedBy = template.getUpdatedBy();
@@ -192,7 +194,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
 
 
     /**
-     * Return the unique identifier (guid) of the glossary term that describes this OpenMetadataTypeDef.
+     * Return the unique identifier (guid) of the valid value that describes this OpenMetadataTypeDef.
      *
      * @return String guid
      */
@@ -203,13 +205,34 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
 
 
     /**
-     * Set up the unique identifier (guid) of the glossary term that describes this OpenMetadataTypeDef.
+     * Set up the unique identifier (guid) of the valid value definition that describes this OpenMetadataTypeDef.
      *
      * @param descriptionGUID String guid
      */
     public void setDescriptionGUID(String descriptionGUID)
     {
         this.descriptionGUID = descriptionGUID;
+    }
+
+    /**
+     * Return the URL to the wiki page that gives more information for this type.
+     *
+     * @return url string
+     */
+    public String getDescriptionWiki()
+    {
+        return descriptionWiki;
+    }
+
+
+    /**
+     * Set up the URL to the wiki page that gives more information for this type.
+     *
+     * @param descriptionWiki url string
+     */
+    public void setDescriptionWiki(String descriptionWiki)
+    {
+        this.descriptionWiki = descriptionWiki;
     }
 
 
@@ -506,6 +529,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
                 ", superType=" + superType +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 ", origin='" + origin + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
@@ -549,6 +573,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
         return Objects.equals(superType, openMetadataTypeDef.superType) &&
                        Objects.equals(description, openMetadataTypeDef.description) &&
                        Objects.equals(descriptionGUID, openMetadataTypeDef.descriptionGUID) &&
+                       Objects.equals(descriptionWiki, openMetadataTypeDef.descriptionWiki) &&
                        Objects.equals(origin, openMetadataTypeDef.origin) &&
                        Objects.equals(createdBy, openMetadataTypeDef.createdBy) &&
                        Objects.equals(updatedBy, openMetadataTypeDef.updatedBy) &&
@@ -570,7 +595,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), superType, description, descriptionGUID, origin, createdBy, updatedBy, createTime, updateTime, options,
-                            externalStandardTypeMappings, validElementStatusList, initialStatus, attributeDefinitions);
+        return Objects.hash(super.hashCode(), superType, description, descriptionGUID, descriptionWiki, origin, createdBy, updatedBy, createTime,
+                            updateTime, options, externalStandardTypeMappings, validElementStatusList, initialStatus, attributeDefinitions);
     }
 }

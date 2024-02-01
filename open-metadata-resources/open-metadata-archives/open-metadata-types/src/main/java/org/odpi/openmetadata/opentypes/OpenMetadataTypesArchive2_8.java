@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -162,7 +163,6 @@ public class OpenMetadataTypesArchive2_8
         update0030HostsAndOperatingPlatforms();
         update0050Applications();
         update0440OrganizationControls();
-        update0462GovernanceActionProcessSteps();
     }
 
 
@@ -379,63 +379,6 @@ public class OpenMetadataTypesArchive2_8
     /*
      * -------------------------------------------------------------------------------------------------------
      */
-
-    /**
-     * 0462 Describe Governance Action ProcessSteps
-     */
-    private void update0462GovernanceActionProcessSteps()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessStepEntity());
-    }
-
-
-    /**
-     * Deprecate supportedGuards and replace with producedGuards.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateGovernanceActionProcessStepEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceActionProcessStep";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "supportedGuards";
-        final String attribute1Description     = "Deprecated attribute. Use the producedGuards attribute to describe the supported guards.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "producedGuards";
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
-
-        final String attribute2Name            = "producedGuards";
-        final String attribute2Description     = "List of guards that this process step produces.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute2Name,
-                                                                attribute2Description,
-                                                                attribute2DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 }
 

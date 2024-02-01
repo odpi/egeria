@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -36,7 +37,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
     private OpenMetadataAccess openMetadataAccess = null;
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private final String qualifiedNamePropertyName = "qualifiedName";
 
 
     /**
@@ -216,16 +216,12 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
         {
             String qualifiedName = inputType + ":" + inputInstanceName;
 
-            OpenMetadataElement openMetadataElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName,
-                                                                                                        qualifiedNamePropertyName,
-                                                                                                        false,
-                                                                                                        false,
-                                                                                                        null);
+            OpenMetadataElement openMetadataElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
             if (openMetadataElement == null)
             {
                 ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                       qualifiedNamePropertyName,
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                        qualifiedName);
 
                 return openMetadataAccess.createMetadataElementInStore(openMetadataType,
@@ -269,9 +265,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
             List<RelatedMetadataElements> existingRelationships = openMetadataAccess.getMetadataElementRelationships(end1GUID,
                                                                                                                      end2GUID,
                                                                                                                      openMetadataRelationshipType,
-                                                                                                                     false,
-                                                                                                                     false,
-                                                                                                                     null,
                                                                                                                      0,
                                                                                                                      0);
             if (existingRelationships == null)
@@ -284,12 +277,9 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                 openMetadataAccess.createRelatedElementsInStore(openMetadataRelationshipType,
                                                                 end1GUID,
                                                                 end2GUID,
-                                                                false,
-                                                                false,
                                                                 null,
                                                                 null,
-                                                                properties,
-                                                                null);
+                                                                properties);
             }
         }
     }

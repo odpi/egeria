@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -66,7 +66,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
                     {
                         bean.setSetGUID(relationship.getEntityOneProxy().getGUID());
                         bean.setIsDefaultValue(this.removeIsDefaultValue(relationship.getProperties()));

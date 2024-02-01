@@ -6,9 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
      * An optional qualified name of a template Incident Report entity that is created if there is confusion identifying the correct
      * reference data for a file being catalogued.
      */
-    static public final String INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY = "incidentReportQualifiedName";
+    static public final String INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY = "incidentReportTemplateQualifiedName";
 
     /**
      * An optional flag that instructs the connector to wait for the monitoring directory to be created if it does not exist rather than
@@ -112,13 +110,6 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
 
         super.connectorTypeBean = connectorType;
 
-        CatalogTargetType catalogTargetType = new CatalogTargetType();
-
-        catalogTargetType.setTypeName(OpenMetadataTypesMapper.DATA_FOLDER_TYPE_NAME);
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
-
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
-
         /*
          * Set up the component description used in the connector's audit log messages.
          */
@@ -126,7 +117,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

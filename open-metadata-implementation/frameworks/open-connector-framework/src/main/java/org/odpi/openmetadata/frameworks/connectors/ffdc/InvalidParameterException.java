@@ -17,6 +17,9 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Parameter in error.
+     */
     private   String  parameterName;
 
     /**

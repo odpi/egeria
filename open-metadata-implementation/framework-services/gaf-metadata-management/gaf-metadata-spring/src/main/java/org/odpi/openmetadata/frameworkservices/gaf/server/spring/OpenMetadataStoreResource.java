@@ -826,9 +826,35 @@ public class OpenMetadataStoreResource
                                                       @PathVariable String            serviceURLMarker,
                                                       @PathVariable String            userId,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestBody  UpdateRequestBody requestBody)
+                                                      @RequestBody(required = false)  UpdateRequestBody requestBody)
     {
         return restAPI.deleteMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to archive this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
+
+    public  VoidResponse archiveMetadataElementInStore(@PathVariable String            serverName,
+                                                       @PathVariable String            serviceURLMarker,
+                                                       @PathVariable String            userId,
+                                                       @PathVariable String            metadataElementGUID,
+                                                       @RequestBody(required = false)  ArchiveRequestBody requestBody)
+    {
+        return restAPI.archiveMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
     }
 
 

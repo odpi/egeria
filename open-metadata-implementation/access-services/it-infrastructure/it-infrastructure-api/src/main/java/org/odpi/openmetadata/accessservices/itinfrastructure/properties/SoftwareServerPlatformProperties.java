@@ -6,7 +6,9 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,15 +25,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private static final String deployedImplementationTypeProperty = "deployedImplementationType";
     private static final String versionProperty                    = "platformVersion";
     private static final String sourceProperty                     = "source";
     private static final String userIdProperty                     = "userId";
 
-    private String  platformType    = null;
-    private String  platformVersion = null;
+    private String platformVersion            = null;
     private String  platformSource  = null;
     private String  platformUserId  = null;
 
@@ -55,8 +56,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         if (template != null)
         {
-            platformType    = template.getSoftwareServerPlatformType();
-            platformVersion = template.getSoftwareServerPlatformVersion();
+            platformVersion            = template.getSoftwareServerPlatformVersion();
             platformSource  = template.getSoftwareServerPlatformSource();
             platformUserId  = template.getSoftwareServerPlatformUserId();
         }
@@ -79,12 +79,6 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
             if (assetExtendedProperties != null)
             {
-                if (assetExtendedProperties.get(deployedImplementationTypeProperty) != null)
-                {
-                    platformType = assetExtendedProperties.get(deployedImplementationTypeProperty).toString();
-                    assetExtendedProperties.remove(deployedImplementationTypeProperty);
-                }
-
                 if (assetExtendedProperties.get(versionProperty) != null)
                 {
                     platformVersion = assetExtendedProperties.get(versionProperty).toString();
@@ -117,7 +111,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      */
     public AssetProperties cloneToAsset()
     {
-        return this.cloneToAsset("SoftwareServerPlatform");
+        return this.cloneToAsset(OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME);
     }
 
 
@@ -140,10 +134,6 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
             assetExtendedProperties = new HashMap<>();
         }
 
-        if (platformType != null)
-        {
-            assetExtendedProperties.put(deployedImplementationTypeProperty, platformType);
-        }
         if (platformVersion != null)
         {
             assetExtendedProperties.put(versionProperty, platformVersion);
@@ -163,28 +153,6 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
         }
 
         return assetProperties;
-    }
-
-
-    /**
-     * Return the type description for the server's type.
-     *
-     * @return type description string
-     */
-    public String getSoftwareServerPlatformType()
-    {
-        return platformType;
-    }
-
-
-    /**
-     * Set up the type description for the server's type.
-     *
-     * @param platformType type description string
-     */
-    public void setSoftwareServerPlatformType(String platformType)
-    {
-        this.platformType = platformType;
     }
 
 
@@ -274,12 +242,12 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
-                       ", platformType='" + platformType + '\'' +
+                       ", platformType='" + getDeployedImplementationType() + '\'' +
                        ", platformVersion='" + platformVersion + '\'' +
                        ", platformSource='" + platformSource + '\'' +
                        ", platformUserId='" + platformUserId + '\'' +
                        ", cloneToAsset=" + cloneToAsset() +
-                       ", softwareServerPlatformType='" + getSoftwareServerPlatformType() + '\'' +
+                       ", softwareServerPlatformType='" + getDeployedImplementationType() + '\'' +
                        ", softwareServerPlatformVersion='" + getSoftwareServerPlatformVersion() + '\'' +
                        ", softwareServerPlatformSource='" + getSoftwareServerPlatformSource() + '\'' +
                        ", softwareServerPlatformUserId='" + getSoftwareServerPlatformUserId() + '\'' +
@@ -309,8 +277,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
             return false;
         }
         SoftwareServerPlatformProperties that = (SoftwareServerPlatformProperties) objectToCompare;
-        return Objects.equals(platformType, that.platformType) &&
-                Objects.equals(platformVersion, that.platformVersion) &&
+        return Objects.equals(platformVersion, that.platformVersion) &&
                 Objects.equals(platformSource, that.platformSource) &&
                 Objects.equals(platformUserId, that.platformUserId);
     }
@@ -324,6 +291,6 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), platformType, platformVersion, platformSource, platformUserId);
+        return Objects.hash(super.hashCode(), platformVersion, platformSource, platformUserId);
     }
 }

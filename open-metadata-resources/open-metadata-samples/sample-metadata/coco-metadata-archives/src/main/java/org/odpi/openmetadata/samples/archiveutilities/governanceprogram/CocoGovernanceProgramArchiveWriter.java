@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.ResourceUse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
@@ -64,7 +65,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     private void writeDomains()
     {
         String governanceDomainSetGUID = archiveHelper.addCollection(null,
-                                                                     OpenMetadataTypesMapper.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
                                                                      "GovernanceDomainSet:Coco Pharmaceuticals",
                                                                      "Coco Pharmaceuticals Governance Domains",
                                                                      "List of active governance domains at Coco Pharmaceuticals.",
@@ -93,12 +94,11 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             archiveHelper.addResourceListRelationship(domainDefinition.getQualifiedName(),
                                                       communityQName,
-                                                      "Implementing team",
-                                                      false);
+                                                      ResourceUse.SUPPORTING_PEOPLE.getResourceUse());
 
 
-            String governanceOfficerQName = OpenMetadataTypesMapper.GOVERNANCE_OFFICER_TYPE_NAME + ": " + domainDefinition.getQualifiedName();
-            archiveHelper.addGovernanceRole(OpenMetadataTypesMapper.GOVERNANCE_OFFICER_TYPE_NAME,
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME + ": " + domainDefinition.getQualifiedName();
+            archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME,
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
                                             "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
@@ -191,7 +191,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataTypesMapper.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
                                             leaderRoleQName,
                                             "Community Leader",
                                             null,
@@ -202,7 +202,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, OpenMetadataTypesMapper.COMMUNITY_MEMBERSHIP_TYPE_LEADER);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_LEADER);
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
@@ -214,7 +214,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataTypesMapper.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
                                             memberRoleQName,
                                             "CommunityMember",
                                             null,
@@ -225,7 +225,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, OpenMetadataTypesMapper.COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR);
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {
@@ -274,7 +274,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     private void writeProjectStatusValidValueSet()
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                validValueSetQName,
                                                                ProjectStatusDefinition.validValueSetName,
                                                                ProjectStatusDefinition.validValueSetDescription,
@@ -290,7 +290,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName + "." + projectStatusDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                     validValueQName,
                                                                     projectStatusDefinition.getDisplayName(),
                                                                     null,
@@ -332,7 +332,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
 
-            archiveHelper.addPersonRole(OpenMetadataTypesMapper.PROJECT_MANAGER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.PROJECT_MANAGER_TYPE_NAME,
                                         projectManagerQName,
                                         projectDefinition.getIdentifier() + ":ProjectManager",
                                         projectDefinition.getDisplayName() + " project manager",

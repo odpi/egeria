@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -94,7 +95,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorType extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /*
      * Attributes of a connector type
@@ -162,8 +164,8 @@ public class ConnectorType extends Referenceable
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
-            supportedAssetTypeName = template.getDeployedImplementationType();
-            deployedImplementationType = template.getSupportedAssetTypeName();
+            supportedAssetTypeName = template.getSupportedAssetTypeName();
+            deployedImplementationType = template.getDeployedImplementationType();
             expectedDataFormat = template.getExpectedDataFormat();
             connectorProviderClassName = template.getConnectorProviderClassName();
             connectorFrameworkName = template.getConnectorFrameworkName();

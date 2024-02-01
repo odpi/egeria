@@ -12,6 +12,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -21,13 +23,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.util.Map;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 
 /**
  * DataFileHandler manages DataFile objects from the property server. It runs server-side in the DataEngine OMAS
@@ -108,8 +103,8 @@ public class DataEngineDataFileHandler {
                     externalSourceName, userId, methodName);
         }
         String schemaTypeGuid = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, fileGuid, externalSourceName);
-        dataEngineCommonHandler.upsertExternalRelationship(userId, fileGuid, schemaTypeGuid, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                fileTypeName, SCHEMA_TYPE_TYPE_NAME, externalSourceName, null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, fileGuid, schemaTypeGuid, OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                           fileTypeName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME, externalSourceName, null);
         dataEngineFolderHierarchyHandler.upsertFolderHierarchy(fileGuid, file.getFileType(), file.getPathName(),
                 externalSourceGuid, externalSourceName, userId, methodName);
 
@@ -118,7 +113,7 @@ public class DataEngineDataFileHandler {
 
         if (file.getIncomplete()) {
             fileHandler.setClassificationInRepository(userId, externalSourceGuid, externalSourceName, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
-                    INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null,
+                                                      OpenMetadataType.INCOMPLETE_CLASSIFICATION_TYPE_GUID, OpenMetadataType.INCOMPLETE_CLASSIFICATION_TYPE_NAME, null,
                                                       true, false, false, dataEngineCommonHandler.getNow(), methodName);
         }
 
@@ -146,13 +141,13 @@ public class DataEngineDataFileHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         Optional<EntityDetail> schemaType = dataEngineCommonHandler.getEntityForRelationship(userId, dataFileGUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, DATA_FILE_TYPE_NAME);
+                                                                                             OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.DATA_FILE.typeName);
         if (schemaType.isPresent()) {
             dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
 
-            fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
-                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false,
-                    false, dataEngineCommonHandler.getNow(), methodName);
+            fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, OpenMetadataProperty.GUID.name,
+                                               OpenMetadataType.DATA_FILE.typeGUID, OpenMetadataType.DATA_FILE.typeName, null, null, false,
+                                               false, dataEngineCommonHandler.getNow(), methodName);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
         }
@@ -162,7 +157,7 @@ public class DataEngineDataFileHandler {
                                           EntityDetail fileAsEntity, DataFile file, Map<String, Object> extendedProperties,
                                           String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.DATA_FILE.typeName);
 
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
                CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(), null,
