@@ -4,9 +4,9 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Like;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -58,11 +58,9 @@ public class LikeConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof Like)
+            if (returnBean instanceof Like bean)
             {
-                Like bean = (Like) returnBean;
-
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.LIKE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.LIKE_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity.

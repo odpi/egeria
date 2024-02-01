@@ -26,9 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class TabularColumnProperties extends SchemaAttributeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
-
     /**
      * Default constructor used by subclasses
      */

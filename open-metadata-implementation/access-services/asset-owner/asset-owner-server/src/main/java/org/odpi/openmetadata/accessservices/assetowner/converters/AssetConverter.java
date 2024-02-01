@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -95,22 +95,22 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
                      * The values in the classifications override the values in the main properties of the Asset's entity.
                      * Having these properties in the main entity is deprecated.
                      */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
                     assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
                     assetProperties.setOwner(this.getOwner(instanceProperties));
                     assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME, entity);
 
                     assetProperties.setOwner(this.getOwner(instanceProperties));
                     assetProperties.setOwnerTypeName(this.getOwnerTypeName(instanceProperties));
                     assetProperties.setOwnerPropertyName(this.getOwnerPropertyName(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
                     assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
                     assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));

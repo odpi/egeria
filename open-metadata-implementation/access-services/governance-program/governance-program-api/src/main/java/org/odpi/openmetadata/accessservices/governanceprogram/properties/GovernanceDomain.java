@@ -34,14 +34,49 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceDomain implements Serializable
 {
+    /**
+     * The governance domain is not specified.
+     */
     UNCLASSIFIED         (0,  "Unclassified",         "The governance domain is not specified."),
+
+    /**
+     * The data (information) governance domain.
+     */
     DATA                 (1,  "Data",                 "The data (information) governance domain."),
+
+    /**
+     * The data privacy governance domain.
+     */
     PRIVACY              (2,  "Privacy",              "The data privacy governance domain."),
+
+    /**
+     * The security governance domain.
+     */
     SECURITY             (3,  "Security",             "The security governance domain."),
+
+    /**
+     * The IT infrastructure management governance domain.
+     */
     IT_INFRASTRUCTURE    (4,  "IT Infrastructure",    "The IT infrastructure management governance domain."),
+
+    /**
+     * The software development lifecycle (SDLC) governance domain.
+     */
     SOFTWARE_DEVELOPMENT (5,  "Software Development", "The software development lifecycle (SDLC) governance domain."),
+
+    /**
+     * The corporate governance domain.
+     */
     CORPORATE            (6,  "Corporate",            "The corporate governance domain."),
+
+    /**
+     * The physical asset management governance domain.
+     */
     ASSET_MANAGEMENT     (7,  "Asset Management",     "The physical asset management governance domain."),
+
+    /**
+     * The governance domain is locally defined.
+     */
     OTHER                (99, "Other",                "The governance domain is locally defined.");
 
     private static final long serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentType;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -121,15 +121,15 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                 if ((comment != null) && (comment.getElementHeader() != null) && (comment.getElementHeader().getGUID() != null))
                 {
                     comment.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                 comment.getElementHeader().getGUID(),
-                                                                                 commentGUIDParameterName,
-                                                                                 OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                                                 assetManagerGUID,
-                                                                                 assetManagerName,
-                                                                                 false,
-                                                                                 false,
-                                                                                 null,
-                                                                                 methodName));
+                                                                                comment.getElementHeader().getGUID(),
+                                                                                commentGUIDParameterName,
+                                                                                OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                                assetManagerGUID,
+                                                                                assetManagerName,
+                                                                                false,
+                                                                                false,
+                                                                                null,
+                                                                                methodName));
                 }
             }
         }
@@ -204,7 +204,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           commentGUID,
                                           commentGUIDParameterName,
-                                          OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                          OpenMetadataType.COMMENT_TYPE_NAME,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -265,7 +265,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         commentGUID,
                                         commentGUIDParameterName,
-                                        OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT_TYPE_NAME,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -322,7 +322,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         commentGUID,
                                         commentGUIDParameterName,
-                                        OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT_TYPE_NAME,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -412,11 +412,11 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_GUID,
+                                                          OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
                                                           questionCommentGUID,
-                                                          OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                          OpenMetadataType.COMMENT_TYPE_NAME,
                                                           answerCommentGUID,
-                                                          OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                          OpenMetadataType.COMMENT_TYPE_NAME,
                                                           methodName);
     }
 
@@ -467,11 +467,11 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
                                                          assetManagerName,
-                                                         OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                                         OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_NAME,
                                                          questionCommentGUID,
-                                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                         OpenMetadataType.COMMENT_TYPE_NAME,
                                                          answerCommentGUID,
-                                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                         OpenMetadataType.COMMENT_TYPE_NAME,
                                                          methodName);
     }
 
@@ -515,8 +515,8 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         List<CommentElement> results = commentHandler.findBeans(userId,
                                                                 searchString,
                                                                 searchStringParameterName,
-                                                                OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                OpenMetadataType.COMMENT_TYPE_GUID,
+                                                                OpenMetadataType.COMMENT_TYPE_NAME,
                                                                 "qualifiedName",
                                                                 startFrom,
                                                                 pageSize,
@@ -569,7 +569,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         List<CommentElement> results = commentHandler.getComments(userId,
                                                                   elementGUID,
                                                                   elementGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                  OpenMetadataType.REFERENCEABLE.typeName,
                                                                   startFrom,
                                                                   pageSize,
                                                                   forLineage,
@@ -617,7 +617,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         CommentElement comment = commentHandler.getBeanFromRepository(userId,
                                                                       commentGUID,
                                                                       guidParameterName,
-                                                                      OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                      OpenMetadataType.COMMENT_TYPE_NAME,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
                                                                       effectiveTime,
@@ -628,7 +628,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
             comment.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         commentGUID,
                                                                         guidParameterName,
-                                                                        OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                        OpenMetadataType.COMMENT_TYPE_NAME,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,

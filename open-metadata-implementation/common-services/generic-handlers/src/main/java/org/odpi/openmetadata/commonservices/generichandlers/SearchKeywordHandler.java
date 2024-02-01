@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -118,8 +120,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
-                                           OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                           OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                           OpenMetadataType.SEARCH_KEYWORD.typeName,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -166,7 +168,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.KEYWORD_DESCRIPTION_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DESCRIPTION.name,
                                                                                      keywordDescription,
                                                                                      methodName);
 
@@ -175,8 +177,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     keywordGUID,
                                     keywordGUIDParameterName,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
@@ -224,9 +226,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             if (repositoryHandler.countAttachedRelationshipsByType(userId,
                                                                    keywordGUID,
-                                                                   OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                                                   OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                                                   OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                                                    2,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
@@ -238,8 +240,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                keywordGUID,
                                                keywordGUIDParameterName,
-                                               OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                               OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                               OpenMetadataType.SEARCH_KEYWORD.typeName,
                                                null,
                                                null,
                                                forLineage,
@@ -250,7 +252,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
             else
             {
                 invalidParameterHandler.throwCannotDeleteElementInUse(keywordGUID,
-                                                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                                                      OpenMetadataType.SEARCH_KEYWORD.typeName,
                                                                       serviceName,
                                                                       methodName);
             }
@@ -285,9 +287,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         return this.countAttachments(userId,
                                      elementGUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                     OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                     OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                      2,
                                      forLineage,
                                      forDuplicateProcessing,
@@ -337,9 +339,9 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
+                                        OpenMetadataType.SEARCH_KEYWORD.typeName,
                                         null,
                                         null,
                                         2,
@@ -391,10 +393,10 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         startingKeywordGUID,
                                         startingKeywordGUIDParameterName,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
-                                        OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                        OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                        OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeName,
+                                        OpenMetadataType.SEARCH_KEYWORD.typeName,
                                         null,
                                         null,
                                         0,
@@ -439,7 +441,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                          OpenMetadataType.SEARCH_KEYWORD.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
@@ -482,13 +484,13 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataProperty.KEYWORD.name);
 
         return this.getBeansByValue(userId,
                                     keyword,
                                     keywordParameterName,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeName,
                                     propertyNames,
                                     true,
                                     null,
@@ -539,8 +541,8 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByValue(userId,
                                     searchString,
                                     searchStringParameterName,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                    OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                    OpenMetadataType.SEARCH_KEYWORD.typeName,
                                     null,
                                     false,
                                     null,
@@ -605,12 +607,12 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   elementType,
                                   keywordGUID,
                                   keywordGUIDParameterName,
-                                  OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                  OpenMetadataType.SEARCH_KEYWORD.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   serviceSupportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                  OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -665,13 +667,13 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       elementType,
                                       keywordGUID,
                                       keywordGUIDParameterName,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                      OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                      OpenMetadataType.SEARCH_KEYWORD.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       serviceSupportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_SEARCH_KEYWORD_TYPE_NAME,
+                                      OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -721,15 +723,15 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   keywordOneGUID,
                                   keywordOneGUIDParameterName,
-                                  OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                  OpenMetadataType.SEARCH_KEYWORD.typeName,
                                   keywordTwoGUID,
                                   keywordTwoGUIDParameterName,
-                                  OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                  OpenMetadataType.SEARCH_KEYWORD.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   serviceSupportedZones,
-                                  OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                  OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -779,16 +781,16 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       keywordOneGUID,
                                       keywordOneGUIDParameterName,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                      OpenMetadataType.SEARCH_KEYWORD.typeName,
                                       keywordTwoGUID,
                                       keywordTwoGUIDParameterName,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+                                      OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+                                      OpenMetadataType.SEARCH_KEYWORD.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       serviceSupportedZones,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
+                                      OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.RELATED_KEYWORD_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }

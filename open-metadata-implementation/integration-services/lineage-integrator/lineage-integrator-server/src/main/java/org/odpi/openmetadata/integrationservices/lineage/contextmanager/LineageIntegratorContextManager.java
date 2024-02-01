@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;

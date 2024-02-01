@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -94,9 +96,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         return this.countAttachments(userId,
                                      elementGUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                     OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                     OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                     OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                      2,
                                      forLineage,
                                      forDuplicateProcessing,
@@ -144,9 +146,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                        OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                        OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                         null,
                                         null,
                                         0,
@@ -201,9 +203,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                        OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                        OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                         null,
                                         null,
                                         0,
@@ -268,8 +270,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
-                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                           OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                           OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -314,7 +316,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.TAG_DESCRIPTION_PROPERTY_NAME,
+                                                                                     OpenMetadataType.TAG_DESCRIPTION_PROPERTY_NAME,
                                                                                      tagDescription,
                                                                                      methodName);
 
@@ -323,8 +325,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     tagGUID,
                                     tagGUIDParameterName,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -372,8 +374,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     tagGUID,
                                     tagGUIDParameterName,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -423,8 +425,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     tagGUID,
                                     tagGUIDParameterName,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -465,7 +467,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                          OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
@@ -506,7 +508,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                          OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
@@ -549,13 +551,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.TAG_NAME_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                     propertyNames,
                                     true,
                                     null,
@@ -603,13 +605,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataType.TAG_NAME_PROPERTY_NAME);
 
         return this.getBeansByCreator(userId,
                                       name,
                                       nameParameterName,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                       propertyNames,
                                       true,
                                       forLineage,
@@ -656,8 +658,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByValue(userId,
                                     searchString,
                                     searchStringParameterName,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     false,
                                     null,
@@ -706,8 +708,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByCreator(userId,
                                       searchString,
                                       searchStringParameterName,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                       null,
                                       false,
                                       forLineage,
@@ -826,7 +828,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                                                       isPublic,
                                                                                       methodName);
 
@@ -838,12 +840,12 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   elementType,
                                   tagGUID,
                                   tagGUIDParameterName,
-                                  OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                  OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   suppliedSupportedZones,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                  OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -898,13 +900,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       elementType,
                                       tagGUID,
                                       tagGUIDParameterName,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
-                                      OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
+                                      OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       suppliedSupportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }

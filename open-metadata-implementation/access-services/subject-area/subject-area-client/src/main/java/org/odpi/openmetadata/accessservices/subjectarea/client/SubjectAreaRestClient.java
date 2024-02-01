@@ -34,7 +34,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
     private final String serverPlatformURLRoot;
 
     /**
-     * {@inheritDoc}
+     * Constructor
      */
     public SubjectAreaRestClient(String serverName, String serverPlatformURLRoot) throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot);
@@ -43,7 +43,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
     }
 
     /**
-     * {@inheritDoc}
+     * Constructor
      */
     public SubjectAreaRestClient(String serverName,
                                  String serverPlatformURLRoot,

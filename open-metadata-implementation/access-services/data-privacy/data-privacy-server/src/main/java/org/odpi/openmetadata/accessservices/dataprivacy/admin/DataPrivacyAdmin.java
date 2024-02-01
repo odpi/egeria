@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataprivacy.admin;
 
 import org.odpi.openmetadata.accessservices.dataprivacy.ffdc.DataPrivacyAuditCode;
-import org.odpi.openmetadata.accessservices.dataprivacy.listener.DataPrivacyOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.dataprivacy.server.DataPrivacyServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
@@ -16,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.List;
 
 /**
- * DataPrivacyAdmin manages the start up and shutdown of the Data Privacy OMAS.   During start up,
+ * DataPrivacyAdmin manages the start-up and shutdown of the Data Privacy OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
 public class DataPrivacyAdmin extends AccessServiceAdmin

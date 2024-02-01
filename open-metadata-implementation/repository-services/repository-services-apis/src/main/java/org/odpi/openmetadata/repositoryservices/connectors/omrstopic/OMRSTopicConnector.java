@@ -437,10 +437,19 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
     }
 
+
+    /**
+     * Send an event.
+     *
+     * @param event event to send
+     * @param logEvent flag to indicate that the event should be logged
+     * @return true
+     */
     private boolean sendEventTask(OMRSEventV1 event,
-                                  boolean logEvent)
+                                  boolean     logEvent)
     {
         final String methodName = "sendEventTask";
+
         try
         {
             String eventString = OBJECT_WRITER.writeValueAsString(event);
@@ -448,9 +457,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             if ((auditLog != null) && logEvent)
             {
                 auditLog.logMessage(methodName,
-                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
-                                topicName),
-                        eventString);
+                                    OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
+                                                                                            topicName),
+                                    eventString);
             }
 
             for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
@@ -471,6 +480,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             log.debug("Unexpected error sending event: " + exc.getMessage());
             throw new CompletionException(exc);
         }
+
         return true;
     }
 
@@ -574,19 +584,11 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             switch (event.getEventCategory())
             {
-                case REGISTRY:
-                    topicListener.processRegistryEvent(new OMRSRegistryEvent(event));
-                    break;
-
-                case TYPEDEF:
-                    topicListener.processTypeDefEvent(new OMRSTypeDefEvent(event));
-                    break;
-
-                case INSTANCE:
-                    topicListener.processInstanceEvent(new OMRSInstanceEvent(event));
-                    break;
-
-                default:
+                case REGISTRY -> topicListener.processRegistryEvent(new OMRSRegistryEvent(event));
+                case TYPEDEF -> topicListener.processTypeDefEvent(new OMRSTypeDefEvent(event));
+                case INSTANCE -> topicListener.processInstanceEvent(new OMRSInstanceEvent(event));
+                default ->
+                {
                     /*
                      * Nothing to do since this server does not understand the message type.  This situation
                      * will occur if the local server is back level from another server in the cohort
@@ -596,10 +598,10 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                     {
                         auditLog.logMessage(actionDescription,
                                             OMRSAuditCode.PROCESS_UNKNOWN_EVENT.getMessageDefinition(),
-                                           "event {" + event + "}");
+                                            "event {" + event + "}");
                     }
-
                     log.debug("Unknown event received :|");
+                }
             }
         }
         else

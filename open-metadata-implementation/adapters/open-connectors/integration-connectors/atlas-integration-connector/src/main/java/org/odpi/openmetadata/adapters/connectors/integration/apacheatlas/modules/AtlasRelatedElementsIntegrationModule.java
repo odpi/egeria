@@ -22,7 +22,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -162,7 +161,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                 for (AtlasEntityHeader correlationEntity : correlationEntities)
                 {
                     /*
-                     * Atlas returns entities in deleted status and they should be ignored.
+                     * Atlas returns entities in deleted status, and they should be ignored.
                      */
                     if ((correlationEntity != null) && (correlationEntity.getStatus() == AtlasInstanceStatus.ACTIVE))
                     {
@@ -186,10 +185,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                  * The correlation entity is related to a valid atlas entity.  Retrieve the equivalent entity from the open metadata
                                  * ecosystem.
                                  */
-                                OpenMetadataElement egeriaEntity = openMetadataAccess.getMetadataElementByGUID(egeriaGUID,
-                                                                                                               false,
-                                                                                                               false,
-                                                                                                               null);
+                                OpenMetadataElement egeriaEntity = openMetadataAccess.getMetadataElementByGUID(egeriaGUID);
 
                                 if (! ApacheAtlasIntegrationProvider.NONE_RELATED_ELEMENT_CONFIGURATION_PROPERTY_VALUE.equals(relatedClassificationPolicy))
                                 {
@@ -294,12 +290,9 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                     openMetadataAccess.createRelatedElementsInStore(referenceValueAssignmentRelationshipName,
                                                                                     egeriaEntity.getElementGUID(),
                                                                                     referenceValue.getElementHeader().getGUID(),
-                                                                                    false,
-                                                                                    false,
                                                                                     null,
                                                                                     null,
-                                                                                    null,
-                                                                                    new Date());
+                                                                                    null);
 
                                     if (auditLog != null)
                                     {
@@ -323,7 +316,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                     {
                         RelatedMetadataElement relatedMetadataElement = existingReferenceValueAssignments.get(classificationName);
 
-                        openMetadataAccess.deleteRelatedElementsInStore(relatedMetadataElement.getRelationshipGUID(), false, false, new Date());
+                        openMetadataAccess.deleteRelatedElementsInStore(relatedMetadataElement.getRelationshipGUID());
                     }
                 }
             }
@@ -364,9 +357,6 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                 List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                                                      1,
                                                                                                                      referenceValueAssignmentRelationshipName,
-                                                                                                                     false,
-                                                                                                                     false,
-                                                                                                                     new Date(),
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
                 while (relatedMetadataElements != null)
@@ -396,9 +386,6 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                     relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                             1,
                                                                                             referenceValueAssignmentRelationshipName,
-                                                                                            false,
-                                                                                            false,
-                                                                                            new Date(),
                                                                                             startFrom,
                                                                                             myContext.getMaxPageSize());
                 }
@@ -446,9 +433,6 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                 List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                                                      1,
                                                                                                                      null,
-                                                                                                                     false,
-                                                                                                                     false,
-                                                                                                                     new Date(),
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
                 while (relatedMetadataElements != null)
@@ -459,9 +443,6 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                     relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                             1,
                                                                                             referenceValueAssignmentRelationshipName,
-                                                                                            false,
-                                                                                            false,
-                                                                                            new Date(),
                                                                                             startFrom,
                                                                                             myContext.getMaxPageSize());
                 }

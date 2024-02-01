@@ -11,9 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-public enum JanusConnectorErrorCode implements AuditLogMessageSet {
-
-
+public enum JanusConnectorErrorCode implements AuditLogMessageSet
+{
     CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-004 ",
             OMRSAuditLogRecordSeverity.STARTUP,
             "Graph cannot be opened with that configuration",

@@ -4,11 +4,10 @@ package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME;
 
 /**
  * EndpointBuilder is able to build the properties for an Endpoint entity.
@@ -49,12 +48,12 @@ public class EndpointBuilder extends ReferenceableBuilder {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         if (networkAddress != null) {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, NETWORK_ADDRESS_PROPERTY_NAME,
-                    networkAddress, methodName);
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                      networkAddress, methodName);
         }
 
         if (protocol != null) {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, PROTOCOL_PROPERTY_NAME,
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.PROTOCOL_PROPERTY_NAME,
                     protocol, methodName);
         }
 

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 /**
  * The AssetConsumerAuditCode is used to define the message content for the OMRS Audit Log.
@@ -25,13 +25,13 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0001 - The Asset Consumer Open Metadata Access Service (OMAS) is initializing a new server instance
      */
     SERVICE_INITIALIZING("OMAS-ASSET-CONSUMER-0001",
-             OMRSAuditLogRecordSeverity.STARTUP,
-             "The Asset Consumer Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Asset Consumer OMAS.  " +
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The Asset Consumer Open Metadata Access Service (OMAS) is initializing a new server instance",
+                         "The local server has started up a new instance of the Asset Consumer OMAS.  " +
                                  "This service enables tools to locate assets in the catalog, retrieve information about them" +
                                  "and create open connectors to access the content of the assets.  It also sends " +
                                  "events on its out topic each time a new asset is created or updated.",
-             "No action is required as long as this service is expected to be started for this server.  " +
+                         "No action is required as long as this service is expected to be started for this server.  " +
                                  "If it is not required, then remove the configuration for this service " +
                                  "from the access service list in this server's configuration document."),
 
@@ -39,7 +39,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0002 - The Asset Consumer Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}
      */
     SERVICE_PUBLISHING("OMAS-ASSET-CONSUMER-0002",
-                       OMRSAuditLogRecordSeverity.STARTUP,
+                       AuditLogRecordSeverityLevel.STARTUP,
                        "The Asset Consumer Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}",
                        "The local server has started up the event publisher for the Asset Consumer OMAS.  " +
                                "It will begin publishing asset configuration changes to its out topic.",
@@ -49,7 +49,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0003 - The Asset Consumer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}
      */
     SERVICE_INITIALIZED("OMAS-ASSET-CONSUMER-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
+                        AuditLogRecordSeverityLevel.STARTUP,
              "The Asset Consumer Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "Verify that this service has initialized successfully and has the correct set of supported zones " +
@@ -60,7 +60,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0004 - The Asset Consumer Open Metadata Access Service (OMAS) is shutting down its instance for server {0}
      */
     SERVICE_SHUTDOWN("OMAS-ASSET-CONSUMER-0004",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
              "The Asset Consumer Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Asset Consumer OMAS instance.",
              "No action is required if the server shutdown was intentional."),
@@ -69,7 +69,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0005 - The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance in server {0}; the {1} exception occurred with error message: {2}
      */
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CONSUMER-0005",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             AuditLogRecordSeverityLevel.EXCEPTION,
              "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance in server {0}; the {1} exception " +
                                      "occurred with error message: {2}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
@@ -79,7 +79,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0008 - Audit message for asset {0}: {1}
      */
     ASSET_AUDIT_LOG("OMAS-ASSET-CONSUMER-0008",
-               OMRSAuditLogRecordSeverity.ASSET,
+                    AuditLogRecordSeverityLevel.ASSET,
                "Audit message for asset {0}: {1}",
                "An asset consumer has logged a message for an asset.",
                "Review the message to ensure no action is required."),
@@ -88,7 +88,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0010 - The Asset Consumer Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}
      */
     PUBLISHING_SHUTDOWN("OMAS-ASSET-CONSUMER-0010",
-                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Asset Consumer Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an Asset Consumer OMAS instance.  " +
                                 "No more configuration events will be published to the named topic.",
@@ -99,7 +99,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0011 - The Asset Consumer Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out topic {1}. The error message was: {2}
      */
     PUBLISHING_SHUTDOWN_ERROR("OMAS-ASSET-CONSUMER-0011",
-                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              AuditLogRecordSeverityLevel.SHUTDOWN,
                               "The Asset Consumer Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
                                       "topic {1}. The error message was: {2}",
                               "The local administrator has requested shut down of an Asset Consumer OMAS instance.  " +
@@ -113,7 +113,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0012 - The Asset Consumer Open Metadata Access Service (OMAS) has sent event of type: {0}
      */
     OUT_TOPIC_EVENT("OMAS-ASSET-CONSUMER-0012",
-                    OMRSAuditLogRecordSeverity.EVENT,
+                    AuditLogRecordSeverityLevel.EVENT,
              "The Asset Consumer Open Metadata Access Service (OMAS) has sent event of type: {0}",
                      "The access service sends out asset notifications to ensure connected tools have the most up to-date " +
                      "knowledge about assets.  This audit log message is to create a record of the events that are being published.",
@@ -124,7 +124,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0014 - Event {0} could not be published due to {1} exception with message: {2}
      */
     PROCESS_EVENT_EXCEPTION("OMAS-ASSET-CONSUMER-0014",
-                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            AuditLogRecordSeverityLevel.EXCEPTION,
                             "Event {0} could not be published due to {1} exception with message: {2}",
                             "The system is unable to publish the event to the Asset Consumer OMAS's OutTopic.",
                             "Verify the topic configuration and that the event broker is running."),
@@ -133,7 +133,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * OMAS-ASSET-CONSUMER-0018 - The Asset Consumer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned error message: {2}
      */
     OUT_TOPIC_FAILURE("OMAS-ASSET-CONSUMER-0018",
-                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      AuditLogRecordSeverityLevel.EXCEPTION,
                       "The Asset Consumer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
                               "error message: {2}",
                       "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
@@ -142,8 +142,12 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
     
     ;
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
 
     /**
      * The constructor for AssetConsumerAuditCode expects to be passed one of the enumeration rows defined in
@@ -151,7 +155,7 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * <br><br>
      *     AssetConsumerAuditCode   auditCode = AssetConsumerAuditCode.SERVER_NOT_AVAILABLE;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -159,17 +163,17 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    AssetConsumerAuditCode(String                     messageId,
-                           OMRSAuditLogRecordSeverity severity,
-                           String                     message,
-                           String                     systemAction,
-                           String                     userAction)
+    AssetConsumerAuditCode(String                      messageId,
+                           AuditLogRecordSeverityLevel severity,
+                           String                      message,
+                           String                      systemAction,
+                           String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -181,7 +185,11 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -192,8 +200,13 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -208,7 +221,11 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
     public String toString()
     {
         return "AssetConsumerAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

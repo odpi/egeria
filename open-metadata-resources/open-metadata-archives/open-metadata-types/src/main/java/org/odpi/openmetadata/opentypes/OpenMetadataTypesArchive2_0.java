@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -181,19 +183,20 @@ public class OpenMetadataTypesArchive2_0
 
     private ClassificationDef addTemplateClassification()
     {
-        final String guid = "25fad4a2-c2d6-440d-a5b1-e537881f84ee";
+        final String guid            = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.TEMPLATE_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.TEMPLATE_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.TEMPLATE_CLASSIFICATION.wikiURL;
 
-        final String name            = "Template";
-        final String description     = "Marks the referenceable as a template for creating new objects.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
+                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  false);
 
@@ -204,15 +207,15 @@ public class OpenMetadataTypesArchive2_0
         TypeDefAttribute       property;
 
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Unique name of the template.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the template and how/where it is used.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "additionalProperties";
-        final String attribute3Description     = "Additional information that is useful to the consumer of the template.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
+        final String attribute3Description     = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

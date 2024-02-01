@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
  * The ProjectManagementAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -22,26 +21,39 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum ProjectManagementAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMAS-PROJECT-MANAGEMENT-0001 - The Project Management Open Metadata Access Service (OMAS) is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OMAS-PROJECT-MANAGEMENT-0001",
-             OMRSAuditLogRecordSeverity.STARTUP,
+             AuditLogRecordSeverityLevel.STARTUP,
              "The Project Management Open Metadata Access Service (OMAS) is initializing a new server instance",
              "The local server has started up a new instance of the Project Management OMAS.",
              "No action is needed if this service is required.  This is part of the configured operation of the server."),
 
+    /**
+     * OMAS-PROJECT-MANAGEMENT-0003 - The Project Management Open Metadata Access Service (OMAS) has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OMAS-PROJECT-MANAGEMENT-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
+             AuditLogRecordSeverityLevel.STARTUP,
              "The Project Management Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "Verify that there were no errors reported as the service started."),
 
+    /**
+     * OMAS-PROJECT-MANAGEMENT-0004 - The Project Management Open Metadata Access Service (OMAS) is shutting down its instance for server {0}
+     */
     SERVICE_SHUTDOWN("OMAS-PROJECT-MANAGEMENT-0004",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
+             AuditLogRecordSeverityLevel.SHUTDOWN,
              "The Project Management Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Project Management OMAS instance.",
              "Verify that all resources have been released."),
 
+    /**
+     * OMAS-PROJECT-MANAGEMENT-0005 - The Project Management Open Metadata Access Service (OMAS) is unable to initialize a new instance; 
+     * error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-PROJECT-MANAGEMENT-0005",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
+             AuditLogRecordSeverityLevel.EXCEPTION,
              "The Project Management Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
@@ -52,16 +64,18 @@ public enum ProjectManagementAuditCode implements AuditLogMessageSet
     private static final long    serialVersionUID = 1L;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    
 
     /**
      * The constructor for ProjectManagementAuditCode expects to be passed one of the enumeration rows defined in
      * ProjectManagementAuditCode above.   For example:
-     *
      *     ProjectManagementAuditCode   auditCode = ProjectManagementAuditCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique Id for the message
      * @param severity - severity of the message
@@ -69,17 +83,17 @@ public enum ProjectManagementAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    ProjectManagementAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+    ProjectManagementAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -91,7 +105,11 @@ public enum ProjectManagementAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -102,9 +120,32 @@ public enum ProjectManagementAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "ProjectManagementAuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -130,7 +130,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         repositoryHandler.getEntityByGUID(userId,
                                           assetGUID,
                                           assetGUIDParameterName,
-                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                          OpenMetadataType.ASSET.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,
@@ -139,7 +139,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         repositoryHandler.getEntityByGUID(userId,
                                           discoveryEngineGUIDParameterName,
                                           assetGUID,
-                                          OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                          OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,
@@ -159,14 +159,22 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
 
         if (assetGUID != null)
         {
-            builder.setAnchors(userId, assetGUID, methodName);
+            this.addAnchorGUIDToBuilder(userId,
+                                        assetGUID,
+                                        assetGUIDParameterName,
+                                        false,
+                                        false,
+                                        effectiveTime,
+                                        supportedZones,
+                                        builder,
+                                        methodName);
         }
 
         builder.setEffectivityDates(effectiveFrom,effectiveTo);
 
         String  reportGUID = repositoryHandler.createEntity(userId,
-                                                            OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                            OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
+                                                            OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                             null,
                                                             null,
                                                             builder.getInstanceProperties(methodName),
@@ -177,7 +185,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         if (reportGUID != null)
         {
             repositoryHandler.createRelationship(userId,
-                                                 OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_GUID,
+                                                 OpenMetadataType.REPORT_TO_ASSET_TYPE_GUID,
                                                  null,
                                                  null,
                                                  assetGUID,
@@ -186,7 +194,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                  methodName);
 
             repositoryHandler.createRelationship(userId,
-                                                 OpenMetadataAPIMapper.REPORT_TO_ENGINE_TYPE_GUID,
+                                                 OpenMetadataType.REPORT_TO_ENGINE_TYPE_GUID,
                                                  null,
                                                  null,
                                                  discoveryEngineGUID,
@@ -195,7 +203,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                  methodName);
 
             repositoryHandler.createRelationship(userId,
-                                                 OpenMetadataAPIMapper.REPORT_TO_SERVICE_TYPE_GUID,
+                                                 OpenMetadataType.REPORT_TO_SERVICE_TYPE_GUID,
                                                  null,
                                                  null,
                                                  discoveryServiceGUID,
@@ -273,8 +281,8 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                     null,
                                     discoveryReportGUID,
                                     discoveryReportGUIDParameterName,
-                                    OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
-                                    OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                    OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
+                                    OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -315,7 +323,7 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         return getBeanFromRepository(userId,
                                      discoveryReportGUID,
                                      reportGUIDParameterName,
-                                     OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                     OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                      forLineage,
                                      forDuplicateProcessing,
                                      supportedZones,
@@ -358,10 +366,10 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         return this.getAttachedElements(userId,
                                         assetGUID,
                                         assetGUIDParameter,
-                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                        OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME,
-                                        OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                        OpenMetadataType.ASSET.typeName,
+                                        OpenMetadataType.REPORT_TO_ASSET_TYPE_GUID,
+                                        OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME,
+                                        OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                         null,
                                         null,
                                         0,

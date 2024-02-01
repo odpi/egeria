@@ -167,6 +167,7 @@ public class IntegrationContextManager
                                                         externalSourceGUID,
                                                         externalSourceName,
                                                         integrationConnectorGUID,
+                                                        auditLog,
                                                         maxPageSize);
         }
 

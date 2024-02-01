@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.outtopic;
 
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -779,7 +779,7 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
 
                     userIdentityHandler.validateAnchorEntity(userId,
                                                              fullEntity.getGUID(),
-                                                             OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                              fullEntity,
                                                              guidParameterName,
                                                              false,

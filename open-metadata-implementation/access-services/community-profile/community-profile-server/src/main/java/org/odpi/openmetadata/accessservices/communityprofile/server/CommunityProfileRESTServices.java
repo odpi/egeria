@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -187,8 +187,8 @@ public class CommunityProfileRESTServices
             SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,
@@ -241,7 +241,7 @@ public class CommunityProfileRESTServices
             response.setElement(handler.getBeanFromRepository(userId,
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
-                                                              OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -296,7 +296,7 @@ public class CommunityProfileRESTServices
                                                         null,
                                                         metadataSourceGUID,
                                                         metadataSourceGUIDParameterName,
-                                                        OpenMetadataAPIMapper.USER_PROFILE_MANAGER_TYPE_NAME,
+                                                        OpenMetadataType.USER_PROFILE_MANAGER_TYPE_NAME,
                                                         null,
                                                         null,
                                                         true,
@@ -355,7 +355,7 @@ public class CommunityProfileRESTServices
                                                         null,
                                                         metadataSourceGUID,
                                                         metadataSourceGUIDParameterName,
-                                                        OpenMetadataAPIMapper.USER_ACCESS_DIRECTORY_TYPE_NAME,
+                                                        OpenMetadataType.USER_ACCESS_DIRECTORY_TYPE_NAME,
                                                         null,
                                                         null,
                                                         true,
@@ -413,7 +413,7 @@ public class CommunityProfileRESTServices
                                                         null,
                                                         metadataSourceGUID,
                                                         metadataSourceGUIDParameterName,
-                                                        OpenMetadataAPIMapper.MASTER_DATA_MANAGER_TYPE_NAME,
+                                                        OpenMetadataType.MASTER_DATA_MANAGER_TYPE_NAME,
                                                         null,
                                                         null,
                                                         true,

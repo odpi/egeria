@@ -28,9 +28,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 
@@ -89,7 +89,7 @@ public abstract class SubjectAreaHandler {
         EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                            guid,
                                                                            "guid",
-                                                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                                            null,
                                                                            null,
                                                                            false,
@@ -123,7 +123,7 @@ public abstract class SubjectAreaHandler {
         EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                            categoryGuid,
                                                                            "guid",
-                                                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                           OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                            null,
                                                                            null,
                                                                            false,
@@ -433,7 +433,7 @@ public abstract class SubjectAreaHandler {
             EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                false,

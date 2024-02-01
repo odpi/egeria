@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -79,8 +81,8 @@ public class CollectionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-              OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+              OpenMetadataType.COLLECTION_TYPE_GUID,
+              OpenMetadataType.COLLECTION_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -102,8 +104,8 @@ public class CollectionBuilder extends ReferenceableBuilder
                       String               serviceName,
                       String               serverName)
     {
-        super(OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-              OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+        super(OpenMetadataType.COLLECTION_TYPE_GUID,
+              OpenMetadataType.COLLECTION_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -124,13 +126,13 @@ public class CollectionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -165,7 +167,7 @@ public class CollectionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.FOLDER_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER_TYPE_NAME);
         }
     }
 
@@ -190,7 +192,7 @@ public class CollectionBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
+                                                                                  OpenMetadataType.FOLDER_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -199,7 +201,7 @@ public class CollectionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.FOLDER_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER_TYPE_NAME);
         }
     }
 
@@ -219,14 +221,14 @@ public class CollectionBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                   null,
-                                                                                  OpenMetadataAPIMapper.ORDER_BY_PROPERTY_NAME,
+                                                                                  OpenMetadataType.ORDER_BY_PROPERTY_NAME,
                                                                                   orderBy,
                                                                                   methodName);
 
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.ORDER_PROPERTY_NAME_PROPERTY_NAME,
                                                                   orderPropertyName,
                                                                   methodName);
 

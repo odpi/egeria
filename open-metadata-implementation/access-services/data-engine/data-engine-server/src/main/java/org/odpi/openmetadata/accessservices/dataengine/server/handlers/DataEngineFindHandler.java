@@ -10,6 +10,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
@@ -26,9 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
 
 
 /**
@@ -97,7 +96,7 @@ public class DataEngineFindHandler {
         final String externalSourceName = findRequestBody.getExternalSourceName();
 
         List<EntityDetail> result = genericHandler.getEntitiesByValue(userId, findRequestBody.getIdentifiers().getQualifiedName(),
-                QUALIFIED_NAME_PROPERTY_NAME, typeGuid, findRequestBody.getType(), Collections.singletonList(QUALIFIED_NAME_PROPERTY_NAME),
+                                                                      OpenMetadataProperty.QUALIFIED_NAME.name, typeGuid, findRequestBody.getType(), Collections.singletonList(OpenMetadataProperty.QUALIFIED_NAME.name),
                 true, null, null, false, false,
                 0, invalidParameterHandler.getMaxPagingSize(), dataEngineCommonHandler.getNow(), methodName);
 
@@ -129,17 +128,17 @@ public class DataEngineFindHandler {
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
         primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
-        instanceProperties.setProperty(QUALIFIED_NAME_PROPERTY_NAME, primitivePropertyValue);
+        instanceProperties.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name, primitivePropertyValue);
 
         return instanceProperties;
     }
 
     private String getTypeGuid(String userId, String typeName){
         if(typeName == null){
-            return REFERENCEABLE_TYPE_GUID;
+            return OpenMetadataType.REFERENCEABLE.typeGUID;
         }
         TypeDef typeDef = repositoryHelper.getTypeDefByName(userId, typeName);
-        return typeDef == null ? REFERENCEABLE_TYPE_GUID : typeDef.getGUID();
+        return typeDef == null ? OpenMetadataType.REFERENCEABLE.typeGUID : typeDef.getGUID();
     }
 
 }

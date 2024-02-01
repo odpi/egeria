@@ -189,7 +189,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -505,9 +504,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             List<RelatedMetadataElement> connectionLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                             2,
                                                                                             connectionRelationshipName,
-                                                                                            false,
-                                                                                            false,
-                                                                                            null,
                                                                                             0,
                                                                                             0);
 
@@ -641,9 +637,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             List<RelatedMetadataElement> endpointLinks = store.getRelatedMetadataElements(connection.getElementGUID(),
                                                                                           2,
                                                                                           endpointRelationshipName,
-                                                                                          false,
-                                                                                          false,
-                                                                                          null,
                                                                                           0,
                                                                                           0);
 
@@ -738,7 +731,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String fileExtension = FilenameUtils.getExtension(destinationFilePathName);
         String newFileGUID;
 
-        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null, true, false, null);
+        governanceContext.getOpenMetadataStore().setForLineage(true);
+
+        String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null);
         String processGUID;
 
         if (topLevelProcessGUID == null)
@@ -780,11 +775,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID == null)
         {
-            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
+            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
 
             if (sourceFileGUID == null)
             {
-                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null, true, false, null);
+                sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null);
             }
 
             if (! sourceLineageFromFile)
@@ -804,11 +799,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
         else
         {
-            String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName,
-                                                                                                                   null,
-                                                                                                                   false,
-                                                                                                                   false,
-                                                                                                                   null);
+            String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName, null);
 
             newFileGUID = governanceContext.createAssetFromTemplate(assetTypeName, assetTemplateGUID, "CSVFile:" + destinationFilePathName, fileName, null, null, extendedProperties);
 
@@ -826,13 +817,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             newFileGUID = getFolderGUID(newFileGUID);
         }
 
-        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName", true, false, null);
+        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
         if (sourceFileGUID != null)
         {
             governanceContext.createLineageRelationship("DataFlow", sourceFileGUID, null, null, null, processGUID);
         }
 
         governanceContext.createLineageRelationship("DataFlow", processGUID, null, null, null, newFileGUID);
+
+        metadataStore.setForLineage(false);
 
         if (auditLog != null)
         {
@@ -866,9 +859,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                            2,
                                                                                                            "NestedFile",
-                                                                                                           false,
-                                                                                                           false,
-                                                                                                           null,
                                                                                                            0,
                                                                                                            0);
 
@@ -900,40 +890,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (fileExtension != null)
         {
-            switch (fileExtension)
+            assetTypeName = switch (fileExtension)
             {
-                case "csv":
-                    assetTypeName = "CSVFile";
-                    break;
-
-                case "json":
-                    assetTypeName = "JSONFile";
-                    break;
-
-                case "avro":
-                    assetTypeName = "AvroFileName";
-                    break;
-
-                case "pdf":
-                case "doc":
-                case "docx":
-                case "ppt":
-                case "pptx":
-                case "xls":
-                case "xlsx":
-                case "md":
-                    assetTypeName = "Document";
-                    break;
-
-                case "jpg":
-                case "jpeg":
-                case "png":
-                case "gif":
-                case "mp3":
-                case "mp4":
-                    assetTypeName = "MediaFile";
-                    break;
-            }
+                case "csv" -> "CSVFile";
+                case "json" -> "JSONFile";
+                case "avro" -> "AvroFile";
+                case "pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "md" -> "Document";
+                case "jpg", "jpeg", "png", "gif", "mp3", "mp4" -> "MediaFile";
+                default -> assetTypeName;
+            };
         }
 
         return assetTypeName;

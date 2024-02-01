@@ -1431,6 +1431,24 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
 
     /**
+     * Retrieve a single relationship by GUID.
+     *
+     * @param guid unique identifier
+     * @return description of requested entity
+     * @throws PropertyServerException problem connecting to Apache Atlas
+     */
+    public AtlasRelationship getRelationshipByGUID(String guid) throws PropertyServerException
+    {
+        final String methodName = "getRelationshipByGUID(" + guid + ")";
+        final String url = targetRootURL + "/api/atlas/v2/relationship/guid/" + guid;
+
+        AtlasRelationship relationship = this.callGetRESTCallNoParams(methodName, AtlasRelationship.class, url);
+
+        return validateActiveRelationship(relationship);
+    }
+
+
+    /**
      * Add a relationship.
      *
      * @param atlasRelationship description of relationship
@@ -1497,6 +1515,24 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
 
     /**
+     * Check that the relationship is ACTIVE - otherwise return null.
+     *
+     * @param retrievedRelationship relationship retrieved from the Apache Atlas repository
+     * @return retrieved entity or null
+     */
+    private AtlasRelationship validateActiveRelationship(AtlasRelationship retrievedRelationship)
+    {
+        if ((retrievedRelationship != null) && (retrievedRelationship.getStatus() == AtlasInstanceStatus.ACTIVE))
+        {
+            return retrievedRelationship;
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Retrieve a single entity by GUID.
      *
      * @param guid unique identifier
@@ -1505,7 +1541,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
      */
     public AtlasEntityWithExtInfo getEntityByGUID(String guid) throws PropertyServerException
     {
-        final String methodName = "getEntity(" + guid + ")";
+        final String methodName = "getEntityByGUID(" + guid + ")";
         final String url = targetRootURL + "/api/atlas/v2/entity/guid/" + guid;
 
         AtlasEntityWithExtInfo entity = this.callGetRESTCallNoParams(methodName, AtlasEntityWithExtInfo.class, url);

@@ -73,7 +73,7 @@ public class PropertyHelper
      * @return boolean result
      */
     public boolean isTypeOf(ElementControlHeader elementControlHeader,
-                            String expectedType)
+                            String               expectedType)
     {
         if (expectedType == null)
         {
@@ -448,6 +448,7 @@ public class PropertyHelper
      * @param mapValues contents of the map
      * @return instance properties object.
      */
+    @SuppressWarnings(value = "unchecked")
     public ElementProperties addPropertyMap(ElementProperties   properties,
                                             Map<String, Object> mapValues)
     {
@@ -697,6 +698,167 @@ public class PropertyHelper
     }
 
 
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addBooleanMapProperty(ElementProperties    properties,
+                                                   String               propertyName,
+                                                   Map<String, Boolean> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                /*
+                 * The values of a map property are stored as an embedded ElementProperties object.
+                 */
+                ElementProperties  mapElementProperties  = this.addBooleanPropertyMap(null, mapValues);
+
+                /*
+                 * If there was content in the map then the resulting ElementProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapElementProperties != null)
+                {
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    mapTypePropertyValue.setTypeName("map<string,boolean>");
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addIntMapProperty(ElementProperties    properties,
+                                               String               propertyName,
+                                               Map<String, Integer> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                /*
+                 * The values of a map property are stored as an embedded ElementProperties object.
+                 */
+                ElementProperties  mapElementProperties  = this.addIntPropertyMap(null, mapValues);
+
+                /*
+                 * If there was content in the map then the resulting ElementProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapElementProperties != null)
+                {
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    mapTypePropertyValue.setTypeName("map<string,int>");
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addLongMapProperty(ElementProperties properties,
+                                                String            propertyName,
+                                                Map<String, Long> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                /*
+                 * The values of a map property are stored as an embedded ElementProperties object.
+                 */
+                ElementProperties  mapElementProperties  = this.addLongPropertyMap(null, mapValues);
+
+                /*
+                 * If there was content in the map then the resulting ElementProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapElementProperties != null)
+                {
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    mapTypePropertyValue.setTypeName("map<string,long>");
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        return properties;
+    }
+
 
     /**
      * Add the supplied property map to an element properties object.  Each of the entries in the map is added
@@ -745,6 +907,157 @@ public class PropertyHelper
 
         return properties;
     }
+
+
+
+    /**
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addIntPropertyMap(ElementProperties    properties,
+                                               Map<String, Integer> mapValues)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            ElementProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new ElementProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Integer mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addLongPropertyMap(ElementProperties   properties,
+                                                Map<String, Long> mapValues)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            ElementProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new ElementProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Long mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addBooleanPropertyMap(ElementProperties    properties,
+                                                   Map<String, Boolean> mapValues)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            ElementProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new ElementProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Boolean mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
+
 
 
     /**

@@ -73,12 +73,12 @@ import java.util.List;
  * }
  * </code>
  */
-public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnectorProviderBase {
-
+public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnectorProviderBase
+{
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int connectorComponentId = 100;
+    private static final int connectorComponentId = 87;
 
     /*
      * Unique identifier for the connector type.
@@ -96,7 +96,7 @@ public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnector
     /*
      * Class of the connector.
      */
-    private static final Class<?> connectorClass = XTDBOMRSRepositoryConnector.class;
+    private static final String connectorClass = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnector";
 
     public static final String XTDB_CONFIG = "xtdbConfig";
     public static final String XTDB_CONFIG_EDN = "xtdbConfigEDN";
@@ -114,7 +114,7 @@ public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnector
         /*
          * Set up the class name of the connector that this provider creates.
          */
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorClassName(connectorClass);
 
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
@@ -142,7 +142,7 @@ public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnector
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

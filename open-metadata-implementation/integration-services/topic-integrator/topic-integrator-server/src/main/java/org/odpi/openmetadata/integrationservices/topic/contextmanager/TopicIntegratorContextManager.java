@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorContext;
 import org.odpi.openmetadata.integrationservices.topic.ffdc.TopicIntegratorAuditCode;
@@ -200,7 +200,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
             serviceOptionsString = serviceOptions.toString();
         }
 
-        if (integrationConnector instanceof TopicIntegratorConnector)
+        if (integrationConnector instanceof TopicIntegratorConnector serviceSpecificConnector)
         {
             auditLog.logMessage(methodName,
                                 TopicIntegratorAuditCode.CONNECTOR_CONTEXT_INITIALIZING.getMessageDefinition(connectorName,
@@ -208,8 +208,6 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                                                 metadataSourceQualifiedName,
                                                                                                                 permittedSynchronizationName,
                                                                                                                 serviceOptionsString));
-
-            TopicIntegratorConnector serviceSpecificConnector = (TopicIntegratorConnector)integrationConnector;
 
             String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
             String externalSourceName = metadataSourceQualifiedName;
@@ -241,6 +239,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                   integrationConnectorGUID,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
+                                                                                  auditLog,
                                                                                   maxPageSize);
             serviceSpecificConnector.setContext(integratorContext);
             integrationConnector.setConnectorName(connectorName);

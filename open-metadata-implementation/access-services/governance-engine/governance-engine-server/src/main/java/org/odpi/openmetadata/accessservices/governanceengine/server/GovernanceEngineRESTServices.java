@@ -139,6 +139,7 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem detected by the metadata store.
      */
+    @SuppressWarnings(value="deprecation")
     public VoidResponse updateGovernanceActionStatus(String            serverName,
                                                      String            userId,
                                                      String            governanceActionGUID,

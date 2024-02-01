@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataSetProperties extends AssetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

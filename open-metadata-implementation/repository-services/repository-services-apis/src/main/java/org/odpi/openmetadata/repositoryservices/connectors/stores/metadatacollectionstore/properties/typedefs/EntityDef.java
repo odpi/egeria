@@ -83,6 +83,7 @@ public class EntityDef extends TypeDef
                 ", superType=" + getSuperType() +
                 ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", descriptionGUID='" + getDescriptionWiki() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +

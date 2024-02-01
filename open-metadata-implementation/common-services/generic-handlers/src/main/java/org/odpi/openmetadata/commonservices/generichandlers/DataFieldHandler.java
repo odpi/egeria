@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -151,11 +153,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> annotationRelationships = super.getAttachmentLinks(userId,
                                                                               discoveryReportGUID,
                                                                               discoveryReportGUIDParameterName,
-                                                                              OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                                                              OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                                                              OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                                                              OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                                              OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
+                                                                              OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
                                                                               null,
-                                                                              OpenMetadataAPIMapper.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME,
+                                                                              OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName,
                                                                               0,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
@@ -179,10 +181,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         List<String> entityGUIDs = super.getAttachedElementGUIDs(userId,
                                                                                  annotationEnd.getGUID(),
                                                                                  annotationEndParameterName,
-                                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                                 OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_GUID,
-                                                                                 OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME,
-                                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                                 OpenMetadataType.DATA_FIELD_TYPE_NAME,
+                                                                                 OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
+                                                                                 OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                                                                 OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startingFrom,
@@ -243,10 +245,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> entityGUIDs = super.getAttachedElementGUIDs(userId,
                                                                  parentDataFieldGUID,
                                                                  dataFieldGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                 OpenMetadataType.DATA_FIELD_TYPE_NAME,
+                                                                 OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID,
+                                                                 OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME,
+                                                                 OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  startingFrom,
@@ -301,11 +303,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     dataFieldGUID,
                                                                     dataFieldGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FIELD_TYPE_NAME,
+                                                                    OpenMetadataType.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
+                                                                    OpenMetadataType.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                     0,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -328,7 +330,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     EntityDetail entityDetail = super.getEntityFromRepository(userId,
                                                                               entityProxy.getGUID(),
                                                                               attachedEntityGUIDParameterName,
-                                                                              OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                              OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                               null,
                                                                               null,
                                                                               forLineage,
@@ -448,7 +450,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity = super.getEntityFromRepository(userId,
                                                             dataFieldGUID,
                                                             dataFieldGUIDParameterName,
-                                                            OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                            OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                             null,
                                                             null,
                                                             forLineage,
@@ -460,7 +462,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> relationships = super.getAllAttachmentLinks(userId,
                                                                        dataFieldGUID,
                                                                        dataFieldGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                                       OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
                                                                        effectiveTime,
@@ -527,7 +529,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(parentEntityGUID, parentEntityParameterName, methodName);
         invalidParameterHandler.validateName(dataFieldName, dataFieldNameParameterName, methodName);
 
-        String       assetGUID    = null;
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               parentEntityGUID,
                                                               parentEntityParameterName,
@@ -540,11 +541,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               effectiveTime,
                                                               methodName);
 
-        if (anchorEntity != null)
-        {
-            assetGUID = anchorEntity.getGUID();
-        }
-
         DataFieldBuilder builder = new DataFieldBuilder(dataFieldName,
                                                         dataFieldType,
                                                         dataFieldDescription,
@@ -552,23 +548,23 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         dataFieldSortOrder,
                                                         defaultValue,
                                                         additionalProperties,
-                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                        OpenMetadataType.DATA_FIELD_TYPE_GUID,
+                                                        OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                         null,
                                                         repositoryHelper,
                                                         serviceName,
                                                         serverName);
 
-        if (assetGUID != null)
+        if (anchorEntity != null)
         {
-            builder.setAnchors(userId, assetGUID, methodName);
+            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
         }
 
         String dataFieldGUID = this.createBeanInRepository(userId,
                                                            externalSourceGUID,
                                                            externalSourceName,
-                                                           OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                           OpenMetadataType.DATA_FIELD_TYPE_GUID,
+                                                           OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                            builder,
                                                            effectiveTime,
                                                            methodName);
@@ -577,7 +573,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                                   null,
-                                                                                                  OpenMetadataAPIMapper.DATA_FIELD_POSITION_PROPERTY_NAME,
+                                                                                                  OpenMetadataType.DATA_FIELD_POSITION_PROPERTY_NAME,
                                                                                                   dataFieldPosition,
                                                                                                   methodName);
             this.uncheckedLinkElementToElement(userId,
@@ -588,7 +584,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                parentEntityType,
                                                dataFieldGUID,
                                                dataFieldGUIDParameterName,
-                                               OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                               OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
@@ -654,9 +650,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  externalSourceName,
                                  annotationGUID,
                                  annotationGUIDParameterName,
-                                 OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
-                                 OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_GUID,
-                                 OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                 OpenMetadataType.ANNOTATION.typeName,
+                                 OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
+                                 OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                  dataFieldPosition,
                                  dataFieldName,
                                  dataFieldType,
@@ -724,9 +720,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  externalSourceName,
                                  parentDataFieldGUID,
                                  parentDataFieldGUIDParameterName,
-                                 OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                 OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID,
-                                 OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME,
+                                 OpenMetadataType.DATA_FIELD_TYPE_NAME,
+                                 OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID,
+                                 OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME,
                                  dataFieldPosition,
                                  dataFieldName,
                                  dataFieldType,
@@ -751,6 +747,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceGUID unique identifier of the external source (null for local)
      * @param externalSourceName unique name of the external source (null for local)
      * @param linkFromDataFieldGUID unique identifier of the data field that is at end 1 of the relationship
+     * @param linkToDataFieldGUID unique identifier of the data field that is at end 2 of the relationship
      * @param relationshipEnd the logical end of the relationship.  Use 0 if this does not make sense.
      * @param relationshipTypeName the name of this relationship between data fields.
      * @param additionalProperties any additional properties
@@ -783,19 +780,19 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataAPIMapper.RELATIONSHIP_END_PROPERTY_NAME,
+                                                                                              OpenMetadataProperty.RELATIONSHIP_END.name,
                                                                                               relationshipEnd,
                                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name,
                                                                               relationshipTypeName,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                  relationshipProperties,
-                                                                                 OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                                  additionalProperties,
                                                                                  methodName);
         this.linkElementToElement(userId,
@@ -803,15 +800,15 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   linkFromDataFieldGUID,
                                   linkFromDataFieldGUIDParameterName,
-                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                  OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                   linkToDataFieldGUID,
                                   linkToDataFieldGUIDParameterName,
-                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                  OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
-                                  OpenMetadataAPIMapper.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
+                                  OpenMetadataType.DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID,
+                                  OpenMetadataType.DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME,
                                   relationshipProperties,
                                   null,
                                   null,
@@ -878,8 +875,8 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         dataFieldSortOrder,
                                                         defaultValue,
                                                         additionalProperties,
-                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                                        OpenMetadataType.DATA_FIELD_TYPE_GUID,
+                                                        OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                                         null,
                                                         repositoryHelper,
                                                         serviceName,
@@ -892,8 +889,8 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      externalSourceName,
                                      dataFieldGUID,
                                      dataFieldGUIDParameterName,
-                                     OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
-                                     OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                     OpenMetadataType.DATA_FIELD_TYPE_GUID,
+                                     OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                      forLineage,
                                      forDuplicateProcessing,
                                      supportedZones,
@@ -941,8 +938,8 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      externalSourceName,
                                      dataFieldGUID,
                                      dataFieldGUIDParameterName,
-                                     OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
-                                     OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                     OpenMetadataType.DATA_FIELD_TYPE_GUID,
+                                     OpenMetadataType.DATA_FIELD_TYPE_NAME,
                                      null,
                                      null,
                                      forLineage,

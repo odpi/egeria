@@ -179,7 +179,7 @@ public class IntegrationReportProperties implements Serializable
     /**
      * Return the list of guids of elements that have been created.
      *
-     * @return set of guids
+     * @return list of guids
      */
     public List<String> getCreatedElements()
     {
@@ -190,28 +190,50 @@ public class IntegrationReportProperties implements Serializable
     /**
      * Set up the list of guids of elements that have been created.
      *
-     * @param createdElements set of guids
+     * @param createdElements list of guids
      */
     public void setCreatedElements(List<String> createdElements)
     {
         this.createdElements = createdElements;
     }
 
+    /**
+     * Return the identifiers of the elements that have been updated.
+     *
+     * @return list of guids
+     */
     public List<String> getUpdatedElements()
     {
         return updatedElements;
     }
 
+    /**
+     * Set up the identifiers of the elements that have been updated.
+     *
+     * @param updatedElements list of guids
+     */
     public void setUpdatedElements(List<String> updatedElements)
     {
         this.updatedElements = updatedElements;
     }
 
+
+    /**
+     * Return the identifiers of the elements that have been deleted.
+     *
+     * @return list of guids
+     */
     public List<String> getDeletedElements()
     {
         return deletedElements;
     }
 
+
+    /**
+     * Set up the identifiers of the elements that have been deleted.
+     *
+     * @param deletedElements list of guids
+     */
     public void setDeletedElements(List<String> deletedElements)
     {
         this.deletedElements = deletedElements;

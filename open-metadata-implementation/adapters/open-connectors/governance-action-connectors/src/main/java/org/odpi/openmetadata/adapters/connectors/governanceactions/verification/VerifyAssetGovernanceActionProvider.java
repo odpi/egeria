@@ -4,11 +4,13 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.verification;
 
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionConnector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -44,6 +46,10 @@ public class VerifyAssetGovernanceActionProvider extends GovernanceActionService
 
     private static final String connectorClassName = null; // todo
 
+    /**
+     * Name of the target action where the asset's unique identifier.
+     */
+    private static final String ACTION_TARGET_NAME      = "assetGUID";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -92,5 +98,13 @@ public class VerifyAssetGovernanceActionProvider extends GovernanceActionService
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

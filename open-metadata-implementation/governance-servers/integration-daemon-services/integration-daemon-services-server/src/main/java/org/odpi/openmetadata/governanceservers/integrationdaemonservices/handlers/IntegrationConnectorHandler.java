@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -480,6 +481,71 @@ public class IntegrationConnectorHandler
     }
 
 
+
+    /**
+     * Update the endpoint network address for a specific integration connector.
+     *
+     * @param userId calling user
+     * @param actionDescription external caller's activity
+     * @param networkAddress name of a specific connector or null for all connectors and the properties to change
+     */
+
+    public void updateEndpointNetworkAddress(String userId,
+                                             String actionDescription,
+                                             String networkAddress)
+    {
+        if (connection != null)
+        {
+            Endpoint endpoint = connection.getEndpoint();
+
+            if (endpoint != null)
+            {
+                endpoint.setAddress(networkAddress);
+
+                connection.setEndpoint(endpoint);
+
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_ENDPOINT_UPDATE.getMessageDefinition(userId,
+                                                                                                                             integrationConnectorName,
+                                                                                                                             integrationDaemonName,
+                                                                                                                             networkAddress));
+            }
+            else
+            {
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_NO_ENDPOINT_TO_UPDATE.getMessageDefinition(userId,
+                                                                                                                                   integrationConnectorName,
+                                                                                                                                   integrationDaemonName));
+            }
+
+            this.reinitializeConnector(actionDescription);
+        }
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     *
+     * @param userId calling user
+     * @param actionDescription external caller's activity
+     * @param connection new connection object
+     */
+
+    public  void updateConnectorConnection(String     userId,
+                                           String     actionDescription,
+                                           Connection connection)
+    {
+        this.connection = connection;
+
+        auditLog.logMessage(actionDescription,
+                            IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_ENDPOINT_UPDATE.getMessageDefinition(userId,
+                                                                                                                     integrationConnectorName,
+                                                                                                                     integrationDaemonName));
+
+        this.reinitializeConnector(actionDescription);
+    }
+
+
     /**
      * Call engage() method of the integration connector.  This is called in a separate thread.
      *
@@ -667,6 +733,10 @@ public class IntegrationConnectorHandler
             if ((integrationConnectorStatus == IntegrationConnectorStatus.RUNNING) ||
                 (integrationConnectorStatus == IntegrationConnectorStatus.FAILED))
             {
+                if (integrationContext != null)
+                {
+                    integrationContext.disconnect();
+                }
                 integrationConnector.disconnect();
                 updateStatus(IntegrationConnectorStatus.STOPPED);
             }

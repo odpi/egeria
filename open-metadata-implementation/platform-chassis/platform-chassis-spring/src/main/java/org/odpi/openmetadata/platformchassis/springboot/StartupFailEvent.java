@@ -15,7 +15,14 @@ public class StartupFailEvent extends ApplicationEvent
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Source of the failure
+     */
     private final Object source;
+
+    /**
+     * Error message
+     */
     private final String message;
 
 

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -28,12 +30,12 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName      name of this OMAS
      * @param serverName       name of local server
      */
-    protected ReferenceableBuilder(OMRSRepositoryHelper repositoryHelper,
-                                   String               serviceName,
-                                   String               serverName)
+    public ReferenceableBuilder(OMRSRepositoryHelper repositoryHelper,
+                                String serviceName,
+                                String serverName)
     {
-        super(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        super(OpenMetadataType.REFERENCEABLE.typeGUID,
+              OpenMetadataType.REFERENCEABLE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -53,8 +55,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                    String               serviceName,
                                    String               serverName)
     {
-        super(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        super(OpenMetadataType.REFERENCEABLE.typeGUID,
+              OpenMetadataType.REFERENCEABLE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -127,8 +129,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                    String               serviceName,
                                    String               serverName)
     {
-        super(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+        super(OpenMetadataType.REFERENCEABLE.typeGUID,
+              OpenMetadataType.REFERENCEABLE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -267,7 +269,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                       null,
                                                                                       InstanceProvenanceType.LOCAL_COHORT,
                                                                                       userId,
-                                                                                      OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                                                                       typeName,
                                                                                       ClassificationOrigin.ASSIGNED,
                                                                                       null,
@@ -279,7 +281,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
             }
             catch (TypeErrorException error)
             {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
             }
         }
     }
@@ -305,19 +307,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
+                                                                      OpenMetadataType.OWNER_PROPERTY_NAME,
                                                                       owner,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
                                                                       ownerTypeName,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
                                                                       ownerPropertyName,
                                                                       methodName);
         }
@@ -351,7 +353,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -363,7 +365,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
         }
     }
 
@@ -386,19 +388,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.TEMPLATE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   name,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.TEMPLATE_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                      additionalProperties,
                                                                      methodName);
 
@@ -428,25 +430,25 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
                                                                   defaultValue,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.SAMPLE_VALUES_PROPERTY_NAME,
+                                                                       OpenMetadataType.SAMPLE_VALUES_PROPERTY_NAME,
                                                                        sampleValues,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.DATA_PATTERN_PROPERTY_NAME,
-                                                                  dataPattern,
-                                                                  methodName);
+                                                                       properties,
+                                                                       OpenMetadataType.DATA_PATTERN_PROPERTY_NAME,
+                                                                       dataPattern,
+                                                                       methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.NAME_PATTERN_PROPERTY_NAME,
+                                                                       OpenMetadataType.NAME_PATTERN_PROPERTY_NAME,
                                                                        namePattern,
                                                                        methodName);
 
@@ -482,7 +484,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -495,7 +497,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName);
         }
     }
 
@@ -510,43 +512,43 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getMementoProperties(Date                archiveDate,
-                                            String              archiveUser,
-                                            String              archiveProcess,
-                                            Map<String, String> archiveProperties,
-                                            String              methodName)
+    public InstanceProperties getMementoProperties(Date                archiveDate,
+                                                   String              archiveUser,
+                                                   String              archiveProcess,
+                                                   Map<String, String> archiveProperties,
+                                                   String              methodName)
     {
         InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    null,
-                                                                                   OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.ARCHIVE_DATE.name,
                                                                                    archiveDate != null ? archiveDate : new Date(),
                                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ARCHIVE_USER.name,
                                                                   archiveUser,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ARCHIVE_PROCESS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ARCHIVE_PROCESS.name,
                                                                   archiveProcess,
                                                                   methodName);
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.ARCHIVE_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ARCHIVE_PROPERTIES.name,
                                                                      archiveProperties,
                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ARCHIVE_SERVICE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ARCHIVE_SERVICE.name,
                                                                   serviceName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.ARCHIVE_METHOD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ARCHIVE_METHOD.name,
                                                                   methodName,
                                                                   methodName);
 
@@ -581,7 +583,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -593,7 +595,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -614,18 +616,18 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataAPIMapper.SECURITY_LABELS_PROPERTY_NAME,
+                                                                                          OpenMetadataType.SECURITY_LABELS_PROPERTY_NAME,
                                                                                           securityLabels,
                                                                                           methodName);
         properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
+                                                               OpenMetadataType.SECURITY_PROPERTIES_PROPERTY_NAME,
                                                                securityProperties,
                                                                methodName);
 
         properties = repositoryHelper.addStringArrayStringMapPropertyToInstance(serviceName,
                                                                                 properties,
-                                                                                OpenMetadataAPIMapper.ACCESS_GROUPS_PROPERTY_NAME,
+                                                                                OpenMetadataType.ACCESS_GROUPS_PROPERTY_NAME,
                                                                                 accessGroups,
                                                                                 methodName);
 
@@ -651,19 +653,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DESCRIPTION.name,
                                                                                      description,
                                                                                      methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                   scope,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                                  OpenMetadataType.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
                                                                   businessCapabilityGUID,
                                                                   methodName);
 
@@ -691,19 +693,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   qualifiedName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA.name,
                                                                   formula,
                                                                   methodName);
 
@@ -731,19 +733,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   qualifiedName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                  OpenMetadataType.GUARD_PROPERTY_NAME,
                                                                   guard,
                                                                   methodName);
 
@@ -771,19 +773,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   qualifiedName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA.name,
                                                                   formula,
                                                                   methodName);
 
@@ -809,13 +811,13 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   qualifiedName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -852,7 +854,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                       qualifiedName,
                                                                       methodName);
         }
@@ -861,7 +863,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                          properties,
-                                                                         OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                          additionalProperties,
                                                                          methodName);
         }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,10 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceListProperties extends RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
-
-    String  resourceUse   = null;
-    boolean watchResource = false;
+    String              resourceUse            = null;
+    String              resourceUseDescription = null;
+    Map<String, String> resourceUseProperties  = null;
+    boolean             watchResource          = false;
 
     /**
      * Default constructor
@@ -47,15 +48,17 @@ public class ResourceListProperties extends RelationshipProperties
         if (template != null)
         {
             this.resourceUse = template.getResourceUse();
+            this.resourceUseDescription = template.getResourceUseDescription();
+            this.resourceUseProperties = template.getResourceUseProperties();
             this.watchResource = template.getWatchResource();
         }
     }
 
 
     /**
-     * Return the reason why the resource has been attached to the initiative.
+     * Return the identifier that describes the type of resource use. (Use ResourceUse enum in GAF).
      *
-     * @return description
+     * @return string
      */
     public String getResourceUse()
     {
@@ -64,13 +67,57 @@ public class ResourceListProperties extends RelationshipProperties
 
 
     /**
-     * Set up the reason why the resource has been attached to the initiative.
+     * Set up identifier that describes the type of resource use. (Use ResourceUse enum in GAF).
      *
-     * @param resourceUse description
+     * @param resourceUse string
      */
     public void setResourceUse(String resourceUse)
     {
         this.resourceUse = resourceUse;
+    }
+
+
+    /**
+     * Return the description of how the resource is used, or why it is useful.
+     *
+     * @return string
+     */
+    public String getResourceUseDescription()
+    {
+        return resourceUseDescription;
+    }
+
+
+    /**
+     * Set up the description of how the resource is used, or why it is useful.
+     *
+     * @param resourceUseDescription string
+     */
+    public void setResourceUseDescription(String resourceUseDescription)
+    {
+        this.resourceUseDescription = resourceUseDescription;
+    }
+
+
+    /**
+     * Return any additional properties that explains how to use the resource.
+     *
+     * @return map
+     */
+    public Map<String, String> getResourceUseProperties()
+    {
+        return resourceUseProperties;
+    }
+
+
+    /**
+     * Set up any additional properties that explains how to use the resource.
+     *
+     * @param resourceUseProperties map
+     */
+    public void setResourceUseProperties(Map<String, String> resourceUseProperties)
+    {
+        this.resourceUseProperties = resourceUseProperties;
     }
 
 
@@ -105,7 +152,9 @@ public class ResourceListProperties extends RelationshipProperties
     public String toString()
     {
         return "ResourceListProperties{" +
-                       "resourceUse='" + resourceUse + '\'' +
+                "resourceUse='" + resourceUse + '\'' +
+                "resourceUseDescription='" + resourceUseDescription + '\'' +
+                "resourceUseProperties='" + resourceUseProperties + '\'' +
                        ", watchResource=" + watchResource +
                        '}';
     }
@@ -133,7 +182,10 @@ public class ResourceListProperties extends RelationshipProperties
             return false;
         }
         ResourceListProperties that = (ResourceListProperties) objectToCompare;
-        return watchResource == that.watchResource && Objects.equals(resourceUse, that.resourceUse);
+        return watchResource == that.watchResource &&
+                Objects.equals(resourceUse, that.resourceUse) &&
+                Objects.equals(resourceUseDescription, that.resourceUseDescription) &&
+                Objects.equals(resourceUseProperties, that.resourceUseProperties);
     }
 
 
@@ -145,6 +197,6 @@ public class ResourceListProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), resourceUse, watchResource);
+        return Objects.hash(super.hashCode(), resourceUse, resourceUseDescription, resourceUseProperties, watchResource);
     }
 }

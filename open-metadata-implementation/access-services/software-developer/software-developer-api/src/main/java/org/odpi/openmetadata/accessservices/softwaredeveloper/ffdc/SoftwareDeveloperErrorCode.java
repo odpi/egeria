@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The SoftwareDeveloperErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Software Developer OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -27,6 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum SoftwareDeveloperErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OMAS-SOFTWARE-DEVELOPER-404-001 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-SOFTWARE-DEVELOPER-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
@@ -36,29 +38,29 @@ public enum SoftwareDeveloperErrorCode implements ExceptionMessageSet
 
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for SoftwareDeveloperErrorCode expects to be passed one of the enumeration rows defined in
-     * SoftwareDeveloperErrorCode above.   For example:
-     *
-     *     SoftwareDeveloperErrorCode   errorCode = SoftwareDeveloperErrorCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    SoftwareDeveloperErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    SoftwareDeveloperErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -70,7 +72,11 @@ public enum SoftwareDeveloperErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -83,6 +89,12 @@ public enum SoftwareDeveloperErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -90,16 +102,19 @@ public enum SoftwareDeveloperErrorCode implements ExceptionMessageSet
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "SoftwareDeveloperErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
- 
 }

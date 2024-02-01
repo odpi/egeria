@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -108,30 +108,30 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
                                 EntityProxy endOne = relationship.getEntityOneProxy();
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               endOne.getType().getTypeDefName(),
-                                                              OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME))
+                                                              OpenMetadataType.API_OPERATION_TYPE_NAME))
                                 {
                                     if (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
-                                                                  OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME))
+                                                                  OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME))
                                     {
                                         bean.setParameterListType(APIParameterListType.HEADER);
                                     }
                                     else if (repositoryHelper.isTypeOf(serviceName,
                                                                        relationship.getType().getTypeDefName(),
-                                                                       OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME))
+                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME))
                                     {
                                         bean.setParameterListType(APIParameterListType.REQUEST);
                                     }
                                     else if (repositoryHelper.isTypeOf(serviceName,
                                                                        relationship.getType().getTypeDefName(),
-                                                                       OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
+                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME))
                                     {
                                         bean.setParameterListType(APIParameterListType.RESPONSE);
                                     }
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName,
                                                                    endOne.getType().getTypeDefName(),
-                                                                   OpenMetadataAPIMapper.API_PARAMETER_TYPE_NAME))
+                                                                   OpenMetadataType.API_PARAMETER_TYPE_NAME))
                                 {
                                     parameterCount ++;
                                 }

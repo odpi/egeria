@@ -18,7 +18,7 @@ public class ConnectedFeedback extends AssetFeedback
      * @param serviceName calling service
      * @param serverName name of server to use on server calls.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
      * @param commentCount the total number of comments to process.  A negative value is converted to 0.
      * @param likeCount the total number of likes to process.  A negative value is converted to 0.
@@ -31,7 +31,7 @@ public class ConnectedFeedback extends AssetFeedback
     ConnectedFeedback(String                 serviceName,
                       String                 serverName,
                       String                 userId,
-                      String                 omasServerURL,
+                      String                 platformURLRoot,
                       String                 assetGUID,
                       int                    commentCount,
                       int                    likeCount,
@@ -47,7 +47,7 @@ public class ConnectedFeedback extends AssetFeedback
             super.comments = new ConnectedComments(serviceName,
                                                    serverName,
                                                    userId,
-                                                   omasServerURL,
+                                                   platformURLRoot,
                                                    assetGUID,
                                                    commentCount,
                                                    maxCacheSize,
@@ -60,7 +60,7 @@ public class ConnectedFeedback extends AssetFeedback
             super.likes = new ConnectedLikes(serviceName,
                                              serverName,
                                              userId,
-                                             omasServerURL,
+                                             platformURLRoot,
                                              assetGUID,
                                              likeCount,
                                              maxCacheSize,
@@ -72,7 +72,7 @@ public class ConnectedFeedback extends AssetFeedback
             super.ratings = new ConnectedAssetRatings(serviceName,
                                                       serverName,
                                                       userId,
-                                                      omasServerURL,
+                                                      platformURLRoot,
                                                       assetGUID,
                                                       ratingCount,
                                                       maxCacheSize,
@@ -84,7 +84,7 @@ public class ConnectedFeedback extends AssetFeedback
             super.informalTags = new ConnectedInformalTags(serviceName,
                                                            serverName,
                                                            userId,
-                                                           omasServerURL,
+                                                           platformURLRoot,
                                                            assetGUID,
                                                            tagCount,
                                                            maxCacheSize,

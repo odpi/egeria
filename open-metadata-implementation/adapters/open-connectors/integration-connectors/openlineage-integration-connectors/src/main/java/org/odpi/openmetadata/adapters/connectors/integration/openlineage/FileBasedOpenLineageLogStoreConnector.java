@@ -143,7 +143,7 @@ public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCo
                                            zonedDateTime.getSecond() +  ":" +
                                            zonedDateTime.getNano();
 
-                File logStoreFile = new File(logStoreDirectoryName + "/" + namespace + "/" + jobName + "/" + runId + "-" + timestamp + "-" + eventType + ".json");
+                File logStoreFile = new File(logStoreDirectoryName + "/" + namespace + "/" + jobName + "/" + runId + "-" + timestamp + "-" + eventType + ".openlineageevent");
 
                 FileUtils.writeStringToFile(logStoreFile, rawEvent, (String) null, false);
             }

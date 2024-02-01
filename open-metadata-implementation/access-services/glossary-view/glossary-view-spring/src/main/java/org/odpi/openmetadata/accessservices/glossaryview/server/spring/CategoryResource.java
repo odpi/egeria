@@ -31,7 +31,7 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
         description="The Glossary View OMAS provides APIs and events for retrieving glossaries, categories and terms.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omas/glossary-view/overview/"))
-
+@Deprecated
 public class CategoryResource {
 
     private final CategoryService categoryService;

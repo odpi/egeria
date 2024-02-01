@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 
 /**
  * EvaluateAnnotationsGovernanceActionConnector is currently a placeholder for a governance action that will look through the annotations
- * from a discovery analysis report and set up guards to drive actions that process the different types.
+ * from a survey report and set up guards to drive actions that process the different types.
  */
 public class EvaluateAnnotationsGovernanceActionConnector
 {

@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_REQUEST_TYPE_NAME;
-import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_RESPONSE_TYPE_NAME;
 
 /**
  * BigGlossaryArchiveBuilder provides API metadata.
